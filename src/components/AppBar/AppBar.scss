@@ -1,0 +1,33 @@
+.app-bar {
+  padding: 2rem 0rem 1rem;
+
+  .ui.input.searcher {
+    & > input {
+      background-color: transparent;
+      border: none;
+    }
+  }
+
+  .profile-avatar {
+    padding-top: 0.4rem;
+    padding-bottom: 0.6rem;
+
+    &-trigger {
+      padding-right: 0.8rem;
+    }
+
+    &-circle {
+      width: 2rem;
+      height: 2rem;
+      background-color: #6772e5;
+      color: #fff;
+      display: inline-block;
+      border-radius: 3rem;
+      text-align: center;
+      align-content: center;
+      padding-top: 0.28rem;
+      margin-right: 0.7rem;
+      font-size: 0.8rem;
+    }
+  }
+}

@@ -1,0 +1,107 @@
+import axios from 'axios'
+
+import { jsonToFormData } from '@lib/utils/functions'
+
+let _source, beforeRoute
+
+function verifyRequestCancel(route) {
+  if(beforeRoute === route) {
+    if(_source !== undefined) _source.cancel('Operation canceled due to new instance.')
+  } else {
+    beforeRoute = route
+  }
+}
+
+require('axios-debug-log')
+
+export default class Request {
+  constructor(url) {
+    this.url = url
+    this.instance = null
+
+    this.http()
+  }
+
+  http = function() {
+    let config = {
+      baseURL: this.url
+      // mode   : 'no-cors'
+    }
+
+    if(this.token)
+      config.headers = {
+        Authorization: `Bearer ${this.token}`
+      }
+
+    this.instance = axios.create(config)
+  }
+
+  Put = (route, payload = {}) => {
+    return new Promise((resolve, reject) => {
+      verifyRequestCancel(route)
+      this.instance
+        .put(route, payload)
+        .then(res => resolve(res.data))
+        .catch(e => {
+          reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
+        })
+    })
+  }
+
+  Delete = (route, payload = {}) => {
+    return new Promise((resolve, reject) => {
+      verifyRequestCancel(route)
+      this.instance
+        .delete(route, { data: payload })
+        .then(res => resolve(res.data))
+        .catch(e => {
+          reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
+        })
+    })
+  }
+
+  Patch = (route, payload = {}) => {
+    return new Promise((resolve, reject) => {
+      verifyRequestCancel(route)
+      this.instance
+        .patch(route, payload)
+        .then(res => resolve(res.data))
+        .catch(e => {
+          reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
+        })
+    })
+  }
+
+  Post = (route, payload = {}) => {
+    return new Promise((resolve, reject) => {
+      verifyRequestCancel(route)
+      this.instance
+        .post(route, jsonToFormData(payload))
+        .then(res => resolve(res.data))
+        .catch(e => {
+          reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
+        })
+    })
+  }
+
+  Get = (route, payload = {}) => {
+    return new Promise((resolve, reject) => {
+      verifyRequestCancel(route)
+      this.instance
+        .get(route, {
+          params: payload
+        })
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(e => {
+          reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
+        })
+    })
+  }
+
+  reHydrateToken = token => {
+    this.token = token
+    this.http()
+  }
+}

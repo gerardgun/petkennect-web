@@ -1,0 +1,111 @@
+
+body {
+  background-color: #f6f7f8;
+}
+
+.form-primary {
+  &-actions {
+    &.vertical {
+      .ui.button {
+        margin-bottom: 0.8rem;
+      }
+    }
+  }
+
+  &-segment {
+    &.ui.segment {
+      background-color: #f9fafb;
+      box-shadow: none;
+      border: none;
+    }
+  }
+
+  .ui.form {
+    input[type=password]:focus,
+    input[type=text]:focus,
+    input[type=number]:focus,
+    input[type=email]:focus,
+    input[type=tel]:focus,
+    input[type=date]:focus,
+    .ui.selection.active.dropdown,
+    .ui.selection.active.dropdown:hover,
+    .ui.selection.active.dropdown .menu {
+      border-color: #00b5ad;
+    }
+
+    .ui.toggle.checkbox {
+      input:checked~.box:before,
+      input:checked~label:before {
+        background-color: #00b5ad !important;
+      }
+    }
+  }
+
+  .ui.divider {
+    margin-top: 2.3rem;
+    margin-bottom: 1.8rem;
+  }
+}
+
+.segment-content {
+  &.ui.segment {
+    box-shadow: none;
+    border: none;
+  }
+
+  &-header.ui.grid {
+    margin-bottom: 2rem;
+  }
+
+  .ui.secondary.pointing.menu {
+    margin-bottom: 2rem;
+  }
+}
+
+.table-primary {
+  &.ui.basic.table {
+    margin-bottom: 3rem;
+    margin-top: 0rem;
+
+    thead th {
+      color: #222b3b;
+    }
+  
+    tbody {
+      tr.active {
+        background-color: #00b5ad0a !important;
+      }
+
+      td {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        color: #222b3bd9;
+      }
+    }
+  }
+
+  .ui.checkbox {
+    input:checked~label {
+      &::after{
+        color: #fff;
+        font-size: 0.8rem;
+      }
+
+      &::before{
+        border-color: #00b5ad;
+        background-color: #00b5ad;
+      }
+    }
+  }
+
+  &-segment-dimmable.ui.segment {
+    padding: 0rem 2rem 0rem;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+  }
+}
+
+.ui.fluid.container {
+  max-width: 1400px !important;
+}

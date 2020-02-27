@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ConnectedRouter } from 'connected-react-router'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { Switch, BrowserRouter as Router } from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import PrivateRoute from '@components/Route/Private'
+import PublicRoute from '@components/Route/Public'
 
-export default App;
+import routes from '@routes'
+import store, { history } from './store/configureStore'
+
+const AppRouter = () => (
+  <ConnectedRouter history={history}>
+    <Router>
+      <Switch>
+        {
+          routes.map((route, index) => (
+            route.auth === true ? (
+              <PrivateRoute key={index} {...route} />
+            ) : (
+              <PublicRoute key={index} {...route} />
+            )
+          ))
+        }
+      </Switch>
+    </Router>
+  </ConnectedRouter>
+)
+
+const App = () => (
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>
+)
+
+export default App
