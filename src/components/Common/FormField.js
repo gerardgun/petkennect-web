@@ -16,18 +16,20 @@ const FormField = props => {
     ...rest
   } = props
 
-  const _handleBlur = (e, data) => {
+  const _handleBlur = (e, data = {}) => {
     let value = ''
 
-    if(data && 'value' in data)
+    if(data.value)
       value = data.value
-    else if(e && 'currentTarget' in e && 'value' in e.currentTarget)
+    else
       value = e
 
     return onBlur(value)
   }
 
-  const _handleChange = (e, { value }) => onChange(value)
+  const _handleChange = (e, { checked, value }) => {
+    return onChange(typeof checked !== 'undefined' ? checked : value)
+  }
 
   return (
     <Form.Field>

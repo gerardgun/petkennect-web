@@ -41,7 +41,8 @@ export default {
       PATCH, PATCH_FULFILLED, PATCH_FAILURE,
       POST, POST_FULFILLED, POST_FAILURE,
       PUT, PUT_FULFILLED, PUT_FAILURE,
-      // Propipos del reducer
+      // Propios del reducer
+      RESET,
       RESET_ITEM,
       SET_ITEM,
       UPDATE
@@ -76,6 +77,7 @@ export default {
       [ERROR_ACTION]   : PUT_FAILURE
     }),
     // Reducer creators
+    reset    : () => ({ type: RESET }),
     resetItem: () => ({ type: RESET_ITEM }),
     setItem  : (item, mode = READ) => ({ type: SET_ITEM, item, mode }),
     update   : payload => ({ type: UPDATE, payload })

@@ -7,7 +7,7 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
   const _handleDeleteBtnClick = () => {
     if(props.onDelete) {
       props.onDelete()
-    } else {
+    } else if(isMultipleDeleting) {
       const selectedIds = list.selector.selected_items.map(({ id }) => id)
 
       props.dispatch(duckDetail.creators.delete(...selectedIds))
@@ -15,9 +15,15 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
           props.dispatch(duck.creators.removeSelectedIds())
           props.onClose()
         })
+    } else {
+      props.dispatch(duckDetail.creators.delete(detail.item.id))
+        .then(() => {
+          props.onClose()
+        })
     }
   }
 
+  const isMultipleDeleting = Boolean(list)
   const deleting = detail.status === 'DELETING'
 
   return (
@@ -29,7 +35,15 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
     >
       <Header content='Alert!' />
       <Modal.Content>
-        <p>Are you sure to delete the {list.selector.selected_items.length} selected records?</p>
+        <p>
+          {
+            isMultipleDeleting ? (
+              `Are you sure to delete the ${list.selector.selected_items.length} selected records?`
+            ) : (
+              'Are you sure to delete this record?'
+            )
+          }
+        </p>
       </Modal.Content>
       <Modal.Actions>
         <Button content='Cancel' disabled={deleting} onClick={props.onClose} />
@@ -49,9 +63,9 @@ ModalDelete.defaultProps = {
 
 export default compose(
   connect(
-    (state, props) => ({
-      detail: state[props.duckDetail.store],
-      list  : state[props.duck.store]
+    (state, { duck, duckDetail }) => ({
+      detail: state[duckDetail.store],
+      list  : typeof duck !== 'undefined' ? state[duck.store] : null
     }),
     dispatch => ({ dispatch })
   )

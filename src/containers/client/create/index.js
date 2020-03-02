@@ -8,11 +8,13 @@ import _times from 'lodash/times'
 import faker from 'faker'
 
 import Layout from '@components/Layout'
+import ModalDelete from '@components/Modal/Delete'
 import Pagination from '@components/Pagination'
 import FormInformation from './FormInformation'
 import FormContactData from './FormContactData'
 import FormEmergencyData from './FormEmergencyData'
 import FormLegalReleases from './FormLegalReleases'
+import useModal from '@components/Modal/useModal'
 import { parseResponseError } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
@@ -28,19 +30,28 @@ const ClientCreate = props => {
     destroy,
     get,
     post,
-    put
+    put,
+    reset
   } = props
 
   const submitBtn = useRef(null)
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
+  const [ open, { handleOpen, handleClose } ] = useModal()
 
   useEffect(() => {
     if(isUpdating) get(match.params.client)
 
     return () => {
       destroy(...formIds)
+      reset()
     }
   }, [])
+
+  useEffect(() => {
+    if(clientDetail.status === 'DELETED') {
+      history.replace('/client')
+    }
+  }, [ clientDetail.status ])
 
   const _handleSubmit = () => {
     const formIndexWithErrors = isUpdating ? (
@@ -49,7 +60,7 @@ const ClientCreate = props => {
       })
     ) : (
       forms.findIndex((form, index) => {
-        return (!form.fields || Object.keys(form.errors).length > 0) && [ 0, 1 ].includes(index)
+        return (form.fields.length === 0 || Object.keys(form.errors).length > 0) && [ 0, 1 ].includes(index)
       })
     )
 
@@ -57,13 +68,18 @@ const ClientCreate = props => {
       setTabActiveIndex(formIndexWithErrors)
       setTimeout(() => submitBtn.current.ref.current.click(), 100)
     } else {
-      console.log(forms.map(item => item.fields))
+      const values = forms
+        .filter(item => item.fields.length > 0)
+        .map(({ fields, values }) => {
+          return fields.reduce((a, b) => ({ ...a, [b]: values[b] }), {})
+        })
+        .reduce((a, b) => ({ ...a, ...b }))
 
       if(isUpdating) {
-        return put()
+        return put({ id: clientDetail.item.id, ...values})
           .catch(parseResponseError)
       } else {
-        return post()
+        return post(values)
           .then(() => history.replace('/client/1'))
           .catch(parseResponseError)
       }
@@ -153,7 +169,7 @@ const ClientCreate = props => {
           <Button as={Link} content='Cancel' fluid size='large' to='/client' />
           <Button
             color='teal'
-            content='Create Client'
+            content={`${isUpdating ? 'Update' : 'Create'} Client`}
             disabled={saving}
             form={formIds[activeTabIndex]}
             loading={saving}
@@ -161,6 +177,9 @@ const ClientCreate = props => {
             ref={submitBtn}
             size='large'
             type='submit' />
+          {
+            isUpdating && (<Button color='google plus' content='Delete Client' fluid onClick={handleOpen} size='large' />)
+          }
           <Divider horizontal>other</Divider>
           <Button fluid icon='mail outline' content='Send Email' />
           <Button fluid icon='print' content='Print' />
@@ -168,27 +187,31 @@ const ClientCreate = props => {
           <Button fluid icon='share square' content='Email Records' />
         </Grid.Column>
       </Grid>
+
+      <ModalDelete
+        duckDetail={clientDetailDuck}
+        onClose={handleClose}
+        open={open} />
     </Layout>
   )
 }
-
-// const registeredFields = Object.keys(state.form[props.form].registeredFields || {})
-// const initialValues = registeredFields.reduce((a, b) => ({ ...a, [b]: clientDetail.item[b] }), {})
 
 export default compose(
   connect(
     state => ({
       clientDetail: clientDetailDuck.selectors.detail(state),
       forms       : formIds.map(formId => ({
-        fields: getFormValues(formId)(state),
+        fields: Object.keys((state.form[formId] || {}).registeredFields || {}),
+        values: getFormValues(formId)(state),
         errors: getFormSyncErrors(formId)(state)
       })),
     }),
     {
       destroy,
-      get : clientDetailDuck.creators.get,
-      post: clientDetailDuck.creators.post,
-      put : clientDetailDuck.creators.put
+      get  : clientDetailDuck.creators.get,
+      post : clientDetailDuck.creators.post,
+      put  : clientDetailDuck.creators.put,
+      reset: clientDetailDuck.creators.resetItem
     }
   ),
 )(ClientCreate)

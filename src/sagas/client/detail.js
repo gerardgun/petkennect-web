@@ -29,7 +29,7 @@ function* get({ id }) {
     yield put({ type: types.GET_PENDING })
 
     // const client = yield call(Get, `client/${id}`)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
+    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
 
     yield put({
       type   : types.GET_FULFILLED,
@@ -55,11 +55,11 @@ function* get({ id }) {
           send_email: true,
           parent_name: faker.name.firstName(),
           parent_lastname: faker.name.lastName(),
-          // auth_people: _times(3, index => ({
-          //   id: index,
-          //   name: faker.name.firstName(),
-          //   relation: 'Friend'
-          // })),
+          auth_people: _times(3, index => ({
+            id: index,
+            name: faker.name.firstName(),
+            relation: 'Friend'
+          })),
           sign_on: faker.date.recent().toISOString().split('T')[0],
           liability: true,
           kc_waiver: true
@@ -94,7 +94,8 @@ function* _put({ payload }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Put, `client/${payload.id}`, payload)
+    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
+    // yield call(Put, `client/${payload.id}`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

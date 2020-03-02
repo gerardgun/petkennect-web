@@ -18,6 +18,11 @@ body {
       box-shadow: none;
       border: none;
     }
+    &-tab.ui.segment {
+      box-shadow: none;
+      border: none;
+      padding: 0;
+    }
   }
 
   .ui.form {
