@@ -3,21 +3,20 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { destroy, getFormSyncErrors, getFormValues } from 'redux-form'
-import { Button, Divider, Grid, Header, Segment, Tab, Table } from 'semantic-ui-react'
-import _times from 'lodash/times'
-import faker from 'faker'
+import { Button, Divider, Grid, Header, Segment, Tab } from 'semantic-ui-react'
 
 import Layout from '@components/Layout'
 import ModalDelete from '@components/Modal/Delete'
-import Pagination from '@components/Pagination'
 import FormInformation from './FormInformation'
 import FormContactData from './FormContactData'
 import FormEmergencyData from './FormEmergencyData'
 import FormLegalReleases from './FormLegalReleases'
+import InteractionHistory from './InteractionHistory'
 import useModal from '@components/Modal/useModal'
 import { parseResponseError } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
+import clientInteractionDuck from '@reducers/client/interaction'
 
 const formIds = [ 'client-create-information', 'client-create-contact-data', 'client-create-emergency-data', 'client-create-legal-releases' ]
 
@@ -31,7 +30,8 @@ const ClientCreate = props => {
     get,
     post,
     put,
-    reset
+    resetItem,
+    getInteractions
   } = props
 
   const submitBtn = useRef(null)
@@ -39,11 +39,14 @@ const ClientCreate = props => {
   const [ open, { handleOpen, handleClose } ] = useModal()
 
   useEffect(() => {
-    if(isUpdating) get(match.params.client)
+    if(isUpdating) {
+      get(match.params.client)
+      getInteractions()
+    }
 
     return () => {
       destroy(...formIds)
-      reset()
+      resetItem()
     }
   }, [])
 
@@ -123,44 +126,7 @@ const ClientCreate = props => {
                 },
                 {
                   menuItem: 'Interaction History',
-                  render: () => (
-                    <>
-                      <Table basic='very' selectable className='table-primary'>
-                        <Table.Header>
-                          <Table.Row>
-                            <Table.HeaderCell>Date</Table.HeaderCell>
-                            <Table.HeaderCell>Staff/Location</Table.HeaderCell>
-                            <Table.HeaderCell>Comments</Table.HeaderCell>
-                          </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                          {
-                            _times(5, index => {
-                              return (
-                                <Table.Row key={index}>
-                                  <Table.Cell>
-                                    {faker.date.past().toLocaleString()}
-                                  </Table.Cell>
-                                  <Table.Cell>
-                                    {faker.address.streetAddress()}
-                                  </Table.Cell>
-                                  <Table.Cell>
-                                    {faker.lorem.paragraph()}
-                                  </Table.Cell>
-                                </Table.Row>
-                              )
-                            })
-                          }
-                        </Table.Body>
-                      </Table>
-
-                      <Pagination
-                        activePage={1}
-                        // onPageChange={_handlePaginationChange}
-                        totalPages={3}
-                      />
-                    </>
-                  ),
+                  render: () => <InteractionHistory />,
                 }
               ]} />
           </Segment>
@@ -211,7 +177,8 @@ export default compose(
       get  : clientDetailDuck.creators.get,
       post : clientDetailDuck.creators.post,
       put  : clientDetailDuck.creators.put,
-      reset: clientDetailDuck.creators.resetItem
+      resetItem      : clientDetailDuck.creators.resetItem,
+      getInteractions: clientInteractionDuck.creators.get,
     }
   ),
 )(ClientCreate)

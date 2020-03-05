@@ -12,13 +12,14 @@ function* get({ payload }) {
   try {
     yield put({ type: types.GET_PENDING })
 
+    const filters = yield select(selectors.filters)
     yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
     // const clients = yield call(Get, '/client')
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(15, index => ({
+        items: _times(filters.page_size, index => ({
           id: index,
           name: faker.name.firstName(),
           city: faker.address.city(),

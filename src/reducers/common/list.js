@@ -6,8 +6,7 @@ export default {
 
     return {
       filters: {
-        q        : '',
-        page_size: 25,
+        q: '',
         ...filters
       },
       items : [],
@@ -22,6 +21,22 @@ export default {
   reducer: (state, action, { types, statuses }) =>
     produce(state, draft => {
       switch (action.type) {
+        case types.GET: {
+          const { payload } = action
+
+          // Filter params to apply
+          const paramKeys = Object.keys(payload)
+            .filter(key => !(['page_size', 'page'].includes(key)))
+
+          const params = paramKeys.reduce((a, b) => ({ ...a, [b]: payload[b] }), {})
+
+          draft.filters = {
+            ...state.filters,
+            ...params
+          }
+
+          return
+        }
         case types.REMOVE_FILTERS:
           let { ...filters } = state.filters
 
@@ -64,16 +79,17 @@ export default {
     get          : (payload = {}) => ({ type: GET, payload })
   }),
   selectors: ({ store }) => ({
-    list      : state => state[store],
-    getFilters: (state, payload = {}) => {
-      const list = state[store]
-      const filters = { ...list.filters }
+    list   : state => state[store],
+    filters: state => {
+      const {
+        filters,
+        pagination = {}
+      } = state[store]
 
-      Object.keys(filters).forEach(key => {
-        if(key in payload) filters[key] = payload[key]
-      })
-
-      return filters
+      return {
+        ...filters,
+        ...(pagination.params || {})
+      }
     }
   })
 }

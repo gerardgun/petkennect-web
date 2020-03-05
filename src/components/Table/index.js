@@ -10,13 +10,21 @@ const TableList = ({ duck, list, ...props }) => {
   const getColumnContent = (item, column) => {
     let content = item[column.name]
 
-    // if(column.name === 'image')
+    if(column.type === 'boolean') content = content ? 'Yes' : 'No'
 
     return content
   }
 
   const _handleDropdownChange = (e, { value }, item) => {
     props.onRowOptionClick(value, item)
+  }
+
+  const _handlePaginationChange = (e, { activePage }) => {
+    props.dispatch(
+      duck.creators.get({
+        page: activePage
+      })
+    )
   }
 
   const _handleRowClick = (e, item) => {
@@ -41,7 +49,7 @@ const TableList = ({ duck, list, ...props }) => {
   }
 
   const loading = list.status === 'GETTING'
-  const areAllItemsChecked = list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
+  const areAllItemsChecked = list.selector && list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
 
   return (
     <Dimmer.Dimmable
@@ -82,7 +90,7 @@ const TableList = ({ duck, list, ...props }) => {
         <Table.Body>
           {
             list.items.map((item, index) => {
-              const checked = list.selector.selected_items.some(({ id }) => id === item.id)
+              const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
               
               return (
                 <Table.Row active={checked} key={index} onClick={e => _handleRowClick(e, item)}>
@@ -131,11 +139,18 @@ const TableList = ({ duck, list, ...props }) => {
         </Table.Body>
       </Table>
 
-      <Pagination
-        activePage={1}
-        // onPageChange={_handlePaginationChange}
-        totalPages={10}
-      />
+      {
+        list.pagination && (
+          <Pagination
+            activePage={list.pagination.params.page}
+            onPageChange={_handlePaginationChange}
+            totalPages={list.pagination.meta.last_page}
+            from={list.pagination.meta.from}
+            to={list.pagination.meta.to}
+            total={list.pagination.meta.total}
+          />
+        )
+      }
     </Dimmer.Dimmable>
   )
 }

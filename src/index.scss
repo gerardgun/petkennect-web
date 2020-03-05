@@ -67,6 +67,16 @@ body {
   }
 }
 
+.form-modal.ui.modal {
+  .content {
+    padding: 2rem;
+  }
+
+  .ui.header {
+    margin-bottom: 2rem;
+  }
+}
+
 .table-primary {
   &.ui.basic.table {
     margin-bottom: 3rem;
