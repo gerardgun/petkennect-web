@@ -20,7 +20,7 @@ const FormContactData = props => {
 
   useEffect(() => {
     if(clientDetail.item.id && !initialized) props.initialize(clientDetail.item)
-  }, [ clientDetail.status ])
+  }, [clientDetail.item, clientDetail.status, initialized, props])
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>
@@ -75,7 +75,7 @@ const FormContactData = props => {
             autoComplete='off'
           />
           <Field
-            name='referred'
+            name='referred_id'
             component={FormField}
             control={Form.Select}
             options={[

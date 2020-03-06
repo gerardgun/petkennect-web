@@ -15,6 +15,14 @@ const InteractionHistory = props => {
     props.setItem(null, 'CREATE')
   }
 
+  const _handleRowClick = (e, item) => {
+    props.setItem(item, 'UPDATE')
+  }
+
+  const _handleRowOptionClick = (option, item) => {
+    if(option === 'edit') props.setItem(item, 'UPDATE')
+  }
+
   return (
     <Tab.Pane className='form-primary-segment-tab'>
       <Grid className='segment-content-header'>
@@ -23,7 +31,10 @@ const InteractionHistory = props => {
           <Button color='teal' content='Add Comment' onClick={_handleAddBtnClick} />
         </Grid.Column>
       </Grid>
-      <Table duck={clientInteractionDuck} />
+      <Table
+        duck={clientInteractionDuck}
+        onRowClick={_handleRowClick}
+        onRowOptionClick={_handleRowOptionClick} />
       <Form />
     </Tab.Pane>
   )

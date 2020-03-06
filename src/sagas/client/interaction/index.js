@@ -20,9 +20,11 @@ function* get({ payload }) {
       type   : types.GET_FULFILLED,
       payload: {
         items: _times(filters.page_size, index => ({
-          id: index,
-          date: faker.date.past().toLocaleString().split(' ')[0],
+          id: (index + 1),
+          date: faker.date.past().toISOString().split('T')[0],
+          staff_id: 1,
           staff: faker.name.firstName() + ' ' + faker.name.lastName(),
+          location_id: 1,
           location: '02-RH',
           comment: faker.lorem.paragraph(),
           follow_up: faker.random.boolean(),

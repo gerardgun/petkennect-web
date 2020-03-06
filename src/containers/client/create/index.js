@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { destroy, getFormSyncErrors, getFormValues } from 'redux-form'
+import { destroy, submit, getFormSyncErrors, getFormValues } from 'redux-form'
 import { Button, Divider, Grid, Header, Segment, Tab } from 'semantic-ui-react'
 
 import Layout from '@components/Layout'
@@ -27,6 +27,7 @@ const ClientCreate = props => {
     history,
     match,
     destroy,
+    submit,
     get,
     post,
     put,
@@ -34,7 +35,6 @@ const ClientCreate = props => {
     getInteractions
   } = props
 
-  const submitBtn = useRef(null)
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
   const [ open, { handleOpen, handleClose } ] = useModal()
 
@@ -56,6 +56,13 @@ const ClientCreate = props => {
     }
   }, [ clientDetail.status ])
 
+  const _handleSaveBtnClick = () => {
+    const formId = formIds[activeTabIndex]
+    
+    if(formId) submit(formId)
+    else _handleSubmit()
+  }
+
   const _handleSubmit = () => {
     const formIndexWithErrors = isUpdating ? (
       forms.findIndex((form, index) => {
@@ -69,7 +76,7 @@ const ClientCreate = props => {
 
     if(formIndexWithErrors !== -1) {
       setTabActiveIndex(formIndexWithErrors)
-      setTimeout(() => submitBtn.current.ref.current.click(), 100)
+      setTimeout(() => submit(formIds[formIndexWithErrors]), 100)
     } else {
       const values = forms
         .filter(item => item.fields.length > 0)
@@ -124,10 +131,10 @@ const ClientCreate = props => {
                   menuItem: 'Legal Releases',
                   render: () => <FormLegalReleases onSubmit={_handleSubmit} />,
                 },
-                {
+                isUpdating && ({
                   menuItem: 'Interaction History',
                   render: () => <InteractionHistory />,
-                }
+                })
               ]} />
           </Segment>
         </Grid.Column>
@@ -137,12 +144,10 @@ const ClientCreate = props => {
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Client`}
             disabled={saving}
-            form={formIds[activeTabIndex]}
-            loading={saving}
             fluid
-            ref={submitBtn}
-            size='large'
-            type='submit' />
+            loading={saving}
+            onClick={_handleSaveBtnClick}
+            size='large' />
           {
             isUpdating && (<Button color='google plus' content='Delete Client' fluid onClick={handleOpen} size='large' />)
           }
@@ -174,6 +179,7 @@ export default compose(
     }),
     {
       destroy,
+      submit,
       get  : clientDetailDuck.creators.get,
       post : clientDetailDuck.creators.post,
       put  : clientDetailDuck.creators.put,

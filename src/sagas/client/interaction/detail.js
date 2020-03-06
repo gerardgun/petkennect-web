@@ -37,8 +37,10 @@ function* get({ id }) {
         item: {
           id: 1,
           date: faker.date.recent().toISOString().split('T')[0],
-          staff: 1,
-          location: 1,
+          staff_id: 1,
+          staff: faker.name.firstName() + ' ' + faker.name.lastName(),
+          location_id: 1,
+          location: '02-RH',
           comment: faker.lorem.paragraph(),
           follow_up: faker.random.boolean()
         }

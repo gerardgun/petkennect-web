@@ -67,9 +67,19 @@ body {
   }
 }
 
-.form-modal.ui.modal {
-  .content {
-    padding: 2rem;
+.form-modal {
+  &.ui.modal {
+    .content {
+      padding: 2.5rem 3rem 2rem;
+    }
+  }
+
+  &-actions {
+    margin-bottom: 0rem !important;
+
+    .field {
+      text-align: right;
+    }
   }
 
   .ui.header {

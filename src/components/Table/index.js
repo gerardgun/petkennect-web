@@ -59,7 +59,7 @@ const TableList = ({ duck, list, ...props }) => {
       raised
     >
       <Dimmer active={loading} inverted>
-        <Loader>Cargando...</Loader>
+        <Loader>Loading...</Loader>
       </Dimmer>
 
       <Table basic='very' selectable className='table-primary'>
@@ -128,6 +128,7 @@ const TableList = ({ duck, list, ...props }) => {
                             }))
                           }
                           selectOnBlur={false}
+                          value={null}
                         />
                       </Table.Cell>
                     )

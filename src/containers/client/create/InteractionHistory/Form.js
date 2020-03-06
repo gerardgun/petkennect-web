@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import _times from 'lodash/times'
 import faker from 'faker'
@@ -10,7 +11,7 @@ import faker from 'faker'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import YupFields from '@lib/constants/yup-fields'
-import { syncValidate } from '@lib/utils/functions'
+import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientInteractionDetailDuck from '@reducers/client/interaction/detail'
@@ -26,9 +27,18 @@ const InteractionHistory = props => {
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
-  const _handleClose = () => {
-    reset()
-    props.resetItem()
+  const _handleClose = () => props.resetItem()
+
+  const _handleSubmit = values => {
+    if(isUpdating) {
+      return props.put({ id: clientInteractionDetail.item.id, ...values})
+        .then(_handleClose)
+        .catch(parseResponseError)
+    } else {
+      return props.post(values)
+        .then(_handleClose)
+        .catch(parseResponseError)
+    }
   }
 
   const isOpened = useMemo(() => getIsOpened(clientInteractionDetail.mode), [ clientInteractionDetail.mode ])
@@ -42,9 +52,8 @@ const InteractionHistory = props => {
       size='small'
     >
       <Modal.Content>
-        <Form onReset={reset} onSubmit={handleSubmit}>
-          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Create'} Client</Header>
-
+        <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Create'} Comment</Header>
           <Form.Group widths='equal'>
             <Field
               name='date'
@@ -56,7 +65,7 @@ const InteractionHistory = props => {
               autoComplete='off'
             />
             <Field
-              name='location'
+              name='location_id'
               component={FormField}
               control={Form.Select}
               options={[
@@ -71,7 +80,7 @@ const InteractionHistory = props => {
               selectOnBlur={false}
             />
             <Field
-              name='staff'
+              name='staff_id'
               component={FormField}
               control={Form.Select}
               options={staffMembers}
@@ -86,7 +95,7 @@ const InteractionHistory = props => {
               name='comment'
               component={FormField}
               control={Form.TextArea}
-              label='Comments'
+              label='Comments *'
               placeholder='Enter comments'
             />
           </Form.Group>
@@ -109,6 +118,23 @@ const InteractionHistory = props => {
               </Form.Group>
             )
           }
+
+          <Form.Group widths='equal' className='form-modal-actions'>
+            <Form.Field>
+              <Button
+                content='Cancel'
+                disabled={submitting}
+                type="button"
+                onClick={_handleClose}
+              />
+              <Button
+                color='teal'
+                content={isUpdating ? 'Save changes' : 'Create'}
+                disabled={submitting}
+                loading={submitting}
+              />
+            </Form.Field>
+          </Form.Group>
         </Form>
       </Modal.Content>
     </Modal>
@@ -116,20 +142,33 @@ const InteractionHistory = props => {
 }
 
 export default compose(
+  withRouter,
   connect(
-    state => ({
-      clientDetail: clientDetailDuck.selectors.detail(state),
-      clientInteractionDetail: clientInteractionDetailDuck.selectors.detail(state)
-    }),
+    state => {
+      const clientInteractionDetail = clientInteractionDetailDuck.selectors.detail(state)
+
+      return {
+        clientDetail: clientDetailDuck.selectors.detail(state),
+        clientInteractionDetail,
+        initialValues: clientInteractionDetail.item
+      }
+    },
     {
+      post: clientInteractionDetailDuck.creators.post,
+      put: clientInteractionDetailDuck.creators.put,
       resetItem: clientInteractionDetailDuck.creators.resetItem,
     }
   ),
   reduxForm({
     form              : 'client-interaction-form',
+    destroyOnUnmount  : false,
+    enableReinitialize: true,
     validate: values  => {
       const schema = {
-        email: YupFields.email
+        date: YupFields.date,
+        location_id: YupFields.num_required,
+        staff_id: YupFields.num_required,
+        comment: YupFields.comment
       }
 
       return syncValidate(Yup.object().shape(schema), values)

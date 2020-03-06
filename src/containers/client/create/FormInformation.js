@@ -26,7 +26,7 @@ const FormInformation = props => {
 
   useEffect(() => {
     if(clientDetail.item.id && !initialized) props.initialize(clientDetail.item)
-  }, [ clientDetail.status ])
+  }, [clientDetail.item, clientDetail.status, initialized, props])
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>
@@ -75,7 +75,7 @@ const FormInformation = props => {
             type='date'
           />
           <Field
-            name='contact_location'
+            name='contact_location_id'
             component={FormField}
             control={Form.Select}
             options={[
@@ -101,7 +101,7 @@ const FormInformation = props => {
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='city'
+            name='city_id'
             component={FormField}
             control={Form.Select}
             options={cities}
@@ -112,7 +112,7 @@ const FormInformation = props => {
             selectOnBlur={false}
           />
           <Field
-            name='state'
+            name='state_id'
             component={FormField}
             control={Form.Select}
             options={states}
@@ -123,7 +123,7 @@ const FormInformation = props => {
             selectOnBlur={false}
           />
           <Field
-            name='zip'
+            name='zip_id'
             component={FormField}
             control={Form.Select}
             options={zipes}
@@ -133,6 +133,24 @@ const FormInformation = props => {
             search
             selectOnBlur={false}
           />
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            name='status_id'
+            component={FormField}
+            control={Form.Select}
+            options={[
+              { key: 1, value: 1, text : 'DECLINED' },
+              { key: 2, value: 2, text : 'GREEN' },
+              { key: 3, value: 3, text : 'RED - See notes' },
+              { key: 4, value: 4, text : 'VIP CLIENT' },
+            ]}
+            label='Status'
+            placeholder='Select status'
+            selectOnBlur={false}
+          />
+          <Form.Field />
+          <Form.Field />
         </Form.Group>
 
         {
@@ -164,9 +182,9 @@ export default compose(
         name: YupFields.name,
         lastname: YupFields.first_lastname,
         second_lastname: YupFields.second_lastname,
-        city: YupFields.city,
-        state: YupFields.state,
-        zip: YupFields.zip,
+        city_id: YupFields.city,
+        state_id: YupFields.state,
+        zip_id: YupFields.zip,
       }
 
       return syncValidate(Yup.object().shape(schema), values)
