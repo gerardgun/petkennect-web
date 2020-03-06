@@ -18,7 +18,7 @@ import clientInteractionDetailDuck from '@reducers/client/interaction/detail'
 
 const staffMembers = _times(10, index => ({ key: index, value: index, text : `${faker.name.firstName()} ${faker.name.lastName()}` }))
 
-const InteractionHistory = props => {
+const InteractionForm = props => {
   const {
     clientDetail,
     clientInteractionDetail,
@@ -174,5 +174,5 @@ export default compose(
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(InteractionHistory)
+)(InteractionForm)
 

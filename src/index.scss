@@ -3,6 +3,18 @@ body {
   background-color: #f6f7f8;
 }
 
+.detail-view {
+  &-tab {
+    .ui.tabular.menu {
+      border-bottom: none !important;
+
+      a {
+        border: none;
+      }
+    }
+  }
+}
+
 .form-primary {
   &-actions {
     &.vertical {
@@ -68,6 +80,15 @@ body {
 }
 
 .form-modal {
+  &.side {
+    right: 0;
+    top: 0;
+    height: 100%;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-radius: 0 !important;
+  }
+
   &.ui.modal {
     .content {
       padding: 2.5rem 3rem 2rem;

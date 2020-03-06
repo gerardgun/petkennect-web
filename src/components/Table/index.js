@@ -32,7 +32,7 @@ const TableList = ({ duck, list, ...props }) => {
     
     if(!isCheckbox) {
       if(props.onRowClick) props.onRowClick(e, item)
-      else props.history.push(`${list.config.base_uri}/${item.id}`)
+      else if(list.config.base_uri) props.history.push(`${list.config.base_uri}/${item.id}`)
     }
   }
 

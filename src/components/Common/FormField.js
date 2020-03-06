@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Form } from 'semantic-ui-react'
 
@@ -16,6 +16,16 @@ const FormField = props => {
     ...rest
   } = props
 
+  const getComputedInput = () => {
+    let { ...computed } = input
+
+    if(props.type === 'file') {
+      delete computed.value
+    }
+
+    return computed
+  }
+
   const _handleBlur = (e, data = {}) => {
     let value = ''
 
@@ -31,15 +41,17 @@ const FormField = props => {
     return onChange(typeof checked !== 'undefined' ? checked : value)
   }
 
+  const computedInput = getComputedInput()
+
   return (
     <Form.Field>
       <WrappedComponent
         onChange={_handleChange}
         onBlur={_handleBlur}
-        {...input}
+        {...computedInput}
         {...rest}
       />
-      <FormFieldError input={input} meta={meta} />
+      <FormFieldError input={computedInput} meta={meta} />
     </Form.Field>
   )
 }

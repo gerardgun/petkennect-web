@@ -1,5 +1,5 @@
 export default {
-  base_uri: '/client/:client/interaction',
+  base_uri: null,
   row: {
     // options: [
     //   {
