@@ -20,7 +20,7 @@ const FormContactData = props => {
 
   useEffect(() => {
     if(clientDetail.item.id && !initialized) props.initialize(clientDetail.item)
-  }, [clientDetail.item, clientDetail.status, initialized, props])
+  }, [ clientDetail.status ])
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>

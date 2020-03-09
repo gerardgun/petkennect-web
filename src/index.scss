@@ -87,6 +87,27 @@ body {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     border-radius: 0 !important;
+
+    &.tab {
+      &.ui.modal {
+        background-color: #f6f7f8;
+
+        .content {
+          background-color: #f6f7f8;
+        }
+      }
+
+      .segment-content-header {
+        .ui.header {
+          margin-bottom: 0rem;
+        }
+      }
+    }
+  }
+
+  .ui.divider {
+    margin-top: 2.3rem;
+    margin-bottom: 1.8rem;
   }
 
   &.ui.modal {
