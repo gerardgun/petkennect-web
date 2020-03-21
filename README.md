@@ -1,4 +1,40 @@
+# PetKennect Operations Web
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Dependencies:
+
+#### Common
+1. axios
+2. extensible duck
+3. immer
+1. node-sass
+4. react
+4. react-dom
+10. react-redux
+5. react-router-dom
+6. react-spring
+5. connected-react-router
+11. redux
+12. redux-form
+13. redux-saga
+12. semantic-ui-react
+15. yup
+4. @loadable/component
+
+#### Development
+1. axios-debug-log
+1. customize-cra
+2. redux-logger
+3. react-app-rewired
+5. jest
+
+## Development
+
+- `git clone REPOSITORY_LINK` # Clone the repository
+- `cd petkennect-operations-web`
+- `cp .env.example .env` # Copy the enviroment file and put values for development 
+- `yarn` or `npm install` # Install dependencies, We recommend working with yarn
+- `yarn start` or `DEBUG=axios yarn start` # Run the app in dev mode
 
 ## Available Scripts
 
