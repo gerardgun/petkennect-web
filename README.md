@@ -1,6 +1,8 @@
 # PetKennect Operations Web
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## [Development Workflow](https://github.com/ias-custom/petkennect-operations-backend/blob/master/dev-worklow.md)
+
 ## Dependencies:
 
 #### Common
