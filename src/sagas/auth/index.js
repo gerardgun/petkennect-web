@@ -110,17 +110,18 @@ function* signIn({ payload }) {
   try {
     yield put({ type: types.SIGN_IN_PENDING })
 
-    /* BEGIN Delete */
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
-    localStorage.setItem('@token', 'fake-token')
-    reHydrateToken('fake-token')
-    /* END Delete */
+    // /* BEGIN Delete */
+    // yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
+    // localStorage.setItem('@token', 'fake-token')
+    // reHydrateToken('fake-token')
+    // /* END Delete */
 
-    // const result = yield call(Post, 'auth/sign-in', payload)
+    const result = yield call(Post, 'login/', payload);
+    console.log('RESULT LOGIN', result);
 
-    // localStorage.setItem('@token', result.token)
+    //localStorage.setItem('@token', result.token);
 
-    // reHydrateToken(result.token)
+    reHydrateToken(result.token);
 
     yield put({ type: types.SIGN_IN_FULFILLED })
   } catch (e) {

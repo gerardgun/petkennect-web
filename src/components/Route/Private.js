@@ -14,7 +14,7 @@ const PrivateRoute = ({ auth, check, get, component: Component, ...rest }) => {
     if(auth.auth_status === 'EXISTS') {
       get() // Recover auth user detail
     } else if(auth.auth_status === 'NOT_EXISTS' || auth.auth_status === 'SIGNED_OUT') {
-      // rest.history.replace('/auth/sign-in')
+      rest.history.replace('/')
     }
   }, [ auth.auth_status ])
 

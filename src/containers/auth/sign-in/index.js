@@ -46,7 +46,7 @@ const SignIn = props => {
           <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
             <Form.Group widths='equal'>
               <Field
-                name='email'
+                name='username_or_email'
                 component={FormField}
                 control={Form.Input}
                 label='Email'
@@ -105,7 +105,7 @@ export default compose(
     ({ auth }) => ({
       auth,
       initialValues: {
-        email   : process.env.NODE_ENV === 'development' ? 'tester@petkennect.com' : '',
+        username_or_email   : process.env.NODE_ENV === 'development' ? '' : '',
         password: process.env.NODE_ENV === 'development' ? '' : '',
       }
     }),
@@ -117,7 +117,7 @@ export default compose(
     form    : 'auth-sign-in',
     validate: values => {
       const schema = {
-        email   : YupFields.email,
+        username_or_email   : YupFields.email,
         password: YupFields.password
       }
 
