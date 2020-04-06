@@ -9,6 +9,8 @@ import Me from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
 import ClientCreate from '@containers/client/create'
+import Pet from '@containers/pet'
+import PetCreate from '@containers/pet/create'
 // import FoundationDetail from '@containers/foundation/detail'
 // import Grant from '@containers/grant'
 // import GrantAdd from '@containers/grant/add'
@@ -66,14 +68,18 @@ const privateRoutes = [
     path     : '/dashboard',
     component: Dashboard
   },
-  // {
-  //   path     : '/foundation',
-  //   component: Foundation
-  // },
-  // {
-  //   path     : '/foundation/add',
-  //   component: FoundationAdd
-  // },
+  {
+    path     : '/pet',
+    component: Pet
+  },
+  {
+    path     : '/pet/create',
+    component: PetCreate
+  },
+  {
+    path     : '/pet/:id',
+    component: PetCreate
+  },
   // {
   //   path     : '/foundation/:foundation',
   //   component: FoundationDetail
