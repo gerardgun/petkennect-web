@@ -79,7 +79,7 @@ const SignIn = props => {
 
             <Form.Group widths="equal">
               <Form.Field>
-                <Link to='/'>Forgot your password?</Link>
+                <Link to='/forgot-password'>Forgot your password?</Link>
               </Form.Field>
             </Form.Group>
             <Form.Group>

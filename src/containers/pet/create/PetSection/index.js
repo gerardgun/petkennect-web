@@ -39,7 +39,7 @@ const ClientSection = props => {
             <Tab
               activeIndex={activeTabIndex}
               menu={{ secondary: true, pointing: true }}
-              onTabChange={(e, { index }) => setTabActiveIndex(index)}
+              onTabChange={(e, { activeIndex }) => setTabActiveIndex(activeIndex)}
               panes={[
                 {
                   menuItem: 'Information',

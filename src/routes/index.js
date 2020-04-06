@@ -27,19 +27,21 @@ import PetCreate from '@containers/pet/create'
 // import ProposalDetail from '@containers/proposal/detail'
 // import ServedAreaDetail from '@containers/served_area/detail'
 import User from '@containers/user'
+import ForgotPassword from '../containers/auth/password/ForgotPassword';
+import ResetPassword from '../containers/auth/password/ResetPassword';
 
 const publicRoutes = [
   {
     path     : '/',
     component: AuthSignIn
   },
-  // {
-  // 	path        : '/about',
-  // 	component   : About,
-  // },
   {
-    path     : '/auth/recover-account',
-    component: AuthRecoverAccount
+    path: '/forgot-password',
+    component: ForgotPassword
+  },
+  {
+    path: '/reset-password',
+    component: ResetPassword,
   },
   {
     path     : '/auth/sign-in',
