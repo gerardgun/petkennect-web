@@ -18,7 +18,8 @@ const PublicRoute = ({ auth, check, get, component: Component, ...rest }) => {
 
   useEffect(() => {
     if(auth.status === 'GOT' || auth.status === 'SIGNED_IN') {
-      rest.history.replace('/dashboard')
+      if(auth.item.is_superadmin) rest.history.replace('/organization')
+      else rest.history.replace('/dashboard')
     }
   }, [ auth.status ])
 

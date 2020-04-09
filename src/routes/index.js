@@ -1,5 +1,6 @@
 // Public Containers
 import AuthRecoverAccount from '@containers/auth/recover-account'
+import AuthForgotPassword from '@containers/auth/forgot-password'
 import AuthSignIn from '@containers/auth/sign-in'
 import AuthSignUp from '@containers/auth/sign-up'
 import Error404 from '@containers/page/error-404'
@@ -9,7 +10,9 @@ import Me from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
 import ClientCreate from '@containers/client/create'
-// import FoundationDetail from '@containers/foundation/detail'
+import Company from '@containers/company'
+import Organization from '@containers/organization'
+import OrganizationCreate from '@containers/organization/create'
 // import Grant from '@containers/grant'
 // import GrantAdd from '@containers/grant/add'
 // import GrantDetail from '@containers/grant/detail'
@@ -36,7 +39,11 @@ const publicRoutes = [
   // 	component   : About,
   // },
   {
-    path     : '/auth/recover-account',
+    path     : '/auth/forgot-password',
+    component: AuthForgotPassword
+  },
+  {
+    path     : '/auth/recover-account/:token',
     component: AuthRecoverAccount
   },
   {
@@ -63,21 +70,25 @@ const privateRoutes = [
     component: ClientCreate
   },
   {
+    path     : '/company',
+    component: Company
+  },
+  {
     path     : '/dashboard',
     component: Dashboard
   },
-  // {
-  //   path     : '/foundation',
-  //   component: Foundation
-  // },
-  // {
-  //   path     : '/foundation/add',
-  //   component: FoundationAdd
-  // },
-  // {
-  //   path     : '/foundation/:foundation',
-  //   component: FoundationDetail
-  // },
+  {
+    path     : '/organization',
+    component: Organization
+  },
+  {
+    path     : '/organization/create',
+    component: OrganizationCreate
+  },
+  {
+    path     : '/organization/:organization',
+    component: OrganizationCreate
+  },
   // {
   //   path     : '/grant',
   //   component: Grant

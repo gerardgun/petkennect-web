@@ -17,6 +17,7 @@ export default {
     .required('The password is required'),
   second_lastname : Yup.string().required('Second lastname is required'),
   state: Yup.number().required('State is required'),
+  subdomain: Yup.string().required('Subdomain is required'),
   whenIsUpdating: (then, otherwise) => Yup.mixed().when('id', (id, schema) => (id ? then : otherwise)),
   zip: Yup.number().required('Zip is required'),
 }

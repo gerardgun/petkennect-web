@@ -1,8 +1,23 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { Link } from 'react-router-dom'
 import { Image } from 'semantic-ui-react'
 
 import Sidebar from '@components/Common/Sidebar'
+
+const categoriesForSuperAdmin = [
+  {
+    href: '/organization',
+    icon: 'factory',
+    label: 'Organizations'
+  },
+  {
+    href: '/company',
+    icon: 'building',
+    label: 'Companies'
+  },
+]
 
 const categories = [
   {
@@ -112,16 +127,20 @@ const categories = [
   },
 ]
 
-const AppSidebar = () => {
+const AppSidebar = ({ auth, ...props }) => {
   const [ activedCategoryIndex, setActivedCategoryIndex ] = useState(null)
 
+  const getCategories = () => auth.item.is_superadmin ? categoriesForSuperAdmin : categories
+
   const _handleCategoryClick = index => setActivedCategoryIndex(index)
+
+  const categoriesToRender = useMemo(() => getCategories(), [ auth.item.id ])
 
   return (
     <Sidebar>
       <Image size='small' src='/images/logo.svg' style={{ margin: '3rem 0rem' }} />
       {
-        categories.map(({ subcategories = null, ...rest }, index) => (
+        categoriesToRender.map(({ subcategories = null, ...rest }, index) => (
           <Sidebar.Category
             key={index}
             active={activedCategoryIndex === index}
@@ -142,4 +161,13 @@ const AppSidebar = () => {
   )
 }
 
-export default AppSidebar
+export default compose(
+  connect(
+    ({ auth }) => ({
+      auth,
+    }),
+    {
+      // Nothing
+    }
+  )
+)(AppSidebar)
