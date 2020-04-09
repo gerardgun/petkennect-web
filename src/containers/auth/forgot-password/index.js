@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Container, Form, Grid, Image, Input, Header } from 'semantic-ui-react'
+import { Button, Container, Form, Grid, Image, Input, Header, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -13,12 +13,10 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 
-import './sign-in.scss'
-
-const SignIn = props => {
+const ForgotPassword = props => {
   const {
     auth,
-    signIn,
+    requestPasswordReset,
     // from redux form
     error,
     handleSubmit,
@@ -27,10 +25,13 @@ const SignIn = props => {
     submitting
   } = props
 
-  const _handleSubmit = values => {
-    const { email: username_or_email, password } = values
 
-    return signIn({ username_or_email, password })
+  const _handleConfirmBtnClick = () => {
+    props.history.replace('/auth/sign-in')
+  }
+
+  const _handleSubmit = values => {
+    return requestPasswordReset(values)
       .catch(parseResponseError)
   }
 
@@ -41,9 +42,12 @@ const SignIn = props => {
           <Image src='/images/sign-in.svg' />
         </Grid.Column>
         <Grid.Column style={{ alignSelf: 'center' }}>
-          <Header as='h2'>¡Welcome!</Header>
+          <Header as='h2'>Forgot Password?</Header>
           <p>
-            Enter your email and password for sign in.
+            Enter the email address you used when you joined and we’ll send you instructions to reset your password.
+          </p>
+          <p>
+            For security reasons, we do NOT store your password. So rest assured that we will never send your password via email.
           </p>
 
           <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
@@ -59,16 +63,6 @@ const SignIn = props => {
                 autoComplete='off'
               />
             </Form.Group>
-            <Form.Group widths='equal'>
-              <Field
-                name='password'
-                component={FormField}
-                control={Form.Input}
-                label='Password'
-                placeholder='Enter your password'
-                type='password'
-              />
-            </Form.Group>
 
             {
               error && (
@@ -80,33 +74,42 @@ const SignIn = props => {
               )
             }
 
-            {/* BEGIN Delete */}
             <Form.Group widths="equal">
               <Form.Field>
-                <span style={{ color: 'gray' }}>Credentials for demo <br/> superadmin user: martincruz.cs@gmail.com <br/> pass: Abc1234=<br/><br/> admin user: test.@aron.mail <br/> pass: Abc1234=</span>
-              </Form.Field>
-            </Form.Group>
-            {/* END Delete */}
-
-            <Form.Group widths="equal">
-              <Form.Field>
-                <Link to='/auth/forgot-password'>Forgot your password?</Link>
+                <span style={{ color: 'grey' }}>Do you have a user?</span> <Link to='/auth/sign-in'>Sign in</Link>
               </Form.Field>
             </Form.Group>
             <Form.Group>
               <Form.Field
                 control={Button}
                 disabled={pristine || submitting}
-                loading={auth.status === 'SIGNING_IN'}
+                loading={auth.status === 'PATCHING'}
                 type='submit' 
               >
-                Sign in
+                Send reset instructions
               </Form.Field>
             </Form.Group>
           </Form>
 
         </Grid.Column>
       </Grid>
+
+      <Modal
+        closeOnDimmerClick={false}
+        open={auth.status === 'PATCHED'}
+        onClose={props.onClose}
+        size='tiny'
+      >
+        <Header content='Success!' />
+        <Modal.Content>
+          <p>
+            We have sent the instructions to your email.
+          </p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color='teal' content='Ok' onClick={_handleConfirmBtnClick} />
+        </Modal.Actions>
+      </Modal>
     </Container>
   )
 }
@@ -116,23 +119,21 @@ export default compose(
     ({ auth }) => ({
       auth,
       initialValues: {
-        email   : process.env.NODE_ENV === 'development' ? 'martincruz.cs@gmail.com' : '',
-        password: process.env.NODE_ENV === 'development' ? '' : '',
+        email: process.env.NODE_ENV === 'development' ? 'martincruz.cs@gmail.co' : '',
       }
     }),
     {
-      signIn: authDuck.creators.signIn
+      requestPasswordReset: authDuck.creators.requestPasswordReset
     }
   ),
   reduxForm({
-    form    : 'auth-sign-in',
+    form    : 'auth-forgot-password',
     validate: values => {
       const schema = {
         email   : YupFields.email,
-        password: YupFields.password
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(SignIn)
+)(ForgotPassword)

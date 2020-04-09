@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
@@ -13,12 +13,10 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 
-import './sign-in.scss'
-
-const SignIn = props => {
+const RecoverAccount = props => {
   const {
     auth,
-    signIn,
+    recoverAccount,
     // from redux form
     error,
     handleSubmit,
@@ -27,10 +25,17 @@ const SignIn = props => {
     submitting
   } = props
 
-  const _handleSubmit = values => {
-    const { email: username_or_email, password } = values
+  useEffect(() => {
+    if(auth.status === 'POSTED') {
+      props.history.replace('/auth/sign-in')
+    }
+  }, [ auth.status ])
 
-    return signIn({ username_or_email, password })
+  const _handleSubmit = values => {
+    return recoverAccount({
+      password: values.password,
+      token: props.match.params.token
+    })
       .catch(parseResponseError)
   }
 
@@ -41,31 +46,19 @@ const SignIn = props => {
           <Image src='/images/sign-in.svg' />
         </Grid.Column>
         <Grid.Column style={{ alignSelf: 'center' }}>
-          <Header as='h2'>¡Welcome!</Header>
+          <Header as='h2'>Reset password</Header>
           <p>
-            Enter your email and password for sign in.
+            Change your password and sign in.
           </p>
 
           <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
             <Form.Group widths='equal'>
               <Field
-                name='email'
-                component={FormField}
-                control={Form.Input}
-                label='Email'
-                placeholder='Enter email'
-                type='email'
-                autoFocus
-                autoComplete='off'
-              />
-            </Form.Group>
-            <Form.Group widths='equal'>
-              <Field
                 name='password'
                 component={FormField}
                 control={Form.Input}
-                label='Password'
-                placeholder='Enter your password'
+                label='New password'
+                placeholder='Enter your new password'
                 type='password'
               />
             </Form.Group>
@@ -80,27 +73,14 @@ const SignIn = props => {
               )
             }
 
-            {/* BEGIN Delete */}
-            <Form.Group widths="equal">
-              <Form.Field>
-                <span style={{ color: 'gray' }}>Credentials for demo <br/> superadmin user: martincruz.cs@gmail.com <br/> pass: Abc1234=<br/><br/> admin user: test.@aron.mail <br/> pass: Abc1234=</span>
-              </Form.Field>
-            </Form.Group>
-            {/* END Delete */}
-
-            <Form.Group widths="equal">
-              <Form.Field>
-                <Link to='/auth/forgot-password'>Forgot your password?</Link>
-              </Form.Field>
-            </Form.Group>
             <Form.Group>
               <Form.Field
                 control={Button}
                 disabled={pristine || submitting}
-                loading={auth.status === 'SIGNING_IN'}
+                loading={auth.status === 'PATCHING'}
                 type='submit' 
               >
-                Sign in
+                Submit
               </Form.Field>
             </Form.Group>
           </Form>
@@ -116,23 +96,21 @@ export default compose(
     ({ auth }) => ({
       auth,
       initialValues: {
-        email   : process.env.NODE_ENV === 'development' ? 'martincruz.cs@gmail.com' : '',
-        password: process.env.NODE_ENV === 'development' ? '' : '',
+        password: '',
       }
     }),
     {
-      signIn: authDuck.creators.signIn
+      recoverAccount: authDuck.creators.recoverAccount
     }
   ),
   reduxForm({
-    form    : 'auth-sign-in',
+    form    : 'auth-recover-account',
     validate: values => {
       const schema = {
-        email   : YupFields.email,
         password: YupFields.password
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(SignIn)
+)(RecoverAccount)

@@ -8,7 +8,6 @@ export default base({
   namespace   : '@@pet-kennect',
   store       : 'auth',
   initialState: {
-    user       : {},
     auth_status: 'NOT_EXISTS'
   }
 })
@@ -27,6 +26,7 @@ export default base({
       'CHECK_FAILURE',
       'CHECK_FULFILLED',
       'CHECK_PENDING',
+      'RECOVER_ACCOUNT',
       'SIGN_IN',
       'SIGN_IN_CANCEL',
       'SIGN_IN_FAILURE',
@@ -88,6 +88,9 @@ export default base({
     creators: ({
       types: {
         CHECK, CHECK_FULFILLED, CHECK_FAILURE,
+        PATCH, PATCH_FULFILLED, PATCH_FAILURE,
+        POST, POST_FULFILLED, POST_FAILURE,
+        RECOVER_ACCOUNT,
         SIGN_IN, SIGN_IN_FULFILLED, SIGN_IN_FAILURE,
         SIGN_OUT, SIGN_OUT_FULFILLED, SIGN_OUT_FAILURE
       }
@@ -96,6 +99,18 @@ export default base({
         type             : CHECK,
         [WAIT_FOR_ACTION]: CHECK_FULFILLED,
         [ERROR_ACTION]   : CHECK_FAILURE
+      }),
+      recoverAccount: payload => ({
+        type: RECOVER_ACCOUNT,
+        payload,
+        [WAIT_FOR_ACTION]: POST_FULFILLED,
+        [ERROR_ACTION]   : POST_FAILURE
+      }),
+      requestPasswordReset: payload => ({
+        type: PATCH,
+        payload,
+        [WAIT_FOR_ACTION]: PATCH_FULFILLED,
+        [ERROR_ACTION]   : PATCH_FAILURE
       }),
       signIn: payload => ({
         type             : SIGN_IN,

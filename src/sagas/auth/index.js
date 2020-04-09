@@ -36,15 +36,15 @@ function* get() {
     yield put({ type: types.GET_PENDING })
 
     /* BEGIN Delete */
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
+    const user = localStorage.getItem('@auth_user')
+    const { is_staff, ...parsedUser } = JSON.parse(user)
+    
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
         item: {
-          id: 123,
-          name: 'Tester',
-          lastname: 'Lastname',
-          email: 'tester@petkennect.com'
+          ...parsedUser,
+          is_superadmin: is_staff
         }
       }
     })
@@ -110,17 +110,16 @@ function* signIn({ payload }) {
   try {
     yield put({ type: types.SIGN_IN_PENDING })
 
-    /* BEGIN Delete */
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
-    localStorage.setItem('@token', 'fake-token')
-    reHydrateToken('fake-token')
-    /* END Delete */
+    const { token, ...user } = yield call(Post, 'login/', payload)
 
-    // const result = yield call(Post, 'auth/sign-in', payload)
+    // Setting the token
+    localStorage.setItem('@token', token)
+    reHydrateToken(token)
 
-    // localStorage.setItem('@token', result.token)
-
-    // reHydrateToken(result.token)
+    // BEGIN Delete
+    // Setting the auth user data
+    localStorage.setItem('@auth_user', JSON.stringify(user))
+    // END Delete
 
     yield put({ type: types.SIGN_IN_FULFILLED })
   } catch (e) {
@@ -157,9 +156,26 @@ function* signOut() {
 
 function* recoverAccount({ payload }) {
   try {
+    yield put({ type: types.POST_PENDING })
+
+    const result = yield call(Post, 'reset-password/', payload)
+
+    yield put({
+      type: types.POST_FULFILLED
+    })
+  } catch (e) {
+    yield put({
+      type : types.POST_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* requestPasswordReset({ payload }) {
+  try {
     yield put({ type: types.PATCH_PENDING })
 
-    const result = yield call(Post, 'auth/recover-account', payload)
+    const result = yield call(Post, 'forgot-password/', payload)
 
     yield put({
       type: types.PATCH_FULFILLED
@@ -177,7 +193,8 @@ export default [
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
   takeEvery(types.PUT, _put),
+  takeEvery(types.RECOVER_ACCOUNT, recoverAccount),
   takeEvery(types.SIGN_IN, signIn),
   takeEvery(types.SIGN_OUT, signOut),
-  takeEvery(types.PATCH, recoverAccount)
+  takeEvery(types.PATCH, requestPasswordReset)
 ]

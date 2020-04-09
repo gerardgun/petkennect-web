@@ -30,7 +30,7 @@ export default class Request {
 
     if(this.token)
       config.headers = {
-        Authorization: `Bearer ${this.token}`
+        Authorization: `JWT ${this.token}`
       }
 
     this.instance = axios.create(config)
@@ -40,7 +40,7 @@ export default class Request {
     return new Promise((resolve, reject) => {
       verifyRequestCancel(route)
       this.instance
-        .put(route, payload)
+        .put(route, jsonToFormData(payload))
         .then(res => resolve(res.data))
         .catch(e => {
           reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
@@ -64,7 +64,7 @@ export default class Request {
     return new Promise((resolve, reject) => {
       verifyRequestCancel(route)
       this.instance
-        .patch(route, payload)
+        .patch(route, jsonToFormData(payload))
         .then(res => resolve(res.data))
         .catch(e => {
           reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
