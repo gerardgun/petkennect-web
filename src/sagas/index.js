@@ -8,6 +8,10 @@ import clientDocumentDetail from './client/document/detail'
 import clientInteraction from './client/interaction'
 import clientInteractionDetail from './client/interaction/detail'
 import clientPet from './client/pet'
+import company from './company'
+import companyDetail from './company/detail'
+import organization from './organization'
+import organizationDetail from './organization/detail'
 import pet from './pet'
 import petDetail from './pet/detail'
 import user from './user'
@@ -23,6 +27,10 @@ export default function* rootSaga() {
     ...clientInteraction,
     ...clientInteractionDetail,
     ...clientPet,
+    ...company,
+    ...companyDetail,
+    ...organization,
+    ...organizationDetail,
     ...pet,
     ...petDetail,
     ...user,

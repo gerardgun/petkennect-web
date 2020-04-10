@@ -10,6 +10,11 @@ import clientDocumentDetail from '@reducers/client/document/detail'
 import clientInteraction from '@reducers/client/interaction'
 import clientInteractionDetail from '@reducers/client/interaction/detail'
 import clientPet from '@reducers/client/pet'
+import company from '@reducers/company'
+import companyDetail from '@reducers/company/detail'
+import organization from '@reducers/organization'
+import organizationDetail from '@reducers/organization/detail'
+import organizationCompany from '@reducers/organization/company'
 import pet from '@reducers/pet'
 import petDetail from '@reducers/pet/detail'
 import user from '@reducers/user'
@@ -26,6 +31,11 @@ const createRootReducer = history => combineReducers({
   [clientInteraction.store]: clientInteraction.reducer,
   [clientInteractionDetail.store]: clientInteractionDetail.reducer,
   [clientPet.store]   : clientPet.reducer,
+  [company.store]: company.reducer,
+  [companyDetail.store]: companyDetail.reducer,
+  [organization.store]      : organization.reducer,
+  [organizationDetail.store]: organizationDetail.reducer,
+  [organizationCompany.store]      : organizationCompany.reducer,
   [pet.store]      : pet.reducer,
   [petDetail.store]: petDetail.reducer,
   [user.store]        : user.reducer,

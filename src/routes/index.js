@@ -1,5 +1,6 @@
 // Public Containers
 import AuthRecoverAccount from '@containers/auth/recover-account'
+import AuthForgotPassword from '@containers/auth/forgot-password'
 import AuthSignIn from '@containers/auth/sign-in'
 import AuthSignUp from '@containers/auth/sign-up'
 import Error404 from '@containers/page/error-404'
@@ -12,6 +13,9 @@ import ClientCreate from '@containers/client/create'
 import Pet from '@containers/pet'
 import PetCreate from '@containers/pet/create'
 // import FoundationDetail from '@containers/foundation/detail'
+import Company from '@containers/company'
+import Organization from '@containers/organization'
+import OrganizationCreate from '@containers/organization/create'
 // import Grant from '@containers/grant'
 // import GrantAdd from '@containers/grant/add'
 // import GrantDetail from '@containers/grant/detail'
@@ -27,8 +31,6 @@ import PetCreate from '@containers/pet/create'
 // import ProposalDetail from '@containers/proposal/detail'
 // import ServedAreaDetail from '@containers/served_area/detail'
 import User from '@containers/user'
-import ForgotPassword from '../containers/auth/password/ForgotPassword';
-import ResetPassword from '../containers/auth/password/ResetPassword';
 
 const publicRoutes = [
   {
@@ -36,12 +38,12 @@ const publicRoutes = [
     component: AuthSignIn
   },
   {
-    path: '/forgot-password',
-    component: ForgotPassword
+    path     : '/auth/forgot-password',
+    component: AuthForgotPassword
   },
   {
-    path: '/reset-password',
-    component: ResetPassword,
+    path     : '/auth/recover-account/:token',
+    component: AuthRecoverAccount
   },
   {
     path     : '/auth/sign-in',
@@ -67,6 +69,10 @@ const privateRoutes = [
     component: ClientCreate
   },
   {
+    path     : '/company',
+    component: Company
+  },
+  {
     path     : '/dashboard',
     component: Dashboard
   },
@@ -86,6 +92,18 @@ const privateRoutes = [
   //   path     : '/foundation/:foundation',
   //   component: FoundationDetail
   // },
+  {
+    path     : '/organization',
+    component: Organization
+  },
+  {
+    path     : '/organization/create',
+    component: OrganizationCreate
+  },
+  {
+    path     : '/organization/:organization',
+    component: OrganizationCreate
+  },
   // {
   //   path     : '/grant',
   //   component: Grant

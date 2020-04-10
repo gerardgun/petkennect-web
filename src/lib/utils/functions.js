@@ -80,6 +80,16 @@ export const parseResponseError = e => {
 
   if(typeof e.response === 'undefined') {
     errors._error = 'There was an error communicating with the service.'
+  } else if(e.response.status === 422 || e.response.status === 400) {
+    Object.entries(e.response.data).forEach(([ fieldname, errorList ]) => {
+      fieldname = fieldname === 'non_field_errors' ? '_error' : fieldname
+
+      return errors[fieldname] = errorList[0]
+    })
+  } else if(e.response.status === 500) {
+    errors._error = 'Error 500. The server has a internal error, contact us please.'
+  } else {
+    errors._error = 'There was an error communicating with the service.'
   }
 
   throw new SubmissionError(errors)

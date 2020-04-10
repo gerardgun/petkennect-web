@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Checkbox, Dimmer, Dropdown, Loader, Segment, Table } from 'semantic-ui-react'
+import { Checkbox, Dimmer, Dropdown, Image, Loader, Segment, Table } from 'semantic-ui-react'
 
 import Pagination from '@components/Pagination'
 
@@ -11,6 +11,9 @@ const TableList = ({ duck, list, ...props }) => {
     let content = item[column.name]
 
     if(column.type === 'boolean') content = content ? 'Yes' : 'No'
+    else if(column.type === 'image') content = <Image rounded src={content || 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'} size='mini' />
+    else if(column.type === 'datetime') content = (new Date(content)).toLocaleString()
+    else if(column.type === 'string') content = content || <span style={{ color: 'grey' }}>-</span>
 
     return content
   }
@@ -89,53 +92,59 @@ const TableList = ({ duck, list, ...props }) => {
         </Table.Header>
         <Table.Body>
           {
-            list.items.map((item, index) => {
-              const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
-              
-              return (
-                <Table.Row active={checked} key={index} onClick={e => _handleRowClick(e, item)}>
-                  {/* Row selection */}
-                  {
-                    list.selector && (
-                      <Table.Cell>
-                        <Checkbox
-                          checked={checked}
-                          onChange={(e, data) => _handleSelectorCheckboxChange(e, data, item)} />
-                      </Table.Cell>
-                    )
-                  }
-
-                  {/* Row data */}
-                  {
-                    list.config.columns.map(({ width = null, align = null, ...column }, index) => (
-                      <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
-                    ))
-                  }
-
-                  {/* Row options */}
-                  {
-                    list.config.row.options && (
-                      <Table.Cell textAlign='center'>
-                        <Dropdown
-                          text='Options'
-                          onChange={(e, data) => _handleDropdownChange(e, data, item)}
-                          options={
-                            list.config.row.options.map((item, index) => ({
-                              key: index,
-                              icon: item.icon,
-                              value: item.name,
-                              text: item.display_name,
-                            }))
-                          }
-                          selectOnBlur={false}
-                          value={null}
-                        />
-                      </Table.Cell>
-                    )
-                  }
-                </Table.Row>
-              )
-            })
+            list.items.length > 0 ? (
+              list.items.map((item, index) => {
+                const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
+                
+                return (
+                  <Table.Row active={checked} key={index} onClick={e => _handleRowClick(e, item)}>
+                    {/* Row selection */}
+                    {
+                      list.selector && (
+                        <Table.Cell>
+                          <Checkbox
+                            checked={checked}
+                            onChange={(e, data) => _handleSelectorCheckboxChange(e, data, item)} />
+                        </Table.Cell>
+                      )
+                    }
+  
+                    {/* Row data */}
+                    {
+                      list.config.columns.map(({ width = null, align = null, ...column }, index) => (
+                        <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
+                      ))
+                    }
+  
+                    {/* Row options */}
+                    {
+                      list.config.row.options && (
+                        <Table.Cell textAlign='center'>
+                          <Dropdown
+                            text='Options'
+                            onChange={(e, data) => _handleDropdownChange(e, data, item)}
+                            options={
+                              list.config.row.options.map((item, index) => ({
+                                key: index,
+                                icon: item.icon,
+                                value: item.name,
+                                text: item.display_name,
+                              }))
+                            }
+                            selectOnBlur={false}
+                            value={null}
+                          />
+                        </Table.Cell>
+                      )
+                    }
+                  </Table.Row>
+                )
+              })
+            ) : (
+              <Table.Row disabled>
+                <Table.Cell colspan={list.config.columns.length + Number(Boolean(list.config.row.options))} textAlign='center'>No items.</Table.Cell>
+              </Table.Row>
+            )
           }
         </Table.Body>
       </Table>
