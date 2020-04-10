@@ -99,7 +99,7 @@ const OrganizationSection = props => {
                   name='phone'
                   component={FormField}
                   control={Form.Input}
-                  label='Phone *'
+                  label='Phone'
                   placeholder='Enter phone'
                   autoComplete='off'
                 />
@@ -146,7 +146,7 @@ const OrganizationSection = props => {
                   name='country'
                   component={FormField}
                   control={Form.Input}
-                  label='Country *'
+                  label='Country'
                   placeholder='Enter country'
                   autoComplete='off'
                 />
@@ -154,7 +154,7 @@ const OrganizationSection = props => {
                   name='state'
                   component={FormField}
                   control={Form.Input}
-                  label='State *'
+                  label='State'
                   placeholder='Enter state'
                   autoComplete='off'
                 />
@@ -162,7 +162,7 @@ const OrganizationSection = props => {
                   name='city'
                   component={FormField}
                   control={Form.Input}
-                  label='City *'
+                  label='City'
                   placeholder='Enter city'
                   autoComplete='off'
                 />
@@ -172,7 +172,7 @@ const OrganizationSection = props => {
                   name='zip'
                   component={FormField}
                   control={Form.Input}
-                  label='Zip *'
+                  label='Zip'
                   placeholder='Enter zip'
                   autoComplete='off'
                 />
@@ -184,7 +184,7 @@ const OrganizationSection = props => {
                   name='logo'
                   component={FormField}
                   control={Form.Input}
-                  label='Logo *'
+                  label='Logo'
                   type='file'
                 />
                 <Form.Field />

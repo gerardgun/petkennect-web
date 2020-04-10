@@ -38,9 +38,13 @@ const CompanyForm = props => {
     }))
   }
 
-  const _handleClose = () => props.resetItem()
+  const _handleClose = () => {
+    props.resetItem()
+    reset()
+  }
 
   const _handleSubmit = values => {
+    console.log(values)
     const finalValues = Object.entries(values)
         .filter(([key, value]) => Boolean(value))
         .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
@@ -113,7 +117,7 @@ const CompanyForm = props => {
               name='subdomain_prefix'
               component={FormField}
               control={Form.Input}
-              label='Subdomain prefix'
+              label='Subdomain prefix *'
               placeholder='Enter subdomain'
               autoComplete='off'
             />
@@ -208,7 +212,7 @@ const CompanyForm = props => {
               name='zip'
               component={FormField}
               control={Form.Input}
-              label='Zip *'
+              label='Zip'
               placeholder='Enter zip'
               autoComplete='off'
             />
@@ -240,7 +244,7 @@ const CompanyForm = props => {
               name='logo'
               component={FormField}
               control={Form.Input}
-              label='Logo *'
+              label='Logo'
               type='file'
             />
             <Form.Field />

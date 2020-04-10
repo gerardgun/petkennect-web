@@ -65,7 +65,7 @@ export const jsonToFormData = json => {
           form.append(`${key}[${index}]`, value)
         })
       } else if(value instanceof FileList) {
-        form.append(key, value[0])
+        if(value.length > 0) form.append(key, value[0])
       } else {
         form.append(key, value)
       }

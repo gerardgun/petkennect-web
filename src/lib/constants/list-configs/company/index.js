@@ -40,14 +40,6 @@ export default {
       sort        : false
     },
     {
-      display_name: 'Email',
-      name        : 'email',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
       display_name: 'City',
       name        : 'city',
       type        : 'string',
