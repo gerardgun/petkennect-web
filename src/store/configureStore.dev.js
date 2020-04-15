@@ -2,6 +2,7 @@ import { routerMiddleware } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
 import { applyMiddleware, compose, createStore } from 'redux'
 import { createLogger } from 'redux-logger'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import createSagaMiddleware from 'redux-saga'
 import createReduxWaitForMiddleware from 'redux-wait-for-action'
 
@@ -25,7 +26,7 @@ const store = createStore(
   createRootReducer(history), // root reducer with router state
   {}, // Initial state
   compose(
-    applyMiddleware(...middlewares)
+    composeWithDevTools(applyMiddleware(...middlewares))
   )
 )
 

@@ -10,6 +10,9 @@ import Me from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
 import ClientCreate from '@containers/client/create'
+import Pet from '@containers/pet'
+import PetCreate from '@containers/pet/create'
+// import FoundationDetail from '@containers/foundation/detail'
 import Company from '@containers/company'
 import Organization from '@containers/organization'
 import OrganizationCreate from '@containers/organization/create'
@@ -35,10 +38,6 @@ const publicRoutes = [
     path     : '/',
     component: AuthSignIn
   },
-  // {
-  // 	path        : '/about',
-  // 	component   : About,
-  // },
   {
     path     : '/auth/forgot-password',
     component: AuthForgotPassword
@@ -78,6 +77,22 @@ const privateRoutes = [
     path     : '/dashboard',
     component: Dashboard
   },
+  {
+    path     : '/pet',
+    component: Pet
+  },
+  {
+    path     : '/pet/create',
+    component: PetCreate
+  },
+  {
+    path     : '/pet/:id',
+    component: PetCreate
+  },
+  // {
+  //   path     : '/foundation/:foundation',
+  //   component: FoundationDetail
+  // },
   {
     path     : '/organization',
     component: Organization
