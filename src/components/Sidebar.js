@@ -31,7 +31,7 @@ const categories = [
     label: 'Clients'
   },
   {
-    href: '/',
+    href: '/pet',
     icon: 'gitlab',
     label: 'Pets'
   },

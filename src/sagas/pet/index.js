@@ -20,14 +20,19 @@ function* get({ payload }) {
       type   : types.GET_FULFILLED,
       payload: {
         items: _times(filters.page_size, index => ({
-          id: index,
+          id: index + 1,
           name: faker.name.firstName(),
+          last_name: faker.name.lastName(),
+          breed: faker.random.arrayElement(['Shitzu', 'Yorkshire Terrier', 'Siberian Husky', 'Shitzu X']),
+          location: '02-RH',
           city: faker.address.city(),
           state: faker.address.state(),
-          location: '02-RH',
           phone: faker.phone.phoneNumber(),
           home_phone: faker.phone.phoneNumber(),
-          current: 'No'
+          current: faker.random.boolean(),
+          retired: faker.random.boolean(),
+          sex: faker.random.arrayElement(['Male', 'Female']),
+          reason: faker.lorem.sentence(),
         })) 
       }
     })
