@@ -75,7 +75,7 @@ const FormEmergencyData = props => {
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='parent_name'
+            name='emergency_contact_name'
             component={FormField}
             control={Form.Input}
             label='Name'
@@ -84,7 +84,7 @@ const FormEmergencyData = props => {
             autoComplete='off'
           />
           <Field
-            name='parent_lastname'
+            name='emergency_contact_last_name'
             component={FormField}
             control={Form.Input}
             label='Lastname'
@@ -92,7 +92,7 @@ const FormEmergencyData = props => {
             autoComplete='off'
           />
           <Field
-            name='parent_relationship'
+            name='emergency_contact_relationship'
             component={FormField}
             control={Form.Input}
             label='Relationship'
@@ -102,7 +102,7 @@ const FormEmergencyData = props => {
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='vet_name'
+            name='emergency_vet_name'
             component={FormField}
             control={Form.Input}
             label='Vet name'
@@ -110,7 +110,7 @@ const FormEmergencyData = props => {
             autoComplete='off'
           />
           <Field
-            name='vet_location'
+            name='emergency_vet_location'
             component={FormField}
             control={Form.Input}
             label='Vet location'
@@ -118,7 +118,7 @@ const FormEmergencyData = props => {
             autoComplete='off'
           />
           <Field
-            name='parent_phone'
+            name='emergency_vet_phones[0]'
             component={FormField}
             control={Form.Input}
             label='Phone'
@@ -129,7 +129,7 @@ const FormEmergencyData = props => {
         </Form.Group>
         <FieldArray
           component={AuthorizedPeopleList}
-          name='auth_people'
+          name='authorized_people_pick_up'
           title='People Authorized to Pick Up' />
 
         {

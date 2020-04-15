@@ -24,7 +24,7 @@ const Dashboard = ({ client, ...props }) => {
             <Header as='h2'>Dashboard</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' />
+            <Button content='Download' icon='cloud download' labelPosition='left' />
             <Button content='Filter' icon='filter' labelPosition='left' />
             {
               client.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' />)

@@ -24,7 +24,7 @@ const FormInformation = props => {
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='sign_on'
+            name='legal_sign_on'
             component={FormField}
             control={Form.Input}
             label='Sign on'
@@ -37,7 +37,7 @@ const FormInformation = props => {
         </Form.Group>
         <Form.Group>
           <Field
-            name='liability'
+            name='legal_liability'
             component={FormField}
             control={Form.Checkbox}
             label='Liability'
@@ -45,7 +45,7 @@ const FormInformation = props => {
             type='checkbox'
           />
           <Field
-            name='kc_waiver'
+            name='legal_kc_waiver'
             component={FormField}
             control={Form.Checkbox}
             label='KC Waiver'

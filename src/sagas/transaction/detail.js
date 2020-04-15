@@ -1,19 +1,16 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
-import _times from 'lodash/times'
-import faker from 'faker'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
-import organizationDetailDuck from '@reducers/organization/detail'
-import organizationCompanyDuck from '@reducers/organization/company'
+import transactionDetailDuck from '@reducers/transaction/detail'
 
-const { types, selectors } = organizationDetailDuck
+const { types, selectors } = transactionDetailDuck
 
 function* deleteItem({ ids: [ id ] }) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
-    yield call(Delete, `organizations/${id}/`)
+    yield call(Delete, `transactions/${id}/`)
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -27,21 +24,13 @@ function* deleteItem({ ids: [ id ] }) {
 function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
-    yield put({ type: organizationCompanyDuck.types.GET_PENDING })
 
-    const { companies, ...organization } = yield call(Get, `organizations/${id}`)
+    const transaction = yield call(Get, `transactions/${id}`)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: organization
-      }
-    })
-
-    yield put({
-      type   : organizationCompanyDuck.types.GET_FULFILLED,
-      payload: {
-        items: companies
+        item: transaction
       }
     })
   } catch (e) {
@@ -56,7 +45,7 @@ function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, 'organizations/', payload)
+    const result = yield call(Post, 'transactions/', payload)
 
     yield put({
       type: types.POST_FULFILLED,
@@ -74,7 +63,7 @@ function* _put({ payload }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `organizations/${payload.id}/`, payload)
+    yield call(Patch, `transactions/${payload.id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

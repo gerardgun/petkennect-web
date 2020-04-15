@@ -27,7 +27,7 @@ const FormContactData = props => {
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='phone'
+            name='phones[0]'
             component={FormField}
             control={Form.Input}
             label='Cell Phone'
@@ -37,7 +37,7 @@ const FormContactData = props => {
             autoComplete='off'
           />
           <Field
-            name='home_phone'
+            name='phones[1]'
             component={FormField}
             control={Form.Input}
             label='Home Phone'
@@ -46,7 +46,7 @@ const FormContactData = props => {
             autoComplete='off'
           />
           <Field
-            name='work_phone'
+            name='phones[2]'
             component={FormField}
             control={Form.Input}
             label='Work Phone'
@@ -57,7 +57,7 @@ const FormContactData = props => {
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='other_phone'
+            name='phones[3]'
             component={FormField}
             control={Form.Input}
             label='Other Phone'
@@ -75,7 +75,19 @@ const FormContactData = props => {
             autoComplete='off'
           />
           <Field
-            name='referred_id'
+            name='alt_email'
+            component={FormField}
+            control={Form.Input}
+            label='Alt Email'
+            placeholder='Enter email'
+            type='email'
+            autoComplete='off'
+          />
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            // name='referred_id'
+            name='referred'
             component={FormField}
             control={Form.Select}
             options={[
@@ -89,6 +101,8 @@ const FormContactData = props => {
             placeholder='Select an option'
             selectOnBlur={false}
           />
+          <Form.Field />
+          <Form.Field />
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
@@ -126,7 +140,8 @@ export default compose(
     destroyOnUnmount  : false,
     validate: values  => {
       const schema = {
-        email   : YupFields.email
+        email    : YupFields.email,
+        alt_email: YupFields.emailNotRequired,
       }
     
       return syncValidate(Yup.object().shape(schema), values)

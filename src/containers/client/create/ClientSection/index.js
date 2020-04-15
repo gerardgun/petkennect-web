@@ -61,18 +61,22 @@ const ClientSection = props => {
       setTimeout(() => submit(formIds[formIndexWithErrors]), 100)
     } else {
       const values = forms
-        .filter(item => item.fields.length > 0)
+        .filter(item => item.fields.length > 0 && Boolean(item.values))
         .map(({ fields, values }) => {
           return fields.reduce((a, b) => ({ ...a, [b]: values[b] }), {})
         })
         .reduce((a, b) => ({ ...a, ...b }))
 
+      const finalValues = Object.entries(values)
+        .filter(([key, value]) => Boolean(value))
+        .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
+
       if(isUpdating) {
-        return put({ id: clientDetail.item.id, ...values})
+        return put({ id: clientDetail.item.id, ...finalValues})
           .catch(parseResponseError)
       } else {
-        return post(values)
-          .then(() => history.replace('/client/1'))
+        return post(finalValues)
+          .then(result => history.replace(`/client/${result.id}`))
           .catch(parseResponseError)
       }
     }

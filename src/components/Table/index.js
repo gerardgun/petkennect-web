@@ -12,6 +12,7 @@ const TableList = ({ duck, list, ...props }) => {
 
     if(column.type === 'boolean') content = content ? 'Yes' : 'No'
     else if(column.type === 'image') content = <Image rounded src={content || 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'} size='mini' />
+    else if(column.type === 'date') content = (new Date(content)).toLocaleString().split(' ').shift()
     else if(column.type === 'datetime') content = (new Date(content)).toLocaleString()
     else if(column.type === 'string') content = content || <span style={{ color: 'grey' }}>-</span>
 
@@ -142,7 +143,7 @@ const TableList = ({ duck, list, ...props }) => {
               })
             ) : (
               <Table.Row disabled>
-                <Table.Cell colspan={list.config.columns.length + Number(Boolean(list.config.row.options))} textAlign='center'>No items.</Table.Cell>
+                <Table.Cell colSpan={list.config.columns.length + Number(Boolean(list.config.row.options))} textAlign='center'>No items.</Table.Cell>
               </Table.Row>
             )
           }

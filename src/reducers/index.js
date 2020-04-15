@@ -17,6 +17,8 @@ import organizationDetail from '@reducers/organization/detail'
 import organizationCompany from '@reducers/organization/company'
 import pet from '@reducers/pet'
 import petDetail from '@reducers/pet/detail'
+import transaction from '@reducers/transaction'
+import transactionDetail from '@reducers/transaction/detail'
 import user from '@reducers/user'
 import userDetail from '@reducers/user/detail'
 
@@ -38,6 +40,8 @@ const createRootReducer = history => combineReducers({
   [organizationCompany.store]      : organizationCompany.reducer,
   [pet.store]      : pet.reducer,
   [petDetail.store]: petDetail.reducer,
+  [transaction.store]      : transaction.reducer,
+  [transactionDetail.store]: transactionDetail.reducer,
   [user.store]        : user.reducer,
   [userDetail.store]  : userDetail.reducer
 })

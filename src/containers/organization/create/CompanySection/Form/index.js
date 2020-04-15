@@ -27,7 +27,7 @@ const CompanyForm = props => {
 
   useEffect(() => {
     if(companyDetail.mode === 'CREATE' && organization.items.length === 0) {
-      props.getOrganization(props.match.params.organization)
+      props.getOrganizations()
     }
   }, [ companyDetail.mode ])
 
@@ -44,7 +44,6 @@ const CompanyForm = props => {
   }
 
   const _handleSubmit = values => {
-    console.log(values)
     const finalValues = Object.entries(values)
         .filter(([key, value]) => Boolean(value))
         .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})

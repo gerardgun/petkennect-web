@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Image } from 'semantic-ui-react'
 
 import Sidebar from '@components/Common/Sidebar'
@@ -17,11 +17,16 @@ const categoriesForSuperAdmin = [
     icon: 'building',
     label: 'Companies'
   },
+  {
+    href: '/transaction',
+    icon: 'exchange',
+    label: 'Transactions'
+  },
 ]
 
 const categories = [
   {
-    href: '/',
+    href: '/dashboard',
     icon: 'chart bar outline',
     label: 'Dashboard'
   },
@@ -31,17 +36,17 @@ const categories = [
     label: 'Clients'
   },
   {
-    href: '/',
+    href: '/pet',
     icon: 'gitlab',
     label: 'Pets'
   },
   {
-    href: '/',
+    href: '/request',
     icon: 'osi',
     label: 'Online Requests'
   },
   {
-    href: '/',
+    href: '/sale',
     icon: 'dollar sign',
     label: 'Retail Sales'
   },
@@ -128,11 +133,7 @@ const categories = [
 ]
 
 const AppSidebar = ({ auth, ...props }) => {
-  const [ activedCategoryIndex, setActivedCategoryIndex ] = useState(null)
-
   const getCategories = () => auth.item.is_superadmin ? categoriesForSuperAdmin : categories
-
-  const _handleCategoryClick = index => setActivedCategoryIndex(index)
 
   const categoriesToRender = useMemo(() => getCategories(), [ auth.item.id ])
 
@@ -140,28 +141,33 @@ const AppSidebar = ({ auth, ...props }) => {
     <Sidebar>
       <Image size='small' src='/images/logo.svg' style={{ margin: '3rem 0rem' }} />
       {
-        categoriesToRender.map(({ subcategories = null, ...rest }, index) => (
-          <Sidebar.Category
-            key={index}
-            active={activedCategoryIndex === index}
-            onClick={() => _handleCategoryClick(index)}
-            {...rest}
-          >
-            {
-              subcategories ? (
-                subcategories.map(({ href: to, label }, index) => (
-                  <Link key={index} to={to}>{label}</Link>
-                ))
-              ) : null
-            }
-          </Sidebar.Category>
-        ))
+        categoriesToRender.map(({ subcategories = null, ...rest }, index) => {
+          const rgx = new RegExp(`^${rest.href}.*`)
+          const active = rgx.test(props.match.path)
+
+          return (
+            <Sidebar.Category
+              key={index}
+              active={active}
+              {...rest}
+            >
+              {
+                subcategories ? (
+                  subcategories.map(({ href: to, label }, index) => (
+                    <Link key={index} to={to}>{label}</Link>
+                  ))
+                ) : null
+              }
+            </Sidebar.Category>
+          )
+        })
       }
     </Sidebar>
   )
 }
 
 export default compose(
+  withRouter,
   connect(
     ({ auth }) => ({
       auth,

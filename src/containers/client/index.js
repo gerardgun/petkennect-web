@@ -12,8 +12,12 @@ import useModal from '@components/Modal/useModal'
 import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
 
-const Client = ({ client, ...props }) => {
+const Client = ({ client, clientDetail, ...props }) => {
   const [ open, { handleOpen, handleClose } ] = useModal()
+
+  useEffect(() => {
+    if(clientDetail.status === 'DELETED') props.getClients()
+  }, [ clientDetail.status ])
 
   useEffect(() => {
     props.getClients()
@@ -27,8 +31,8 @@ const Client = ({ client, ...props }) => {
             <Header as='h2'>Clients</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' />
-            <Button content='Filter' icon='filter' labelPosition='left' />
+            <Button content='Download' disabled icon='cloud download' labelPosition='left' />
+            <Button content='Filter' disabled icon='filter' labelPosition='left' />
             {
               client.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={handleOpen} />)
             }
@@ -50,8 +54,9 @@ const Client = ({ client, ...props }) => {
 
 export default compose(
   connect(
-    ({ client }) => ({
-      client
+    ({ client, ...state }) => ({
+      client,
+      clientDetail: clientDetailDuck.selectors.detail(state),
     }),
     {
       getClients: clientDuck.creators.get

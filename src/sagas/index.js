@@ -14,6 +14,8 @@ import organization from './organization'
 import organizationDetail from './organization/detail'
 import pet from './pet'
 import petDetail from './pet/detail'
+import transaction from './transaction'
+import transactionDetail from './transaction/detail'
 import user from './user'
 import userDetail from './user/detail'
 
@@ -33,6 +35,8 @@ export default function* rootSaga() {
     ...organizationDetail,
     ...pet,
     ...petDetail,
+    ...transaction,
+    ...transactionDetail,
     ...user,
     ...userDetail,
   ])

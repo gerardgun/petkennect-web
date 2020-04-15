@@ -33,7 +33,7 @@ const FormInformation = props => {
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='name'
+            name='first_name'
             component={FormField}
             control={Form.Input}
             label='Name *'
@@ -42,23 +42,13 @@ const FormInformation = props => {
             autoComplete='off'
           />
           <Field
-            name='lastname'
+            name='last_name'
             component={FormField}
             control={Form.Input}
             label='Lastname *'
             placeholder='Enter lastname'
             autoComplete='off'
           />
-          <Field
-            name='second_lastname'
-            component={FormField}
-            control={Form.Input}
-            label='Second lastname *'
-            placeholder='Enter second lastname'
-            autoComplete='off'
-          />
-        </Form.Group>
-        <Form.Group widths='equal'>
           <Field
             name='spouse'
             component={FormField}
@@ -67,6 +57,8 @@ const FormInformation = props => {
             placeholder='Enter spouse'
             autoComplete='off'
           />
+        </Form.Group>
+        <Form.Group widths='equal'>
           <Field
             name='contact_date'
             component={FormField}
@@ -86,6 +78,21 @@ const FormInformation = props => {
             ]}
             label='Contact Location'
             placeholder='Contact Location'
+            selectOnBlur={false}
+          />
+          <Field
+            name='status'
+            // name='status_id'
+            component={FormField}
+            control={Form.Select}
+            options={[
+              { key: 1, value: 1, text : 'DECLINED' },
+              { key: 2, value: 2, text : 'GREEN' },
+              { key: 3, value: 3, text : 'RED - See notes' },
+              { key: 4, value: 4, text : 'VIP CLIENT' },
+            ]}
+            label='Status'
+            placeholder='Select status'
             selectOnBlur={false}
           />
         </Form.Group>
@@ -134,24 +141,6 @@ const FormInformation = props => {
             selectOnBlur={false}
           />
         </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            name='status_id'
-            component={FormField}
-            control={Form.Select}
-            options={[
-              { key: 1, value: 1, text : 'DECLINED' },
-              { key: 2, value: 2, text : 'GREEN' },
-              { key: 3, value: 3, text : 'RED - See notes' },
-              { key: 4, value: 4, text : 'VIP CLIENT' },
-            ]}
-            label='Status'
-            placeholder='Select status'
-            selectOnBlur={false}
-          />
-          <Form.Field />
-          <Form.Field />
-        </Form.Group>
 
         {
           error && (
@@ -179,12 +168,11 @@ export default compose(
     destroyOnUnmount: false,
     validate        : values  => {
       const schema = {
-        name: YupFields.name,
-        lastname: YupFields.first_lastname,
-        second_lastname: YupFields.second_lastname,
-        city_id: YupFields.city,
-        state_id: YupFields.state,
-        zip_id: YupFields.zip,
+        first_name: YupFields.name,
+        last_name: YupFields.first_lastname,
+        // city_id: YupFields.city,
+        // state_id: YupFields.state,
+        // zip_id: YupFields.zip,
       }
 
       return syncValidate(Yup.object().shape(schema), values)
