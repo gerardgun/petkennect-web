@@ -55,24 +55,30 @@ export const syncValidate = (schema, values) => {
   }
 }
 
-export const jsonToFormData = json => {
-  const form = new FormData()
+export const parsePayload = payload => {
+  const containsFileList = Object.values(payload).some(value => value instanceof FileList)
+  let body = payload // Raw payload
 
-  Object.entries(json).forEach(([key, value]) => {
-    if(typeof value !== 'undefined') {
-      if(value instanceof Array) {
-        value.forEach((value, index) => {
-          form.append(`${key}[${index}]`, value)
-        })
-      } else if(value instanceof FileList) {
-        form.append(key, value[0])
-      } else {
-        form.append(key, value)
+  // If payload contains some FileList, create a FormData payload
+  if(containsFileList) {
+    body = new FormData()
+
+    Object.entries(payload).forEach(([key, value]) => {
+      if(typeof value !== 'undefined') {
+        if(value instanceof Array) {
+          value.forEach((value, index) => {
+            body.append(`${key}[${index}]`, value)
+          })
+        } else if(value instanceof FileList) {
+          if(value.length > 0) body.append(key, value[0])
+        } else {
+          body.append(key, value)
+        }
       }
-    }
-  })
+    })
+  }
 
-  return form
+  return body
 }
 
 export const parseResponseError = e => {

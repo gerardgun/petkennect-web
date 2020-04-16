@@ -61,18 +61,37 @@ const ClientSection = props => {
       setTimeout(() => submit(formIds[formIndexWithErrors]), 100)
     } else {
       const values = forms
-        .filter(item => item.fields.length > 0)
+        .map(({ fields, ...rest }) => {
+          let parsedFields = fields.reduce((a, b) => {
+            const fieldname = /^(\w+).*/.exec(b)[1]
+
+            return a.includes(fieldname) ? a : [ ...a, fieldname ]
+          }, [])
+
+          return { fields: parsedFields, ...rest }
+        })
+        .filter(item => item.fields.length > 0 && Boolean(item.values))
         .map(({ fields, values }) => {
           return fields.reduce((a, b) => ({ ...a, [b]: values[b] }), {})
         })
         .reduce((a, b) => ({ ...a, ...b }))
 
+      let finalValues = Object.entries(values)
+        .filter(([key, value]) => Boolean(value))
+        .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
+
+      // For checkbox values
+      if('legal_sign_on' in finalValues) {
+        if(!('legal_liability' in finalValues)) finalValues.legal_liability = false
+        if(!('legal_kc_waiver' in finalValues)) finalValues.legal_kc_waiver = false
+      }
+
       if(isUpdating) {
-        return put({ id: clientDetail.item.id, ...values})
+        return put({ id: clientDetail.item.id, ...finalValues})
           .catch(parseResponseError)
       } else {
-        return post(values)
-          .then(() => history.replace('/client/1'))
+        return post(finalValues)
+          .then(result => history.replace(`/client/${result.id}`))
           .catch(parseResponseError)
       }
     }

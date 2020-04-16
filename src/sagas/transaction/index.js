@@ -2,21 +2,21 @@ import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
-import clientDuck from '@reducers/client'
+import transactionDuck from '@reducers/transaction'
 
-const { types, selectors } = clientDuck
+const { types, selectors } = transactionDuck
 
 function* get({ payload }) {
   try {
     yield put({ type: types.GET_PENDING })
 
     const filters = yield select(selectors.filters)
-    const clients = yield call(Get, 'customers/')
+    const transactions = yield call(Get, '/transactions/')
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: clients
+        items: transactions
       }
     })
   } catch (e) {

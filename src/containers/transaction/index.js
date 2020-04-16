@@ -7,24 +7,24 @@ import Layout from '@components/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
 import Table from '@components/Table'
-import Form from '@containers/organization/create/CompanySection/Form'
+import Form from '@containers/transaction/create'
 
-import companyDuck from '@reducers/company'
-import companyDetailDuck from '@reducers/company/detail'
+import transactionDuck from '@reducers/transaction'
+import transactionDetailDuck from '@reducers/transaction/detail'
 
-const Company = ({ company, companyDetail, ...props }) => {
+const Transaction = ({ transaction, transactionDetail, ...props }) => {
   // For Modal Delete
   const [ open, { handleOpen, handleClose } ] = useModal()
 
   useEffect(() => {
-    props.getCompanies()
+    props.getTransactions()
   }, [])
 
   useEffect(() => {
-    if(companyDetail.status === 'POSTED' || companyDetail.status === 'PUT' || companyDetail.status === 'DELETED') {
-      props.getCompanies()
+    if(transactionDetail.status === 'POSTED' || transactionDetail.status === 'PUT' || transactionDetail.status === 'DELETED') {
+      props.getTransactions()
     }
-  }, [ companyDetail.status ])
+  }, [ transactionDetail.status ])
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
@@ -48,22 +48,22 @@ const Company = ({ company, companyDetail, ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2'>Companies</Header>
+            <Header as='h2'>Transactions</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
             <Button content='Download' disabled icon='cloud download' labelPosition='left' />
-            <Button color='teal' content='New Company' onClick={_handleAddBtnClick} />
+            <Button color='teal' content='New Transaction' onClick={_handleAddBtnClick} />
           </Grid.Column>
         </Grid>
         <Table
-          duck={companyDuck}
+          duck={transactionDuck}
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick} />
 
         <Form />
 
         <ModalDelete
-          duckDetail={companyDetailDuck}
+          duckDetail={transactionDetailDuck}
           onClose={handleClose}
           open={open} />
 
@@ -74,13 +74,13 @@ const Company = ({ company, companyDetail, ...props }) => {
 
 export default compose(
   connect(
-    ({ company, ...state }) => ({
-      company,
-      companyDetail: companyDetailDuck.selectors.detail(state),
+    ({ transaction, ...state }) => ({
+      transaction,
+      transactionDetail: transactionDetailDuck.selectors.detail(state),
     }),
     {
-      getCompanies: companyDuck.creators.get,
-      setItem        : companyDetailDuck.creators.setItem,
+      getTransactions: transactionDuck.creators.get,
+      setItem        : transactionDetailDuck.creators.setItem,
     }
   )
-)(Company) 
+)(Transaction) 

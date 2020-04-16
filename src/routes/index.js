@@ -16,6 +16,7 @@ import PetCreate from '@containers/pet/create'
 import Company from '@containers/company'
 import Organization from '@containers/organization'
 import OrganizationCreate from '@containers/organization/create'
+import Transaction from '@containers/transaction'
 // import Grant from '@containers/grant'
 // import GrantAdd from '@containers/grant/add'
 // import GrantDetail from '@containers/grant/detail'
@@ -104,18 +105,10 @@ const privateRoutes = [
     path     : '/organization/:organization',
     component: OrganizationCreate
   },
-  // {
-  //   path     : '/grant',
-  //   component: Grant
-  // },
-  // {
-  //   path     : '/grant/add',
-  //   component: GrantAdd
-  // },
-  // {
-  //   path     : '/grant/:grant',
-  //   component: GrantDetail
-  // },
+  {
+    path     : '/transaction',
+    component: Transaction
+  },
   // {
   //   path     : '/grantee',
   //   component: Grantee

@@ -49,7 +49,7 @@ const CompanySection = ({ company, companyDetail, ...props }) => {
               <Header as='h2'>Companies</Header>
             </Grid.Column>
             <Grid.Column textAlign='right'>
-              <Button content='Filter' icon='filter' labelPosition='left' />
+              <Button content='Download' disabled icon='cloud download' labelPosition='left' />
               <Button color='teal' content='New Company' onClick={_handleAddBtnClick} />
             </Grid.Column>
           </Grid>

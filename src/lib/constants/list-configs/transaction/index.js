@@ -16,57 +16,33 @@ export default {
   },
   columns: [
     {
-      display_name: '',
-      name        : 'thumbnail',
-      type        : 'image',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Legal Name',
-      name        : 'legal_name',
+      display_name: 'Seller',
+      name        : 'seller_legal_name',
       type        : 'string', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'DBA',
-      name        : 'dba',
+      display_name: 'Buyer',
+      name        : 'buyer_legal_name',
+      type        : 'string', 
+      width       : null,
+      align       : 'left',
+      sort        : false
+    },
+    {
+      display_name: 'Company',
+      name        : 'company_legal_name',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'City',
-      name        : 'city',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'State',
-      name        : 'state',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Multilocation',
-      name        : 'multilocation',
-      type        : 'boolean',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Organization',
-      name        : 'organization',
-      type        : 'string',
+      display_name: 'Transacted at',
+      name        : 'transacted_at',
+      type        : 'date',
       width       : null,
       align       : 'left',
       sort        : false

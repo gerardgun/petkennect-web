@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, isSubmitting } from 'redux-form'
 import { Form, Tab } from 'semantic-ui-react'
 import * as Yup from 'yup'
-import _times from 'lodash/times'
-import faker from 'faker'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
@@ -14,51 +13,52 @@ import { syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
 
-const cities = _times(10, index => ({ key: index, value: index, text : faker.address.city() }))
-const states = _times(10, index => ({ key: index, value: index, text : faker.address.state() }))
-const zipes = _times(10, index => ({ key: index, value: index, text : faker.address.zipCode() }))
+const zipes = [ { key: 1, value: 1, text : '25435' } ]
 
 const FormInformation = props => {
   const {
     clientDetail,
+    match,
     error, handleSubmit, initialized, reset // redux-form
   } = props
 
   useEffect(() => {
-    if(clientDetail.item.id && !initialized) props.initialize(clientDetail.item)
+    if(!initialized && clientDetail.item.id) {
+      props.initialize({
+        ...clientDetail.item,
+        state: 'PA',
+        city: 'DOYLESTOWN',
+        zip_code: 1,
+        contact_location_id: 1
+      })
+    }
   }, [ clientDetail.status ])
+
+  const isUpdating = match.params.client
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='name'
+            name='first_name'
             component={FormField}
             control={Form.Input}
             label='Name *'
             placeholder='Enter names'
+            readOnly={isUpdating}
             autoFocus
             autoComplete='off'
           />
           <Field
-            name='lastname'
+            name='last_name'
             component={FormField}
             control={Form.Input}
             label='Lastname *'
             placeholder='Enter lastname'
+            readOnly={isUpdating}
             autoComplete='off'
           />
-          <Field
-            name='second_lastname'
-            component={FormField}
-            control={Form.Input}
-            label='Second lastname *'
-            placeholder='Enter second lastname'
-            autoComplete='off'
-          />
-        </Form.Group>
-        <Form.Group widths='equal'>
           <Field
             name='spouse'
             component={FormField}
@@ -67,6 +67,8 @@ const FormInformation = props => {
             placeholder='Enter spouse'
             autoComplete='off'
           />
+        </Form.Group>
+        <Form.Group widths='equal'>
           <Field
             name='contact_date'
             component={FormField}
@@ -88,6 +90,20 @@ const FormInformation = props => {
             placeholder='Contact Location'
             selectOnBlur={false}
           />
+          <Field
+            name='status'
+            component={FormField}
+            control={Form.Select}
+            options={[
+              { key: 1, value: 'DECLINED', text : 'DECLINED' },
+              { key: 2, value: 'GREEN', text : 'GREEN' },
+              { key: 3, value: 'RED', text : 'RED - See notes' },
+              { key: 4, value: 'VIP-CLIENT', text : 'VIP CLIENT' },
+            ]}
+            label='Status'
+            placeholder='Select status'
+            selectOnBlur={false}
+          />
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
@@ -101,56 +117,33 @@ const FormInformation = props => {
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='city_id'
+            name='state'
             component={FormField}
-            control={Form.Select}
-            options={cities}
-            label='City *'
-            placeholder='Select city'
-            autoComplete='off'
-            search
-            selectOnBlur={false}
-          />
-          <Field
-            name='state_id'
-            component={FormField}
-            control={Form.Select}
-            options={states}
+            control={Form.Input}
             label='State *'
-            placeholder='Select state'
             autoComplete='off'
-            search
-            selectOnBlur={false}
+            readOnly
           />
           <Field
-            name='zip_id'
+            name='city'
+            component={FormField}
+            control={Form.Input}
+            label='City *'
+            autoComplete='off'
+            readOnly
+          />
+          <Field
+            name='zip_code'
             component={FormField}
             control={Form.Select}
             options={zipes}
             label='Zip *'
             placeholder='Select zip'
             autoComplete='off'
+            readOnly
             search
             selectOnBlur={false}
           />
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            name='status_id'
-            component={FormField}
-            control={Form.Select}
-            options={[
-              { key: 1, value: 1, text : 'DECLINED' },
-              { key: 2, value: 2, text : 'GREEN' },
-              { key: 3, value: 3, text : 'RED - See notes' },
-              { key: 4, value: 4, text : 'VIP CLIENT' },
-            ]}
-            label='Status'
-            placeholder='Select status'
-            selectOnBlur={false}
-          />
-          <Form.Field />
-          <Form.Field />
         </Form.Group>
 
         {
@@ -168,6 +161,7 @@ const FormInformation = props => {
 }
 
 export default compose(
+  withRouter,
   connect(
     state => ({
       clientDetail: clientDetailDuck.selectors.detail(state)
@@ -179,12 +173,9 @@ export default compose(
     destroyOnUnmount: false,
     validate        : values  => {
       const schema = {
-        name: YupFields.name,
-        lastname: YupFields.first_lastname,
-        second_lastname: YupFields.second_lastname,
-        city_id: YupFields.city,
-        state_id: YupFields.state,
-        zip_id: YupFields.zip,
+        first_name: YupFields.name,
+        last_name: YupFields.first_lastname,
+        zip_code: YupFields.zip,
       }
 
       return syncValidate(Yup.object().shape(schema), values)

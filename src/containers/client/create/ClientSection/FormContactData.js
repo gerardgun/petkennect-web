@@ -27,7 +27,7 @@ const FormContactData = props => {
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='phone'
+            name='phones[0]'
             component={FormField}
             control={Form.Input}
             label='Cell Phone'
@@ -37,7 +37,7 @@ const FormContactData = props => {
             autoComplete='off'
           />
           <Field
-            name='home_phone'
+            name='phones[1]'
             component={FormField}
             control={Form.Input}
             label='Home Phone'
@@ -46,7 +46,7 @@ const FormContactData = props => {
             autoComplete='off'
           />
           <Field
-            name='work_phone'
+            name='phones[2]'
             component={FormField}
             control={Form.Input}
             label='Work Phone'
@@ -57,7 +57,7 @@ const FormContactData = props => {
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='other_phone'
+            name='phones[3]'
             component={FormField}
             control={Form.Input}
             label='Other Phone'
@@ -75,20 +75,33 @@ const FormContactData = props => {
             autoComplete='off'
           />
           <Field
-            name='referred_id'
+            name='alt_email'
+            component={FormField}
+            control={Form.Input}
+            label='Alt Email'
+            placeholder='Enter email'
+            type='email'
+            autoComplete='off'
+          />
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            name='referred'
             component={FormField}
             control={Form.Select}
             options={[
-              { key: 1, value: 1, text : 'Drive-by' },
-              { key: 2, value: 2, text : 'Event' },
-              { key: 3, value: 3, text : 'Internet search' },
-              { key: 4, value: 4, text : 'Referral' },
-              { key: 5, value: 5, text : 'Other' },
+              { key: 1, value: 'DRIVE-BY', text : 'Drive-by' },
+              { key: 2, value: 'EVENT', text : 'Event' },
+              { key: 3, value: 'INTERNET-SEARCH', text : 'Internet search' },
+              { key: 4, value: 'REFERRAL', text : 'Referral' },
+              { key: 5, value: 'OTHER', text : 'Other' },
             ]}
             label='Referred'
             placeholder='Select an option'
             selectOnBlur={false}
           />
+          <Form.Field />
+          <Form.Field />
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
@@ -126,7 +139,8 @@ export default compose(
     destroyOnUnmount  : false,
     validate: values  => {
       const schema = {
-        email   : YupFields.email
+        email    : YupFields.email,
+        alt_email: YupFields.emailNotRequired,
       }
     
       return syncValidate(Yup.object().shape(schema), values)

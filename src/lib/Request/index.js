@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-import { jsonToFormData } from '@lib/utils/functions'
+import { parsePayload } from '@lib/utils/functions'
 
-let _source, beforeRoute
+let _source
+let beforeRoute
 
 function verifyRequestCancel(route) {
   if(beforeRoute === route) {
@@ -23,14 +24,15 @@ export default class Request {
   }
 
   http = function() {
-    let config = {
+    const config = {
       baseURL: this.url
       // mode   : 'no-cors'
     }
 
     if(this.token)
       config.headers = {
-        Authorization: `JWT ${this.token}`
+        Authorization: `JWT ${this.token}`,
+        'Tenant-subdomain-prefix': 'joker',
       }
 
     this.instance = axios.create(config)
@@ -40,7 +42,7 @@ export default class Request {
     return new Promise((resolve, reject) => {
       verifyRequestCancel(route)
       this.instance
-        .put(route, jsonToFormData(payload))
+        .put(route, parsePayload(payload))
         .then(res => resolve(res.data))
         .catch(e => {
           reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
@@ -64,7 +66,7 @@ export default class Request {
     return new Promise((resolve, reject) => {
       verifyRequestCancel(route)
       this.instance
-        .patch(route, jsonToFormData(payload))
+        .patch(route, parsePayload(payload))
         .then(res => resolve(res.data))
         .catch(e => {
           reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
@@ -76,7 +78,7 @@ export default class Request {
     return new Promise((resolve, reject) => {
       verifyRequestCancel(route)
       this.instance
-        .post(route, jsonToFormData(payload))
+        .post(route, parsePayload(payload))
         .then(res => resolve(res.data))
         .catch(e => {
           reject({ type: axios.isCancel(e) ? 'cancel' : 'err', ...e })
