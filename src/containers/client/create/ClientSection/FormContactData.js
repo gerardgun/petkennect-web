@@ -86,16 +86,15 @@ const FormContactData = props => {
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            // name='referred_id'
             name='referred'
             component={FormField}
             control={Form.Select}
             options={[
-              { key: 1, value: 1, text : 'Drive-by' },
-              { key: 2, value: 2, text : 'Event' },
-              { key: 3, value: 3, text : 'Internet search' },
-              { key: 4, value: 4, text : 'Referral' },
-              { key: 5, value: 5, text : 'Other' },
+              { key: 1, value: 'DRIVE-BY', text : 'Drive-by' },
+              { key: 2, value: 'EVENT', text : 'Event' },
+              { key: 3, value: 'INTERNET-SEARCH', text : 'Internet search' },
+              { key: 4, value: 'REFERRAL', text : 'Referral' },
+              { key: 5, value: 'OTHER', text : 'Other' },
             ]}
             label='Referred'
             placeholder='Select an option'

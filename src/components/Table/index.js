@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Checkbox, Dimmer, Dropdown, Image, Loader, Segment, Table } from 'semantic-ui-react'
+import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
 
 const TableList = ({ duck, list, ...props }) => {
   const getColumnContent = (item, column) => {
-    let content = item[column.name]
+    let content = _get(item, column.name, null)
 
     if(column.type === 'boolean') content = content ? 'Yes' : 'No'
     else if(column.type === 'image') content = <Image rounded src={content || 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'} size='mini' />

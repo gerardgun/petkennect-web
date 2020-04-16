@@ -2,7 +2,8 @@ import axios from 'axios'
 
 import { parsePayload } from '@lib/utils/functions'
 
-let _source, beforeRoute
+let _source
+let beforeRoute
 
 function verifyRequestCancel(route) {
   if(beforeRoute === route) {
@@ -23,14 +24,15 @@ export default class Request {
   }
 
   http = function() {
-    let config = {
+    const config = {
       baseURL: this.url
       // mode   : 'no-cors'
     }
 
     if(this.token)
       config.headers = {
-        Authorization: `JWT ${this.token}`
+        Authorization: `JWT ${this.token}`,
+        'Tenant-subdomain-prefix': 'joker',
       }
 
     this.instance = axios.create(config)

@@ -7,17 +7,12 @@ export default {
         name        : 'edit',
         icon        : 'edit outline'
       },
-      {
-        display_name: 'Delete',
-        name        : 'delete',
-        icon        : 'trash alternate outline'
-      },
     ]
   },
   columns: [
     {
       display_name: 'Name',
-      name        : 'name',
+      name        : 'first_name',
       type        : 'string', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
@@ -49,7 +44,7 @@ export default {
     },
     {
       display_name: 'Phone Mobile',
-      name        : 'phone',
+      name        : 'phones[0]',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -57,15 +52,15 @@ export default {
     },
     {
       display_name: 'Phone Home',
-      name        : 'home_phone',
+      name        : 'phones[1]',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'Current',
-      name        : 'current',
+      display_name: 'Status',
+      name        : 'status',
       type        : 'string',
       width       : null,
       align       : 'left',

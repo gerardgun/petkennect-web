@@ -23,6 +23,12 @@ const Client = ({ client, clientDetail, ...props }) => {
     props.getClients()
   }, [])
 
+  const _handleRowOptionClick = (option, item) => {
+    if(option === 'edit') {
+      props.history.push(`client/${item.id}`)
+    }
+  }
+
   return (
     <Layout>
       <Segment className='segment-content' padded='very'>
@@ -39,7 +45,9 @@ const Client = ({ client, clientDetail, ...props }) => {
             <Button as={Link} color='teal' content='New Client' to='/client/create' />
           </Grid.Column>
         </Grid>
-        <Table duck={clientDuck} />
+        <Table
+          duck={clientDuck}
+          onRowOptionClick={_handleRowOptionClick} />
       </Segment>
 
       <ModalDelete
@@ -59,7 +67,7 @@ export default compose(
       clientDetail: clientDetailDuck.selectors.detail(state),
     }),
     {
-      getClients: clientDuck.creators.get
+      getClients: clientDuck.creators.get,
     }
   )
 )(Client) 

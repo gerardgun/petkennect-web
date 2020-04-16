@@ -61,9 +61,9 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Select}
             options={[
-              { key: 1, value: 1, text : 'Visa' },
-              { key: 2, value: 2, text : 'Mastercard' },
-              { key: 5, value: 5, text : 'Express' },
+              { key: 1, value: 'visa', text : 'Visa' },
+              { key: 2, value: 'mastercard', text : 'Mastercard' },
+              { key: 5, value: 'express', text : 'Express' },
             ]}
             label='CC Type'
             placeholder='Select a CC Type'
