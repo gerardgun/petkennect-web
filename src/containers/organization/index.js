@@ -8,9 +8,8 @@ import Layout from '@components/Layout'
 import Table from '@components/Table'
 
 import organizationDuck from '@reducers/organization'
-import organizationDetailDuck from '@reducers/organization/detail'
 
-const Organization = ({ organization, ...props }) => {
+const Organization = props => {
   useEffect(() => {
     props.getOrganizations()
   }, [])
@@ -23,11 +22,15 @@ const Organization = ({ organization, ...props }) => {
             <Header as='h2'>Organizations</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' disabled icon='cloud download' labelPosition='left' />
-            <Button as={Link} color='teal' content='New Organization' to='/organization/create' />
+            <Button
+              content='Download' disabled icon='cloud download'
+              labelPosition='left'/>
+            <Button
+              as={Link} color='teal' content='New Organization'
+              to='/organization/create'/>
           </Grid.Column>
         </Grid>
-        <Table duck={organizationDuck} />
+        <Table duck={organizationDuck}/>
       </Segment>
     </Layout>
   )
@@ -42,4 +45,4 @@ export default compose(
       getOrganizations: organizationDuck.creators.get
     }
   )
-)(Organization) 
+)(Organization)

@@ -1,10 +1,10 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import transactionDetailDuck from '@reducers/transaction/detail'
 
-const { types, selectors } = transactionDetailDuck
+const { types } = transactionDetailDuck
 
 function* deleteItem({ ids: [ id ] }) {
   try {
@@ -48,7 +48,7 @@ function* post({ payload }) {
     const result = yield call(Post, 'transactions/', payload)
 
     yield put({
-      type: types.POST_FULFILLED,
+      type   : types.POST_FULFILLED,
       payload: result
     })
   } catch (e) {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Divider, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import _times from 'lodash/times'
 
@@ -15,26 +15,25 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 import companyDetailDuck from '@reducers/company/detail'
 import organizationDuck from '@reducers/organization'
 
-const divisions = _times(10, index => ({ key: index, value: index, text : `Division ${index + 1}` }))
-const regions = _times(10, index => ({ key: index, value: index, text : `Region ${index + 1}` }))
+const divisions = _times(10, index => ({ key: index, value: index, text: `Division ${index + 1}` }))
+const regions = _times(10, index => ({ key: index, value: index, text: `Region ${index + 1}` }))
 
 const CompanyForm = props => {
   const {
     organization,
     companyDetail,
-    error, handleSubmit, pristine, reset, submitting // redux-form
+    error, handleSubmit, reset, submitting // redux-form
   } = props
 
   useEffect(() => {
-    if(companyDetail.mode === 'CREATE' && organization.items.length === 0) {
+    if(companyDetail.mode === 'CREATE' && organization.items.length === 0)
       props.getOrganizations()
-    }
   }, [ companyDetail.mode ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
   const getOrganizationOptions = () => {
     return organization.items.map((item, index) => ({
-      key: index, value: item.id, text : item.legal_name
+      key: index, value: item.id, text: item.legal_name
     }))
   }
 
@@ -45,11 +44,11 @@ const CompanyForm = props => {
 
   const _handleSubmit = values => {
     const finalValues = Object.entries(values)
-        .filter(([key, value]) => Boolean(value))
-        .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
+      .filter(([ , value ]) => Boolean(value))
+      .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
 
     if(isUpdating) {
-      return props.put({ id: companyDetail.item.id, ...finalValues})
+      return props.put({ id: companyDetail.item.id, ...finalValues })
         .then(_handleClose)
         .catch(parseResponseError)
     } else {
@@ -69,220 +68,200 @@ const CompanyForm = props => {
   return (
     <Modal
       className='form-modal side'
-      open={isOpened}
       onClose={_handleClose}
-      size='large'
-    >
+      open={isOpened}
+      size='large'>
       <Modal.Content>
         <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'New'} Company</Header>
+        {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           {
             (!isUpdating && isFromCompanyModule) && (
               <Form.Group widths='equal'>
                 <Field
-                  name='organization'
+                  autoComplete='off'
                   component={FormField}
                   control={Form.Select}
-                  options={organizations}
                   label='Organization'
+                  name='organization'
+                  options={organizations}
                   placeholder='Select organization'
-                  autoComplete='off'
                   search
-                  selectOnBlur={false}
-                />
-                <Form.Field />
-                <Form.Field />
+                  selectOnBlur={false}/>
+                <Form.Field/>
+                <Form.Field/>
               </Form.Group>
             )
           }
           <Form.Group widths='equal'>
             <Field
-              name='legal_name'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Legal name *'
-              placeholder='Enter legal name'
-              autoComplete='off'
-            />
+              name='legal_name'
+              placeholder='Enter legal name'/>
             <Field
-              name='dba'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='DBA'
-              placeholder='Enter DBA'
-              autoComplete='off'
-            />
+              name='dba'
+              placeholder='Enter DBA'/>
             <Field
-              name='subdomain_prefix'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Subdomain prefix *'
-              placeholder='Enter subdomain'
-              autoComplete='off'
-            />
+              name='subdomain_prefix'
+              placeholder='Enter subdomain'/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='tax_id'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Tax ID'
-              placeholder='Enter tax ID'
-              autoComplete='off'
-            />
+              name='tax_id'
+              placeholder='Enter tax ID'/>
             <Field
-              name='phone'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Phone'
-              placeholder='Enter phone'
-              autoComplete='off'
-            />
+              name='phone'
+              placeholder='Enter phone'/>
             <Field
-              name='email'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Email'
+              name='email'
               placeholder='Enter email'
-              type='email'
-              autoComplete='off'
-            />
+              type='email'/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='website'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Website'
-              placeholder='www.example.com'
-              autoComplete='off'
-            />
-            <Form.Field />
-            <Form.Field />
+              name='website'
+              placeholder='www.example.com'/>
+            <Form.Field/>
+            <Form.Field/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='address1'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Address 1'
-              placeholder='Enter address'
-              autoComplete='off'
-            />
+              name='address1'
+              placeholder='Enter address'/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='address2'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Address 2'
-              placeholder='Enter address'
-              autoComplete='off'
-            />
+              name='address2'
+              placeholder='Enter address'/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='country'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Country'
-              placeholder='Enter country'
-              autoComplete='off'
-            />
+              name='country'
+              placeholder='Enter country'/>
             <Field
-              name='state'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='State'
-              placeholder='Enter state'
-              autoComplete='off'
-            />
+              name='state'
+              placeholder='Enter state'/>
             <Field
-              name='city'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='City'
-              placeholder='Enter city'
-              autoComplete='off'
-            />
+              name='city'
+              placeholder='Enter city'/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='zip'
+              autoComplete='off'
               component={FormField}
               control={Form.Input}
               label='Zip'
-              placeholder='Enter zip'
-              autoComplete='off'
-            />
+              name='zip'
+              placeholder='Enter zip'/>
             <Field
-              name='division_id'
+              autoComplete='off'
               component={FormField}
               control={Form.Select}
-              options={divisions}
               label='Division'
+              name='division_id'
+              options={divisions}
               placeholder='Select division'
-              autoComplete='off'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
             <Field
-              name='region_id'
+              autoComplete='off'
               component={FormField}
               control={Form.Select}
-              options={regions}
               label='Region'
+              name='region_id'
+              options={regions}
               placeholder='Select region'
-              autoComplete='off'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
           </Form.Group>
           <Form.Group>
             <Field
-              name='logo'
               component={FormField}
               control={Form.Input}
               label='Logo'
-              type='file'
-            />
-            <Form.Field />
-            <Form.Field />
+              name='logo'
+              type='file'/>
+            <Form.Field/>
+            <Form.Field/>
           </Form.Group>
           <Form.Group>
             <Field
-              name='multilocation'
               component={FormField}
               control={Form.Checkbox}
               label='Multilocation'
-              type='checkbox'
-            />
+              name='multilocation'
+              type='checkbox'/>
           </Form.Group>
 
           {
             error && (
-              <Form.Group widths="equal">
+              <Form.Group widths='equal'>
                 <Form.Field>
-                  <FormError message={error} />
+                  <FormError message={error}/>
                 </Form.Field>
               </Form.Group>
             )
           }
 
-          <Form.Group widths='equal' className='form-modal-actions'>
+          <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
                 content='Cancel'
                 disabled={submitting}
-                type="button"
                 onClick={_handleClose}
-              />
+                type='button'/>
               <Button
                 color='teal'
                 content={isUpdating ? 'Save changes' : 'Save'}
                 disabled={submitting}
-                loading={submitting}
-              />
+                loading={submitting}/>
             </Form.Field>
           </Form.Group>
         </Form>
@@ -294,7 +273,7 @@ const CompanyForm = props => {
 export default compose(
   withRouter,
   connect(
-    ({ organization, ...state}) => {
+    ({ organization, ...state }) => {
       const companyDetail = companyDetailDuck.selectors.detail(state)
       let initialValues = { ...companyDetail.item }
 
@@ -304,25 +283,25 @@ export default compose(
       return {
         organization,
         companyDetail,
-        initialValues,
+        initialValues
       }
     },
     {
       getOrganizations: organizationDuck.creators.get,
-      post: companyDetailDuck.creators.post,
-      put: companyDetailDuck.creators.put,
-      resetItem: companyDetailDuck.creators.resetItem,
+      post            : companyDetailDuck.creators.post,
+      put             : companyDetailDuck.creators.put,
+      resetItem       : companyDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
     form              : 'organization-company-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
-    validate: values  => {
+    validate          : values  => {
       const schema = {
-        organization: YupFields.num_required,
-        legal_name: YupFields.name,
-        subdomain_prefix: YupFields.subdomain,
+        organization    : YupFields.num_required,
+        legal_name      : YupFields.name,
+        subdomain_prefix: YupFields.subdomain
       }
 
       return syncValidate(Yup.object().shape(schema), values)

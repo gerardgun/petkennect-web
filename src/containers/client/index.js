@@ -13,7 +13,7 @@ import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
 
 const Client = ({ client, clientDetail, ...props }) => {
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     if(clientDetail.status === 'DELETED') props.getClients()
@@ -24,9 +24,8 @@ const Client = ({ client, clientDetail, ...props }) => {
   }, [])
 
   const _handleRowOptionClick = (option, item) => {
-    if(option === 'edit') {
+    if(option === 'edit')
       props.history.push(`client/${item.id}`)
-    }
   }
 
   return (
@@ -37,24 +36,30 @@ const Client = ({ client, clientDetail, ...props }) => {
             <Header as='h2'>Clients</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' disabled icon='cloud download' labelPosition='left' />
-            <Button content='Filter' disabled icon='filter' labelPosition='left' />
+            <Button
+              content='Download' disabled icon='cloud download'
+              labelPosition='left'/>
+            <Button
+              content='Filter' disabled icon='filter'
+              labelPosition='left'/>
             {
-              client.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={handleOpen} />)
+              client.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
             }
-            <Button as={Link} color='teal' content='New Client' to='/client/create' />
+            <Button
+              as={Link} color='teal' content='New Client'
+              to='/client/create'/>
           </Grid.Column>
         </Grid>
         <Table
           duck={clientDuck}
-          onRowOptionClick={_handleRowOptionClick} />
+          onRowOptionClick={_handleRowOptionClick}/>
       </Segment>
 
       <ModalDelete
         duck={clientDuck}
         duckDetail={clientDetailDuck}
-        onClose={handleClose}
-        open={open} />
+        onClose={_handleClose}
+        open={open}/>
 
     </Layout>
   )
@@ -64,10 +69,10 @@ export default compose(
   connect(
     ({ client, ...state }) => ({
       client,
-      clientDetail: clientDetailDuck.selectors.detail(state),
+      clientDetail: clientDetailDuck.selectors.detail(state)
     }),
     {
-      getClients: clientDuck.creators.get,
+      getClients: clientDuck.creators.get
     }
   )
-)(Client) 
+)(Client)

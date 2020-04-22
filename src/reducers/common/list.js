@@ -26,7 +26,7 @@ export default {
 
           // Filter params to apply
           const paramKeys = Object.keys(payload)
-            .filter(key => !(['page_size', 'page'].includes(key)))
+            .filter(key => !([ 'page_size', 'page' ].includes(key)))
 
           const params = paramKeys.reduce((a, b) => ({ ...a, [b]: payload[b] }), {})
 
@@ -37,7 +37,7 @@ export default {
 
           return
         }
-        case types.REMOVE_FILTERS:
+        case types.REMOVE_FILTERS: {
           let { ...filters } = state.filters
 
           action.keys.forEach(item => delete filters[item])
@@ -47,6 +47,7 @@ export default {
           draft.status = statuses.REMOVED_FILTERS
 
           return
+        }
         case types.SET_FILTERS:
           draft.filters = {
             ...state.filters,

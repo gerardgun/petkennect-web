@@ -12,7 +12,7 @@ import clientDocumentDuck from '@reducers/client/document'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
 const DocumentSection = ({ document, ...props }) => {
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
@@ -22,7 +22,7 @@ const DocumentSection = ({ document, ...props }) => {
     props.setItem(item, 'UPDATE')
   }
 
-  const _handleRowOptionClick = (option, item) => {
+  const _handleRowOptionClick = (option/* , item */) => {
     if(option === 'preview') alert('Preview Document File...')
     else if(option === 'email') alert('Share Document via email...')
   }
@@ -36,25 +36,25 @@ const DocumentSection = ({ document, ...props }) => {
               <Header as='h2'>Document List</Header>
             </Grid.Column>
             <Grid.Column textAlign='right'>
-              <Button content='Filter' icon='filter' labelPosition='left' />
+              <Button content='Filter' icon='filter' labelPosition='left'/>
               {
-                document.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={handleOpen} />)
+                document.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
               }
-              <Button color='teal' content='Add Document' onClick={_handleAddBtnClick} />
+              <Button color='teal' content='Add Document' onClick={_handleAddBtnClick}/>
             </Grid.Column>
           </Grid>
           <Table
             duck={clientDocumentDuck}
             onRowClick={_handleRowClick}
-            onRowOptionClick={_handleRowOptionClick} />
+            onRowOptionClick={_handleRowOptionClick}/>
         </Segment>
 
-        <Form />
+        <Form/>
         <ModalDelete
           duck={clientDocumentDuck}
           duckDetail={clientDocumentDetailDuck}
-          onClose={handleClose}
-          open={open} />
+          onClose={_handleClose}
+          open={open}/>
       </Grid.Column>
     </Grid>
   )
@@ -66,7 +66,7 @@ export default compose(
       document: clientDocumentDuck.selectors.list(state)
     }),
     {
-      setItem: clientDocumentDetailDuck.creators.setItem,
+      setItem: clientDocumentDetailDuck.creators.setItem
     }
   )
-)(DocumentSection) 
+)(DocumentSection)

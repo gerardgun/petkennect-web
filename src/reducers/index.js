@@ -23,27 +23,27 @@ import user from '@reducers/user'
 import userDetail from '@reducers/user/detail'
 
 const createRootReducer = history => combineReducers({
-  form                : formReducer,
-  router              : connectRouter(history),
-  [auth.store]        : auth.reducer,
-  [client.store]      : client.reducer,
-  [clientDetail.store]: clientDetail.reducer,
-  [clientDocument.store]: clientDocument.reducer,
-  [clientDocumentDetail.store]: clientDocumentDetail.reducer,
-  [clientInteraction.store]: clientInteraction.reducer,
+  form                           : formReducer,
+  router                         : connectRouter(history),
+  [auth.store]                   : auth.reducer,
+  [client.store]                 : client.reducer,
+  [clientDetail.store]           : clientDetail.reducer,
+  [clientDocument.store]         : clientDocument.reducer,
+  [clientDocumentDetail.store]   : clientDocumentDetail.reducer,
+  [clientInteraction.store]      : clientInteraction.reducer,
   [clientInteractionDetail.store]: clientInteractionDetail.reducer,
-  [clientPet.store]   : clientPet.reducer,
-  [company.store]: company.reducer,
-  [companyDetail.store]: companyDetail.reducer,
-  [organization.store]      : organization.reducer,
-  [organizationDetail.store]: organizationDetail.reducer,
-  [organizationCompany.store]      : organizationCompany.reducer,
-  [pet.store]      : pet.reducer,
-  [petDetail.store]: petDetail.reducer,
-  [transaction.store]      : transaction.reducer,
-  [transactionDetail.store]: transactionDetail.reducer,
-  [user.store]        : user.reducer,
-  [userDetail.store]  : userDetail.reducer
+  [clientPet.store]              : clientPet.reducer,
+  [company.store]                : company.reducer,
+  [companyDetail.store]          : companyDetail.reducer,
+  [organization.store]           : organization.reducer,
+  [organizationDetail.store]     : organizationDetail.reducer,
+  [organizationCompany.store]    : organizationCompany.reducer,
+  [pet.store]                    : pet.reducer,
+  [petDetail.store]              : petDetail.reducer,
+  [transaction.store]            : transaction.reducer,
+  [transactionDetail.store]      : transactionDetail.reducer,
+  [user.store]                   : user.reducer,
+  [userDetail.store]             : userDetail.reducer
 })
 
 export default createRootReducer

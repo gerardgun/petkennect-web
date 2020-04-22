@@ -10,47 +10,51 @@ import FormField from '@components/Common/FormField'
 import clientDetailDuck from '@reducers/client/detail'
 
 const AuthorizedPeopleList = ({ fields, meta: { error, submitFailed }, title = 'Some title' }) => {
+  const _handleAddBtnClick = () => fields.push({ ...authorizedPersonInitialState })
+  const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
+
   const authorizedPersonInitialState = {
-    name: '',
+    name    : '',
     relation: ''
   }
 
   return (
     <>
-      <Divider />
+      <Divider/>
       <Header as='h4'>{title}</Header>
       <Segment className='form-primary-segment' padded='very'>
         {
           fields.map((item, index) => (
             <Form.Group key={index} widths='equal'>
               <Field
-                name={`${item}.name`}
+                autoComplete='off'
                 component={FormField}
                 control={Form.Input}
                 label='Name'
-                placeholder='Enter names'
-                autoComplete='off'
-              />
+                name={`${item}.name`}
+                placeholder='Enter names'/>
               <Field
-                name={`${item}.relation`}
+                autoComplete='off'
                 component={FormField}
                 control={Form.Input}
                 label='Relation'
-                placeholder='Enter relation'
-                autoComplete='off'
-              />
-              <Form.Button icon='trash alternate outline' label='&nbsp;' onClick={() => fields.remove(index)} type='button' />
+                name={`${item}.relation`}
+                placeholder='Enter relation'/>
+              <Form.Button
+                data-index={index} icon='trash alternate outline' label='&nbsp;'
+                onClick={_handleRemoveBtnClick}
+                type='button'/>
             </Form.Group>
           ))
         }
         <div style={{ textAlign: 'center' }}>
-          <Button content='Add person' onClick={() => fields.push({ ...authorizedPersonInitialState })} type='button' />
+          <Button content='Add person' onClick={_handleAddBtnClick} type='button'/>
         </div>
         {
           submitFailed && error && (
-            <Form.Group widths="equal">
+            <Form.Group widths='equal'>
               <Form.Field>
-                <FormError message={error} />
+                <FormError message={error}/>
               </Form.Field>
             </Form.Group>
           )
@@ -72,71 +76,66 @@ const FormEmergencyData = props => {
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>
+      {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='emergency_contact_name'
+            autoComplete='off'
+            autoFocus
             component={FormField}
             control={Form.Input}
             label='Name'
-            placeholder='Enter names'
-            autoFocus
-            autoComplete='off'
-          />
+            name='emergency_contact_name'
+            placeholder='Enter names'/>
           <Field
-            name='emergency_contact_last_name'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Lastname'
-            placeholder='Enter lastname'
-            autoComplete='off'
-          />
+            name='emergency_contact_last_name'
+            placeholder='Enter lastname'/>
           <Field
-            name='emergency_contact_relationship'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Relationship'
-            placeholder='Enter relationship'
-            autoComplete='off'
-          />
+            name='emergency_contact_relationship'
+            placeholder='Enter relationship'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='emergency_vet_name'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Vet name'
-            placeholder='Enter vet name'
-            autoComplete='off'
-          />
+            name='emergency_vet_name'
+            placeholder='Enter vet name'/>
           <Field
-            name='emergency_vet_location'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Vet location'
-            placeholder='Enter vet location'
-            autoComplete='off'
-          />
+            name='emergency_vet_location'
+            placeholder='Enter vet location'/>
           <Field
-            name='emergency_vet_phones[0]'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Phone'
+            name='emergency_vet_phones[0]'
             placeholder='Enter phone number'
-            type='tel'
-            autoComplete='off'
-          />
+            type='tel'/>
         </Form.Group>
         <FieldArray
           component={AuthorizedPeopleList}
           name='authorized_people_pick_up'
-          title='People Authorized to Pick Up' />
+          title='People Authorized to Pick Up'/>
 
         {
           error && (
-            <Form.Group widths="equal">
+            <Form.Group widths='equal'>
               <Form.Field>
-                <FormError message={error} />
+                <FormError message={error}/>
               </Form.Field>
             </Form.Group>
           )
@@ -154,8 +153,8 @@ export default compose(
     {}
   ),
   reduxForm({
-    form              : 'client-create-emergency-data',
-    destroyOnUnmount  : false,
+    form            : 'client-create-emergency-data',
+    destroyOnUnmount: false
   })
 )(FormEmergencyData)
 

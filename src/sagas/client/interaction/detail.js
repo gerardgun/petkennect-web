@@ -1,14 +1,13 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
-import _times from 'lodash/times'
+import { call, put, takeEvery } from 'redux-saga/effects'
 import faker from 'faker'
 
-import { Delete, Get, Post, Put } from '@lib/utils/http-client'
+// import { Delete, Get, Post, Put } from '@lib/utils/http-client'
 
 import clientInteractionDetailDuck from '@reducers/client/interaction/detail'
 
-const { types, selectors } = clientInteractionDetailDuck
+const { types } = clientInteractionDetailDuck
 
-function* deleteItem({ ids }) {
+function* deleteItem(/* { ids } */) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
@@ -24,7 +23,7 @@ function* deleteItem({ ids }) {
   }
 }
 
-function* get({ id }) {
+function* get(/* { id } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
@@ -35,14 +34,14 @@ function* get({ id }) {
       type   : types.GET_FULFILLED,
       payload: {
         item: {
-          id: 1,
-          date: faker.date.recent().toISOString().split('T')[0],
-          staff_id: 1,
-          staff: faker.name.firstName() + ' ' + faker.name.lastName(),
+          id         : 1,
+          date       : faker.date.recent().toISOString().split('T')[0],
+          staff_id   : 1,
+          staff      : faker.name.firstName() + ' ' + faker.name.lastName(),
           location_id: 1,
-          location: '02-RH',
-          comment: faker.lorem.paragraph(),
-          follow_up: faker.random.boolean()
+          location   : '02-RH',
+          comment    : faker.lorem.paragraph(),
+          follow_up  : faker.random.boolean()
         }
       }
     })
@@ -54,7 +53,7 @@ function* get({ id }) {
   }
 }
 
-function* post({ payload }) {
+function* post(/* { payload } */) {
   try {
     yield put({ type: types.POST_PENDING })
 
@@ -70,7 +69,7 @@ function* post({ payload }) {
   }
 }
 
-function* _put({ payload }) {
+function* _put(/* { payload } */) {
   try {
     yield put({ type: types.PUT_PENDING })
 

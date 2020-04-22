@@ -22,7 +22,7 @@ const ClientCreate = props => {
     resetItem,
     getDocuments,
     getInteractions,
-    getPets,
+    getPets
   } = props
 
   useEffect(() => {
@@ -49,37 +49,37 @@ const ClientCreate = props => {
         panes={[
           {
             menuItem: { key: 'user', icon: 'user', content: 'Client Info' },
-            render: () => <ClientSection />,
+            render  : () => <ClientSection/>
           },
           {
             menuItem: (
               <Menu.Item key='pets'>
-                <Icon name='paw' /> Pets <Label>2</Label>
+                <Icon name='paw'/> Pets <Label>2</Label>
               </Menu.Item>
             ),
-            render: () => <PetSection />,
+            render: () => <PetSection/>
           },
           {
             menuItem: (
               <Menu.Item key='invoices'>
-                <Icon name='file outline' /> Invoices/Billing <Label>4</Label>
+                <Icon name='file outline'/> Invoices/Billing <Label>4</Label>
               </Menu.Item>
             ),
-            render: () => <Tab.Pane>Tab 3 Content</Tab.Pane>,
+            render: () => <Tab.Pane>Tab 3 Content</Tab.Pane>
           },
           {
             menuItem: (
               <Menu.Item key='documents'>
-                <Icon name='file alternate outline' /> Documents <Label>4</Label>
+                <Icon name='file alternate outline'/> Documents <Label>4</Label>
               </Menu.Item>
             ),
-            render: () => <DocumentSection />,
+            render: () => <DocumentSection/>
           },
           {
             menuItem: { key: 'portal', icon: 'tty', content: 'Client Portal' },
-            render: () => <Tab.Pane>Tab 5 Content</Tab.Pane>,
-          },
-        ]} />
+            render  : () => <Tab.Pane>Tab 5 Content</Tab.Pane>
+          }
+        ]}/>
     </Layout>
   )
 }
@@ -87,7 +87,7 @@ const ClientCreate = props => {
 export default compose(
   connect(
     state => ({
-      clientDetail: clientDetailDuck.selectors.detail(state),
+      clientDetail: clientDetailDuck.selectors.detail(state)
     }),
     {
       destroy,
@@ -95,7 +95,7 @@ export default compose(
       resetItem      : clientDetailDuck.creators.resetItem,
       getDocuments   : clientDocumentDuck.creators.get,
       getInteractions: clientInteractionDuck.creators.get,
-      getPets        : clientPetDuck.creators.get,
+      getPets        : clientPetDuck.creators.get
     }
-  ),
+  )
 )(ClientCreate)

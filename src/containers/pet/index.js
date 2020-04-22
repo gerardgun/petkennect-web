@@ -9,15 +9,15 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 
-import petDuck from '@reducers/pet';
+import petDuck from '@reducers/pet'
 import petDetailDuck from '@reducers/pet/detail'
 
 const PetList = ({ pet, ...props }) => {
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     props.getPets()
-  }, []);
+  }, [])
 
   return (
     <Layout>
@@ -27,35 +27,34 @@ const PetList = ({ pet, ...props }) => {
             <Header as='h2'>Pets</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' />
-            <Button content='Filter' icon='filter' labelPosition='left' />
+            <Button content='Download'/>
+            <Button content='Filter' icon='filter' labelPosition='left'/>
             {
-              pet.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={handleOpen} />)
+              pet.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
             }
-            <Button as={Link} color='teal' content='New Pet' to='/pet/create' />
+            <Button
+              as={Link} color='teal' content='New Pet'
+              to='/pet/create'/>
           </Grid.Column>
         </Grid>
-        <Table duck={petDuck} />
+        <Table duck={petDuck}/>
       </Segment>
 
       <ModalDelete
         duck={petDuck}
         duckDetail={petDetailDuck}
-        onClose={handleClose}
-        open={open} />
+        onClose={_handleClose}
+        open={open}/>
 
     </Layout>
   )
 }
 
-const mapStateToProps = ({ pet }) => ({
-  pet
-});
-
-const mapDispatchToProps = {
-  getPets: petDuck.creators.get
-};
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    ({ pet }) => ({
+      pet
+    }), {
+      getPets: petDuck.creators.get
+    })
 )(PetList)

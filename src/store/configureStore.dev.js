@@ -17,7 +17,7 @@ const middlewares = [
   sagaMiddleware,
   createLogger({
     collapsed: true,
-    duration: true
+    duration : true
   }),
   createReduxWaitForMiddleware()
 ]

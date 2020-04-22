@@ -11,21 +11,19 @@ const PrivateRoute = ({ auth, check, get, component: Component, ...rest }) => {
   }, [])
 
   useEffect(() => {
-    if(auth.auth_status === 'EXISTS') {
+    if(auth.auth_status === 'EXISTS')
       get() // Recover auth user detail
-    } else if(auth.auth_status === 'NOT_EXISTS') {
+    else if(auth.auth_status === 'NOT_EXISTS')
       rest.history.replace('/auth/sign-in')
-    }
   }, [ auth.auth_status ])
 
   useEffect(() => {
-    if(auth.status === 'SIGNED_OUT') {
+    if(auth.status === 'SIGNED_OUT')
       rest.history.replace('/auth/sign-in')
-    }
   }, [ auth.status ])
 
   return (
-    <Route {...rest} render={props => <Component {...props} />} />
+    <Route {...rest} render={props => <Component {...props}/>}/>
   )
 }
 

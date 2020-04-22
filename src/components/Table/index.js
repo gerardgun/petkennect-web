@@ -12,7 +12,7 @@ const TableList = ({ duck, list, ...props }) => {
     let content = _get(item, column.name, null)
 
     if(column.type === 'boolean') content = content ? 'Yes' : 'No'
-    else if(column.type === 'image') content = <Image rounded src={content || 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'} size='mini' />
+    else if(column.type === 'image') content = <Image rounded size='mini' src={content || 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'}/>
     else if(column.type === 'date') content = (new Date(content)).toLocaleString().split(' ').shift()
     else if(column.type === 'datetime') content = (new Date(content)).toLocaleString()
     else if(column.type === 'string') content = content || <span style={{ color: 'grey' }}>-</span>
@@ -34,11 +34,10 @@ const TableList = ({ duck, list, ...props }) => {
 
   const _handleRowClick = (e, item) => {
     const isCheckbox = e.target.tagName === 'LABEL' && /ui.*checkbox/.test(e.target.parentNode.classList.value)
-    
-    if(!isCheckbox) {
+
+    if(!isCheckbox)
       if(props.onRowClick) props.onRowClick(e, item)
       else if(list.config.base_uri) props.history.push(`${list.config.base_uri}/${item.id}`)
-    }
   }
 
   const _handleSelectorCheckboxChange = (e, { checked }, { id }) => {
@@ -58,16 +57,15 @@ const TableList = ({ duck, list, ...props }) => {
 
   return (
     <Dimmer.Dimmable
+      as={Segment}
       className='table-primary-segment-dimmable'
       dimmed={loading}
-      as={Segment}
-      raised
-    >
+      raised>
       <Dimmer active={loading} inverted>
         <Loader>Loading...</Loader>
       </Dimmer>
 
-      <Table basic='very' selectable className='table-primary'>
+      <Table basic='very' className='table-primary' selectable>
         <Table.Header>
           <Table.Row>
             {/* Row selection */}
@@ -76,11 +74,11 @@ const TableList = ({ duck, list, ...props }) => {
                 <Table.HeaderCell>
                   <Checkbox
                     checked={areAllItemsChecked}
-                    onChange={_handleSelectorCheckboxHeaderChange} />
+                    onChange={_handleSelectorCheckboxHeaderChange}/>
                 </Table.HeaderCell>
               )
             }
-            
+
             {/* Row data header */}
             {
               list.config.columns.map(({ display_name }, index) => (<Table.HeaderCell key={index}>{display_name}</Table.HeaderCell>))
@@ -97,7 +95,7 @@ const TableList = ({ duck, list, ...props }) => {
             list.items.length > 0 ? (
               list.items.map((item, index) => {
                 const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
-                
+
                 return (
                   <Table.Row active={checked} key={index} onClick={e => _handleRowClick(e, item)}>
                     {/* Row selection */}
@@ -106,36 +104,35 @@ const TableList = ({ duck, list, ...props }) => {
                         <Table.Cell>
                           <Checkbox
                             checked={checked}
-                            onChange={(e, data) => _handleSelectorCheckboxChange(e, data, item)} />
+                            onChange={(e, data) => _handleSelectorCheckboxChange(e, data, item)}/>
                         </Table.Cell>
                       )
                     }
-  
+
                     {/* Row data */}
                     {
                       list.config.columns.map(({ width = null, align = null, ...column }, index) => (
                         <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
                       ))
                     }
-  
+
                     {/* Row options */}
                     {
                       list.config.row.options && (
                         <Table.Cell textAlign='center'>
                           <Dropdown
-                            text='Options'
                             onChange={(e, data) => _handleDropdownChange(e, data, item)}
                             options={
                               list.config.row.options.map((item, index) => ({
-                                key: index,
-                                icon: item.icon,
+                                key  : index,
+                                icon : item.icon,
                                 value: item.name,
-                                text: item.display_name,
+                                text : item.display_name
                               }))
                             }
                             selectOnBlur={false}
-                            value={null}
-                          />
+                            text='Options'
+                            value={null}/>
                         </Table.Cell>
                       )
                     }
@@ -155,12 +152,11 @@ const TableList = ({ duck, list, ...props }) => {
         list.pagination && (
           <Pagination
             activePage={list.pagination.params.page}
-            onPageChange={_handlePaginationChange}
-            totalPages={list.pagination.meta.last_page}
             from={list.pagination.meta.from}
+            onPageChange={_handlePaginationChange}
             to={list.pagination.meta.to}
             total={list.pagination.meta.total}
-          />
+            totalPages={list.pagination.meta.last_page}/>
         )
       }
     </Dimmer.Dimmable>
@@ -168,9 +164,9 @@ const TableList = ({ duck, list, ...props }) => {
 }
 
 TableList.defaultProps = {
-  duck: null,
+  duck            : null,
   onRowOptionClick: () => {},
-  onRowClick: null
+  onRowClick      : null
 }
 
 export default compose(

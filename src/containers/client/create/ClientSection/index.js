@@ -26,28 +26,27 @@ const ClientSection = props => {
     match,
     submit,
     post,
-    put,
+    put
   } = props
 
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
-    if(clientDetail.status === 'DELETED') {
+    if(clientDetail.status === 'DELETED')
       history.replace('/client')
-    }
   }, [ clientDetail.status ])
 
   const _handleSaveBtnClick = () => {
     const formId = formIds[activeTabIndex]
-    
+
     if(formId) submit(formId)
     else _handleSubmit()
   }
 
   const _handleSubmit = () => {
     const formIndexWithErrors = isUpdating ? (
-      forms.findIndex((form, index) => {
+      forms.findIndex(form => {
         return Object.keys(form.errors).length > 0
       })
     ) : (
@@ -77,7 +76,7 @@ const ClientSection = props => {
         .reduce((a, b) => ({ ...a, ...b }))
 
       let finalValues = Object.entries(values)
-        .filter(([key, value]) => Boolean(value))
+        .filter(([ , value ]) => Boolean(value))
         .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
 
       // For checkbox values
@@ -86,16 +85,17 @@ const ClientSection = props => {
         if(!('legal_kc_waiver' in finalValues)) finalValues.legal_kc_waiver = false
       }
 
-      if(isUpdating) {
-        return put({ id: clientDetail.item.id, ...finalValues})
+      if(isUpdating)
+        return put({ id: clientDetail.item.id, ...finalValues })
           .catch(parseResponseError)
-      } else {
+      else
         return post(finalValues)
           .then(result => history.replace(`/client/${result.id}`))
           .catch(parseResponseError)
-      }
     }
   }
+
+  const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
 
   const isUpdating = match.params.client
   const saving = [ 'POSTING', 'PUTTING' ].includes(clientDetail.status)
@@ -114,33 +114,35 @@ const ClientSection = props => {
             <Tab
               activeIndex={activeTabIndex}
               menu={{ secondary: true, pointing: true }}
-              onTabChange={(e, { activeIndex }) => setTabActiveIndex(activeIndex)}
+              onTabChange={_handleTabChange}
               panes={[
                 {
                   menuItem: 'Information',
-                  render: () => <FormInformation onSubmit={_handleSubmit} />,
+                  render  : () => <FormInformation onSubmit={_handleSubmit}/>
                 },
                 {
                   menuItem: 'Contact Data',
-                  render: () => <FormContactData onSubmit={_handleSubmit} />,
+                  render  : () => <FormContactData onSubmit={_handleSubmit}/>
                 },
                 {
                   menuItem: 'Emergency Data',
-                  render: () => <FormEmergencyData onSubmit={_handleSubmit} />,
+                  render  : () => <FormEmergencyData onSubmit={_handleSubmit}/>
                 },
                 {
                   menuItem: 'Legal Releases',
-                  render: () => <FormLegalReleases onSubmit={_handleSubmit} />,
+                  render  : () => <FormLegalReleases onSubmit={_handleSubmit}/>
                 },
                 isUpdating && ({
                   menuItem: 'Interaction History',
-                  render: () => <InteractionHistory />,
+                  render  : () => <InteractionHistory/>
                 })
-              ]} />
+              ]}/>
           </Segment>
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
-          <Button as={Link} content='Cancel' fluid size='large' to='/client' />
+          <Button
+            as={Link} content='Cancel' fluid
+            size='large' to='/client'/>
           <Button
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Client`}
@@ -148,22 +150,24 @@ const ClientSection = props => {
             fluid
             loading={saving}
             onClick={_handleSaveBtnClick}
-            size='large' />
+            size='large'/>
           {
-            isUpdating && (<Button color='google plus' content='Delete Client' fluid onClick={handleOpen} size='large' />)
+            isUpdating && (<Button
+              color='google plus' content='Delete Client' fluid
+              onClick={_handleOpen} size='large'/>)
           }
           <Divider horizontal>other</Divider>
-          <Button fluid icon='mail outline' content='Send Email' />
-          <Button fluid icon='print' content='Print' />
-          <Button fluid icon='file alternate outline' content='View Records' />
-          <Button fluid icon='share square' content='Email Records' />
+          <Button content='Send Email' fluid icon='mail outline'/>
+          <Button content='Print' fluid icon='print'/>
+          <Button content='View Records' fluid icon='file alternate outline'/>
+          <Button content='Email Records' fluid icon='share square'/>
         </Grid.Column>
       </Grid>
 
       <ModalDelete
         duckDetail={clientDetailDuck}
-        onClose={handleClose}
-        open={open} />
+        onClose={_handleClose}
+        open={open}/>
     </>
   )
 }
@@ -177,12 +181,12 @@ export default compose(
         fields: Object.keys((state.form[formId] || {}).registeredFields || {}),
         values: getFormValues(formId)(state),
         errors: getFormSyncErrors(formId)(state)
-      })),
+      }))
     }),
     {
       submit,
       post: clientDetailDuck.creators.post,
-      put : clientDetailDuck.creators.put,
+      put : clientDetailDuck.creators.put
     }
-  ),
+  )
 )(ClientSection)

@@ -1,14 +1,12 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
-import _times from 'lodash/times'
-import faker from 'faker'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
-import { Delete, Get, Post, Put } from '@lib/utils/http-client'
+// import { Delete, Get, Post, Put } from '@lib/utils/http-client'
 
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
-const { types, selectors } = clientDocumentDetailDuck
+const { types } = clientDocumentDetailDuck
 
-function* deleteItem({ ids }) {
+function* deleteItem(/* { ids } */) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
@@ -24,7 +22,7 @@ function* deleteItem({ ids }) {
   }
 }
 
-function* get({ id }) {
+function* get(/* { id } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
@@ -35,7 +33,7 @@ function* get({ id }) {
       type   : types.GET_FULFILLED,
       payload: {
         item: {
-          id: 1,
+          id: 1
         }
       }
     })
@@ -47,7 +45,7 @@ function* get({ id }) {
   }
 }
 
-function* post({ payload }) {
+function* post(/* { payload } */) {
   try {
     yield put({ type: types.POST_PENDING })
 
@@ -63,7 +61,7 @@ function* post({ payload }) {
   }
 }
 
-function* _put({ payload }) {
+function* _put(/* { payload } */) {
   try {
     yield put({ type: types.PUT_PENDING })
 

@@ -1,230 +1,208 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Form, Header, Tab } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
-import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
 
-
 const FormInformation = props => {
-  const { reset, handleSubmit } = props;
+  const { reset, handleSubmit } = props
 
   return (
     <Tab.Pane className='form-primary-segment-tab'>
+      {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Header as='h3'>Other Information</Header>
 
         <Form.Group widths='equal'>
           <Field
-            name='name'
+            autoComplete='off'
+            autoFocus
             component={FormField}
             control={Form.Input}
             label='Coloring'
-            placeholder='Coloring'
-            autoFocus
-            autoComplete='off'
-          />
+            name='name'
+            placeholder='Coloring'/>
           <Field
-            name='bread'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Received Dog From'
-            placeholder='Received Dog From'
-            autoComplete='off'
-          />
-          <Form.Field />
+            name='bread'
+            placeholder='Received Dog From'/>
+          <Form.Field/>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Field
-            name='fixed'
             component={FormField}
             control={Form.Checkbox}
             label='Crate Trained'
-          />
+            name='fixed'/>
           <Field
-            name='retire'
             component={FormField}
             control={Form.Checkbox}
             label='Housebroken'
-          />
+            name='retire'/>
           <Field
-            name='retire'
             component={FormField}
             control={Form.Checkbox}
             label='Formal Training'
-          />
-          <Form.Field />
-          <Form.Field />
+            name='retire'/>
+          <Form.Field/>
+          <Form.Field/>
         </Form.Group>
 
         <Header as='h3'>Health</Header>
 
         <Form.Group widths='equal'>
           <Field
-            name='name'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Medical Restrictions'
-            placeholder='Medical Restrictions'
-            autoComplete='off'
-          />
+            name='name'
+            placeholder='Medical Restrictions'/>
           <Field
-            name='bread'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Allergies/Concerns'
-            placeholder='Allergies/Concerns'
-            autoComplete='off'
-          />
-          <Form.Field />
+            name='bread'
+            placeholder='Allergies/Concerns'/>
+          <Form.Field/>
         </Form.Group>
         <Form.Group>
           <Field
-            name='retire'
             component={FormField}
             control={Form.Checkbox}
             label='Flea/Tick Preventive'
-          />
+            name='retire'/>
         </Form.Group>
 
         <Header as='h3'>Hesitates at Eat</Header>
 
         <Form.Group>
           <Field
-            name='retire'
             component={FormField}
             control={Form.Checkbox}
             label='Peanut Butter'
-          />
+            name='retire'/>
           <Field
-            name='retire'
             component={FormField}
             control={Form.Checkbox}
             label='Wet food'
-          />
+            name='retire'/>
           <Field
-            name='retire'
             component={FormField}
             control={Form.Checkbox}
             label='Water'
-          />
+            name='retire'/>
         </Form.Group>
 
         <Header as='h3'>Temperament</Header>
 
         <Form.Group widths='equal'>
           <Field
-            name='Days'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Overall Temperament'
-            placeholder='Overal Temperament'
-            autoComplete='off'
-          />
-          <Field
             name='Days'
+            placeholder='Overal Temperament'/>
+          <Field
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Bittem Human'
-            placeholder='Days'
-            autoComplete='off'
-          />
-          <Form.Field />
+            name='Days'
+            placeholder='Days'/>
+          <Form.Field/>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Field
-            name='Days'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Dog Fights'
-            placeholder='Dog Fights'
-            autoComplete='off'
-          />
-          <Field
             name='Days'
+            placeholder='Dog Fights'/>
+          <Field
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Any Fears'
-            placeholder='Any Fears'
-            autoComplete='off'
-          />
-          <Form.Field />
+            name='Days'
+            placeholder='Any Fears'/>
+          <Form.Field/>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Field
-            name='Days'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Prefer Men/Women'
-            placeholder='Prefer Men/Women'
-            autoComplete='off'
-          />
-          <Form.Field />
-          <Form.Field />
+            name='Days'
+            placeholder='Prefer Men/Women'/>
+          <Form.Field/>
+          <Form.Field/>
         </Form.Group>
 
         <Header as='h3'>Day Care Info</Header>
 
         <Form.Group widths='equal'>
           <Field
-            name='Days'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Reason for Removal'
-            placeholder='Reason for Removal'
-            autoComplete='off'
-          />
-          <Form.Field />
-          <Form.Field />
+            name='Days'
+            placeholder='Reason for Removal'/>
+          <Form.Field/>
+          <Form.Field/>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Field
-            label="Any Other Notes"
-            name="behavioral"
             component={FormField}
             control={Form.TextArea}
-            placeholder="Enter Description"
-          />
+            label='Any Other Notes'
+            name='behavioral'
+            placeholder='Enter Description'/>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Field
-            name='fixed'
             component={FormField}
             control={Form.Checkbox}
             label='Attended Day Care'
-          />
+            name='fixed'/>
           <Field
-            name='retire'
             component={FormField}
             control={Form.Checkbox}
             label='Removed from Day Care'
-          />
-          <Form.Field />
-          <Form.Field />
+            name='retire'/>
+          <Form.Field/>
+          <Form.Field/>
         </Form.Group>
 
       </Form>
     </Tab.Pane>
   )
-};
+}
 
 export default compose(
   connect(
-    state => ({
-    }),
+    () => ({}),
     {}
   ),
   reduxForm({
-    form: 'pet-create-additional-info',
+    form            : 'pet-create-additional-info',
     destroyOnUnmount: false,
     validate        : values  => {
       const schema = {}

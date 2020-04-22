@@ -11,9 +11,9 @@ export default base({
     config,
     pagination: {
       params: {
-        page_size: 4,
+        page_size: 4
       }
-    } 
+    }
   }
 })
   .extend(list)

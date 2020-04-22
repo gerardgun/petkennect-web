@@ -11,20 +11,18 @@ const PublicRoute = ({ auth, check, get, component: Component, ...rest }) => {
   }, [])
 
   useEffect(() => {
-    if(auth.auth_status === 'EXISTS') {
+    if(auth.auth_status === 'EXISTS')
       get() // Recover auth user detail
-    }
   }, [ auth.auth_status ])
 
   useEffect(() => {
-    if(auth.status === 'GOT' || auth.status === 'SIGNED_IN') {
+    if(auth.status === 'GOT' || auth.status === 'SIGNED_IN')
       if(auth.item.is_superadmin) rest.history.replace('/organization')
       else rest.history.replace('/dashboard')
-    }
   }, [ auth.status ])
 
   return (
-    <Route {...rest} render={props => <Component {...props} />} />
+    <Route {...rest} render={props => <Component {...props}/>}/>
   )
 }
 

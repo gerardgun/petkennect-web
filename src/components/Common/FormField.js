@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Form } from 'semantic-ui-react'
 
 import FormFieldError from '@components/Common/FormFieldError'
@@ -19,9 +18,8 @@ const FormField = props => {
   const getComputedInput = () => {
     let { ...computed } = input
 
-    if(props.type === 'file') {
+    if(props.type === 'file')
       delete computed.value
-    }
 
     return computed
   }
@@ -46,12 +44,11 @@ const FormField = props => {
   return (
     <Form.Field>
       <WrappedComponent
-        onChange={_handleChange}
         onBlur={_handleBlur}
+        onChange={_handleChange}
         {...computedInput}
-        {...rest}
-      />
-      <FormFieldError input={computedInput} meta={meta} />
+        {...rest}/>
+      <FormFieldError input={computedInput} meta={meta}/>
     </Form.Field>
   )
 }

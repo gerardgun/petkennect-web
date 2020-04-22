@@ -1,18 +1,16 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
-import faker from 'faker'
-import _times from 'lodash/times'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
 import organizationDuck from '@reducers/organization'
 
-const { types, selectors } = organizationDuck
+const { types } = organizationDuck
 
-function* get({ payload }) {
+function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const filters = yield select(selectors.filters)
+    // const filters = yield select(selectors.filters)
     const organizations = yield call(Get, '/organizations')
 
     yield put({

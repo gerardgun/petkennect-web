@@ -24,7 +24,7 @@ export default {
       ...rest
     }
   },
-  reducer: (state, action, { types, statuses }) =>
+  reducer: (state, action, { types }) =>
     produce(state, draft => {
       switch (action.type) {
         case types.GET: {
@@ -32,7 +32,7 @@ export default {
 
           // Pagination params to apply
           const paramKeys = Object.keys(payload)
-            .filter(key => ['page_size', 'page'].includes(key))
+            .filter(key => [ 'page_size', 'page' ].includes(key))
 
           const params = paramKeys.reduce((a, b) => ({ ...a, [b]: payload[b] }), {})
 

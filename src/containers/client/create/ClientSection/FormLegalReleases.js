@@ -21,96 +21,89 @@ const FormInformation = props => {
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>
+      {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='legal_sign_on'
+            autoComplete='off'
+            autoFocus
             component={FormField}
             control={Form.Input}
             label='Sign on'
-            type='date'
-            autoFocus
-            autoComplete='off'
-          />
-          <Form.Field />
-          <Form.Field />
+            name='legal_sign_on'
+            type='date'/>
+          <Form.Field/>
+          <Form.Field/>
         </Form.Group>
         <Form.Group>
           <Field
-            name='legal_liability'
             component={FormField}
             control={Form.Checkbox}
             label='Liability'
+            name='legal_liability'
             toggle
-            type='checkbox'
-          />
+            type='checkbox'/>
           <Field
-            name='legal_kc_waiver'
             component={FormField}
             control={Form.Checkbox}
             label='KC Waiver'
+            name='legal_kc_waiver'
             toggle
-            type='checkbox'
-          />
+            type='checkbox'/>
         </Form.Group>
-        <Divider />
+        <Divider/>
         <Header as='h4'>Credit Card</Header>
         <Form.Group widths='equal'>
           <Field
-            name='cc_type'
             component={FormField}
             control={Form.Select}
-            options={[
-              { key: 1, value: 'visa', text : 'Visa' },
-              { key: 2, value: 'mastercard', text : 'Mastercard' },
-              { key: 5, value: 'express', text : 'Express' },
-            ]}
             label='CC Type'
+            name='cc_type'
+            options={[
+              { key: 1, value: 'visa', text: 'Visa' },
+              { key: 2, value: 'mastercard', text: 'Mastercard' },
+              { key: 5, value: 'express', text: 'Express' }
+            ]}
             placeholder='Select a CC Type'
-            selectOnBlur={false}
-          />
+            selectOnBlur={false}/>
           <Field
-            name='cc_exp_month'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Expiration date'
-            placeholder='MM'
-            autoComplete='off'
-          />
+            name='cc_exp_month'
+            placeholder='MM'/>
           <Field
-            name='cc_exp_year'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='&nbsp;'
-            placeholder='YY'
-            autoComplete='off'
-          />
+            name='cc_exp_year'
+            placeholder='YY'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='cc_number'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Card number'
-            placeholder='XXXX-XXXX-XXXX-XXXX'
-            autoComplete='off'
-          />
+            name='cc_number'
+            placeholder='XXXX-XXXX-XXXX-XXXX'/>
           <Field
-            name='cc_cvc'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='CVC'
-            placeholder='XXX'
-            autoComplete='off'
-          />
-          <Form.Field />
+            name='cc_cvc'
+            placeholder='XXX'/>
+          <Form.Field/>
         </Form.Group>
 
         {
           error && (
-            <Form.Group widths="equal">
+            <Form.Group widths='equal'>
               <Form.Field>
-                <FormError message={error} />
+                <FormError message={error}/>
               </Form.Field>
             </Form.Group>
           )
@@ -128,8 +121,8 @@ export default compose(
     {}
   ),
   reduxForm({
-    form              : 'client-create-legal-releases',
-    destroyOnUnmount  : false,
+    form            : 'client-create-legal-releases',
+    destroyOnUnmount: false
   })
 )(FormInformation)
 

@@ -16,7 +16,7 @@ import petDetailDuck from '@reducers/pet/detail'
 const PetForm = props => {
   const {
     petDetail,
-    error, handleSubmit, pristine, reset, submitting // redux-form
+    error, handleSubmit, reset, submitting // redux-form
   } = props
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
@@ -24,15 +24,14 @@ const PetForm = props => {
   const _handleClose = () => props.resetItem()
 
   const _handleSubmit = values => {
-    if(isUpdating) {
-      return props.put({ id: petDetail.item.id, ...values})
+    if(isUpdating)
+      return props.put({ id: petDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
-    } else {
+    else
       return props.post(values)
         .then(_handleClose)
         .catch(parseResponseError)
-    }
   }
 
   const isOpened = useMemo(() => getIsOpened(petDetail.mode), [ petDetail.mode ])
@@ -41,191 +40,174 @@ const PetForm = props => {
   return (
     <Modal
       className='form-modal side'
-      open={isOpened}
       onClose={_handleClose}
-      size='large'
-    >
+      open={isOpened}
+      size='large'>
       <Modal.Content>
+        {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Pet</Header>
-          <Field name='id' component='input' type='hidden' />
+          <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
-              name='name'
+              autoComplete='off'
+              autoFocus
               component={FormField}
               control={Form.Input}
               label='Name *'
-              placeholder='Enter name'
-              autoFocus
-              autoComplete='off'
-            />
+              name='name'
+              placeholder='Enter name'/>
             <Field
-              name='breed_id'
               component={FormField}
               control={Form.Select}
-              options={[
-                { key: 1, value: 1, text : 'Shitzu' },
-                { key: 2, value: 2, text : 'Yorkshire Terrier' },
-                { key: 3, value: 3, text : 'Siberian Husky' },
-                { key: 4, value: 4, text : 'Shitzu X' },
-              ]}
               label='Breed *'
+              name='breed_id'
+              options={[
+                { key: 1, value: 1, text: 'Shitzu' },
+                { key: 2, value: 2, text: 'Yorkshire Terrier' },
+                { key: 3, value: 3, text: 'Siberian Husky' },
+                { key: 4, value: 4, text: 'Shitzu X' }
+              ]}
               placeholder='Select breed'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
             <Field
-              name='date_birth'
               component={FormField}
               control={Form.Input}
               label='Date of birth'
-              type='date'
-            />
+              name='date_birth'
+              type='date'/>
             <Field
-              name='sex'
               component={FormField}
               control={Form.Select}
-              options={[
-                { key: 1, value: 1, text : 'Male' },
-                { key: 2, value: 2, text : 'Female' },
-              ]}
               label='Sex *'
+              name='sex'
+              options={[
+                { key: 1, value: 1, text: 'Male' },
+                { key: 2, value: 2, text: 'Female' }
+              ]}
               placeholder='Select sex'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='weight'
               component={FormField}
               control={Form.Input}
               label='Weight'
+              name='weight'
               placeholder='Enter weight'
-              type='number'
-            />
+              type='number'/>
             <Field
-              name='reason_id'
               component={FormField}
               control={Form.Select}
-              options={[
-                { key: 1, value: 1, text : 'Reason 1' },
-                { key: 2, value: 2, text : 'Reason 2' },
-              ]}
               label='Reason'
+              name='reason_id'
+              options={[
+                { key: 1, value: 1, text: 'Reason 1' },
+                { key: 2, value: 2, text: 'Reason 2' }
+              ]}
               placeholder='Select reason'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
             <Field
-              name='size'
               component={FormField}
               control={Form.Select}
-              options={[
-                { key: 1, value: 1, text : 'Small' },
-                { key: 2, value: 2, text : 'Medium' },
-                { key: 3, value: 3, text : 'Large' },
-                { key: 4, value: 4, text : 'Giant' },
-              ]}
               label='Dog size'
+              name='size'
+              options={[
+                { key: 1, value: 1, text: 'Small' },
+                { key: 2, value: 2, text: 'Medium' },
+                { key: 3, value: 3, text: 'Large' },
+                { key: 4, value: 4, text: 'Giant' }
+              ]}
               placeholder='Select size'
-              selectOnBlur={false}
-            />
-            <Form.Field />
+              selectOnBlur={false}/>
+            <Form.Field/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='special_instructions'
               component={FormField}
               control={Form.TextArea}
               label='Special instructions'
-              placeholder='Enter description'
-            />
+              name='special_instructions'
+              placeholder='Enter description'/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='behavioral'
               component={FormField}
               control={Form.TextArea}
               label='Behavioral'
-              placeholder='Enter description'
-            />
+              name='behavioral'
+              placeholder='Enter description'/>
           </Form.Group>
           <Form.Group>
             <Field
-              name='fixed'
               component={FormField}
               control={Form.Checkbox}
               label='Fixed'
-              type='checkbox'
-            />
+              name='fixed'
+              type='checkbox'/>
             <Field
-              name='retire'
               component={FormField}
               control={Form.Checkbox}
               label='Retire'
-              type='checkbox'
-            />
+              name='retire'
+              type='checkbox'/>
           </Form.Group>
 
-          <Divider />
+          <Divider/>
           <Header as='h4'>Vaccinations</Header>
 
           <Form.Group widths='equal'>
             <Field
-              name='date_rabies'
               component={FormField}
               control={Form.Input}
               label='Rabies'
-              type='date'
-            />
+              name='date_rabies'
+              type='date'/>
             <Field
-              name='date_bordetella'
               component={FormField}
               control={Form.Input}
               label='Bordetella'
-              type='date'
-            />
+              name='date_bordetella'
+              type='date'/>
             <Field
-              name='date_notification_set_on'
               component={FormField}
               control={Form.Input}
               label='Notification set on'
-              type='date'
-            />
+              name='date_notification_set_on'
+              type='date'/>
             <Field
-              name='date_bordetella'
               component={FormField}
               control={Form.Input}
               label='Bordetella'
-              type='date'
-            />
+              name='date_bordetella'
+              type='date'/>
           </Form.Group>
 
           {
             error && (
-              <Form.Group widths="equal">
+              <Form.Group widths='equal'>
                 <Form.Field>
-                  <FormError message={error} />
+                  <FormError message={error}/>
                 </Form.Field>
               </Form.Group>
             )
           }
 
-          <Form.Group widths='equal' className='form-modal-actions'>
+          <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
                 content='Cancel'
                 disabled={submitting}
-                type="button"
                 onClick={_handleClose}
-              />
+                type='button'/>
               <Button
                 color='teal'
                 content={isUpdating ? 'Save changes' : 'Save'}
                 disabled={submitting}
-                loading={submitting}
-              />
+                loading={submitting}/>
             </Form.Field>
           </Form.Group>
         </Form>
@@ -246,19 +228,19 @@ export default compose(
       }
     },
     {
-      post: petDetailDuck.creators.post,
-      put: petDetailDuck.creators.put,
-      resetItem: petDetailDuck.creators.resetItem,
+      post     : petDetailDuck.creators.post,
+      put      : petDetailDuck.creators.put,
+      resetItem: petDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
     form              : 'client-pet-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
-    validate: values  => {
+    validate          : values  => {
       const schema = {
         document_type_id: YupFields.num_required,
-        file: YupFields.whenIsUpdating(YupFields.nullable, YupFields.file),
+        file            : YupFields.whenIsUpdating(YupFields.nullable, YupFields.file)
       }
 
       return syncValidate(Yup.object().shape(schema), values)

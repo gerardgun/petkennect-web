@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
@@ -9,283 +9,255 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
 
-
 const FormInformation = props => {
-  const { error, handleSubmit, reset } = props;
-
+  const { error, handleSubmit, reset } = props
 
   return (
     <Tab.Pane className='form-primary-segment-tab'>
+      {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='name'
+            autoComplete='off'
+            autoFocus
             component={FormField}
             control={Form.Input}
             label='Name *'
-            placeholder='Name'
-            autoFocus
-            autoComplete='off'
-          />
+            name='name'
+            placeholder='Name'/>
           <Field
-            name='bread'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Bread *'
-            placeholder='Enter lastname'
-            autoComplete='off'
-          />
+            name='bread'
+            placeholder='Enter lastname'/>
           <Field
-            name='date_of_birth'
             component={FormField}
             control={Form.Input}
             label='Date of Birth'
+            name='date_of_birth'
             placeholder='Date of Birth'
-            type="date"
-          />
+            type='date'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='weight'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Weight'
-            placeholder='Enter spouse'
-            autoComplete='off'
-          />
+            name='weight'
+            placeholder='Enter spouse'/>
           <Field
-            name='contact_location_id'
             component={FormField}
             control={Form.Select}
-            options={[
-              { key: 1, value: 'M', text : 'Male' },
-              { key: 2, value: 'F', text : 'Female' },
-            ]}
             label='Sex'
+            name='contact_location_id'
+            options={[
+              { key: 1, value: 'M', text: 'Male' },
+              { key: 2, value: 'F', text: 'Female' }
+            ]}
             placeholder='Sex'
-            selectOnBlur={false}
-          />
+            selectOnBlur={false}/>
           <Field
-            name='dob_size'
             component={FormField}
             control={Form.Select}
-            options={[
-              { key: 1, value: 'small', text : 'Small' },
-              { key: 2, value: 'small', text : 'Medium' },
-            ]}
             label='Dog Size'
+            name='dob_size'
+            options={[
+              { key: 1, value: 'small', text: 'Small' },
+              { key: 2, value: 'small', text: 'Medium' }
+            ]}
             placeholder='Dog Size'
-            selectOnBlur={false}
-          />
+            selectOnBlur={false}/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='reason'
             component={FormField}
             control={Form.Select}
-            options={[
-              { key: 1, value: 'small', text : 'Temporary Home' },
-            ]}
             label='Reason'
+            name='reason'
+            options={[
+              { key: 1, value: 'small', text: 'Temporary Home' }
+            ]}
             placeholder='Reason'
-            selectOnBlur={false}
-          />
+            selectOnBlur={false}/>
           <Field
-            name='standing_reservation'
             component={FormField}
             control={Form.Select}
-            options={[
-              { key: 1, value: 'small', text : 'Milo' },
-            ]}
             label='Standing Reservation'
+            name='standing_reservation'
+            options={[
+              { key: 1, value: 'small', text: 'Milo' }
+            ]}
             placeholder='Standing Reservation'
-            selectOnBlur={false}
-          />
+            selectOnBlur={false}/>
           <Field
-            name='Days'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Days'
-            placeholder='Days'
-            autoComplete='off'
-          />
+            name='Days'
+            placeholder='Days'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            label="Special Instructions"
-            name="special_instructions"
             component={FormField}
             control={Form.TextArea}
-            placeholder="Lorem ipsum..."
-          />
+            label='Special Instructions'
+            name='special_instructions'
+            placeholder='Lorem ipsum...'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            label="Behavioral"
-            name="behavioral"
             component={FormField}
             control={Form.TextArea}
-            placeholder="Lorem ipsum..."
-          />
+            label='Behavioral'
+            name='behavioral'
+            placeholder='Lorem ipsum...'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='fixed'
             component={FormField}
             control={Form.Checkbox}
             label='Fixed'
-          />
+            name='fixed'/>
           <Field
-            name='retire'
             component={FormField}
             control={Form.Checkbox}
             label='Retire'
-          />
-          <Form.Field />
-          <Form.Field />
-          <Form.Field />
+            name='retire'/>
+          <Form.Field/>
+          <Form.Field/>
+          <Form.Field/>
         </Form.Group>
 
         <Header as='h3'>Vaccionations</Header>
 
         <Form.Group widths='equal'>
           <Field
-            name='rabies'
             component={FormField}
             control={Form.Input}
             label='Rabies'
+            name='rabies'
             placeholder='Rabies'
-            type="date"
-          />
+            type='date'/>
           <Field
-            name='bortedella'
             component={FormField}
             control={Form.Input}
             label='Bortedella'
+            name='bortedella'
             placeholder='Bortedella'
-            type="date"
-          />
+            type='date'/>
           <Field
-            name='notification_set_on'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Notification Set On'
-            type='date'
-            autoComplete='off'
-          />
+            name='notification_set_on'
+            type='date'/>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Field
-            name='rabies'
             component={FormField}
             control={Form.Input}
             label='DHLPP'
+            name='rabies'
             placeholder='Rabies'
-            type="date"
-          />
+            type='date'/>
           <Field
-            name='bortedella'
             component={FormField}
             control={Form.Input}
             label='Neg. Fecal'
+            name='bortedella'
             placeholder='Bortedella'
-            type="date"
-          />
+            type='date'/>
           <Field
-            name='notification_set_on'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Influenza'
-            type='date'
-            autoComplete='off'
-          />
+            name='notification_set_on'
+            type='date'/>
         </Form.Group>
 
         <Header as='h3'>Temperament</Header>
 
         <Form.Group widths='equal'>
           <Field
-            name='rabies'
             component={FormField}
             control={Form.Input}
             label='Tested'
+            name='rabies'
             placeholder='Rabies'
-            type="date"
-          />
+            type='date'/>
           <Field
-            name='reason'
             component={FormField}
             control={Form.Select}
+            label='Result'
+            name='reason'
             options={[
             ]}
-            label='Result'
             placeholder='Result'
-            selectOnBlur={false}
-          />
-          <Form.Field />
+            selectOnBlur={false}/>
+          <Form.Field/>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Field
-            label="Temperament Test Observations"
-            name="behavioral"
             component={FormField}
             control={Form.TextArea}
-            placeholder=""
-          />
+            label='Temperament Test Observations'
+            name='behavioral'
+            placeholder=''/>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Field
-            name='rabies'
             component={FormField}
             control={Form.Input}
             label='Strike 1'
+            name='rabies'
             placeholder='Strike 1'
-            type="date"
-          />
+            type='date'/>
           <Field
-            name='bortedella'
             component={FormField}
             control={Form.Input}
             label='Strike 2'
+            name='bortedella'
             placeholder='Strike 2'
-            type="date"
-          />
+            type='date'/>
           <Field
-            name='notification_set_on'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Strike 3'
-            type='date'
-            autoComplete='off'
-          />
+            name='notification_set_on'
+            type='date'/>
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Field
-            name='fixed'
             component={FormField}
             control={Form.Checkbox}
             label='Daycare'
-          />
+            name='fixed'/>
           <Field
-            name='retire'
             component={FormField}
             control={Form.Checkbox}
             label='Aggressive'
-          />
-          <Form.Field />
-          <Form.Field />
-          <Form.Field />
+            name='retire'/>
+          <Form.Field/>
+          <Form.Field/>
+          <Form.Field/>
         </Form.Group>
 
         {
           error && (
-            <Form.Group widths="equal">
+            <Form.Group widths='equal'>
               <Form.Field>
-                <FormError message={error} />
+                <FormError message={error}/>
               </Form.Field>
             </Form.Group>
           )
@@ -293,16 +265,15 @@ const FormInformation = props => {
       </Form>
     </Tab.Pane>
   )
-};
+}
 
 export default compose(
   connect(
-    state => ({
-    }),
+    () => ({}),
     {}
   ),
   reduxForm({
-    form: 'pet-create-information',
+    form            : 'pet-create-information',
     destroyOnUnmount: false,
     validate        : values  => {
       const schema = {}

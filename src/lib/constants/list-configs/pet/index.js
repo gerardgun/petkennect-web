@@ -1,6 +1,6 @@
 export default {
   base_uri: '/pet',
-  row: {
+  row     : {
     options: [
       {
         display_name: 'Edit',
@@ -11,7 +11,7 @@ export default {
         display_name: 'Delete',
         name        : 'delete',
         icon        : 'trash alternate outline'
-      },
+      }
     ]
   },
   columns: [

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Header, Icon, Modal } from 'semantic-ui-react'
+import { Button, Header, Modal } from 'semantic-ui-react'
 
 const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
   const _handleDeleteBtnClick = () => {
@@ -29,11 +29,10 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
   return (
     <Modal
       closeOnDimmerClick={!deleting}
-      open={open}
       onClose={props.onClose}
-      size='tiny'
-    >
-      <Header content='Alert!' />
+      open={open}
+      size='tiny'>
+      <Header content='Alert!'/>
       <Modal.Content>
         <p>
           {
@@ -46,8 +45,10 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
         </p>
       </Modal.Content>
       <Modal.Actions>
-        <Button content='Cancel' disabled={deleting} onClick={props.onClose} />
-        <Button color='google plus' content='Delete' icon='trash' loading={deleting} onClick={_handleDeleteBtnClick} />
+        <Button content='Cancel' disabled={deleting} onClick={props.onClose}/>
+        <Button
+          color='google plus' content='Delete' icon='trash'
+          loading={deleting} onClick={_handleDeleteBtnClick}/>
       </Modal.Actions>
     </Modal>
   )

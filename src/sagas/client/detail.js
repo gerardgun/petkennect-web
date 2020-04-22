@@ -1,16 +1,16 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
-import { Delete, Get, Post, Put } from '@lib/utils/http-client'
+import { Get, Post, Put } from '@lib/utils/http-client'
 
 import clientDetailDuck from '@reducers/client/detail'
 
-const { types, selectors } = clientDetailDuck
+const { types } = clientDetailDuck
 
 function* deleteItem({ ids }) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
-    yield call(Post, 'clean-customers/', {
+    yield call(Post, 'clean-clients/', {
       customer_ids: ids
     })
 
@@ -27,7 +27,7 @@ function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const client = yield call(Get, `customers/${id}`)
+    const client = yield call(Get, `clients/${id}`)
 
     yield put({
       type   : types.GET_FULFILLED,
@@ -47,7 +47,7 @@ function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, 'customers/', payload)
+    const result = yield call(Post, 'clients/', payload)
 
     yield put({
       type   : types.POST_FULFILLED,
@@ -65,7 +65,7 @@ function* _put({ payload }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Put, `customers/${payload.id}/`, payload)
+    yield call(Put, `clients/${payload.id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

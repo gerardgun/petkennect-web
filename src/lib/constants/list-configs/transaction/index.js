@@ -1,6 +1,6 @@
 export default {
   base_uri: null,
-  row: {
+  row     : {
     options: [
       {
         display_name: 'Edit',
@@ -11,7 +11,7 @@ export default {
         display_name: 'Delete',
         name        : 'delete',
         icon        : 'trash alternate outline'
-      },
+      }
     ]
   },
   columns: [
@@ -26,7 +26,7 @@ export default {
     {
       display_name: 'Buyer',
       name        : 'buyer_legal_name',
-      type        : 'string', 
+      type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
@@ -54,6 +54,6 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
-    },
+    }
   ]
 }

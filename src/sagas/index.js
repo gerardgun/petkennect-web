@@ -38,6 +38,6 @@ export default function* rootSaga() {
     ...transaction,
     ...transactionDetail,
     ...user,
-    ...userDetail,
+    ...userDetail
   ])
 }

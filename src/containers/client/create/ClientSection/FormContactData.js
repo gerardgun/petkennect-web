@@ -24,100 +24,93 @@ const FormContactData = props => {
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>
+      {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='phones[0]'
+            autoComplete='off'
+            autoFocus
             component={FormField}
             control={Form.Input}
             label='Cell Phone'
+            name='phones[0]'
             placeholder='Enter phone number'
-            type='tel'
-            autoFocus
-            autoComplete='off'
-          />
+            type='tel'/>
           <Field
-            name='phones[1]'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Home Phone'
+            name='phones[1]'
             placeholder='Enter phone number'
-            type='tel'
-            autoComplete='off'
-          />
+            type='tel'/>
           <Field
-            name='phones[2]'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Work Phone'
+            name='phones[2]'
             placeholder='Enter phone number'
-            type='tel'
-            autoComplete='off'
-          />
+            type='tel'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='phones[3]'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Other Phone'
+            name='phones[3]'
             placeholder='Enter phone number'
-            type='tel'
-            autoComplete='off'
-          />
+            type='tel'/>
           <Field
-            name='email'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Email *'
+            name='email'
             placeholder='Enter email'
-            type='email'
-            autoComplete='off'
-          />
+            type='email'/>
           <Field
-            name='alt_email'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Alt Email'
+            name='alt_email'
             placeholder='Enter email'
-            type='email'
-            autoComplete='off'
-          />
+            type='email'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='referred'
             component={FormField}
             control={Form.Select}
-            options={[
-              { key: 1, value: 'DRIVE-BY', text : 'Drive-by' },
-              { key: 2, value: 'EVENT', text : 'Event' },
-              { key: 3, value: 'INTERNET-SEARCH', text : 'Internet search' },
-              { key: 4, value: 'REFERRAL', text : 'Referral' },
-              { key: 5, value: 'OTHER', text : 'Other' },
-            ]}
             label='Referred'
+            name='referred'
+            options={[
+              { key: 1, value: 'DRIVE-BY', text: 'Drive-by' },
+              { key: 2, value: 'EVENT', text: 'Event' },
+              { key: 3, value: 'INTERNET-SEARCH', text: 'Internet search' },
+              { key: 4, value: 'REFERRAL', text: 'Referral' },
+              { key: 5, value: 'OTHER', text: 'Other' }
+            ]}
             placeholder='Select an option'
-            selectOnBlur={false}
-          />
-          <Form.Field />
-          <Form.Field />
+            selectOnBlur={false}/>
+          <Form.Field/>
+          <Form.Field/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='send_email'
             component={FormField}
             control={Form.Checkbox}
             label='Send email'
-            type='checkbox'
-          />
+            name='send_email'
+            type='checkbox'/>
         </Form.Group>
 
         {
           error && (
-            <Form.Group widths="equal">
+            <Form.Group widths='equal'>
               <Form.Field>
-                <FormError message={error} />
+                <FormError message={error}/>
               </Form.Field>
             </Form.Group>
           )
@@ -135,14 +128,14 @@ export default compose(
     {}
   ),
   reduxForm({
-    form              : 'client-create-contact-data',
-    destroyOnUnmount  : false,
-    validate: values  => {
+    form            : 'client-create-contact-data',
+    destroyOnUnmount: false,
+    validate        : values  => {
       const schema = {
         email    : YupFields.email,
-        alt_email: YupFields.emailNotRequired,
+        alt_email: YupFields.emailNotRequired
       }
-    
+
       return syncValidate(Yup.object().shape(schema), values)
     }
   })

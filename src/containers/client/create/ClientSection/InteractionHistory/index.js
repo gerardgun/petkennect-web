@@ -27,15 +27,15 @@ const InteractionHistory = props => {
     <Tab.Pane className='form-primary-segment-tab'>
       <Grid className='segment-content-header'>
         <Grid.Column textAlign='right'>
-          <Button content='Download' icon='cloud download' labelPosition='left' />
-          <Button color='teal' content='Add Comment' onClick={_handleAddBtnClick} />
+          <Button content='Download' icon='cloud download' labelPosition='left'/>
+          <Button color='teal' content='Add Comment' onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>
       <Table
         duck={clientInteractionDuck}
         onRowClick={_handleRowClick}
-        onRowOptionClick={_handleRowOptionClick} />
-      <Form />
+        onRowOptionClick={_handleRowOptionClick}/>
+      <Form/>
     </Tab.Pane>
   )
 }
@@ -46,8 +46,7 @@ export default compose(
       clientDetail: clientDetailDuck.selectors.detail(state)
     }),
     {
-      setItem: clientInteractionDetailDuck.creators.setItem,
+      setItem: clientInteractionDetailDuck.creators.setItem
     }
-  ),
+  )
 )(InteractionHistory)
-

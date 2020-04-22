@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Container, Form, Grid, Image, Input, Header } from 'semantic-ui-react'
+import { Button, Container, Form, Grid, Image, Header } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -26,15 +25,14 @@ const RecoverAccount = props => {
   } = props
 
   useEffect(() => {
-    if(auth.status === 'POSTED') {
+    if(auth.status === 'POSTED')
       props.history.replace('/auth/sign-in')
-    }
   }, [ auth.status ])
 
   const _handleSubmit = values => {
     return recoverAccount({
       password: values.password,
-      token: props.match.params.token
+      token   : props.match.params.token
     })
       .catch(parseResponseError)
   }
@@ -42,8 +40,8 @@ const RecoverAccount = props => {
   return (
     <Container className='sign-in'>
       <Grid columns={2}>
-        <Grid.Column style={{ padding: '0 3rem', }}>
-          <Image src='/images/sign-in.svg' />
+        <Grid.Column style={{ padding: '0 3rem' }}>
+          <Image src='/images/sign-in.svg'/>
         </Grid.Column>
         <Grid.Column style={{ alignSelf: 'center' }}>
           <Header as='h2'>Reset password</Header>
@@ -51,23 +49,23 @@ const RecoverAccount = props => {
             Change your password and sign in.
           </p>
 
+          {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
             <Form.Group widths='equal'>
               <Field
-                name='password'
                 component={FormField}
                 control={Form.Input}
                 label='New password'
+                name='password'
                 placeholder='Enter your new password'
-                type='password'
-              />
+                type='password'/>
             </Form.Group>
 
             {
               error && (
-                <Form.Group widths="equal">
+                <Form.Group widths='equal'>
                   <Form.Field>
-                    <FormError message={error} />
+                    <FormError message={error}/>
                   </Form.Field>
                 </Form.Group>
               )
@@ -78,8 +76,7 @@ const RecoverAccount = props => {
                 control={Button}
                 disabled={pristine || submitting}
                 loading={auth.status === 'PATCHING'}
-                type='submit' 
-              >
+                type='submit'>
                 Submit
               </Form.Field>
             </Form.Group>
@@ -96,7 +93,7 @@ export default compose(
     ({ auth }) => ({
       auth,
       initialValues: {
-        password: '',
+        password: ''
       }
     }),
     {

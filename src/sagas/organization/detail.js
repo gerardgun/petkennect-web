@@ -1,13 +1,11 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
-import _times from 'lodash/times'
-import faker from 'faker'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import organizationDetailDuck from '@reducers/organization/detail'
 import organizationCompanyDuck from '@reducers/organization/company'
 
-const { types, selectors } = organizationDetailDuck
+const { types } = organizationDetailDuck
 
 function* deleteItem({ ids: [ id ] }) {
   try {
@@ -59,7 +57,7 @@ function* post({ payload }) {
     const result = yield call(Post, 'organizations/', payload)
 
     yield put({
-      type: types.POST_FULFILLED,
+      type   : types.POST_FULFILLED,
       payload: result
     })
   } catch (e) {

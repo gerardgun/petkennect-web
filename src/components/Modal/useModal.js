@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const useModal = () => {
   const [ open, setOpen ] = useState(false)
 
-  const handleClose = () => {
+  const _handleClose = () => {
     setOpen(false)
   }
 
-  const handleOpen = () => {
+  const _handleOpen = () => {
     setOpen(true)
   }
 
   return [
     open,
     {
-      handleClose,
-      handleOpen
+      _handleClose,
+      _handleOpen
     }
   ]
 }

@@ -16,7 +16,7 @@ import clientDocumentDetailDuck from '@reducers/client/document/detail'
 const DocumentForm = props => {
   const {
     clientDocumentDetail,
-    error, handleSubmit, pristine, reset, submitting // redux-form
+    error, handleSubmit, reset, submitting // redux-form
   } = props
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
@@ -24,15 +24,14 @@ const DocumentForm = props => {
   const _handleClose = () => props.resetItem()
 
   const _handleSubmit = values => {
-    if(isUpdating) {
-      return props.put({ id: clientDocumentDetail.item.id, ...values})
+    if(isUpdating)
+      return props.put({ id: clientDocumentDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
-    } else {
+    else
       return props.post(values)
         .then(_handleClose)
         .catch(parseResponseError)
-    }
   }
 
   const isOpened = useMemo(() => getIsOpened(clientDocumentDetail.mode), [ clientDocumentDetail.mode ])
@@ -41,73 +40,68 @@ const DocumentForm = props => {
   return (
     <Modal
       className='form-modal'
-      open={isOpened}
       onClose={_handleClose}
-      size='small'
-    >
+      open={isOpened}
+      size='small'>
       <Modal.Content>
+        {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Document</Header>
-          <Field name='id' component='input' type='hidden' />
+          <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
-              name='description'
+              autoFocus
               component={FormField}
               control={Form.TextArea}
               label='Description'
-              placeholder='Enter description'
-              autoFocus
-            />
+              name='description'
+              placeholder='Enter description'/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='document_type_id'
               component={FormField}
               control={Form.Select}
-              options={[
-                { key: 1, value: 1, text : 'Vet Letter' },
-                { key: 2, value: 2, text : 'Medication Instructions' },
-                { key: 3, value: 3, text : 'Pet Photo' },
-                { key: 4, value: 4, text : 'PDF' },
-              ]}
               label='Document Type *'
+              name='document_type_id'
+              options={[
+                { key: 1, value: 1, text: 'Vet Letter' },
+                { key: 2, value: 2, text: 'Medication Instructions' },
+                { key: 3, value: 3, text: 'Pet Photo' },
+                { key: 4, value: 4, text: 'PDF' }
+              ]}
               placeholder='Select type'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
             <Field
-              name='file'
               component={FormField}
               control={Form.Input}
               label='File *'
-              type='file'
-            />
+              name='file'
+              type='file'/>
           </Form.Group>
 
           {
             error && (
-              <Form.Group widths="equal">
+              <Form.Group widths='equal'>
                 <Form.Field>
-                  <FormError message={error} />
+                  <FormError message={error}/>
                 </Form.Field>
               </Form.Group>
             )
           }
 
-          <Form.Group widths='equal' className='form-modal-actions'>
+          <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
                 content='Cancel'
                 disabled={submitting}
-                type="button"
                 onClick={_handleClose}
-              />
+                type='button'/>
               <Button
                 color='teal'
                 content={isUpdating ? 'Save changes' : 'Save'}
                 disabled={submitting}
-                loading={submitting}
-              />
+                loading={submitting}/>
             </Form.Field>
           </Form.Group>
         </Form>
@@ -128,19 +122,19 @@ export default compose(
       }
     },
     {
-      post: clientDocumentDetailDuck.creators.post,
-      put: clientDocumentDetailDuck.creators.put,
-      resetItem: clientDocumentDetailDuck.creators.resetItem,
+      post     : clientDocumentDetailDuck.creators.post,
+      put      : clientDocumentDetailDuck.creators.put,
+      resetItem: clientDocumentDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
     form              : 'client-document-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
-    validate: values  => {
+    validate          : values  => {
       const schema = {
         document_type_id: YupFields.num_required,
-        file: YupFields.whenIsUpdating(YupFields.nullable, YupFields.file),
+        file            : YupFields.whenIsUpdating(YupFields.nullable, YupFields.file)
       }
 
       return syncValidate(Yup.object().shape(schema), values)

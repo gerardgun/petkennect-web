@@ -1,10 +1,10 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
-import { Post, Put, Get, reHydrateToken } from '@lib/utils/http-client'
+import { Post, Put, reHydrateToken } from '@lib/utils/http-client'
 
 import authDuck from '@reducers/auth'
 
-const { types, selectors } = authDuck
+const { types } = authDuck
 
 function* check() {
   try {
@@ -38,7 +38,7 @@ function* get() {
     /* BEGIN Delete */
     const user = localStorage.getItem('@auth_user')
     const { is_staff, ...parsedUser } = JSON.parse(user)
-    
+
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
@@ -95,7 +95,7 @@ function* _put({ payload }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    const result = yield call(Put, 'auth/me', payload)
+    yield call(Put, 'auth/me', payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
@@ -158,7 +158,7 @@ function* recoverAccount({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, 'reset-password/', payload)
+    yield call(Post, 'reset-password/', payload)
 
     yield put({
       type: types.POST_FULFILLED
@@ -175,7 +175,7 @@ function* requestPasswordReset({ payload }) {
   try {
     yield put({ type: types.PATCH_PENDING })
 
-    const result = yield call(Post, 'forgot-password/', payload)
+    yield call(Post, 'forgot-password/', payload)
 
     yield put({
       type: types.PATCH_FULFILLED

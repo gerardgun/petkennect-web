@@ -1,12 +1,12 @@
 export default {
   base_uri: '/client',
-  row: {
+  row     : {
     options: [
       {
         display_name: 'Edit',
         name        : 'edit',
         icon        : 'edit outline'
-      },
+      }
     ]
   },
   columns: [

@@ -1,6 +1,6 @@
 export default {
   base_uri: null,
-  row: {
+  row     : {
     options: [
       {
         display_name: 'Preview',
@@ -11,7 +11,7 @@ export default {
         display_name: 'Email',
         name        : 'email',
         icon        : 'paper plane outline'
-      },
+      }
     ]
   },
   columns: [
@@ -62,6 +62,6 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
-    },
+    }
   ]
 }
