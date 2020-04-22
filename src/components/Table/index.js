@@ -20,7 +20,10 @@ const TableList = ({ duck, list, ...props }) => {
     return content
   }
 
-  const _handleDropdownChange = (e, { value }, item) => {
+  const _handleDropdownChange = (e, { value }) => {
+    const itemId = +e.currentTarget.closest('.ui.dropdown').dataset.itemId
+    const item = list.items.find(({ id }) => id === itemId)
+
     props.onRowOptionClick(value, item)
   }
 
@@ -32,17 +35,20 @@ const TableList = ({ duck, list, ...props }) => {
     )
   }
 
-  const _handleRowClick = (e, item) => {
+  const _handleRowClick = e => {
     const isCheckbox = e.target.tagName === 'LABEL' && /ui.*checkbox/.test(e.target.parentNode.classList.value)
+    const item = list.items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
 
     if(!isCheckbox)
       if(props.onRowClick) props.onRowClick(e, item)
       else if(list.config.base_uri) props.history.push(`${list.config.base_uri}/${item.id}`)
   }
 
-  const _handleSelectorCheckboxChange = (e, { checked }, { id }) => {
+  const _handleSelectorCheckboxChange = (e, { checked }) => {
+    const itemId = +e.currentTarget.dataset.itemId
+
     props.dispatch(
-      checked === true ? duck.creators.selectIds(id) : duck.creators.removeSelectedIds(id)
+      checked === true ? duck.creators.selectIds(itemId) : duck.creators.removeSelectedIds(itemId)
     )
   }
 
@@ -97,14 +103,16 @@ const TableList = ({ duck, list, ...props }) => {
                 const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
 
                 return (
-                  <Table.Row active={checked} key={index} onClick={e => _handleRowClick(e, item)}>
+                  <Table.Row
+                    active={checked} data-item-id={item.id} key={index}
+                    onClick={_handleRowClick}>
                     {/* Row selection */}
                     {
                       list.selector && (
                         <Table.Cell>
                           <Checkbox
-                            checked={checked}
-                            onChange={(e, data) => _handleSelectorCheckboxChange(e, data, item)}/>
+                            checked={checked} data-item-id={item.id}
+                            onChange={_handleSelectorCheckboxChange}/>
                         </Table.Cell>
                       )
                     }
@@ -121,7 +129,8 @@ const TableList = ({ duck, list, ...props }) => {
                       list.config.row.options && (
                         <Table.Cell textAlign='center'>
                           <Dropdown
-                            onChange={(e, data) => _handleDropdownChange(e, data, item)}
+                            data-item-id={item.id}
+                            onChange={_handleDropdownChange}
                             options={
                               list.config.row.options.map((item, index) => ({
                                 key  : index,
