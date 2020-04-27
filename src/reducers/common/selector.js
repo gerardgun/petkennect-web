@@ -3,7 +3,7 @@ import produce from 'immer'
 export default {
   initialState: (duck, previousState) => ({
     selector: {
-      default_items: [], // selected items for default
+      default_items : [], // selected items for default
       selected_items: []
     },
     ...previousState
@@ -66,12 +66,12 @@ export default {
       SELECT_DEFAULT_IDS,
       SELECT_IDS,
       REMOVE_DEFAULT_IDS,
-      REMOVE_IDS,
+      REMOVE_IDS
     }
   }) => ({
     selectDefaultIds : (...ids) => ({ type: SELECT_DEFAULT_IDS, ids }),
     selectIds        : (...ids) => ({ type: SELECT_IDS, ids }),
     removeDefaultIds : (...ids) => ({ type: REMOVE_DEFAULT_IDS, ids }),
-    removeSelectedIds: (...ids) => ({ type: REMOVE_IDS, ids }),
+    removeSelectedIds: (...ids) => ({ type: REMOVE_IDS, ids })
   })
 }

@@ -19,7 +19,7 @@ export default function createDuck({ namespace, store, initialState = {}, creato
         'POSTING',
         'PRISTINE',
         'PUT',
-        'PUTTING',
+        'PUTTING'
       ]
     },
     types: [

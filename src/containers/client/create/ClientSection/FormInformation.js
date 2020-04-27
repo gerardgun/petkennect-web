@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm, isSubmitting } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import { Form, Tab } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
@@ -13,7 +13,7 @@ import { syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
 
-const zipes = [ { key: 1, value: 1, text : '25435' } ]
+const zipes = [ { key: 1, value: 1, text: '25435' } ]
 
 const FormInformation = props => {
   const {
@@ -23,134 +23,124 @@ const FormInformation = props => {
   } = props
 
   useEffect(() => {
-    if(!initialized && clientDetail.item.id) {
+    if(!initialized && clientDetail.item.id)
       props.initialize({
         ...clientDetail.item,
-        state: 'PA',
-        city: 'DOYLESTOWN',
-        zip_code: 1,
+        state              : 'PA',
+        city               : 'DOYLESTOWN',
+        zip_code           : 1,
         contact_location_id: 1
       })
-    }
   }, [ clientDetail.status ])
 
   const isUpdating = match.params.client
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>
+      {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
           <Field
-            name='first_name'
+            autoComplete='off'
+            autoFocus
             component={FormField}
             control={Form.Input}
             label='Name *'
+            name='first_name'
             placeholder='Enter names'
-            readOnly={isUpdating}
-            autoFocus
-            autoComplete='off'
-          />
+            readOnly={isUpdating}/>
           <Field
-            name='last_name'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Lastname *'
+            name='last_name'
             placeholder='Enter lastname'
-            readOnly={isUpdating}
-            autoComplete='off'
-          />
+            readOnly={isUpdating}/>
           <Field
-            name='spouse'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Spouse'
-            placeholder='Enter spouse'
-            autoComplete='off'
-          />
+            name='spouse'
+            placeholder='Enter spouse'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='contact_date'
             component={FormField}
             control={Form.Input}
             label='Contact date'
-            type='date'
-          />
+            name='contact_date'
+            type='date'/>
           <Field
-            name='contact_location_id'
             component={FormField}
             control={Form.Select}
-            options={[
-              { key: 1, value: 1, text : '02-RH' },
-              { key: 2, value: 2, text : '03-VP' },
-              { key: 3, value: 3, text : '04-HH' },
-              { key: 4, value: 4, text : '05-SC' },
-            ]}
             label='Contact Location'
+            name='contact_location_id'
+            options={[
+              { key: 1, value: 1, text: '02-RH' },
+              { key: 2, value: 2, text: '03-VP' },
+              { key: 3, value: 3, text: '04-HH' },
+              { key: 4, value: 4, text: '05-SC' }
+            ]}
             placeholder='Contact Location'
-            selectOnBlur={false}
-          />
+            selectOnBlur={false}/>
           <Field
-            name='status'
             component={FormField}
             control={Form.Select}
-            options={[
-              { key: 1, value: 'DECLINED', text : 'DECLINED' },
-              { key: 2, value: 'GREEN', text : 'GREEN' },
-              { key: 3, value: 'RED', text : 'RED - See notes' },
-              { key: 4, value: 'VIP-CLIENT', text : 'VIP CLIENT' },
-            ]}
             label='Status'
+            name='status'
+            options={[
+              { key: 1, value: 1, text: 'DECLINED' },
+              { key: 2, value: 2, text: 'GREEN' },
+              { key: 3, value: 3, text: 'RED - See notes' },
+              { key: 4, value: 4, text: 'VIP CLIENT' }
+            ]}
             placeholder='Select status'
-            selectOnBlur={false}
-          />
+            selectOnBlur={false}/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='address'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Address'
-            placeholder='Enter address'
-            autoComplete='off'
-          />
+            name='addresses[0]'
+            placeholder='Enter address'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            name='state'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='State *'
-            autoComplete='off'
-            readOnly
-          />
+            name='state'
+            readOnly/>
           <Field
-            name='city'
+            autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='City *'
-            autoComplete='off'
-            readOnly
-          />
+            name='city'
+            readOnly/>
           <Field
-            name='zip_code'
+            autoComplete='off'
             component={FormField}
             control={Form.Select}
-            options={zipes}
             label='Zip *'
+            name='zip_code'
+            options={zipes}
             placeholder='Select zip'
-            autoComplete='off'
             readOnly
             search
-            selectOnBlur={false}
-          />
+            selectOnBlur={false}/>
         </Form.Group>
 
         {
           error && (
-            <Form.Group widths="equal">
+            <Form.Group widths='equal'>
               <Form.Field>
-                <FormError message={error} />
+                <FormError message={error}/>
               </Form.Field>
             </Form.Group>
           )
@@ -174,8 +164,8 @@ export default compose(
     validate        : values  => {
       const schema = {
         first_name: YupFields.name,
-        last_name: YupFields.first_lastname,
-        zip_code: YupFields.zip,
+        last_name : YupFields.first_lastname,
+        zip_code  : YupFields.zip
       }
 
       return syncValidate(Yup.object().shape(schema), values)

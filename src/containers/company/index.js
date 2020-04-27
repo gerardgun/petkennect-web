@@ -12,18 +12,22 @@ import Form from '@containers/organization/create/CompanySection/Form'
 import companyDuck from '@reducers/company'
 import companyDetailDuck from '@reducers/company/detail'
 
-const Company = ({ company, companyDetail, ...props }) => {
+const Company = props => {
+  const {
+    // company,
+    companyDetail
+  } = props
+
   // For Modal Delete
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     props.getCompanies()
   }, [])
 
   useEffect(() => {
-    if(companyDetail.status === 'POSTED' || companyDetail.status === 'PUT' || companyDetail.status === 'DELETED') {
+    if(companyDetail.status === 'POSTED' || companyDetail.status === 'PUT' || companyDetail.status === 'DELETED')
       props.getCompanies()
-    }
   }, [ companyDetail.status ])
 
   const _handleAddBtnClick = () => {
@@ -37,7 +41,7 @@ const Company = ({ company, companyDetail, ...props }) => {
   const _handleRowOptionClick = (option, item) => {
     if(option === 'delete') {
       props.setItem(item)
-      handleOpen()
+      _handleOpen()
     } else if(option === 'edit') {
       props.setItem(item, 'UPDATE')
     }
@@ -51,21 +55,23 @@ const Company = ({ company, companyDetail, ...props }) => {
             <Header as='h2'>Companies</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' disabled icon='cloud download' labelPosition='left' />
-            <Button color='teal' content='New Company' onClick={_handleAddBtnClick} />
+            <Button
+              content='Download' disabled icon='cloud download'
+              labelPosition='left'/>
+            <Button color='teal' content='New Company' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
         <Table
           duck={companyDuck}
           onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick} />
+          onRowOptionClick={_handleRowOptionClick}/>
 
-        <Form />
+        <Form/>
 
         <ModalDelete
           duckDetail={companyDetailDuck}
-          onClose={handleClose}
-          open={open} />
+          onClose={_handleClose}
+          open={open}/>
 
       </Segment>
     </Layout>
@@ -76,11 +82,11 @@ export default compose(
   connect(
     ({ company, ...state }) => ({
       company,
-      companyDetail: companyDetailDuck.selectors.detail(state),
+      companyDetail: companyDetailDuck.selectors.detail(state)
     }),
     {
       getCompanies: companyDuck.creators.get,
-      setItem        : companyDetailDuck.creators.setItem,
+      setItem     : companyDetailDuck.creators.setItem
     }
   )
-)(Company) 
+)(Company)

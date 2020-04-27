@@ -1,14 +1,13 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
-import _times from 'lodash/times'
+import { call, put, takeEvery } from 'redux-saga/effects'
 import faker from 'faker'
 
-import { Delete, Get, Post, Put } from '@lib/utils/http-client'
+// import { Delete, Get, Post, Put } from '@lib/utils/http-client'
 
 import petDetailDuck from '@reducers/pet/detail'
 
-const { types, selectors } = petDetailDuck
+const { types } = petDetailDuck
 
-function* deleteItem({ ids }) {
+function* deleteItem(/* { ids } */) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
@@ -24,7 +23,7 @@ function* deleteItem({ ids }) {
   }
 }
 
-function* get({ id }) {
+function* get(/* { id } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
@@ -35,27 +34,27 @@ function* get({ id }) {
       type   : types.GET_FULFILLED,
       payload: {
         item: {
-          id: 1,
-          name: faker.name.firstName(),
-          breed_id: 1,
-          date_birth: faker.date.recent().toISOString().split('T')[0],
-          weight: faker.random.number(50),
-          sex: 1,
-          size: faker.random.arrayElement([ 1, 2, 3, 4 ]),
-          reason_id: faker.random.arrayElement([ 1, 2, 3, 4 ]),
-          standing_reservation: faker.random.arrayElement([ 1, 2 ]),
-          special_instructions: faker.lorem.paragraph(1),
-          behavioral: faker.lorem.paragraph(1),
-          fixed: true,
-          retire: true,
-          date_rabies: faker.date.recent().toISOString().split('T')[0],
-          date_bordetella: faker.date.recent().toISOString().split('T')[0],
+          id                      : 1,
+          name                    : faker.name.firstName(),
+          breed_id                : 1,
+          date_birth              : faker.date.recent().toISOString().split('T')[0],
+          weight                  : faker.random.number(50),
+          sex                     : 1,
+          size                    : faker.random.arrayElement([ 1, 2, 3, 4 ]),
+          reason_id               : faker.random.arrayElement([ 1, 2, 3, 4 ]),
+          standing_reservation    : faker.random.arrayElement([ 1, 2 ]),
+          special_instructions    : faker.lorem.paragraph(1),
+          behavioral              : faker.lorem.paragraph(1),
+          fixed                   : true,
+          retire                  : true,
+          date_rabies             : faker.date.recent().toISOString().split('T')[0],
+          date_bordetella         : faker.date.recent().toISOString().split('T')[0],
           date_notification_set_on: faker.date.recent().toISOString().split('T')[0],
-          date_dhlpp: faker.date.recent().toISOString().split('T')[0],
-          date_neg_fecal: faker.date.recent().toISOString().split('T')[0],
-          date_influenza: faker.date.recent().toISOString().split('T')[0],
-          coloring: faker.lorem.words(2),
-          received_dog_from: faker.lorem.words(2),
+          date_dhlpp              : faker.date.recent().toISOString().split('T')[0],
+          date_neg_fecal          : faker.date.recent().toISOString().split('T')[0],
+          date_influenza          : faker.date.recent().toISOString().split('T')[0],
+          coloring                : faker.lorem.words(2),
+          received_dog_from       : faker.lorem.words(2)
         }
       }
     })
@@ -67,7 +66,7 @@ function* get({ id }) {
   }
 }
 
-function* post({ payload }) {
+function* post(/* { payload } */) {
   try {
     yield put({ type: types.POST_PENDING })
 
@@ -83,7 +82,7 @@ function* post({ payload }) {
   }
 }
 
-function* _put({ payload }) {
+function* _put(/* { payload } */) {
   try {
     yield put({ type: types.PUT_PENDING })
 

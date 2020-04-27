@@ -63,8 +63,8 @@ export const parsePayload = payload => {
   if(containsFileList) {
     body = new FormData()
 
-    Object.entries(payload).forEach(([key, value]) => {
-      if(typeof value !== 'undefined') {
+    Object.entries(payload).forEach(([ key, value ]) => {
+      if(typeof value !== 'undefined')
         if(value instanceof Array) {
           value.forEach((value, index) => {
             body.append(`${key}[${index}]`, value)
@@ -74,7 +74,6 @@ export const parsePayload = payload => {
         } else {
           body.append(key, value)
         }
-      }
     })
   }
 
@@ -84,19 +83,18 @@ export const parsePayload = payload => {
 export const parseResponseError = e => {
   let errors = {}
 
-  if(typeof e.response === 'undefined') {
+  if(typeof e.response === 'undefined')
     errors._error = 'There was an error communicating with the service.'
-  } else if(e.response.status === 422 || e.response.status === 400) {
+  else if(e.response.status === 422 || e.response.status === 400)
     Object.entries(e.response.data).forEach(([ fieldname, errorList ]) => {
       fieldname = fieldname === 'non_field_errors' ? '_error' : fieldname
 
       return errors[fieldname] = errorList[0]
     })
-  } else if(e.response.status === 500) {
+  else if(e.response.status === 500)
     errors._error = 'Error 500. The server has a internal error, contact us please.'
-  } else {
+  else
     errors._error = 'There was an error communicating with the service.'
-  }
 
   throw new SubmissionError(errors)
 }

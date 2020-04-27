@@ -12,7 +12,7 @@ import clientPetDuck from '@reducers/client/pet'
 import petDetailDuck from '@reducers/pet/detail'
 
 const PetSection = ({ pet, ...props }) => {
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
@@ -22,7 +22,7 @@ const PetSection = ({ pet, ...props }) => {
     props.setItem(item, 'UPDATE')
   }
 
-  const _handleRowOptionClick = (option, item) => {
+  const _handleRowOptionClick = (option /* , item */) => {
     if(option === 'preview') alert('Preview Pet File...')
     else if(option === 'email') alert('Share Pet via email...')
   }
@@ -36,25 +36,25 @@ const PetSection = ({ pet, ...props }) => {
               <Header as='h2'>Pet List</Header>
             </Grid.Column>
             <Grid.Column textAlign='right'>
-              <Button content='Filter' icon='filter' labelPosition='left' />
+              <Button content='Filter' icon='filter' labelPosition='left'/>
               {
-                pet.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={handleOpen} />)
+                pet.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
               }
-              <Button color='teal' content='Add Pet' onClick={_handleAddBtnClick} />
+              <Button color='teal' content='Add Pet' onClick={_handleAddBtnClick}/>
             </Grid.Column>
           </Grid>
           <Table
             duck={clientPetDuck}
             onRowClick={_handleRowClick}
-            onRowOptionClick={_handleRowOptionClick} />
+            onRowOptionClick={_handleRowOptionClick}/>
         </Segment>
 
-        <Form />
+        <Form/>
         <ModalDelete
           duck={clientPetDuck}
           duckDetail={petDetailDuck}
-          onClose={handleClose}
-          open={open} />
+          onClose={_handleClose}
+          open={open}/>
       </Grid.Column>
     </Grid>
   )
@@ -66,7 +66,7 @@ export default compose(
       pet: clientPetDuck.selectors.list(state)
     }),
     {
-      setItem: petDetailDuck.creators.setItem,
+      setItem: petDetailDuck.creators.setItem
     }
   )
-)(PetSection) 
+)(PetSection)

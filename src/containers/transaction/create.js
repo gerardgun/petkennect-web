@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Divider, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -21,27 +21,26 @@ const TransactionForm = props => {
     organization,
     organizationCompany,
     transactionDetail,
-    change, error, handleSubmit, pristine, reset, submitting // redux-form
+    change, error, handleSubmit, reset, submitting // redux-form
   } = props
 
   useEffect(() => {
-    if((transactionDetail.mode === 'CREATE' || transactionDetail.mode === 'UPDATE') && organization.items.length === 0) {
+    if((transactionDetail.mode === 'CREATE' || transactionDetail.mode === 'UPDATE') && organization.items.length === 0)
       // Load organization options if it is not loaded yet
       props.getOrganizations()
-    }
   }, [ transactionDetail.mode ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
   const getCompanyOptions = () => {
     return organizationCompany.items.map((item, index) => ({
-      key: index, value: item.id, text : item.legal_name
+      key: index, value: item.id, text: item.legal_name
     }))
   }
 
   const getOrganizationOptions = () => {
     return organization.items.map((item, index) => ({
-      key: index, value: item.id, text : item.legal_name
+      key: index, value: item.id, text: item.legal_name
     }))
   }
 
@@ -49,7 +48,7 @@ const TransactionForm = props => {
     props.resetItem()
     reset()
   }
-  
+
   const _handleSellerChange = sellerId => {
     props.getOrganization(sellerId)
 
@@ -58,19 +57,20 @@ const TransactionForm = props => {
   }
 
   const _handleSubmit = values => {
-    const finalValues = Object.entries(values)
-        .filter(([key, value]) => Boolean(value))
-        .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
+    let finalValues = Object.entries(values)
+      .filter(([ , value ]) => Boolean(value))
+      .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
 
-    if(isUpdating) {
-      return props.put({ id: transactionDetail.item.id, ...finalValues})
+    finalValues.transacted_at = `${finalValues.transacted_at}T00:00:00`
+
+    if(isUpdating)
+      return props.put({ id: transactionDetail.item.id, ...finalValues })
         .then(_handleClose)
         .catch(parseResponseError)
-    } else {
+    else
       return props.post(finalValues)
         .then(_handleClose)
         .catch(parseResponseError)
-    }
   }
 
   const organizations = useMemo(() => getOrganizationOptions(), [ organization.status ])
@@ -81,90 +81,84 @@ const TransactionForm = props => {
   return (
     <Modal
       className='form-modal'
-      open={isOpened}
       onClose={_handleClose}
-      size='small'
-    >
+      open={isOpened}
+      size='small'>
       <Modal.Content>
         <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'New'} Transaction</Header>
+        {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Form.Group widths='equal'>
             <Field
-              name='seller'
+              autoComplete='off'
               component={FormField}
               control={Form.Select}
               disabled={isUpdating}
-              options={organizations}
               label='Seller Organization'
+              name='seller'
               onChange={_handleSellerChange}
+              options={organizations}
               placeholder='Select organization'
-              autoComplete='off'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
             <Field
-              name='buyer'
+              autoComplete='off'
               component={FormField}
               control={Form.Select}
               disabled={isUpdating}
-              options={organizations}
               label='Buyer Organization'
+              name='buyer'
+              options={organizations}
               placeholder='Select organization'
-              autoComplete='off'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='company'
+              autoComplete='off'
               component={FormField}
               control={Form.Select}
               disabled={isUpdating}
-              options={
-                isUpdating ? [{
-                  key: transactionDetail.item.company, value: transactionDetail.item.company, text : transactionDetail.item.company_legal_name
-                }] : companies
-              }
               label='Company'
+              name='company'
+              options={
+                isUpdating ? [ {
+                  key: transactionDetail.item.company, value: transactionDetail.item.company, text: transactionDetail.item.company_legal_name
+                } ] : companies
+              }
               placeholder='Select company'
-              autoComplete='off'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
             <Field
-              name='transacted_at'
               component={FormField}
               control={Form.Input}
               label='Transacted at'
-              type='date'
-            />
+              name='transacted_at'
+              type='date'/>
           </Form.Group>
 
           {
             error && (
-              <Form.Group widths="equal">
+              <Form.Group widths='equal'>
                 <Form.Field>
-                  <FormError message={error} />
+                  <FormError message={error}/>
                 </Form.Field>
               </Form.Group>
             )
           }
 
-          <Form.Group widths='equal' className='form-modal-actions'>
+          <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
                 content='Cancel'
                 disabled={submitting}
-                type="button"
                 onClick={_handleClose}
-              />
+                type='button'/>
               <Button
                 color='teal'
                 content={isUpdating ? 'Save changes' : 'Save'}
                 disabled={submitting}
-                loading={submitting}
-              />
+                loading={submitting}/>
             </Form.Field>
           </Form.Group>
         </Form>
@@ -176,7 +170,7 @@ const TransactionForm = props => {
 export default compose(
   withRouter,
   connect(
-    ({ organization, ...state}) => {
+    ({ organization, ...state }) => {
       const transactionDetail = transactionDetailDuck.selectors.detail(state)
       let initialValues = { ...transactionDetail.item }
 
@@ -187,31 +181,31 @@ export default compose(
         organization,
         transactionDetail,
         organizationCompany: organizationCompanyDuck.selectors.list(state),
-        initialValues,
+        initialValues
       }
     },
     {
-      getOrganization: organizationDetailDuck.creators.get,
+      getOrganization : organizationDetailDuck.creators.get,
       getOrganizations: organizationDuck.creators.get,
-      post: transactionDetailDuck.creators.post,
-      put: transactionDetailDuck.creators.put,
-      resetItem: transactionDetailDuck.creators.resetItem,
+      post            : transactionDetailDuck.creators.post,
+      put             : transactionDetailDuck.creators.put,
+      resetItem       : transactionDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
     form              : 'organization-transaction-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
-    validate: values  => {
+    validate          : values  => {
       const schema = {
         seller: YupFields.num_required,
-        buyer: YupFields.num_required.test(
+        buyer : YupFields.num_required.test(
           'is-different',
           '${path} must be different',
-          value => value !== values.seller,
+          value => value !== values.seller
         ),
-        company: YupFields.num_required,
-        transacted_at: YupFields.date,
+        company      : YupFields.num_required,
+        transacted_at: YupFields.date
       }
 
       return syncValidate(Yup.object().shape(schema), values)

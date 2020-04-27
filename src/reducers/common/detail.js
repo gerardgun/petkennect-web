@@ -50,28 +50,28 @@ export default {
     modes: { READ }
   }) => ({
     // Sagas creators
-    create: () => ({ type: CREATE }),
-    delete: (...ids) => ({
-      type: DELETE,
+    create  : () => ({ type: CREATE }),
+    'delete': (...ids) => ({
+      type             : DELETE,
       ids,
       [WAIT_FOR_ACTION]: DELETE_FULFILLED,
       [ERROR_ACTION]   : DELETE_FAILURE
     }),
-    get       : id => ({ type: GET, id }),
-    patch      : payload => ({
-      type: PATCH,
+    get  : id => ({ type: GET, id }),
+    patch: payload => ({
+      type             : PATCH,
       payload,
       [WAIT_FOR_ACTION]: PATCH_FULFILLED,
       [ERROR_ACTION]   : PATCH_FAILURE
     }),
-    post      : payload => ({
-      type: POST,
+    post: payload => ({
+      type             : POST,
       payload,
       [WAIT_FOR_ACTION]: POST_FULFILLED,
       [ERROR_ACTION]   : POST_FAILURE
     }),
-    put       : payload => ({
-      type: PUT,
+    put: payload => ({
+      type             : PUT,
       payload,
       [WAIT_FOR_ACTION]: PUT_FULFILLED,
       [ERROR_ACTION]   : PUT_FAILURE

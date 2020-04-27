@@ -1,6 +1,6 @@
 export default {
   base_uri: null,
-  row: {
+  row     : {
     // options: [
     //   {
     //     display_name: 'Edit',
@@ -54,6 +54,6 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
-    },
+    }
   ]
 }

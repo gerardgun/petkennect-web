@@ -13,14 +13,18 @@ import organizationDetailDuck from '@reducers/organization/detail'
 import organizationCompanyDuck from '@reducers/organization/company'
 import companyDetailDuck from '@reducers/company/detail'
 
-const CompanySection = ({ company, companyDetail, ...props }) => {
+const CompanySection = props => {
+  const {
+    // company,
+    companyDetail
+  } = props
+
   // For Modal Delete
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
-    if(companyDetail.status === 'POSTED' || companyDetail.status === 'PUT' || companyDetail.status === 'DELETED') {
+    if(companyDetail.status === 'POSTED' || companyDetail.status === 'PUT' || companyDetail.status === 'DELETED')
       props.getOrganization(props.match.params.organization)
-    }
   }, [ companyDetail.status ])
 
   const _handleAddBtnClick = () => {
@@ -34,7 +38,7 @@ const CompanySection = ({ company, companyDetail, ...props }) => {
   const _handleRowOptionClick = (option, item) => {
     if(option === 'delete') {
       props.setItem(item)
-      handleOpen()
+      _handleOpen()
     } else if(option === 'edit') {
       props.setItem(item, 'UPDATE')
     }
@@ -49,22 +53,24 @@ const CompanySection = ({ company, companyDetail, ...props }) => {
               <Header as='h2'>Companies</Header>
             </Grid.Column>
             <Grid.Column textAlign='right'>
-              <Button content='Download' disabled icon='cloud download' labelPosition='left' />
-              <Button color='teal' content='New Company' onClick={_handleAddBtnClick} />
+              <Button
+                content='Download' disabled icon='cloud download'
+                labelPosition='left'/>
+              <Button color='teal' content='New Company' onClick={_handleAddBtnClick}/>
             </Grid.Column>
           </Grid>
           <Table
             duck={organizationCompanyDuck}
             onRowClick={_handleRowClick}
-            onRowOptionClick={_handleRowOptionClick} />
+            onRowOptionClick={_handleRowOptionClick}/>
         </Segment>
 
-        <Form />
+        <Form/>
 
         <ModalDelete
           duckDetail={companyDetailDuck}
-          onClose={handleClose}
-          open={open} />
+          onClose={_handleClose}
+          open={open}/>
       </Grid.Column>
     </Grid>
   )
@@ -74,12 +80,12 @@ export default compose(
   withRouter,
   connect(
     state => ({
-      company: organizationCompanyDuck.selectors.list(state),
-      companyDetail: companyDetailDuck.selectors.detail(state),
+      company      : organizationCompanyDuck.selectors.list(state),
+      companyDetail: companyDetailDuck.selectors.detail(state)
     }),
     {
       getOrganization: organizationDetailDuck.creators.get,
-      setItem        : companyDetailDuck.creators.setItem,
+      setItem        : companyDetailDuck.creators.setItem
     }
   )
-)(CompanySection) 
+)(CompanySection)

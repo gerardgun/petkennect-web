@@ -7,8 +7,8 @@ import Table from '@components/Table'
 import Form from './Form'
 
 import clientDetailDuck from '@reducers/client/detail'
-import clientInteractionDuck from '@reducers/client/interaction'
-import clientInteractionDetailDuck from '@reducers/client/interaction/detail'
+import clientCommentDuck from '@reducers/client/comment'
+import clientCommentDetailDuck from '@reducers/client/comment/detail'
 
 const InteractionHistory = props => {
   const _handleAddBtnClick = () => {
@@ -27,15 +27,15 @@ const InteractionHistory = props => {
     <Tab.Pane className='form-primary-segment-tab'>
       <Grid className='segment-content-header'>
         <Grid.Column textAlign='right'>
-          <Button content='Download' icon='cloud download' labelPosition='left' />
-          <Button color='teal' content='Add Comment' onClick={_handleAddBtnClick} />
+          <Button content='Download' icon='cloud download' labelPosition='left'/>
+          <Button color='teal' content='Add Comment' onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>
       <Table
-        duck={clientInteractionDuck}
+        duck={clientCommentDuck}
         onRowClick={_handleRowClick}
-        onRowOptionClick={_handleRowOptionClick} />
-      <Form />
+        onRowOptionClick={_handleRowOptionClick}/>
+      <Form/>
     </Tab.Pane>
   )
 }
@@ -46,8 +46,7 @@ export default compose(
       clientDetail: clientDetailDuck.selectors.detail(state)
     }),
     {
-      setItem: clientInteractionDetailDuck.creators.setItem,
+      setItem: clientCommentDetailDuck.creators.setItem
     }
-  ),
+  )
 )(InteractionHistory)
-

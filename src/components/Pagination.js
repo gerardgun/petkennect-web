@@ -5,7 +5,7 @@ const Pagination = ({ from, to, total, ...rest }) => (
   <Grid columns={16} textAlign='center'>
     <Grid.Row>
       <Grid.Column width={16}>
-        <SemanticPagination size='mini' {...rest} />
+        <SemanticPagination size='mini' {...rest}/>
         <div style={{ paddingTop: '1rem', fontSize: '0.9rem' }}>
           <span>{from} to {to} of {total} records</span>
         </div>
@@ -15,8 +15,8 @@ const Pagination = ({ from, to, total, ...rest }) => (
 )
 
 Pagination.defaultProps = {
-  from: 1,
-  to: 10,
+  from : 1,
+  to   : 10,
   total: 100
 }
 

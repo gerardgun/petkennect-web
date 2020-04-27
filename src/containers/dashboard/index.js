@@ -24,15 +24,17 @@ const Dashboard = ({ client, ...props }) => {
             <Header as='h2'>Dashboard</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' icon='cloud download' labelPosition='left' />
-            <Button content='Filter' icon='filter' labelPosition='left' />
+            <Button content='Download' icon='cloud download' labelPosition='left'/>
+            <Button content='Filter' icon='filter' labelPosition='left'/>
             {
-              client.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' />)
+              client.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete'/>)
             }
-            <Button as={Link} color='teal' content='New Client' to='/client/create' />
+            <Button
+              as={Link} color='teal' content='New Client'
+              to='/client/create'/>
           </Grid.Column>
         </Grid>
-        <Table duck={clientDuck} />
+        <Table duck={clientDuck}/>
       </Segment>
     </Layout>
   )
@@ -47,4 +49,4 @@ export default compose(
       getClients: clientDuck.creators.get
     }
   )
-)(Dashboard) 
+)(Dashboard)

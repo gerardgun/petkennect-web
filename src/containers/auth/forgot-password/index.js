@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Container, Form, Grid, Image, Input, Header, Modal } from 'semantic-ui-react'
+import { Button, Container, Form, Grid, Image, Header, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -25,7 +25,6 @@ const ForgotPassword = props => {
     submitting
   } = props
 
-
   const _handleConfirmBtnClick = () => {
     props.history.replace('/auth/sign-in')
   }
@@ -38,8 +37,8 @@ const ForgotPassword = props => {
   return (
     <Container className='sign-in'>
       <Grid columns={2}>
-        <Grid.Column style={{ padding: '0 3rem', }}>
-          <Image src='/images/sign-in.svg' />
+        <Grid.Column style={{ padding: '0 3rem' }}>
+          <Image src='/images/sign-in.svg'/>
         </Grid.Column>
         <Grid.Column style={{ alignSelf: 'center' }}>
           <Header as='h2'>Forgot Password?</Header>
@@ -50,31 +49,31 @@ const ForgotPassword = props => {
             For security reasons, we do NOT store your password. So rest assured that we will never send your password via email.
           </p>
 
+          {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
             <Form.Group widths='equal'>
               <Field
-                name='email'
+                autoComplete='off'
+                autoFocus
                 component={FormField}
                 control={Form.Input}
                 label='Email'
+                name='email'
                 placeholder='Enter email'
-                type='email'
-                autoFocus
-                autoComplete='off'
-              />
+                type='email'/>
             </Form.Group>
 
             {
               error && (
-                <Form.Group widths="equal">
+                <Form.Group widths='equal'>
                   <Form.Field>
-                    <FormError message={error} />
+                    <FormError message={error}/>
                   </Form.Field>
                 </Form.Group>
               )
             }
 
-            <Form.Group widths="equal">
+            <Form.Group widths='equal'>
               <Form.Field>
                 <span style={{ color: 'grey' }}>Do you have a user?</span> <Link to='/auth/sign-in'>Sign in</Link>
               </Form.Field>
@@ -84,8 +83,7 @@ const ForgotPassword = props => {
                 control={Button}
                 disabled={pristine || submitting}
                 loading={auth.status === 'PATCHING'}
-                type='submit' 
-              >
+                type='submit'>
                 Send reset instructions
               </Form.Field>
             </Form.Group>
@@ -96,18 +94,17 @@ const ForgotPassword = props => {
 
       <Modal
         closeOnDimmerClick={false}
-        open={auth.status === 'PATCHED'}
         onClose={props.onClose}
-        size='tiny'
-      >
-        <Header content='Success!' />
+        open={auth.status === 'PATCHED'}
+        size='tiny'>
+        <Header content='Success!'/>
         <Modal.Content>
           <p>
             We have sent the instructions to your email.
           </p>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='teal' content='Ok' onClick={_handleConfirmBtnClick} />
+          <Button color='teal' content='Ok' onClick={_handleConfirmBtnClick}/>
         </Modal.Actions>
       </Modal>
     </Container>
@@ -119,7 +116,7 @@ export default compose(
     ({ auth }) => ({
       auth,
       initialValues: {
-        email: process.env.NODE_ENV === 'development' ? 'martincruz.cs@gmail.co' : '',
+        email: process.env.NODE_ENV === 'development' ? 'martincruz.cs@gmail.co' : ''
       }
     }),
     {
@@ -130,7 +127,7 @@ export default compose(
     form    : 'auth-forgot-password',
     validate: values => {
       const schema = {
-        email   : YupFields.email,
+        email: YupFields.email
       }
 
       return syncValidate(Yup.object().shape(schema), values)

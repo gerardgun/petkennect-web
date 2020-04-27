@@ -15,16 +15,16 @@ export default {
           ...(pagination.params || {})
         },
         meta: {
-          from     : 1,
-          to       : 15,
-          last_page: 10,
-          total    : 150
+          from       : null,
+          to         : null,
+          last_page  : null,
+          total_items: null
         }
       },
       ...rest
     }
   },
-  reducer: (state, action, { types, statuses }) =>
+  reducer: (state, action, { types }) =>
     produce(state, draft => {
       switch (action.type) {
         case types.GET: {
@@ -32,7 +32,7 @@ export default {
 
           // Pagination params to apply
           const paramKeys = Object.keys(payload)
-            .filter(key => ['page_size', 'page'].includes(key))
+            .filter(key => [ 'page_size', 'page' ].includes(key))
 
           const params = paramKeys.reduce((a, b) => ({ ...a, [b]: payload[b] }), {})
 

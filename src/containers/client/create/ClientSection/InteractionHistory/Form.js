@@ -14,15 +14,15 @@ import YupFields from '@lib/constants/yup-fields'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
-import clientInteractionDetailDuck from '@reducers/client/interaction/detail'
+import clientCommentDetailDuck from '@reducers/client/comment/detail'
 
-const staffMembers = _times(10, index => ({ key: index, value: index, text : `${faker.name.firstName()} ${faker.name.lastName()}` }))
+const staffMembers = _times(10, index => ({ key: index, value: index, text: `${faker.name.firstName()} ${faker.name.lastName()}` }))
 
-const InteractionForm = props => {
+const CommentForm = props => {
   const {
-    clientDetail,
-    clientInteractionDetail,
-    error, handleSubmit, pristine, reset, submitting // redux-form
+    // clientDetail,
+    clientCommentDetail,
+    error, handleSubmit, reset, submitting // redux-form
   } = props
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
@@ -30,109 +30,101 @@ const InteractionForm = props => {
   const _handleClose = () => props.resetItem()
 
   const _handleSubmit = values => {
-    if(isUpdating) {
-      return props.put({ id: clientInteractionDetail.item.id, ...values})
+    if(isUpdating)
+      return props.put({ id: clientCommentDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
-    } else {
+    else
       return props.post(values)
         .then(_handleClose)
         .catch(parseResponseError)
-    }
   }
 
-  const isOpened = useMemo(() => getIsOpened(clientInteractionDetail.mode), [ clientInteractionDetail.mode ])
-  const isUpdating = Boolean(clientInteractionDetail.item.id)
+  const isOpened = useMemo(() => getIsOpened(clientCommentDetail.mode), [ clientCommentDetail.mode ])
+  const isUpdating = Boolean(clientCommentDetail.item.id)
 
   return (
     <Modal
       className='form-modal'
-      open={isOpened}
       onClose={_handleClose}
-      size='small'
-    >
+      open={isOpened}
+      size='small'>
       <Modal.Content>
+        {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Create'} Comment</Header>
           <Form.Group widths='equal'>
             <Field
-              name='date'
+              autoComplete='off'
+              autoFocus
               component={FormField}
               control={Form.Input}
               label='Date *'
-              type='date'
-              autoFocus
-              autoComplete='off'
-            />
+              name='date'
+              type='date'/>
             <Field
-              name='location_id'
               component={FormField}
               control={Form.Select}
-              options={[
-                { key: 1, value: 1, text : '02-RH' },
-                { key: 2, value: 2, text : '03-VP' },
-                { key: 3, value: 3, text : '04-HH' },
-                { key: 4, value: 4, text : '05-SC' },
-              ]}
               label='Location *'
+              name='location_id'
+              options={[
+                { key: 1, value: 1, text: '02-RH' },
+                { key: 2, value: 2, text: '03-VP' },
+                { key: 3, value: 3, text: '04-HH' },
+                { key: 4, value: 4, text: '05-SC' }
+              ]}
               placeholder='Select location'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
             <Field
-              name='staff_id'
               component={FormField}
               control={Form.Select}
-              options={staffMembers}
               label='Staff *'
+              name='staff_id'
+              options={staffMembers}
               placeholder='Select staff'
               search
-              selectOnBlur={false}
-            />
+              selectOnBlur={false}/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='comment'
               component={FormField}
               control={Form.TextArea}
               label='Comments *'
-              placeholder='Enter comments'
-            />
+              name='comment'
+              placeholder='Enter comments'/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              name='follow_up'
               component={FormField}
               control={Form.Checkbox}
               label='Follow up'
-              type='checkbox'
-            />
+              name='follow_up'
+              type='checkbox'/>
           </Form.Group>
 
           {
             error && (
-              <Form.Group widths="equal">
+              <Form.Group widths='equal'>
                 <Form.Field>
-                  <FormError message={error} />
+                  <FormError message={error}/>
                 </Form.Field>
               </Form.Group>
             )
           }
 
-          <Form.Group widths='equal' className='form-modal-actions'>
+          <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
                 content='Cancel'
                 disabled={submitting}
-                type="button"
                 onClick={_handleClose}
-              />
+                type='button'/>
               <Button
                 color='teal'
                 content={isUpdating ? 'Save changes' : 'Create'}
                 disabled={submitting}
-                loading={submitting}
-              />
+                loading={submitting}/>
             </Form.Field>
           </Form.Group>
         </Form>
@@ -145,34 +137,34 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const clientInteractionDetail = clientInteractionDetailDuck.selectors.detail(state)
+      const clientCommentDetail = clientCommentDetailDuck.selectors.detail(state)
 
       return {
-        clientDetail: clientDetailDuck.selectors.detail(state),
-        clientInteractionDetail,
-        initialValues: clientInteractionDetail.item
+        clientDetail : clientDetailDuck.selectors.detail(state),
+        clientCommentDetail,
+        initialValues: clientCommentDetail.item
       }
     },
     {
-      post: clientInteractionDetailDuck.creators.post,
-      put: clientInteractionDetailDuck.creators.put,
-      resetItem: clientInteractionDetailDuck.creators.resetItem,
+      post     : clientCommentDetailDuck.creators.post,
+      put      : clientCommentDetailDuck.creators.put,
+      resetItem: clientCommentDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
-    form              : 'client-interaction-form',
+    form              : 'client-comment-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
-    validate: values  => {
+    validate          : values  => {
       const schema = {
-        date: YupFields.date,
+        date       : YupFields.date,
         location_id: YupFields.num_required,
-        staff_id: YupFields.num_required,
-        comment: YupFields.comment
+        staff_id   : YupFields.num_required,
+        comment    : YupFields.comment
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(InteractionForm)
+)(CommentForm)
 

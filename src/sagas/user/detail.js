@@ -1,10 +1,10 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Put } from '@lib/utils/http-client'
 
 import userDetailDuck from '@reducers/user/detail'
 
-const { types, selectors } = userDetailDuck
+const { types } = userDetailDuck
 
 function* deleteItem({ ids: [ id ] }) {
   try {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Divider, Form, Grid, Header, Segment, Tab } from 'semantic-ui-react'
+import { Button, Divider, Form, Grid, Header, Segment } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -14,43 +14,85 @@ import YupFields from '@lib/constants/yup-fields'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import organizationDetailDuck from '@reducers/organization/detail'
+import zipDuck from '@reducers/zip'
+import zipDetailDuck from '@reducers/zip/detail'
 
 export const formId = 'organization-create-information'
 
 const OrganizationSection = props => {
   const {
     organizationDetail,
-    error, handleSubmit, initialized, reset, // redux-form
+    zip,
+    zipDetail,
+    error, handleSubmit, reset, // redux-form
     history,
     match,
     post,
-    put,
+    put
   } = props
 
-  // For Modal Delete
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal() // For Modal Delete
+  const [ zipOptions, setZipOptions ] = useState([])
 
   useEffect(() => {
-    if(organizationDetail.status === 'DELETED') {
+    if(organizationDetail.status === 'DELETED')
       history.replace('/organization')
-    }
   }, [ organizationDetail.status ])
+
+  useEffect(() => {
+    if(zip.status === 'GOT')
+      setZipOptions(
+        zip.items.map((item, index) => ({
+          key  : index++,
+          value: item.id,
+          text : `${item.postal_code} - ${item.state_code}, ${item.city}`
+        }))
+      )
+  }, [ zip.status ])
+
+  useEffect(() => {
+    if(zipDetail.status === 'GOT') setZipOptionsFromDetail()
+  }, [ zipDetail.status ])
+
+  const setZipOptionsFromDetail = () => setZipOptions([
+    {
+      key  : 1,
+      value: zipDetail.item.id,
+      text : `${zipDetail.item.postal_code} - ${zipDetail.item.state_code}, ${zipDetail.item.city}`
+    }
+  ])
 
   const _handleSubmit = values => {
     const finalValues = Object.entries(values)
-        .filter(([key, value]) => Boolean(value))
-        .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
+      .filter(([ , value ]) => Boolean(value))
+      .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
 
-    if(isUpdating) {
-      return put({ id: organizationDetail.item.id, ...finalValues})
+    if(isUpdating)
+      return put({ id: organizationDetail.item.id, ...finalValues })
         .catch(parseResponseError)
-    } else {
+    else
       return post(finalValues)
         .then(payload => {
           history.replace(`/organization/${payload.id}`)
         })
         .catch(parseResponseError)
-    }
+  }
+
+  const _handleZipBlur = () => {
+    setZipOptionsFromDetail()
+  }
+
+  const _handleZipChange = zipId => {
+    props.setZip(
+      zip.items.find(item => item.id === zipId)
+    )
+  }
+
+  const _handleZipSearchChange = (e, data) => {
+    if(data.searchQuery.length > 3)
+      props.getZipes({
+        search: data.searchQuery
+      })
   }
 
   const isUpdating = match.params.organization
@@ -60,142 +102,137 @@ const OrganizationSection = props => {
     <>
       <Grid className='form-primary'>
         <Grid.Column width='thirteen'>
-          <Segment className='segment-content' padded='very' loading={organizationDetail.status === 'GETTING'}>
+          <Segment className='segment-content' loading={organizationDetail.status === 'GETTING'} padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
                 <Header as='h2'>{isUpdating ? 'Update' : 'Create'} Organization</Header>
               </Grid.Column>
             </Grid>
 
+            {/* eslint-disable-next-line react/jsx-handler-names */}
             <Form id={props.form} onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
               <Form.Group widths='equal'>
                 <Field
-                  name='legal_name'
+                  autoComplete='off'
                   component={FormField}
                   control={Form.Input}
                   label='Legal name *'
-                  placeholder='Enter legal name'
-                  autoComplete='off'
-                />
+                  name='legal_name'
+                  placeholder='Enter legal name'/>
                 <Field
-                  name='dba'
+                  autoComplete='off'
                   component={FormField}
                   control={Form.Input}
                   label='DBA'
-                  placeholder='Enter DBA'
-                  autoComplete='off'
-                />
+                  name='dba'
+                  placeholder='Enter DBA'/>
                 <Field
-                  name='tax_id'
+                  autoComplete='off'
                   component={FormField}
                   control={Form.Input}
                   label='Tax ID'
-                  placeholder='Enter tax ID'
-                  autoComplete='off'
-                />
+                  name='tax_id'
+                  placeholder='Enter tax ID'/>
               </Form.Group>
               <Form.Group widths='equal'>
                 <Field
-                  name='phone'
+                  autoComplete='off'
                   component={FormField}
                   control={Form.Input}
                   label='Phone'
-                  placeholder='Enter phone'
-                  autoComplete='off'
-                />
+                  name='phones[0]'
+                  placeholder='Enter phone'/>
                 <Field
-                  name='email'
+                  autoComplete='off'
                   component={FormField}
                   control={Form.Input}
                   label='Email'
+                  name='email'
                   placeholder='Enter email'
-                  type='email'
-                  autoComplete='off'
-                />
+                  type='email'/>
                 <Field
-                  name='website'
+                  autoComplete='off'
                   component={FormField}
                   control={Form.Input}
                   label='Website'
-                  placeholder='www.example.com'
-                  autoComplete='off'
-                />
+                  name='website'
+                  placeholder='www.example.com'/>
               </Form.Group>
               <Form.Group widths='equal'>
                 <Field
-                  name='address1'
+                  autoComplete='off'
                   component={FormField}
                   control={Form.Input}
                   label='Address 1'
-                  placeholder='Enter address'
-                  autoComplete='off'
-                />
+                  name='addresses[0]'
+                  placeholder='Enter address'/>
               </Form.Group>
               <Form.Group widths='equal'>
                 <Field
-                  name='address2'
+                  autoComplete='off'
                   component={FormField}
                   control={Form.Input}
                   label='Address 2'
-                  placeholder='Enter address'
-                  autoComplete='off'
-                />
+                  name='addresses[1]'
+                  placeholder='Enter address'/>
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Field>
+                  <Form.Input
+                    autoComplete='off'
+                    label='Country'
+                    readOnly
+                    value={zipDetail.item.country_code}/>
+                </Form.Field>
+                <Form.Field>
+                  <Form.Input
+                    autoComplete='off'
+                    label='State'
+                    readOnly
+                    value={zipDetail.item.state}/>
+                </Form.Field>
+                <Form.Field>
+                  <Form.Input
+                    autoComplete='off'
+                    label='City'
+                    readOnly
+                    value={zipDetail.item.city}/>
+                </Form.Field>
               </Form.Group>
               <Form.Group widths='equal'>
                 <Field
-                  name='country'
                   component={FormField}
-                  control={Form.Input}
-                  label='Country'
-                  placeholder='Enter country'
-                  autoComplete='off'
-                />
-                <Field
-                  name='state'
-                  component={FormField}
-                  control={Form.Input}
-                  label='State'
-                  placeholder='Enter state'
-                  autoComplete='off'
-                />
-                <Field
-                  name='city'
-                  component={FormField}
-                  control={Form.Input}
-                  label='City'
-                  placeholder='Enter city'
-                  autoComplete='off'
-                />
-              </Form.Group>
-              <Form.Group widths='equal'>
-                <Field
-                  name='zip'
-                  component={FormField}
-                  control={Form.Input}
+                  control={Form.Select}
+                  disabled={zip.status === 'GETTING'}
                   label='Zip'
-                  placeholder='Enter zip'
-                  autoComplete='off'
-                />
-                <Form.Field />
-                <Form.Field />
+                  loading={zip.status === 'GETTING'}
+                  name='zip_code'
+                  onBlur={_handleZipBlur}
+                  onChange={_handleZipChange}
+                  onSearchChange={_handleZipSearchChange}
+                  options={zipOptions}
+                  placeholder='Search zip'
+                  search
+                  selectOnBlur={false}/>
+                <Form.Field/>
+                <Form.Field/>
               </Form.Group>
               <Form.Group>
                 <Field
-                  name='logo'
                   component={FormField}
                   control={Form.Input}
                   label='Logo'
-                  type='file'
-                />
-                <Form.Field />
-                <Form.Field />
+                  name='logo'
+                  type='file'/>
+                <Form.Field/>
+                <Form.Field/>
               </Form.Group>
 
               {
                 error && (
-                  <Form.Group widths="equal">
+                  <Form.Group widths='equal'>
                     <Form.Field>
-                      <FormError message={error} />
+                      <FormError message={error}/>
                     </Form.Field>
                   </Form.Group>
                 )
@@ -204,31 +241,43 @@ const OrganizationSection = props => {
           </Segment>
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
-          <Button as={Link} content='Cancel' fluid size='large' to='/organization' />
+          <Button
+            as={Link} content='Cancel' fluid
+            size='large' to='/organization'/>
           <Button
             color='teal'
             content={isUpdating ? 'Update' : 'Create'}
             disabled={saving}
             fluid
-            loading={saving}
             form={props.form}
-            type='submit'
-            size='large' />
+            loading={saving}
+            size='large'
+            type='submit'/>
           {
-            isUpdating && (<Button color='google plus' content='Delete' fluid onClick={handleOpen} size='large' />)
+            isUpdating && (<Button
+              color='google plus' content='Delete' fluid
+              onClick={_handleOpen} size='large'/>)
           }
           <Divider horizontal>other</Divider>
-          <Button fluid icon='mail outline' content='Send Email' disabled />
-          <Button fluid icon='print' content='Print' disabled />
-          <Button fluid icon='file alternate outline' content='View Records' disabled />
-          <Button fluid icon='share square' content='Email Records' disabled />
+          <Button
+            content='Send Email' disabled fluid
+            icon='mail outline'/>
+          <Button
+            content='Print' disabled fluid
+            icon='print'/>
+          <Button
+            content='View Records' disabled fluid
+            icon='file alternate outline'/>
+          <Button
+            content='Email Records' disabled fluid
+            icon='share square'/>
         </Grid.Column>
       </Grid>
 
       <ModalDelete
         duckDetail={organizationDetailDuck}
-        onClose={handleClose}
-        open={open} />
+        onClose={_handleClose}
+        open={open}/>
     </>
   )
 }
@@ -236,8 +285,11 @@ const OrganizationSection = props => {
 export default compose(
   withRouter,
   connect(
-    state => {
+    ({ zip, ...state }) => {
       const organizationDetail = organizationDetailDuck.selectors.detail(state)
+      const zipDetail = zipDetailDuck.selectors.detail(state)
+
+      // Initial values for redux form
       let initialValues = { ...organizationDetail.item }
 
       delete initialValues.logo
@@ -245,21 +297,25 @@ export default compose(
 
       return {
         organizationDetail,
-        initialValues,
+        zip,
+        zipDetail,
+        initialValues
       }
     },
     {
-      post: organizationDetailDuck.creators.post,
-      put : organizationDetailDuck.creators.put,
+      getZipes: zipDuck.creators.get,
+      post    : organizationDetailDuck.creators.post,
+      put     : organizationDetailDuck.creators.put,
+      setZip  : zipDetailDuck.creators.setItem
     }
   ),
   reduxForm({
-    form            : formId,
+    form              : formId,
     destroyOnUnmount  : false,
     enableReinitialize: true,
-    validate        : values  => {
+    validate          : values  => {
       const schema = {
-        legal_name: YupFields.name,
+        legal_name: YupFields.name
       }
 
       return syncValidate(Yup.object().shape(schema), values)

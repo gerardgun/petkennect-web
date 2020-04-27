@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { submit, getFormSyncErrors, getFormValues } from 'redux-form'
+// import { submit, getFormSyncErrors, getFormValues } from 'redux-form'
 import { Button, Divider, Grid, Header, Segment, Tab } from 'semantic-ui-react'
 
 import ModalDelete from '@components/Modal/Delete'
@@ -10,20 +10,18 @@ import FormInformation from './FormInformation'
 import useModal from '@components/Modal/useModal'
 
 import clientDetailDuck from '@reducers/client/detail'
-import AdditionalInfoSection from './AdditionalInfoSection';
-import MediaSection from './MediaSection';
+import AdditionalInfoSection from './AdditionalInfoSection'
+import MediaSection from './MediaSection'
 
-
-const ClientSection = props => {
-  const {
-  } = props
-
-  const [ activeTabIndex, setTabActiveIndex ] = useState(0);
-  const [ open, { handleOpen, handleClose } ] = useModal();
+const ClientSection = () => {
+  const [ activeTabIndex, setTabActiveIndex ] = useState(0)
+  const [ open, { /* _handleOpen, */_handleClose } ] = useModal()
 
   const _handleSubmit = () => {
 
-  };
+  }
+
+  const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
 
   return (
     <>
@@ -39,64 +37,61 @@ const ClientSection = props => {
             <Tab
               activeIndex={activeTabIndex}
               menu={{ secondary: true, pointing: true }}
-              onTabChange={(e, { activeIndex }) => setTabActiveIndex(activeIndex)}
+              onTabChange={_handleTabChange}
               panes={[
                 {
                   menuItem: 'Information',
-                  render: () => <FormInformation onSubmit={_handleSubmit} />,
+                  render  : () => <FormInformation onSubmit={_handleSubmit}/>
                 },
                 {
                   menuItem: 'Additional Info',
-                  render: () => <AdditionalInfoSection />,
+                  render  : () => <AdditionalInfoSection/>
                 },
                 {
                   menuItem: 'Media',
-                  render: () => <MediaSection />,
-                },
-              ]} />
+                  render  : () => <MediaSection/>
+                }
+              ]}/>
           </Segment>
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
-          <Button as={Link} content='Cancel' fluid size='large' to='/client' />
+          <Button
+            as={Link} content='Cancel' fluid
+            size='large' to='/client'/>
           <Button
             color='teal'
-            content="Update Pet"
+            content='Update Pet'
             disabled={false}
             fluid
             loading={false}
-            onClick={() => null}
-            size='large' />
+            size='large'/>
           <Button
             color='google plus'
             content='Delete Pet'
             fluid
-            onClick={() => null}
-            size='large'
-          />
+            size='large'/>
 
           <Divider horizontal>Quick Actions</Divider>
 
-          <Button fluid icon='mail outline' content='Send Reminder' />
-          <Button fluid icon='print' content='Print' />
-          <Button fluid icon='file alternate outline' content='Incident Report' />
-          <Button fluid icon='share square' content='Go To Client' />
+          <Button content='Send Reminder' fluid icon='mail outline'/>
+          <Button content='Print' fluid icon='print'/>
+          <Button content='Incident Report' fluid icon='file alternate outline'/>
+          <Button content='Go To Client' fluid icon='share square'/>
         </Grid.Column>
       </Grid>
 
       <ModalDelete
         duckDetail={clientDetailDuck}
-        onClose={handleClose}
-        open={open} />
+        onClose={_handleClose}
+        open={open}/>
     </>
   )
-};
-
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps  = {
-};
+}
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    () => ({}),
+    {}
+  )
 )(ClientSection)

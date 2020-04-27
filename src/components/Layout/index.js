@@ -8,11 +8,11 @@ const Layout = ({ children }) => (
   <Container fluid>
     <Grid>
       <Grid.Column width='three'>
-        <Sidebar />
+        <Sidebar/>
       </Grid.Column>
       <Grid.Column width='thirteen'>
-        <AppBar />
-        
+        <AppBar/>
+
         {/* Content */}
         {children}
 

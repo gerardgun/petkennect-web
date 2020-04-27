@@ -13,23 +13,26 @@ import organizationCompanyDuck from '@reducers/organization/company'
 
 const OrganizationCreate = props => {
   const {
+    // organizationDetail,
     organizationCompany,
     match,
     destroy,
     get,
-    resetItem,
+    resetItem
   } = props
 
   useEffect(() => {
-    if(isUpdating) {
-      get(match.params.organization)
-    }
+    if(isUpdating) get(match.params.organization)
 
     return () => {
       destroy(formId)
       resetItem()
     }
   }, [])
+
+  const _handleTabChange = (e, { activeIndex }) => {
+    if(activeIndex === 0 && isUpdating) get(match.params.organization)
+  }
 
   const isUpdating = match.params.organization
 
@@ -38,20 +41,21 @@ const OrganizationCreate = props => {
       <Tab
         className='detail-view-tab'
         menu={{ color: 'teal', tabular: true, attached: true }}
+        onTabChange={_handleTabChange}
         panes={[
           {
             menuItem: { key: 'user', icon: 'factory', content: 'Organization Info' },
-            render: () => <OrganizationSection />,
+            render  : () => <OrganizationSection/>
           },
           {
             menuItem: (
-              <Menu.Item key='pets' disabled={!isUpdating}>
-                <Icon name='building' /> Companies <Label>{organizationCompany.items.length}</Label>
+              <Menu.Item disabled={!isUpdating} key='pets'>
+                <Icon name='building'/> Companies <Label>{organizationCompany.items.length}</Label>
               </Menu.Item>
             ),
-            render: () => <CompanySection />,
-          },
-        ]} />
+            render: () => <CompanySection/>
+          }
+        ]}/>
     </Layout>
   )
 }
@@ -59,13 +63,13 @@ const OrganizationCreate = props => {
 export default compose(
   connect(
     state => ({
-      organizationDetail: organizationDetailDuck.selectors.detail(state),
-      organizationCompany: organizationCompanyDuck.selectors.list(state),
+      organizationDetail : organizationDetailDuck.selectors.detail(state),
+      organizationCompany: organizationCompanyDuck.selectors.list(state)
     }),
     {
       destroy,
       get      : organizationDetailDuck.creators.get,
-      resetItem: organizationDetailDuck.creators.resetItem,
+      resetItem: organizationDetailDuck.creators.resetItem
     }
-  ),
+  )
 )(OrganizationCreate)

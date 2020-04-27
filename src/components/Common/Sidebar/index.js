@@ -8,10 +8,10 @@ const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
   const getWrapped = () => {
     return href ? ({
       component: Link,
-      props: { to: href }
+      props    : { to: href }
     }) : ({
       component: 'span',
-      props: {}
+      props    : {}
     })
   }
 
@@ -24,7 +24,7 @@ const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
     <div className={`sidebar-category ${active && 'active'}`} {...rest}>
       <WrappedComponent {...wrappedProps}>
         <div className='icon-container'>
-          <Icon name={icon} />
+          <Icon name={icon}/>
         </div> {label}
       </WrappedComponent>
       {

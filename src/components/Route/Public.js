@@ -11,20 +11,26 @@ const PublicRoute = ({ auth, check, get, component: Component, ...rest }) => {
   }, [])
 
   useEffect(() => {
-    if(auth.auth_status === 'EXISTS') {
+    if(auth.auth_status === 'EXISTS')
       get() // Recover auth user detail
-    }
   }, [ auth.auth_status ])
 
   useEffect(() => {
-    if(auth.status === 'GOT' || auth.status === 'SIGNED_IN') {
-      if(auth.item.is_superadmin) rest.history.replace('/organization')
-      else rest.history.replace('/dashboard')
-    }
+    if(auth.status === 'GOT' || auth.status === 'SIGNED_IN')
+      if(
+        (auth.item.is_superadmin && auth.item.companies.length > 0)
+        || (auth.item.companies.length > 1)
+      ) {
+        rest.history.replace('/auth/sso')
+      } else if(auth.item.is_superadmin) {
+        rest.history.replace('/organization')
+      } else {
+        rest.history.replace('/dashboard')
+      }
   }, [ auth.status ])
 
   return (
-    <Route {...rest} render={props => <Component {...props} />} />
+    <Route {...rest} render={props => <Component {...props}/>}/>
   )
 }
 

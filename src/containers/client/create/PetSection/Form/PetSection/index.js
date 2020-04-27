@@ -24,21 +24,20 @@ const PetSection = props => {
     destroy,
     submit,
     post,
-    put,
+    put
   } = props
 
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
-    if(petDetail.status === 'DELETED') {
+    if(petDetail.status === 'DELETED')
       _handleCancelBtnClick()
-    }
   }, [ petDetail.status ])
 
   const _handleCancelBtnClick = () => {
     // Verify if is modal
-    if(true) {
+    if(isModal) {
       props.resetItem()
       destroy(...formIds)
     } else {
@@ -48,13 +47,13 @@ const PetSection = props => {
 
   const _handleSaveBtnClick = () => {
     const formId = formIds[activeTabIndex]
-    
+
     if(formId) submit(formId)
     else _handleSubmit()
   }
 
   const _handleSubmit = () => {
-    const formIndexWithErrors = forms.findIndex((form, index) => {
+    const formIndexWithErrors = forms.findIndex(form => {
       return Object.keys(form.errors).length > 0
     })
 
@@ -69,20 +68,22 @@ const PetSection = props => {
         })
         .reduce((a, b) => ({ ...a, ...b }))
 
-      if(isUpdating) {
-        return put({ id: petDetail.item.id, ...values})
+      if(isUpdating)
+        return put({ id: petDetail.item.id, ...values })
           .catch(parseResponseError)
-      } else {
+      else
         return post(values)
           .then(_handleCancelBtnClick)
           .catch(parseResponseError)
-      }
     }
   }
 
+  const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
+
   // Verify if is modal
-  const isUpdating = true ? petDetail.item.id : match.params.pet
+  const isUpdating = isModal ? petDetail.item.id : match.params.pet
   const saving = [ 'POSTING', 'PUTTING' ].includes(petDetail.status)
+  const isModal = true
 
   return (
     <>
@@ -92,7 +93,7 @@ const PetSection = props => {
             <Grid className='segment-content-header'>
               <Grid.Column>
                 <Header as='h2'>
-                  <Image src='https://react.semantic-ui.com/images/wireframe/square-image.png' rounded />
+                  <Image rounded src='https://react.semantic-ui.com/images/wireframe/square-image.png'/>
                   {isUpdating ? 'Update' : 'Create'} Pet
                 </Header>
               </Grid.Column>
@@ -101,21 +102,23 @@ const PetSection = props => {
             <Tab
               activeIndex={activeTabIndex}
               menu={{ secondary: true, pointing: true }}
-              onTabChange={(e, { activeIndex }) => setTabActiveIndex(activeIndex)}
+              onTabChange={_handleTabChange}
               panes={[
                 {
                   menuItem: 'Information',
-                  render: () => <FormInformation onSubmit={_handleSubmit} />,
+                  render  : () => <FormInformation onSubmit={_handleSubmit}/>
                 },
                 {
                   menuItem: 'Additional Info',
-                  render: () => <FormAdditionalInfo onSubmit={_handleSubmit} />,
-                },
-              ]} />
+                  render  : () => <FormAdditionalInfo onSubmit={_handleSubmit}/>
+                }
+              ]}/>
           </Segment>
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
-          <Button content='Cancel' fluid onClick={_handleCancelBtnClick} size='large' />
+          <Button
+            content='Cancel' fluid onClick={_handleCancelBtnClick}
+            size='large'/>
           <Button
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Pet`}
@@ -123,21 +126,23 @@ const PetSection = props => {
             fluid
             loading={saving}
             onClick={_handleSaveBtnClick}
-            size='large' />
+            size='large'/>
           {
-            isUpdating && (<Button color='google plus' content='Delete Pet' fluid onClick={handleOpen} size='large' />)
+            isUpdating && (<Button
+              color='google plus' content='Delete Pet' fluid
+              onClick={_handleOpen} size='large'/>)
           }
           <Divider horizontal>other</Divider>
-          <Button fluid icon='bell outline' content='Send Reminder' />
-          <Button fluid icon='print' content='Print' />
-          <Button fluid icon='file alternate outline' content='Incident Report' />
+          <Button content='Send Reminder' fluid icon='bell outline'/>
+          <Button content='Print' fluid icon='print'/>
+          <Button content='Incident Report' fluid icon='file alternate outline'/>
         </Grid.Column>
       </Grid>
 
       <ModalDelete
         duckDetail={petDetailDuck}
-        onClose={handleClose}
-        open={open} />
+        onClose={_handleClose}
+        open={open}/>
     </>
   )
 }
@@ -151,14 +156,14 @@ export default compose(
         fields: Object.keys((state.form[formId] || {}).registeredFields || {}),
         values: getFormValues(formId)(state),
         errors: getFormSyncErrors(formId)(state)
-      })),
+      }))
     }),
     {
       destroy,
       submit,
       post     : petDetailDuck.creators.post,
       put      : petDetailDuck.creators.put,
-      resetItem: petDetailDuck.creators.resetItem,
+      resetItem: petDetailDuck.creators.resetItem
     }
-  ),
+  )
 )(PetSection)

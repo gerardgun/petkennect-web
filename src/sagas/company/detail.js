@@ -1,12 +1,11 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
-import _times from 'lodash/times'
-import faker from 'faker'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import companyDetailDuck from '@reducers/company/detail'
+import zipDetailDuck from '@reducers/zip/detail'
 
-const { types, selectors } = companyDetailDuck
+const { types } = companyDetailDuck
 
 function* deleteItem({ ids: [ id ] }) {
   try {
@@ -50,7 +49,7 @@ function* post({ payload }) {
     const result = yield call(Post, 'companies/', payload)
 
     yield put({
-      type: types.POST_FULFILLED,
+      type   : types.POST_FULFILLED,
       payload: result
     })
   } catch (e) {
@@ -76,9 +75,18 @@ function* _put({ payload }) {
   }
 }
 
+function* setItem({ item, mode }) {
+  if(mode === 'UPDATE')
+    yield put({
+      type: zipDetailDuck.types.GET,
+      id  : item.zip_code
+    })
+}
+
 export default [
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
-  takeEvery(types.PUT, _put)
+  takeEvery(types.PUT, _put),
+  takeEvery(types.SET_ITEM, setItem)
 ]

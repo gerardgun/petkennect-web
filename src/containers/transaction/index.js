@@ -12,18 +12,22 @@ import Form from '@containers/transaction/create'
 import transactionDuck from '@reducers/transaction'
 import transactionDetailDuck from '@reducers/transaction/detail'
 
-const Transaction = ({ transaction, transactionDetail, ...props }) => {
+const Transaction = props => {
+  const {
+    // transaction,
+    transactionDetail
+  } = props
+
   // For Modal Delete
-  const [ open, { handleOpen, handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     props.getTransactions()
   }, [])
 
   useEffect(() => {
-    if(transactionDetail.status === 'POSTED' || transactionDetail.status === 'PUT' || transactionDetail.status === 'DELETED') {
+    if(transactionDetail.status === 'POSTED' || transactionDetail.status === 'PUT' || transactionDetail.status === 'DELETED')
       props.getTransactions()
-    }
   }, [ transactionDetail.status ])
 
   const _handleAddBtnClick = () => {
@@ -37,7 +41,7 @@ const Transaction = ({ transaction, transactionDetail, ...props }) => {
   const _handleRowOptionClick = (option, item) => {
     if(option === 'delete') {
       props.setItem(item)
-      handleOpen()
+      _handleOpen()
     } else if(option === 'edit') {
       props.setItem(item, 'UPDATE')
     }
@@ -51,21 +55,23 @@ const Transaction = ({ transaction, transactionDetail, ...props }) => {
             <Header as='h2'>Transactions</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' disabled icon='cloud download' labelPosition='left' />
-            <Button color='teal' content='New Transaction' onClick={_handleAddBtnClick} />
+            <Button
+              content='Download' disabled icon='cloud download'
+              labelPosition='left'/>
+            <Button color='teal' content='New Transaction' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
         <Table
           duck={transactionDuck}
           onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick} />
+          onRowOptionClick={_handleRowOptionClick}/>
 
-        <Form />
+        <Form/>
 
         <ModalDelete
           duckDetail={transactionDetailDuck}
-          onClose={handleClose}
-          open={open} />
+          onClose={_handleClose}
+          open={open}/>
 
       </Segment>
     </Layout>
@@ -76,11 +82,11 @@ export default compose(
   connect(
     ({ transaction, ...state }) => ({
       transaction,
-      transactionDetail: transactionDetailDuck.selectors.detail(state),
+      transactionDetail: transactionDetailDuck.selectors.detail(state)
     }),
     {
       getTransactions: transactionDuck.creators.get,
-      setItem        : transactionDetailDuck.creators.setItem,
+      setItem        : transactionDetailDuck.creators.setItem
     }
   )
-)(Transaction) 
+)(Transaction)

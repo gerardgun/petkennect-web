@@ -16,9 +16,9 @@ const AppRouter = () => (
         {
           routes.map((route, index) => (
             route.auth === true ? (
-              <PrivateRoute key={index} {...route} />
+              <PrivateRoute key={index} {...route}/>
             ) : (
-              <PublicRoute key={index} {...route} />
+              <PublicRoute key={index} {...route}/>
             )
           ))
         }
@@ -29,7 +29,7 @@ const AppRouter = () => (
 
 const App = () => (
   <Provider store={store}>
-    <AppRouter />
+    <AppRouter/>
   </Provider>
 )
 

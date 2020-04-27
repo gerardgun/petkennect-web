@@ -1,6 +1,6 @@
 export default {
   base_uri: null,
-  row: {
+  row     : {
     options: [
       {
         display_name: 'Send reminder',
@@ -11,7 +11,7 @@ export default {
         display_name: 'View Incident Report',
         name        : 'view_incident_report',
         icon        : 'search plus'
-      },
+      }
     ]
   },
   columns: [
@@ -78,6 +78,6 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
-    },
+    }
   ]
 }

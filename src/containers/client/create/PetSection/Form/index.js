@@ -2,9 +2,8 @@ import React, { useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { destroy } from 'redux-form'
-import { Icon, Label, Menu, Modal, Tab } from 'semantic-ui-react'
+import { Label, Menu, Modal, Tab } from 'semantic-ui-react'
 
-import Layout from '@components/Layout'
 import PetSection, { formIds } from './PetSection'
 // import IncidentSection from './IncidentSection'
 
@@ -15,24 +14,23 @@ const PetCreate = props => {
     petDetail,
     match,
     destroy,
-    get,
+    get
     // getDocuments,
-    // getInteractions,
+    // getComments,
     // getPets,
   } = props
 
   useEffect(() => {
-    if(petDetail.status === 'SET_ITEM' && isUpdating) {
+    if(petDetail.status === 'SET_ITEM' && isUpdating)
       // Verify if is modal
-      if(true) {
+      if(isModal) {
         get(petDetail.item.id)
         // getDocuments()
-        // getInteractions()
+        // getComments()
         // getPets()
       } else {
         get(match.params.pet)
       }
-    }
   }, [ petDetail.status ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
@@ -44,14 +42,14 @@ const PetCreate = props => {
 
   const isOpened = useMemo(() => getIsOpened(petDetail.mode), [ petDetail.mode ])
   const isUpdating = Boolean(petDetail.item.id)
+  const isModal = true
 
   return (
     <Modal
       className='form-modal side tab'
-      open={isOpened}
       onClose={_handleClose}
-      size='large'
-    >
+      open={isOpened}
+      size='large'>
       <Modal.Content>
         <Tab
           className='detail-view-tab'
@@ -59,12 +57,12 @@ const PetCreate = props => {
           panes={[
             {
               menuItem: { key: 'pet', icon: 'paw', content: 'Pet Info' },
-              render: () => <PetSection />,
+              render  : () => <PetSection/>
             },
             {
               menuItem: { key: 'incidents', content: 'Incidents' },
               // render: () => <IncidentSection />,
-              render: () => <Tab.Pane>Tab Incident Content</Tab.Pane>,
+              render  : () => <Tab.Pane>Tab Incident Content</Tab.Pane>
             },
             {
               menuItem: (
@@ -72,7 +70,7 @@ const PetCreate = props => {
                   Training <Label>4</Label>
                 </Menu.Item>
               ),
-              render: () => <Tab.Pane>Tab 3 Content</Tab.Pane>,
+              render: () => <Tab.Pane>Tab 3 Content</Tab.Pane>
             },
             {
               menuItem: (
@@ -80,7 +78,7 @@ const PetCreate = props => {
                   Fitness <Label>4</Label>
                 </Menu.Item>
               ),
-              render: () => <Tab.Pane>Tab 4 Content</Tab.Pane>,
+              render: () => <Tab.Pane>Tab 4 Content</Tab.Pane>
             },
             {
               menuItem: (
@@ -88,7 +86,7 @@ const PetCreate = props => {
                   Day Camp <Label>4</Label>
                 </Menu.Item>
               ),
-              render: () => <Tab.Pane>Tab 5 Content</Tab.Pane>,
+              render: () => <Tab.Pane>Tab 5 Content</Tab.Pane>
             },
             {
               menuItem: (
@@ -96,7 +94,7 @@ const PetCreate = props => {
                   Boarding <Label>4</Label>
                 </Menu.Item>
               ),
-              render: () => <Tab.Pane>Tab 6 Content</Tab.Pane>,
+              render: () => <Tab.Pane>Tab 6 Content</Tab.Pane>
             },
             {
               menuItem: (
@@ -104,9 +102,9 @@ const PetCreate = props => {
                   Grooming <Label>4</Label>
                 </Menu.Item>
               ),
-              render: () => <Tab.Pane>Tab 7 Content</Tab.Pane>,
-            },
-          ]} />
+              render: () => <Tab.Pane>Tab 7 Content</Tab.Pane>
+            }
+          ]}/>
       </Modal.Content>
     </Modal>
   )
@@ -115,15 +113,15 @@ const PetCreate = props => {
 export default compose(
   connect(
     state => ({
-      petDetail: petDetailDuck.selectors.detail(state),
+      petDetail: petDetailDuck.selectors.detail(state)
     }),
     {
       destroy,
-      get            : petDetailDuck.creators.get,
-      resetItem      : petDetailDuck.creators.resetItem,
+      get      : petDetailDuck.creators.get,
+      resetItem: petDetailDuck.creators.resetItem
       // getDocuments   : clientDocumentDuck.creators.get,
-      // getInteractions: clientInteractionDuck.creators.get,
+      // getComments: clientCommentDuck.creators.get,
       // getPets        : clientPetDuck.creators.get,
     }
-  ),
+  )
 )(PetCreate)

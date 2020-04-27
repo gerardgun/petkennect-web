@@ -1,12 +1,12 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
 import userDuck from '@reducers/user'
 
-const { types, selectors } = userDuck
+const { types } = userDuck
 
-function* get({ payload }) {
+function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 

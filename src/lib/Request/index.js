@@ -31,8 +31,8 @@ export default class Request {
 
     if(this.token)
       config.headers = {
-        Authorization: `JWT ${this.token}`,
-        'Tenant-subdomain-prefix': 'joker',
+        Authorization            : `JWT ${this.token}`,
+        'Tenant-subdomain-prefix': 'joker'
       }
 
     this.instance = axios.create(config)
