@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -6,6 +6,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import _times from 'lodash/times'
+import faker from 'faker'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
@@ -14,21 +15,46 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import companyDetailDuck from '@reducers/company/detail'
 import organizationDuck from '@reducers/organization'
+import zipDuck from '@reducers/zip'
+import zipDetailDuck from '@reducers/zip/detail'
 
-const divisions = _times(10, index => ({ key: index, value: index, text: `Division ${index + 1}` }))
-const regions = _times(10, index => ({ key: index, value: index, text: `Region ${index + 1}` }))
+const divisions = _times(2, index => ({ key: index, value: index, text: `Division ${index + 1}` }))
+const regions = _times(2, index => ({ key: index, value: index, text: `Region ${index + 1}` }))
 
 const CompanyForm = props => {
   const {
     organization,
     companyDetail,
+    zip,
+    zipDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
+  const [ zipOptions, setZipOptions ] = useState([])
+
   useEffect(() => {
-    if(companyDetail.mode === 'CREATE' && organization.items.length === 0)
-      props.getOrganizations()
+    if(companyDetail.mode === 'CREATE') {
+      if(organization.items.length === 0)
+        props.getOrganizations()
+
+      setZipOptions([])
+    }
   }, [ companyDetail.mode ])
+
+  useEffect(() => {
+    if(zip.status === 'GOT')
+      setZipOptions(
+        zip.items.map((item, index) => ({
+          key  : index++,
+          value: item.id,
+          text : `${item.postal_code} - ${item.state_code}, ${item.city}`
+        }))
+      )
+  }, [ zip.status ])
+
+  useEffect(() => {
+    if(zipDetail.status === 'GOT') setZipOptionsFromDetail()
+  }, [ zipDetail.status ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
   const getOrganizationOptions = () => {
@@ -37,15 +63,25 @@ const CompanyForm = props => {
     }))
   }
 
+  const setZipOptionsFromDetail = () => setZipOptions([
+    {
+      key  : 1,
+      value: zipDetail.item.id,
+      text : `${zipDetail.item.postal_code} - ${zipDetail.item.state_code}, ${zipDetail.item.city}`
+    }
+  ])
+
   const _handleClose = () => {
     props.resetItem()
     reset()
   }
 
   const _handleSubmit = values => {
-    const finalValues = Object.entries(values)
-      .filter(([ , value ]) => Boolean(value))
+    let finalValues = Object.entries(values)
+      .filter(([ , value ]) => value !== null)
       .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
+
+    if(!('multilocation' in finalValues)) finalValues.multilocation = false
 
     if(isUpdating) {
       return props.put({ id: companyDetail.item.id, ...finalValues })
@@ -54,10 +90,36 @@ const CompanyForm = props => {
     } else {
       const payload = isFromCompanyModule ? finalValues : { ...finalValues, organization: props.match.params.organization }
 
-      return props.post(payload)
+      return props.post({
+        ...payload,
+        main_admin: {
+          status    : true,
+          title     : 1,
+          first_name: 'Jhon',
+          last_name : 'Doe',
+          email     : faker.internet.email()
+        }
+      })
         .then(_handleClose)
         .catch(parseResponseError)
     }
+  }
+
+  const _handleZipBlur = () => {
+    setZipOptionsFromDetail()
+  }
+
+  const _handleZipChange = zipId => {
+    props.setZip(
+      zip.items.find(item => item.id === zipId)
+    )
+  }
+
+  const _handleZipSearchChange = (e, data) => {
+    if(data.searchQuery.length > 3)
+      props.getZipes({
+        search: data.searchQuery
+      })
   }
 
   const organizations = useMemo(() => getOrganizationOptions(), [ organization.status ])
@@ -129,7 +191,7 @@ const CompanyForm = props => {
               component={FormField}
               control={Form.Input}
               label='Phone'
-              name='phone'
+              name='phones[0]'
               placeholder='Enter phone'/>
             <Field
               autoComplete='off'
@@ -148,7 +210,13 @@ const CompanyForm = props => {
               label='Website'
               name='website'
               placeholder='www.example.com'/>
-            <Form.Field/>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Form.Input}
+              label='Theme color'
+              name='theme_color'
+              placeholder='#000000'/>
             <Form.Field/>
           </Form.Group>
           <Form.Group widths='equal'>
@@ -157,7 +225,7 @@ const CompanyForm = props => {
               component={FormField}
               control={Form.Input}
               label='Address 1'
-              name='address1'
+              name='addresses[0]'
               placeholder='Enter address'/>
           </Form.Group>
           <Form.Group widths='equal'>
@@ -166,59 +234,62 @@ const CompanyForm = props => {
               component={FormField}
               control={Form.Input}
               label='Address 2'
-              name='address2'
+              name='addresses[1]'
               placeholder='Enter address'/>
           </Form.Group>
           <Form.Group widths='equal'>
-            <Field
-              autoComplete='off'
-              component={FormField}
-              control={Form.Input}
-              label='Country'
-              name='country'
-              placeholder='Enter country'/>
-            <Field
-              autoComplete='off'
-              component={FormField}
-              control={Form.Input}
-              label='State'
-              name='state'
-              placeholder='Enter state'/>
-            <Field
-              autoComplete='off'
-              component={FormField}
-              control={Form.Input}
-              label='City'
-              name='city'
-              placeholder='Enter city'/>
+            <Form.Field>
+              <Form.Input
+                autoComplete='off'
+                label='Country'
+                readOnly
+                value={zipDetail.item.country_code}/>
+            </Form.Field>
+            <Form.Field>
+              <Form.Input
+                autoComplete='off'
+                label='State'
+                readOnly
+                value={zipDetail.item.state}/>
+            </Form.Field>
+            <Form.Field>
+              <Form.Input
+                autoComplete='off'
+                label='City'
+                readOnly
+                value={zipDetail.item.city}/>
+            </Form.Field>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              autoComplete='off'
-              component={FormField}
-              control={Form.Input}
-              label='Zip'
-              name='zip'
-              placeholder='Enter zip'/>
-            <Field
-              autoComplete='off'
               component={FormField}
               control={Form.Select}
-              label='Division'
-              name='division_id'
-              options={divisions}
-              placeholder='Select division'
+              disabled={zip.status === 'GETTING'}
+              label='Zip'
+              loading={zip.status === 'GETTING'}
+              name='zip_code'
+              onBlur={_handleZipBlur}
+              onChange={_handleZipChange}
+              onSearchChange={_handleZipSearchChange}
+              options={zipOptions}
+              placeholder='Search zip'
               search
               selectOnBlur={false}/>
             <Field
-              autoComplete='off'
+              component={FormField}
+              control={Form.Select}
+              label='Division'
+              name='division'
+              options={divisions}
+              placeholder='Select division'
+              selectOnBlur={false}/>
+            <Field
               component={FormField}
               control={Form.Select}
               label='Region'
-              name='region_id'
+              name='region'
               options={regions}
               placeholder='Select region'
-              search
               selectOnBlur={false}/>
           </Form.Group>
           <Form.Group>
@@ -273,8 +344,10 @@ const CompanyForm = props => {
 export default compose(
   withRouter,
   connect(
-    ({ organization, ...state }) => {
+    ({ organization, zip, ...state }) => {
       const companyDetail = companyDetailDuck.selectors.detail(state)
+      const zipDetail = zipDetailDuck.selectors.detail(state)
+
       let initialValues = { ...companyDetail.item }
 
       delete initialValues.logo
@@ -283,14 +356,18 @@ export default compose(
       return {
         organization,
         companyDetail,
+        zip,
+        zipDetail,
         initialValues
       }
     },
     {
       getOrganizations: organizationDuck.creators.get,
+      getZipes        : zipDuck.creators.get,
       post            : companyDetailDuck.creators.post,
       put             : companyDetailDuck.creators.put,
-      resetItem       : companyDetailDuck.creators.resetItem
+      resetItem       : companyDetailDuck.creators.resetItem,
+      setZip          : zipDetailDuck.creators.setItem
     }
   ),
   reduxForm({
@@ -301,7 +378,8 @@ export default compose(
       const schema = {
         organization    : YupFields.num_required,
         legal_name      : YupFields.name,
-        subdomain_prefix: YupFields.subdomain
+        subdomain_prefix: YupFields.subdomain,
+        theme_color     : YupFields.theme_color
       }
 
       return syncValidate(Yup.object().shape(schema), values)

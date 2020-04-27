@@ -91,10 +91,10 @@ const FormInformation = props => {
             label='Status'
             name='status'
             options={[
-              { key: 1, value: 'DECLINED', text: 'DECLINED' },
-              { key: 2, value: 'GREEN', text: 'GREEN' },
-              { key: 3, value: 'RED', text: 'RED - See notes' },
-              { key: 4, value: 'VIP-CLIENT', text: 'VIP CLIENT' }
+              { key: 1, value: 1, text: 'DECLINED' },
+              { key: 2, value: 2, text: 'GREEN' },
+              { key: 3, value: 3, text: 'RED - See notes' },
+              { key: 4, value: 4, text: 'VIP CLIENT' }
             ]}
             placeholder='Select status'
             selectOnBlur={false}/>
@@ -105,7 +105,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Address'
-            name='address'
+            name='addresses[0]'
             placeholder='Enter address'/>
         </Form.Group>
         <Form.Group widths='equal'>

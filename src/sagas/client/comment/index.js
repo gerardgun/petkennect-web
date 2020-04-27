@@ -4,9 +4,9 @@ import _times from 'lodash/times'
 
 // import { Get } from '@lib/utils/http-client'
 
-import clientInteractionDuck from '@reducers/client/interaction'
+import clientCommentDuck from '@reducers/client/comment'
 
-const { types, selectors } = clientInteractionDuck
+const { types, selectors } = clientCommentDuck
 
 function* get(/* { payload } */) {
   try {

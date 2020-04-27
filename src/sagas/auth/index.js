@@ -37,15 +37,11 @@ function* get() {
 
     /* BEGIN Delete */
     const user = localStorage.getItem('@auth_user')
-    const { is_staff, ...parsedUser } = JSON.parse(user)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: {
-          ...parsedUser,
-          is_superadmin: is_staff
-        }
+        item: JSON.parse(user)
       }
     })
     /* END Delete */
@@ -110,7 +106,8 @@ function* signIn({ payload }) {
   try {
     yield put({ type: types.SIGN_IN_PENDING })
 
-    const { token, ...user } = yield call(Post, 'login/', payload)
+    const { token, is_staff, ...rest } = yield call(Post, 'login/', payload)
+    const user = { ...rest, is_superadmin: is_staff }
 
     // Setting the token
     localStorage.setItem('@token', token)
@@ -121,7 +118,12 @@ function* signIn({ payload }) {
     localStorage.setItem('@auth_user', JSON.stringify(user))
     // END Delete
 
-    yield put({ type: types.SIGN_IN_FULFILLED })
+    yield put({
+      type   : types.SIGN_IN_FULFILLED,
+      payload: {
+        item: user
+      }
+    })
   } catch (e) {
     yield put({
       type : types.SIGN_IN_FAILURE,

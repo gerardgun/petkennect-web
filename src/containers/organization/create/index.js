@@ -13,6 +13,7 @@ import organizationCompanyDuck from '@reducers/organization/company'
 
 const OrganizationCreate = props => {
   const {
+    // organizationDetail,
     organizationCompany,
     match,
     destroy,
@@ -21,14 +22,17 @@ const OrganizationCreate = props => {
   } = props
 
   useEffect(() => {
-    if(isUpdating)
-      get(match.params.organization)
+    if(isUpdating) get(match.params.organization)
 
     return () => {
       destroy(formId)
       resetItem()
     }
   }, [])
+
+  const _handleTabChange = (e, { activeIndex }) => {
+    if(activeIndex === 0 && isUpdating) get(match.params.organization)
+  }
 
   const isUpdating = match.params.organization
 
@@ -37,6 +41,7 @@ const OrganizationCreate = props => {
       <Tab
         className='detail-view-tab'
         menu={{ color: 'teal', tabular: true, attached: true }}
+        onTabChange={_handleTabChange}
         panes={[
           {
             menuItem: { key: 'user', icon: 'factory', content: 'Organization Info' },

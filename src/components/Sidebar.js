@@ -139,7 +139,7 @@ const AppSidebar = ({ auth, ...props }) => {
 
   return (
     <Sidebar>
-      <Image size='small' src='/images/logo.svg' style={{ margin: '3rem 0rem' }}/>
+      <Image src='/images/logo.png' style={{ padding: '3rem 1rem' }}/>
       {
         categoriesToRender.map(({ subcategories = null, ...rest }, index) => {
           const rgx = new RegExp(`^${rest.href}.*`)

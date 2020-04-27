@@ -16,7 +16,10 @@ function* get(/* { payload } */) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: transactions
+        items: transactions.map(item => ({
+          ...item,
+          transacted_at: item.transacted_at.split('T')[0]
+        }))
       }
     })
   } catch (e) {

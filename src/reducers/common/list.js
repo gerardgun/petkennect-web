@@ -6,7 +6,7 @@ export default {
 
     return {
       filters: {
-        q: '',
+        search: '',
         ...filters
       },
       items : [],

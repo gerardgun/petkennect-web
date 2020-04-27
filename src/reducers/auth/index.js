@@ -66,6 +66,8 @@ export default base({
 
           return
         case types.SIGN_IN_FULFILLED:
+          for (let key in action.payload) draft[key] = action.payload[key]
+
           draft.status = statuses.SIGNED_IN
 
           return

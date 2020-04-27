@@ -76,7 +76,7 @@ const ClientSection = props => {
         .reduce((a, b) => ({ ...a, ...b }))
 
       let finalValues = Object.entries(values)
-        .filter(([ , value ]) => Boolean(value))
+        .filter(([ , value ]) => value !== null)
         .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
 
       // For checkbox values
@@ -86,7 +86,7 @@ const ClientSection = props => {
       }
 
       if(isUpdating)
-        return put({ id: clientDetail.item.id, ...finalValues })
+        return put({ id: clientDetail.item.id, user: clientDetail.item.user, ...finalValues })
           .catch(parseResponseError)
       else
         return post(finalValues)

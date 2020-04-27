@@ -3,6 +3,7 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import companyDetailDuck from '@reducers/company/detail'
+import zipDetailDuck from '@reducers/zip/detail'
 
 const { types } = companyDetailDuck
 
@@ -74,9 +75,18 @@ function* _put({ payload }) {
   }
 }
 
+function* setItem({ item, mode }) {
+  if(mode === 'UPDATE')
+    yield put({
+      type: zipDetailDuck.types.GET,
+      id  : item.zip_code
+    })
+}
+
 export default [
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
-  takeEvery(types.PUT, _put)
+  takeEvery(types.PUT, _put),
+  takeEvery(types.SET_ITEM, setItem)
 ]

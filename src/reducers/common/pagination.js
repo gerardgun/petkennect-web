@@ -15,10 +15,10 @@ export default {
           ...(pagination.params || {})
         },
         meta: {
-          from     : 1,
-          to       : 15,
-          last_page: 10,
-          total    : 150
+          from       : null,
+          to         : null,
+          last_page  : null,
+          total_items: null
         }
       },
       ...rest

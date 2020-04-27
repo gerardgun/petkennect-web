@@ -4,6 +4,7 @@ import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import organizationDetailDuck from '@reducers/organization/detail'
 import organizationCompanyDuck from '@reducers/organization/company'
+import zipDetailDuck from '@reducers/zip/detail'
 
 const { types } = organizationDetailDuck
 
@@ -42,6 +43,12 @@ function* get({ id }) {
         items: companies
       }
     })
+
+    if(organization.zip_code)
+      yield put({
+        type: zipDetailDuck.types.GET,
+        id  : organization.zip_code
+      })
   } catch (e) {
     yield put({
       type : types.GET_FAILURE,

@@ -16,7 +16,7 @@ const PetCreate = props => {
     destroy,
     get
     // getDocuments,
-    // getInteractions,
+    // getComments,
     // getPets,
   } = props
 
@@ -26,7 +26,7 @@ const PetCreate = props => {
       if(isModal) {
         get(petDetail.item.id)
         // getDocuments()
-        // getInteractions()
+        // getComments()
         // getPets()
       } else {
         get(match.params.pet)
@@ -120,7 +120,7 @@ export default compose(
       get      : petDetailDuck.creators.get,
       resetItem: petDetailDuck.creators.resetItem
       // getDocuments   : clientDocumentDuck.creators.get,
-      // getInteractions: clientInteractionDuck.creators.get,
+      // getComments: clientCommentDuck.creators.get,
       // getPets        : clientPetDuck.creators.get,
     }
   )

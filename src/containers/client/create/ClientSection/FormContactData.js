@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Form, Tab } from 'semantic-ui-react'
@@ -15,12 +16,15 @@ import clientDetailDuck from '@reducers/client/detail'
 const FormContactData = props => {
   const {
     clientDetail,
+    match,
     error, handleSubmit, initialized, reset // redux-form
   } = props
 
   useEffect(() => {
     if(clientDetail.item.id && !initialized) props.initialize(clientDetail.item)
   }, [ clientDetail.status ])
+
+  const isUpdating = match.params.client
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>
@@ -69,6 +73,7 @@ const FormContactData = props => {
             label='Email *'
             name='email'
             placeholder='Enter email'
+            readOnly={isUpdating}
             type='email'/>
           <Field
             autoComplete='off'
@@ -86,11 +91,11 @@ const FormContactData = props => {
             label='Referred'
             name='referred'
             options={[
-              { key: 1, value: 'DRIVE-BY', text: 'Drive-by' },
-              { key: 2, value: 'EVENT', text: 'Event' },
-              { key: 3, value: 'INTERNET-SEARCH', text: 'Internet search' },
-              { key: 4, value: 'REFERRAL', text: 'Referral' },
-              { key: 5, value: 'OTHER', text: 'Other' }
+              { key: 1, value: 1, text: 'Drive-by' },
+              { key: 2, value: 2, text: 'Event' },
+              { key: 3, value: 3, text: 'Internet search' },
+              { key: 4, value: 4, text: 'Referral' },
+              { key: 5, value: 5, text: 'Other' }
             ]}
             placeholder='Select an option'
             selectOnBlur={false}/>
@@ -121,6 +126,7 @@ const FormContactData = props => {
 }
 
 export default compose(
+  withRouter,
   connect(
     state => ({
       clientDetail: clientDetailDuck.selectors.detail(state)

@@ -50,6 +50,10 @@ body {
       border-color: #00b5ad;
     }
 
+    input:read-only {
+      background-color: #00000008;
+    }
+
     .ui.toggle.checkbox {
       input:checked~.box:before,
       input:checked~label:before {

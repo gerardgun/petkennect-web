@@ -57,9 +57,11 @@ const TransactionForm = props => {
   }
 
   const _handleSubmit = values => {
-    const finalValues = Object.entries(values)
+    let finalValues = Object.entries(values)
       .filter(([ , value ]) => Boolean(value))
       .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
+
+    finalValues.transacted_at = `${finalValues.transacted_at}T00:00:00`
 
     if(isUpdating)
       return props.put({ id: transactionDetail.item.id, ...finalValues })

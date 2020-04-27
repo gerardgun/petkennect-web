@@ -14,14 +14,14 @@ import YupFields from '@lib/constants/yup-fields'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
-import clientInteractionDetailDuck from '@reducers/client/interaction/detail'
+import clientCommentDetailDuck from '@reducers/client/comment/detail'
 
 const staffMembers = _times(10, index => ({ key: index, value: index, text: `${faker.name.firstName()} ${faker.name.lastName()}` }))
 
-const InteractionForm = props => {
+const CommentForm = props => {
   const {
     // clientDetail,
-    clientInteractionDetail,
+    clientCommentDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
@@ -31,7 +31,7 @@ const InteractionForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ id: clientInteractionDetail.item.id, ...values })
+      return props.put({ id: clientCommentDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -40,8 +40,8 @@ const InteractionForm = props => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(clientInteractionDetail.mode), [ clientInteractionDetail.mode ])
-  const isUpdating = Boolean(clientInteractionDetail.item.id)
+  const isOpened = useMemo(() => getIsOpened(clientCommentDetail.mode), [ clientCommentDetail.mode ])
+  const isUpdating = Boolean(clientCommentDetail.item.id)
 
   return (
     <Modal
@@ -137,22 +137,22 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const clientInteractionDetail = clientInteractionDetailDuck.selectors.detail(state)
+      const clientCommentDetail = clientCommentDetailDuck.selectors.detail(state)
 
       return {
         clientDetail : clientDetailDuck.selectors.detail(state),
-        clientInteractionDetail,
-        initialValues: clientInteractionDetail.item
+        clientCommentDetail,
+        initialValues: clientCommentDetail.item
       }
     },
     {
-      post     : clientInteractionDetailDuck.creators.post,
-      put      : clientInteractionDetailDuck.creators.put,
-      resetItem: clientInteractionDetailDuck.creators.resetItem
+      post     : clientCommentDetailDuck.creators.post,
+      put      : clientCommentDetailDuck.creators.put,
+      resetItem: clientCommentDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
-    form              : 'client-interaction-form',
+    form              : 'client-comment-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
     validate          : values  => {
@@ -166,5 +166,5 @@ export default compose(
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(InteractionForm)
+)(CommentForm)
 

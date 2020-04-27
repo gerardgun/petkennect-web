@@ -11,7 +11,7 @@ import PetSection from './PetSection'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientDocumentDuck from '@reducers/client/document'
-import clientInteractionDuck from '@reducers/client/interaction'
+import clientCommentDuck from '@reducers/client/comment'
 import clientPetDuck from '@reducers/client/pet'
 
 const ClientCreate = props => {
@@ -21,7 +21,7 @@ const ClientCreate = props => {
     get,
     resetItem,
     getDocuments,
-    getInteractions,
+    getComments,
     getPets
   } = props
 
@@ -29,7 +29,7 @@ const ClientCreate = props => {
     if(isUpdating) {
       get(match.params.client)
       getDocuments()
-      getInteractions()
+      getComments()
       getPets()
     }
 
@@ -91,11 +91,11 @@ export default compose(
     }),
     {
       destroy,
-      get            : clientDetailDuck.creators.get,
-      resetItem      : clientDetailDuck.creators.resetItem,
-      getDocuments   : clientDocumentDuck.creators.get,
-      getInteractions: clientInteractionDuck.creators.get,
-      getPets        : clientPetDuck.creators.get
+      get         : clientDetailDuck.creators.get,
+      resetItem   : clientDetailDuck.creators.resetItem,
+      getDocuments: clientDocumentDuck.creators.get,
+      getComments : clientCommentDuck.creators.get,
+      getPets     : clientPetDuck.creators.get
     }
   )
 )(ClientCreate)

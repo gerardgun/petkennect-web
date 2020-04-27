@@ -7,8 +7,8 @@ import Table from '@components/Table'
 import Form from './Form'
 
 import clientDetailDuck from '@reducers/client/detail'
-import clientInteractionDuck from '@reducers/client/interaction'
-import clientInteractionDetailDuck from '@reducers/client/interaction/detail'
+import clientCommentDuck from '@reducers/client/comment'
+import clientCommentDetailDuck from '@reducers/client/comment/detail'
 
 const InteractionHistory = props => {
   const _handleAddBtnClick = () => {
@@ -32,7 +32,7 @@ const InteractionHistory = props => {
         </Grid.Column>
       </Grid>
       <Table
-        duck={clientInteractionDuck}
+        duck={clientCommentDuck}
         onRowClick={_handleRowClick}
         onRowOptionClick={_handleRowOptionClick}/>
       <Form/>
@@ -46,7 +46,7 @@ export default compose(
       clientDetail: clientDetailDuck.selectors.detail(state)
     }),
     {
-      setItem: clientInteractionDetailDuck.creators.setItem
+      setItem: clientCommentDetailDuck.creators.setItem
     }
   )
 )(InteractionHistory)

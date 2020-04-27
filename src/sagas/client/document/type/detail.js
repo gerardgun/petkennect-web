@@ -1,11 +1,10 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import faker from 'faker'
 
 // import { Delete, Get, Post, Put } from '@lib/utils/http-client'
 
-import clientInteractionDetailDuck from '@reducers/client/interaction/detail'
+import clientDocumentTypeDetailDuck from '@reducers/client/document/type/detail'
 
-const { types } = clientInteractionDetailDuck
+const { types } = clientDocumentTypeDetailDuck
 
 function* deleteItem(/* { ids } */) {
   try {
@@ -34,14 +33,7 @@ function* get(/* { id } */) {
       type   : types.GET_FULFILLED,
       payload: {
         item: {
-          id         : 1,
-          date       : faker.date.recent().toISOString().split('T')[0],
-          staff_id   : 1,
-          staff      : faker.name.firstName() + ' ' + faker.name.lastName(),
-          location_id: 1,
-          location   : '02-RH',
-          comment    : faker.lorem.paragraph(),
-          follow_up  : faker.random.boolean()
+          id: 1
         }
       }
     })

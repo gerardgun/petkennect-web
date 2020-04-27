@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -14,12 +14,16 @@ import YupFields from '@lib/constants/yup-fields'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import organizationDetailDuck from '@reducers/organization/detail'
+import zipDuck from '@reducers/zip'
+import zipDetailDuck from '@reducers/zip/detail'
 
 export const formId = 'organization-create-information'
 
 const OrganizationSection = props => {
   const {
     organizationDetail,
+    zip,
+    zipDetail,
     error, handleSubmit, reset, // redux-form
     history,
     match,
@@ -27,13 +31,36 @@ const OrganizationSection = props => {
     put
   } = props
 
-  // For Modal Delete
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal() // For Modal Delete
+  const [ zipOptions, setZipOptions ] = useState([])
 
   useEffect(() => {
     if(organizationDetail.status === 'DELETED')
       history.replace('/organization')
   }, [ organizationDetail.status ])
+
+  useEffect(() => {
+    if(zip.status === 'GOT')
+      setZipOptions(
+        zip.items.map((item, index) => ({
+          key  : index++,
+          value: item.id,
+          text : `${item.postal_code} - ${item.state_code}, ${item.city}`
+        }))
+      )
+  }, [ zip.status ])
+
+  useEffect(() => {
+    if(zipDetail.status === 'GOT') setZipOptionsFromDetail()
+  }, [ zipDetail.status ])
+
+  const setZipOptionsFromDetail = () => setZipOptions([
+    {
+      key  : 1,
+      value: zipDetail.item.id,
+      text : `${zipDetail.item.postal_code} - ${zipDetail.item.state_code}, ${zipDetail.item.city}`
+    }
+  ])
 
   const _handleSubmit = values => {
     const finalValues = Object.entries(values)
@@ -49,6 +76,23 @@ const OrganizationSection = props => {
           history.replace(`/organization/${payload.id}`)
         })
         .catch(parseResponseError)
+  }
+
+  const _handleZipBlur = () => {
+    setZipOptionsFromDetail()
+  }
+
+  const _handleZipChange = zipId => {
+    props.setZip(
+      zip.items.find(item => item.id === zipId)
+    )
+  }
+
+  const _handleZipSearchChange = (e, data) => {
+    if(data.searchQuery.length > 3)
+      props.getZipes({
+        search: data.searchQuery
+      })
   }
 
   const isUpdating = match.params.organization
@@ -96,7 +140,7 @@ const OrganizationSection = props => {
                   component={FormField}
                   control={Form.Input}
                   label='Phone'
-                  name='phone'
+                  name='phones[0]'
                   placeholder='Enter phone'/>
                 <Field
                   autoComplete='off'
@@ -120,7 +164,7 @@ const OrganizationSection = props => {
                   component={FormField}
                   control={Form.Input}
                   label='Address 1'
-                  name='address1'
+                  name='addresses[0]'
                   placeholder='Enter address'/>
               </Form.Group>
               <Form.Group widths='equal'>
@@ -129,40 +173,47 @@ const OrganizationSection = props => {
                   component={FormField}
                   control={Form.Input}
                   label='Address 2'
-                  name='address2'
+                  name='addresses[1]'
                   placeholder='Enter address'/>
               </Form.Group>
               <Form.Group widths='equal'>
-                <Field
-                  autoComplete='off'
-                  component={FormField}
-                  control={Form.Input}
-                  label='Country'
-                  name='country'
-                  placeholder='Enter country'/>
-                <Field
-                  autoComplete='off'
-                  component={FormField}
-                  control={Form.Input}
-                  label='State'
-                  name='state'
-                  placeholder='Enter state'/>
-                <Field
-                  autoComplete='off'
-                  component={FormField}
-                  control={Form.Input}
-                  label='City'
-                  name='city'
-                  placeholder='Enter city'/>
+                <Form.Field>
+                  <Form.Input
+                    autoComplete='off'
+                    label='Country'
+                    readOnly
+                    value={zipDetail.item.country_code}/>
+                </Form.Field>
+                <Form.Field>
+                  <Form.Input
+                    autoComplete='off'
+                    label='State'
+                    readOnly
+                    value={zipDetail.item.state}/>
+                </Form.Field>
+                <Form.Field>
+                  <Form.Input
+                    autoComplete='off'
+                    label='City'
+                    readOnly
+                    value={zipDetail.item.city}/>
+                </Form.Field>
               </Form.Group>
               <Form.Group widths='equal'>
                 <Field
-                  autoComplete='off'
                   component={FormField}
-                  control={Form.Input}
+                  control={Form.Select}
+                  disabled={zip.status === 'GETTING'}
                   label='Zip'
-                  name='zip'
-                  placeholder='Enter zip'/>
+                  loading={zip.status === 'GETTING'}
+                  name='zip_code'
+                  onBlur={_handleZipBlur}
+                  onChange={_handleZipChange}
+                  onSearchChange={_handleZipSearchChange}
+                  options={zipOptions}
+                  placeholder='Search zip'
+                  search
+                  selectOnBlur={false}/>
                 <Form.Field/>
                 <Form.Field/>
               </Form.Group>
@@ -234,8 +285,11 @@ const OrganizationSection = props => {
 export default compose(
   withRouter,
   connect(
-    state => {
+    ({ zip, ...state }) => {
       const organizationDetail = organizationDetailDuck.selectors.detail(state)
+      const zipDetail = zipDetailDuck.selectors.detail(state)
+
+      // Initial values for redux form
       let initialValues = { ...organizationDetail.item }
 
       delete initialValues.logo
@@ -243,12 +297,16 @@ export default compose(
 
       return {
         organizationDetail,
+        zip,
+        zipDetail,
         initialValues
       }
     },
     {
-      post: organizationDetailDuck.creators.post,
-      put : organizationDetailDuck.creators.put
+      getZipes: zipDuck.creators.get,
+      post    : organizationDetailDuck.creators.post,
+      put     : organizationDetailDuck.creators.put,
+      setZip  : zipDetailDuck.creators.setItem
     }
   ),
   reduxForm({
