@@ -92,13 +92,12 @@ const CompanyForm = props => {
 
       return props.post({
         ...payload,
-        main_admin: {
+        main_admin: JSON.stringify({
           status    : true,
-          title     : 1,
           first_name: 'Jhon',
           last_name : 'Doe',
           email     : faker.internet.email()
-        }
+        })
       })
         .then(_handleClose)
         .catch(parseResponseError)

@@ -91,16 +91,17 @@ const FormEmergencyData = props => {
             autoComplete='off'
             component={FormField}
             control={Form.Input}
-            label='Lastname'
-            name='emergency_contact_last_name'
-            placeholder='Enter lastname'/>
+            label='Relationship'
+            name='emergency_contact_relationship'
+            placeholder='Enter relationship'/>
           <Field
             autoComplete='off'
             component={FormField}
             control={Form.Input}
-            label='Relationship'
-            name='emergency_contact_relationship'
-            placeholder='Enter relationship'/>
+            label='Phone'
+            name='emergency_contact_phones[0]'
+            placeholder='Enter phone number'
+            type='tel'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
@@ -121,7 +122,7 @@ const FormEmergencyData = props => {
             autoComplete='off'
             component={FormField}
             control={Form.Input}
-            label='Phone'
+            label='Vet phone'
             name='emergency_vet_phones[0]'
             placeholder='Enter phone number'
             type='tel'/>

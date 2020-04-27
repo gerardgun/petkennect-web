@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -12,26 +12,67 @@ import YupFields from '@lib/constants/yup-fields'
 import { syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
-
-const zipes = [ { key: 1, value: 1, text: '25435' } ]
+import zipDuck from '@reducers/zip'
+import zipDetailDuck from '@reducers/zip/detail'
 
 const FormInformation = props => {
   const {
     clientDetail,
+    zip,
+    zipDetail,
     match,
     error, handleSubmit, initialized, reset // redux-form
   } = props
+
+  const [ zipOptions, setZipOptions ] = useState([])
 
   useEffect(() => {
     if(!initialized && clientDetail.item.id)
       props.initialize({
         ...clientDetail.item,
-        state              : 'PA',
-        city               : 'DOYLESTOWN',
-        zip_code           : 1,
         contact_location_id: 1
       })
   }, [ clientDetail.status ])
+
+  useEffect(() => {
+    if(zip.status === 'GOT')
+      setZipOptions(
+        zip.items.map((item, index) => ({
+          key  : index++,
+          value: item.id,
+          text : `${item.postal_code} - ${item.state_code}, ${item.city}`
+        }))
+      )
+  }, [ zip.status ])
+
+  useEffect(() => {
+    if(zipDetail.status === 'GOT') setZipOptionsFromDetail()
+  }, [ zipDetail.status ])
+
+  const setZipOptionsFromDetail = () => setZipOptions([
+    {
+      key  : 1,
+      value: zipDetail.item.id,
+      text : `${zipDetail.item.postal_code} - ${zipDetail.item.state_code}, ${zipDetail.item.city}`
+    }
+  ])
+
+  const _handleZipBlur = () => {
+    setZipOptionsFromDetail()
+  }
+
+  const _handleZipChange = zipId => {
+    props.setZip(
+      zip.items.find(item => item.id === zipId)
+    )
+  }
+
+  const _handleZipSearchChange = (e, data) => {
+    if(data.searchQuery.length > 3)
+      props.getZipes({
+        search: data.searchQuery
+      })
+  }
 
   const isUpdating = match.params.client
 
@@ -109,31 +150,45 @@ const FormInformation = props => {
             placeholder='Enter address'/>
         </Form.Group>
         <Form.Group widths='equal'>
+          <Form.Field>
+            <Form.Input
+              autoComplete='off'
+              label='Country'
+              readOnly
+              value={zipDetail.item.country_code}/>
+          </Form.Field>
+          <Form.Field>
+            <Form.Input
+              autoComplete='off'
+              label='State'
+              readOnly
+              value={zipDetail.item.state}/>
+          </Form.Field>
+          <Form.Field>
+            <Form.Input
+              autoComplete='off'
+              label='City'
+              readOnly
+              value={zipDetail.item.city}/>
+          </Form.Field>
+        </Form.Group>
+        <Form.Group widths='equal'>
           <Field
-            autoComplete='off'
-            component={FormField}
-            control={Form.Input}
-            label='State *'
-            name='state'
-            readOnly/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Form.Input}
-            label='City *'
-            name='city'
-            readOnly/>
-          <Field
-            autoComplete='off'
             component={FormField}
             control={Form.Select}
+            disabled={zip.status === 'GETTING'}
             label='Zip *'
+            loading={zip.status === 'GETTING'}
             name='zip_code'
-            options={zipes}
-            placeholder='Select zip'
-            readOnly
+            onBlur={_handleZipBlur}
+            onChange={_handleZipChange}
+            onSearchChange={_handleZipSearchChange}
+            options={zipOptions}
+            placeholder='Search zip'
             search
             selectOnBlur={false}/>
+          <Form.Field/>
+          <Form.Field/>
         </Form.Group>
 
         {
@@ -153,10 +208,19 @@ const FormInformation = props => {
 export default compose(
   withRouter,
   connect(
-    state => ({
-      clientDetail: clientDetailDuck.selectors.detail(state)
-    }),
-    {}
+    ({ zip, ...state }) => {
+      const zipDetail = zipDetailDuck.selectors.detail(state)
+
+      return {
+        clientDetail: clientDetailDuck.selectors.detail(state),
+        zip,
+        zipDetail
+      }
+    },
+    {
+      getZipes: zipDuck.creators.get,
+      setZip  : zipDetailDuck.creators.setItem
+    }
   ),
   reduxForm({
     form            : 'client-create-information',

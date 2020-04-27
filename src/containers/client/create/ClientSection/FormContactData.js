@@ -102,14 +102,14 @@ const FormContactData = props => {
           <Form.Field/>
           <Form.Field/>
         </Form.Group>
-        <Form.Group widths='equal'>
+        {/* <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Form.Checkbox}
             label='Send email'
             name='send_email'
             type='checkbox'/>
-        </Form.Group>
+        </Form.Group> */}
 
         {
           error && (

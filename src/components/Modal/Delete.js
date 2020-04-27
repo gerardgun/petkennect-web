@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Header, Modal } from 'semantic-ui-react'
+import _get from 'lodash/get'
 
 const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
   const _handleDeleteBtnClick = () => {
@@ -43,6 +44,11 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
             )
           }
         </p>
+        {
+          (detail.status === 'ERROR' && _get(detail, 'error.response.data.detail', null)) && (
+            <p style={{ color: '#dd4b39' }}>{detail.error.response.data.detail[0]}</p>
+          )
+        }
       </Modal.Content>
       <Modal.Actions>
         <Button content='Cancel' disabled={deleting} onClick={props.onClose}/>
