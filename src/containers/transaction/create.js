@@ -64,7 +64,7 @@ const TransactionForm = props => {
     finalValues.transacted_at = `${finalValues.transacted_at}T00:00:00`
 
     if(isUpdating)
-      return props.put({ id: transactionDetail.item.id, ...finalValues })
+      return props.put({ id: transactionDetail.item.id, transacted_at: finalValues.transacted_at })
         .then(_handleClose)
         .catch(parseResponseError)
     else

@@ -3,6 +3,7 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 import { Get, Post, Put } from '@lib/utils/http-client'
 
 import clientDetailDuck from '@reducers/client/detail'
+import zipDetailDuck from '@reducers/zip/detail'
 
 const { types } = clientDetailDuck
 
@@ -35,6 +36,12 @@ function* get({ id }) {
         item: client
       }
     })
+
+    if(client.zip_code)
+      yield put({
+        type: zipDetailDuck.types.GET,
+        id  : client.zip_code
+      })
   } catch (e) {
     yield put({
       type : types.GET_FAILURE,

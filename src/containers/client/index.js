@@ -11,6 +11,7 @@ import useModal from '@components/Modal/useModal'
 
 import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
+import zipDetailDuck from '@reducers/zip/detail'
 
 const Client = ({ client, clientDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
@@ -22,6 +23,10 @@ const Client = ({ client, clientDetail, ...props }) => {
   useEffect(() => {
     props.getClients()
   }, [])
+
+  const _handleNewClick = () => {
+    props.setZip()
+  }
 
   const _handleRowOptionClick = (option, item) => {
     if(option === 'edit')
@@ -47,6 +52,7 @@ const Client = ({ client, clientDetail, ...props }) => {
             }
             <Button
               as={Link} color='teal' content='New Client'
+              onClick={_handleNewClick}
               to='/client/create'/>
           </Grid.Column>
         </Grid>
@@ -72,7 +78,8 @@ export default compose(
       clientDetail: clientDetailDuck.selectors.detail(state)
     }),
     {
-      getClients: clientDuck.creators.get
+      getClients: clientDuck.creators.get,
+      setZip    : zipDetailDuck.creators.setItem
     }
   )
 )(Client)

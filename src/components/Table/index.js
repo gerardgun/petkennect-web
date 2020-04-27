@@ -164,7 +164,7 @@ const TableList = ({ duck, list, ...props }) => {
             from={list.pagination.meta.from}
             onPageChange={_handlePaginationChange}
             to={list.pagination.meta.to}
-            total={list.pagination.meta.total}
+            total={list.pagination.meta.total_items}
             totalPages={list.pagination.meta.last_page}/>
         )
       }

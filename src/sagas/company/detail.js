@@ -76,11 +76,17 @@ function* _put({ payload }) {
 }
 
 function* setItem({ item, mode }) {
-  if(mode === 'UPDATE')
+  if(mode === 'UPDATE') {
     yield put({
-      type: zipDetailDuck.types.GET,
-      id  : item.zip_code
+      type: zipDetailDuck.types.RESET_ITEM
     })
+
+    if(item.zip_code)
+      yield put({
+        type: zipDetailDuck.types.GET,
+        id  : item.zip_code
+      })
+  }
 }
 
 export default [
