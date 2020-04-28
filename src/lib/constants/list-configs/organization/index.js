@@ -57,7 +57,7 @@ export default {
     },
     {
       display_name: 'State',
-      name        : 'state',
+      name        : 'state_code',
       type        : 'string',
       width       : null,
       align       : 'left',
