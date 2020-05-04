@@ -1,6 +1,6 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, useParams } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
@@ -8,22 +8,15 @@ import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import YupFields from '@lib/constants/yup-fields'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import clientDocumentDetailDuck from '@reducers/client/document/detail'
-import clientDocumentTypesDuck from '@reducers/client/document/type'
+import clientDocumentTypeDetailDuck from '@reducers/client/document/type/detail'
 
-const DocumentForm = props => {
+const DocumentTypeForm = props => {
   const {
-    clientDocumentDetail,
+    clientDocumentTypeDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
-  const { client: client_id } = useParams()
-
-  useEffect(()=> {
-    props.getDocumentTypes()
-  }, [ client_id ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
@@ -31,17 +24,17 @@ const DocumentForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ client_id, id: clientDocumentDetail.item.id, ...values })
+      return props.put({ id: clientDocumentTypeDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props.post({ client_id ,...values })
+      return props.post({ ...values })
         .then(_handleClose)
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(clientDocumentDetail.mode), [ clientDocumentDetail.mode ])
-  const isUpdating = Boolean(clientDocumentDetail.item.id)
+  const isOpened = useMemo(() => getIsOpened(clientDocumentTypeDetail.mode), [ clientDocumentTypeDetail.mode ])
+  const isUpdating = Boolean(clientDocumentTypeDetail.item.id)
 
   return (
     <Modal
@@ -52,37 +45,16 @@ const DocumentForm = props => {
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Document</Header>
+          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Document Type</Header>
           <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
               autoFocus
               component={FormField}
-              control={Form.TextArea}
-              label='Description'
-              name='description'
-              placeholder='Enter description'/>
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Form.Select}
-              label='Document Type *'
-              name='type'
-              options={props.clientDocumentTypes.items.map(_documentType => ({
-                key  : _documentType.id,
-                value: _documentType.id,
-                text : `${_documentType.name}`
-              }))}
-              placeholder='Select type'
-              search
-              selectOnBlur={false}/>
-            <Field
-              component={FormField}
               control={Form.Input}
-              label='File *'
-              name='files'
-              type='file'/>
+              label='Name'
+              name='name'
+              placeholder='Enter name'/>
           </Form.Group>
 
           {
@@ -119,33 +91,29 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const clientDocumentDetail = clientDocumentDetailDuck.selectors.detail(state)
-      const clientDocumentTypes = clientDocumentTypesDuck.selectors.list(state)
+      const clientDocumentTypeDetail = clientDocumentTypeDetailDuck.selectors.detail(state)
 
       return {
-        clientDocumentDetail,
-        initialValues: clientDocumentDetail.item,
-        clientDocumentTypes
+        clientDocumentTypeDetail,
+        initialValues: clientDocumentTypeDetail.item
       }
     },
     {
-      post            : clientDocumentDetailDuck.creators.post,
-      put             : clientDocumentDetailDuck.creators.put,
-      resetItem       : clientDocumentDetailDuck.creators.resetItem,
-      getDocumentTypes: clientDocumentTypesDuck.creators.get
+      post     : clientDocumentTypeDetailDuck.creators.post,
+      put      : clientDocumentTypeDetailDuck.creators.put,
+      resetItem: clientDocumentTypeDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
-    form              : 'client-document-form',
+    form              : 'client-document-type-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        type : YupFields.num_required,
-        files: YupFields.whenIsUpdating(YupFields.nullable, YupFields.file)
+        name: Yup.string().required()
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(DocumentForm)
+)(DocumentTypeForm)

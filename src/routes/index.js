@@ -12,6 +12,8 @@ import Client from '@containers/client'
 import ClientCreate from '@containers/client/create'
 import Location from '@containers/location'
 import LocationCreate from '@containers/location/create'
+import DocumentType from '@containers/document-type'
+// import DocumentTypeCreate from '@containers/document-type/create'
 import Pet from '@containers/pet'
 import PetCreate from '@containers/pet/create'
 // import FoundationDetail from '@containers/foundation/detail'
@@ -102,6 +104,10 @@ const privateRoutes = [
   {
     path     : '/setup/location/:location',
     component: LocationCreate
+  },
+  {
+    path     : '/setup/document-type',
+    component: DocumentType
   },
   {
     path     : '/organization',

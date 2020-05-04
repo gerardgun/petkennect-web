@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
@@ -10,10 +10,19 @@ import Form from './Form'
 
 import clientDocumentDuck from '@reducers/client/document'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
+import { useParams } from 'react-router-dom'
 
-const DocumentSection = ({ document, ...props }) => {
+const DocumentSection = ({ document, documentDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const { client: client_id } = useParams()
+  useEffect(() => {
+    const { status } =  documentDetail
 
+    if(status === 'DELETED' || status  === 'POSTED' || status === 'PUT')
+      props.getDocuments({
+        client_id
+      })
+  }, [ documentDetail.status ])
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
   }
@@ -63,10 +72,12 @@ const DocumentSection = ({ document, ...props }) => {
 export default compose(
   connect(
     state => ({
-      document: clientDocumentDuck.selectors.list(state)
+      document      : clientDocumentDuck.selectors.list(state),
+      documentDetail: clientDocumentDetailDuck.selectors.detail(state)
     }),
     {
-      setItem: clientDocumentDetailDuck.creators.setItem
+      setItem     : clientDocumentDetailDuck.creators.setItem,
+      getDocuments: clientDocumentDuck.creators.get
     }
   )
 )(DocumentSection)
