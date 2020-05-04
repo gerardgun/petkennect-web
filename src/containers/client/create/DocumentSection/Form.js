@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
@@ -12,12 +12,18 @@ import YupFields from '@lib/constants/yup-fields'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
+import clientDocumentTypesDuck from '@reducers/client/document/type'
 
 const DocumentForm = props => {
   const {
     clientDocumentDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
+  const { client: client_id } = useParams()
+
+  useEffect(()=> {
+    props.getDocumentTypes()
+  }, [ client_id ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
@@ -25,11 +31,11 @@ const DocumentForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ id: clientDocumentDetail.item.id, ...values })
+      return props.put({ client_id, id: clientDocumentDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props.post(values)
+      return props.post({ client_id ,...values })
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -62,13 +68,12 @@ const DocumentForm = props => {
               component={FormField}
               control={Form.Select}
               label='Document Type *'
-              name='document_type_id'
-              options={[
-                { key: 1, value: 1, text: 'Vet Letter' },
-                { key: 2, value: 2, text: 'Medication Instructions' },
-                { key: 3, value: 3, text: 'Pet Photo' },
-                { key: 4, value: 4, text: 'PDF' }
-              ]}
+              name='type'
+              options={props.clientDocumentTypes.items.map(_documentType => ({
+                key  : _documentType.id,
+                value: _documentType.id,
+                text : `${_documentType.name}`
+              }))}
               placeholder='Select type'
               search
               selectOnBlur={false}/>
@@ -76,7 +81,7 @@ const DocumentForm = props => {
               component={FormField}
               control={Form.Input}
               label='File *'
-              name='file'
+              name='files'
               type='file'/>
           </Form.Group>
 
@@ -115,16 +120,19 @@ export default compose(
   connect(
     state => {
       const clientDocumentDetail = clientDocumentDetailDuck.selectors.detail(state)
+      const clientDocumentTypes = clientDocumentTypesDuck.selectors.list(state)
 
       return {
         clientDocumentDetail,
-        initialValues: clientDocumentDetail.item
+        initialValues: clientDocumentDetail.item,
+        clientDocumentTypes
       }
     },
     {
-      post     : clientDocumentDetailDuck.creators.post,
-      put      : clientDocumentDetailDuck.creators.put,
-      resetItem: clientDocumentDetailDuck.creators.resetItem
+      post            : clientDocumentDetailDuck.creators.post,
+      put             : clientDocumentDetailDuck.creators.put,
+      resetItem       : clientDocumentDetailDuck.creators.resetItem,
+      getDocumentTypes: clientDocumentTypesDuck.creators.get
     }
   ),
   reduxForm({
@@ -133,8 +141,8 @@ export default compose(
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        document_type_id: YupFields.num_required,
-        file            : YupFields.whenIsUpdating(YupFields.nullable, YupFields.file)
+        type : YupFields.num_required,
+        files: YupFields.whenIsUpdating(YupFields.nullable, YupFields.file)
       }
 
       return syncValidate(Yup.object().shape(schema), values)

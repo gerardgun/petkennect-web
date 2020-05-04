@@ -1,17 +1,21 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery, select } from 'redux-saga/effects'
 
-// import { Delete, Get, Post, Put } from '@lib/utils/http-client'
+import { Post, Put } from '@lib/utils/http-client'
 
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
+import clientDetailDuck from '@reducers/client/detail'
 
 const { types } = clientDocumentDetailDuck
 
-function* deleteItem(/* { ids } */) {
+function* deleteItem({ ids }) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
-    // yield call(Delete, `client/${id}`)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
+    const clientDetail = yield select(clientDetailDuck.selectors.detail)
+
+    yield call(Post, `clients/${clientDetail.item.id}/clean-documents/`, {
+      client_document_ids: ids
+    })
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -45,12 +49,12 @@ function* get(/* { id } */) {
   }
 }
 
-function* post(/* { payload } */) {
+function* post({ payload :{ client_id,  ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
+    const { id: upload_employee } = localStorage.getItem('@auth_user')
 
-    // yield call(Post, 'client', payload)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
+    yield call(Post, `clients/${client_id}/documents/`, { ...payload, upload_employee })
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {
@@ -61,12 +65,11 @@ function* post(/* { payload } */) {
   }
 }
 
-function* _put(/* { payload } */) {
+function* _put({ payload: { client_id, id, ...payload } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-    // yield call(Put, `client/${payload.id}`, payload)
+    yield call(Put, `clients/${client_id}/documents/${id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

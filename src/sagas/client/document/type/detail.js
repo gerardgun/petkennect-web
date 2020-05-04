@@ -45,20 +45,20 @@ function* get(/* { id } */) {
   }
 }
 
-function* post(/* { payload } */) {
-  try {
-    yield put({ type: types.POST_PENDING })
+function* post(/* { payload: { client_id }, ...payload }*/) {
+  // try {
+  //   yield put({ type: types.POST_PENDING })
+  //   const { id: upload_employee } = localStorage.getItem('@auth_user')
 
-    // yield call(Post, 'client', payload)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
+  //   yield call(Post, `clients/${client_id}/documents/`, { ...payload, upload_employee })
 
-    yield put({ type: types.POST_FULFILLED })
-  } catch (e) {
-    yield put({
-      type : types.POST_FAILURE,
-      error: e
-    })
-  }
+  //   yield put({ type: types.POST_FULFILLED })
+  // } catch (e) {
+  //   yield put({
+  //     type : types.POST_FAILURE,
+  //     error: e
+  //   })
+  // }
 }
 
 function* _put(/* { payload } */) {
