@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Tab } from 'semantic-ui-react'
 
@@ -13,10 +14,15 @@ import clientCommentDetailDuck from '@reducers/client/comment/detail'
 
 const InteractionHistory = props => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const { client: clientId } = useParams()
 
   useEffect(() => {
     const { status } =  props.clientCommentDetail
-    if(status === 'DELETED' || status  === 'POSTED' || status === 'PUT') props.getComments()
+
+    if(status === 'DELETED' || status  === 'POSTED' || status === 'PUT')
+      props.getComments({
+        client_id: clientId
+      })
   }, [ props.clientCommentDetail.status ])
 
   const _handleAddBtnClick = () => {

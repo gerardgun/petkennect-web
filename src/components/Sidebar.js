@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Link, withRouter } from 'react-router-dom'
@@ -119,6 +119,7 @@ const categories = [
     icon         : 'cogs',
     label        : 'Setup',
     subcategories: [
+      { href: '/setup/location', label: 'Locations' },
       { href: '/', label: 'Enable Decline Portal Client' },
       { href: '/', label: 'Price Master' },
       { href: '/', label: 'Breed' },
@@ -133,7 +134,20 @@ const categories = [
 ]
 
 const AppSidebar = ({ auth, ...props }) => {
+  const [ activeCategorieIndexes, setActiveCategorieIndexes ] = useState([])
+
   const getCategories = () => auth.item.is_superadmin ? categoriesForSuperAdmin : categories
+
+  const _handleCategoryClick = e => {
+    const index = +e.currentTarget.dataset.index
+    const category = categoriesToRender[index]
+
+    if(!category.href)
+      if(activeCategorieIndexes.includes(index))
+        setActiveCategorieIndexes(prevState => prevState.filter(categoryIndex => categoryIndex !== index))
+      else
+        setActiveCategorieIndexes(prevState => ([ ...prevState, index ]))
+  }
 
   const categoriesToRender = useMemo(() => getCategories(), [ auth.item.id ])
 
@@ -143,12 +157,14 @@ const AppSidebar = ({ auth, ...props }) => {
       {
         categoriesToRender.map(({ subcategories = null, ...rest }, index) => {
           const rgx = new RegExp(`^${rest.href}.*`)
-          const active = rgx.test(props.match.path)
+          const active = rgx.test(props.match.path) || activeCategorieIndexes.includes(index)
 
           return (
             <Sidebar.Category
               active={active}
+              data-index={index}
               key={index}
+              onClick={_handleCategoryClick}
               {...rest}>
               {
                 subcategories ? (

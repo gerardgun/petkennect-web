@@ -49,7 +49,7 @@ export default {
     },
     {
       display_name: 'State',
-      name        : 'state',
+      name        : 'state_code',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -65,7 +65,7 @@ export default {
     },
     {
       display_name: 'Organization',
-      name        : 'organization',
+      name        : 'organization_legal_name',
       type        : 'string',
       width       : null,
       align       : 'left',

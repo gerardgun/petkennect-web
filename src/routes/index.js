@@ -10,6 +10,8 @@ import Me from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
 import ClientCreate from '@containers/client/create'
+import Location from '@containers/location'
+import LocationCreate from '@containers/location/create'
 import Pet from '@containers/pet'
 import PetCreate from '@containers/pet/create'
 // import FoundationDetail from '@containers/foundation/detail'
@@ -89,10 +91,18 @@ const privateRoutes = [
     path     : '/pet/:id',
     component: PetCreate
   },
-  // {
-  //   path     : '/foundation/:foundation',
-  //   component: FoundationDetail
-  // },
+  {
+    path     : '/setup/location',
+    component: Location
+  },
+  {
+    path     : '/setup/location/create',
+    component: LocationCreate
+  },
+  {
+    path     : '/setup/location/:location',
+    component: LocationCreate
+  },
   {
     path     : '/organization',
     component: Organization
@@ -109,22 +119,6 @@ const privateRoutes = [
     path     : '/transaction',
     component: Transaction
   },
-  // {
-  //   path     : '/grantee',
-  //   component: Grantee
-  // },
-  // {
-  //   path     : '/grantee/add',
-  //   component: GranteeAdd
-  // },
-  // {
-  //   path     : '/grantee/:grantee',
-  //   component: GranteeDetail
-  // },
-  // {
-  //   path     : '/grantee/focus-area/:focusarea',
-  //   component: GranteeFocusAreaDetail
-  // },
   {
     path     : '/me',
     component: Me

@@ -1,9 +1,10 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects'
 import faker from 'faker'
 
-import {  Post, Put } from '@lib/utils/http-client'
+import { Post, Put } from '@lib/utils/http-client'
 
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
+import clientDetailDuck from '@reducers/client/detail'
 
 const { types } = clientCommentDetailDuck
 
@@ -11,7 +12,9 @@ function* deleteItem({ ids }) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
-    yield call(Post, 'clean-client-comments/', {
+    const clientDetail = yield select(clientDetailDuck.selectors.detail)
+
+    yield call(Post, `clients/${clientDetail.item.id}/clean-comments/`, {
       client_comment_ids: ids
     })
 
@@ -54,11 +57,11 @@ function* get(/* { id } */) {
   }
 }
 
-function* post({ payload }) {
+function* post({ payload: { client_id, ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, 'client-comments/', payload)
+    yield call(Post, `clients/${client_id}/comments/`, payload)
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {
@@ -69,11 +72,11 @@ function* post({ payload }) {
   }
 }
 
-function* _put({ payload }) {
+function* _put({ payload: { client_id, id, ...payload } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Put, `client-comments/${payload.id}/`, payload)
+    yield call(Put, `clients/${client_id}/comments/${id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

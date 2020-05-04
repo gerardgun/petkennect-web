@@ -1,5 +1,5 @@
 export default {
-  base_uri: '/client',
+  base_uri: '/setup/location',
   row     : {
     options: [
       {
@@ -11,56 +11,24 @@ export default {
   },
   columns: [
     {
-      display_name: 'Name',
-      name        : 'first_name',
+      display_name: 'Code',
+      name        : 'code',
       type        : 'string', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'City',
-      name        : 'city',
+      display_name: 'Name',
+      name        : 'name',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'State',
-      name        : 'state',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Location',
-      name        : 'location',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Phone Mobile',
-      name        : 'phones[0]',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Phone Home',
-      name        : 'phones[1]',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Status',
-      name        : 'status',
+      display_name: 'Address 1',
+      name        : 'addresses[0]',
       type        : 'string',
       width       : null,
       align       : 'left',

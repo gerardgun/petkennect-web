@@ -9,11 +9,7 @@ import * as Yup from 'yup'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import YupFields from '@lib/constants/yup-fields'
-import {
-  parseResponseError,
-  syncValidate,
-  parsePaginationResponse
-} from '@lib/utils/functions'
+import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
@@ -47,15 +43,15 @@ const CommentForm = (props) => {
 
   const _handleClose = () => props.resetItem()
 
-  const _handleSubmit = (values) => {
+  const _handleSubmit = values => {
     if(isUpdating)
       return props
-        .put({ id: clientCommentDetail.item.id, ...values })
+        .put({ id: clientCommentDetail.item.id, client_id: clientId, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
       return props
-        .post({ ...values, client: clientId })
+        .post({ ...values, client_id: clientId })
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -63,8 +59,6 @@ const CommentForm = (props) => {
     clientCommentDetail.mode
   ])
   const isUpdating = Boolean(clientCommentDetail.item.id)
-
-  const employeesItems = parsePaginationResponse(employees.items)
 
   return (
     <Modal
@@ -97,7 +91,7 @@ const CommentForm = (props) => {
               control={Form.Select}
               label='Staff *'
               name='employee'
-              options={employeesItems.map(_employee=>({
+              options={employees.items.map(_employee=>({
                 key  : _employee.id,
                 value: _employee.id,
                 text : `${_employee.first_name} ${_employee.last_name}`

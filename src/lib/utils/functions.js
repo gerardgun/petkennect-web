@@ -98,10 +98,3 @@ export const parseResponseError = e => {
 
   throw new SubmissionError(errors)
 }
-
-/** i.e: for dropwdowns */
-export const parsePaginationResponse = (response = {})  => {
-  const { results = [] } = response
-
-  return results
-}

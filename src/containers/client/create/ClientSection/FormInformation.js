@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -8,6 +8,7 @@ import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
+import useZipInputSearch from '@components/useZipInputSearch'
 import YupFields from '@lib/constants/yup-fields'
 import { syncValidate } from '@lib/utils/functions'
 
@@ -24,7 +25,7 @@ const FormInformation = props => {
     error, handleSubmit, initialized, reset // redux-form
   } = props
 
-  const [ zipOptions, setZipOptions ] = useState([])
+  const [ zipOptions, { _handleZipChange, _handleZipSearchChange } ] = useZipInputSearch(zip, zipDetail, props.getZipes, props.setZip)
 
   useEffect(() => {
     if(!initialized && clientDetail.item.id)
@@ -33,46 +34,6 @@ const FormInformation = props => {
         contact_location_id: 1
       })
   }, [ clientDetail.status ])
-
-  useEffect(() => {
-    if(zip.status === 'GOT')
-      setZipOptions(
-        zip.items.map((item, index) => ({
-          key  : index++,
-          value: item.id,
-          text : `${item.postal_code} - ${item.state_code}, ${item.city}`
-        }))
-      )
-  }, [ zip.status ])
-
-  useEffect(() => {
-    if(zipDetail.status === 'GOT') setZipOptionsFromDetail()
-  }, [ zipDetail.status ])
-
-  const setZipOptionsFromDetail = () => setZipOptions([
-    {
-      key  : 1,
-      value: zipDetail.item.id,
-      text : `${zipDetail.item.postal_code} - ${zipDetail.item.state_code}, ${zipDetail.item.city}`
-    }
-  ])
-
-  const _handleZipBlur = () => {
-    setZipOptionsFromDetail()
-  }
-
-  const _handleZipChange = zipId => {
-    props.setZip(
-      zip.items.find(item => item.id === zipId)
-    )
-  }
-
-  const _handleZipSearchChange = (e, data) => {
-    if(data.searchQuery.length > 3)
-      props.getZipes({
-        search: data.searchQuery
-      })
-  }
 
   const isUpdating = match.params.client
 
@@ -180,7 +141,6 @@ const FormInformation = props => {
             label='Zip *'
             loading={zip.status === 'GETTING'}
             name='zip_code'
-            onBlur={_handleZipBlur}
             onChange={_handleZipChange}
             onSearchChange={_handleZipSearchChange}
             options={zipOptions}

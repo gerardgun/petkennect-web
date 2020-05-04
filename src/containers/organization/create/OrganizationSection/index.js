@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -10,6 +10,7 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
+import useZipInputSearch from '@components/useZipInputSearch'
 import YupFields from '@lib/constants/yup-fields'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
@@ -24,43 +25,18 @@ const OrganizationSection = props => {
     organizationDetail,
     zip,
     zipDetail,
-    error, handleSubmit, reset, // redux-form
     history,
     match,
-    post,
-    put
+    error, handleSubmit, reset // redux-form
   } = props
 
   const [ open, { _handleOpen, _handleClose } ] = useModal() // For Modal Delete
-  const [ zipOptions, setZipOptions ] = useState([])
+  const [ zipOptions, { _handleZipChange, _handleZipSearchChange } ] = useZipInputSearch(zip, zipDetail, props.getZipes, props.setZip)
 
   useEffect(() => {
     if(organizationDetail.status === 'DELETED')
       history.replace('/organization')
   }, [ organizationDetail.status ])
-
-  useEffect(() => {
-    if(zip.status === 'GOT')
-      setZipOptions(
-        zip.items.map((item, index) => ({
-          key  : index++,
-          value: item.id,
-          text : `${item.postal_code} - ${item.state_code}, ${item.city}`
-        }))
-      )
-  }, [ zip.status ])
-
-  useEffect(() => {
-    if(zipDetail.status === 'GOT') setZipOptionsFromDetail()
-  }, [ zipDetail.status ])
-
-  const setZipOptionsFromDetail = () => setZipOptions([
-    {
-      key  : 1,
-      value: zipDetail.item.id,
-      text : `${zipDetail.item.postal_code} - ${zipDetail.item.state_code}, ${zipDetail.item.city}`
-    }
-  ])
 
   const _handleSubmit = values => {
     const finalValues = Object.entries(values)
@@ -68,31 +44,14 @@ const OrganizationSection = props => {
       .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
 
     if(isUpdating)
-      return put({ id: organizationDetail.item.id, ...finalValues })
+      return props.put({ id: organizationDetail.item.id, ...finalValues })
         .catch(parseResponseError)
     else
-      return post(finalValues)
+      return props.post(finalValues)
         .then(payload => {
           history.replace(`/organization/${payload.id}`)
         })
         .catch(parseResponseError)
-  }
-
-  const _handleZipBlur = () => {
-    setZipOptionsFromDetail()
-  }
-
-  const _handleZipChange = zipId => {
-    props.setZip(
-      zip.items.find(item => item.id === zipId)
-    )
-  }
-
-  const _handleZipSearchChange = (e, data) => {
-    if(data.searchQuery.length > 3)
-      props.getZipes({
-        search: data.searchQuery
-      })
   }
 
   const isUpdating = match.params.organization
@@ -207,7 +166,6 @@ const OrganizationSection = props => {
                   label='Zip'
                   loading={zip.status === 'GETTING'}
                   name='zip_code'
-                  onBlur={_handleZipBlur}
                   onChange={_handleZipChange}
                   onSearchChange={_handleZipSearchChange}
                   options={zipOptions}
