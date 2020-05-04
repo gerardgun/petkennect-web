@@ -120,6 +120,7 @@ const categories = [
     label        : 'Setup',
     subcategories: [
       { href: '/setup/location', label: 'Locations' },
+      { href: '/setup/document-type', label: 'Document Types' },
       { href: '/', label: 'Enable Decline Portal Client' },
       { href: '/', label: 'Price Master' },
       { href: '/', label: 'Breed' },
