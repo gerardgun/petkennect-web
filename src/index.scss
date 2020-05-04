@@ -115,7 +115,7 @@ body {
   }
 
   &.ui.modal {
-    .content {
+    & > .content {
       padding: 2.5rem 3rem 2rem;
     }
   }

@@ -9,7 +9,12 @@ export default base({
   namespace   : '@@pet-kennect',
   store       : 'zip',
   initialState: {
-    config
+    config,
+    pagination: {
+      params: {
+        page_size: 50
+      }
+    }
   }
 })
   .extend(list)

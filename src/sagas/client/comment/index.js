@@ -1,8 +1,6 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
-import faker from 'faker'
-import _times from 'lodash/times'
 
-// import { Get } from '@lib/utils/http-client'
+import { Get } from '@lib/utils/http-client'
 
 import clientCommentDuck from '@reducers/client/comment'
 
@@ -12,23 +10,19 @@ function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const filters = yield select(selectors.filters)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-    // const clients = yield call(Get, '/client')
+    const { client_id, ...filters } = yield select(selectors.filters)
+    const list = yield select(selectors.list)
+
+    const { results, ...meta } = yield call(Get, `clients/${client_id}/comments/`, filters)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(filters.page_size, index => ({
-          id         : (index + 1),
-          date       : faker.date.past().toISOString().split('T')[0],
-          staff_id   : 1,
-          staff      : faker.name.firstName() + ' ' + faker.name.lastName(),
-          location_id: 1,
-          location   : '02-RH',
-          comment    : faker.lorem.paragraph(),
-          follow_up  : faker.random.boolean()
-        }))
+        items     : results,
+        pagination: {
+          ...list.pagination,
+          meta
+        }
       }
     })
   } catch (e) {

@@ -1,12 +1,10 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
-import _times from 'lodash/times'
-import faker from 'faker'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
@@ -15,32 +13,51 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
+import employeeDuck from '@reducers/employee'
+import locationDuck from '@reducers/location'
 
-const staffMembers = _times(10, index => ({ key: index, value: index, text: `${faker.name.firstName()} ${faker.name.lastName()}` }))
-
-const CommentForm = props => {
+const CommentForm = (props) => {
   const {
+    employees,
+    locations,
+    getEmployees,
+    getLocations,
     // clientDetail,
     clientCommentDetail,
-    error, handleSubmit, reset, submitting // redux-form
+    error,
+    handleSubmit,
+    reset,
+    submitting // redux-form,
   } = props
 
-  const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
+  const { client: clientId } = useParams()
+
+  useEffect(() => {
+    if(clientId) {
+      getEmployees()
+      getLocations()
+    }
+  }, [ clientId ])
+
+  const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
 
   const _handleClose = () => props.resetItem()
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ id: clientCommentDetail.item.id, ...values })
+      return props
+        .put({ id: clientCommentDetail.item.id, client_id: clientId, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props.post(values)
+      return props
+        .post({ ...values, client_id: clientId })
         .then(_handleClose)
         .catch(parseResponseError)
   }
-
-  const isOpened = useMemo(() => getIsOpened(clientCommentDetail.mode), [ clientCommentDetail.mode ])
+  const isOpened = useMemo(() => getIsOpened(clientCommentDetail.mode), [
+    clientCommentDetail.mode
+  ])
   const isUpdating = Boolean(clientCommentDetail.item.id)
 
   return (
@@ -52,27 +69,20 @@ const CommentForm = props => {
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Create'} Comment</Header>
+          <Header as='h2' className='segment-content-header'>
+            {isUpdating ? 'Update' : 'Create'} Comment
+          </Header>
           <Form.Group widths='equal'>
-            <Field
-              autoComplete='off'
-              autoFocus
-              component={FormField}
-              control={Form.Input}
-              label='Date *'
-              name='date'
-              type='date'/>
             <Field
               component={FormField}
               control={Form.Select}
               label='Location *'
-              name='location_id'
-              options={[
-                { key: 1, value: 1, text: '02-RH' },
-                { key: 2, value: 2, text: '03-VP' },
-                { key: 3, value: 3, text: '04-HH' },
-                { key: 4, value: 4, text: '05-SC' }
-              ]}
+              name='location'
+              options={locations.items.map((_location) => ({
+                key  : _location.id,
+                value: _location.id,
+                text : _location.code
+              }))}
               placeholder='Select location'
               search
               selectOnBlur={false}/>
@@ -80,8 +90,12 @@ const CommentForm = props => {
               component={FormField}
               control={Form.Select}
               label='Staff *'
-              name='staff_id'
-              options={staffMembers}
+              name='employee'
+              options={employees.items.map(_employee=>({
+                key  : _employee.id,
+                value: _employee.id,
+                text : `${_employee.first_name} ${_employee.last_name}`
+              }))}
               placeholder='Select staff'
               search
               selectOnBlur={false}/>
@@ -103,15 +117,13 @@ const CommentForm = props => {
               type='checkbox'/>
           </Form.Group>
 
-          {
-            error && (
-              <Form.Group widths='equal'>
-                <Form.Field>
-                  <FormError message={error}/>
-                </Form.Field>
-              </Form.Group>
-            )
-          }
+          {error && (
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <FormError message={error}/>
+              </Form.Field>
+            </Form.Group>
+          )}
 
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
@@ -136,35 +148,41 @@ const CommentForm = props => {
 export default compose(
   withRouter,
   connect(
-    state => {
-      const clientCommentDetail = clientCommentDetailDuck.selectors.detail(state)
+    (state) => {
+      const clientCommentDetail = clientCommentDetailDuck.selectors.detail(
+        state
+      )
+      const employees = employeeDuck.selectors.list(state)
+      const locations = locationDuck.selectors.list(state)
 
       return {
         clientDetail : clientDetailDuck.selectors.detail(state),
         clientCommentDetail,
-        initialValues: clientCommentDetail.item
+        initialValues: clientCommentDetail.item,
+        employees,
+        locations
       }
     },
     {
-      post     : clientCommentDetailDuck.creators.post,
-      put      : clientCommentDetailDuck.creators.put,
-      resetItem: clientCommentDetailDuck.creators.resetItem
+      post        : clientCommentDetailDuck.creators.post,
+      put         : clientCommentDetailDuck.creators.put,
+      resetItem   : clientCommentDetailDuck.creators.resetItem,
+      getEmployees: employeeDuck.creators.get,
+      getLocations: locationDuck.creators.get
     }
   ),
   reduxForm({
     form              : 'client-comment-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
-    validate          : values  => {
+    validate          : (values) => {
       const schema = {
-        date       : YupFields.date,
-        location_id: YupFields.num_required,
-        staff_id   : YupFields.num_required,
-        comment    : YupFields.comment
+        location: YupFields.num_required,
+        employee: YupFields.num_required,
+        comment : YupFields.comment
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
 )(CommentForm)
-

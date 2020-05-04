@@ -29,7 +29,9 @@ const ClientCreate = props => {
     if(isUpdating) {
       get(match.params.client)
       getDocuments()
-      getComments()
+      getComments({
+        client_id: match.params.client
+      })
       getPets()
     }
 

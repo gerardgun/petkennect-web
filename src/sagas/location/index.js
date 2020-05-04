@@ -12,7 +12,6 @@ function* get(/* { payload } */) {
 
     // const filters = yield select(selectors.filters)
     const locations = yield call(Get, '/locations/')
-
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
