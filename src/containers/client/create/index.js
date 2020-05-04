@@ -16,6 +16,7 @@ import clientPetDuck from '@reducers/client/pet'
 
 const ClientCreate = props => {
   const {
+    clientDocument,
     match,
     destroy,
     get,
@@ -74,7 +75,7 @@ const ClientCreate = props => {
           {
             menuItem: (
               <Menu.Item key='documents'>
-                <Icon name='file alternate outline'/> Documents <Label>4</Label>
+                <Icon name='file alternate outline'/> Documents <Label>{clientDocument.items.length}</Label>
               </Menu.Item>
             ),
             render: () => <DocumentSection/>
@@ -91,7 +92,8 @@ const ClientCreate = props => {
 export default compose(
   connect(
     state => ({
-      clientDetail: clientDetailDuck.selectors.detail(state)
+      clientDetail  : clientDetailDuck.selectors.detail(state),
+      clientDocument: clientDocumentDuck.selectors.list(state)
     }),
     {
       destroy,

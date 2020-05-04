@@ -23,7 +23,8 @@
       "@lib/*": ["./src/lib/*"],
       "@reducers/*": ["./src/reducers/*"],
       "@routes/*": ["./src/routes/*"],
-      "@sagas/*": ["./src/sagas/*"]
+      "@sagas/*": ["./src/sagas/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   },
   "exclude": ["node_modules", ".next", ".vscode", "public"],
