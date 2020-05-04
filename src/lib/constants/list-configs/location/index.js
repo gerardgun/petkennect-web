@@ -1,11 +1,16 @@
 export default {
-  base_uri: '/setup/location',
+  base_uri: null,
   row     : {
     options: [
       {
         display_name: 'Edit',
         name        : 'edit',
         icon        : 'edit outline'
+      },
+      {
+        display_name: 'Delete',
+        name        : 'delete',
+        icon        : 'trash alternate outline'
       }
     ]
   },

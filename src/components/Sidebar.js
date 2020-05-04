@@ -36,9 +36,14 @@ const categories = [
     label: 'Clients'
   },
   {
-    href : '/pet',
-    icon : 'gitlab',
-    label: 'Pets'
+    href         : null,
+    icon         : 'gitlab',
+    label        : 'Pets',
+    subcategories: [
+      { href: '/pet', label: 'Pets' },
+      { href: '/pet/class', label: 'Classes' },
+      { href: '/pet/breed', label: 'Breeds' }
+    ]
   },
   {
     href : '/request',
