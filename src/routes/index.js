@@ -11,6 +11,7 @@ import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
 import ClientCreate from '@containers/client/create'
 import Location from '@containers/location'
+import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
 import PetCreate from '@containers/pet/create'
 // import FoundationDetail from '@containers/foundation/detail'
@@ -93,6 +94,10 @@ const privateRoutes = [
   {
     path     : '/setup/location',
     component: Location
+  },
+  {
+    path     : '/setup/document-type',
+    component: DocumentType
   },
   {
     path     : '/organization',

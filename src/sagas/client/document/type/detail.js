@@ -1,17 +1,19 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery , select } from 'redux-saga/effects'
 
 // import { Delete, Get, Post, Put } from '@lib/utils/http-client'
 
 import clientDocumentTypeDetailDuck from '@reducers/client/document/type/detail'
+import { Post, Put, Delete } from '@lib/utils/http-client'
 
 const { types } = clientDocumentTypeDetailDuck
 
-function* deleteItem(/* { ids } */) {
+function* deleteItem(/* { id }*/) {
   try {
+    const clientDocumentTypeDetail = yield select(clientDocumentTypeDetailDuck.selectors.detail)
+
     yield put({ type: types.DELETE_PENDING })
 
-    // yield call(Delete, `client/${id}`)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
+    yield call(Delete, `client-document-types/${clientDocumentTypeDetail.item.id}/`)
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -45,12 +47,11 @@ function* get(/* { id } */) {
   }
 }
 
-function* post(/* { payload } */) {
+function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    // yield call(Post, 'client', payload)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
+    yield call(Post, 'client-document-types/', payload)
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {
@@ -61,7 +62,19 @@ function* post(/* { payload } */) {
   }
 }
 
-function* _put(/* { payload } */) {
+function* _put({ payload : { id, ...payload } }) {
+  try {
+    yield put({ type: types.PUT_PENDING })
+
+    yield call(Put, `client-document-types/${id}/`, payload)
+
+    yield put({ type: types.PUT_FULFILLED })
+  } catch (e) {
+    yield put({
+      type : types.PUT_FAILURE,
+      error: e
+    })
+  }
   try {
     yield put({ type: types.PUT_PENDING })
 

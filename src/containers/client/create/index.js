@@ -28,7 +28,9 @@ const ClientCreate = props => {
   useEffect(() => {
     if(isUpdating) {
       get(match.params.client)
-      getDocuments()
+      getDocuments({
+        client_id: match.params.client
+      })
       getComments({
         client_id: match.params.client
       })
