@@ -11,13 +11,13 @@ export default {
     //     display_name: 'Delete',
     //     name        : 'delete',
     //     icon        : 'trash alternate outline'
-    //   },
+    //   }
     // ]
   },
   columns: [
     {
       display_name: 'Date',
-      name        : 'date',
+      name        : 'created_at',
       type        : 'date',
       width       : null,
       align       : 'left',
@@ -25,7 +25,7 @@ export default {
     },
     {
       display_name: 'Staff',
-      name        : 'staff',
+      name        : 'employee_full_name',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -33,7 +33,7 @@ export default {
     },
     {
       display_name: 'Location',
-      name        : 'location',
+      name        : 'location_code',
       type        : 'string',
       width       : null,
       align       : 'left',
