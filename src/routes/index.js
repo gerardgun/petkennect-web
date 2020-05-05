@@ -14,6 +14,8 @@ import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
 import PetCreate from '@containers/pet/create'
+import PetClass from '@containers/pet-class'
+import PetBreed from '@containers/pet-breed'
 // import FoundationDetail from '@containers/foundation/detail'
 import Company from '@containers/company'
 import Organization from '@containers/organization'
@@ -78,6 +80,14 @@ const privateRoutes = [
   {
     path     : '/dashboard',
     component: Dashboard
+  },
+  {
+    path     : '/pet/class',
+    component: PetClass
+  },
+  {
+    path     : '/pet/breed',
+    component: PetBreed
   },
   {
     path     : '/pet',

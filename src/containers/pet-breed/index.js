@@ -4,24 +4,25 @@ import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
 import Layout from '@components/Layout'
+import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import DocumentTypeCreate from './create'
-
-import clientDocumentTypeDuck from '@reducers/client/document/type'
-import clientDocumentTypeDetailDuck from '@reducers/client/document/type/detail'
 import useModal from '@components/Modal/useModal'
-import { useChangeStatusEffect } from 'src/hooks/Shared'
+import PetBreedForm from  './create'
 
-const DocumentType = props => {
-  const { clientDocumentTypeDetail : { status } = {} } = props
+import petBreedDuck from '@reducers/pet/breed'
+import petBreedDetailDuck from '@reducers/pet/breed/detail'
+import { useChangeStatusEffect } from '@hooks/Shared'
+
+const PetBreedList = ({ ...props }) => {
+  const { petBreedDetail : { status } = {} } = props
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+
   useEffect(() => {
-    props.getDocumentTypes()
+    props.getPetBreeds()
   }, [])
 
-  useChangeStatusEffect(props.getDocumentTypes, status)
+  useChangeStatusEffect(props.getPetBreeds, status)
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
@@ -44,28 +45,30 @@ const DocumentType = props => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2'>Document Types</Header>
+            <Header as='h2'>Pets Breed</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
+            <Button content='Download' disabled/>
             <Button
-              content='Download' disabled icon='cloud download'
+              content='Filter'
+              disabled
+              icon='filter'
               labelPosition='left'/>
-
             <Button
-              as={Link} color='teal' content='New Document Type'
+              as={Link} color='teal' content='New Pet Breed'
               onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
         <Table
-          duck={clientDocumentTypeDuck}
+          duck={petBreedDuck}
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
-        <DocumentTypeCreate/>
-        <ModalDelete
-          duckDetail={clientDocumentTypeDetailDuck}
-          onClose={_handleClose}
-          open={open}/>
       </Segment>
+      <PetBreedForm/>
+      <ModalDelete
+        duckDetail={petBreedDetailDuck}
+        onClose={_handleClose}
+        open={open}/>
 
     </Layout>
   )
@@ -73,14 +76,10 @@ const DocumentType = props => {
 
 export default compose(
   connect(
-    (state) => ({
-      // clientDocumentTypes     : clientDocumentTypeDuck.selectors.list(state),
-      clientDocumentTypeDetail: clientDocumentTypeDetailDuck.selectors.detail(state)
-
-    }),
-    {
-      getDocumentTypes: clientDocumentTypeDuck.creators.get,
-      setItem         : clientDocumentTypeDetailDuck.creators.setItem
-    }
-  )
-)(DocumentType)
+    state => ({
+      petBreedDetail: petBreedDetailDuck.selectors.detail(state)
+    }), {
+      getPetBreeds: petBreedDuck.creators.get,
+      setItem     : petBreedDetailDuck.creators.setItem
+    })
+)(PetBreedList)
