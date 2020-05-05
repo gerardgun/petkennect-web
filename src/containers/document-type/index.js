@@ -12,19 +12,17 @@ import DocumentTypeCreate from './create'
 import clientDocumentTypeDuck from '@reducers/client/document/type'
 import clientDocumentTypeDetailDuck from '@reducers/client/document/type/detail'
 import useModal from '@components/Modal/useModal'
+import { useChangeStatusEffect } from 'src/hooks/Shared'
 
 const DocumentType = props => {
+  const { clientDocumentTypeDetail : { status } = {} } = props
   const [ open, { _handleOpen, _handleClose } ] = useModal()
   useEffect(() => {
     props.getDocumentTypes()
   }, [])
 
-  useEffect(() => {
-    const { status } =  props.clientDocumentTypeDetail
+  useChangeStatusEffect(props.getDocumentTypes, status)
 
-    if(status === 'DELETED' || status  === 'POSTED' || status === 'PUT')
-      props.getDocumentTypes()
-  }, [ props.clientDocumentTypeDetail.status ])
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
   }
