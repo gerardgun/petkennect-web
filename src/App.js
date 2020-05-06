@@ -8,6 +8,9 @@ import PublicRoute from '@components/Route/Public'
 
 import routes from '@routes'
 import store, { history } from './store/configureStore'
+import Backend from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
+import CustomDragLayer from '@components/Common/CustomDragLayer'
 
 const AppRouter = () => (
   <ConnectedRouter history={history}>
@@ -24,13 +27,16 @@ const AppRouter = () => (
         }
       </Switch>
     </Router>
+    <CustomDragLayer />
   </ConnectedRouter>
 )
 
 const App = () => (
-  <Provider store={store}>
-    <AppRouter/>
-  </Provider>
+  <DndProvider backend={Backend}>
+    <Provider store={store}>
+      <AppRouter/>
+    </Provider>
+  </DndProvider>
 )
 
 export default App

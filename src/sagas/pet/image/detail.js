@@ -1,16 +1,22 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put,select, takeEvery } from 'redux-saga/effects'
 
-import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
+import { Delete, Get, Post } from '@lib/utils/http-client'
 
 import petImageDetailDuck from '@reducers/pet/image/detail'
+import clientPetDetailDuck from '@reducers/client/pet/detail'
 
 const { types } = petImageDetailDuck
 
-function* deleteItem({ ids: [ id ] }) {
+function* deleteItem(/* { payload }*/) {
   try {
+    const clientPetDetail = yield select(clientPetDetailDuck.selectors.detail)
+    const pet_id = clientPetDetail.item.id
+    const petImageDetail = yield select(petImageDetailDuck.selectors.detail)
+    const pet_image_id = petImageDetail.item.id
+
     yield put({ type: types.DELETE_PENDING })
 
-    yield call(Delete, `pet-images/${id}/`)
+    yield call(Delete, `pets/${pet_id}/images/${pet_image_id}/`)
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -41,11 +47,11 @@ function* get({ id }) {
   }
 }
 
-function* post({ payload }) {
+function* post({ payload: { pet_id , ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, 'pet-images/', payload)
+    const result = yield call(Post, `pets/${pet_id}/images/`, payload)
 
     yield put({
       type   : types.POST_FULFILLED,
@@ -59,11 +65,17 @@ function* post({ payload }) {
   }
 }
 
-function* _put({ payload }) {
+function* _put({ payload: { pet_id, pet_image_drag = {}, pet_image_drop  = {} } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `pet-images/${payload.id}/`, payload)
+    yield call(Post, `pets/${pet_id}/order-images/`, [ {
+      pet_image_id: pet_image_drop.id,
+      order       : pet_image_drag.order
+    },{
+      pet_image_id: pet_image_drag.id,
+      order       : pet_image_drop.order
+    } ])
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

@@ -1,0 +1,14 @@
+.custom-dragger-layer {
+
+  .gallery_image_container {
+    position: relative;
+    .gallery_image{
+      cursor: pointer;
+      height: 120px;
+      object-fit: contain;
+      object-position: center;
+      position: relative;
+    }
+  
+  }
+}

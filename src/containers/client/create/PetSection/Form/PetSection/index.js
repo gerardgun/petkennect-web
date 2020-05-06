@@ -8,7 +8,7 @@ import { Button, Divider, Grid, Header, Image, Segment, Tab } from 'semantic-ui-
 import ModalDelete from '@components/Modal/Delete'
 import FormInformation from './FormInformation'
 import FormAdditionalInfo from './FormAdditionalInfo'
-// import FormGalleryInfo from './FormGalleryInfo'
+import FormGalleryInfo from './FormGalleryInfo'
 import useModal from '@components/Modal/useModal'
 import { parseResponseError } from '@lib/utils/functions'
 
@@ -114,11 +114,11 @@ const PetSection = props => {
                 {
                   menuItem: 'Additional Info',
                   render  : () => <FormAdditionalInfo onSubmit={_handleSubmit}/>
-                }
-                // {
-                //   menuItem: 'Media',
-                //   render  : () => <FormGalleryInfo/>
-                // }
+                },
+                isUpdating ? {
+                  menuItem: 'Media',
+                  render  : () =>   <FormGalleryInfo/>
+                } : {}
               ]}/>
           </Segment>
         </Grid.Column>
