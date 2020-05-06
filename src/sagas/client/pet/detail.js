@@ -2,18 +2,20 @@ import { call, put, takeEvery , select } from 'redux-saga/effects'
 
 // import { Delete, Get, Post, Put } from '@lib/utils/http-client'
 
-import clientDocumentTypeDetailDuck from '@reducers/client/document/type/detail'
-import { Post, Put, Delete } from '@lib/utils/http-client'
+import clientPetDetailDuck from '@reducers/client/pet/detail'
+import clientDetailDuck from '@reducers/client/detail'
+import { Post, Patch, Delete } from '@lib/utils/http-client'
 
-const { types } = clientDocumentTypeDetailDuck
+const { types } = clientPetDetailDuck
 
 function* deleteItem(/* { id }*/) {
   try {
-    const clientDocumentTypeDetail = yield select(clientDocumentTypeDetailDuck.selectors.detail)
+    const clientPetDetail = yield select(clientPetDetailDuck.selectors.detail)
+    const clientDetail = yield select(clientDetailDuck.selectors.detail)
 
     yield put({ type: types.DELETE_PENDING })
 
-    yield call(Delete, `client-document-types/${clientDocumentTypeDetail.item.id}/`)
+    yield call(Delete, `clients/${clientDetail.item.id}/pets/${clientPetDetail.item.id}/`)
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -47,11 +49,12 @@ function* get(/* { id } */) {
   }
 }
 
-function* post({ payload }) {
+function* post({ payload: { ...payload } }) {
   try {
+    const clientDetail = yield select(clientDetailDuck.selectors.detail)
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, 'client-document-types/', payload)
+    yield call(Post, `clients/${clientDetail.item.id}/pets/`, payload)
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {
@@ -62,11 +65,15 @@ function* post({ payload }) {
   }
 }
 
-function* _put({ payload : { id, ...payload } }) {
+function* _put({ payload : { ...payload } }) {
+// function* _put({ payload : { id,...payload } }) {
   try {
+    const clientPetDetail = yield select(clientPetDetailDuck.selectors.detail)
+    const clientDetail = yield select(clientDetailDuck.selectors.detail)
+
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Put, `client-document-types/${id}/`, payload)
+    yield call(Patch, `clients/${clientDetail.item.id}/pets/${clientPetDetail.item.id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

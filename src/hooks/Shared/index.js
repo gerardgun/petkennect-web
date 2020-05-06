@@ -18,7 +18,7 @@ function useChangeStatusEffect(callback = ()=> {},status  = 'RESET_ITEM') {
   const prevStatus = usePrevious(status)
   useEffect(() => {
     if(prevStatus !== status && prevStatus !== 'RESET_ITEM' && (status === 'DELETED' || status  === 'POSTED' || status === 'PUT'))
-      callback(status)
+      callback()
   }, [ status , prevStatus ])
 }
 

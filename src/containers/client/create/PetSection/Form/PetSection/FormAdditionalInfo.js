@@ -3,24 +3,26 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Divider, Form, Header, Tab } from 'semantic-ui-react'
+import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
+import { syncValidate, formatIntToBool, parseBoolToInt } from '@lib/utils/functions'
 
-import petDetailDuck from '@reducers/pet/detail'
+import clientPetDetailDuck from '@reducers/client/pet/detail'
 
 const FormAdditionalInfo = props => {
   const {
-    petDetail,
+    clientPetDetail,
     error, handleSubmit, initialized, reset // redux-form
   } = props
 
   useEffect(() => {
-    if(petDetail.status === 'GOT' && !initialized) props.initialize(petDetail.item)
-  }, [ petDetail.status ])
+    if(clientPetDetail.status === 'GOT' && !initialized) props.initialize(clientPetDetail.item)
+  }, [ clientPetDetail.status ])
 
   return (
-    <Tab.Pane className='form-primary-segment-tab' loading={petDetail.status === 'GETTING'}>
+    <Tab.Pane className='form-primary-segment-tab' loading={clientPetDetail.status === 'GETTING'}>
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
 
@@ -32,33 +34,39 @@ const FormAdditionalInfo = props => {
             component={FormField}
             control={Form.Input}
             label='Coloring'
-            name='coloring'
+            name='info_coloring'
             placeholder='Enter coloring'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Received dog from'
-            name='received_dog_from'
+            name='info_received_from'
             placeholder='Enter received dog from'/>
         </Form.Group>
         <Form.Group>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Crate Trained'
-            name='crate_trained'
+            name='info_crate_trained'
+            parse={parseBoolToInt}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Housebroken'
-            name='housebroken'
+            name='info_housebroken'
+            parse={parseBoolToInt}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Formal training'
-            name='formal_training'
+            name='info_formal_training'
+            parse={parseBoolToInt}
             type='checkbox'/>
         </Form.Group>
 
@@ -70,21 +78,23 @@ const FormAdditionalInfo = props => {
             component={FormField}
             control={Form.Input}
             label='Medical restrictions'
-            name='medical_restrictions'
+            name='health_medical_restrictions'
             placeholder='Enter medical restrictions'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Allergies/Concerns'
-            name='allergies_concerns'
+            name='health_allergies_concerns'
             placeholder='Enter allergies/concerns'/>
         </Form.Group>
         <Form.Group>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Flea/Tick Preventive'
-            name='flea_tick_preventive'
+            name='health_flea_tick_preventive'
+            parse={parseBoolToInt}
             type='checkbox'/>
         </Form.Group>
 
@@ -95,20 +105,26 @@ const FormAdditionalInfo = props => {
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Peanut Butter'
-            name='peanut_butter'
+            name='hesitate_peanut_butter'
+            parse={parseBoolToInt}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Wet Food'
-            name='wet_food'
+            name='hesitate_wet_food'
+            parse={parseBoolToInt}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Water'
-            name='water'
+            name='hesitate_water'
+            parse={parseBoolToInt}
             type='checkbox'/>
         </Form.Group>
 
@@ -120,13 +136,13 @@ const FormAdditionalInfo = props => {
             component={FormField}
             control={Form.Input}
             label='Overall Temperament'
-            name='overal_temperament'
+            name='temp_overall'
             placeholder='Enter overall temperament'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Bitten Human'
-            name='bitten_human'
+            name='temp_bitten_human'
             placeholder='Enter bitten human'/>
         </Form.Group>
         <Form.Group widths='equal'>
@@ -134,13 +150,13 @@ const FormAdditionalInfo = props => {
             component={FormField}
             control={Form.Input}
             label='Dog Fights'
-            name='dog_fights'
+            name='temp_dog_fights'
             placeholder='Enter dog fights'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Any Fears'
-            name='any_fears'
+            name='temp_any_fears'
             placeholder='Enter any fears'/>
         </Form.Group>
         <Form.Group widths='equal'>
@@ -148,7 +164,7 @@ const FormAdditionalInfo = props => {
             component={FormField}
             control={Form.Input}
             label='Prefer Men/Women'
-            name='prefer_men_women'
+            name='temp_prefer'
             placeholder='Enter prefer'/>
           <Form.Field/>
         </Form.Group>
@@ -156,14 +172,18 @@ const FormAdditionalInfo = props => {
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Jumped Fences'
-            name='jumped_fences'
+            name='temp_jumped_fences'
+            parse={parseBoolToInt}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Shared Water Bowls'
-            name='shared_water_bowls'
+            name='temp_shared_water_bowls'
+            parse={parseBoolToInt}
             type='checkbox'/>
         </Form.Group>
 
@@ -175,7 +195,7 @@ const FormAdditionalInfo = props => {
             component={FormField}
             control={Form.Input}
             label='Reason for Removal'
-            name='reason_removal'
+            name='daycare_removed_reason'
             placeholder='Enter reason for removal'/>
           <Form.Field/>
         </Form.Group>
@@ -184,21 +204,25 @@ const FormAdditionalInfo = props => {
             component={FormField}
             control={Form.TextArea}
             label='Any other notes'
-            name='any_other_notes'
+            name='daycare_notes'
             placeholder='Enter description'/>
         </Form.Group>
         <Form.Group>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Attended Day Care'
-            name='attended_day_care'
+            name='daycare_attended'
+            parse={parseBoolToInt}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Removed from Day Care'
-            name='removed_from_day_care'
+            name='daycare_removed'
+            parse={parseBoolToInt}
             type='checkbox'/>
         </Form.Group>
 
@@ -218,14 +242,33 @@ const FormAdditionalInfo = props => {
 
 export default compose(
   connect(
-    state => ({
-      petDetail: petDetailDuck.selectors.detail(state)
-    }),
+    state => {
+      const clientPetDetail =  clientPetDetailDuck.selectors.detail(state)
+
+      return {
+        clientPetDetail,
+        initialValues: clientPetDetail.item
+      }
+    }
+    ,
     {}
   ),
   reduxForm({
     form            : 'pet-create-additional-info',
-    destroyOnUnmount: false
+    destroyOnUnmount: false,
+    validate        : values  => {
+      const schema = {
+        info_crate_trained         : Yup.mixed().required(),
+        info_housebroken           : Yup.mixed().required(),
+        info_formal_training       : Yup.mixed().required(),
+        health_flea_tick_preventive: Yup.mixed().required(),
+        daycare_attended           : Yup.mixed().required(),
+        daycare_removed            : Yup.mixed().required()
+      }
+
+      return syncValidate(Yup.object().shape(schema), values)
+    }
+
   })
 )(FormAdditionalInfo)
 

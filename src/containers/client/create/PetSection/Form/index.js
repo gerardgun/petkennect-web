@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { destroy } from 'redux-form'
@@ -7,31 +7,29 @@ import { Label, Menu, Modal, Tab } from 'semantic-ui-react'
 import PetSection, { formIds } from './PetSection'
 // import IncidentSection from './IncidentSection'
 
-import petDetailDuck from '@reducers/pet/detail'
+import clientPetDetailDuck from '@reducers/client/pet/detail'
 
 const PetCreate = props => {
   const {
-    petDetail,
-    match,
-    destroy,
-    get
+    clientPetDetail,
+    // match,
+    destroy
+    // get
     // getDocuments,
     // getComments,
     // getPets,
   } = props
 
-  useEffect(() => {
-    if(petDetail.status === 'SET_ITEM' && isUpdating)
-      // Verify if is modal
-      if(isModal) {
-        get(petDetail.item.id)
-        // getDocuments()
-        // getComments()
-        // getPets()
-      } else {
-        get(match.params.pet)
-      }
-  }, [ petDetail.status ])
+  /** future behavior with route and hashes, it seems to me */
+  // useEffect(() => {
+  //   if(clientPetDetail.status === 'SET_ITEM' && isUpdating)
+  //     // Verify if is modal
+  //     if(isModal) {
+  //       get(clientPetDetail.item.id)
+  //     } else {
+  //       get(match.params.pet)
+  //     }
+  // }, [ clientPetDetail.status ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
@@ -40,9 +38,10 @@ const PetCreate = props => {
     destroy(...formIds)
   }
 
-  const isOpened = useMemo(() => getIsOpened(petDetail.mode), [ petDetail.mode ])
-  const isUpdating = Boolean(petDetail.item.id)
-  const isModal = true
+  const isOpened = useMemo(() => getIsOpened(clientPetDetail.mode), [ clientPetDetail.mode ])
+  /** future behavior with route and hashes, it seems to me */
+  // const isUpdating = Boolean(clientPetDetail.item.id)
+  // const isModal = true
 
   return (
     <Modal
@@ -113,12 +112,12 @@ const PetCreate = props => {
 export default compose(
   connect(
     state => ({
-      petDetail: petDetailDuck.selectors.detail(state)
+      clientPetDetail: clientPetDetailDuck.selectors.detail(state)
     }),
     {
       destroy,
-      get      : petDetailDuck.creators.get,
-      resetItem: petDetailDuck.creators.resetItem
+      // get      : clientPetDetailDuck.creators.get,
+      resetItem: clientPetDetailDuck.creators.resetItem
       // getDocuments   : clientDocumentDuck.creators.get,
       // getComments: clientCommentDuck.creators.get,
       // getPets        : clientPetDuck.creators.get,

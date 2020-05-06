@@ -16,6 +16,7 @@ import clientPetDuck from '@reducers/client/pet'
 
 const ClientCreate = props => {
   const {
+    clientPet,
     clientDocument,
     match,
     destroy,
@@ -35,7 +36,9 @@ const ClientCreate = props => {
       getComments({
         client_id: match.params.client
       })
-      getPets()
+      getPets({
+        client_id: match.params.client
+      })
     }
 
     return () => {
@@ -59,7 +62,7 @@ const ClientCreate = props => {
           {
             menuItem: (
               <Menu.Item key='pets'>
-                <Icon name='paw'/> Pets <Label>2</Label>
+                <Icon name='paw'/> Pets <Label>{clientPet.items.length}</Label>
               </Menu.Item>
             ),
             render: () => <PetSection/>
@@ -93,6 +96,7 @@ export default compose(
   connect(
     state => ({
       clientDetail  : clientDetailDuck.selectors.detail(state),
+      clientPet     : clientPetDuck.selectors.list(state),
       clientDocument: clientDocumentDuck.selectors.list(state)
     }),
     {

@@ -10,6 +10,7 @@ import clientDocumentDetail from './client/document/detail'
 import clientDocumentType from './client/document/type'
 import clientDocumentTypeDetail from './client/document/type/detail'
 import clientPet from './client/pet'
+import clientPetDetail from './client/pet/detail'
 import company from './company'
 import companyDetail from './company/detail'
 import employee from './employee'
@@ -50,6 +51,7 @@ export default function* rootSaga() {
     ...clientDocumentType,
     ...clientDocumentTypeDetail,
     ...clientPet,
+    ...clientPetDetail,
     ...company,
     ...companyDetail,
     ...employee,

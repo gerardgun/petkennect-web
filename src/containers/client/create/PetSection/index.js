@@ -9,10 +9,14 @@ import useModal from '@components/Modal/useModal'
 import Form from './Form'
 
 import clientPetDuck from '@reducers/client/pet'
-import petDetailDuck from '@reducers/pet/detail'
+import clientPetDetailDuck from '@reducers/client/pet/detail'
+import { useChangeStatusEffect } from '@hooks/Shared'
+import { useParams } from 'react-router-dom'
 
-const PetSection = ({ pet, ...props }) => {
+const PetSection = ({ getClientPets, clientPetDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+
+  const { client: client_id } = useParams()
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
@@ -22,10 +26,17 @@ const PetSection = ({ pet, ...props }) => {
     props.setItem(item, 'UPDATE')
   }
 
-  const _handleRowOptionClick = (option /* , item */) => {
-    if(option === 'preview') alert('Preview Pet File...')
-    else if(option === 'email') alert('Share Pet via email...')
+  const _handleRowOptionClick = (option , item) => {
+    if(option === 'edit') {props.setItem(item, 'UPDATE')}
+    else if(option === 'delete') {
+      props.setItem(item)
+      _handleOpen()
+    }
   }
+
+  useChangeStatusEffect(()=> getClientPets({
+    client_id
+  }), clientPetDetail.status)
 
   return (
     <Grid className='form-primary'>
@@ -36,10 +47,9 @@ const PetSection = ({ pet, ...props }) => {
               <Header as='h2'>Pet List</Header>
             </Grid.Column>
             <Grid.Column textAlign='right'>
-              <Button content='Filter' icon='filter' labelPosition='left'/>
-              {
-                pet.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
-              }
+              <Button
+                content='Filter' disabled icon='filter'
+                labelPosition='left'/>
               <Button color='teal' content='Add Pet' onClick={_handleAddBtnClick}/>
             </Grid.Column>
           </Grid>
@@ -51,8 +61,7 @@ const PetSection = ({ pet, ...props }) => {
 
         <Form/>
         <ModalDelete
-          duck={clientPetDuck}
-          duckDetail={petDetailDuck}
+          duckDetail={clientPetDetailDuck}
           onClose={_handleClose}
           open={open}/>
       </Grid.Column>
@@ -63,10 +72,12 @@ const PetSection = ({ pet, ...props }) => {
 export default compose(
   connect(
     state => ({
-      pet: clientPetDuck.selectors.list(state)
+      clientPet      : clientPetDuck.selectors.list(state),
+      clientPetDetail: clientPetDetailDuck.selectors.detail(state)
     }),
     {
-      setItem: petDetailDuck.creators.setItem
+      setItem      : clientPetDetailDuck.creators.setItem,
+      getClientPets: clientPetDuck.creators.get
     }
   )
 )(PetSection)
