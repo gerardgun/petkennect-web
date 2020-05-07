@@ -3,14 +3,14 @@ import { call, put,select, takeEvery } from 'redux-saga/effects'
 import { Delete, Get, Post } from '@lib/utils/http-client'
 
 import petImageDetailDuck from '@reducers/pet/image/detail'
-import clientPetDetailDuck from '@reducers/client/pet/detail'
+import petDetailDuck from '@reducers/pet/detail'
 
 const { types } = petImageDetailDuck
 
 function* deleteItem(/* { payload }*/) {
   try {
-    const clientPetDetail = yield select(clientPetDetailDuck.selectors.detail)
-    const pet_id = clientPetDetail.item.id
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+    const pet_id = petDetail.item.id
     const petImageDetail = yield select(petImageDetailDuck.selectors.detail)
     const pet_image_id = petImageDetail.item.id
 

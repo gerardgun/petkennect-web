@@ -20,8 +20,10 @@ const PetImage  =  ({ image , onDelete: _handleDelete, onUpdate: _handleUpdate }
     collect: (monitor) => ({
       isActive: monitor.canDrop() && monitor.isOver()
     }),
-    drop: (item) =>
-      _handleUpdate({ pet_image_drag: item, pet_image_drop: image })
+    drop: (item) => {
+      if(item.id !== image.id)
+        _handleUpdate({ pet_image_drag: item, pet_image_drop: image })
+    }
   })
 
   useEffect(() => {

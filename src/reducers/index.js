@@ -12,7 +12,6 @@ import clientDocumentDetail from '@reducers/client/document/detail'
 import clientDocumentType from '@reducers/client/document/type'
 import clientDocumentTypeDetail from '@reducers/client/document/type/detail'
 import clientPet from '@reducers/client/pet'
-import clientPetDetail from '@reducers/client/pet/detail'
 import company from '@reducers/company'
 import companyDetail from '@reducers/company/detail'
 import employee from '@reducers/employee'
@@ -55,7 +54,6 @@ const createRootReducer = history => combineReducers({
   [clientComment.store]           : clientComment.reducer,
   [clientCommentDetail.store]     : clientCommentDetail.reducer,
   [clientPet.store]               : clientPet.reducer,
-  [clientPetDetail.store]         : clientPetDetail.reducer,
   [company.store]                 : company.reducer,
   [companyDetail.store]           : companyDetail.reducer,
   [employee.store]                : employee.reducer,

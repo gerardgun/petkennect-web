@@ -9,11 +9,12 @@ import useModal from '@components/Modal/useModal'
 import Form from './Form'
 
 import clientPetDuck from '@reducers/client/pet'
-import clientPetDetailDuck from '@reducers/client/pet/detail'
+import petDetailDuck from '@reducers/pet/detail'
 import { useChangeStatusEffect } from '@hooks/Shared'
 import { useParams } from 'react-router-dom'
 
-const PetSection = ({ getClientPets, clientPetDetail, ...props }) => {
+const PetSection = (props) => {
+  const { getClientPets, petDetail } = props
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const { client: client_id } = useParams()
@@ -36,7 +37,7 @@ const PetSection = ({ getClientPets, clientPetDetail, ...props }) => {
 
   useChangeStatusEffect(()=> getClientPets({
     client_id
-  }), clientPetDetail.status)
+  }), petDetail.status)
 
   return (
     <Grid className='form-primary'>
@@ -61,7 +62,7 @@ const PetSection = ({ getClientPets, clientPetDetail, ...props }) => {
 
         <Form/>
         <ModalDelete
-          duckDetail={clientPetDetailDuck}
+          duckDetail={petDetailDuck}
           onClose={_handleClose}
           open={open}/>
       </Grid.Column>
@@ -72,11 +73,11 @@ const PetSection = ({ getClientPets, clientPetDetail, ...props }) => {
 export default compose(
   connect(
     state => ({
-      clientPet      : clientPetDuck.selectors.list(state),
-      clientPetDetail: clientPetDetailDuck.selectors.detail(state)
+      clientPet: clientPetDuck.selectors.list(state),
+      petDetail: petDetailDuck.selectors.detail(state)
     }),
     {
-      setItem      : clientPetDetailDuck.creators.setItem,
+      setItem      : petDetailDuck.creators.setItem,
       getClientPets: clientPetDuck.creators.get
     }
   )

@@ -1,18 +1,19 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
-import faker from 'faker'
+import { call, put, takeEvery, select } from 'redux-saga/effects'
 
-// import { Delete, Get, Post, Put } from '@lib/utils/http-client'
+import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import petDetailDuck from '@reducers/pet/detail'
+import clientDetailDuck from '@reducers/client/detail'
 
 const { types } = petDetailDuck
 
 function* deleteItem(/* { ids } */) {
   try {
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+
     yield put({ type: types.DELETE_PENDING })
 
-    // yield call(Delete, `pet/${id}`)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
+    yield call(Delete, `pets/${petDetail.item.id}/`)
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -24,38 +25,17 @@ function* deleteItem(/* { ids } */) {
 }
 
 function* get(/* { id } */) {
+  const petDetail = yield select(petDetailDuck.selectors.detail)
   try {
     yield put({ type: types.GET_PENDING })
 
-    // const pet = yield call(Get, `pet/${id}`)
+    const item = yield call(Get, `pet/${petDetail.item.id}`)
     yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: {
-          id                      : 1,
-          name                    : faker.name.firstName(),
-          breed_id                : 1,
-          date_birth              : faker.date.recent().toISOString().split('T')[0],
-          weight                  : faker.random.number(50),
-          sex                     : 1,
-          size                    : faker.random.arrayElement([ 1, 2, 3, 4 ]),
-          reason_id               : faker.random.arrayElement([ 1, 2, 3, 4 ]),
-          standing_reservation    : faker.random.arrayElement([ 1, 2 ]),
-          special_instructions    : faker.lorem.paragraph(1),
-          behavioral              : faker.lorem.paragraph(1),
-          fixed                   : true,
-          retire                  : true,
-          date_rabies             : faker.date.recent().toISOString().split('T')[0],
-          date_bordetella         : faker.date.recent().toISOString().split('T')[0],
-          date_notification_set_on: faker.date.recent().toISOString().split('T')[0],
-          date_dhlpp              : faker.date.recent().toISOString().split('T')[0],
-          date_neg_fecal          : faker.date.recent().toISOString().split('T')[0],
-          date_influenza          : faker.date.recent().toISOString().split('T')[0],
-          coloring                : faker.lorem.words(2),
-          received_dog_from       : faker.lorem.words(2)
-        }
+        item
       }
     })
   } catch (e) {
@@ -66,12 +46,12 @@ function* get(/* { id } */) {
   }
 }
 
-function* post(/* { payload } */) {
+function* post({ payload: { ...payload } }) {
   try {
+    const clientDetail = yield select(clientDetailDuck.selectors.detail)
     yield put({ type: types.POST_PENDING })
 
-    // yield call(Post, 'pet', payload)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 2000)))
+    yield call(Post, `clients/${clientDetail.item.id}/pets/`, payload)
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {
@@ -82,12 +62,14 @@ function* post(/* { payload } */) {
   }
 }
 
-function* _put(/* { payload } */) {
+function* _put({ payload : { ...payload } }) {
   try {
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+    const clientDetail = yield select(clientDetailDuck.selectors.detail)
+
     yield put({ type: types.PUT_PENDING })
 
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-    // yield call(Put, `pet/${payload.id}`, payload)
+    yield call(Patch, `clients/${clientDetail.item.id}/pets/${petDetail.item.id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

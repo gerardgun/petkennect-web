@@ -8,7 +8,7 @@ import ModalDelete from '@components/Modal/Delete'
 
 import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
-import clientPetDetailDuck from '@reducers/client/pet/detail'
+import petDetailDuck from '@reducers/pet/detail'
 import { useDropzone } from 'react-dropzone'
 import { useChangeStatusEffect } from '@hooks/Shared'
 import useModal from '@components/Modal/useModal'
@@ -16,7 +16,7 @@ import PetImage from './PetImage'
 
 const FormInformation = props => {
   const {
-    clientPetDetail,
+    petDetail,
     petImage,
     petImageDetail,
     getPetImages
@@ -26,14 +26,14 @@ const FormInformation = props => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(()=> {
-    getPetImages({ pet_id: clientPetDetail.item.id })
+    getPetImages({ pet_id: petDetail.item.id })
   }, [  ])
 
-  useChangeStatusEffect(()=> getPetImages({ pet_id: clientPetDetail.item.id }), petImageDetail.status)
+  useChangeStatusEffect(()=> getPetImages({ pet_id: petDetail.item.id }), petImageDetail.status)
 
   const _handleDrop = useCallback((_acceptedFiles, _rejectedFiles , event) => {
     const images = event.dataTransfer ? event.dataTransfer.files : event.target.files
-    props.post({ pet_id: clientPetDetail.item.id ,images })
+    props.post({ pet_id: petDetail.item.id ,images })
   }, [])
 
   const {
@@ -47,7 +47,7 @@ const FormInformation = props => {
   }
 
   const _handleUpdate = (payload) => {
-    props.put({ pet_id: clientPetDetail.item.id, ...payload })
+    props.put({ pet_id: petDetail.item.id, ...payload })
   }
 
   return (
@@ -85,8 +85,8 @@ export default compose(
 
       return {
         petImage,
-        petImageDetail : petImageDetailDuck.selectors.detail(state),
-        clientPetDetail: clientPetDetailDuck.selectors.detail(state)
+        petImageDetail: petImageDetailDuck.selectors.detail(state),
+        petDetail     : petDetailDuck.selectors.detail(state)
       }
     }
     ,

@@ -10,12 +10,12 @@ import FormField from '@components/Common/FormField'
 import YupFields from '@lib/constants/yup-fields'
 import { syncValidate } from '@lib/utils/functions'
 
-import clientPetDetailDuck from '@reducers/client/pet/detail'
+import petDetailDuck from '@reducers/pet/detail'
 import petBreedDuck from '@reducers/pet/breed'
 
 const FormInformation = props => {
   const {
-    clientPetDetail,
+    petDetail,
     petBreed,
     getPetBreeds,
     error, handleSubmit, initialized, reset // redux-form
@@ -25,11 +25,11 @@ const FormInformation = props => {
     getPetBreeds()
   },[])
   useEffect(() => {
-    if(clientPetDetail.status === 'GOT' && !initialized) props.initialize(clientPetDetail.item)
-  }, [ clientPetDetail.status ])
+    if(petDetail.status === 'GOT' && !initialized) props.initialize(petDetail.item)
+  }, [ petDetail.status ])
 
   return (
-    <Tab.Pane className='form-primary-segment-tab' loading={clientPetDetail.status === 'GETTING'}>
+    <Tab.Pane className='form-primary-segment-tab' loading={petDetail.status === 'GETTING'}>
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>
@@ -294,11 +294,11 @@ const FormInformation = props => {
 export default compose(
   connect(
     state => {
-      const clientPetDetail = clientPetDetailDuck.selectors.detail(state)
+      const petDetail = petDetailDuck.selectors.detail(state)
 
       return {
-        clientPetDetail,
-        initialValues: clientPetDetail.item,
+        petDetail,
+        initialValues: petDetail.item,
         petBreed     : petBreedDuck.selectors.list(state)
       }
     }

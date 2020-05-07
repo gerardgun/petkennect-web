@@ -27,7 +27,7 @@ const AppRouter = () => (
         }
       </Switch>
     </Router>
-    <CustomDragLayer />
+    <CustomDragLayer/>
   </ConnectedRouter>
 )
 

@@ -7,11 +7,11 @@ import { Label, Menu, Modal, Tab } from 'semantic-ui-react'
 import PetSection, { formIds } from './PetSection'
 // import IncidentSection from './IncidentSection'
 
-import clientPetDetailDuck from '@reducers/client/pet/detail'
+import petDetailDuck from '@reducers/pet/detail'
 
 const PetCreate = props => {
   const {
-    clientPetDetail,
+    petDetail,
     // match,
     destroy
     // get
@@ -38,7 +38,7 @@ const PetCreate = props => {
     destroy(...formIds)
   }
 
-  const isOpened = useMemo(() => getIsOpened(clientPetDetail.mode), [ clientPetDetail.mode ])
+  const isOpened = useMemo(() => getIsOpened(petDetail.mode), [ petDetail.mode ])
   /** future behavior with route and hashes, it seems to me */
   // const isUpdating = Boolean(clientPetDetail.item.id)
   // const isModal = true
@@ -112,12 +112,12 @@ const PetCreate = props => {
 export default compose(
   connect(
     state => ({
-      clientPetDetail: clientPetDetailDuck.selectors.detail(state)
+      petDetail: petDetailDuck.selectors.detail(state)
     }),
     {
       destroy,
-      // get      : clientPetDetailDuck.creators.get,
-      resetItem: clientPetDetailDuck.creators.resetItem
+      // get      : petDetailDuck.creators.get,
+      resetItem: petDetailDuck.creators.resetItem
       // getDocuments   : clientDocumentDuck.creators.get,
       // getComments: clientCommentDuck.creators.get,
       // getPets        : clientPetDuck.creators.get,

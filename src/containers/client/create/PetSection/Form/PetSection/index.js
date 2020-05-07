@@ -12,13 +12,13 @@ import FormGalleryInfo from './FormGalleryInfo'
 import useModal from '@components/Modal/useModal'
 import { parseResponseError } from '@lib/utils/functions'
 
-import clientPetDetailDuck from '@reducers/client/pet/detail'
+import petDetailDuck from '@reducers/pet/detail'
 
 export const formIds = [ 'pet-create-information', 'pet-create-additional-info' ]
 
 const PetSection = props => {
   const {
-    clientPetDetail,
+    petDetail,
     forms,
     history,
     match,
@@ -32,9 +32,9 @@ const PetSection = props => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
-    if(clientPetDetail.status === 'DELETED')
+    if(petDetail.status === 'DELETED')
       _handleCancelBtnClick()
-  }, [ clientPetDetail.status ])
+  }, [ petDetail.status ])
 
   const _handleCancelBtnClick = () => {
     // Verify if is modal
@@ -70,12 +70,12 @@ const PetSection = props => {
         .reduce((a, b) => ({ ...a, ...b }))
 
       if(isUpdating)
-        return put({ id: clientPetDetail.item.id,...values })
+        return put({ id: petDetail.item.id,...values })
         // return put({ id: clientPetDetail.item.id,...clientPetDetail.item,...values })
           .then(_handleCancelBtnClick)
           .catch(parseResponseError)
       else
-        return post({ ...clientPetDetail.item,...values })
+        return post({ ...petDetail.item,...values })
           .then(_handleCancelBtnClick)
           .catch(parseResponseError)
     }
@@ -85,8 +85,8 @@ const PetSection = props => {
 
   // Verify if is modal
   const isModal = true
-  const isUpdating = isModal ? clientPetDetail.item.id : match.params.pet
-  const saving = [ 'POSTING', 'PUTTING' ].includes(clientPetDetail.status)
+  const isUpdating = isModal ? petDetail.item.id : match.params.pet
+  const saving = [ 'POSTING', 'PUTTING' ].includes(petDetail.status)
 
   return (
     <>
@@ -153,7 +153,7 @@ const PetSection = props => {
       </Grid>
 
       <ModalDelete
-        duckDetail={clientPetDetailDuck}
+        duckDetail={petDetailDuck}
         onClose={_handleClose}
         open={open}/>
     </>
@@ -164,7 +164,7 @@ export default compose(
   withRouter,
   connect(
     state => ({
-      clientPetDetail: clientPetDetailDuck.selectors.detail(state),
+      petDetail: petDetailDuck.selectors.detail(state),
 
       forms: formIds.map(formId => ({
         fields: Object.keys((state.form[formId] || {}).registeredFields || {}),
@@ -175,9 +175,9 @@ export default compose(
     {
       destroy,
       submit,
-      post     : clientPetDetailDuck.creators.post,
-      put      : clientPetDetailDuck.creators.put,
-      resetItem: clientPetDetailDuck.creators.resetItem
+      post     : petDetailDuck.creators.post,
+      put      : petDetailDuck.creators.put,
+      resetItem: petDetailDuck.creators.resetItem
     }
   )
 )(PetSection)

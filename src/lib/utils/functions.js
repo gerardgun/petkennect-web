@@ -99,7 +99,8 @@ export const parseResponseError = e => {
   throw new SubmissionError(errors)
 }
 
-/** temp utils, until backend update TINY_INT to BOOL fields*/
+/** temp utils, until backend update TINY_INT to BOOL fields
+ * PD: solo es hasta que corrijan lo de backend, ahi noma lo dejo :D*/
 export const formatIntToBool = value => !!value
 
 export const parseBoolToInt = value => value ? 1 : 0

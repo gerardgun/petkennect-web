@@ -9,20 +9,20 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate, formatIntToBool, parseBoolToInt } from '@lib/utils/functions'
 
-import clientPetDetailDuck from '@reducers/client/pet/detail'
+import petDetailDuck from '@reducers/pet/detail'
 
 const FormAdditionalInfo = props => {
   const {
-    clientPetDetail,
+    petDetail,
     error, handleSubmit, initialized, reset // redux-form
   } = props
 
   useEffect(() => {
-    if(clientPetDetail.status === 'GOT' && !initialized) props.initialize(clientPetDetail.item)
-  }, [ clientPetDetail.status ])
+    if(petDetail.status === 'GOT' && !initialized) props.initialize(petDetail.item)
+  }, [ petDetail.status ])
 
   return (
-    <Tab.Pane className='form-primary-segment-tab' loading={clientPetDetail.status === 'GETTING'}>
+    <Tab.Pane className='form-primary-segment-tab' loading={petDetail.status === 'GETTING'}>
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
 
@@ -243,11 +243,11 @@ const FormAdditionalInfo = props => {
 export default compose(
   connect(
     state => {
-      const clientPetDetail =  clientPetDetailDuck.selectors.detail(state)
+      const petDetail =  petDetailDuck.selectors.detail(state)
 
       return {
-        clientPetDetail,
-        initialValues: clientPetDetail.item
+        petDetail,
+        initialValues: petDetail.item
       }
     }
     ,
