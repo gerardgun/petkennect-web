@@ -1,32 +1,38 @@
 .pets-form-gallery {
   .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 120px);
+    display: flex;
     column-gap: 8px;
     row-gap: 8px;
   }
-  .gallery_drop-zone{ 
-    height: 100%;
-    width: 100%;
+  .gallery_drop-zone {
+    width: 120px;
+    min-width: 120px;
+    margin-right: 8px;
+    height: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: 1px solid rgba(34,36,38,.15);
+    border: 1px solid rgba(34, 36, 38, 0.15);
     border-radius: 4px;
     height: 120px;
     cursor: pointer;
   }
   .gallery_image_container {
     position: relative;
-    .gallery_image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    .gallery_image {
       cursor: pointer;
+      width: 120px;
       height: 120px;
       object-fit: contain;
       object-position: center;
       position: relative;
     }
-    .gallery_button-delete{
+    .gallery_button-delete {
       display: none;
       position: absolute;
       top: 0;
@@ -34,9 +40,8 @@
       margin: 0;
       padding-right: 0;
     }
-    &:hover .gallery_button-delete{
+    &:hover .gallery_button-delete {
       display: block;
     }
   }
-  
 }

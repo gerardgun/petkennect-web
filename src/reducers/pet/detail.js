@@ -11,8 +11,8 @@ export default base({
       info_housebroken           : 0,
       info_formal_training       : 0,
       health_flea_tick_preventive: 0,
-      daycare_attended           : 0,
-      daycare_removed            : 0
+      daycare_attended           : false,
+      daycare_removed            : false
     }
   }
 })

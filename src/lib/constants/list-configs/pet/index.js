@@ -21,23 +21,31 @@ export default {
       type        : 'string', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
-      display_name: 'Last Name',
-      name        : 'last_name',
+      display_name: 'Client First Name',
+      name        : 'client_first_name',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
+    },
+    {
+      display_name: 'Client Last Name',
+      name        : 'client_last_name',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true
     },
     {
       display_name: 'Breed',
-      name        : 'breed',
+      name        : 'breed_name',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Location',
@@ -45,7 +53,7 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Current',
@@ -61,7 +69,7 @@ export default {
       type        : 'boolean',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Reason',
@@ -77,7 +85,7 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     }
   ]
 }

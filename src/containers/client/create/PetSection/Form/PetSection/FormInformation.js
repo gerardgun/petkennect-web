@@ -58,7 +58,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Date of birth'
-            name='borns_at'
+            name='born_at'
             type='date'/>
         </Form.Group>
         <Form.Group widths='equal'>
@@ -124,7 +124,7 @@ const FormInformation = props => {
           <Field
             component={FormField}
             control={Form.Input}
-            label='&nbsp;'
+            label='Days'
             name='standing_reservation_days'
             placeholder='Days'/>
         </Form.Group>

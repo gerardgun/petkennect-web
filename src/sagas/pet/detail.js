@@ -1,3 +1,4 @@
+
 import { call, put, takeEvery, select } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
@@ -24,14 +25,11 @@ function* deleteItem(/* { ids } */) {
   }
 }
 
-function* get(/* { id } */) {
-  const petDetail = yield select(petDetailDuck.selectors.detail)
+function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const item = yield call(Get, `pet/${petDetail.item.id}`)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-
+    const item = yield call(Get, `pets/${id}/`)
     yield put({
       type   : types.GET_FULFILLED,
       payload: {

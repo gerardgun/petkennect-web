@@ -211,18 +211,14 @@ const FormAdditionalInfo = props => {
           <Field
             component={FormField}
             control={Form.Checkbox}
-            format={formatIntToBool}
             label='Attended Day Care'
             name='daycare_attended'
-            parse={parseBoolToInt}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
-            format={formatIntToBool}
             label='Removed from Day Care'
             name='daycare_removed'
-            parse={parseBoolToInt}
             type='checkbox'/>
         </Form.Group>
 

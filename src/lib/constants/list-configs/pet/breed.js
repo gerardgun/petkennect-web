@@ -41,7 +41,7 @@ export default {
     },
     {
       display_name: 'Pet Class',
-      name        : 'pet_class',
+      name        : 'et',
       type        : 'string',
       width       : null,
       align       : 'left',

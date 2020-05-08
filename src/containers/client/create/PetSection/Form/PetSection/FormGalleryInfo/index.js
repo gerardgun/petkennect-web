@@ -6,13 +6,14 @@ import {  Form, Header, Tab  } from 'semantic-ui-react'
 
 import ModalDelete from '@components/Modal/Delete'
 
-import petImageDuck from '@reducers/pet/image'
-import petImageDetailDuck from '@reducers/pet/image/detail'
 import petDetailDuck from '@reducers/pet/detail'
 import { useDropzone } from 'react-dropzone'
-import { useChangeStatusEffect } from '@hooks/Shared'
 import useModal from '@components/Modal/useModal'
-import PetImage from './PetImage'
+// import PetImage from './PetImage'
+import PetGallery from './PetGallery'
+
+import petImageDuck from '@reducers/pet/image'
+import petImageDetailDuck from '@reducers/pet/image/detail'
 
 const FormInformation = props => {
   const {
@@ -29,8 +30,6 @@ const FormInformation = props => {
     getPetImages({ pet_id: petDetail.item.id })
   }, [  ])
 
-  useChangeStatusEffect(()=> getPetImages({ pet_id: petDetail.item.id }), petImageDetail.status)
-
   const _handleDrop = useCallback((_acceptedFiles, _rejectedFiles , event) => {
     const images = event.dataTransfer ? event.dataTransfer.files : event.target.files
     props.post({ pet_id: petDetail.item.id ,images })
@@ -39,19 +38,19 @@ const FormInformation = props => {
   const {
     getRootProps,
     getInputProps
-  } = useDropzone({ onDrop: _handleDrop,accept: 'image/*' ,multiple: false })
+  } = useDropzone({ onDrop: _handleDrop, accept: 'image/*' ,multiple: false })
 
   const _handleDeleteImage = (_image)=> () => {
     props.setItem(_image)
     _handleOpen()
   }
 
-  const _handleUpdate = (payload) => {
-    props.put({ pet_id: petDetail.item.id, ...payload })
+  const _handleUpdate = pet_images => {
+    props.put({ pet_id: petDetail.item.id, pet_images })
   }
 
   return (
-    <Tab.Pane className='form-primary-segment-tab' loading={petImage.status === 'GETTING'} >
+    <Tab.Pane className='form-primary-segment-tab' loading={petImage.status === 'GETTING' || petImageDetail.status === 'PUTTING'} >
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form className='pets-form-gallery'>
         <Header as='h4'>Photo Gallery</Header>
@@ -60,15 +59,11 @@ const FormInformation = props => {
             <input {...getInputProps()}/>
             <div>Drag and Drop a Image</div>
           </div>
-          {[ ...petImage.items ]
-            .sort((_firstImage,_secondImage)=>_firstImage.order - _secondImage.order)
-            .map(_image => (
-              <PetImage
-                image={_image}  key={_image.key}
-                onDelete={_handleDeleteImage}
-                onUpdate={_handleUpdate}/>
-            ))}
+          <PetGallery
+            items={[ ...petImage.items ].sort((_firstItem,_secondItem)=>_firstItem.order - _secondItem.order)}
+            onDelete={_handleDeleteImage} onUpdate={_handleUpdate}/>
         </div>
+
         <ModalDelete
           duckDetail={petImageDetailDuck}
           onClose={_handleClose}
