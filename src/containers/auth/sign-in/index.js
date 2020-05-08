@@ -82,7 +82,16 @@ const SignIn = props => {
             {/* BEGIN Delete */}
             <Form.Group widths='equal'>
               <Form.Field>
-                <span style={{ color: 'gray' }}>Credentials for demo <br/> superadmin user: martincruz.cs@gmail.com <br/> pass: Abc1234=<br/><br/> admin user: test@aron.mail <br/> pass: Abc1234=</span>
+                <span style={{ color: 'gray' }}>Credentials for demo
+                  <br/>
+                  superadmin user: martincruz.cs@gmail.com<br/>pass: Abc1234=
+                  <br/>
+                  <br/>
+                  admin user: test@aron.mail<br/>pass: Abc1234=
+                  <br/>
+                  <br/>
+                  admin user - all companies: patricia93@yahoo.com <br/>pass: usermultitenant1
+                </span>
               </Form.Field>
             </Form.Group>
             {/* END Delete */}

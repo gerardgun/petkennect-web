@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 
-import { Post, Put, reHydrateToken } from '@lib/utils/http-client'
+import { Post, Put, reHydrateToken, reHydrateTenant as _reHydrateTenant } from '@lib/utils/http-client'
 
 import authDuck from '@reducers/auth'
 
@@ -11,13 +11,16 @@ function* check() {
     yield put({ type: types.CHECK_PENDING })
 
     const token = localStorage.getItem('@token')
+    const tenant = localStorage.getItem('@auth_tenant')
 
     if(token) reHydrateToken(token)
+    if(tenant) _reHydrateTenant(tenant)
 
     yield put({
       type   : types.CHECK_FULFILLED,
       payload: {
-        auth_status: token ? authDuck.statuses.EXISTS : authDuck.statuses.NOT_EXISTS
+        auth_status: token ? authDuck.statuses.EXISTS : authDuck.statuses.NOT_EXISTS,
+        tenant     : tenant || ''
       }
     })
   } catch (e) {
@@ -56,6 +59,7 @@ function* get() {
     // })
   } catch (e) {
     localStorage.removeItem('@token')
+    localStorage.removeItem('@auth_tenant')
 
     yield put({
       type : types.GET_FAILURE,
@@ -117,11 +121,16 @@ function* signIn({ payload }) {
     // Setting the auth user data
     localStorage.setItem('@auth_user', JSON.stringify(user))
     // END Delete
+    const is_employee_and_belong_one_company =  !user.is_superadmin && rest.companies.length === 1
+    if(is_employee_and_belong_one_company)
+      localStorage.setItem('@auth_tenant', rest.companies[0].subdomain_prefix)
 
     yield put({
       type   : types.SIGN_IN_FULFILLED,
       payload: {
-        item: user
+        item       : user,
+        auth_status: token ? authDuck.statuses.EXISTS : authDuck.statuses.NOT_EXISTS,
+        tenant     : is_employee_and_belong_one_company ?  rest.companies[0].subdomain_prefix : ''
       }
     })
   } catch (e) {
@@ -137,6 +146,7 @@ function* signOut() {
     yield put({ type: types.SIGN_OUT_PENDING })
 
     localStorage.removeItem('@token')
+    localStorage.removeItem('@auth_tenant')
 
     // Reset main reducers
     yield put({
@@ -190,6 +200,27 @@ function* requestPasswordReset({ payload }) {
   }
 }
 
+function* rehydrateTenant({ payload }) {
+  try {
+    yield put({ type: types.REHYDRATE_TENANT_PENDING })
+
+    localStorage.setItem('@auth_tenant', payload)
+
+    _reHydrateTenant(payload)
+    yield put({
+      type   : types.REHYDRATE_TENANT_FULFILLED,
+      payload: {
+        tenant: payload
+      }
+    })
+  } catch (e) {
+    yield put({
+      type : types.REHYDRATE_TENANT_FAILURE,
+      error: e
+    })
+  }
+}
+
 export default [
   takeEvery(types.CHECK, check),
   takeEvery(types.GET, get),
@@ -198,5 +229,6 @@ export default [
   takeEvery(types.RECOVER_ACCOUNT, recoverAccount),
   takeEvery(types.SIGN_IN, signIn),
   takeEvery(types.SIGN_OUT, signOut),
-  takeEvery(types.PATCH, requestPasswordReset)
+  takeEvery(types.PATCH, requestPasswordReset),
+  takeEvery(types.REHYDRATE_TENANT, rehydrateTenant)
 ]

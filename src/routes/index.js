@@ -3,6 +3,7 @@ import AuthRecoverAccount from '@containers/auth/recover-account'
 import AuthForgotPassword from '@containers/auth/forgot-password'
 import AuthSignIn from '@containers/auth/sign-in'
 import AuthSignUp from '@containers/auth/sign-up'
+import AuthSSO from '@containers/auth/sso'
 import Error404 from '@containers/page/error-404'
 
 // Private Containers
@@ -61,6 +62,10 @@ const publicRoutes = [
 ]
 
 const privateRoutes = [
+  {
+    path     : '/auth/sso',
+    component: AuthSSO
+  },
   {
     path     : '/client',
     component: Client
