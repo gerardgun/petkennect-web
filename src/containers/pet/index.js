@@ -50,7 +50,7 @@ const PetList = ({ pet, ...props }) => {
               to='/pet/create'/>
           </Grid.Column>
         </Grid>
-        <Table duck={petDuck}  refetchData={props.getPets}/>
+        <Table duck={petDuck}/>
       </Segment>
 
       <ModalDelete

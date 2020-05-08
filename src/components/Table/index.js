@@ -46,15 +46,21 @@ const TableList = ({ duck, list, ...props }) => {
           ordering: '-' + name
         })
       )
-      props.refetchData()
+      props.dispatch(
+        duck.creators.get()
+      )
 
       return
     }
+
     props.dispatch(
       duck.creators.setFilters({
         ordering: name
       }))
-    props.refetchData()
+
+    props.dispatch(
+      duck.creators.get()
+    )
   }
 
   const _handleDropdownChange = (e, { value }) => {
@@ -220,8 +226,7 @@ const TableList = ({ duck, list, ...props }) => {
 TableList.defaultProps = {
   duck            : null,
   onRowOptionClick: () => {},
-  onRowClick      : null,
-  refetchData     : ()=> {}
+  onRowClick      : null
 }
 
 export default compose(
