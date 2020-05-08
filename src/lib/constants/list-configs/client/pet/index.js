@@ -1,16 +1,28 @@
 export default {
   base_uri: null,
   row     : {
+    // options: [
+    //   {
+    //     display_name: 'Send reminder',
+    //     name        : 'send_reminder',
+    //     icon        : 'paper plane outline'
+    //   },
+    //   {
+    //     display_name: 'View Incident Report',
+    //     name        : 'view_incident_report',
+    //     icon        : 'search plus'
+    //   }
+    // ]
     options: [
       {
-        display_name: 'Send reminder',
-        name        : 'send_reminder',
-        icon        : 'paper plane outline'
+        display_name: 'Edit',
+        name        : 'edit',
+        icon        : 'edit outline'
       },
       {
-        display_name: 'View Incident Report',
-        name        : 'view_incident_report',
-        icon        : 'search plus'
+        display_name: 'Delete',
+        name        : 'delete',
+        icon        : 'trash alternate outline'
       }
     ]
   },
@@ -26,14 +38,6 @@ export default {
     {
       display_name: 'Breed',
       name        : 'breed',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Location',
-      name        : 'location',
       type        : 'string',
       width       : null,
       align       : 'left',

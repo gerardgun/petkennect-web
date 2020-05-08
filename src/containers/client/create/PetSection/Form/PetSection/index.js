@@ -8,6 +8,7 @@ import { Button, Divider, Grid, Header, Image, Segment, Tab } from 'semantic-ui-
 import ModalDelete from '@components/Modal/Delete'
 import FormInformation from './FormInformation'
 import FormAdditionalInfo from './FormAdditionalInfo'
+import FormGalleryInfo from './FormGalleryInfo'
 import useModal from '@components/Modal/useModal'
 import { parseResponseError } from '@lib/utils/functions'
 
@@ -69,10 +70,12 @@ const PetSection = props => {
         .reduce((a, b) => ({ ...a, ...b }))
 
       if(isUpdating)
-        return put({ id: petDetail.item.id, ...values })
+        return put({ id: petDetail.item.id,...values })
+        // return put({ id: clientPetDetail.item.id,...clientPetDetail.item,...values })
+          .then(_handleCancelBtnClick)
           .catch(parseResponseError)
       else
-        return post(values)
+        return post({ ...petDetail.item,...values })
           .then(_handleCancelBtnClick)
           .catch(parseResponseError)
     }
@@ -81,9 +84,9 @@ const PetSection = props => {
   const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
 
   // Verify if is modal
+  const isModal = true
   const isUpdating = isModal ? petDetail.item.id : match.params.pet
   const saving = [ 'POSTING', 'PUTTING' ].includes(petDetail.status)
-  const isModal = true
 
   return (
     <>
@@ -111,7 +114,11 @@ const PetSection = props => {
                 {
                   menuItem: 'Additional Info',
                   render  : () => <FormAdditionalInfo onSubmit={_handleSubmit}/>
-                }
+                },
+                isUpdating ? {
+                  menuItem: 'Media',
+                  render  : () =>   <FormGalleryInfo/>
+                } : {}
               ]}/>
           </Segment>
         </Grid.Column>
@@ -133,9 +140,15 @@ const PetSection = props => {
               onClick={_handleOpen} size='large'/>)
           }
           <Divider horizontal>other</Divider>
-          <Button content='Send Reminder' fluid icon='bell outline'/>
-          <Button content='Print' fluid icon='print'/>
-          <Button content='Incident Report' fluid icon='file alternate outline'/>
+          <Button
+            content='Send Reminder' disabled fluid
+            icon='bell outline'/>
+          <Button
+            content='Print' disabled fluid
+            icon='print'/>
+          <Button
+            content='Incident Report' disabled fluid
+            icon='file alternate outline'/>
         </Grid.Column>
       </Grid>
 
@@ -152,7 +165,8 @@ export default compose(
   connect(
     state => ({
       petDetail: petDetailDuck.selectors.detail(state),
-      forms    : formIds.map(formId => ({
+
+      forms: formIds.map(formId => ({
         fields: Object.keys((state.form[formId] || {}).registeredFields || {}),
         values: getFormValues(formId)(state),
         errors: getFormSyncErrors(formId)(state)

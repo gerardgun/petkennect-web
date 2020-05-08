@@ -11,13 +11,19 @@ import YupFields from '@lib/constants/yup-fields'
 import { syncValidate } from '@lib/utils/functions'
 
 import petDetailDuck from '@reducers/pet/detail'
+import petBreedDuck from '@reducers/pet/breed'
 
 const FormInformation = props => {
   const {
     petDetail,
+    petBreed,
+    getPetBreeds,
     error, handleSubmit, initialized, reset // redux-form
   } = props
 
+  useEffect(()=> {
+    getPetBreeds()
+  },[])
   useEffect(() => {
     if(petDetail.status === 'GOT' && !initialized) props.initialize(petDetail.item)
   }, [ petDetail.status ])
@@ -39,13 +45,12 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Select}
             label='Breed *'
-            name='breed_id'
-            options={[
-              { key: 1, value: 1, text: 'Shitzu' },
-              { key: 2, value: 2, text: 'Yorkshire Terrier' },
-              { key: 3, value: 3, text: 'Siberian Husky' },
-              { key: 4, value: 4, text: 'Shitzu X' }
-            ]}
+            name='breed'
+            options={petBreed.items.map(_petBreed => ({
+              key  : _petBreed.id ,
+              value: _petBreed.id ,
+              text : _petBreed.name
+            }))}
             placeholder='Select breed'
             search
             selectOnBlur={false}/>
@@ -53,7 +58,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Date of birth'
-            name='date_birth'
+            name='born_at'
             type='date'/>
         </Form.Group>
         <Form.Group widths='equal'>
@@ -95,7 +100,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Select}
             label='Reason'
-            name='reason_id'
+            name='reason'
             options={[
               { key: 1, value: 1, text: 'Owner Surrender' },
               { key: 2, value: 2, text: 'Deceased' },
@@ -119,7 +124,7 @@ const FormInformation = props => {
           <Field
             component={FormField}
             control={Form.Input}
-            label='&nbsp;'
+            label='Days'
             name='standing_reservation_days'
             placeholder='Days'/>
         </Form.Group>
@@ -136,7 +141,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.TextArea}
             label='Behavioral'
-            name='behavioral'
+            name='behaviorial_comments'
             placeholder='Enter description'/>
         </Form.Group>
         <Form.Group>
@@ -150,7 +155,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Checkbox}
             label='Retire'
-            name='retire'
+            name='retired'
             type='checkbox'/>
         </Form.Group>
 
@@ -162,19 +167,19 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Rabies'
-            name='date_rabies'
+            name='vac_rabies_date'
             type='date'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Bordetella'
-            name='date_bordetella'
+            name='vac_bortedella_date'
             type='date'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Notification set on'
-            name='date_notification_set_on'
+            name='vac_notification_sent_on'
             type='date'/>
         </Form.Group>
         <Form.Group widths='equal'>
@@ -182,19 +187,19 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='DHLPP'
-            name='date_dhlpp'
+            name='vac_dhlpp_date'
             type='date'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Neg. Fecal'
-            name='date_neg_fecal'
+            name='vac_neg_fecal_date'
             type='date'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Influenza'
-            name='date_influenza'
+            name='vac_influenza_date'
             type='date'/>
         </Form.Group>
         <Form.Group>
@@ -202,7 +207,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Checkbox}
             label='All current'
-            name='all_current'
+            name='vac_all_current'
             type='checkbox'/>
         </Form.Group>
 
@@ -214,13 +219,13 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Tested'
-            name='date_tested'
+            name='temp_test_date'
             type='date'/>
           <Field
             component={FormField}
             control={Form.Select}
             label='Result'
-            name='result'
+            name='temp_test_result'
             options={[
               { key: 1, value: 1, text: 'Pass' },
               { key: 2, value: 2, text: 'Fail' }
@@ -234,7 +239,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.TextArea}
             label='Temperament test observations'
-            name='temperament_observations'
+            name='temp_test_observations'
             placeholder='Enter description'/>
         </Form.Group>
         <Form.Group widths='equal'>
@@ -242,19 +247,19 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Strike 1'
-            name='date_strike_1'
+            name='temp_strikes.date_strike_1'
             type='date'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Strike 2'
-            name='date_strike_2'
+            name='temp_strikes.date_strike_2'
             type='date'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Strike 3'
-            name='date_strike_3'
+            name='temp_strikes.date_strike_3'
             type='date'/>
         </Form.Group>
         <Form.Group>
@@ -262,13 +267,13 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Checkbox}
             label='Daycare'
-            name='temperament_day_care'
+            name='temp_daycare'
             type='checkbox'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
             label='Aggressive'
-            name='temperament_aggressive'
+            name='temp_aggressive'
             type='checkbox'/>
         </Form.Group>
 
@@ -288,18 +293,27 @@ const FormInformation = props => {
 
 export default compose(
   connect(
-    state => ({
-      petDetail: petDetailDuck.selectors.detail(state)
-    }),
-    {}
+    state => {
+      const petDetail = petDetailDuck.selectors.detail(state)
+
+      return {
+        petDetail,
+        initialValues: petDetail.item,
+        petBreed     : petBreedDuck.selectors.list(state)
+      }
+    }
+    ,
+    {
+      getPetBreeds: petBreedDuck.creators.get
+    }
   ),
   reduxForm({
     form            : 'pet-create-information',
     destroyOnUnmount: false,
     validate        : values  => {
       const schema = {
-        name    : YupFields.name,
-        breed_id: YupFields.num_required
+        name : YupFields.name,
+        breed: YupFields.num_required
       }
 
       return syncValidate(Yup.object().shape(schema), values)

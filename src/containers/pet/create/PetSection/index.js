@@ -1,22 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 // import { submit, getFormSyncErrors, getFormValues } from 'redux-form'
 import { Button, Divider, Grid, Header, Segment, Tab } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+// import ModalDelete from '@components/Modal/Delete'
 import FormInformation from './FormInformation'
-import useModal from '@components/Modal/useModal'
+// import useModal from '@components/Modal/useModal'
 
-import clientDetailDuck from '@reducers/client/detail'
+import petDetailDuck from '@reducers/pet/detail'
 import AdditionalInfoSection from './AdditionalInfoSection'
 import MediaSection from './MediaSection'
 
-const ClientSection = () => {
+const PetSection = (props) => {
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
-  const [ open, { /* _handleOpen, */_handleClose } ] = useModal()
-
+  // const [ open, { /* _handleOpen, */_handleClose } ] = useModal()
+  const {  id } = useParams()
+  useEffect(()=> {
+    props.get(id)
+  },[ id ])
   const _handleSubmit = () => {
 
   }
@@ -30,7 +33,7 @@ const ClientSection = () => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2'>Create Pet</Header>
+                <Header as='h2'>Info Pet</Header>
               </Grid.Column>
             </Grid>
 
@@ -80,10 +83,10 @@ const ClientSection = () => {
         </Grid.Column>
       </Grid>
 
-      <ModalDelete
+      {/* <ModalDelete
         duckDetail={clientDetailDuck}
         onClose={_handleClose}
-        open={open}/>
+        open={open}/> */}
     </>
   )
 }
@@ -92,6 +95,8 @@ export default compose(
   withRouter,
   connect(
     () => ({}),
-    {}
+    {
+      get: petDetailDuck.creators.get
+    }
   )
-)(ClientSection)
+)(PetSection)

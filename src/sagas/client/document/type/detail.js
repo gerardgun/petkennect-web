@@ -75,19 +75,6 @@ function* _put({ payload : { id, ...payload } }) {
       error: e
     })
   }
-  try {
-    yield put({ type: types.PUT_PENDING })
-
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-    // yield call(Put, `client/${payload.id}`, payload)
-
-    yield put({ type: types.PUT_FULFILLED })
-  } catch (e) {
-    yield put({
-      type : types.PUT_FAILURE,
-      error: e
-    })
-  }
 }
 
 export default [

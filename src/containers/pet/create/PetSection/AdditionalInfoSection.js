@@ -6,9 +6,11 @@ import { Form, Header, Tab } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
-import { syncValidate } from '@lib/utils/functions'
+import { syncValidate, formatIntToBool, parseBoolToInt } from '@lib/utils/functions'
 
-const FormInformation = props => {
+import petDetailDuck from '@reducers/pet/detail'
+
+const FormAdditionalInformation = props => {
   const { reset, handleSubmit } = props
 
   return (
@@ -24,14 +26,14 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Coloring'
-            name='name'
+            name='info_coloring'
             placeholder='Coloring'/>
           <Field
             autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Received Dog From'
-            name='bread'
+            name='info_received_from'
             placeholder='Received Dog From'/>
           <Form.Field/>
         </Form.Group>
@@ -40,18 +42,24 @@ const FormInformation = props => {
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Crate Trained'
-            name='fixed'/>
+            name='info_crate_trained'
+            parse={parseBoolToInt}/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Housebroken'
-            name='retire'/>
+            name='info_housebroken'
+            parse={parseBoolToInt}/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Formal Training'
-            name='retire'/>
+            name='info_formal_training'
+            parse={parseBoolToInt}/>
           <Form.Field/>
           <Form.Field/>
         </Form.Group>
@@ -64,14 +72,14 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Medical Restrictions'
-            name='name'
+            name='health_medical_restrictions'
             placeholder='Medical Restrictions'/>
           <Field
             autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Allergies/Concerns'
-            name='bread'
+            name='health_allergies_concerns'
             placeholder='Allergies/Concerns'/>
           <Form.Field/>
         </Form.Group>
@@ -79,8 +87,10 @@ const FormInformation = props => {
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Flea/Tick Preventive'
-            name='retire'/>
+            name='health_flea_tick_preventive'
+            parse={parseBoolToInt}/>
         </Form.Group>
 
         <Header as='h3'>Hesitates at Eat</Header>
@@ -89,18 +99,24 @@ const FormInformation = props => {
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Peanut Butter'
-            name='retire'/>
+            name='hesitate_peanut_butter'
+            parse={parseBoolToInt}/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Wet food'
-            name='retire'/>
+            name='hesitate_wet_food'
+            parse={parseBoolToInt}/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={formatIntToBool}
             label='Water'
-            name='retire'/>
+            name='hesitate_water'
+            parse={parseBoolToInt}/>
         </Form.Group>
 
         <Header as='h3'>Temperament</Header>
@@ -111,14 +127,14 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Overall Temperament'
-            name='Days'
+            name='temp_overall'
             placeholder='Overal Temperament'/>
           <Field
             autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Bittem Human'
-            name='Days'
+            name='temp_bitten_human'
             placeholder='Days'/>
           <Form.Field/>
         </Form.Group>
@@ -129,14 +145,14 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Dog Fights'
-            name='Days'
+            name='temp_dog_fights'
             placeholder='Dog Fights'/>
           <Field
             autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Any Fears'
-            name='Days'
+            name='temp_any_fears'
             placeholder='Any Fears'/>
           <Form.Field/>
         </Form.Group>
@@ -147,7 +163,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Prefer Men/Women'
-            name='Days'
+            name='temp_prefer'
             placeholder='Prefer Men/Women'/>
           <Form.Field/>
           <Form.Field/>
@@ -161,7 +177,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Reason for Removal'
-            name='Days'
+            name='daycare_removed_reason'
             placeholder='Reason for Removal'/>
           <Form.Field/>
           <Form.Field/>
@@ -172,7 +188,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.TextArea}
             label='Any Other Notes'
-            name='behavioral'
+            name='daycare_notes'
             placeholder='Enter Description'/>
         </Form.Group>
 
@@ -181,12 +197,12 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Checkbox}
             label='Attended Day Care'
-            name='fixed'/>
+            name='daycare_attended'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
             label='Removed from Day Care'
-            name='retire'/>
+            name='daycare_removed'/>
           <Form.Field/>
           <Form.Field/>
         </Form.Group>
@@ -198,17 +214,25 @@ const FormInformation = props => {
 
 export default compose(
   connect(
-    () => ({}),
+    (state) => {
+      const petDetail = petDetailDuck.selectors.detail(state)
+
+      return {
+        petDetail,
+        initialValues: petDetail.item
+      }
+    },
     {}
   ),
   reduxForm({
-    form            : 'pet-create-additional-info',
-    destroyOnUnmount: false,
-    validate        : values  => {
+    form              : 'pet-create-additional-info',
+    destroyOnUnmount  : false,
+    enableReinitialize: true,
+    validate          : values  => {
       const schema = {}
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(FormInformation)
+)(FormAdditionalInformation)
 

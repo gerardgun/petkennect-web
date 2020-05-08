@@ -20,6 +20,49 @@ const TableList = ({ duck, list, ...props }) => {
     return content
   }
 
+  const getSortOrder = (name, sort)  => {
+    if(!sort)
+      return undefined
+
+    switch (list.filters.ordering) {
+      case name:
+        return  'ascending'
+
+      case '-' + name:
+        return  'descending'
+
+      default:
+        return undefined
+    }
+  }
+
+  const _handleToggleSort = (name,sort)  => ()=>  {
+    if(!sort)
+      return
+
+    if(list.filters.ordering === name) {
+      props.dispatch(
+        duck.creators.setFilters({
+          ordering: '-' + name
+        })
+      )
+      props.dispatch(
+        duck.creators.get()
+      )
+
+      return
+    }
+
+    props.dispatch(
+      duck.creators.setFilters({
+        ordering: name
+      }))
+
+    props.dispatch(
+      duck.creators.get()
+    )
+  }
+
   const _handleDropdownChange = (e, { value }) => {
     const itemId = +e.currentTarget.closest('.ui.dropdown').dataset.itemId
     const item = list.items.find(({ id }) => id === itemId)
@@ -71,7 +114,9 @@ const TableList = ({ duck, list, ...props }) => {
         <Loader>Loading...</Loader>
       </Dimmer>
 
-      <Table basic='very' className='table-primary' selectable>
+      <Table
+        basic='very' className='table-primary' selectable
+        sortable>
         <Table.Header>
           <Table.Row>
             {/* Row selection */}
@@ -87,7 +132,13 @@ const TableList = ({ duck, list, ...props }) => {
 
             {/* Row data header */}
             {
-              list.config.columns.map(({ display_name }, index) => (<Table.HeaderCell key={index}>{display_name}</Table.HeaderCell>))
+              list.config.columns.map(({ display_name, sort ,name }, index) => (
+                <Table.HeaderCell
+                  key={index}
+                  onClick={_handleToggleSort(name,sort)}
+                  sorted={getSortOrder(name,sort)}>{display_name}
+                </Table.HeaderCell>
+              ))
             }
 
             {/* Row options */}
