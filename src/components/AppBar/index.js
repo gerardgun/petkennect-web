@@ -52,7 +52,7 @@ const AppBar = ({ auth, ...props }) => {
         </Grid.Column>
         <Grid.Column textAlign='right' width={10}>
 
-          <Dropdown
+          {!auth.item.is_superadmin && <Dropdown
             className='profile-company'
             icon='angle down'
             onChange={_handleCompanyDropDown}
@@ -71,7 +71,7 @@ const AppBar = ({ auth, ...props }) => {
                 {(companies.find(_company =>_company.subdomain_prefix === auth.tenant) || {}).legal_name}
               </span>
             )}
-            value={null}/>
+            value={null}/>}
           <Dropdown
             className='profile-avatar'
             icon='angle down'

@@ -33,6 +33,7 @@ const SSO = props => {
       .catch(parseResponseError)
   }
   useEffect(() => {
+    if(status === 'REHYDRATED_TENANT' && !auth.tenant) history.push('/organization')
     if(status === 'REHYDRATED_TENANT') history.push('/dashboard')
   }, [ status ])
 
