@@ -8,7 +8,8 @@ export default base({
   namespace   : '@@pet-kennect',
   store       : 'auth',
   initialState: {
-    auth_status: 'NOT_EXISTS'
+    auth_status: 'NOT_EXISTS',
+    tenant     : ''
   }
 })
   .extend(detail)
@@ -17,7 +18,9 @@ export default base({
       statuses: [
         'CHECKING', 'CHECKED', 'EXISTS', 'NOT_EXISTS',
         'SIGNING_OUT', 'SIGNED_OUT',
-        'SIGNING_IN', 'SIGNED_IN'
+        'SIGNING_IN', 'SIGNED_IN',
+        'REHYDRATING_TENANT',
+        'REHYDRATED_TENANT'
       ]
     },
     types: [
@@ -36,7 +39,12 @@ export default base({
       'SIGN_OUT_CANCEL',
       'SIGN_OUT_FAILURE',
       'SIGN_OUT_FULFILLED',
-      'SIGN_OUT_PENDING'
+      'SIGN_OUT_PENDING',
+      'REHYDRATE_TENANT',
+      'REHYDRATE_TENANT_CANCEL',
+      'REHYDRATE_TENANT_FAILURE',
+      'REHYDRATE_TENANT_FULFILLED',
+      'REHYDRATE_TENANT_PENDING'
     ],
     reducer: (state, action, { types, statuses }) => produce(state, draft => {
       switch (action.type) {
@@ -83,6 +91,18 @@ export default base({
           draft.status = statuses.SIGNING_OUT
 
           return
+        case types.REHYDRATE_TENANT_FULFILLED:
+          for (let key in action.payload) draft[key] = action.payload[key]
+
+          draft.status = statuses.REHYDRATED_TENANT
+
+          return
+
+        case types.REHYDRATE_TENANT_PENDING:
+          draft.status = statuses.REHYDRATING_TENANT
+
+          return
+
         default:
           return
       }
@@ -94,7 +114,10 @@ export default base({
         /* POST, */ POST_FULFILLED, POST_FAILURE,
         RECOVER_ACCOUNT,
         SIGN_IN, SIGN_IN_FULFILLED, SIGN_IN_FAILURE,
-        SIGN_OUT, SIGN_OUT_FULFILLED, SIGN_OUT_FAILURE
+        SIGN_OUT, SIGN_OUT_FULFILLED, SIGN_OUT_FAILURE,
+        REHYDRATE_TENANT,
+        REHYDRATE_TENANT_FULFILLED,
+        REHYDRATE_TENANT_FAILURE
       }
     }) => ({
       check: () => ({
@@ -125,6 +148,12 @@ export default base({
         payload,
         [WAIT_FOR_ACTION]: SIGN_OUT_FULFILLED,
         [ERROR_ACTION]   : SIGN_OUT_FAILURE
+      }),
+      rehydrateTenant: payload => ({
+        type             : REHYDRATE_TENANT,
+        payload,
+        [WAIT_FOR_ACTION]: REHYDRATE_TENANT_FULFILLED,
+        [ERROR_ACTION]   : REHYDRATE_TENANT_FAILURE
       })
     })
   })

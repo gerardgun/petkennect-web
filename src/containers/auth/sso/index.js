@@ -1,108 +1,78 @@
-import React from 'react'
+import './styles.scss'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
-import { Button, Container, Form, Grid, Image, Header } from 'semantic-ui-react'
-import * as Yup from 'yup'
 
-import FormField from '@components/Common/FormField'
-import FormError from '@components/Common/FormError'
-import YupFields from '@lib/constants/yup-fields'
-import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import { compose } from 'redux'
+import { Button, Container,  Header, List, Radio } from 'semantic-ui-react'
 
 import authDuck from '@reducers/auth'
+import { parseResponseError } from '@lib/utils/functions'
+import { useHistory } from 'react-router-dom'
 
 const SSO = props => {
   const {
     auth,
-    signIn,
-    // from redux form
-    error,
-    handleSubmit,
-    pristine,
-    reset,
-    submitting
+    rehydrateTenant
+
   } = props
 
-  const _handleSubmit = values => {
-    const { email: username_or_email, password } = values
+  const [ company, setCompany ] = useState({})
+  const  { item : { is_superadmin = false,  companies = [ ] } = {} , status } = auth
+  const history = useHistory()
 
-    return signIn({ username_or_email, password })
+  const getAbbrev = ({ legal_name = '' }) => legal_name
+    .split(' ')
+    .map(str=> str.trim()[0])
+    .filter((_ , index)=> index < 2)
+    .join(' ').toUpperCase()
+
+  const _handleSelectOption = (_company) => ()=> setCompany(_company)
+
+  const _handleSubmit = () => {
+    return rehydrateTenant(company.subdomain_prefix)
       .catch(parseResponseError)
   }
+  useEffect(() => {
+    if(status === 'REHYDRATED_TENANT') history.push('/dashboard')
+  }, [ status ])
 
   return (
-    <Container className='sign-in'>
-      <Grid columns={2}>
-        <Grid.Column style={{ padding: '0 3rem' }}>
-          <Image src='/images/sign-in.svg'/>
-        </Grid.Column>
-        <Grid.Column style={{ alignSelf: 'center' }}>
-          <Header as='h2'>¡Welcome!</Header>
-          <p>
-            Enter your email and password for sign in.
-          </p>
+    <Container className='auth-sso'>
 
-          {/* eslint-disable-next-line react/jsx-handler-names */}
-          <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-            <Form.Group widths='equal'>
-              <Field
-                autoComplete='off'
-                autoFocus
-                component={FormField}
-                control={Form.Input}
-                label='Email'
-                name='email'
-                placeholder='Enter email'
-                type='email'/>
-            </Form.Group>
-            <Form.Group widths='equal'>
-              <Field
-                component={FormField}
-                control={Form.Input}
-                label='Password'
-                name='password'
-                placeholder='Enter your password'
-                type='password'/>
-            </Form.Group>
+      <div className='container'>
+        <Header as='h2' className='text-center'>Select company</Header>
+        <List className='list' selection>
+          {  is_superadmin && <List.Item
+            className='list-item'
+            onClick={_handleSelectOption({ id: 'SUPER_ADMIN_ID', subdomain_prefix: undefined })}>
+            <div className='item-radio'>
+              <Radio checked={company.id === 'SUPER_ADMIN_ID'}/>
+            </div>
+            <div className='item-logo'>PK</div>
+            <div>
+              <div className='item-title'>Pet Kennect</div>
+              <div className='item-description'>Super admin</div>
+            </div>
+          </List.Item>}
+          {companies.map(_company => (
+            <List.Item
+              className='list-item' key={_company.id} onClick={_handleSelectOption(_company)}>
+              <div className='item-radio'>
+                <Radio checked={_company.id === company.id}/>
+              </div>
+              <div className='item-logo'>{getAbbrev(_company)}</div>
+              <div>
+                <div className='item-title'>{_company.legal_name}</div>
+                <div className='item-description'>{_company.is_superadmin ? 'Super Admin' : 'Employee'}</div>
+              </div>
+            </List.Item>
+          ))}
+        </List>
 
-            {
-              error && (
-                <Form.Group widths='equal'>
-                  <Form.Field>
-                    <FormError message={error}/>
-                  </Form.Field>
-                </Form.Group>
-              )
-            }
-
-            {/* BEGIN Delete */}
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <span style={{ color: 'gray' }}>Credentials for demo <br/> superadmin user: martincruz.cs@gmail.com <br/> pass: Abc1234=<br/><br/> admin user: test@aron.mail <br/> pass: Abc1234=</span>
-              </Form.Field>
-            </Form.Group>
-            {/* END Delete */}
-
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <Link to='/auth/forgot-password'>Forgot your password?</Link>
-              </Form.Field>
-            </Form.Group>
-            <Form.Group>
-              <Form.Field
-                control={Button}
-                disabled={pristine || submitting}
-                loading={auth.status === 'SIGNING_IN'}
-                type='submit'>
-                Sign in
-              </Form.Field>
-            </Form.Group>
-          </Form>
-
-        </Grid.Column>
-      </Grid>
+        <Button
+          className='submit-button' color='teal' onClick={_handleSubmit}
+          size='large'>Continue</Button>
+      </div>
     </Container>
   )
 }
@@ -117,18 +87,8 @@ export default compose(
       }
     }),
     {
-      signIn: authDuck.creators.signIn
+      signIn         : authDuck.creators.signIn,
+      rehydrateTenant: authDuck.creators.rehydrateTenant
     }
-  ),
-  reduxForm({
-    form    : 'auth-sign-in',
-    validate: values => {
-      const schema = {
-        email   : YupFields.email,
-        password: YupFields.password
-      }
-
-      return syncValidate(Yup.object().shape(schema), values)
-    }
-  })
+  )
 )(SSO)

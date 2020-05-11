@@ -18,13 +18,16 @@ const PublicRoute = ({ auth, check, get, component: Component, ...rest }) => {
   useEffect(() => {
     if(auth.status === 'GOT' || auth.status === 'SIGNED_IN')
       if(
-        (auth.item.is_superadmin && auth.item.companies.length > 0)
-        || (auth.item.companies.length > 1)
+        (
+          (auth.item.is_superadmin && auth.item.companies.length > 0)
+          || (auth.item.companies.length > 1)
+        )
+        && !auth.tenant
       ) {
         rest.history.replace('/auth/sso')
-      } else if(auth.item.is_superadmin) {
+      } else if(auth.item.is_superadmin && !auth.tenant) {
         rest.history.replace('/organization')
-      } else {
+      } else if(auth.tenant) {
         rest.history.replace('/dashboard')
       }
   }, [ auth.status ])

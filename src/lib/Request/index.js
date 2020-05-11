@@ -32,7 +32,8 @@ export default class Request {
     if(this.token)
       config.headers = {
         Authorization            : `JWT ${this.token}`,
-        'Tenant-subdomain-prefix': 'joker'
+        'Tenant-subdomain-prefix': this.tenant
+        // 'Tenant-subdomain-prefix': 'joker'
       }
 
     this.instance = axios.create(config)
@@ -104,6 +105,11 @@ export default class Request {
 
   reHydrateToken = token => {
     this.token = token
+    this.http()
+  }
+
+  reHydrateTenant= tenant => {
+    this.tenant = tenant
     this.http()
   }
 }

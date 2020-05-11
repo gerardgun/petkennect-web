@@ -23,7 +23,7 @@ const PrivateRoute = ({ auth, check, get, component: Component, ...rest }) => {
   }, [ auth.status ])
 
   return (
-    <Route {...rest} render={props => <Component {...props}/>}/>
+    <Route {...rest} render={props => <Component {...props} key={rest.path + auth.tenant}/>}/>
   )
 }
 
