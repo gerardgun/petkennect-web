@@ -46,6 +46,15 @@ const categories = [
     ]
   },
   {
+    href         : null,
+    icon         : 'users',
+    label        : 'Employees',
+    subcategories: [
+      { href: '/pet', label: 'Employees' },
+      { href: '/employee-title', label: 'Titles' }
+    ]
+  },
+  {
     href : '/request',
     icon : 'osi',
     label: 'Online Requests'
