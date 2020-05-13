@@ -45,7 +45,13 @@ function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, 'employees/', payload)
+    const { user_exists, ...values } = payload
+    let result
+
+    if(user_exists)
+      result = yield call(Post, 'employee-profile/', values)
+    else
+      result = yield call(Post, 'employees/', values)
 
     yield put({
       type   : types.POST_FULFILLED,
@@ -59,7 +65,8 @@ function* post({ payload }) {
   }
 }
 
-function* _put({ payload }) {
+function* _put({ payload: { email, ...payload } }) {
+  /* eslint no-unused-vars: 0 */ //
   try {
     yield put({ type: types.PUT_PENDING })
 

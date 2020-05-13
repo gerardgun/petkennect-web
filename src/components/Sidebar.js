@@ -50,7 +50,7 @@ const categories = [
     icon         : 'users',
     label        : 'Employees',
     subcategories: [
-      { href: '/pet', label: 'Employees' },
+      { href: '/employee', label: 'Employees' },
       { href: '/employee-title', label: 'Titles' }
     ]
   },
