@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -22,7 +22,7 @@ import employeeDetailDuck from '@reducers/employee/detail'
 import employeeTitleDuck from '@reducers/employee/title'
 import locationDuck from '@reducers/location'
 import userDuck from '@reducers/user'
-import { useStateDerivedFromProps } from '@hooks/Shared'
+import { useDebounce } from '@hooks/Shared'
 
 const EmployeeForm = (props) => {
   const {
@@ -37,7 +37,7 @@ const EmployeeForm = (props) => {
     submitting // redux-form
   } = props
 
-  const [ userOptions, setUserOptions ] = useStateDerivedFromProps(user.items)
+  const [ customUser, setCustomUser ] = useState({ id: 'CUSTOM_USER_OPTION_ID', email: '' })
   useEffect(() => {
     props.getUsers()
     props.getEmployeeTitles()
@@ -46,7 +46,10 @@ const EmployeeForm = (props) => {
 
   const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
 
-  const _handleClose = () => props.resetItem()
+  const _handleClose = () => {
+    reset()
+    props.resetItem()
+  }
 
   const _handleSubmit = (values) => {
     if(isUpdating)
@@ -61,21 +64,34 @@ const EmployeeForm = (props) => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(employeeDetail.mode), [
-    employeeDetail.mode
-  ])
+  const isOpened = useMemo(() => getIsOpened(employeeDetail.mode), [ employeeDetail.mode ])
   const isUpdating = Boolean(employeeDetail.item.id)
 
+  const { _handleDebounce } = useDebounce((text)=> {
+    props.setUserFilters({ search: text })
+    props.getUsers()
+  })
+
+  const _handleSearchChange = (_, { searchQuery }) => _handleDebounce(searchQuery)
+
   const _handleUserOptionChange = (value) => {
+    if(isUpdating)
+      return
+
     const latestValue = value[value.length  ? value.length - 1 : 0]
 
-    const user = userOptions.find(_user => _user.email === latestValue)
-    if(user) {
+    if(!latestValue) {
+      props.setUserFilters({ search: '' })
+      props.getUsers()
+    }
+
+    const _user = user.items.find(_user => _user.email === latestValue)
+    if(_user) {
       setFieldValue('employee-form','user_exists', true)
-      setFieldValue('employee-form','first_name', user.first_name)
-      setFieldValue('employee-form','last_name', user.last_name)
-      setFieldValue('employee-form','user', user.id)
-      setUserOptions(userOptions.filter(_user => _user.id !== 'CUSTOM_USER_OPTION_ID'))
+      setFieldValue('employee-form','first_name', _user.first_name)
+      setFieldValue('employee-form','last_name', _user.last_name)
+      setFieldValue('employee-form','user', _user.id)
+      setCustomUser({ id: 'CUSTOM_USER_OPTION_ID', email: '' })
 
       return
     }
@@ -85,22 +101,9 @@ const EmployeeForm = (props) => {
   }
 
   const _handleUserOptionAddItem = (_, data) => {
-    const  user = userOptions.find(({ id }) => id === 'CUSTOM_USER_OPTION_ID')
-    if(user) {
-      setUserOptions(
-        userOptions.map((_user) =>
-          _user.id === 'CUSTOM_USER_OPTION_ID'
-            ? { id: 'CUSTOM_USER_OPTION_ID', email: data.value }
-            : _user
-        )
-      )
-
-      return
-    }
-    setUserOptions([
-      ...userOptions,
-      { id: 'CUSTOM_USER_OPTION_ID', email: data.value }
-    ])
+    setCustomUser({
+      id: 'CUSTOM_USER_OPTION_ID', email: data.value
+    })
   }
 
   return (
@@ -120,7 +123,6 @@ const EmployeeForm = (props) => {
           <Field
             component='input' defaultValue={true} name='user_exists'
             type='hidden'/>
-          {/* <Field component='input' name='email' type='hidden'/> */}
           <FormGroup widths='equal'>
             <Field
               additionLabel='Invite '
@@ -128,17 +130,17 @@ const EmployeeForm = (props) => {
               closeOnChange
               component={FormField}
               control={Form.Dropdown}
-              disabled={isUpdating}
               fluid
-              format={value=> {
-                return [ value ]
-              }}
+              format={value=>
+                [ value ]
+              }
               label='Add or Search some PetKennect User*'
               multiple
               name='email'
               onAddItem={_handleUserOptionAddItem}
               onChange={_handleUserOptionChange}
-              options={userOptions.map((_user) => ({
+              onSearchChange={_handleSearchChange}
+              options={[ ...user.items,customUser ].map((_user) => ({
                 key  : _user.id,
                 value: _user.email,
                 text : `${_user.email}`
@@ -147,6 +149,7 @@ const EmployeeForm = (props) => {
                 value[value.length > 0 ? value.length - 1 : 0]
               }
               placeholder='Search user by email'
+              readOnly={isUpdating}
               search
               selection
               selectOnBlur={false}/>
@@ -156,18 +159,18 @@ const EmployeeForm = (props) => {
               autoFocus
               component={FormField}
               control={Form.Input}
-              disabled={!!props.user_exists || isUpdating}
               label='Name *'
               name='first_name'
-              placeholder='Enter name'/>
+              placeholder='Enter name'
+              readOnly={!!props.user_exists || isUpdating}/>
             <Field
               autoFocus
               component={FormField}
               control={Form.Input}
-              disabled={!!props.user_exists || isUpdating}
               label='Lastname'
               name='last_name'
-              placeholder='Enter lastname'/>
+              placeholder='Enter lastname'
+              readOnly={!!props.user_exists || isUpdating}/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
@@ -256,6 +259,7 @@ export default compose(
       put              : employeeDetailDuck.creators.put,
       resetItem        : employeeDetailDuck.creators.resetItem,
       getUsers         : userDuck.creators.get,
+      setUserFilters   : userDuck.creators.setFilters,
       getEmployeeTitles: employeeTitleDuck.creators.get,
       getLocations     : locationDuck.creators.get,
       setFieldValue    : change
