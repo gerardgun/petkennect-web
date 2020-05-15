@@ -16,51 +16,51 @@ export default {
       type        : 'string', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
-      display_name: 'City',
-      name        : 'city',
-      type        : 'string',
+      display_name: 'Name',
+      name        : 'last_name',
+      type        : 'string', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
-      display_name: 'State',
-      name        : 'state',
-      type        : 'string',
+      display_name: 'Email',
+      name        : 'email',
+      type        : 'string', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
       display_name: 'Location',
-      name        : 'location',
+      name        : 'location_name',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Phone Mobile',
-      name        : 'phones[0]',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Phone Home',
-      name        : 'phones[1]',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Status',
       name        : 'status',
+      type        : 'boolean',
+      width       : null,
+      align       : 'left',
+      sort        : true
+    },
+    {
+      display_name: 'Title',
+      name        : 'title',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false
+    },
+    {
+      display_name: 'Role',
+      name        : 'role',
       type        : 'string',
       width       : null,
       align       : 'left',

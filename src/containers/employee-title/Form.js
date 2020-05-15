@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter  } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
@@ -8,13 +8,14 @@ import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
+import YupFields from '@lib/constants/yup-fields'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import petClassDetailDuck from '@reducers/pet/class/detail'
+import employeeTitleDetailDuck from '@reducers/employee/title/detail'
 
-const PetClassForm = props => {
+const EmployeeTitleForm = props => {
   const {
-    petClassDetail,
+    employeeTitleDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
@@ -27,7 +28,7 @@ const PetClassForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ id: petClassDetail.item.id, ...values })
+      return props.put({ id: employeeTitleDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -36,8 +37,8 @@ const PetClassForm = props => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(petClassDetail.mode), [ petClassDetail.mode ])
-  const isUpdating = Boolean(petClassDetail.item.id)
+  const isOpened = useMemo(() => getIsOpened(employeeTitleDetail.mode), [ employeeTitleDetail.mode ])
+  const isUpdating = Boolean(employeeTitleDetail.item.id)
 
   return (
     <Modal
@@ -48,16 +49,18 @@ const PetClassForm = props => {
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Pet Class</Header>
+          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Employee Title</Header>
           <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
               autoFocus
               component={FormField}
               control={Form.Input}
-              label='Name'
+              label='Name *'
               name='name'
               placeholder='Enter name'/>
+          </Form.Group>
+          <Form.Group widths='equal'>
           </Form.Group>
 
           {
@@ -94,29 +97,29 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const petClassDetail = petClassDetailDuck.selectors.detail(state)
+      const employeeTitleDetail = employeeTitleDetailDuck.selectors.detail(state)
 
       return {
-        petClassDetail ,
-        initialValues: petClassDetail.item
+        employeeTitleDetail,
+        initialValues: employeeTitleDetail.item
       }
     },
     {
-      post     : petClassDetailDuck.creators.post,
-      put      : petClassDetailDuck.creators.put,
-      resetItem: petClassDetailDuck.creators.resetItem
+      post     : employeeTitleDetailDuck.creators.post,
+      put      : employeeTitleDetailDuck.creators.put,
+      resetItem: employeeTitleDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
-    form              : 'pet-class-form',
+    form              : 'employee-title-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        name: Yup.string().required()
+        name: YupFields.name
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(PetClassForm)
+)(EmployeeTitleForm)

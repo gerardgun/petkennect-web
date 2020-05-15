@@ -41,7 +41,10 @@ const CommentForm = (props) => {
 
   const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
 
-  const _handleClose = () => props.resetItem()
+  const _handleClose = () => {
+    props.reset()
+    props.resetItem()
+  }
 
   const _handleSubmit = values => {
     if(isUpdating)
