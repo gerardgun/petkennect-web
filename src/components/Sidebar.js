@@ -51,7 +51,7 @@ const categories = [
     label        : 'Catalogue',
     subcategories: [
       { href: '/product', label: 'Products' },
-      { href: '/categories', label: 'Categories' }
+      { href: '/category', label: 'Categories' }
     ]
   },
   {
