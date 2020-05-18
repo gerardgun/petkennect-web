@@ -1,6 +1,8 @@
 import { all } from 'redux-saga/effects'
 
 import auth from './auth'
+import category from './category'
+import categoryDetail from './category/detail'
 import client from './client'
 import clientDetail from './client/detail'
 import clientComment from './client/comment'
@@ -28,6 +30,10 @@ import petClass from './pet/class'
 import petClassDetail from './pet/class/detail'
 import petImage from './pet/image'
 import petImageDetail from './pet/image/detail'
+import product from './product'
+import productDetail from './product/detail'
+import productImage from './product/image'
+import productImageDetail from './product/image/detail'
 import rol from './rol'
 import rolDetail from './rol/detail'
 import rolPermission from './rol/permission'
@@ -41,6 +47,8 @@ import zipDetail from './zip/detail'
 export default function* rootSaga() {
   yield all([
     ...auth,
+    ...category,
+    ...categoryDetail,
     ...client,
     ...clientDetail,
     ...clientComment,
@@ -68,6 +76,10 @@ export default function* rootSaga() {
     ...petClassDetail,
     ...petImage,
     ...petImageDetail,
+    ...product,
+    ...productDetail,
+    ...productImage,
+    ...productImageDetail,
     ...rol,
     ...rolDetail,
     ...rolPermission,
