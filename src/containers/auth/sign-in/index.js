@@ -41,7 +41,7 @@ const SignIn = props => {
           <Image src='/images/sign-in.svg'/>
         </Grid.Column>
         <Grid.Column style={{ alignSelf: 'center' }}>
-          <Header as='h2'>¡Welcome!</Header>
+          <Header as='h2'>¡Welcome to PetKennect!</Header>
           <p>
             Enter your email and password for sign in.
           </p>
