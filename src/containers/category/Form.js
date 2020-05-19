@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -20,6 +20,11 @@ const CategoryForm = props => {
     categoryDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
+
+  useEffect(() => {
+    if(categoryDetail.item.id)
+      props.get(categoryDetail.item.id)
+  }, [ categoryDetail.item.id ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
@@ -62,25 +67,25 @@ const CategoryForm = props => {
               name='name'
               placeholder='Enter name'/>
           </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Form.Select}
-              label='Nest in'
-              name='parent'
-              options={category.items
-                .filter(_category => _category.parent === null)
-                .map((_category) => ({
-                  key  : _category.id,
-                  value: _category.id,
-                  text : `${_category.name}`
-                }))}
-              placeholder='Select a parent category'
-              search
-              selectOnBlur={false}/>
-
-          </Form.Group>
-
+          {!isUpdating
+            && <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Form.Select}
+                label='Nest in'
+                name='parent'
+                options={category.items
+                  .filter(_category => _category.parent === null)
+                  .map((_category) => ({
+                    key  : _category.id,
+                    value: _category.id,
+                    text : `${_category.name}`
+                  }))}
+                placeholder='Select a parent category'
+                search
+                selectOnBlur={false}/>
+            </Form.Group>
+          }
           {
             error && (
               <Form.Group widths='equal'>
@@ -124,6 +129,7 @@ export default compose(
       }
     },
     {
+      get      : categoryDetailDuck.creators.get,
       post     : categoryDetailDuck.creators.post,
       put      : categoryDetailDuck.creators.put,
       resetItem: categoryDetailDuck.creators.resetItem

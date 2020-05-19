@@ -6,6 +6,7 @@ import { Button, Grid, Header, Segment, Input } from 'semantic-ui-react'
 
 import Layout from '@components/Layout'
 import ModalDelete from '@components/Modal/Delete'
+import ModalFilter from '@components/Modal/Filter'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 
@@ -14,7 +15,8 @@ import productDetailDuck from '@reducers/product/detail'
 import { useDebounceText } from '@hooks/Shared'
 
 const ProductList = ({ product, productDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
+  const [ openFilterModal, { _handleOpen: _handleOpenFilterModal, _handleClose: _handleCloseFilterModal } ] = useModal()
 
   useEffect(() => {
     if(productDetail.status === 'DELETED') props.getProducts()
@@ -36,7 +38,7 @@ const ProductList = ({ product, productDetail, ...props }) => {
     else if(option === 'delete')
     {
       props.setItem(item)
-      _handleOpen()
+      _handleOpenDeleteModal()
     }
   }
   const  _handleRowClick = (option,item) => {
@@ -58,10 +60,11 @@ const ProductList = ({ product, productDetail, ...props }) => {
               content='Download' disabled icon='cloud download'
               labelPosition='left'/>
             <Button
-              content='Filter' disabled icon='filter'
-              labelPosition='left'/>
+              content='Filter' icon='filter'
+              labelPosition='left'
+              onClick={_handleOpenFilterModal}/>
             {
-              product.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
+              product.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpenDeleteModal}/>)
             }
             <Button
               as={Link} color='teal' content='New Product'
@@ -77,8 +80,12 @@ const ProductList = ({ product, productDetail, ...props }) => {
       <ModalDelete
         duck={productDuck}
         duckDetail={productDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+        onClose={_handleCloseDeleteModal}
+        open={openDeleteModal}/>
+      <ModalFilter
+        duck={productDuck}
+        onClose={_handleCloseFilterModal}
+        open={openFilterModal}/>
 
     </Layout>
   )

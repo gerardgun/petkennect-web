@@ -25,12 +25,12 @@ function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const client = yield call(Get, `categories/${id}/`)
+    const category = yield call(Get, `categories/${id}/`)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: client
+        item: category
       }
     })
   } catch (e) {

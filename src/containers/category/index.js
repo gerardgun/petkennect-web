@@ -5,8 +5,8 @@ import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Layout'
-// import ModalDelete from '@components/Modal/Delete'
-// import useModal from '@components/Modal/useModal'
+import ModalDelete from '@components/Modal/Delete'
+import useModal from '@components/Modal/useModal'
 import CategoryForm from  './Form'
 
 import categoryDuck from '@reducers/category'
@@ -16,7 +16,7 @@ import SortableList from './SortableList'
 
 const CategoryList = ({ ...props }) => {
   const { categoryDetail : { status } = {}, category } = props
-  // const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     props.getCategories()
@@ -28,17 +28,14 @@ const CategoryList = ({ ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  // const _handleRowClick = (e, item) => {
-  //   props.setItem(item, 'UPDATE')
-  // }
+  const _handleUpdateClick = (id) => {
+    props.setItem({ id }, 'UPDATE')
+  }
 
-  // const _handleRowOptionClick = (option , item) => {
-  //   if(option === 'edit') {props.setItem(item, 'UPDATE')}
-  //   else if(option === 'delete') {
-  //     props.setItem(item)
-  //     _handleOpen()
-  //   }
-  // }
+  const _handleDeleteClick = (id) => {
+    props.setItem({ id })
+    _handleOpen()
+  }
 
   return (
     <Layout>
@@ -54,14 +51,14 @@ const CategoryList = ({ ...props }) => {
               onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
-        <SortableList items={category.items}/>
+        <SortableList items={category.items} onDelete={_handleDeleteClick} onUpdate={_handleUpdateClick}/>
 
       </Segment>
       <CategoryForm/>
-      {/* <ModalDelete
+      <ModalDelete
         duckDetail={categoryDetailDuck}
         onClose={_handleClose}
-        open={open}/> */}
+        open={open}/>
 
     </Layout>
   )

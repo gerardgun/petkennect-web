@@ -45,7 +45,12 @@ export default {
       type        : 'number',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : true,
+      filter      : {
+        range: true,
+        lt   : 'price__lt',
+        gt   : 'price__gt'
+      }
     },
     {
       display_name: 'Stock',
@@ -53,7 +58,12 @@ export default {
       type        : 'number',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : true,
+      filter      : {
+        range: true,
+        lt   : 'stock__lt',
+        gt   : 'stock__gt'
+      }
     },
     {
       display_name: 'Outstanding',

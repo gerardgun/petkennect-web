@@ -28,13 +28,15 @@ const FormInformation = props => {
             label='Name *'
             name='name'
             placeholder='Name'/>
+
           <Field
             autoComplete='off'
             component={FormField}
             control={Form.Input}
             label='Slug'
             name='slug'
-            placeholder='Slug'/>
+            placeholder='Auto generated'
+            readOnly/>
 
           <Field
             component={FormField}
