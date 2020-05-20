@@ -10,6 +10,7 @@ const ModalFilter = ({  duckList,duck, open, reset,...props }) => {
   useEffect(() => {
     return  _handleReset
   }, [])
+
   const getEmptyFilters = () => {
     const filters = {}
 
@@ -24,6 +25,7 @@ const ModalFilter = ({  duckList,duck, open, reset,...props }) => {
 
     return  filters
   }
+
   const _handleSubmit = (values) => {
     props.dispatch(
       duck.creators.setFilters({
@@ -119,12 +121,13 @@ export default compose(
   connect(
     (state, { duck }) => ({
       duckList     : duck.selectors.list(state),
-      initialValues: {}
+      initialValues: {},
+      form         : `filter-modal-form/${duck.store}`
     }),
     dispatch => ({ dispatch })
   ),
   reduxForm({
-    form              : 'product-filter-modal-form',
+
     destroyOnUnmount  : false,
     enableReinitialize: true,
     validate          : values  => {

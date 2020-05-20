@@ -44,6 +44,10 @@ const CategoryForm = props => {
         .catch(parseResponseError)
   }
 
+  const categoryHasChild = (_id) => {
+    return Boolean(category.items.find(_category => _category.parent === _id))
+  }
+
   const isOpened = useMemo(() => getIsOpened(categoryDetail.mode), [ categoryDetail.mode ])
   const isUpdating = Boolean(categoryDetail.item.id)
 
@@ -67,25 +71,28 @@ const CategoryForm = props => {
               name='name'
               placeholder='Enter name'/>
           </Form.Group>
-          {!isUpdating
-            && <Form.Group widths='equal'>
-              <Field
-                component={FormField}
-                control={Form.Select}
-                label='Nest in'
-                name='parent'
-                options={category.items
-                  .filter(_category => _category.parent === null)
-                  .map((_category) => ({
-                    key  : _category.id,
-                    value: _category.id,
-                    text : `${_category.name}`
-                  }))}
-                placeholder='Select a parent category'
-                search
-                selectOnBlur={false}/>
-            </Form.Group>
-          }
+          {/* {!isUpdating */}
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Form.Select}
+              disabled={isUpdating && categoryHasChild(categoryDetail.item.id)}
+              label='Nest in'
+              name='parent'
+              options={[ ...category.items
+                .filter(_category => _category.parent === null)
+                .map((_category) => ({
+                  key  : _category.id,
+                  value: _category.id,
+                  text : `${_category.name}`
+                })),
+              { key: 'NO_PARENT',value: null, text: 'No Parent' } ]
+              }
+              placeholder='Select a parent category'
+              search
+              selectOnBlur={false}/>
+          </Form.Group>
+          {/* } */}
           {
             error && (
               <Form.Group widths='equal'>

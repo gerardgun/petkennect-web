@@ -16,6 +16,10 @@ import YupFields from '@lib/constants/yup-fields'
 const FormInformation = props => {
   const { category, error, handleSubmit, reset } = props
 
+  const categoryHasChild = (_id) => {
+    return Boolean(category.items.find(_category => _category.parent === _id))
+  }
+
   return (
     <Tab.Pane className='form-primary-segment-tab'>
       {/* eslint-disable-next-line react/jsx-handler-names */}
@@ -78,11 +82,13 @@ const FormInformation = props => {
             label='Categories *'
             multiple
             name='categories'
-            options={category.items.map(_category=> ({
-              key  : _category.id,
-              value: _category.id,
-              text : `${_category.name}`
-            }))}
+            options={category.items
+              .filter(_category => !categoryHasChild(_category.id))
+              .map(_category=> ({
+                key  : _category.id,
+                value: _category.id,
+                text : `${_category.name}`
+              }))}
             placeholder='Search categories'
             search
             selection
