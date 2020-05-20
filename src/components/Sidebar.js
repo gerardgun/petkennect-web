@@ -47,6 +47,15 @@ const categories = [
   },
   {
     href         : null,
+    icon         : 'book',
+    label        : 'Catalogue',
+    subcategories: [
+      { href: '/product', label: 'Products' },
+      { href: '/category', label: 'Categories' }
+    ]
+  },
+  {
+    href         : null,
     icon         : 'users',
     label        : 'Employees',
     subcategories: [

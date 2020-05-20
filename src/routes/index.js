@@ -17,6 +17,10 @@ import Pet from '@containers/pet'
 import PetCreate from '@containers/pet/create'
 import PetClass from '@containers/pet-class'
 import PetBreed from '@containers/pet-breed'
+import Product from '@containers/product'
+import ProductCreate from '@containers/product/create'
+import Category from '@containers/category'
+// import PetBreed from '@containers/product/create'
 import EmployeeTitle from '@containers/employee-title'
 import Employee from '@containers/employee'
 // import FoundationDetail from '@containers/foundation/detail'
@@ -107,6 +111,22 @@ const privateRoutes = [
   {
     path     : '/pet/:id',
     component: PetCreate
+  },
+  {
+    path     : '/product',
+    component: Product
+  },
+  {
+    path     : '/product/create',
+    component: ProductCreate
+  },
+  {
+    path     : '/product/:id',
+    component: ProductCreate
+  },
+  {
+    path     : '/category',
+    component: Category
   },
   {
     path     : '/employee',

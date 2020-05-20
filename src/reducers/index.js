@@ -3,6 +3,8 @@ import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 
 import auth from '@reducers/auth'
+import category from '@reducers/category'
+import categoryDetail from '@reducers/category/detail'
 import client from '@reducers/client'
 import clientDetail from '@reducers/client/detail'
 import clientComment from '@reducers/client/comment'
@@ -31,6 +33,10 @@ import petClass from '@reducers/pet/class'
 import petClassDetail from '@reducers/pet/class/detail'
 import petImage from '@reducers/pet/image'
 import petImageDetail from '@reducers/pet/image/detail'
+import product from '@reducers/product'
+import productDetail from '@reducers/product/detail'
+import productImage from '@reducers/product/image'
+import productImageDetail from '@reducers/product/image/detail'
 import rol from '@reducers/rol'
 import rolDetail from '@reducers/rol/detail'
 import rolPermission from '@reducers/rol/permission'
@@ -45,6 +51,8 @@ const createRootReducer = history => combineReducers({
   form                            : formReducer,
   router                          : connectRouter(history),
   [auth.store]                    : auth.reducer,
+  [category.store]                : category.reducer,
+  [categoryDetail.store]          : categoryDetail.reducer,
   [client.store]                  : client.reducer,
   [clientDetail.store]            : clientDetail.reducer,
   [clientDocument.store]          : clientDocument.reducer,
@@ -73,6 +81,10 @@ const createRootReducer = history => combineReducers({
   [petClassDetail.store]          : petClassDetail.reducer,
   [petImage.store]                : petImage.reducer,
   [petImageDetail.store]          : petImageDetail.reducer,
+  [product.store]                 : product.reducer,
+  [productDetail.store]           : productDetail.reducer,
+  [productImage.store]            : productImage.reducer,
+  [productImageDetail.store]      : productImageDetail.reducer,
   [rol.store]                     : rol.reducer,
   [rolDetail.store]               : rolDetail.reducer,
   [rolPermission.store]           : rolPermission.reducer,
