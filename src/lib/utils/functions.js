@@ -56,11 +56,12 @@ export const syncValidate = (schema, values) => {
 }
 
 export const parsePayload = payload => {
-  const containsFileList = Object.values(payload).some(value => value instanceof FileList)
+  const containsFileOrFileList = Object.values(payload).some(value => value instanceof FileList || value instanceof File)
+  // const containsFileList = Object.values(payload).some(value => value instanceof FileList)
   let body = payload // Raw payload
 
   // If payload contains some FileList, create a FormData payload
-  if(containsFileList) {
+  if(containsFileOrFileList) {
     body = new FormData()
 
     Object.entries(payload).forEach(([ key, value ]) => {

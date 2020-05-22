@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback, useState } from 'react'
 import _debounce from 'lodash/debounce'
+import _isEqual from 'lodash/isEqual'
 
 const uC = useCallback
 
@@ -19,8 +20,10 @@ function usePrevious(value) {
 
 function useStateDerivedFromProps(value) {
   const [ state, setState ] = useState(value)
+  const prevValue = usePrevious(value)
   useEffect(()=> {
-    setState(value)
+    if(!_isEqual(prevValue,value))
+      setState(value)
   },[ value ])
 
   return [ state,setState ]
@@ -78,4 +81,14 @@ function useDebounce(callback = () => {}, delay = 1000) {
   }
 }
 
-export { usePrevious, useChangeStatusEffect, useDebounceText , useStateDerivedFromProps , useDebounce }
+/** for get value within listener */
+function useRefFromValue(value) {
+  const ref = useRef(value)
+  useEffect(()=> {
+    ref.current = value
+  }, [ value ])
+
+  return ref
+}
+
+export { usePrevious, useChangeStatusEffect, useDebounceText , useStateDerivedFromProps , useDebounce , useRefFromValue }

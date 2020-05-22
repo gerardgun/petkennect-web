@@ -1,15 +1,14 @@
 import base from '@reducers/base'
 import list from '@reducers/common/list'
 
-import config from '@lib/constants/list-configs/product'
-import pagination from '@reducers/common/pagination'
+import config from '@lib/constants/list-configs/product/package'
 
 export default base({
   namespace   : '@@pet-kennect',
-  store       : 'product',
+  store       : 'product/package',
   initialState: {
     config
   }
 })
   .extend(list)
-  .extend(pagination)
+

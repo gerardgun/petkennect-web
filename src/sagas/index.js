@@ -34,6 +34,8 @@ import product from './product'
 import productDetail from './product/detail'
 import productImage from './product/image'
 import productImageDetail from './product/image/detail'
+import productPackage from './product/package'
+import productPackageDetail from './product/package/detail'
 import rol from './rol'
 import rolDetail from './rol/detail'
 import rolPermission from './rol/permission'
@@ -80,6 +82,8 @@ export default function* rootSaga() {
     ...productDetail,
     ...productImage,
     ...productImageDetail,
+    ...productPackage,
+    ...productPackageDetail,
     ...rol,
     ...rolDetail,
     ...rolPermission,

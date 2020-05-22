@@ -14,7 +14,7 @@ import productDuck from '@reducers/product'
 import productDetailDuck from '@reducers/product/detail'
 import { useDebounceText } from '@hooks/Shared'
 
-const ProductList = ({ product, productDetail, ...props }) => {
+const ProductList = ({ /* product ,*/  productDetail, ...props }) => {
   const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
   const [ openFilterModal, { _handleOpen: _handleOpenFilterModal, _handleClose: _handleCloseFilterModal } ] = useModal()
 
@@ -44,6 +44,9 @@ const ProductList = ({ product, productDetail, ...props }) => {
   const  _handleRowClick = (option,item) => {
     props.history.push(`product/${item.id}`)
   }
+  const _handleCreateClick = ()=> {
+    props.setItem(null, 'CREATE')
+  }
 
   return (
     <Layout>
@@ -63,11 +66,9 @@ const ProductList = ({ product, productDetail, ...props }) => {
               content='Filter' icon='filter'
               labelPosition='left'
               onClick={_handleOpenFilterModal}/>
-            {
-              product.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpenDeleteModal}/>)
-            }
             <Button
               as={Link} color='teal' content='New Product'
+              onClick={_handleCreateClick}
               to='/product/create'/>
           </Grid.Column>
         </Grid>
@@ -78,7 +79,6 @@ const ProductList = ({ product, productDetail, ...props }) => {
       </Segment>
 
       <ModalDelete
-        duck={productDuck}
         duckDetail={productDetailDuck}
         onClose={_handleCloseDeleteModal}
         open={openDeleteModal}/>

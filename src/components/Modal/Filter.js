@@ -90,20 +90,24 @@ const ModalFilter = ({  duckList,duck, open, reset,...props }) => {
           {duckList.config.columns
             .filter(_column => Boolean(_column.filter))
             .map(_column =>_renderItemFilter(_column))}
-          <Modal.Actions>
-            <Button
-              content='Cancel' disabled={duckList.status === 'GETTING'} onClick={props.onClose}
-              type='button'/>
-            <Button
-              content='Reset' disabled={duckList.status === 'GETTING'} onClick={_handleReset}
-              type='button'/>
 
-            <Button
-              color='teal' content='Filter'
-              disabled={duckList.status === 'GETTING'}
-              icon='trash'
-              loading={duckList.status === 'GETTING'}/>
-          </Modal.Actions>
+          <Form.Group className='form-modal-actions' widths='equal'>
+            <Form.Field>
+              <Button
+                content='Cancel' disabled={duckList.status === 'GETTING'} onClick={props.onClose}
+                type='button'/>
+              <Button
+                content='Reset' disabled={duckList.status === 'GETTING'} onClick={_handleReset}
+                type='button'/>
+
+              <Button
+                color='teal' content='Filter'
+                disabled={duckList.status === 'GETTING'}
+                icon='trash'
+                loading={duckList.status === 'GETTING'}/>
+            </Form.Field>
+          </Form.Group>
+
         </Form>
       </Modal.Content>
 

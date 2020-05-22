@@ -36,7 +36,24 @@ const CategoryList = ({ ...props }) => {
     props.setItem({ id })
     _handleOpen()
   }
+  /** future implementation with "order" field */
+  // const getTreeCategories = useMemo(() => {
+  //   const _categories = category.items
+  //   const groupByParentCategory = _groupBy(_categories,'parent')
+  //   const rootCategories = _orderBy(groupByParentCategory[null], [ 'order','id' ],[ 'asc','asc' ])
 
+  //   return rootCategories
+  //     .map(_rootCategory => ({
+  //       ..._rootCategory,
+  //       children: groupByParentCategory[_rootCategory.id]
+  //     }))
+  //     .map(_rootCategory=>({
+  //       ..._rootCategory ,
+  //       children: _rootCategory.children
+  //         ? _orderBy(_rootCategory.children, [ 'order','id' ],[ 'asc','asc' ])
+  //         : _rootCategory.children
+  //     }))
+  // }, [ category.items ])
   return (
     <Layout>
       <Segment className='segment-content' padded='very'>

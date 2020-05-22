@@ -32,14 +32,6 @@ export default {
       sort        : false
     },
     {
-      display_name: 'Short Description',
-      name        : 'short_description',
-      type        : 'boolean',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
       display_name: 'Price',
       name        : 'price',
       type        : 'number',

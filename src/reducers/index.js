@@ -37,6 +37,8 @@ import product from '@reducers/product'
 import productDetail from '@reducers/product/detail'
 import productImage from '@reducers/product/image'
 import productImageDetail from '@reducers/product/image/detail'
+import productPackage from '@reducers/product/package'
+import productPackageDetail from '@reducers/product/package/detail'
 import rol from '@reducers/rol'
 import rolDetail from '@reducers/rol/detail'
 import rolPermission from '@reducers/rol/permission'
@@ -85,6 +87,8 @@ const createRootReducer = history => combineReducers({
   [productDetail.store]           : productDetail.reducer,
   [productImage.store]            : productImage.reducer,
   [productImageDetail.store]      : productImageDetail.reducer,
+  [productPackage.store]          : productPackage.reducer,
+  [productPackageDetail.store]    : productPackageDetail.reducer,
   [rol.store]                     : rol.reducer,
   [rolDetail.store]               : rolDetail.reducer,
   [rolPermission.store]           : rolPermission.reducer,
