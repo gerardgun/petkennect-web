@@ -8,7 +8,6 @@ export default base({
     item: {
       is_outstanding: false,
       is_active     : false,
-      is_package    : false,
       categories    : []
     }
   }

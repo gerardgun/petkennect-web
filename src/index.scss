@@ -184,3 +184,19 @@ body {
 .text-center {
   text-align: center;
 }
+
+.text-area-container{
+  position: relative;
+  margin-bottom: 16;
+  .text-area-counter {
+    position: absolute;
+    bottom: -16px;
+    right: 8px;
+  }
+}
+.drop-down-item-group {
+  margin-left: 16px;
+}
+.drop-down-group {
+  font-weight: 600;
+}

@@ -1,5 +1,5 @@
-import  './styles.scss'
-import React, { useEffect, useCallback } from 'react'
+// import  './styles.scss'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {  Form, Header, Tab  } from 'semantic-ui-react'
@@ -7,12 +7,12 @@ import {  Form, Header, Tab  } from 'semantic-ui-react'
 import ModalDelete from '@components/Modal/Delete'
 
 import productDetailDuck from '@reducers/product/detail'
-import { useDropzone } from 'react-dropzone'
 import useModal from '@components/Modal/useModal'
-import ProductGallery from './ProductGallery'
 
 import productImageDuck from '@reducers/product/image'
 import productImageDetailDuck from '@reducers/product/image/detail'
+import { useParams } from 'react-router-dom'
+import Gallery from '@components/Gallery'
 
 const MediaSection = props => {
   const {
@@ -22,23 +22,16 @@ const MediaSection = props => {
 
   } = props
 
+  const { id } = useParams()
+
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(()=> {
-    getProductImages()
+    if(id)
+      getProductImages()
   }, [  ])
 
-  const _handleDrop = useCallback((_acceptedFiles, _rejectedFiles , event) => {
-    const images = event.dataTransfer ? event.dataTransfer.files : event.target.files
-    props.post({ images })
-  }, [])
-
-  const {
-    getRootProps,
-    getInputProps
-  } = useDropzone({ onDrop: _handleDrop, accept: 'image/*' ,multiple: false })
-
-  const _handleDeleteImage = (_image)=> () => {
+  const _handleDeleteImage = (_image)  =>{
     props.setItem(_image)
     _handleOpen()
   }
@@ -46,21 +39,24 @@ const MediaSection = props => {
   const _handleUpdate = product_images => {
     props.put({ product_images })
   }
+  const _handleCreate  = (images) => {
+    props.post({ images })
+  }
+
+  const isUpdating = Boolean(id)
 
   return (
     <Tab.Pane className='form-primary-segment-tab' loading={productImage.status === 'GETTING' || productImageDetail.status === 'PUTTING'} >
       {/* eslint-disable-next-line react/jsx-handler-names */}
-      <Form className='product-form-gallery'>
+      <Form>
         <Header as='h4'>Photo Gallery</Header>
-        <div className='gallery'>
-          <div {...getRootProps()}  className='gallery_drop-zone'>
-            <input {...getInputProps()}/>
-            <div>Drag and Drop a Image</div>
-          </div>
-          <ProductGallery
-            items={[ ...productImage.items ].sort((_firstItem,_secondItem)=>_firstItem.order - _secondItem.order)}
-            onDelete={_handleDeleteImage} onUpdate={_handleUpdate}/>
-        </div>
+
+        <Gallery
+          enableLocal={!isUpdating}
+          form='gallery-form'
+          items={[ ...productImage.items ].sort((_firstItem,_secondItem)=>_firstItem.order - _secondItem.order)}
+          onCreate={_handleCreate} onDelete={_handleDeleteImage}
+          onUpdate={_handleUpdate}/>
 
         <ModalDelete
           duckDetail={productImageDetailDuck}

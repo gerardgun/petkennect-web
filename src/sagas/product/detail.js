@@ -24,13 +24,12 @@ function* deleteItem({ ids: [ id ] }) {
 function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
-
-    const user = yield call(Get, `products/${id}/`)
+    const product = yield call(Get, `products/${id}/`)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: user
+        item: product
       }
     })
   } catch (e) {
@@ -46,8 +45,7 @@ function* post({ payload }) {
     yield put({ type: types.POST_PENDING })
 
     const result = yield call(Post, 'products/', payload)
-
-    yield put({ type: types.POST_FULFILLED, payload: result })
+    yield put({ type: types.POST_FULFILLED, payload: { item: result } })
   } catch (e) {
     yield put({
       type : types.POST_FAILURE,
@@ -62,7 +60,7 @@ function* _put({ payload }) {
 
     const result = yield call(Patch, `products/${payload.id}/`, payload)
 
-    yield put({ type: types.PUT_FULFILLED, payload: result })
+    yield put({ type: types.PUT_FULFILLED, payload: { item: result } })
   } catch (e) {
     yield put({
       type : types.PUT_FAILURE,
