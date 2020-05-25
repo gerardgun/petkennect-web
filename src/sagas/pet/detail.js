@@ -67,7 +67,7 @@ function* _put({ payload : { ...payload } }) {
 
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `clients/${clientDetail.item.id}/pets/${petDetail.item.id}/`, payload)
+    yield call(Patch, `clients/${clientDetail.item.id || petDetail.item.client}/pets/${petDetail.item.id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

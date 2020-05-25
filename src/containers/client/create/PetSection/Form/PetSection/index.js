@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { destroy, submit, getFormSyncErrors, getFormValues } from 'redux-form'
 import { Button, Divider, Grid, Header, Image, Segment, Tab } from 'semantic-ui-react'
@@ -149,6 +149,11 @@ const PetSection = props => {
           <Button
             content='Incident Report' disabled fluid
             icon='file alternate outline'/>
+          {isUpdating && <Button
+            as={Link}
+            content='Go to client' fluid
+            icon='share square' to={`/client/${petDetail.item.client}`}/>
+          }
         </Grid.Column>
       </Grid>
 
