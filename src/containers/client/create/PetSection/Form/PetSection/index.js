@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { destroy, submit, getFormSyncErrors, getFormValues } from 'redux-form'
 import { Button, Divider, Grid, Header, Image, Segment, Tab } from 'semantic-ui-react'
@@ -30,6 +30,8 @@ const PetSection = props => {
 
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+
+  const { client } = useParams()
 
   useEffect(() => {
     if(petDetail.status === 'DELETED')
@@ -149,6 +151,12 @@ const PetSection = props => {
           <Button
             content='Incident Report' disabled fluid
             icon='file alternate outline'/>
+          {isUpdating && !client && <Button
+            as={Link}
+            content='Go to client' fluid
+            icon='share square'
+            onClick={_handleCancelBtnClick} to={`/client/${petDetail.item.client}`}/>
+          }
         </Grid.Column>
       </Grid>
 

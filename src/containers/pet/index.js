@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment, Input } from 'semantic-ui-react'
 
@@ -8,24 +7,36 @@ import Layout from '@components/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
+import Form from '@containers/client/create/PetSection/Form'
 
 import petDuck from '@reducers/pet'
 import petDetailDuck from '@reducers/pet/detail'
 import { useChangeStatusEffect, useDebounceText } from '@hooks/Shared'
 
-const PetList = ({ pet, ...props }) => {
+const PetList = ({ pet, petDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+
+  useEffect(() => {
+    props.getPets()
+  }, [])
 
   const { _handleChangeText } = useDebounceText((text)=> {
     props.setFilters({ search: text })
     props.getPets()
   })
 
-  useEffect(() => {
-    props.getPets()
-  }, [])
+  const _handleRowClick = (e, item) => {
+    props.setItem(item, 'UPDATE')
+  }
+  const _handleRowOptionClick = (option , item) => {
+    if(option === 'edit') {props.setItem(item, 'UPDATE')}
+    else if(option === 'delete') {
+      props.setItem(item)
+      _handleOpen()
+    }
+  }
 
-  useChangeStatusEffect(props.getPets,pet.status)
+  useChangeStatusEffect(props.getPets,petDetail.status)
 
   return (
     <Layout>
@@ -45,14 +56,13 @@ const PetList = ({ pet, ...props }) => {
             {
               pet.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
             }
-            <Button
-              as={Link} color='teal' content='New Pet'
-              to='/pet/create'/>
           </Grid.Column>
         </Grid>
-        <Table duck={petDuck}/>
+        <Table
+          duck={petDuck}  onRowClick={_handleRowClick}
+          onRowOptionClick={_handleRowOptionClick}/>
       </Segment>
-
+      <Form/>
       <ModalDelete
         duck={petDuck}
         duckDetail={petDetailDuck}
@@ -65,10 +75,12 @@ const PetList = ({ pet, ...props }) => {
 
 export default compose(
   connect(
-    ({ pet }) => ({
-      pet
+    ({ pet ,...state }) => ({
+      pet,
+      petDetail: petDetailDuck.selectors.detail(state)
     }), {
       getPets   : petDuck.creators.get,
-      setFilters: petDuck.creators.setFilters
+      setFilters: petDuck.creators.setFilters,
+      setItem   : petDetailDuck.creators.setItem
     })
 )(PetList)

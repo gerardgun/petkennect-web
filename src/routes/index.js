@@ -14,7 +14,6 @@ import ClientCreate from '@containers/client/create'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
-import PetCreate from '@containers/pet/create'
 import PetClass from '@containers/pet-class'
 import PetBreed from '@containers/pet-breed'
 import Product from '@containers/product'
@@ -103,14 +102,6 @@ const privateRoutes = [
   {
     path     : '/pet',
     component: Pet
-  },
-  {
-    path     : '/pet/create',
-    component: PetCreate
-  },
-  {
-    path     : '/pet/:id',
-    component: PetCreate
   },
   {
     path     : '/product',

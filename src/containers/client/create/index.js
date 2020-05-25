@@ -45,7 +45,7 @@ const ClientCreate = props => {
       destroy(...formIds)
       resetItem()
     }
-  }, [])
+  }, [ match.params.client ])
 
   const isUpdating = match.params.client
 
