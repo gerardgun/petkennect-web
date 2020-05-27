@@ -164,7 +164,6 @@ const EmployeeForm = (props) => {
               placeholder='Enter name'
               readOnly={!!props.user_exists || isUpdating}/>
             <Field
-              autoFocus
               component={FormField}
               control={Form.Input}
               label='Lastname'

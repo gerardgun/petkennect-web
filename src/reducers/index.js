@@ -42,6 +42,12 @@ import productPackageDetail from '@reducers/product/package/detail'
 import rol from '@reducers/rol'
 import rolDetail from '@reducers/rol/detail'
 import rolPermission from '@reducers/rol/permission'
+import service from '@reducers/service'
+import serviceDetail from '@reducers/service/detail'
+import serviceAddon from '@reducers/service/addon'
+import serviceAddonDetail from '@reducers/service/addon/detail'
+import serviceAddonGroup from '@reducers/service/addon/group'
+import serviceAddonGroupDetail from '@reducers/service/addon/group/detail'
 import transaction from '@reducers/transaction'
 import transactionDetail from '@reducers/transaction/detail'
 import user from '@reducers/user'
@@ -93,6 +99,12 @@ const createRootReducer = history => combineReducers({
   [rolDetail.store]               : rolDetail.reducer,
   [rolPermission.store]           : rolPermission.reducer,
   [transaction.store]             : transaction.reducer,
+  [service.store]                 : service.reducer,
+  [serviceDetail.store]           : serviceDetail.reducer,
+  [serviceAddon.store]            : serviceAddon.reducer,
+  [serviceAddonDetail.store]      : serviceAddonDetail.reducer,
+  [serviceAddonGroup.store]       : serviceAddonGroup.reducer,
+  [serviceAddonGroupDetail.store] : serviceAddonGroupDetail.reducer,
   [transactionDetail.store]       : transactionDetail.reducer,
   [user.store]                    : user.reducer,
   [userDetail.store]              : userDetail.reducer,

@@ -15,9 +15,9 @@ export default {
     }
   },
   consts: {
-    statuses: [ 'REMOVED_FILTERS', 'SET_FILTERS' ]
+    statuses: [ 'REMOVED_FILTERS', 'SET_FILTERS','UPDATED' ]
   },
-  types  : [ 'REMOVE_FILTERS', 'SET_FILTERS' ],
+  types  : [ 'REMOVE_FILTERS', 'SET_FILTERS','UPDATE' ],
   reducer: (state, action, { types, statuses }) =>
     produce(state, draft => {
       switch (action.type) {
@@ -55,6 +55,12 @@ export default {
           }
 
           draft.status = statuses.SET_FILTERS
+
+          return
+        case types.UPDATE:
+          draft.items = action.payload
+
+          draft.status = statuses.UPDATED
 
           return
 
