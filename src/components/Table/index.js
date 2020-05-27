@@ -7,9 +7,7 @@ import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
 
-const TableList = ({ duck, noDuckitems,  list, ...props }) => {
-  const items = noDuckitems  || list.items
-
+const TableList = ({ duck, list, ...props }) => {
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
 
@@ -67,7 +65,7 @@ const TableList = ({ duck, noDuckitems,  list, ...props }) => {
 
   const _handleDropdownChange = (e, { value }) => {
     const itemId = +e.currentTarget.closest('.ui.dropdown').dataset.itemId
-    const item = items.find(({ id }) => id === itemId)
+    const item = list.items.find(({ id }) => id === itemId)
 
     props.onRowOptionClick(value, item)
   }
@@ -82,7 +80,7 @@ const TableList = ({ duck, noDuckitems,  list, ...props }) => {
 
   const _handleRowClick = e => {
     const isCheckbox = e.target.tagName === 'LABEL' && /ui.*checkbox/.test(e.target.parentNode.classList.value)
-    const item = items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
+    const item = list.items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
 
     if(!isCheckbox)
       if(props.onRowClick) props.onRowClick(e, item)
@@ -99,12 +97,12 @@ const TableList = ({ duck, noDuckitems,  list, ...props }) => {
 
   const _handleSelectorCheckboxHeaderChange = (e, { checked }) => {
     props.dispatch(
-      checked === true ? duck.creators.selectIds(...items.map(({ id }) => id)) : duck.creators.removeSelectedIds()
+      checked === true ? duck.creators.selectIds(...list.items.map(({ id }) => id)) : duck.creators.removeSelectedIds()
     )
   }
 
-  const loading =  props.noDuckLoading || list.status === 'GETTING'
-  const areAllItemsChecked = list.selector && items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
+  const loading = list.status === 'GETTING'
+  const areAllItemsChecked = list.selector && list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
 
   return (
     <Dimmer.Dimmable
@@ -151,8 +149,8 @@ const TableList = ({ duck, noDuckitems,  list, ...props }) => {
         </Table.Header>
         <Table.Body>
           {
-            items.length > 0 ? (
-              items.map((item, index) => {
+            list.items.length > 0 ? (
+              list.items.map((item, index) => {
                 const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
 
                 return (
@@ -228,10 +226,9 @@ const TableList = ({ duck, noDuckitems,  list, ...props }) => {
 TableList.defaultProps = {
   duck            : null,
   onRowOptionClick: () => {},
-  onRowClick      : null,
-  noDuckitems     : null,
-  noDuckLoading   : false
+  onRowClick      : null
 }
+
 export default compose(
   withRouter,
   connect(
