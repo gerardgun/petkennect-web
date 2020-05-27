@@ -52,8 +52,10 @@ const FormInformation = props => {
         name  : _customGroup,
         addons: groups[_customGroup]
       }))
-
-    props.updateAddonGroups([ ..._defaultGroups,...customGroups ])
+    if(serviceDetail.item.type === 'C')
+      props.updateAddonGroups([ ...customGroups ])
+    else if(serviceDetail.item.type === 'G')
+      props.updateAddonGroups([ ..._defaultGroups,...customGroups ])
   }, [ serviceDetail.item.addons ])
 
   const _handleAddBtnClick = () => {
@@ -67,17 +69,27 @@ const FormInformation = props => {
     <Tab.Pane className='form-primary-segment-tab' loading={loading}>
       {/* eslint-disable-next-line react/jsx-handler-names */}
       {/* <pre>{JSON.stringify(addonGroups, null, 2)}</pre> */}
-      {
-        serviceAddonGroup.items.map(_group=>(<AddonGroupTable group={_group} key={_group.id}/>))
-      }
-      <Button
-        basic
-        color='teal'
-        content='Create Addon Group' fluid
-        icon='add'
-        labelPosition='left'
-        onClick={_handleAddBtnClick}
-        size='massive'/>
+      {[ 'G' ,'C' ].includes(serviceDetail.item.type) && (
+        <>
+          {
+            serviceAddonGroup.items.map(_group=>(<AddonGroupTable group={_group} key={_group.id}/>))
+          }
+          <Button
+            basic
+            color='teal'
+            content='Create Addon Group' fluid
+            icon='add'
+            labelPosition='left'
+            onClick={_handleAddBtnClick}
+            size='massive'/>
+
+        </>
+      )}
+      {![ 'G' ,'C' ].includes(serviceDetail.item.type) && (
+        <>
+          wip...
+        </>
+      )}
       <AddonForm/>
       <AddonGroupForm/>
     </Tab.Pane>

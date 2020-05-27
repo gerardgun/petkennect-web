@@ -5,7 +5,7 @@ import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import ModalDelete from '@components/Modal/Delete'
-import Table from '@components/Table'
+import SimpleTable from '@components/Common/SimpleTable'
 import useModal from '@components/Modal/useModal'
 
 import serviceDetailDuck from '@reducers/service/detail'
@@ -81,10 +81,9 @@ const AddonGroupTable = ({ ...props }) => {
             onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>
-      <Table
-        duck={serviceAddonDuck}
-        noDuckitems={props.group.addons}
-        // noDuckLoading={loading}
+      <SimpleTable
+        config={props.serviceAddon.config}
+        items={props.group.addons}
         onRowClick={_handleRowClick}
         onRowOptionClick={_handleRowOptionClick}/>
       <ModalDelete
@@ -111,6 +110,7 @@ AddonGroupTable.propTypes = {
 export default compose(
   connect(
     ({ ...state }) => ({
+      serviceAddon      : serviceAddonDuck.selectors.list(state),
       serviceAddonDetail: serviceAddonDetailDuck.selectors.detail(state),
       serviceDetail     : serviceDetailDuck.selectors.detail(state)
     }), {

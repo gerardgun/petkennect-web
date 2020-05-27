@@ -20,7 +20,7 @@ export default {
     },
     {
       display_name: 'Plans',
-      name        : 'price',
+      name        : 'plans.length',
       type        : 'number', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left'

@@ -16,8 +16,6 @@ function* deleteItem({ ids: [ id ] }) {
 
     yield put({ type: types.DELETE_PENDING })
 
-    yield put({ type: types.PUT_PENDING })
-
     yield all(addons.map(_addon =>
       call(deleteAddonItem,{ ids: [ _addon.id ] })
     ))

@@ -14,6 +14,7 @@ import { parseResponseError } from '@lib/utils/functions'
 
 import serviceDetailDuck from '@reducers/service/detail'
 import Layout from '@components/Layout'
+import ServiceTypes from '@lib/constants/ServiceTypes'
 
 export const formIds = [ 'service-create-information' ]
 
@@ -114,7 +115,7 @@ const ServiceCreate = props => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2'>{isUpdating ? 'Update Gromming' : 'Create'} Service</Header>
+                <Header as='h2'>{isUpdating ? `Update ${ServiceTypes[serviceDetail.item.type]}` : 'Create'} Service</Header>
               </Grid.Column>
             </Grid>
 
@@ -151,7 +152,7 @@ const ServiceCreate = props => {
             onClick={_handleSaveBtnClick}
             size='large'/>
           {
-            isUpdating &&  serviceDetail.item.type === 'C' && (<Button
+            isUpdating && serviceDetail.status === 'GOT' && serviceDetail.item.type === 'C' && (<Button
               color='google plus' content='Delete Service' fluid
               onClick={_handleOpen} size='large'/>)
           }

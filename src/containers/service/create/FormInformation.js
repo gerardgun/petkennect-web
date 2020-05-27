@@ -57,15 +57,6 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Base price *'
-            name='price'
-            type='number'/>
-
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
             control={Form.Checkbox}
             label='Active'
             name='is_active'
@@ -101,8 +92,7 @@ export default compose(
     destroyOnUnmount: false,
     validate        : values  => {
       const schema = {
-        name : YupFields.name,
-        price: Yup.number().required('Price is required')
+        name: YupFields.name
       }
 
       return syncValidate(Yup.object().shape(schema), values)
