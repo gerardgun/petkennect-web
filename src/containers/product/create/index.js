@@ -11,7 +11,7 @@ import ModalDelete from '@components/Modal/Delete'
 import MediaSection from './MediaSection'
 import PackageSection from './PackageSection'
 import useModal from '@components/Modal/useModal'
-import Layout from '@components/Layout'
+import Layout from '@components/Common/Layout'
 
 import productDetailDuck from '@reducers/product/detail'
 import productPackageDuck from '@reducers/product/package'

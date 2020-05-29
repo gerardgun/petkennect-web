@@ -13,7 +13,7 @@ import useModal from '@components/Modal/useModal'
 import { parseResponseError } from '@lib/utils/functions'
 
 import serviceDetailDuck from '@reducers/service/detail'
-import Layout from '@components/Layout'
+import Layout from '@components/Common/Layout'
 import ServiceTypes from '@lib/constants/ServiceTypes'
 
 export const formIds = [ 'service-create-information' ]

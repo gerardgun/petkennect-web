@@ -162,10 +162,15 @@ const FormAdditionalInfo = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Form.Select}
             label='Prefer Men/Women'
             name='temp_prefer'
-            placeholder='Enter prefer'/>
+            options={[
+              { key: 1, value: true, text: 'Men' }, // backend issue
+              { key: 2, value: false, text: 'Women' }
+            ]}
+            placeholder='Select preference'
+            selectOnBlur={false}/>
           <Form.Field/>
         </Form.Group>
         <Form.Group>

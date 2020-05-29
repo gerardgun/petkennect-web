@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
-import Layout from '@components/Layout'
+import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
 import Table from '@components/Table'

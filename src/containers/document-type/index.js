@@ -5,7 +5,7 @@ import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import ModalDelete from '@components/Modal/Delete'
-import Layout from '@components/Layout'
+import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import DocumentTypeCreate from './create'
 
