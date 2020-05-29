@@ -39,6 +39,12 @@ import productPackageDetail from './product/package/detail'
 import rol from './rol'
 import rolDetail from './rol/detail'
 import rolPermission from './rol/permission'
+import service from './service'
+import serviceDetail from './service/detail'
+import serviceAddon from './service/addon'
+import serviceAddonDetail from './service/addon/detail'
+import serviceAddonGroup from './service/addon/group'
+import serviceAddonGroupDetail from './service/addon/group/detail'
 import transaction from './transaction'
 import transactionDetail from './transaction/detail'
 import user from './user'
@@ -87,6 +93,12 @@ export default function* rootSaga() {
     ...rol,
     ...rolDetail,
     ...rolPermission,
+    ...service,
+    ...serviceDetail,
+    ...serviceAddon,
+    ...serviceAddonDetail,
+    ...serviceAddonGroup,
+    ...serviceAddonGroupDetail,
     ...transaction,
     ...transactionDetail,
     ...user,

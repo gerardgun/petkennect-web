@@ -122,8 +122,7 @@ const TableSortableList = ({ duckDetail, list,detail, ...props }) => {
       </Dimmer>
 
       <Table
-        basic='very' className='table-primary' selectable
-        sortable>
+        basic='very' className='table-primary' selectable>
         <Table.Header>
           <Table.Row>
             {/* Row data header */}

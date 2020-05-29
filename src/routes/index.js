@@ -22,6 +22,8 @@ import Category from '@containers/category'
 // import PetBreed from '@containers/product/create'
 import EmployeeTitle from '@containers/employee-title'
 import Employee from '@containers/employee'
+import Service from '@containers/service'
+import ServiceCreate from '@containers/service/create'
 // import FoundationDetail from '@containers/foundation/detail'
 import Company from '@containers/company'
 import Organization from '@containers/organization'
@@ -118,6 +120,18 @@ const privateRoutes = [
   {
     path     : '/category',
     component: Category
+  },
+  {
+    path     : '/service',
+    component: Service
+  },
+  {
+    path     : '/service/create',
+    component: ServiceCreate
+  },
+  {
+    path     : '/service/:id',
+    component: ServiceCreate
   },
   {
     path     : '/employee',
