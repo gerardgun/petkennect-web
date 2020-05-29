@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment, Input } from 'semantic-ui-react'
 
-import Layout from '@components/Layout'
+import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import ModalFilter from '@components/Modal/Filter'
 import Table from '@components/Table'

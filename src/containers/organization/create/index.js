@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { destroy } from 'redux-form'
 import { Icon, Label, Menu, Tab } from 'semantic-ui-react'
 
-import Layout from '@components/Layout'
+import Layout from '@components/Common/Layout'
 import OrganizationSection, { formId } from './OrganizationSection'
 import CompanySection from './CompanySection'
 

@@ -11,7 +11,7 @@ import Form from './Form'
 import employeeTitleDuck from '@reducers/employee/title'
 import employeeTitleDetailDuck from '@reducers/employee/title/detail'
 import { useChangeStatusEffect } from '@hooks/Shared'
-import Layout from '@components/Layout'
+import Layout from '@components/Common/Layout'
 
 const EmployeeTitleList = ({ employeeTitleDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()

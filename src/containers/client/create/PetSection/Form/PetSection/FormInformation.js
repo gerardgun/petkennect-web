@@ -75,8 +75,8 @@ const FormInformation = props => {
             label='Sex'
             name='sex'
             options={[
-              { key: 1, value: 1, text: 'Male' },
-              { key: 2, value: 2, text: 'Female' }
+              { key: 1, value: 'M', text: 'Male' },
+              { key: 2, value: 'F', text: 'Female' }
             ]}
             placeholder='Select sex'
             search
@@ -87,10 +87,10 @@ const FormInformation = props => {
             label='Dog size'
             name='size'
             options={[
-              { key: 1, value: 1, text: 'Small' },
-              { key: 2, value: 2, text: 'Medium' },
-              { key: 3, value: 3, text: 'Large' },
-              { key: 4, value: 4, text: 'Giant' }
+              { key: 1, value: 'S', text: 'Small' },
+              { key: 2, value: 'M', text: 'Medium' },
+              { key: 3, value: 'L', text: 'Large' },
+              { key: 4, value: 'G', text: 'Giant' }
             ]}
             placeholder='Select size'
             selectOnBlur={false}/>
@@ -102,10 +102,10 @@ const FormInformation = props => {
             label='Reason'
             name='reason'
             options={[
-              { key: 1, value: 1, text: 'Owner Surrender' },
-              { key: 2, value: 2, text: 'Deceased' },
-              { key: 3, value: 3, text: 'Temporary Home' },
-              { key: 4, value: 4, text: 'Other' }
+              { key: 1, value: '1', text: 'Owner Surrender' },
+              { key: 2, value: '2', text: 'Deceased' },
+              { key: 3, value: '3', text: 'Temporary Home' },
+              { key: 4, value: '4', text: 'Other' }
             ]}
             placeholder='Select reason'
             search
@@ -116,8 +116,8 @@ const FormInformation = props => {
             label='Standing Reservation'
             name='standing_reservation'
             options={[
-              { key: 1, value: 1, text: 'Yes' },
-              { key: 2, value: 2, text: 'No' }
+              { key: 1, value: true, text: 'Yes' },
+              { key: 2, value: false, text: 'No' }
             ]}
             placeholder='Select option'
             selectOnBlur={false}/>
@@ -140,7 +140,7 @@ const FormInformation = props => {
           <Field
             component={FormField}
             control={Form.TextArea}
-            label='Behavioral'
+            label='Behavioral' // backend issue
             name='behaviorial_comments'
             placeholder='Enter description'/>
         </Form.Group>
@@ -148,14 +148,18 @@ const FormInformation = props => {
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={Boolean}
             label='Fixed'
             name='fixed'
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Form.Checkbox}
+            format={Boolean}
             label='Retire'
             name='retired'
+            parse={Number}
             type='checkbox'/>
         </Form.Group>
 
@@ -219,7 +223,7 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Tested'
-            name='temp_test_date'
+            name='tem_test_date'
             type='date'/>
           <Field
             component={FormField}
@@ -227,8 +231,8 @@ const FormInformation = props => {
             label='Result'
             name='temp_test_result'
             options={[
-              { key: 1, value: 1, text: 'Pass' },
-              { key: 2, value: 2, text: 'Fail' }
+              { key: 1, value: true, text: 'Pass' },
+              { key: 2, value: false, text: 'Fail' }
             ]}
             placeholder='Select result'
             selectOnBlur={false}/>
@@ -247,19 +251,19 @@ const FormInformation = props => {
             component={FormField}
             control={Form.Input}
             label='Strike 1'
-            name='temp_strikes.date_strike_1'
+            name='temp_strikes[0]'
             type='date'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Strike 2'
-            name='temp_strikes.date_strike_2'
+            name='temp_strikes[1]'
             type='date'/>
           <Field
             component={FormField}
             control={Form.Input}
             label='Strike 3'
-            name='temp_strikes.date_strike_3'
+            name='temp_strikes[2]'
             type='date'/>
         </Form.Group>
         <Form.Group>
