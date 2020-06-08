@@ -34,6 +34,8 @@ import petIncidentType from './pet/incident-type'
 import petIncidentTypeDetail from './pet/incident-type/detail'
 import petIncidentAction from './pet/incident-action'
 import petIncidentActionDetail from './pet/incident-action/detail'
+import petIncidentBehavior from './pet/incident-behavior'
+import petIncidentBehaviorDetail from './pet/incident-behavior/detail'
 import product from './product'
 import productDetail from './product/detail'
 import productImage from './product/image'
@@ -92,6 +94,8 @@ export default function* rootSaga() {
     ...petIncidentTypeDetail,
     ...petIncidentAction,
     ...petIncidentActionDetail,
+    ...petIncidentBehavior,
+    ...petIncidentBehaviorDetail,
     ...product,
     ...productDetail,
     ...productImage,

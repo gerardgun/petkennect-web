@@ -44,7 +44,8 @@ const categories = [
       { href: '/pet/class', label: 'Classes' },
       { href: '/pet/breed', label: 'Breeds' },
       { href: '/pet/incident-type', label: 'Incident Types' },
-      { href: '/pet/incident-action', label: 'Incident Action' }
+      { href: '/pet/incident-action', label: 'Incident Actions' },
+      { href: '/pet/incident-behavior', label: 'Incident Behaviors' }
     ]
   },
   {
