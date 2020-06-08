@@ -30,6 +30,8 @@ import petClass from './pet/class'
 import petClassDetail from './pet/class/detail'
 import petImage from './pet/image'
 import petImageDetail from './pet/image/detail'
+import petIncidentType from './pet/incident-type'
+import petIncidentTypeDetail from './pet/incident-type/detail'
 import product from './product'
 import productDetail from './product/detail'
 import productImage from './product/image'
@@ -84,6 +86,8 @@ export default function* rootSaga() {
     ...petClassDetail,
     ...petImage,
     ...petImageDetail,
+    ...petIncidentType,
+    ...petIncidentTypeDetail,
     ...product,
     ...productDetail,
     ...productImage,

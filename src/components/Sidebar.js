@@ -42,7 +42,8 @@ const categories = [
     subcategories: [
       { href: '/pet', label: 'Pets' },
       { href: '/pet/class', label: 'Classes' },
-      { href: '/pet/breed', label: 'Breeds' }
+      { href: '/pet/breed', label: 'Breeds' },
+      { href: '/pet/incident-type', label: 'Incident Types' }
     ]
   },
   {
