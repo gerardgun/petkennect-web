@@ -43,7 +43,7 @@ function* get({ id }) {
 }
 
 function* post({ payload: {
-  main_admin: main_admin_email,
+  main_admin_email,
   main_admin_first_name,
   main_admin_last_name,
   user,
@@ -83,7 +83,7 @@ function* post({ payload: {
 
 function* _put({
   payload: {
-    main_admin: main_admin_email,
+    main_admin_email,
     main_admin_first_name,
     main_admin_last_name,
     user,
@@ -105,9 +105,10 @@ function* _put({
 
     yield call(Patch, `companies/${payload.id}/`, {
       ...payload,
-      phones   : JSON.stringify(phones),
-      addresses: JSON.stringify(addresses),
-      main_admin })
+      phones    : JSON.stringify(phones),
+      addresses : JSON.stringify(addresses),
+      main_admin,
+      isFormData: true })
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

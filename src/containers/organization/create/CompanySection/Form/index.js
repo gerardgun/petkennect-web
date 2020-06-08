@@ -136,11 +136,7 @@ const CompanyForm = props => {
   const _handleSearchChange = (_, { searchQuery }) => _handleDebounce(searchQuery)
 
   const _handleUserOptionChange = (value) => {
-    if(isUpdating)
-      return
-
     const latestValue = value[value.length  ? value.length - 1 : 0]
-
     if(!latestValue) {
       props.setUserFilters({ search: '' })
       props.getUsers()
@@ -159,6 +155,7 @@ const CompanyForm = props => {
     props.change('user_exists', false)
     props.change('main_admin_first_name', '')
     props.change('main_admin_last_name', '')
+    props.change('main_admin_email', null)
   }
   const _handleUserOptionAddItem = (_, data) => {
     setCustomUser({
@@ -389,13 +386,11 @@ const CompanyForm = props => {
               control={Form.Dropdown}
               fluid
               format={value=>
-                // isUpdating
-                //   ? [ (user.items.find(_user => _user.id === props.watchedMainAdmin) || {}).email ]
                 [ value ]
               }
               label='Add or Search some PetKennect User*'
               multiple
-              name='main_admin'
+              name='main_admin_email'
               onAddItem={_handleUserOptionAddItem}
               onChange={_handleUserOptionChange}
               onSearchChange={_handleSearchChange}
@@ -408,7 +403,7 @@ const CompanyForm = props => {
                 value[value.length > 0 ? value.length - 1 : 0]
               }
               placeholder='Search user by email'
-              readOnly={isUpdating}
+              // readOnly={isUpdating}
               search
               selection
               selectOnBlur={false}/>
@@ -420,14 +415,14 @@ const CompanyForm = props => {
               label='Name *'
               name='main_admin_first_name'
               placeholder='Enter name'
-              readOnly={!!props.user_exists || isUpdating}/>
+              readOnly={!!props.user_exists || (isUpdating && props.pristine)}/>
             <Field
               component={FormField}
               control={Form.Input}
               label='Lastname'
               name='main_admin_last_name'
               placeholder='Enter lastname'
-              readOnly={!!props.user_exists || isUpdating}/>
+              readOnly={!!props.user_exists || (isUpdating && props.pristine)}/>
           </Form.Group>
 
           {
