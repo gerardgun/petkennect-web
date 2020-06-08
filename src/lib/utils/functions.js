@@ -61,7 +61,7 @@ export const parsePayload = payload => {
   let body = payload // Raw payload
 
   // If payload contains some FileList, create a FormData payload
-  if(containsFileOrFileList) {
+  if(containsFileOrFileList || body.isFormData) {
     body = new FormData()
 
     Object.entries(payload).forEach(([ key, value ]) => {

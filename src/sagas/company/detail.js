@@ -26,7 +26,7 @@ function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const company = yield call(Get, `companies/${id}`)
+    const company = yield call(Get, `companies/${id}/`)
 
     yield put({
       type   : types.GET_FULFILLED,
@@ -42,11 +42,32 @@ function* get({ id }) {
   }
 }
 
-function* post({ payload }) {
+function* post({ payload: {
+  main_admin_email,
+  main_admin_first_name,
+  main_admin_last_name,
+  user,
+  user_exists,
+  phones,
+  addresses,
+  ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, 'companies/', payload)
+    const main_admin = JSON.stringify({
+      status: true ,
+      ...(user_exists
+        ? { user }
+        : {
+          status: 'true', first_name: main_admin_first_name, last_name: main_admin_last_name , email: main_admin_email
+        })
+    })
+    const result = yield call(Post, 'companies/', {
+      ...payload,
+      phones   : JSON.stringify(phones),
+      addresses: JSON.stringify(addresses),
+      main_admin
+    })
 
     yield put({
       type   : types.POST_FULFILLED,
@@ -60,11 +81,34 @@ function* post({ payload }) {
   }
 }
 
-function* _put({ payload }) {
+function* _put({
+  payload: {
+    main_admin_email,
+    main_admin_first_name,
+    main_admin_last_name,
+    user,
+    user_exists,
+    phones,
+    addresses,
+    ...payload } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `companies/${payload.id}/`, payload)
+    const main_admin = JSON.stringify({
+      status: true ,
+      ...(user_exists
+        ? { user }
+        : {
+          status: 'true', first_name: main_admin_first_name, last_name: main_admin_last_name , email: main_admin_email
+        })
+    })
+
+    yield call(Patch, `companies/${payload.id}/`, {
+      ...payload,
+      phones    : JSON.stringify(phones),
+      addresses : JSON.stringify(addresses),
+      main_admin,
+      isFormData: true })
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
