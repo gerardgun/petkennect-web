@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Container, Form, Grid, Image, Header } from 'semantic-ui-react'
@@ -41,23 +42,36 @@ const RecoverAccount = props => {
     <Container className='sign-in'>
       <Grid columns={2}>
         <Grid.Column style={{ padding: '0 3rem' }}>
-          <Image src='/images/sign-in.svg'/>
+          <Image src='/images/New-password.svg'/>
         </Grid.Column>
         <Grid.Column style={{ alignSelf: 'center' }}>
-          <Header as='h2'>Reset password</Header>
+          {/* <Header as='h2'>Reset password</Header> */}
+          <Header as='h2' className='auth-heading'>New password</Header>
           <p>
-            Change your password and sign in.
+            Enter the new password then your password will change.
           </p>
 
           {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
             <Form.Group widths='equal'>
               <Field
+                className='txt-field'
                 component={FormField}
                 control={Form.Input}
                 label='New password'
                 name='password'
-                placeholder='Enter your new password'
+                placeholder='Enter new password'
+                type='password'/>
+            </Form.Group>
+
+            <Form.Group widths='equal'>
+              <Field
+                className='txt-field'
+                component={FormField}
+                control={Form.Input}
+                label='Confirm password'
+                name='Confirm password'
+                placeholder='Confirm password'
                 type='password'/>
             </Form.Group>
 
@@ -71,15 +85,22 @@ const RecoverAccount = props => {
               )
             }
 
-            <Form.Group>
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <Button
+                  as={Link} className='Link-button' content='Back to Sign In'
+                  text='Back to Sign In' to='/auth/sign-in'/>
+              </Form.Field>
               <Form.Field
+                className='send-button'
                 control={Button}
                 disabled={pristine || submitting}
                 loading={auth.status === 'PATCHING'}
                 type='submit'>
-                Submit
+                Reset password
               </Form.Field>
             </Form.Group>
+
           </Form>
 
         </Grid.Column>

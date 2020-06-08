@@ -38,15 +38,12 @@ const ForgotPassword = props => {
     <Container className='sign-in'>
       <Grid columns={2}>
         <Grid.Column style={{ padding: '0 3rem' }}>
-          <Image src='/images/sign-in.svg'/>
+          <Image src='/images/Forgot-password.svg'/>
         </Grid.Column>
         <Grid.Column style={{ alignSelf: 'center' }}>
-          <Header as='h2'>Forgot Password?</Header>
+          <Header as='h2' className='auth-heading'>Forgot your password?</Header>
           <p>
-            Enter the email address you used when you joined and we’ll send you instructions to reset your password.
-          </p>
-          <p>
-            For security reasons, we do NOT store your password. So rest assured that we will never send your password via email.
+            Well help you reseat it and get back on track.
           </p>
 
           {/* eslint-disable-next-line react/jsx-handler-names */}
@@ -55,6 +52,7 @@ const ForgotPassword = props => {
               <Field
                 autoComplete='off'
                 autoFocus
+                className='txt-field'
                 component={FormField}
                 control={Form.Input}
                 label='Email'
@@ -75,16 +73,17 @@ const ForgotPassword = props => {
 
             <Form.Group widths='equal'>
               <Form.Field>
-                <span style={{ color: 'grey' }}>Do you have a user?</span> <Link to='/auth/sign-in'>Sign in</Link>
+                <Button
+                  as={Link} className='Link-button' content='Back to Sign In'
+                  text='Back to Sign In' to='/auth/sign-in'/>
               </Form.Field>
-            </Form.Group>
-            <Form.Group>
               <Form.Field
+                className='send-button'
                 control={Button}
                 disabled={pristine || submitting}
                 loading={auth.status === 'PATCHING'}
                 type='submit'>
-                Send reset instructions
+                Send email
               </Form.Field>
             </Form.Group>
           </Form>
