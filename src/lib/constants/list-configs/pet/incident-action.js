@@ -32,13 +32,12 @@ export default {
       sort        : false
     },
     {
-      display_name: 'Limits of incidents',
-      name        : 'limit',
+      display_name: 'Result',
+      name        : 'result_type',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
     }
-
   ]
 }
