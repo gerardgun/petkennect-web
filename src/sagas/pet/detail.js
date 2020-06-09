@@ -47,9 +47,13 @@ function* get({ id }) {
 function* post({ payload: { ...payload } }) {
   try {
     const clientDetail = yield select(clientDetailDuck.selectors.detail)
+
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, `clients/${clientDetail.item.id}/pets/`, payload)
+    yield call(Post, `clients/${clientDetail.item.id}/pets/`, {
+      ...payload,
+      employee: 5 // delete
+    })
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {

@@ -18,7 +18,10 @@ function* get(/* { payload } */) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items     : results,
+        items: results.map(({ client_first_name, client_last_name, ...rest }) => ({
+          client_fullname: `${client_first_name} ${client_last_name}`,
+          ...rest
+        })),
         pagination: {
           ...list.pagination,
           meta

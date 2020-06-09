@@ -96,63 +96,65 @@ const IncidentSectionList = ({ ...props }) => {
   }
 
   return (
-    <>
-      <Segment className='segment-content' padded='very'>
-        {Boolean(_warningIncidentTypes.length) && (
-          <Grid>
-            <Header as='h3'><Icon color='yellow'  name='warning sign' size='large'/> Warning </Header>
+
+    <Grid className='form-primary'>
+      <Grid.Column>
+        <Segment className='segment-content' padded='very'>
+          {Boolean(_warningIncidentTypes.length) && (
+            <Grid>
+              <Header as='h3'><Icon color='yellow'  name='warning sign' size='large'/> Warning </Header>
               Some types of incidents are going over the limits:
-            {_warningIncidentTypes.map((_type, index) => (<div key={index}>
-              <Header size='tiny'>
-                {_type.name}{'  '}
-              </Header>
-              <Icon name='long arrow alternate right'/>
-              {'  '}Limit:{' '}
-              <Header size='tiny'>
-                {_type.limit}{' '}
-              </Header>
-              {' '}Current:{' '}
-              <Header size='tiny'>
-                {_type.current}{' '}
-              </Header>
-            </div>))}
+              {_warningIncidentTypes.map((_type, index) => (<div key={index}>
+                <Header size='tiny'>
+                  {_type.name}{'  '}
+                </Header>
+                <Icon name='long arrow alternate right'/>
+                {'  '}Limit:{' '}
+                <Header size='tiny'>
+                  {_type.limit}{' '}
+                </Header>
+                {' '}Current:{' '}
+                <Header size='tiny'>
+                  {_type.current}{' '}
+                </Header>
+              </div>))}
+            </Grid>
+          )}
+          <Grid className='segment-content-header' columns={2}>
+            <Grid.Column>
+              <Header as='h2'>Incident History</Header>
+            </Grid.Column>
+            <Grid.Column textAlign='right'>
+              <Button
+                content='Filter' icon='filter'
+                labelPosition='left'
+                onClick={_handleOpenFilterModal}/>
+              <Button
+                as={Link} color='teal' content='New Incident'
+                onClick={_handleAddBtnClick}/>
+            </Grid.Column>
           </Grid>
-        )}
-        <Grid className='segment-content-header' columns={2}>
-          <Grid.Column>
-            <Header as='h2'>Incident History</Header>
-          </Grid.Column>
-          <Grid.Column textAlign='right'>
-            <Button
-              content='Filter' icon='filter'
-              labelPosition='left'
-              onClick={_handleOpenFilterModal}/>
-            <Button
-              as={Link} color='teal' content='New Incident'
-              onClick={_handleAddBtnClick}/>
-          </Grid.Column>
-        </Grid>
-        <Table
+          <Table
+            duck={petIncidentDuck}
+            onRowClick={_handleRowClick}
+            onRowOptionClick={_handleRowOptionClick}/>
+        </Segment>
+        <PetIncidentForm/>
+
+        <ModalFilter
           duck={petIncidentDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
-      </Segment>
-      <PetIncidentForm/>
-
-      <ModalFilter
-        duck={petIncidentDuck}
-        onClose={_handleCloseFilterModal}
-        open={openFilterModal}
-        options={{
-          action_name: petIncidentAction.items,
-          type_name  : petIncidentType.items
-        }}/>
-      <ModalDelete
-        duckDetail={petIncidentDetailDuck}
-        onClose={_handleCloseDeleteModal}
-        open={openDeleteModal}/>
-
-    </>
+          onClose={_handleCloseFilterModal}
+          open={openFilterModal}
+          options={{
+            action_name: petIncidentAction.items,
+            type_name  : petIncidentType.items
+          }}/>
+        <ModalDelete
+          duckDetail={petIncidentDetailDuck}
+          onClose={_handleCloseDeleteModal}
+          open={openDeleteModal}/>
+      </Grid.Column>
+    </Grid>
   )
 }
 
