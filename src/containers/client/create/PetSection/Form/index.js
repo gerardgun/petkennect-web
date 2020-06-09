@@ -5,7 +5,7 @@ import { destroy } from 'redux-form'
 import { Label, Menu, Modal, Tab } from 'semantic-ui-react'
 
 import PetSection, { formIds } from './PetSection'
-// import IncidentSection from './IncidentSection'
+import IncidentSection from './IncidentSection'
 
 import petDetailDuck from '@reducers/pet/detail'
 
@@ -60,8 +60,7 @@ const PetCreate = props => {
             },
             {
               menuItem: { key: 'incidents', content: 'Incidents' },
-              // render: () => <IncidentSection />,
-              render  : () => <Tab.Pane>Tab Incident Content</Tab.Pane>
+              render  : () => <IncidentSection/>
             },
             {
               menuItem: (

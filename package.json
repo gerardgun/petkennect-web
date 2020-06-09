@@ -14,6 +14,7 @@
     "extensible-duck": "^1.6.0",
     "faker": "^4.1.0",
     "immer": "^5.3.6",
+    "moment": "^2.26.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-beautiful-dnd": "^13.0.0",

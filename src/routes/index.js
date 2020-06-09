@@ -16,6 +16,9 @@ import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
 import PetClass from '@containers/pet-class'
 import PetBreed from '@containers/pet-breed'
+import PetIncidentType from '@containers/pet-incident-type'
+import PetIncidentAction from '@containers/pet-incident-action'
+import PetIncidentBehavior from '@containers/pet-incident-behavior'
 import Product from '@containers/product'
 import ProductCreate from '@containers/product/create/RootProvider'
 import Category from '@containers/category'
@@ -100,6 +103,18 @@ const privateRoutes = [
   {
     path     : '/pet/breed',
     component: PetBreed
+  },
+  {
+    path     : '/pet/incident-type',
+    component: PetIncidentType
+  },
+  {
+    path     : '/pet/incident-action',
+    component: PetIncidentAction
+  },
+  {
+    path     : '/pet/incident-behavior',
+    component: PetIncidentBehavior
   },
   {
     path     : '/pet',

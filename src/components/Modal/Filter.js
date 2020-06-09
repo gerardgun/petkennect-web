@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form'
 import { syncValidate } from '@lib/utils/functions'
 import * as Yup from 'yup'
 
-const ModalFilter = ({  duckList,duck, open, reset,...props }) => {
+const ModalFilter = ({  duckList,duck, open, reset, options ,...props }) => {
   useEffect(() => {
     return  _handleReset
   }, [])
@@ -73,6 +73,25 @@ const ModalFilter = ({  duckList,duck, open, reset,...props }) => {
           </Form.Group>
         </div>
       )
+    if(_column.filter.selectable)
+      return (
+        <div key={_column.name}>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Form.Select}
+              label={_column.filter.label}
+              name={_column.filter.name}
+              options={options[_column.name].map(_option => ({
+                key  : _option.id,
+                value: _option.name,
+                text : `${_option.name}`
+              }))}
+              placeholder={`Select ${_column.filter.label}`}
+              search/>
+          </Form.Group>
+        </div>
+      )
 
     return null
   }
@@ -118,6 +137,7 @@ const ModalFilter = ({  duckList,duck, open, reset,...props }) => {
 ModalFilter.defaultProps = {
   duck   : null,
   open   : false,
+  options: {},
   onClose: () => {}
 }
 
