@@ -39,6 +39,8 @@ import petIncidentAction from '@reducers/pet/incident-action'
 import petIncidentActionDetail from '@reducers/pet/incident-action/detail'
 import petIncidentBehavior from '@reducers/pet/incident-behavior'
 import petIncidentBehaviorDetail from '@reducers/pet/incident-behavior/detail'
+import petIncident from '@reducers/pet/incident'
+import petIncidentDetail from '@reducers/pet/incident/detail'
 import product from '@reducers/product'
 import productDetail from '@reducers/product/detail'
 import productImage from '@reducers/product/image'
@@ -101,6 +103,8 @@ const createRootReducer = history => combineReducers({
   [petIncidentActionDetail.store]  : petIncidentActionDetail.reducer,
   [petIncidentBehavior.store]      : petIncidentBehavior.reducer,
   [petIncidentBehaviorDetail.store]: petIncidentBehaviorDetail.reducer,
+  [petIncident.store]              : petIncident.reducer,
+  [petIncidentDetail.store]        : petIncidentDetail.reducer,
   [product.store]                  : product.reducer,
   [productDetail.store]            : productDetail.reducer,
   [productImage.store]             : productImage.reducer,
