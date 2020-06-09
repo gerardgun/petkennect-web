@@ -47,7 +47,7 @@ const IncidentSectionForm = (props) => {
   const _handleSubmit = (values) => {
     if(isUpdating)
       return props
-        .put({ id: petIncidentDetail.item.id, ...values })
+        .put({ id: petIncidentDetail.item.id, ...values, internal_description: values.internal_description ? values.internal_description : null  })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -141,7 +141,7 @@ const IncidentSectionForm = (props) => {
             <Field
               component={FormField}
               control={Form.TextArea}
-              label='Internal Comments *'
+              label='Internal Comments'
               name='internal_description'
               placeholder='Enter internal comments'/>
           </Form.Group>
@@ -215,7 +215,7 @@ export default compose(
         behaviors           : Yup.array().of(Yup.mixed()).min(1, 'Must be 1 at the least').required('Behaviors is required'),
         incised_at          : Yup.string().required('Incised at is required'),
         description         : Yup.string().required('Comments is required'),
-        internal_description: Yup.string().required('Internal Comments is required')
+        internal_description: Yup.string().nullable()
       }
 
       return syncValidate(Yup.object().shape(schema), values)

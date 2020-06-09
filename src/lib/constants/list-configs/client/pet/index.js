@@ -37,7 +37,7 @@ export default {
     },
     {
       display_name: 'Breed',
-      name        : 'breed',
+      name        : 'breed_name',
       type        : 'string',
       width       : null,
       align       : 'left',

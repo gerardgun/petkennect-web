@@ -52,7 +52,10 @@ function* post({ payload }) {
 
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, `pets/${pet_id}/incidents/`, payload)
+    const result = yield call(Post, `pets/${pet_id}/incidents/`, {
+      ...payload,
+      employee: 5 // delete
+    })
 
     yield put({
       type   : types.POST_FULFILLED,
