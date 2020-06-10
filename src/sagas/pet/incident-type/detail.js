@@ -80,7 +80,8 @@ function* _put({ payload :  { has_limit, limit, ...payload } }) {
       }
     else
       body = {
-        ...payload
+        ...payload,
+        limit: 0
       }
 
     yield call(Patch, `pet-incident-types/${payload.id}/`, body)

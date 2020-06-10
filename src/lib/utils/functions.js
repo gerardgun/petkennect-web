@@ -2,6 +2,7 @@ import _set from 'lodash/set'
 import _get from 'lodash/get'
 import { SubmissionError } from 'redux-form'
 import * as Yup from 'yup'
+import { Get } from '@lib/utils/http-client'
 
 export const getMessageError = e => {
   let currentMessage = 'Error'
@@ -105,4 +106,36 @@ export const parseResponseError = e => {
 export const formatIntToBool = value => !!value
 
 export const parseBoolToInt = value => value ? 1 : 0
+
+export const openIncidentPDF = (petId, incidentId) => {
+  Get(`/pets/${petId}/incidents/${incidentId}/view-report`,{}, {
+    responseType: 'arraybuffer'
+  })
+    .then((response) => {
+      const downloadUrl = window.URL.createObjectURL(new Blob([ response ], { type: 'application/pdf' }))
+
+      window.open(downloadUrl)
+    })
+}
+
+export const downloadIncidentPDF = (petId, incidentId, name) => {
+  Get(`/pets/${petId}/incidents/${incidentId}/view-report`,{}, {
+    responseType: 'arraybuffer'
+  })
+    .then((response) => {
+      const downloadUrl = window.URL.createObjectURL(new Blob([ response ], { type: 'application/pdf' }))
+
+      const link = document.createElement('a')
+
+      link.href = downloadUrl
+
+      link.setAttribute('download', `${name}.pdf`) // any other extension
+
+      document.body.appendChild(link)
+
+      link.click()
+
+      link.remove()
+    })
+}
 

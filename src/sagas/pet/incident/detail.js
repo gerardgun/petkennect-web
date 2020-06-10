@@ -86,9 +86,30 @@ function* _put({ payload }) {
   }
 }
 
+function* sendEmail({ payload }) {
+  try {
+    const { item : { id:pet_id } = {} } = yield select(petDetailDuck.selectors.detail)
+    const { item : { id: pet_incident_id } = {} } = yield select(petIncidentDetailDuck.selectors.detail)
+
+    yield put({ type: types.SEND_EMAIL_PENDING })
+    const result = yield call(Post, `pets/${pet_id}/incidents/${pet_incident_id}/send-report/`, payload)
+
+    yield put({
+      type   : types.SEND_EMAIL_FULFILLED,
+      payload: result
+    })
+  } catch (e) {
+    yield put({
+      type : types.SEND_EMAIL_FAILURE,
+      error: e
+    })
+  }
+}
+
 export default [
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
-  takeEvery(types.PUT, _put)
+  takeEvery(types.PUT, _put),
+  takeEvery(types.SEND_EMAIL, sendEmail)
 ]

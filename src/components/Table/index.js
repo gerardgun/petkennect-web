@@ -186,11 +186,11 @@ const TableList = ({ duck, list, ...props }) => {
                         <Table.Cell textAlign='center'>
                           {list.config.row.options
                             .filter(_option=> _option.is_inline)
-                            .map((item, index)=> (
+                            .map((_item, index)=> (
                               <Button
                                 icon key={index}
-                                onClick={_handleOptionClick(item.name, item)}>
-                                <Icon name={item.icon}/>
+                                onClick={_handleOptionClick(_item.name, item)}>
+                                <Icon name={_item.icon}/>
                               </Button>
                             ))}
                           <Dropdown

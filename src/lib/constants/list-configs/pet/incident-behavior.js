@@ -15,14 +15,14 @@ export default {
     ]
   },
   columns: [
-    {
-      display_name: 'ID',
-      name        : 'id',
-      type        : 'number',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
+    // {
+    //   display_name: 'ID',
+    //   name        : 'id',
+    //   type        : 'number',
+    //   width       : null,
+    //   align       : 'left',
+    //   sort        : false
+    // },
     {
       display_name: 'Name',
       name        : 'name',

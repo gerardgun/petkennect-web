@@ -87,12 +87,13 @@ export default class Request {
     })
   }
 
-  Get = (route, payload = {}) => {
+  Get = (route, payload = {}, config = {}) => {
     return new Promise((resolve, reject) => {
       verifyRequestCancel(route)
       this.instance
         .get(route, {
-          params: payload
+          params: payload,
+          ...config
         })
         .then(res => {
           resolve(res.data)

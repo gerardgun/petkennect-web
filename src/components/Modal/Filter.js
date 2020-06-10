@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Header, Modal, Form, FormField } from 'semantic-ui-react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, getFormValues } from 'redux-form'
 import { syncValidate } from '@lib/utils/functions'
 import * as Yup from 'yup'
 
@@ -21,6 +21,8 @@ const ModalFilter = ({  duckList,duck, open, reset, options ,...props }) => {
           filters[_column.filter.lt] = ''
           filters[_column.filter.gt] = ''
         }
+        if(_column.filter.selectable)
+          filters[_column.filter.name] = ''
       })
 
     return  filters
@@ -46,6 +48,18 @@ const ModalFilter = ({  duckList,duck, open, reset, options ,...props }) => {
       )
     )
     reset()
+
+    duckList.config.columns
+      .filter(_column => Boolean(_column.filter))
+      .forEach(_column => {
+        /* Why? Because a problem with semantic ui*/
+        if(_column.filter.selectable)
+          props.change(_column.filter.name, null)
+      })
+  }
+
+  const _handleChangeDropdown = _column =>  (e,data)=> {
+    props.change(_column.filter.name,data.value)
   }
 
   const _renderItemFilter  = (_column)=> {
@@ -55,7 +69,6 @@ const ModalFilter = ({  duckList,duck, open, reset, options ,...props }) => {
           <Header as='h3'>{_column.display_name}</Header>
           <Form.Group widths='equal'>
             <Field
-              autoFocus
               component={FormField}
               control={Form.Input}
               label='Lower than'
@@ -63,7 +76,6 @@ const ModalFilter = ({  duckList,duck, open, reset, options ,...props }) => {
               placeholder={`Enter ${_column.display_name}`}
               type='number'/>
             <Field
-              autoFocus
               component={FormField}
               control={Form.Input}
               label='Greater than'
@@ -77,18 +89,20 @@ const ModalFilter = ({  duckList,duck, open, reset, options ,...props }) => {
       return (
         <div key={_column.name}>
           <Form.Group widths='equal'>
-            <Field
-              component={FormField}
+            <Field component='input'  name={_column.filter.name} type='hidden'/>
+            <Form.Field
               control={Form.Select}
+              fluid
               label={_column.filter.label}
-              name={_column.filter.name}
+              onChange={_handleChangeDropdown(_column)}
               options={options[_column.name].map(_option => ({
                 key  : _option.id,
-                value: _option.name,
+                value: _option.id,
                 text : `${_option.name}`
               }))}
               placeholder={`Select ${_column.filter.label}`}
-              search/>
+              search
+              value={props.formValues[_column.filter.name]}/>
           </Form.Group>
         </div>
       )
@@ -146,7 +160,8 @@ export default compose(
     (state, { duck }) => ({
       duckList     : duck.selectors.list(state),
       initialValues: {},
-      form         : `filter-modal-form/${duck.store}`
+      form         : `filter-modal-form/${duck.store}`,
+      formValues   : getFormValues(`filter-modal-form/${duck.store}`)(state) || {}
     }),
     dispatch => ({ dispatch })
   ),

@@ -9,20 +9,23 @@ import ModalFilter from '@components/Modal/Filter'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import PetIncidentForm from  './Form'
+import EmailForm from  './EmailForm'
 
 import petIncidentDuck from '@reducers/pet/incident'
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
 import petIncidentActionsDuck from '@reducers/pet/incident-action'
 import petIncidentTypeDuck from '@reducers/pet/incident-type'
+import petDetailDuck from '@reducers/pet/detail'
 
 import { useChangeStatusEffect } from '@hooks/Shared'
 
-import _groupBy  from 'lodash/groupBy'
+import { downloadIncidentPDF, openIncidentPDF } from '@lib/utils/functions'
 
 const IncidentSectionList = ({ ...props }) => {
-  const { petIncidentDetail : { status } = {}, petIncident, petIncidentAction, petIncidentType } = props
+  const { petIncidentDetail : { status } = {}, petIncidentAction, petIncidentType , petDetail } = props
   const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
   const [ openFilterModal, { _handleOpen: _handleOpenFilterModal, _handleClose: _handleCloseFilterModal } ] = useModal()
+  const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
 
   useEffect(() => {
     props.getPetIncidents()
@@ -41,31 +44,18 @@ const IncidentSectionList = ({ ...props }) => {
   }
 
   const _warningIncidentTypes = useMemo(()=> {
-    try {
-      // temp trycatch currently backend lack some field
-      const _incidentTypesWithLimit = petIncidentType.items.filter(_type => _type.limit)
-      const _incidentTypeWithLimitIds = petIncidentType.items.filter(_type => _type.limit).map(_type=> _type.id)
-
-      const _warningPetIncidents =  petIncident.items.filter(_petIncident => _incidentTypeWithLimitIds.includes(_petIncident.type))
-
-      const _warningPetIncidentsByType = _groupBy(_warningPetIncidents , 'type')
-
-      return  _incidentTypesWithLimit
-        .filter(_type => Boolean(_warningPetIncidentsByType[_type]) && _type.limit - _warningPetIncidentsByType[_type].length <= 2)
-        .map(_type=> ({
-          name   : _type.name,
-          limit  : _type.limit,
-          current: _warningPetIncidentsByType[_type].length
-        }))
-    } catch (error) {
-      return  []
-    }
-  }, [ petIncident.items, petIncidentType.items ])
+    return  petDetail.item.summary.incident_types
+      .filter(_incidentType=>  _incidentType.limit && _incidentType.limit - _incidentType.count <= 2)
+      .map(_incidentType => ({
+        ..._incidentType,
+        name: (petIncidentType.items.find(_type => _type.id === _incidentType.id) || {}).name
+      }))
+  }, [ petDetail.item.summary.incident_types, petIncidentType.items ])
 
   const _handleRowOptionClick = (option , item) => {
     switch (option) {
       case 'view_pdf':
-        alert('working in progress...')
+        openIncidentPDF(petDetail.item.id, item.id, `pet-incident-${item.id}-${item.action}-${item.type}`)
 
         return
 
@@ -81,12 +71,13 @@ const IncidentSectionList = ({ ...props }) => {
         return
 
       case 'preview_report':
-        alert('working in progress...')
+        _handleOpenEmailFormModal()
+        props.setItem(item)
 
         return
 
       case 'download_report':
-        alert('working in progress...')
+        downloadIncidentPDF(petDetail.item.id, item.id, `pet-incident-${item.id}-${item.action}-${item.type}`)
 
         return
 
@@ -101,23 +92,29 @@ const IncidentSectionList = ({ ...props }) => {
       <Grid.Column>
         <Segment className='segment-content' padded='very'>
           {Boolean(_warningIncidentTypes.length) && (
-            <Grid>
-              <Header as='h3'><Icon color='yellow'  name='warning sign' size='large'/> Warning </Header>
-              Some types of incidents are going over the limits:
-              {_warningIncidentTypes.map((_type, index) => (<div key={index}>
-                <Header size='tiny'>
-                  {_type.name}{'  '}
-                </Header>
-                <Icon name='long arrow alternate right'/>
-                {'  '}Limit:{' '}
-                <Header size='tiny'>
-                  {_type.limit}{' '}
-                </Header>
-                {' '}Current:{' '}
-                <Header size='tiny'>
-                  {_type.current}{' '}
-                </Header>
-              </div>))}
+            <Grid className='gray br16' padded>
+              <Grid.Column width='16'>
+                <Header as='h3'><Icon color='yellow'  name='warning sign' size='large'/> Warning </Header>
+                Some types of incidents are going over the limits:
+              </Grid.Column>
+              <Grid.Column width='16'>
+                {_warningIncidentTypes.map((_type, index) => (<span key={index} >
+                  <strong>
+                    {_type.name}{'  '}
+                  </strong>
+                  &#8594;
+                  {'  '}Limit:{' '}
+                  <strong>
+                    {_type.limit}{' '}
+                  </strong>
+                  {' '}Current:{' '}
+                  <strong>
+                    {_type.count}{' '}
+                  </strong>
+                  <br/>
+                </span>))}
+
+              </Grid.Column>
             </Grid>
           )}
           <Grid className='segment-content-header' columns={2}>
@@ -140,7 +137,7 @@ const IncidentSectionList = ({ ...props }) => {
             onRowOptionClick={_handleRowOptionClick}/>
         </Segment>
         <PetIncidentForm/>
-
+        <EmailForm onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
         <ModalFilter
           duck={petIncidentDuck}
           onClose={_handleCloseFilterModal}
@@ -164,7 +161,8 @@ export default compose(
       petIncident      : petIncidentDuck.selectors.list(state),
       petIncidentDetail: petIncidentDetailDuck.selectors.detail(state),
       petIncidentAction: petIncidentActionsDuck.selectors.list(state),
-      petIncidentType  : petIncidentTypeDuck.selectors.list(state)
+      petIncidentType  : petIncidentTypeDuck.selectors.list(state),
+      petDetail        : petDetailDuck.selectors.detail(state)
     }), {
       getPetIncidents      : petIncidentDuck.creators.get,
       getPetIncidentActions: petIncidentActionsDuck.creators.get,
