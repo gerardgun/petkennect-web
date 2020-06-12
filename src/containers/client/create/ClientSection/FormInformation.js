@@ -67,6 +67,27 @@ const FormInformation = props => {
             name='spouse'
             placeholder='Enter spouse'/>
         </Form.Group>
+
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Form.Input}
+            icon='upload'
+            label='Profile Picture'
+            name='prfile_picture'
+            placeholder='Upload image'
+            style={{ width: '77%' }}
+            type='file'/>
+          <Form.Field/>
+          <Field
+            component={FormField}
+            control={Form.Checkbox}
+            label='ACTIVE'
+            name=''
+            style={{ 'padding-top': '30px', 'margin-left': '-34px' }}
+            toggle
+            type='checkbox'/>
+        </Form.Group>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -106,9 +127,18 @@ const FormInformation = props => {
             autoComplete='off'
             component={FormField}
             control={Form.Input}
-            label='Address'
+            label='Address1'
             name='addresses[0]'
             placeholder='Enter address'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Form.Input}
+            label='Address2'
+            name=''
+            placeholder='Enter address2'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Field>

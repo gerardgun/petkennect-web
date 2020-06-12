@@ -111,11 +111,12 @@ const EmployeeForm = (props) => {
       className='form-modal'
       onClose={_handleClose}
       open={isOpened}
-      size='small'>
+      size='small'
+      style={{ width: '847px' }}>
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>
+          <Header as='h2' className='segment-content-header cls-MainHeader'>
             {isUpdating ? 'Update' : 'Add'} Employee
           </Header>
           <Field component='input' name='id' type='hidden'/>
@@ -123,7 +124,7 @@ const EmployeeForm = (props) => {
           <Field
             component='input' defaultValue={true} name='user_exists'
             type='hidden'/>
-          <FormGroup widths='equal'>
+          {/* <FormGroup widths='equal'>
             <Field
               additionLabel='Invite '
               allowAdditions
@@ -153,8 +154,40 @@ const EmployeeForm = (props) => {
               search
               selection
               selectOnBlur={false}/>
-          </FormGroup>
-          <Form.Group widths='equal'>
+          </FormGroup> */}
+
+          <Header as='h4' className='cls-ModelHeader'>SEARCH USER</Header>
+
+          <FormGroup widths='equal'>
+            <Field
+              additionLabel='Invite '
+              allowAdditions
+              closeOnChange
+              component={FormField}
+              control={Form.Dropdown}
+              fluid
+              format={value=>
+                [ value ]
+              }
+              label='Email user *'
+              multiple
+              name='email'
+              onAddItem={_handleUserOptionAddItem}
+              onChange={_handleUserOptionChange}
+              onSearchChange={_handleSearchChange}
+              options={[ ...user.items,customUser ].map((_user) => ({
+                key  : _user.id,
+                value: _user.email,
+                text : `${_user.email}`
+              }))}
+              parse={value =>
+                value[value.length > 0 ? value.length - 1 : 0]
+              }
+              placeholder='Search email'
+              readOnly={isUpdating}
+              search
+              selection
+              selectOnBlur={false}/>
             <Field
               autoFocus
               component={FormField}
@@ -166,11 +199,27 @@ const EmployeeForm = (props) => {
             <Field
               component={FormField}
               control={Form.Input}
-              label='Lastname'
+              label='Last name *'
               name='last_name'
               placeholder='Enter lastname'
               readOnly={!!props.user_exists || isUpdating}/>
+          </FormGroup>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Form.Input}
+              icon='upload'
+              label='Profile Picture'
+              name='prfile_picture'
+              placeholder='Upload image'
+              style={{ width: '74%' }}
+              type='file'/>
+            <Form.Field/>
+            <Form.Field/>
           </Form.Group>
+
+          <Header as='h4' className='cls-ModelHeader'>BASIC INFORMATION</Header>
+
           <Form.Group widths='equal'>
             <Field
               component={FormField}
@@ -198,6 +247,14 @@ const EmployeeForm = (props) => {
               placeholder='Select location'
               search
               selectOnBlur={false}/>
+            <Field
+              component={FormField}
+              control={Form.Select}
+              label='Role *'
+              name='Role'
+              placeholder='Select Role'
+              search
+              selectOnBlur={false}/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
@@ -220,11 +277,13 @@ const EmployeeForm = (props) => {
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
+                className='cls-TransCancelBtn'
                 content='Cancel'
                 disabled={submitting}
                 onClick={_handleClose}
                 type='button'/>
               <Button
+                className='cls-saveButton'
                 color='teal'
                 content={isUpdating ? 'Save changes' : 'Save'}
                 disabled={submitting}

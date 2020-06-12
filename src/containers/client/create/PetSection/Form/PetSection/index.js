@@ -11,7 +11,6 @@ import FormAdditionalInfo from './FormAdditionalInfo'
 import FormGalleryInfo from './FormGalleryInfo'
 import useModal from '@components/Modal/useModal'
 import { parseResponseError } from '@lib/utils/functions'
-
 import petDetailDuck from '@reducers/pet/detail'
 
 export const formIds = [ 'pet-create-information', 'pet-create-additional-info' ]
@@ -109,7 +108,7 @@ const PetSection = props => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2'>
+                <Header as='h2' className='cls-MainHeader'>
                   <Image rounded src='https://react.semantic-ui.com/images/wireframe/square-image.png'/>
                   {isUpdating ? 'Update' : 'Create'} Pet
                 </Header>
@@ -118,6 +117,7 @@ const PetSection = props => {
 
             <Tab
               activeIndex={activeTabIndex}
+              className='cls-tabHeader'
               menu={{ secondary: true, pointing: true }}
               onTabChange={_handleTabChange}
               panes={[
@@ -138,9 +138,11 @@ const PetSection = props => {
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
           <Button
+            className='cls-TransCancelBtn'
             content='Cancel' fluid onClick={_handleCancelBtnClick}
             size='large'/>
           <Button
+            className='cls-saveButton'
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Pet`}
             disabled={saving}
@@ -150,21 +152,26 @@ const PetSection = props => {
             size='large'/>
           {
             isUpdating && (<Button
+              className='cls-deleteButton'
               color='google plus' content='Delete Pet' fluid
               onClick={_handleOpen} size='large'/>)
           }
           <Divider horizontal>other</Divider>
           <Button
+            className='cls-cancelButton'
             content='Send Reminder' disabled fluid
             icon='bell outline'/>
           <Button
+            className='cls-cancelButton'
             content='Print' disabled fluid
             icon='print'/>
           <Button
+            className='cls-cancelButton'
             content='Incident Report' disabled fluid
             icon='file alternate outline'/>
           {isUpdating && !client && <Button
             as={Link}
+            className='cls-cancelButton'
             content='Go to client' fluid
             icon='share square'
             onClick={_handleCancelBtnClick} to={`/client/${petDetail.item.client}`}/>

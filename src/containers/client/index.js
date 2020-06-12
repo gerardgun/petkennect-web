@@ -13,6 +13,8 @@ import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
 import zipDetailDuck from '@reducers/zip/detail'
 
+import 'src/containers/Common-style.scss'
+
 const Client = ({ client, clientDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
@@ -38,20 +40,23 @@ const Client = ({ client, clientDetail, ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2'>Clients</Header>
+            <Header as='h2' className='cls-MainHeader'>Clients</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
             <Button
+              className='cls-cancelButton'
               content='Download' disabled icon='cloud download'
               labelPosition='left'/>
             <Button
+              className='cls-cancelButton'
               content='Filter' disabled icon='filter'
               labelPosition='left'/>
             {
               client.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
             }
             <Button
-              as={Link} color='teal' content='New Client'
+              as={Link} className='cls-saveButton' color='teal'
+              content='New Client'
               onClick={_handleNewClick}
               to='/client/create'/>
           </Grid.Column>

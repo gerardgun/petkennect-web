@@ -42,14 +42,18 @@ const DocumentSection = ({ document, documentDetail, ...props }) => {
         <Segment className='segment-content' padded='very'>
           <Grid className='segment-content-header' columns={2}>
             <Grid.Column>
-              <Header as='h2'>Document List</Header>
+              <Header as='h2' className='cls-MainHeader'>Document List</Header>
             </Grid.Column>
             <Grid.Column textAlign='right'>
-              <Button content='Filter' icon='filter' labelPosition='left'/>
+              <Button
+                className='cls-cancelButton' content='Filter' icon='filter'
+                labelPosition='left'/>
               {
                 document.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
               }
-              <Button color='teal' content='Add Document' onClick={_handleAddBtnClick}/>
+              <Button
+                className='cls-saveButton' color='teal' content='Add Document'
+                onClick={_handleAddBtnClick}/>
             </Grid.Column>
           </Grid>
           <Table

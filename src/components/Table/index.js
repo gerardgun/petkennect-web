@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Checkbox, Dimmer, Dropdown, Image, Loader, Segment, Table } from 'semantic-ui-react'
+import { Checkbox, Dimmer, Dropdown, Image, Loader, Segment, Table, Button } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
@@ -11,8 +11,8 @@ const TableList = ({ duck, list, ...props }) => {
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
 
-    if(column.type === 'boolean') content = content ? 'Yes' : 'No'
-    else if(column.type === 'image') content = <Image rounded size='mini' src={content || 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'}/>
+    if(column.type === 'boolean') content = content ? <Button className='teal' content='Active'/> : <Button className='google plus' content='Active'/>
+    else if(column.type === 'image') content = (<Image rounded size='mini' src={content || 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'}/>)
     else if(column.type === 'date') content = (new Date(content)).toLocaleString().split(' ').shift()
     else if(column.type === 'datetime') content = (new Date(content)).toLocaleString()
     else if(column.type === 'string') content = content || <span style={{ color: 'grey' }}>-</span>
