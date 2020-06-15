@@ -95,7 +95,6 @@ body {
     &.tab {
       &.ui.modal {
         background-color: #f6f7f8;
-
         .content {
           background-color: #f6f7f8;
         }
@@ -199,4 +198,10 @@ body {
 }
 .drop-down-group {
   font-weight: 600;
+}
+.ui.grid.gray{ 
+  background-color: #f6f7f8;
+}
+.ui.grid.br16{ 
+  border-radius: 16px;
 }

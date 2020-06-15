@@ -78,11 +78,10 @@ const PetIncidentActionForm = (props) => {
               control={Form.Select}
               label='Result *'
               name='result_type'
-              options={[ 'Neither','Removal from Camp' ].map(result_type=>({
-                key  : result_type,
-                value: result_type,
-                text : `${result_type}`
-              }))}
+              options={[
+                { key: 'N', value: 'N',text: 'Neither' } ,
+                { key: 'R',value: 'R', text: 'Removal from Camp' }
+              ]}
               placeholder='Select an option'
               selectOnBlur={false}/>
           </Form.Group>

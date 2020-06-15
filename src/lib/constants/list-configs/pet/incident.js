@@ -7,11 +7,11 @@ export default {
         icon     : 'file pdf outline',
         is_inline: true
       },
-      // {
-      //   name     : 'edit',
-      //   icon     : 'edit outline',
-      //   is_inline: true
-      // },
+      {
+        name     : 'edit',
+        icon     : 'edit outline',
+        is_inline: true
+      },
       {
         name     : 'delete',
         icon     : 'trash alternate outline',
@@ -48,7 +48,7 @@ export default {
       filter      : {
         selectable: true,
         label     : 'Incident Type',
-        name      : 'type_name'
+        name      : 'type'
       }
     },
     {
@@ -61,7 +61,7 @@ export default {
       filter      : {
         selectable: true,
         label     : 'Incident Action',
-        name      : 'action_name'
+        name      : 'action'
       }
     },
     {

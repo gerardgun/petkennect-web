@@ -189,8 +189,7 @@ export default compose(
         petIncidentType,
         petIncidentBehavior,
         initialValues: {
-          ...petIncidentDetail.item,
-          behaviors: petIncidentDetail.item.id ? petIncidentDetail.item.behaviors.map(_behavior=>_behavior.id) : []
+          ...petIncidentDetail.item
         }
       }
     },
