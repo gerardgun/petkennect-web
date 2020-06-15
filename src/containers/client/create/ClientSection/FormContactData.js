@@ -68,9 +68,10 @@ const FormContactData = props => {
             type='tel'/>
           <Field
             autoComplete='off'
+            className='clsLabel'
             component={FormField}
             control={Form.Input}
-            label='Email *'
+            label='Email'
             name='email'
             placeholder='Enter email'
             readOnly={isUpdating}

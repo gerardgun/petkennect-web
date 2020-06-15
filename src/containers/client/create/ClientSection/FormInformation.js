@@ -45,17 +45,19 @@ const FormInformation = props => {
           <Field
             autoComplete='off'
             autoFocus
+            className='clsLabel'
             component={FormField}
             control={Form.Input}
-            label='Name *'
+            label='Name'
             name='first_name'
             placeholder='Enter names'
             readOnly={isUpdating}/>
           <Field
             autoComplete='off'
+            className='clsLabel'
             component={FormField}
             control={Form.Input}
-            label='Lastname *'
+            label='Lastname'
             name='last_name'
             placeholder='Enter lastname'
             readOnly={isUpdating}/>
@@ -165,10 +167,11 @@ const FormInformation = props => {
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
+            className='clsLabel'
             component={FormField}
             control={Form.Select}
             disabled={zip.status === 'GETTING'}
-            label='Zip *'
+            label='Zip'
             loading={zip.status === 'GETTING'}
             name='zip_code'
             onChange={_handleZipChange}

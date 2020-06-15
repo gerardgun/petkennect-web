@@ -162,6 +162,7 @@ const EmployeeForm = (props) => {
             <Field
               additionLabel='Invite '
               allowAdditions
+              className='clsLabel'
               closeOnChange
               component={FormField}
               control={Form.Dropdown}
@@ -169,7 +170,7 @@ const EmployeeForm = (props) => {
               format={value=>
                 [ value ]
               }
-              label='Email user *'
+              label='Email user'
               multiple
               name='email'
               onAddItem={_handleUserOptionAddItem}
@@ -190,16 +191,18 @@ const EmployeeForm = (props) => {
               selectOnBlur={false}/>
             <Field
               autoFocus
+              className='clsLabel'
               component={FormField}
               control={Form.Input}
-              label='Name *'
+              label='Name'
               name='first_name'
               placeholder='Enter name'
               readOnly={!!props.user_exists || isUpdating}/>
             <Field
+              className='clsLabel'
               component={FormField}
               control={Form.Input}
-              label='Last name *'
+              label='Last name'
               name='last_name'
               placeholder='Enter lastname'
               readOnly={!!props.user_exists || isUpdating}/>
@@ -222,9 +225,10 @@ const EmployeeForm = (props) => {
 
           <Form.Group widths='equal'>
             <Field
+              className='clsLabel'
               component={FormField}
               control={Form.Select}
-              label='Title *'
+              label='Title'
               name='title'
               options={employeeTitle.items.map((_employeeTitle) => ({
                 key  : _employeeTitle.id,
@@ -235,9 +239,10 @@ const EmployeeForm = (props) => {
               search
               selectOnBlur={false}/>
             <Field
+              className='clsLabel'
               component={FormField}
               control={Form.Select}
-              label='Location *'
+              label='Location'
               name='location'
               options={location.items.map((_location) => ({
                 key  : _location.id,
@@ -248,9 +253,10 @@ const EmployeeForm = (props) => {
               search
               selectOnBlur={false}/>
             <Field
+              className='clsLabel'
               component={FormField}
               control={Form.Select}
-              label='Role *'
+              label='Role'
               name='Role'
               placeholder='Select Role'
               search

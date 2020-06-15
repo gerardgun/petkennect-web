@@ -198,3 +198,10 @@ $gray-Color:#9B9FA4;
         }
     };
 }
+
+.clsLabel{
+    label:after {
+	content: ' *';
+	color: $save-Color;
+  }
+}
