@@ -1,0 +1,25 @@
+.c-input-read-only {
+  &.wrapper {
+    .label {
+      width: 100%;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 21px;
+      letter-spacing: -0.04em;
+      color: #9b9fa4;
+      font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    }
+    .input {
+      width: 100%;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 21px;
+      letter-spacing: -0.04em;
+      color: #1c1d1e;
+      font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    }
+  }
+}

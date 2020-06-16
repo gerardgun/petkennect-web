@@ -2,14 +2,12 @@ import React, { useMemo, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm, change, formValueSelector } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import {
   Button,
   Form,
   Header,
-  Modal,
-  FormGroup
-
+  Modal
 } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
@@ -22,15 +20,17 @@ import employeeDetailDuck from '@reducers/employee/detail'
 import employeeTitleDuck from '@reducers/employee/title'
 import locationDuck from '@reducers/location'
 import userDuck from '@reducers/user'
+import rolDuck from '@reducers/rol'
 import { useDebounce } from '@hooks/Shared'
+import InputFile from '@components/Common/InputFile'
 
-const EmployeeForm = (props) => {
+const EmployeeCreateForm = (props) => {
   const {
     employeeDetail,
     employeeTitle,
     location,
     user,
-    setFieldValue,
+    role,
     error,
     handleSubmit,
     reset,
@@ -42,9 +42,10 @@ const EmployeeForm = (props) => {
     props.getUsers()
     props.getEmployeeTitles()
     props.getLocations()
+    props.getRoles()
   }, [])
 
-  const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
+  const getIsOpened = (mode) => mode === 'CREATE'
 
   const _handleClose = () => {
     reset()
@@ -52,20 +53,13 @@ const EmployeeForm = (props) => {
   }
 
   const _handleSubmit = (values) => {
-    if(isUpdating)
-      return props
-        .put({ id: employeeDetail.item.id, ...values })
-        .then(_handleClose)
-        .catch(parseResponseError)
-    else
-      return props
-        .post({ ...values })
-        .then(_handleClose)
-        .catch(parseResponseError)
+    return props
+      .post({ ...values })
+      .then(_handleClose)
+      .catch(parseResponseError)
   }
 
   const isOpened = useMemo(() => getIsOpened(employeeDetail.mode), [ employeeDetail.mode ])
-  const isUpdating = Boolean(employeeDetail.item.id)
 
   const { _handleDebounce } = useDebounce((text)=> {
     props.setUserFilters({ search: text })
@@ -75,9 +69,6 @@ const EmployeeForm = (props) => {
   const _handleSearchChange = (_, { searchQuery }) => _handleDebounce(searchQuery)
 
   const _handleUserOptionChange = (value) => {
-    if(isUpdating)
-      return
-
     const latestValue = value[value.length  ? value.length - 1 : 0]
 
     if(!latestValue) {
@@ -87,17 +78,17 @@ const EmployeeForm = (props) => {
 
     const _user = user.items.find(_user => _user.email === latestValue)
     if(_user) {
-      setFieldValue('employee-form','user_exists', true)
-      setFieldValue('employee-form','first_name', _user.first_name)
-      setFieldValue('employee-form','last_name', _user.last_name)
-      setFieldValue('employee-form','user', _user.id)
+      props.change('user_exists', true)
+      props.change('first_name', _user.first_name)
+      props.change('last_name', _user.last_name)
+      props.change('user', _user.id)
       setCustomUser({ id: 'CUSTOM_USER_OPTION_ID', email: '' })
 
       return
     }
-    setFieldValue('employee-form','user_exists', false)
-    setFieldValue('employee-form','first_name', '')
-    setFieldValue('employee-form','last_name', '')
+    props.change('user_exists', false)
+    props.change('first_name', '')
+    props.change('last_name', '')
   }
 
   const _handleUserOptionAddItem = (_, data) => {
@@ -116,14 +107,16 @@ const EmployeeForm = (props) => {
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Header as='h2' className='segment-content-header'>
-            {isUpdating ? 'Update' : 'Add'} Employee
+            New Employee
           </Header>
           <Field component='input' name='id' type='hidden'/>
           <Field component='input' name='user' type='hidden'/>
           <Field
             component='input' defaultValue={true} name='user_exists'
             type='hidden'/>
-          <FormGroup widths='equal'>
+          <Header as='h4' className='form-section-header ' color='blue'>SEARCH USER</Header>
+
+          <Form.Group widths='equal'>
             <Field
               additionLabel='Invite '
               allowAdditions
@@ -134,7 +127,8 @@ const EmployeeForm = (props) => {
               format={value=>
                 [ value ]
               }
-              label='Add or Search some PetKennect User*'
+              icon='search'
+              label='Email user *'
               multiple
               name='email'
               onAddItem={_handleUserOptionAddItem}
@@ -148,28 +142,39 @@ const EmployeeForm = (props) => {
               parse={value =>
                 value[value.length > 0 ? value.length - 1 : 0]
               }
-              placeholder='Search user by email'
-              readOnly={isUpdating}
+              placeholder='Search email'
+              props={{
+                iconPosition: 'left'
+              }}
               search
               selection
               selectOnBlur={false}/>
-          </FormGroup>
-          <Form.Group widths='equal'>
             <Field
               component={FormField}
               control={Form.Input}
               label='Name *'
               name='first_name'
               placeholder='Enter name'
-              readOnly={!!props.user_exists || isUpdating}/>
+              readOnly={!!props.user_exists}/>
             <Field
               component={FormField}
               control={Form.Input}
               label='Lastname'
               name='last_name'
               placeholder='Enter lastname'
-              readOnly={!!props.user_exists || isUpdating}/>
+              readOnly={!!props.user_exists}/>
           </Form.Group>
+          <Form.Group widths='equal'>
+            <InputFile
+              change={props.change} label='Profile picture' name='profile_picture'
+              onlyImage placeholder='Upload image'/>
+
+            <Form.Field/>
+            <Form.Field/>
+          </Form.Group>
+
+          <Header as='h4' className='form-section-header ' color='blue'>BASIC INFORMATION</Header>
+
           <Form.Group widths='equal'>
             <Field
               component={FormField}
@@ -197,14 +202,26 @@ const EmployeeForm = (props) => {
               placeholder='Select location'
               search
               selectOnBlur={false}/>
+            <Field
+              component={FormField}
+              control={Form.Select}
+              label='Role *'
+              name='role'
+              options={role.items.map((_location) => ({
+                key  : _location.id,
+                value: _location.id,
+                text : `${_location.name}`
+              }))}
+              placeholder='Select role'
+              search
+              selectOnBlur={false}/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
               control={Form.Checkbox}
-              label='ACTIVE'
+              label='Active'
               name='status'
-              toggle
               type='checkbox'/>
           </Form.Group>
 
@@ -225,7 +242,7 @@ const EmployeeForm = (props) => {
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save'}
+                content='Add employee'
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>
@@ -248,23 +265,23 @@ export default compose(
         user         : userDuck.selectors.list(state),
         employeeTitle: employeeTitleDuck.selectors.list(state),
         location     : locationDuck.selectors.list(state),
-        user_exists  : formValueSelector('employee-form')(state, 'user_exists'),
-        email        : formValueSelector('employee-form')(state, 'email')
+        role         : rolDuck.selectors.list(state),
+        user_exists  : formValueSelector('employee-create-form')(state, 'user_exists'),
+        email        : formValueSelector('employee-create-form')(state, 'email')
       }
     },
     {
       post             : employeeDetailDuck.creators.post,
-      put              : employeeDetailDuck.creators.put,
       resetItem        : employeeDetailDuck.creators.resetItem,
       getUsers         : userDuck.creators.get,
       setUserFilters   : userDuck.creators.setFilters,
       getEmployeeTitles: employeeTitleDuck.creators.get,
       getLocations     : locationDuck.creators.get,
-      setFieldValue    : change
+      getRoles         : rolDuck.creators.get
     }
   ),
   reduxForm({
-    form              : 'employee-form',
+    form              : 'employee-create-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
     validate          : (values) => {
@@ -285,4 +302,4 @@ export default compose(
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(EmployeeForm)
+)(EmployeeCreateForm)

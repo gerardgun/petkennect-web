@@ -1,9 +1,9 @@
 import React from 'react'
-import { Form } from 'semantic-ui-react'
+import { Form, Ref } from 'semantic-ui-react'
 
 import FormFieldError from '@components/Common/FormFieldError'
 
-const FormField = props => {
+const FormField = React.forwardRef((props, ref) => {
   const {
     control: WrappedComponent,
     input: {
@@ -43,14 +43,16 @@ const FormField = props => {
 
   return (
     <Form.Field>
-      <WrappedComponent
-        onBlur={_handleBlur}
-        onChange={_handleChange}
-        {...computedInput}
-        {...rest}/>
+      <Ref innerRef={ref}>
+        <WrappedComponent
+          onBlur={_handleBlur}
+          onChange={_handleChange}
+          {...computedInput}
+          {...rest}/>
+      </Ref>
       <FormFieldError input={computedInput} meta={meta}/>
     </Form.Field>
   )
-}
+})
 
 export default FormField
