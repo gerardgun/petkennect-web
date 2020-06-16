@@ -29,7 +29,7 @@ const FormInformation = props => {
   }, [ petDetail.status ])
 
   return (
-    <Tab.Pane className='form-primary-segment-tab' loading={petDetail.status === 'GETTING'}>
+    <Tab.Pane className='form-primary-segment-tab cls-Petform' loading={petDetail.status === 'GETTING'}>
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Form.Group widths='equal'>

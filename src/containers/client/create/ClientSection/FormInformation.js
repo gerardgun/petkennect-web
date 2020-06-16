@@ -45,17 +45,19 @@ const FormInformation = props => {
           <Field
             autoComplete='off'
             autoFocus
+            className='clsLabel'
             component={FormField}
             control={Form.Input}
-            label='Name *'
+            label='Name'
             name='first_name'
             placeholder='Enter names'
             readOnly={isUpdating}/>
           <Field
             autoComplete='off'
+            className='clsLabel'
             component={FormField}
             control={Form.Input}
-            label='Lastname *'
+            label='Lastname'
             name='last_name'
             placeholder='Enter lastname'
             readOnly={isUpdating}/>
@@ -66,6 +68,27 @@ const FormInformation = props => {
             label='Spouse'
             name='spouse'
             placeholder='Enter spouse'/>
+        </Form.Group>
+
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Form.Input}
+            icon='upload'
+            label='Profile Picture'
+            name='prfile_picture'
+            placeholder='Upload image'
+            style={{ width: '77%' }}
+            type='file'/>
+          <Form.Field/>
+          <Field
+            component={FormField}
+            control={Form.Checkbox}
+            label='ACTIVE'
+            name=''
+            style={{ 'padding-top': '30px', 'margin-left': '-34px' }}
+            toggle
+            type='checkbox'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
@@ -106,9 +129,18 @@ const FormInformation = props => {
             autoComplete='off'
             component={FormField}
             control={Form.Input}
-            label='Address'
+            label='Address1'
             name='addresses[0]'
             placeholder='Enter address'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Form.Input}
+            label='Address2'
+            name=''
+            placeholder='Enter address2'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Field>
@@ -135,10 +167,11 @@ const FormInformation = props => {
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
+            className='clsLabel'
             component={FormField}
             control={Form.Select}
             disabled={zip.status === 'GETTING'}
-            label='Zip *'
+            label='Zip'
             loading={zip.status === 'GETTING'}
             name='zip_code'
             onChange={_handleZipChange}

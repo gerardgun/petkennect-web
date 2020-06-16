@@ -50,21 +50,23 @@ const EmployeeList = ({ employee,employeeeDetail ,...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column width={4}>
-            <Header as='h2'>Employees</Header>
+            <Header as='h2' className='cls-MainHeader'>Employees</Header>
           </Grid.Column >
           <Grid.Column textAlign='right' width={12}>
             <Input
               icon='search' onChange={_handleChangeText}
               placeholder='Search...'/>
-            <Button className='' content='Download' disabled/>
+            <Button className='cls-cancelButton' content='Download' disabled/>
             <Button
+              className='cls-cancelButton'
               content='Filter' disabled icon='filter'
               labelPosition='left'/>
             {
               employee.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
             }
             <Button
-              as={Link} color='teal' content='New Employee'
+              as={Link} className='cls-saveButton' color='teal'
+              content='New Employee'
               onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>

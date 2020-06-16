@@ -107,12 +107,13 @@ const ClientSection = props => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2'>{isUpdating ? 'Update' : 'Create'} Client</Header>
+                <Header as='h2' className='cls-MainHeader'>{isUpdating ? 'Update' : 'Create'} Client</Header>
               </Grid.Column>
             </Grid>
 
             <Tab
               activeIndex={activeTabIndex}
+              className='cls-tabHeader'
               menu={{ secondary: true, pointing: true }}
               onTabChange={_handleTabChange}
               panes={[
@@ -141,10 +142,11 @@ const ClientSection = props => {
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
           <Button
-            as={Link} content='Cancel' fluid
+            as={Link} className='cls-TransCancelBtn' content='Cancel'
+            fluid
             size='large' to='/client'/>
           <Button
-            color='teal'
+            className='cls-saveButton' color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Client`}
             disabled={saving}
             fluid
@@ -153,14 +155,23 @@ const ClientSection = props => {
             size='large'/>
           {
             isUpdating && (<Button
-              color='google plus' content='Delete Client' fluid
+              className='cls-deleteButton' color='google plus' content='Delete Client'
+              fluid
               onClick={_handleOpen} size='large'/>)
           }
           <Divider horizontal>other</Divider>
-          <Button content='Send Email' fluid icon='mail outline'/>
-          <Button content='Print' fluid icon='print'/>
-          <Button content='View Records' fluid icon='file alternate outline'/>
-          <Button content='Email Records' fluid icon='share square'/>
+          <Button
+            className='cls-cancelButton' content='Send Email' fluid
+            icon='mail outline'/>
+          <Button
+            className='cls-cancelButton' content='Print' fluid
+            icon='print'/>
+          <Button
+            className='cls-cancelButton' content='View Records' fluid
+            icon='file alternate outline'/>
+          <Button
+            className='cls-cancelButton' content='Email Records' fluid
+            icon='share square'/>
         </Grid.Column>
       </Grid>
 

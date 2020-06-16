@@ -4,13 +4,19 @@
 
     &.active {
       & > span, & > a {
-        color: #6772e5;
+        // color: #6772e5;
+        color: #00AA9F;
+        padding-top: 4px;
       }
 
       .icon-container {
-        background-color: #6772e533;
-        color: #6772e5;
+        // background-color: #6772e533;
+        // color: #6772e5;
+        color: #00AA9F;
       }
+
+      width: 283px;
+      background: rgba(7, 148, 119, 0.1);
     }
 
     & > span, & > a {

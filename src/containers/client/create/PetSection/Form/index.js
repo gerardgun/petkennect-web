@@ -55,7 +55,7 @@ const PetCreate = props => {
       size='large'>
       <Modal.Content>
         <Tab
-          className='detail-view-tab'
+          className='detail-view-tab cls-tabHeader'
           menu={{ color: 'teal', tabular: true, attached: true }}
           panes={[
             {

@@ -45,13 +45,16 @@ const PetSection = (props) => {
         <Segment className='segment-content' padded='very'>
           <Grid className='segment-content-header' columns={2}>
             <Grid.Column>
-              <Header as='h2'>Pet List</Header>
+              <Header as='h2' className='cls-MainHeader'>Pet List</Header>
             </Grid.Column>
             <Grid.Column textAlign='right'>
               <Button
+                className='cls-cancelButton'
                 content='Filter' disabled icon='filter'
                 labelPosition='left'/>
-              <Button color='teal' content='Add Pet' onClick={_handleAddBtnClick}/>
+              <Button
+                className='cls-saveButton' color='teal' content='Add Pet'
+                onClick={_handleAddBtnClick}/>
             </Grid.Column>
           </Grid>
           <Table

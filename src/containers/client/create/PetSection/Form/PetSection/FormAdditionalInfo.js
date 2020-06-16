@@ -26,7 +26,7 @@ const FormAdditionalInfo = props => {
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
 
-        <Header as='h4'>Other Information</Header>
+        <Header as='h4' className='Cls-pethead'>Other Information</Header>
 
         <Form.Group widths='equal'>
           <Field

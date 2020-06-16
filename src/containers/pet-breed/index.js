@@ -45,17 +45,19 @@ const PetBreedList = ({ ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2'>Pets Breed</Header>
+            <Header as='h2' className='cls-MainHeader'>Pets Breed</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' disabled/>
+            <Button className='cls-cancelButton' content='Download' disabled/>
             <Button
+              className='cls-cancelButton'
               content='Filter'
               disabled
               icon='filter'
               labelPosition='left'/>
             <Button
-              as={Link} color='teal' content='New Pet Breed'
+              as={Link} className='cls-saveButton' color='teal'
+              content='New Pet Breed'
               onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>

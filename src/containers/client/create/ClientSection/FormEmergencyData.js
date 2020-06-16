@@ -48,7 +48,9 @@ const AuthorizedPeopleList = ({ fields, meta: { error, submitFailed }, title = '
           ))
         }
         <div style={{ textAlign: 'center' }}>
-          <Button content='Add person' onClick={_handleAddBtnClick} type='button'/>
+          <Button
+            className='cls-cancelButton' content='Add person' onClick={_handleAddBtnClick}
+            type='button'/>
         </div>
         {
           submitFailed && error && (

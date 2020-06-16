@@ -52,7 +52,7 @@ const ClientCreate = props => {
   return (
     <Layout>
       <Tab
-        className='detail-view-tab'
+        className='detail-view-tab cls-tabHeader'
         menu={{ color: 'teal', tabular: true, attached: true }}
         panes={[
           {

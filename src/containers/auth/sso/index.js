@@ -41,7 +41,7 @@ const SSO = props => {
     <Container className='auth-sso'>
 
       <div className='container'>
-        <Header as='h2' className='text-center'>Select company</Header>
+        <Header as='h2'  className='text-center auth-heading'>Select company</Header>
         <List className='list' selection>
           {  is_superadmin && <List.Item
             className='list-item'

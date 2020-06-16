@@ -21,16 +21,21 @@ const Dashboard = ({ client, ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2'>Dashboard</Header>
+            <Header as='h2' className='cls-MainHeader'>Dashboard</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' icon='cloud download' labelPosition='left'/>
-            <Button content='Filter' icon='filter' labelPosition='left'/>
+            <Button
+              className='cls-cancelButton' content='Download' icon='cloud download'
+              labelPosition='left'/>
+            <Button
+              className='cls-cancelButton' content='Filter' icon='filter'
+              labelPosition='left'/>
             {
               client.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete'/>)
             }
             <Button
-              as={Link} color='teal' content='New Client'
+              as={Link}
+              className='cls-saveButton' color='teal' content='New Client'
               to='/client/create'/>
           </Grid.Column>
         </Grid>

@@ -13,6 +13,7 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 
+import 'src/containers/auth/auth-style.scss'
 import './sign-in.scss'
 
 const SignIn = props => {
@@ -41,9 +42,9 @@ const SignIn = props => {
           <Image src='/images/sign-in.svg'/>
         </Grid.Column>
         <Grid.Column style={{ alignSelf: 'center' }}>
-          <Header as='h2'>¡Welcome to PetKennect!</Header>
+          <Header as='h2' className='auth-heading'>Welcome to PetKennect</Header>
           <p>
-            Enter your email and password for sign in.
+            We’re here to help you. Please sign in to your account.
           </p>
 
           {/* eslint-disable-next-line react/jsx-handler-names */}
@@ -52,6 +53,7 @@ const SignIn = props => {
               <Field
                 autoComplete='off'
                 autoFocus
+                className='txt-field'
                 component={FormField}
                 control={Form.Input}
                 label='Email'
@@ -61,8 +63,10 @@ const SignIn = props => {
             </Form.Group>
             <Form.Group widths='equal'>
               <Field
+                className='txt-field'
                 component={FormField}
                 control={Form.Input}
+                icon='hide'
                 label='Password'
                 name='password'
                 placeholder='Enter your password'
@@ -79,6 +83,16 @@ const SignIn = props => {
               )
             }
 
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Form.Checkbox}
+                label='Remember me'/>
+              <Form.Field style={{ textAlign: 'right' }}>
+                <Link className='a-class' to='/auth/forgot-password' >Forgot your password?</Link>
+              </Form.Field>
+            </Form.Group>
+
             {/* BEGIN Delete */}
             <Form.Group widths='equal'>
               <Form.Field>
@@ -94,13 +108,9 @@ const SignIn = props => {
             </Form.Group>
             {/* END Delete */}
 
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <Link to='/auth/forgot-password'>Forgot your password?</Link>
-              </Form.Field>
-            </Form.Group>
             <Form.Group>
               <Form.Field
+                className='signin-btn'
                 control={Button}
                 disabled={pristine || submitting}
                 loading={auth.status === 'SIGNING_IN'}

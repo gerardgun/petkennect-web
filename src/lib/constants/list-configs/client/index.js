@@ -11,6 +11,14 @@ export default {
   },
   columns: [
     {
+      display_name: '',
+      name        : 'photo',
+      type        : 'image', // image, boolean, date, datetime, money, label
+      width       : null,
+      align       : 'left',
+      sort        : true
+    },
+    {
       display_name: 'Name',
       name        : 'first_name',
       type        : 'string', // image, boolean, date, datetime, money, label
