@@ -24,16 +24,8 @@ export default {
       sort        : true
     },
     {
-      display_name: 'Client First Name',
-      name        : 'client_first_name',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'Client Last Name',
-      name        : 'client_last_name',
+      display_name: 'Owner',
+      name        : 'client_fullname',
       type        : 'string',
       width       : null,
       align       : 'left',

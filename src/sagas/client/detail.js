@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 
-import { Get, Post, Put } from '@lib/utils/http-client'
+import { Get, Post, Patch } from '@lib/utils/http-client'
 
 import clientDetailDuck from '@reducers/client/detail'
 import zipDetailDuck from '@reducers/zip/detail'
@@ -72,7 +72,10 @@ function* _put({ payload }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Put, `clients/${payload.id}/`, payload)
+    if('email' in payload)
+      delete payload.email
+
+    yield call(Patch, `clients/${payload.id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

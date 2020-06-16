@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Checkbox, Dimmer, Dropdown, Image, Loader, Segment, Table, Button } from 'semantic-ui-react'
+import { Checkbox, Dimmer, Dropdown, Image, Loader, Segment, Table, Button, Icon } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
@@ -67,6 +67,11 @@ const TableList = ({ duck, list, ...props }) => {
     const itemId = +e.currentTarget.closest('.ui.dropdown').dataset.itemId
     const item = list.items.find(({ id }) => id === itemId)
 
+    props.onRowOptionClick(value, item)
+  }
+
+  const _handleOptionClick = (value, item)=> (e) => {
+    e.stopPropagation()
     props.onRowOptionClick(value, item)
   }
 
@@ -179,16 +184,27 @@ const TableList = ({ duck, list, ...props }) => {
                     {
                       list.config.row.options && (
                         <Table.Cell textAlign='center'>
+                          {list.config.row.options
+                            .filter(_option=> _option.is_inline)
+                            .map((_item, index)=> (
+                              <Button
+                                icon key={index}
+                                onClick={_handleOptionClick(_item.name, item)}>
+                                <Icon name={_item.icon}/>
+                              </Button>
+                            ))}
                           <Dropdown
                             data-item-id={item.id}
                             onChange={_handleDropdownChange}
                             options={
-                              list.config.row.options.map((item, index) => ({
-                                key  : index,
-                                icon : item.icon,
-                                value: item.name,
-                                text : item.display_name
-                              }))
+                              list.config.row.options
+                                .filter(_option => !_option.is_inline)
+                                .map((item, index) => ({
+                                  key  : index,
+                                  icon : item.icon,
+                                  value: item.name,
+                                  text : item.display_name
+                                }))
                             }
                             selectOnBlur={false}
                             text='Options'

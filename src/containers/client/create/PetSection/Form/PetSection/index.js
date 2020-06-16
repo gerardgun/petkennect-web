@@ -88,7 +88,10 @@ const PetSection = props => {
           .then(_handleCancelBtnClick)
           .catch(parseResponseError)
       else
-        return post({ ...petDetail.item,...finalValues })
+        return post({
+          ...petDetail.item,
+          ...finalValues
+        })
           .then(_handleCancelBtnClick)
           .catch(parseResponseError)
     }

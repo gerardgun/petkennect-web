@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { destroy } from 'redux-form'
 import { Label, Menu, Modal, Tab } from 'semantic-ui-react'
 
 import PetSection, { formIds } from './PetSection'
-// import IncidentSection from './IncidentSection'
+import IncidentSection from './IncidentSection'
 
 import petDetailDuck from '@reducers/pet/detail'
 
@@ -20,6 +20,10 @@ const PetCreate = props => {
     // getPets,
   } = props
 
+  useEffect(() => {
+    if(petDetail.item.id)
+      props.get(petDetail.item.id)
+  }, [ petDetail.item.id ])
   /** future behavior with route and hashes, it seems to me */
   // useEffect(() => {
   //   if(clientPetDetail.status === 'SET_ITEM' && isUpdating)
@@ -60,8 +64,7 @@ const PetCreate = props => {
             },
             {
               menuItem: { key: 'incidents', content: 'Incidents' },
-              // render: () => <IncidentSection />,
-              render  : () => <Tab.Pane>Tab Incident Content</Tab.Pane>
+              render  : () => <IncidentSection/>
             },
             {
               menuItem: (
@@ -116,7 +119,7 @@ export default compose(
     }),
     {
       destroy,
-      // get      : petDetailDuck.creators.get,
+      get      : petDetailDuck.creators.get,
       resetItem: petDetailDuck.creators.resetItem
       // getDocuments   : clientDocumentDuck.creators.get,
       // getComments: clientCommentDuck.creators.get,
