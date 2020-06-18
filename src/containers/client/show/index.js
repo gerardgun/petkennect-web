@@ -60,7 +60,7 @@ const ClientShow = ({ clientDetail,clientPet ,...props }) => {
         </Grid>
         <div className='flex mt35'>
           <div  className='flex align-center w30'>
-            <Image avatar className='img-40' src={clientDetail.item.image_url || defaultImage}/>
+            <Image avatar className='img-40' src={clientDetail.item.thumbnail_path || defaultImage}/>
             <div className='c-thumbnail'>
               <div className='title'>{fullname}</div>
               <div className='description'>Client</div>

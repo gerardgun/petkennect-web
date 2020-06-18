@@ -22,7 +22,6 @@ import locationDuck from '@reducers/location'
 import userDuck from '@reducers/user'
 import rolDuck from '@reducers/rol'
 import { useDebounce } from '@hooks/Shared'
-import InputFile from '@components/Common/InputFile'
 
 const EmployeeCreateForm = (props) => {
   const {
@@ -163,14 +162,6 @@ const EmployeeCreateForm = (props) => {
               name='last_name'
               placeholder='Enter lastname'
               readOnly={!!props.user_exists}/>
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <InputFile
-              change={props.change} label='Profile picture' name='profile_picture'
-              onlyImage placeholder='Upload image'/>
-
-            <Form.Field/>
-            <Form.Field/>
           </Form.Group>
 
           <Header as='h4' className='form-section-header ' color='blue'>BASIC INFORMATION</Header>

@@ -67,7 +67,7 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
 
         </Grid>
         <div  className='flex align-center mt35'>
-          <Image avatar className='img-40' src={employeeDetail.item.image_url || defaultImage}/>
+          <Image avatar className='img-40' src={employeeDetail.item.thumbnail_path || defaultImage}/>
           <div className='c-thumbnail'>
             <div className='title'>{fullname}</div>
             <div className='description'>Employee</div>
@@ -94,7 +94,7 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
           <InputReadOnly
             className='w33'
             label='Profile Picture'
-            value={<Image rounded size='mini' src={employeeDetail.item.image_url || defaultImage}/>}/>
+            value={<Image rounded size='mini' src={employeeDetail.item.thumbnail_path || defaultImage}/>}/>
           <InputReadOnly
             className='w33'
             label='Title'

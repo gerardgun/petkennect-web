@@ -29,7 +29,7 @@ function TabClientInfo({ clientDetail  }) {
         <InputReadOnly
           className='w33'
           label='Profile Picture'
-          value={<Image rounded size='mini' src={clientDetail.item.image_url || defaultImage}/>}/>
+          value={<Image rounded size='mini' src={clientDetail.item.thumbnail_path || defaultImage}/>}/>
         <InputReadOnly
           className='w33'
           label='Contact Date'

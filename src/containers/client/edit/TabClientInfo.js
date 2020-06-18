@@ -11,7 +11,6 @@ import YupFields from '@lib/constants/yup-fields'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
-import InputFile from '@components/Common/InputFile'
 
 import clientDetailDuck from '@reducers/client/detail'
 import locationDuck from '@reducers/location'
@@ -70,9 +69,7 @@ function TabClientInfo(props) {
             readOnly/>
         </Form.Group>
         <Form.Group widths='equal'>
-          <InputFile
-            change={props.change} label='Profile picture' name='profile_picture'
-            onlyImage placeholder='Upload image'/>
+
           <Field
             component={FormField}
             control={Form.Input}
@@ -83,17 +80,12 @@ function TabClientInfo(props) {
             component={FormField}
             control={Form.Select}
             label='Location'
-            name='contact_location_id'
+            name='location'
             options={location.items.map(_location =>
               ({ key: _location.id, value: _location.id, text: `${_location.name}` }))
             }
             placeholder='Contact Location'
             selectOnBlur={false}/>
-
-        </Form.Group>
-
-        <Form.Group widths='equal'>
-
           <Field
             component={FormField}
             control={Form.Select}
@@ -107,8 +99,6 @@ function TabClientInfo(props) {
             ]}
             placeholder='Select status'
             selectOnBlur={false}/>
-          <Form.Field/>
-          <Form.Field/>
         </Form.Group>
 
         <Header as='h4' className='form-section-header ' color='blue'>CONTACT DETAILS</Header>
@@ -278,10 +268,10 @@ export default compose(
     enableReinitialize: true,
     validate          : (values) => {
       const schema = {
-        zip_code           : YupFields.zip,
-        contact_location_id: Yup.mixed().required('Location is required'),
-        email              : Yup.string().email().required('Email is required'),
-        contact_date       : Yup.mixed().required('Contact date is required')
+        zip_code    : YupFields.zip,
+        location    : Yup.mixed().required('Location is required'),
+        email       : Yup.string().email().required('Email is required'),
+        contact_date: Yup.mixed().required('Contact date is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

@@ -8,7 +8,7 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
-import ClientCreateForm from './createv2'
+import ClientCreateForm from './create'
 
 import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'

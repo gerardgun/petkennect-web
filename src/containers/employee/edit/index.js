@@ -16,7 +16,6 @@ import rolDuck from '@reducers/rol'
 import { syncValidate, parseResponseError } from '@lib/utils/functions'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import InputFile from '@components/Common/InputFile'
 
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
@@ -95,7 +94,7 @@ const EmployeeEditForm = (props) => {
 
         </Grid>
         <div  className='flex align-center mt35'>
-          <Image avatar className='img-40' src={employeeDetail.item.image_url || defaultImage}/>
+          <Image avatar className='img-40' src={employeeDetail.item.thumbnail_path || defaultImage}/>
           <div className='c-thumbnail'>
             <div className='title'>{fullname}</div>
             <div className='description'>Employee</div>
@@ -136,9 +135,6 @@ const EmployeeEditForm = (props) => {
               readOnly/>
           </Form.Group>
           <Form.Group widths='equal'>
-            <InputFile
-              change={props.change} label='Profile picture' name='profile_picture'
-              onlyImage placeholder='Upload image'/>
 
             <Field
               component={FormField}
@@ -167,8 +163,7 @@ const EmployeeEditForm = (props) => {
               placeholder='Select role'
               search
               selectOnBlur={false}/>
-          </Form.Group>
-          <Form.Group widths='equal'>
+
             <Field
               component={FormField}
               control={Form.Select}
@@ -182,6 +177,9 @@ const EmployeeEditForm = (props) => {
               placeholder='Select location'
               search
               selectOnBlur={false}/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+
             <Field
               className='mt35'
               component={FormField}
@@ -189,6 +187,7 @@ const EmployeeEditForm = (props) => {
               label='Active'
               name='status'
               type='checkbox'/>
+            <Form.Field/>
             <Form.Field/>
           </Form.Group>
 
@@ -214,7 +213,7 @@ export default compose(
 
       return {
         employeeDetail,
-        initialValues: { ...employeeDetail.item, profile_picture: null },
+        initialValues: employeeDetail.item,
         user         : userDuck.selectors.list(state),
         employeeTitle: employeeTitleDuck.selectors.list(state),
         location     : locationDuck.selectors.list(state),

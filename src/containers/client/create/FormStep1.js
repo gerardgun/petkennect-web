@@ -24,7 +24,6 @@ import zipDetailDuck from '@reducers/zip/detail'
 
 import { useDebounce } from '@hooks/Shared'
 import useZipInputSearch from '@components/useZipInputSearch'
-import InputFile from '@components/Common/InputFile'
 
 const ClientCreateFormStep1 = (props) => {
   const {
@@ -150,14 +149,6 @@ const ClientCreateFormStep1 = (props) => {
             placeholder='Enter lastname'
             readOnly={!!props.user_exists}/>
         </Form.Group>
-        <Form.Group widths='equal'>
-          <InputFile
-            change={props.change} label='Profile picture' name='profile_picture'
-            onlyImage placeholder='Upload image'/>
-
-          <Form.Field/>
-          <Form.Field/>
-        </Form.Group>
 
         <Header as='h4' className='form-section-header ' color='blue'>BASIC INFORMATION</Header>
         <Form.Group widths='equal'>
@@ -171,7 +162,7 @@ const ClientCreateFormStep1 = (props) => {
             component={FormField}
             control={Form.Select}
             label='Location'
-            name='contact_location_id'
+            name='location'
             options={location.items.map(_location =>
               ({ key: _location.id, value: _location.id, text: `${_location.name}` }))
             }
@@ -383,10 +374,10 @@ export default compose(
           is  : true,
           then: (m) => m.required('User is Required')
         }),
-        zip_code           : YupFields.zip,
-        contact_location_id: Yup.mixed().required('Location is required'),
-        email              : Yup.string().email().required('Email is required'),
-        contact_date       : Yup.mixed().required('Contact date is required')
+        zip_code    : YupFields.zip,
+        location    : Yup.mixed().required('Location is required'),
+        email       : Yup.string().email().required('Email is required'),
+        contact_date: Yup.mixed().required('Contact date is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

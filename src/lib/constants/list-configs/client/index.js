@@ -16,7 +16,7 @@ export default {
       type        : 'avatar', // image, avatar, multiple, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      avatar_image: 'image_url',
+      avatar_image: 'thumbnail_path',
       avatar_name : [ 'first_name', 'last_name' ],
       avatar_link : '/client/show/',
       sort        : true
@@ -47,7 +47,7 @@ export default {
     },
     {
       display_name: 'Location',
-      name        : 'emergency_vet_location',
+      name        : 'location_name',
       type        : 'string',
       width       : null,
       align       : 'left',

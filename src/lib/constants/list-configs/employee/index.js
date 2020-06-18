@@ -21,7 +21,7 @@ export default {
       type        : 'avatar', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      avatar_image: 'image_url',
+      avatar_image: 'thumbnail_path',
       avatar_name : [ 'first_name', 'last_name' ],
       avatar_link : '/employee/show/',
       sort        : true
