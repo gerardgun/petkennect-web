@@ -44,15 +44,17 @@ const DocumentType = props => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2'>Document Types</Header>
+            <Header as='h2' className='cls-MainHeader'>Document Types</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
             <Button
+              className='cls-cancelButton'
               content='Download' disabled icon='cloud download'
               labelPosition='left'/>
 
             <Button
-              as={Link} color='teal' content='New Document Type'
+              as={Link} className='cls-saveButton' color='teal'
+              content='New Document Type'
               onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>

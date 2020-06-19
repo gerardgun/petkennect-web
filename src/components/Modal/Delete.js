@@ -51,8 +51,11 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
         }
       </Modal.Content>
       <Modal.Actions>
-        <Button content='Cancel' disabled={deleting} onClick={props.onClose}/>
         <Button
+          className='cls-cancelButton' content='Cancel' disabled={deleting}
+          onClick={props.onClose}/>
+        <Button
+          className='cls-deleteButton'
           color='google plus' content='Delete' icon='trash'
           loading={deleting} onClick={_handleDeleteBtnClick}/>
       </Modal.Actions>

@@ -43,14 +43,15 @@ const PetList = ({ pet, petDetail, ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column width={4}>
-            <Header as='h2'>Pets</Header>
+            <Header as='h2' className='cls-MainHeader'>Pets</Header>
           </Grid.Column >
           <Grid.Column textAlign='right' width={12}>
             <Input
               icon='search' onChange={_handleChangeText}
               placeholder='Search...'/>
-            <Button className='' content='Download' disabled/>
+            <Button className='cls-cancelButton' content='Download' disabled/>
             <Button
+              className='cls-cancelButton'
               content='Filter' disabled icon='filter'
               labelPosition='left'/>
             {

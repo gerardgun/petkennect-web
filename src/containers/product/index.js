@@ -53,21 +53,24 @@ const ProductList = ({ /* product ,*/  productDetail, ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column width={4}>
-            <Header as='h2'>Products</Header>
+            <Header as='h2' className='cls-MainHeader'>Products</Header>
           </Grid.Column>
           <Grid.Column textAlign='right' width={12}>
             <Input
               icon='search' onChange={_handleChangeText}
               placeholder='Search...'/>
             <Button
+              className='cls-cancelButton'
               content='Download' disabled icon='cloud download'
               labelPosition='left'/>
             <Button
+              className='cls-cancelButton'
               content='Filter' icon='filter'
               labelPosition='left'
               onClick={_handleOpenFilterModal}/>
             <Button
-              as={Link} color='teal' content='New Product'
+              as={Link} className='cls-saveButton' color='teal'
+              content='New Product'
               onClick={_handleCreateClick}
               to='/product/create'/>
           </Grid.Column>

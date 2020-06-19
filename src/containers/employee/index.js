@@ -48,11 +48,12 @@ const EmployeeList = ({ /* employee,*/ employeeeDetail ,...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column width={4}>
-            <Header as='h2'>Employees</Header>
+            <Header as='h2' className='cls-MainHeader'>Employees</Header>
           </Grid.Column >
           <Grid.Column textAlign='right' width={12}>
             <Button
-              as={Link} color='teal' content='New Employee'
+              as={Link} className='cls-saveButton' color='teal'
+              content='New Employee'
               onClick={_handleAddBtnClick}/>
           </Grid.Column>
           <Grid.Column textAlign='left' width={2} >

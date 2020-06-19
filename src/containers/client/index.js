@@ -15,6 +15,8 @@ import clientDetailDuck from '@reducers/client/detail'
 import zipDetailDuck from '@reducers/zip/detail'
 import { useDebounceText } from '@hooks/Shared'
 
+import 'src/containers/Common-style.scss'
+
 const Client = ({ client, clientDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
@@ -46,7 +48,7 @@ const Client = ({ client, clientDetail, ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2'>Clients</Header>
+            <Header as='h2' className='cls-MainHeader'>Clients</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
             <Button

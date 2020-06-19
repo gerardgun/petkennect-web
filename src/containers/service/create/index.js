@@ -115,12 +115,13 @@ const ServiceCreate = props => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2'>{isUpdating ? `Update ${ServiceTypes[serviceDetail.item.type]}` : 'Create'} Service</Header>
+                <Header as='h2' className='cls-MainHeader'>{isUpdating ? `Update ${ServiceTypes[serviceDetail.item.type]}` : 'Create'} Service</Header>
               </Grid.Column>
             </Grid>
 
             <Tab
               activeIndex={activeTabIndex}
+              className='cls-tabHeader'
               menu={{ secondary: true, pointing: true }}
               onTabChange={_handleTabChange}
               panes={[
@@ -141,9 +142,11 @@ const ServiceCreate = props => {
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
           <Button
-            as={Link} content='Cancel' fluid
+            as={Link} className='cls-cancelButton' content='Cancel'
+            fluid
             size='large' to='/service'/>
           <Button
+            className='cls-saveButton'
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Service`}
             disabled={saving}

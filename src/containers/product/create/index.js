@@ -82,12 +82,13 @@ const ProductSection = (props) => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2'>Info Product</Header>
+                <Header as='h2' className='cls-MainHeader'>Info Product</Header>
               </Grid.Column>
             </Grid>
 
             <Tab
               activeIndex={activeTabIndex}
+              className='cls-tabHeader'
               menu={{ secondary: true, pointing: true }}
               onTabChange={_handleTabChange}
               panes={[
@@ -126,9 +127,11 @@ const ProductSection = (props) => {
         <Grid.Column className='form-primary-actions vertical' width='three'>
 
           <Button
-            as={Link} content='Cancel' disabled={saving}
+            as={Link} className='cls-cancelButton' content='Cancel'
+            disabled={saving}
             fluid size='large' to='/product'/>
           <Button
+            className='cls-saveButton'
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Product`}
             disabled={saving}
@@ -138,15 +141,18 @@ const ProductSection = (props) => {
             size='large'/>
           {
             isUpdating && (<Button
+              className='cls-deleteButton'
               color='google plus' content='Delete Product' fluid
               onClick={_handleOpen} size='large'/>)
           }
           <Divider horizontal>Quick Actions</Divider>
 
           <Button
+            className='cls-cancelButton'
             content='Send Reminder' disabled fluid
             icon='mail outline'/>
           <Button
+            className='cls-cancelButton'
             content='Print' disabled fluid
             icon='print'/>
         </Grid.Column>

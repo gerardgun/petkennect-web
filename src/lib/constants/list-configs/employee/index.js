@@ -1,3 +1,4 @@
+
 export default {
   base_uri: null,
   row     : {
@@ -52,7 +53,7 @@ export default {
     },
     {
       display_name: 'Role',
-      name        : 'role',
+      name        : 'role_name',
       type        : 'string',
       width       : null,
       align       : 'left',

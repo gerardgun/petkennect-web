@@ -27,7 +27,7 @@ const TableList = ({ duck, list, ...props }) => {
       if(column.labels) {
         content = content
           ? <Label circular color='teal'>{ column.labels.positive }</Label>
-          : <Label color='red'>{ column.labels.positive }</Label>
+          : <Label circular color='red'>{ column.labels.positive }</Label>
       } else {
         content = content ? 'Yes' : 'No'
       }
