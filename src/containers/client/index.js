@@ -13,8 +13,6 @@ import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
 import zipDetailDuck from '@reducers/zip/detail'
 
-import 'src/containers/Common-style.scss'
-
 const Client = ({ client, clientDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 

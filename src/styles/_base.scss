@@ -1,6 +1,6 @@
-
 body {
-  background-color: #f6f7f8;
+  font-family: 'Poppins', -apple-system, sans-serif;
+  background-color: #FAFCFF;
 }
 
 .detail-view {
@@ -16,7 +16,7 @@ body {
 }
 
 .form-primary {
-  &-actions {  
+  &-actions {
     &.vertical {
       .ui.button {
         margin-bottom: 0.8rem;
@@ -38,12 +38,12 @@ body {
   }
 
   .ui.form {
-    input[type=password]:focus,
-    input[type=text]:focus,
-    input[type=number]:focus,
-    input[type=email]:focus,
-    input[type=tel]:focus,
-    input[type=date]:focus,
+    input[type="password"]:focus,
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
     .ui.selection.active.dropdown,
     .ui.selection.active.dropdown:hover,
     .ui.selection.active.dropdown .menu {
@@ -55,8 +55,8 @@ body {
     }
 
     .ui.toggle.checkbox {
-      input:checked~.box:before,
-      input:checked~label:before {
+      input:checked ~ .box:before,
+      input:checked ~ label:before {
         background-color: #00b5ad !important;
       }
     }
@@ -140,7 +140,7 @@ body {
     thead th {
       color: #222b3b;
     }
-  
+
     tbody {
       tr.active {
         background-color: #00b5ad0a !important;
@@ -155,13 +155,13 @@ body {
   }
 
   .ui.checkbox {
-    input:checked~label {
-      &::after{
+    input:checked ~ label {
+      &::after {
         color: #fff;
         font-size: 0.8rem;
       }
 
-      &::before{
+      &::before {
         border-color: #00b5ad;
         background-color: #00b5ad;
       }
@@ -184,7 +184,7 @@ body {
   text-align: center;
 }
 
-.text-area-container{
+.text-area-container {
   position: relative;
   margin-bottom: 16;
   .text-area-counter {
@@ -199,9 +199,93 @@ body {
 .drop-down-group {
   font-weight: 600;
 }
-.ui.grid.gray{ 
+.ui.grid.gray {
   background-color: #f6f7f8;
 }
-.ui.grid.br16{ 
+.ui.grid.br16 {
   border-radius: 16px;
+}
+
+.segment-content {
+  .segment-content-header {
+    .column {
+      @include buttonFunction();
+
+      @include mainHeaderFunction();
+    }
+  }
+  @include tabHeaderFunction();
+
+  .field {
+    @include labelFunction();
+  }
+
+  .form {
+    .header {
+      @include pageHeadingFunction();
+    }
+  }
+
+  .table-primary.ui.basic.table thead th {
+    @include tableHeadFunction();
+    border-left: 0px;
+  }
+}
+
+.form-primary {
+  .column {
+    @include buttonFunction();
+
+    @include transparentCancelButton();
+  }
+}
+
+.modals {
+  .modal {
+    @include buttonFunction();
+    @include mainHeaderFunction();
+    @include labelFunction();
+    @include tabHeaderFunction();
+
+    @include transparentCancelButton();
+    .cls-ModelHeader {
+      font-size: 11px;
+      line-height: 16px;
+      font-family: $font-FamilyStyle;
+      color: #005987;
+    }
+  }
+}
+
+.grid {
+  .column {
+    @include tabHeaderFunction();
+  }
+}
+
+.ui.raised.segment.dimmable.table-primary-segment-dimmable {
+  table {
+    td {
+      button {
+        line-height: 0px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 11px;
+        letter-spacing: -0.04em;
+        border-radius: 15px;
+
+        left: 76.86%;
+        right: 16.44%;
+        top: 7.89%;
+        bottom: 42.11%;
+      }
+    }
+  }
+}
+
+.clsLabel {
+  label:after {
+    content: " *";
+    color: $green;
+  }
 }

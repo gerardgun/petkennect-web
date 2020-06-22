@@ -5,8 +5,6 @@ import { Dropdown, Grid, Input } from 'semantic-ui-react'
 
 import authDuck from '@reducers/auth'
 
-import './AppBar.scss'
-
 const AppBar = ({ auth, ...props }) => {
   const { item : { companies = [] } = {} } = auth
 

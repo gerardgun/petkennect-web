@@ -8,13 +8,13 @@ import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
+import useToggle from '@hooks/useToggle'
 import YupFields from '@lib/constants/yup-fields'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 
-import 'src/containers/auth/auth-style.scss'
-import './sign-in.scss'
+import './styles.scss'
 
 const SignIn = props => {
   const {
@@ -28,6 +28,12 @@ const SignIn = props => {
     submitting
   } = props
 
+  const [ isPassShown, tooglePass ] = useToggle()
+
+  const _handlePassIconClick = () => {
+    tooglePass()
+  }
+
   const _handleSubmit = values => {
     const { email: username_or_email, password } = values
 
@@ -38,11 +44,11 @@ const SignIn = props => {
   return (
     <Container className='sign-in'>
       <Grid columns={2}>
-        <Grid.Column style={{ padding: '0 3rem' }}>
-          <Image src='/images/sign-in.svg'/>
+        <Grid.Column width={10}>
+          <Image className='image' src='/images/sign-in.svg'/>
         </Grid.Column>
-        <Grid.Column style={{ alignSelf: 'center' }}>
-          <Header as='h2' className='auth-heading'>Welcome to PetKennect</Header>
+        <Grid.Column width={6}>
+          <Header as='h2'>Welcome to PetKennect</Header>
           <p>
             We’re here to help you. Please sign in to your account.
           </p>
@@ -53,7 +59,6 @@ const SignIn = props => {
               <Field
                 autoComplete='off'
                 autoFocus
-                className='txt-field'
                 component={FormField}
                 control={Form.Input}
                 label='Email'
@@ -63,14 +68,19 @@ const SignIn = props => {
             </Form.Group>
             <Form.Group widths='equal'>
               <Field
-                className='txt-field'
+                action={{
+                  basic  : true,
+                  icon   : isPassShown ? 'eye' : 'eye slash',
+                  onClick: _handlePassIconClick,
+                  type   : 'button'
+                }}
+                autoComplete='off'
                 component={FormField}
                 control={Form.Input}
-                icon='hide'
                 label='Password'
                 name='password'
                 placeholder='Enter your password'
-                type='password'/>
+                type={isPassShown ? 'text' : 'password'}/>
             </Form.Group>
 
             {
@@ -83,17 +93,31 @@ const SignIn = props => {
               )
             }
 
-            <Form.Group widths='equal'>
+            <Form.Group widths='equal checkbox-group'>
               <Field
                 component={FormField}
                 control={Form.Checkbox}
                 label='Remember me'/>
-              <Form.Field style={{ textAlign: 'right' }}>
-                <Link className='a-class' to='/auth/forgot-password' >Forgot your password?</Link>
+              <Form.Field className='link'>
+                <Link to='/auth/forgot-password'>Forgot your password?</Link>
+              </Form.Field>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Field
+                color='teal'
+                control={Button}
+                disabled={pristine || submitting}
+                fluid
+                loading={auth.status === 'SIGNING_IN'}
+                type='submit'
+                width={16}>
+                Sign in
               </Form.Field>
             </Form.Group>
 
             {/* BEGIN Delete */}
+            <br/>
             <Form.Group widths='equal'>
               <Form.Field>
                 <strong>Credentials for demo</strong>
@@ -108,16 +132,6 @@ const SignIn = props => {
             </Form.Group>
             {/* END Delete */}
 
-            <Form.Group>
-              <Form.Field
-                className='signin-btn'
-                control={Button}
-                disabled={pristine || submitting}
-                loading={auth.status === 'SIGNING_IN'}
-                type='submit'>
-                Sign in
-              </Form.Field>
-            </Form.Group>
           </Form>
 
         </Grid.Column>

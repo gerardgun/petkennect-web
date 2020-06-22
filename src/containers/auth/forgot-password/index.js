@@ -13,6 +13,8 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 
+import '@containers/auth/sign-in/styles.scss'
+
 const ForgotPassword = props => {
   const {
     auth,
@@ -35,13 +37,13 @@ const ForgotPassword = props => {
   }
 
   return (
-    <Container className='sign-in'>
+    <Container className='forgot-password'>
       <Grid columns={2}>
-        <Grid.Column style={{ padding: '0 3rem' }}>
-          <Image src='/images/Forgot-password.svg'/>
+        <Grid.Column width={10}>
+          <Image className='image' src='/images/Forgot-password.svg'/>
         </Grid.Column>
-        <Grid.Column style={{ alignSelf: 'center' }}>
-          <Header as='h2' className='auth-heading'>Forgot your password?</Header>
+        <Grid.Column width={6}>
+          <Header as='h2'>Forgot your password?</Header>
           <p>
             Well help you reseat it and get back on track.
           </p>
@@ -52,7 +54,6 @@ const ForgotPassword = props => {
               <Field
                 autoComplete='off'
                 autoFocus
-                className='txt-field'
                 component={FormField}
                 control={Form.Input}
                 label='Email'
@@ -71,19 +72,22 @@ const ForgotPassword = props => {
               )
             }
 
-            <Form.Group widths='equal'>
+            <Form.Group className='action-group' widths='equal'>
               <Form.Field>
                 <Button
-                  as={Link} className='Link-button' content='Back to Sign In'
+                  as={Link} basic color='teal'
+                  content='Back to Sign In'
+                  fluid
                   text='Back to Sign In' to='/auth/sign-in'/>
               </Form.Field>
-              <Form.Field
-                className='send-button'
-                control={Button}
-                disabled={pristine || submitting}
-                loading={auth.status === 'PATCHING'}
-                type='submit'>
-                Send email
+              <Form.Field>
+                <Button
+                  color='teal'
+                  content='Send email'
+                  disabled={pristine || submitting}
+                  fluid
+                  loading={auth.status === 'PATCHING'}
+                  type='submit'/>
               </Form.Field>
             </Form.Group>
           </Form>

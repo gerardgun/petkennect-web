@@ -87,6 +87,8 @@ export const parseResponseError = e => {
 
   if(typeof e.response === 'undefined')
     errors._error = 'There was an error communicating with the service.'
+  else if(typeof e.response.data === 'object' && 'detail' in e.response.data)
+    errors._error = e.response.data.detail
   else if(e.response.status === 422 || e.response.status === 400)
     Object.entries(e.response.data).forEach(([ fieldname, errorList ]) => {
       fieldname = fieldname === 'non_field_errors' ? '_error' : fieldname
