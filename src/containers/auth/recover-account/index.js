@@ -13,6 +13,8 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 
+import '@containers/auth/sign-in/styles.scss'
+
 const RecoverAccount = props => {
   const {
     auth,
@@ -39,14 +41,14 @@ const RecoverAccount = props => {
   }
 
   return (
-    <Container className='sign-in'>
+    <Container className='recover-account'>
       <Grid columns={2}>
-        <Grid.Column style={{ padding: '0 3rem' }}>
+        <Grid.Column width={10}>
           <Image src='/images/New-password.svg'/>
         </Grid.Column>
-        <Grid.Column style={{ alignSelf: 'center' }}>
+        <Grid.Column width={6}>
           {/* <Header as='h2'>Reset password</Header> */}
-          <Header as='h2' className='auth-heading'>New password</Header>
+          <Header as='h2'>New password</Header>
           <p>
             Enter the new password then your password will change.
           </p>
@@ -55,7 +57,6 @@ const RecoverAccount = props => {
           <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
             <Form.Group widths='equal'>
               <Field
-                className='txt-field'
                 component={FormField}
                 control={Form.Input}
                 label='New password'
@@ -66,11 +67,10 @@ const RecoverAccount = props => {
 
             <Form.Group widths='equal'>
               <Field
-                className='txt-field'
                 component={FormField}
                 control={Form.Input}
                 label='Confirm password'
-                name='Confirm password'
+                name='confirm_password'
                 placeholder='Confirm password'
                 type='password'/>
             </Form.Group>
@@ -85,19 +85,21 @@ const RecoverAccount = props => {
               )
             }
 
-            <Form.Group widths='equal'>
+            <Form.Group className='action-group' widths='equal'>
               <Form.Field>
                 <Button
-                  as={Link} className='Link-button' content='Back to Sign In'
+                  as={Link} basic color='teal'
+                  content='Back to Sign In' fluid
                   text='Back to Sign In' to='/auth/sign-in'/>
               </Form.Field>
-              <Form.Field
-                className='send-button'
-                control={Button}
-                disabled={pristine || submitting}
-                loading={auth.status === 'PATCHING'}
-                type='submit'>
-                Reset password
+              <Form.Field>
+                <Button
+                  color='teal'
+                  content='Reset password'
+                  disabled={pristine || submitting}
+                  fluid
+                  loading={auth.status === 'POSTING'}
+                  type='submit'/>
               </Form.Field>
             </Form.Group>
 
@@ -125,7 +127,10 @@ export default compose(
     form    : 'auth-recover-account',
     validate: values => {
       const schema = {
-        password: YupFields.password
+        password        : YupFields.password,
+        confirm_password: Yup.string()
+          .test('passwords-match', 'Passwords do not match', password => password === values.password)
+          .required('Enter your new password again')
       }
 
       return syncValidate(Yup.object().shape(schema), values)
