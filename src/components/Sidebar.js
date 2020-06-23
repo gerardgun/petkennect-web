@@ -82,12 +82,12 @@ const categories = [
     icon         : 'chart line',
     label        : 'Daily Reporting',
     subcategories: [
-      { href: '/', label: 'Boarding Schedule' },
-      { href: '/', label: 'Day Camp Schedule' },
-      { href: '/', label: 'Fitness Schedule' },
-      { href: '/', label: 'Grooming Schedule' },
-      { href: '/', label: 'EOD Sales Report' },
-      { href: '/', label: 'Calendar' }
+      { href: '/not-defined', label: 'Boarding Schedule' },
+      { href: '/not-defined', label: 'Day Camp Schedule' },
+      { href: '/not-defined', label: 'Fitness Schedule' },
+      { href: '/not-defined', label: 'Grooming Schedule' },
+      { href: '/not-defined', label: 'EOD Sales Report' },
+      { href: '/not-defined', label: 'Calendar' }
     ]
   },
   {
@@ -95,10 +95,10 @@ const categories = [
     icon         : 'chart pie',
     label        : 'Day Camp Reports',
     subcategories: [
-      { href: '/', label: 'Day Camp Head Count Schedule' },
-      { href: '/', label: 'Day Camp Refund Calculator' },
-      { href: '/', label: 'Daycampers W/ Balance' },
-      { href: '/', label: 'Online Day Camp Reservations' }
+      { href: '/not-defined', label: 'Day Camp Head Count Schedule' },
+      { href: '/not-defined', label: 'Day Camp Refund Calculator' },
+      { href: '/not-defined', label: 'Daycampers W/ Balance' },
+      { href: '/not-defined', label: 'Online Day Camp Reservations' }
     ]
   },
   {
@@ -106,11 +106,11 @@ const categories = [
     icon         : 'chart area',
     label        : 'Boarding Reports',
     subcategories: [
-      { href: '/', label: 'Boarding Activity' },
-      { href: '/', label: 'Boarding Medication Schedule' },
-      { href: '/', label: 'Boarding Availability' },
-      { href: '/', label: 'Boarding No Shows' },
-      { href: '/', label: 'Online Boarding Reservations' }
+      { href: '/not-defined', label: 'Boarding Activity' },
+      { href: '/not-defined', label: 'Boarding Medication Schedule' },
+      { href: '/not-defined', label: 'Boarding Availability' },
+      { href: '/not-defined', label: 'Boarding No Shows' },
+      { href: '/not-defined', label: 'Online Boarding Reservations' }
     ]
   },
   {
@@ -118,14 +118,14 @@ const categories = [
     icon         : 'chart bar outline',
     label        : 'Training Reports',
     subcategories: [
-      { href: '/', label: 'Agility Class Certificatess' },
-      { href: '/', label: 'Day Training Report Cards' },
-      { href: '/', label: 'Day Trainer Daily Email' },
-      { href: '/', label: 'Day Trainer Performance Log' },
-      { href: '/', label: 'Puppy Class Certificates' },
-      { href: '/', label: 'Training Follow Ups' },
-      { href: '/', label: 'Training Outstanding Balances' },
-      { href: '/', label: 'Weekly Day Training' }
+      { href: '/not-defined', label: 'Agility Class Certificatess' },
+      { href: '/not-defined', label: 'Day Training Report Cards' },
+      { href: '/not-defined', label: 'Day Trainer Daily Email' },
+      { href: '/not-defined', label: 'Day Trainer Performance Log' },
+      { href: '/not-defined', label: 'Puppy Class Certificates' },
+      { href: '/not-defined', label: 'Training Follow Ups' },
+      { href: '/not-defined', label: 'Training Outstanding Balances' },
+      { href: '/not-defined', label: 'Weekly Day Training' }
     ]
   },
   {
@@ -133,12 +133,12 @@ const categories = [
     icon         : 'dna',
     label        : 'Management Functions',
     subcategories: [
-      { href: '/', label: 'Weekly EOD Issues' },
-      { href: '/', label: 'Search Invoices' },
-      { href: '/', label: 'Open Register Functions' },
-      { href: '/', label: 'A/R And Aging Report' },
-      { href: '/', label: 'Occupancy Status' },
-      { href: '/', label: 'Retail Sales Report' }
+      { href: '/not-defined', label: 'Weekly EOD Issues' },
+      { href: '/not-defined', label: 'Search Invoices' },
+      { href: '/not-defined', label: 'Open Register Functions' },
+      { href: '/not-defined', label: 'A/R And Aging Report' },
+      { href: '/not-defined', label: 'Occupancy Status' },
+      { href: '/not-defined', label: 'Retail Sales Report' }
     ]
   },
   {
@@ -148,21 +148,22 @@ const categories = [
     subcategories: [
       { href: '/setup/location', label: 'Locations' },
       { href: '/setup/document-type', label: 'Document Types' },
-      { href: '/', label: 'Enable Decline Portal Client' },
-      { href: '/', label: 'Price Master' },
-      { href: '/', label: 'Breed' },
-      { href: '/', label: 'Calendar' },
-      { href: '/', label: 'Notifications' },
-      { href: '/', label: 'Pet Behaviors' },
-      { href: '/', label: 'Overview' },
-      { href: '/', label: 'Cancellation Reason' },
-      { href: '/', label: 'Client Rating' }
+      { href: '/setup/agreement', label: 'Agreement' },
+      { href: '/not-defined', label: 'Enable Decline Portal Client' },
+      { href: '/not-defined', label: 'Price Master' },
+      { href: '/not-defined', label: 'Breed' },
+      { href: '/not-defined', label: 'Calendar' },
+      { href: '/not-defined', label: 'Notifications' },
+      { href: '/not-defined', label: 'Pet Behaviors' },
+      { href: '/not-defined', label: 'Overview' },
+      { href: '/not-defined', label: 'Cancellation Reason' },
+      { href: '/not-defined', label: 'Client Rating' }
     ]
   }
 ]
 
 const AppSidebar = ({ auth, ...props }) => {
-  const [ activeCategorieIndexes, setActiveCategorieIndexes ] = useState([])
+  const [ activeCategoryIndex, setActiveCategoryIndex ] = useState(null)
 
   const getCategories = () => auth.item.is_superadmin ? categoriesForSuperAdmin : categories
 
@@ -170,11 +171,8 @@ const AppSidebar = ({ auth, ...props }) => {
     const index = +e.currentTarget.dataset.index
     const category = categoriesToRender[index]
 
-    if(!category.href)
-      if(activeCategorieIndexes.includes(index))
-        setActiveCategorieIndexes(prevState => prevState.filter(categoryIndex => categoryIndex !== index))
-      else
-        setActiveCategorieIndexes(prevState => ([ ...prevState, index ]))
+    if(index === activeCategoryIndex) setActiveCategoryIndex(null)
+    else if(!category.href) setActiveCategoryIndex(index)
   }
 
   const categoriesToRender = useMemo(() => getCategories(), [ auth.item.id ])
@@ -183,9 +181,15 @@ const AppSidebar = ({ auth, ...props }) => {
     <Sidebar>
       <Image src='/images/logo.png' style={{ padding: '3rem 1rem' }}/>
       {
-        categoriesToRender.map(({ subcategories = null, ...rest }, index) => {
+        categoriesToRender.map(({ subcategories = [], ...rest }, index) => {
           const rgx = new RegExp(`^${rest.href}.*`)
-          const active = rgx.test(props.match.path) || activeCategorieIndexes.includes(index)
+          const active = activeCategoryIndex === index
+            || rgx.test(props.match.path)
+            || subcategories.some(item => {
+              const rgx = new RegExp(`^${item.href}.*`)
+
+              return rgx.test(props.match.path)
+            })
 
           return (
             <Sidebar.Category
@@ -195,10 +199,12 @@ const AppSidebar = ({ auth, ...props }) => {
               onClick={_handleCategoryClick}
               {...rest}>
               {
-                subcategories ? (
-                  subcategories.map(({ href: to, label }, index) => (
-                    <Link key={index} to={to}>{label}</Link>
-                  ))
+                subcategories.length > 0 ? (
+                  subcategories.map(({ href: to, label }, index) => {
+                    const active = props.match.path === to
+
+                    return <Link className={active ? 'active' : ''} key={index} to={to}>{label}</Link>
+                  })
                 ) : null
               }
             </Sidebar.Category>

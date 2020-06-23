@@ -7,6 +7,8 @@ import AuthSSO from '@containers/auth/sso'
 import Error404 from '@containers/page/error-404'
 
 // Private Containers
+import Agreement from '@containers/agreement'
+import AgreementCreate from '@containers/agreement/create'
 import Me from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
@@ -166,6 +168,18 @@ const privateRoutes = [
   {
     path     : '/employee-title',
     component: EmployeeTitle
+  },
+  {
+    path     : '/setup/agreement',
+    component: Agreement
+  },
+  {
+    path     : '/setup/agreement/create',
+    component: AgreementCreate
+  },
+  {
+    path     : '/setup/agreement/:id',
+    component: AgreementCreate
   },
   {
     path     : '/setup/location',

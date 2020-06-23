@@ -12,6 +12,7 @@ const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio
 const TableList = ({ duck, list, ...props }) => {
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
+
     if(column.type  === 'avatar') {
       const avatar_image = _get(item, column.avatar_image, null)
       const avatar_name = column.avatar_name.map(_name=> _get(item, _name , null)).join(' ')
@@ -33,8 +34,8 @@ const TableList = ({ duck, list, ...props }) => {
       }
 
     else if(column.type === 'image') content = <Image rounded size='mini' src={content || defaultImage}/>
-    else if(column.type === 'date') content = (new Date(content)).toLocaleString().split(' ').shift()
-    else if(column.type === 'datetime') content = (new Date(content)).toLocaleString()
+    else if(column.type === 'date') content = (new Date(content)).toLocaleString('en-US').split(', ').shift()
+    else if(column.type === 'datetime') content = (new Date(content)).toLocaleString('en-US')
     else if(column.type === 'string') content = content || <span style={{ color: 'grey' }}>-</span>
 
     return content

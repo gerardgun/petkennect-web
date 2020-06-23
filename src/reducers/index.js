@@ -2,6 +2,8 @@ import { connectRouter } from 'connected-react-router'
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 
+import agreement from '@reducers/agreement'
+import agreementDetail from '@reducers/agreement/detail'
 import auth from '@reducers/auth'
 import category from '@reducers/category'
 import categoryDetail from '@reducers/category/detail'
@@ -66,6 +68,8 @@ import zipDetail from '@reducers/zip/detail'
 const createRootReducer = history => combineReducers({
   form                             : formReducer,
   router                           : connectRouter(history),
+  [agreement.store]                : agreement.reducer,
+  [agreementDetail.store]          : agreementDetail.reducer,
   [auth.store]                     : auth.reducer,
   [category.store]                 : category.reducer,
   [categoryDetail.store]           : categoryDetail.reducer,

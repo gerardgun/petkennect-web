@@ -44,7 +44,6 @@
 //function use for main header style change
 @mixin mainHeaderFunction {
   .cls-MainHeader{
-      font-family: $font-FamilyStyle;
       font-weight: 700;
       color: $black;
   }
@@ -55,7 +54,6 @@
   .cls-tabHeader{
       .menu{
           a{
-              font-family: $font-FamilyStyle;
               font-weight: 400;
               color: $black;
               &:hover {
@@ -69,7 +67,6 @@
 //function use for label style change
 @mixin labelFunction {
   label{
-      font-family: $font-FamilyStyle;
       // font-weight: 400 !important;
       color: $black !important;
       font-size: .92857143em;
@@ -78,7 +75,6 @@
 }
 
 @mixin pageHeadingFunction {
-      font-family: $font-FamilyStyle;
       color: #005987;
       // font-weight: 700;
       // font-size: 1.07142857rem;
@@ -87,7 +83,6 @@
 }
 
 @mixin tableHeadFunction {
-  font-family: $font-FamilyStyle;
   font-weight: 400 ;
   color: $black;
 }
