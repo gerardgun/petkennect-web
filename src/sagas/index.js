@@ -1,5 +1,7 @@
 import { all } from 'redux-saga/effects'
 
+import agreement from './agreement'
+import agreementDetail from './agreement/detail'
 import auth from './auth'
 import category from './category'
 import categoryDetail from './category/detail'
@@ -62,6 +64,8 @@ import zipDetail from './zip/detail'
 
 export default function* rootSaga() {
   yield all([
+    ...agreement,
+    ...agreementDetail,
     ...auth,
     ...category,
     ...categoryDetail,

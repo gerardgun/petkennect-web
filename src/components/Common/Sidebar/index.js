@@ -2,15 +2,13 @@ import React, { useMemo } from 'react'
 import { Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
-import './Sidebar.scss'
-
 const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
   const getWrapped = () => {
     return href ? ({
       component: Link,
       props    : { to: href }
     }) : ({
-      component: 'span',
+      component: 'div',
       props    : {}
     })
   }
@@ -21,14 +19,18 @@ const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
   } = useMemo(() => getWrapped(), [ href ])
 
   return (
-    <div className={`sidebar-category ${active && 'active'}`} {...rest}>
-      <WrappedComponent {...wrappedProps}>
-        <div className='icon-container'>
+    <div className={`sidebar-category ${active ? 'active' : ''}`} {...rest}>
+      <WrappedComponent className='sidebar-category-item' {...wrappedProps}>
+        <div className='sidebar-category-item-icon'>
           <Icon name={icon}/>
-        </div> {label}
+        </div>
+        <div className='sidebar-category-item-text'>{label}</div>
+        {
+          children && <Icon name={`chevron ${active ? 'down' : 'right'}`}/>
+        }
       </WrappedComponent>
       {
-        active && children && (<div className='sidebar-menu'>{children}</div>)
+        active && children && (<div className='sidebar-category-menu'>{children}</div>)
       }
     </div>
   )

@@ -1,0 +1,77 @@
+.sidebar {
+  &-category {
+    &.active {
+      .sidebar-category-item {
+        border-left-color: $green;
+        background: #00AA9F18;
+        color: $green;
+
+        &-icon {
+          color: $green;
+        }
+      }
+    }
+
+    &:not(.active):hover {
+      .sidebar-category-item {
+        border-left-color: $gray;
+        background: #0000000c;
+        color: $gray;
+      }
+    }
+
+    &-item {
+      padding: 0.3rem 1rem 0.3rem 0.5rem;
+      margin-bottom: 2px;
+      border-left: solid 0.5rem transparent;
+      cursor: pointer;
+      color: $gray;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+
+      &-icon {
+        display: flex;
+        border-radius: 4rem;
+        height: 2.8rem;
+        width: 2.8rem;
+        text-align: center;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        margin-right: 0.5rem;
+        background-color: transparent;
+  
+        i {
+          font-size: 1.2rem;
+        }
+      }
+
+      &-text {
+        flex: 1;
+      }
+    }
+
+    &-menu {
+      border-left: #222b3b22 solid 2px;
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      margin-top: 1rem;
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+
+      a {
+        display: block;
+        color: #222b3b80;
+        margin-bottom: 0.8rem;
+
+        &:hover, &.active {
+          color: $green;
+        }
+
+        &:last-child {
+          margin-bottom: 0rem;
+        }
+      }
+    }
+  }
+}
