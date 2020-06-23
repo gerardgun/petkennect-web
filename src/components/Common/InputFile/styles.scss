@@ -1,0 +1,19 @@
+.c-input-file {
+  &.wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    .input-hidden {
+      height: 0;
+      width: 0;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    .chip {
+      position: absolute !important;
+      top: 28px;
+      left: 48px;
+    }
+  }
+}

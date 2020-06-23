@@ -10,7 +10,8 @@ import Error404 from '@containers/page/error-404'
 import Me from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
-import ClientCreate from '@containers/client/create'
+import ClientShow from '@containers/client/show'
+import ClientEdit from '@containers/client/edit'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
@@ -25,6 +26,8 @@ import Category from '@containers/category'
 // import PetBreed from '@containers/product/create'
 import EmployeeTitle from '@containers/employee-title'
 import Employee from '@containers/employee'
+import EmployeeShow from '@containers/employee/show'
+import EmployeeEdit from '@containers/employee/edit'
 import Service from '@containers/service'
 import ServiceCreate from '@containers/service/create'
 // import FoundationDetail from '@containers/foundation/detail'
@@ -81,12 +84,12 @@ const privateRoutes = [
     component: Client
   },
   {
-    path     : '/client/create',
-    component: ClientCreate
+    path     : '/client/show/:id',
+    component: ClientShow
   },
   {
-    path     : '/client/:client',
-    component: ClientCreate
+    path     : '/client/edit/:id',
+    component: ClientEdit
   },
   {
     path     : '/company',
@@ -151,6 +154,14 @@ const privateRoutes = [
   {
     path     : '/employee',
     component: Employee
+  },
+  {
+    path     : '/employee/show/:id',
+    component: EmployeeShow
+  },
+  {
+    path     : '/employee/edit/:id',
+    component: EmployeeEdit
   },
   {
     path     : '/employee-title',

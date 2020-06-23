@@ -1,5 +1,5 @@
 export default {
-  base_uri: '/client',
+  base_uri: null,
   row     : {
     options: [
       {
@@ -11,20 +11,23 @@ export default {
   },
   columns: [
     {
-      display_name: '',
-      name        : 'photo',
-      type        : 'image', // image, boolean, date, datetime, money, label
+      display_name: 'Client Name',
+      name        : 'first_name', // for sorting
+      type        : 'avatar', // image, avatar, multiple, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
+      avatar_image: 'thumbnail_path',
+      avatar_name : [ 'first_name', 'last_name' ],
+      avatar_link : '/client/show/',
       sort        : true
     },
     {
-      display_name: 'Name',
-      name        : 'first_name',
-      type        : 'string', // image, boolean, date, datetime, money, label
+      display_name: 'Email',
+      name        : 'email',
+      type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'City',
@@ -44,7 +47,7 @@ export default {
     },
     {
       display_name: 'Location',
-      name        : 'location',
+      name        : 'location_name',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -59,17 +62,21 @@ export default {
       sort        : false
     },
     {
-      display_name: 'Phone Home',
-      name        : 'phones[1]',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
       display_name: 'Status',
       name        : 'status',
-      type        : 'string',
+      type        : 'boolean',
+      width       : null,
+      align       : 'left',
+      labels      : {
+        positive: 'Active',
+        negative: 'Active'
+      },
+      sort: false
+    },
+    {
+      display_name: 'Created At',
+      name        : 'created_at',
+      type        : 'date',
       width       : null,
       align       : 'left',
       sort        : false

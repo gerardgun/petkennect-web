@@ -1,18 +1,38 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { Checkbox, Dimmer, Dropdown, Image, Loader, Segment, Table, Button, Icon } from 'semantic-ui-react'
+import { Checkbox, Dimmer, Dropdown, Image, Loader, Segment, Table, Button, Icon, Label } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
 
+const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
+
 const TableList = ({ duck, list, ...props }) => {
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
+    if(column.type  === 'avatar') {
+      const avatar_image = _get(item, column.avatar_image, null)
+      const avatar_name = column.avatar_name.map(_name=> _get(item, _name , null)).join(' ')
+      content = (
+        <div className='flex align-center'>
+          <Image rounded size='mini' src={avatar_image || defaultImage}/>
+          <Link className='text-underline pl8' to={`${column.avatar_link}${item.id}`}>{avatar_name}</Link>
+        </div>
+      )
+    }
 
-    if(column.type === 'boolean') content = content ? <Button className='teal' content='Active'/> : <Button className='google plus' content='Active'/>
-    else if(column.type === 'image') content = (<Image rounded size='mini' src={content || 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'}/>)
+    if(column.type === 'boolean')
+      if(column.labels) {
+        content = content
+          ? <Label circular color='teal'>{ column.labels.positive }</Label>
+          : <Label circular color='red'>{ column.labels.positive }</Label>
+      } else {
+        content = content ? 'Yes' : 'No'
+      }
+
+    else if(column.type === 'image') content = <Image rounded size='mini' src={content || defaultImage}/>
     else if(column.type === 'date') content = (new Date(content)).toLocaleString().split(' ').shift()
     else if(column.type === 'datetime') content = (new Date(content)).toLocaleString()
     else if(column.type === 'string') content = content || <span style={{ color: 'grey' }}>-</span>
@@ -112,7 +132,7 @@ const TableList = ({ duck, list, ...props }) => {
   return (
     <Dimmer.Dimmable
       as={Segment}
-      className='table-primary-segment-dimmable'
+      className='table-primary-segment-dimmable pd0'
       dimmed={loading}
       raised>
       <Dimmer active={loading} inverted>
@@ -141,14 +161,14 @@ const TableList = ({ duck, list, ...props }) => {
                 <Table.HeaderCell
                   key={index}
                   onClick={_handleToggleSort(name,sort)}
-                  sorted={getSortOrder(name,sort)}>{display_name}
+                  sorted={getSortOrder(name,sort)}>{display_name.toUpperCase()}
                 </Table.HeaderCell>
               ))
             }
 
             {/* Row options */}
             {
-              list.config.row.options && (<Table.HeaderCell textAlign='center'>Options</Table.HeaderCell>)
+              list.config.row.options && (<Table.HeaderCell textAlign='center'>OPTIONS</Table.HeaderCell>)
             }
           </Table.Row>
         </Table.Header>

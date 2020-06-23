@@ -1,111 +1,176 @@
-import React, { useEffect } from 'react'
+import React, { useMemo, useState } from 'react'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { destroy } from 'redux-form'
-import { Icon, Label, Menu, Tab } from 'semantic-ui-react'
+import { withRouter } from 'react-router-dom'
+import { compose } from 'redux'
+import { getFormValues, getFormSyncErrors, getFormSubmitErrors, submit, destroy } from 'redux-form'
+import {
+  Header,
+  Modal,
+  Form,
+  Button
+} from 'semantic-ui-react'
 
-import Layout from '@components/Common/Layout'
-import ClientSection, { formIds } from './ClientSection'
-import DocumentSection from './DocumentSection'
-import PetSection from './PetSection'
+import { parseResponseError } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
-import clientDocumentDuck from '@reducers/client/document'
-import clientCommentDuck from '@reducers/client/comment'
-import clientPetDuck from '@reducers/client/pet'
 
-const ClientCreate = props => {
+import FormStep1 from './FormStep1'
+import FormStep2 from './FormStep2'
+
+const formIds = [ 'client-create-step-1-form','client-create-step-2-form' ]
+
+const ClientCreateForm = (props) => {
   const {
-    clientPet,
-    clientDocument,
-    match,
-    destroy,
-    get,
-    resetItem,
-    getDocuments,
-    getComments,
-    getPets
+    history,
+    clientDetail,
+    forms,
+    submit,
+    post,
+    destroy
   } = props
 
-  useEffect(() => {
-    if(isUpdating) {
-      get(match.params.client)
-      getDocuments({
-        client_id: match.params.client
-      })
-      getComments({
-        client_id: match.params.client
-      })
-      getPets({
-        client_id: match.params.client
-      })
-    }
+  const [ stepIndex, setStepIndex ] = useState(0)
 
-    return () => {
-      destroy(...formIds)
-      resetItem()
-    }
-  }, [ match.params.client ])
+  const getIsOpened = (mode) => mode === 'CREATE'
 
-  const isUpdating = match.params.client
+  const _handleClose = () => {
+    setStepIndex(0)
+    props.resetItem()
+    destroy(...formIds)
+  }
+
+  const _handleSaveBtnClick = () => {
+    const formId = formIds[stepIndex]
+
+    if(formId) submit(formId)
+    else _handleSubmit()
+  }
+
+  const _handleSubmit = () => {
+    const formIndexWithErrors = forms.findIndex((form, index) => {
+      return (form.fields.length === 0
+         || Object.keys(form.errors).length > 0) && [ 0, 1 ].includes(index)
+         || Object.keys(form.submitErrors).length > 0
+    })
+
+    // //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    if(formIndexWithErrors === -1  && stepIndex === 0) {
+      setStepIndex(1)
+
+      return
+    }
+    // //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    if(formIndexWithErrors !== -1) {
+      setStepIndex(formIndexWithErrors)
+      setTimeout(() => submit(formIds[formIndexWithErrors]), 100)
+    } else {
+      const values = forms
+        .map(({ fields, ...rest }) => {
+          let parsedFields = fields.reduce((a, b) => {
+            const fieldname = /^(\w+).*/.exec(b)[1]
+
+            return a.includes(fieldname) ? a : [ ...a, fieldname ]
+          }, [])
+
+          return { fields: parsedFields, ...rest }
+        })
+        .filter(item => item.fields.length > 0 && Boolean(item.values))
+        .map(({ fields, values }) => {
+          return fields.reduce((a, b) => ({ ...a, [b]: values[b] }), {})
+        })
+        .reduce((a, b) => ({ ...a, ...b }))
+
+      let finalValues = Object.entries(values)
+        .filter(([ , value ]) => value !== null)
+        .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
+
+      // For checkbox values
+      if('legal_sign_on' in finalValues) {
+        if(!('legal_liability' in finalValues)) finalValues.legal_liability = false
+        if(!('legal_kc_waiver' in finalValues)) finalValues.legal_kc_waiver = false
+      }
+
+      return post(finalValues)
+        .then(result => history.replace(`/client/${result.id}`))
+        .catch(parseResponseError)
+    }
+  }
+
+  const saving = [ 'POSTING' ].includes(clientDetail.status)
+
+  const isOpened = useMemo(() => getIsOpened(clientDetail.mode), [ clientDetail.mode ])
 
   return (
-    <Layout>
-      <Tab
-        className='detail-view-tab cls-tabHeader'
-        menu={{ color: 'teal', tabular: true, attached: true }}
-        panes={[
-          {
-            menuItem: { key: 'user', icon: 'user', content: 'Client Info' },
-            render  : () => <ClientSection/>
-          },
-          {
-            menuItem: (
-              <Menu.Item key='pets'>
-                <Icon name='paw'/> Pets <Label>{clientPet.items.length}</Label>
-              </Menu.Item>
-            ),
-            render: () => <PetSection/>
-          },
-          {
-            menuItem: (
-              <Menu.Item key='invoices'>
-                <Icon name='file outline'/> Invoices/Billing <Label>4</Label>
-              </Menu.Item>
-            ),
-            render: () => <Tab.Pane>Tab 3 Content</Tab.Pane>
-          },
-          {
-            menuItem: (
-              <Menu.Item key='documents'>
-                <Icon name='file alternate outline'/> Documents <Label>{clientDocument.items.length}</Label>
-              </Menu.Item>
-            ),
-            render: () => <DocumentSection/>
-          },
-          {
-            menuItem: { key: 'portal', icon: 'tty', content: 'Client Portal' },
-            render  : () => <Tab.Pane>Tab 5 Content</Tab.Pane>
-          }
-        ]}/>
-    </Layout>
+    <Modal
+      className='form-modal'
+      onClose={_handleClose}
+      open={isOpened}
+      size='small'>
+      <Modal.Content>
+        <Header as='h2' className='segment-content-header'>
+            New Client
+        </Header>
+        {/* eslint-disable-next-line react/jsx-handler-names */}
+        {stepIndex === 0 && <FormStep1 onSubmit={_handleSubmit}/>}
+
+        {stepIndex === 1 && <FormStep2 onSubmit={_handleSubmit}/>}
+
+        <Form.Group className='form-modal-actions' widths='equal'>
+          <Form.Field>
+            <Button
+              className='w120'
+              content='Cancel'
+              disabled={saving}
+              onClick={_handleClose}
+              type='button'/>
+            {stepIndex === 0 ?  (
+              <Button
+                className='w120'
+                color='teal'
+                content='Continue'
+                disabled={saving}
+                loading={saving}
+                onClick={_handleSaveBtnClick}/>
+            ) : (
+              <Button
+                className='w120'
+                color='teal'
+                content='Add client'
+                disabled={saving}
+                loading={saving}
+                onClick={_handleSaveBtnClick}/>
+            )}
+          </Form.Field>
+        </Form.Group>
+
+      </Modal.Content>
+    </Modal>
   )
 }
 
 export default compose(
+  withRouter,
   connect(
-    state => ({
-      clientDetail  : clientDetailDuck.selectors.detail(state),
-      clientPet     : clientPetDuck.selectors.list(state),
-      clientDocument: clientDocumentDuck.selectors.list(state)
-    }),
+    ({ ...state }) => {
+      const clientDetail = clientDetailDuck.selectors.detail(state)
+
+      return {
+        clientDetail,
+        forms: formIds.map(formId => ({
+          fields      : Object.keys((state.form[formId] || {}).registeredFields || {}),
+          values      : getFormValues(formId)(state),
+          errors      : getFormSyncErrors(formId)(state),
+          submitErrors: getFormSubmitErrors(formId)(state)
+        }))
+      }
+    },
     {
       destroy,
-      get         : clientDetailDuck.creators.get,
-      resetItem   : clientDetailDuck.creators.resetItem,
-      getDocuments: clientDocumentDuck.creators.get,
-      getComments : clientCommentDuck.creators.get,
-      getPets     : clientPetDuck.creators.get
+      post     : clientDetailDuck.creators.post,
+      resetItem: clientDetailDuck.creators.resetItem,
+      submit
     }
   )
-)(ClientCreate)
+)(ClientCreateForm)

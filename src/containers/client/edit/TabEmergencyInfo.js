@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react'
+import { Header, Tab, Form, Button, Divider, Segment } from 'semantic-ui-react'
+import './styles.scss'
+import { Field, reduxForm, FieldArray } from 'redux-form'
+import FormField from '@components/Common/FormField'
+import { syncValidate } from '@lib/utils/functions'
+import * as Yup from 'yup'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Field, FieldArray, reduxForm } from 'redux-form'
-import { Button, Divider, Form, Header, Segment, Tab } from 'semantic-ui-react'
-
-import FormError from '@components/Common/FormError'
-import FormField from '@components/Common/FormField'
+import { withRouter } from 'react-router-dom'
 
 import clientDetailDuck from '@reducers/client/detail'
+import FormError from '@components/Common/FormError'
 
-const AuthorizedPeopleList = ({ fields, meta: { error, submitFailed }, title = 'Some title' }) => {
+function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
   const _handleAddBtnClick = () => fields.push({ ...authorizedPersonInitialState })
   const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
 
@@ -21,7 +24,7 @@ const AuthorizedPeopleList = ({ fields, meta: { error, submitFailed }, title = '
   return (
     <>
       <Divider/>
-      <Header as='h4'>{title}</Header>
+      <Header as='h4' className='form-section-header ' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
       <Segment className='form-primary-segment' padded='very'>
         {
           fields.map((item, index) => (
@@ -66,10 +69,14 @@ const AuthorizedPeopleList = ({ fields, meta: { error, submitFailed }, title = '
   )
 }
 
-const FormEmergencyData = props => {
+function TabEmergencyInfo(props) {
   const {
     clientDetail,
-    error, handleSubmit, initialized, reset // redux-form
+    error,
+    handleSubmit,
+    reset,
+    initialized
+    // redux-form
   } = props
 
   useEffect(() => {
@@ -77,23 +84,24 @@ const FormEmergencyData = props => {
   }, [ clientDetail.status ])
 
   return (
-    <Tab.Pane className='form-primary-segment-tab' loading={clientDetail.status === 'GETTING'}>
+    <Tab.Pane className='border-none'>
       {/* eslint-disable-next-line react/jsx-handler-names */}
-      <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
+      <Form onReset={reset} onSubmit={handleSubmit}>
+
+        <Header as='h4' className='form-section-header ' color='blue'>EMERGENCY CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
-            autoFocus
             component={FormField}
             control={Form.Input}
-            label='Name'
+            label='Name *'
             name='emergency_contact_name'
             placeholder='Enter names'/>
           <Field
             autoComplete='off'
             component={FormField}
             control={Form.Input}
-            label='Relationship'
+            label='Relation *'
             name='emergency_contact_relationship'
             placeholder='Enter relationship'/>
           <Field
@@ -105,6 +113,8 @@ const FormEmergencyData = props => {
             placeholder='Enter phone number'
             type='tel'/>
         </Form.Group>
+
+        <Header as='h4' className='form-section-header ' color='blue'>VETERINARIAN CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
@@ -129,35 +139,53 @@ const FormEmergencyData = props => {
             placeholder='Enter phone number'
             type='tel'/>
         </Form.Group>
+
         <FieldArray
           component={AuthorizedPeopleList}
           name='authorized_people_pick_up'
           title='People Authorized to Pick Up'/>
 
-        {
-          error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )
-        }
+        {error && (
+          <Form.Group widths='equal'>
+            <Form.Field>
+              <FormError message={error}/>
+            </Form.Field>
+          </Form.Group>
+        )}
+
       </Form>
     </Tab.Pane>
   )
 }
 
+TabEmergencyInfo.propTypes = {  }
+
+TabEmergencyInfo.defaultProps = {  }
+
 export default compose(
+  withRouter,
   connect(
-    state => ({
-      clientDetail: clientDetailDuck.selectors.detail(state)
-    }),
+    ({ ...state }) => {
+      const clientDetail = clientDetailDuck.selectors.detail(state)
+
+      return {
+        clientDetail,
+        initialValues: clientDetail.item
+      }
+    },
     {}
   ),
   reduxForm({
-    form            : 'client-create-emergency-data',
-    destroyOnUnmount: false
-  })
-)(FormEmergencyData)
+    form              : 'client-edit-step-2-form' ,
+    destroyOnUnmount  : false,
+    enableReinitialize: true,
+    validate          : (values) => {
+      const schema = {
+        emergency_contact_name        : Yup.string().required('Contact name is required'),
+        emergency_contact_relationship: Yup.string().required('Relation is required')
+      }
 
+      return syncValidate(Yup.object().shape(schema), values)
+    }
+  })
+)(TabEmergencyInfo)
