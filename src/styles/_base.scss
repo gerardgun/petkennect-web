@@ -1,5 +1,6 @@
 body {
-  background-color: #f6f7f8;
+  font-family: 'Poppins', -apple-system, sans-serif;
+  background-color: #FAFCFF;
 }
 
 .detail-view {
@@ -15,7 +16,7 @@ body {
 }
 
 .form-primary {
-  &-actions {  
+  &-actions {
     &.vertical {
       .ui.button {
         margin-bottom: 0.8rem;
@@ -327,4 +328,88 @@ img.ui.img-40 {
 }
 .justify-between {
   justify-content: space-between;
+}
+
+.segment-content {
+  .segment-content-header {
+    .column {
+      @include buttonFunction();
+
+      @include mainHeaderFunction();
+    }
+  }
+  @include tabHeaderFunction();
+
+  .field {
+    @include labelFunction();
+  }
+
+  .form {
+    .header {
+      @include pageHeadingFunction();
+    }
+  }
+
+  .table-primary.ui.basic.table thead th {
+    @include tableHeadFunction();
+    border-left: 0px;
+  }
+}
+
+.form-primary {
+  .column {
+    @include buttonFunction();
+
+    @include transparentCancelButton();
+  }
+}
+
+.modals {
+  .modal {
+    @include buttonFunction();
+    @include mainHeaderFunction();
+    @include labelFunction();
+    @include tabHeaderFunction();
+
+    @include transparentCancelButton();
+    .cls-ModelHeader {
+      font-size: 11px;
+      line-height: 16px;
+      font-family: $font-FamilyStyle;
+      color: #005987;
+    }
+  }
+}
+
+.grid {
+  .column {
+    @include tabHeaderFunction();
+  }
+}
+
+.ui.raised.segment.dimmable.table-primary-segment-dimmable {
+  table {
+    td {
+      button {
+        line-height: 0px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 11px;
+        letter-spacing: -0.04em;
+        border-radius: 15px;
+
+        left: 76.86%;
+        right: 16.44%;
+        top: 7.89%;
+        bottom: 42.11%;
+      }
+    }
+  }
+}
+
+.clsLabel {
+  label:after {
+    content: " *";
+    color: $green;
+  }
 }

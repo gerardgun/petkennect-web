@@ -1,0 +1,32 @@
+.ui.form .field {
+  & > label {
+    color: $black;
+    font-weight: 400;
+  }
+
+  .ui.input {
+    input {
+      border: 1px solid $light-gray;
+      font-family: Poppins;
+    }
+  
+    &.action input {
+      border-right-style: none !important;
+    }
+  
+    // Input Button Actions
+    .ui.basic.button {
+      box-shadow: none;
+      color: $green !important;
+      background-color: #fff !important;
+      border: solid 1px $light-gray;
+      border-left-style: none;
+    }
+  }
+}
+
+
+
+.field > label {
+  margin-bottom: 0.6rem;
+}

@@ -15,8 +15,6 @@ import clientDetailDuck from '@reducers/client/detail'
 import zipDetailDuck from '@reducers/zip/detail'
 import { useDebounceText } from '@hooks/Shared'
 
-import 'src/containers/Common-style.scss'
-
 const Client = ({ client, clientDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 

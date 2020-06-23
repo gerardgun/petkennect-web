@@ -3,58 +3,64 @@
   display: flex !important;
   flex-direction: column;
   justify-content: center;
+
+  .ui.horizontal.divider {
+    margin-top: 2.3rem;
+    margin-bottom: 2.3rem;
+  }
+
   .container {
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
     margin: auto;
+
     .list {
       overflow-y: auto;
-      max-height: 280px;
-      width: 400px;
+      max-height: 60vh;
+      width: 430px;
+      padding-top: 1rem;
+      margin-bottom: 2rem;
     }
+
     .list-item {
+      margin-left: 10px !important;
       display: flex !important;
-      &:first {
-        margin-top: 24px;
-      }
-      display: flex;
       align-items: center;
       background: #ffffff !important;
-      &:hover {
-        background: rgba(0,0,0,.03) !important;
-      }
-      box-shadow: 0px 2px 4px #e5eaee;
-      max-width: 400px;
-      width: 100%;
+      box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.055);
+      width: 400px;
       height: 80px;
       margin-bottom: 16px !important;
       border-radius: 0 !important;
-      
+
+      &:first {
+        margin-top: 24px;
+      }
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.01) !important;
+      }
+
       .item-radio {
         width: 92px;
         display: flex;
         align-items: center;
         justify-content: center;
       }
-      .item-title {
-        font-style: normal;
-        font-weight: normal;
-        font-size: 18px;
-        line-height: 27px;
-      }
-      .item-description {
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 27px;
-        /* identical to box height */
 
+      .item-title {
+        font-weight: 300;
+        font-size: 18px;
+        line-height: 27px;
+        color: #1c1d1e !important;
+      }
+
+      .item-description {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 27px;
         letter-spacing: -0.04em;
         color: #1c1d1e;
       }
+
       .item-logo {
         background: #448aff;
         border-radius: 4px;
@@ -66,8 +72,8 @@
         color: white;
         margin-right: 14px;
         font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
+        font-weight: 600;
+        font-size: 1.3rem;
         line-height: 27px;
         display: flex;
         align-items: center;
@@ -75,11 +81,11 @@
         letter-spacing: -0.04em;
       }
     }
-    .submit-button{
-      max-width: 150px;
-      // width: 100%;
+
+    .submit-button {
       width: 400px;
-      max-width: 400px;
+      margin-right: 0rem;
+      margin-left: 10px;
     }
   }
 }
