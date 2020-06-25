@@ -26,8 +26,7 @@ const PetBreedForm = (props) => {
   } = props
 
   useEffect(()=> {
-    if(petBreedDetail.item.id)
-      getPetClasses()
+    getPetClasses()
   }, [ petBreedDetail.item.id ])
   const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
 
@@ -77,10 +76,19 @@ const PetBreedForm = (props) => {
               placeholder='Enter name'/>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Form.Select}
               label='Size'
               name='size'
-              placeholder='Enter size'/>
+              options={[
+                { key: 1, value: 'S', text: 'Small' },
+                { key: 2, value: 'M', text: 'Medium' },
+                { key: 3, value: 'L', text: 'Large' },
+                { key: 4, value: 'G', text: 'Giant' }
+              ]}
+              placeholder='Select size'
+              selectOnBlur={false}/>
+          </Form.Group>
+          <Form.Group widths='equal'>
             <Field
               component={FormField}
               control={Form.Select}
@@ -94,7 +102,6 @@ const PetBreedForm = (props) => {
               placeholder='Select an option'
               selectOnBlur={false}/>
           </Form.Group>
-
           {error && (
             <Form.Group widths='equal'>
               <Form.Field>

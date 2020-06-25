@@ -1,0 +1,17 @@
+.c-alert {
+  &.wrapper {
+    background: #e5eaee;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+  }
+  .text {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: -0.04em;
+    color: #1c1d1e;
+  }
+}

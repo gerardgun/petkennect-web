@@ -40,12 +40,18 @@ import petIncidentBehavior from './pet/incident-behavior'
 import petIncidentBehaviorDetail from './pet/incident-behavior/detail'
 import petIncident from './pet/incident'
 import petIncidentDetail from './pet/incident/detail'
+import petNote from './pet/note'
+import petNoteDetail from './pet/note/detail'
+import petVaccination from './pet/vaccination'
+import petVaccinationDetail from './pet/vaccination/detail'
 import product from './product'
 import productDetail from './product/detail'
 import productImage from './product/image'
 import productImageDetail from './product/image/detail'
 import productPackage from './product/package'
 import productPackageDetail from './product/package/detail'
+import reservation from './reservation'
+import reservationDetail from './reservation/detail'
 import rol from './rol'
 import rolDetail from './rol/detail'
 import rolPermission from './rol/permission'
@@ -104,12 +110,18 @@ export default function* rootSaga() {
     ...petIncidentBehaviorDetail,
     ...petIncident,
     ...petIncidentDetail,
+    ...petNote,
+    ...petNoteDetail,
+    ...petVaccination,
+    ...petVaccinationDetail,
     ...product,
     ...productDetail,
     ...productImage,
     ...productImageDetail,
     ...productPackage,
     ...productPackageDetail,
+    ...reservation,
+    ...reservationDetail,
     ...rol,
     ...rolDetail,
     ...rolPermission,

@@ -9,7 +9,7 @@ const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio
 function TabClientInfo({ clientDetail  }) {
   return (
     <Tab.Pane className='border-none'>
-      <Header as='h4' className='form-section-header mt35' color='blue'>BASIC INFORMATION</Header>
+      <Header as='h4' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w33'
@@ -50,7 +50,7 @@ function TabClientInfo({ clientDetail  }) {
           value={clientDetail.item.status}/>
       </div>
 
-      <Header as='h4' className='form-section-header mt35' color='blue'>CONTACT DETAILS</Header>
+      <Header as='h4' className='form-section-header mt36' color='blue'>CONTACT DETAILS</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w33'
@@ -80,7 +80,7 @@ function TabClientInfo({ clientDetail  }) {
           value={clientDetail.item.referred || '-'}/>
       </div>
 
-      <Header as='h4' className='form-section-header mt35' color='blue'>CLIENT ADDRESS</Header>
+      <Header as='h4' className='form-section-header mt36' color='blue'>CLIENT ADDRESS</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w100'

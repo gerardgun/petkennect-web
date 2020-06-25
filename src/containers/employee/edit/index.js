@@ -93,7 +93,7 @@ const EmployeeEditForm = (props) => {
           </Grid.Column>
 
         </Grid>
-        <div  className='flex align-center mt35'>
+        <div  className='flex align-center mt36'>
           <Image avatar className='img-40' src={employeeDetail.item.thumbnail_path || defaultImage}/>
           <div className='c-thumbnail'>
             <div className='title'>{fullname}</div>
@@ -108,7 +108,7 @@ const EmployeeEditForm = (props) => {
           <Field
             component='input' defaultValue={true} name='user_exists'
             type='hidden'/>
-          <Header as='h4' className='form-section-header mt35' color='blue'>BASIC INFORMATION</Header>
+          <Header as='h4' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
 
           <Form.Group widths='equal'>
 
@@ -181,7 +181,7 @@ const EmployeeEditForm = (props) => {
           <Form.Group widths='equal'>
 
             <Field
-              className='mt35'
+              className='mt36'
               component={FormField}
               control={Form.Checkbox}
               label='Active'

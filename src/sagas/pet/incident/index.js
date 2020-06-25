@@ -21,7 +21,9 @@ function* get(/* { payload } */) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items     : results,
+        items: results.map(({ employee_first_name = '-', employee_last_name = '', ...rest })=> ({
+          ...rest, employee_fullname: `${employee_first_name} ${employee_last_name}`
+        })),
         pagination: {
           ...list.pagination,
           meta
