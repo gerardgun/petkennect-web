@@ -1,5 +1,5 @@
 export default {
-  base_uri: '/pet',
+  base_uri: null,
   row     : {
     options: [
       {

@@ -158,10 +158,10 @@ const TableList = ({ duck, list, ...props }) => {
 
             {/* Row data header */}
             {
-              list.config.columns.map(({ display_name, sort ,name }, index) => (
+              list.config.columns.map(({ display_name, sort ,name, ordering_name }, index) => (
                 <Table.HeaderCell
                   key={index}
-                  onClick={_handleToggleSort(name,sort)}
+                  onClick={_handleToggleSort(ordering_name || name,sort)}
                   sorted={getSortOrder(name,sort)}>{display_name.toUpperCase()}
                 </Table.HeaderCell>
               ))

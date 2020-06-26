@@ -43,12 +43,18 @@ import petIncidentBehavior from '@reducers/pet/incident-behavior'
 import petIncidentBehaviorDetail from '@reducers/pet/incident-behavior/detail'
 import petIncident from '@reducers/pet/incident'
 import petIncidentDetail from '@reducers/pet/incident/detail'
+import petVaccination from '@reducers/pet/vaccination'
+import petVaccinationDetail from '@reducers/pet/vaccination/detail'
+import petNote from '@reducers/pet/note'
+import petNoteDetail from '@reducers/pet/note/detail'
 import product from '@reducers/product'
 import productDetail from '@reducers/product/detail'
 import productImage from '@reducers/product/image'
 import productImageDetail from '@reducers/product/image/detail'
 import productPackage from '@reducers/product/package'
 import productPackageDetail from '@reducers/product/package/detail'
+import reservation from '@reducers/reservation'
+import reservationDetail from '@reducers/reservation/detail'
 import rol from '@reducers/rol'
 import rolDetail from '@reducers/rol/detail'
 import rolPermission from '@reducers/rol/permission'
@@ -109,12 +115,18 @@ const createRootReducer = history => combineReducers({
   [petIncidentBehaviorDetail.store]: petIncidentBehaviorDetail.reducer,
   [petIncident.store]              : petIncident.reducer,
   [petIncidentDetail.store]        : petIncidentDetail.reducer,
+  [petVaccination.store]           : petVaccination.reducer,
+  [petVaccinationDetail.store]     : petVaccinationDetail.reducer,
+  [petNote.store]                  : petNote.reducer,
+  [petNoteDetail.store]            : petNoteDetail.reducer,
   [product.store]                  : product.reducer,
   [productDetail.store]            : productDetail.reducer,
   [productImage.store]             : productImage.reducer,
   [productImageDetail.store]       : productImageDetail.reducer,
   [productPackage.store]           : productPackage.reducer,
   [productPackageDetail.store]     : productPackageDetail.reducer,
+  [reservation.store]              : reservation.reducer,
+  [reservationDetail.store]        : reservationDetail.reducer,
   [rol.store]                      : rol.reducer,
   [rolDetail.store]                : rolDetail.reducer,
   [rolPermission.store]            : rolPermission.reducer,

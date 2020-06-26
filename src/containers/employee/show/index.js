@@ -66,7 +66,7 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
           </Grid.Column>
 
         </Grid>
-        <div  className='flex align-center mt35'>
+        <div  className='flex align-center mt36'>
           <Image avatar className='img-40' src={employeeDetail.item.thumbnail_path || defaultImage}/>
           <div className='c-thumbnail'>
             <div className='title'>{fullname}</div>
@@ -74,7 +74,7 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
           </div>
         </div>
 
-        <Header as='h4' className='form-section-header mt35' color='blue'>BASIC INFORMATION</Header>
+        <Header as='h4' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
         <div className='flex flex-row align-center mv20'>
           <InputReadOnly
             className='w33'

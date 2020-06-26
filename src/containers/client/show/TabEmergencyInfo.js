@@ -7,7 +7,7 @@ import './styles.scss'
 function TabEmergencyInfo({ clientDetail  }) {
   return (
     <Tab.Pane className='border-none'>
-      <Header as='h4' className='form-section-header mt35' color='blue'>EMERGENCY CONTACT</Header>
+      <Header as='h4' className='form-section-header mt36' color='blue'>EMERGENCY CONTACT</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w33'
@@ -22,7 +22,7 @@ function TabEmergencyInfo({ clientDetail  }) {
           label='Phone'
           value={_get(clientDetail.item,'emergency_contact_phones[0]','-')}/>
       </div>
-      <Header as='h4' className='form-section-header mt35' color='blue'>VETERINARIAN CONTACT</Header>
+      <Header as='h4' className='form-section-header mt36' color='blue'>VETERINARIAN CONTACT</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w33'
@@ -38,7 +38,7 @@ function TabEmergencyInfo({ clientDetail  }) {
           value={_get(clientDetail.item, 'emergency_vet_phones[0]', '-')}/>
       </div>
 
-      <Header as='h4' className='form-section-header mt35' color='blue'>PEOPLE AUTORIZED TO PICK UP</Header>
+      <Header as='h4' className='form-section-header mt36' color='blue'>PEOPLE AUTORIZED TO PICK UP</Header>
       {clientDetail.item.authorized_people_pick_up.map((_person,index) => (
         <div className='flex flex-row align-center mv20' key={index}>
           <div className='w33 text-regular flex justify-between'>

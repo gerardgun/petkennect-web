@@ -12,9 +12,11 @@ import Form from '@containers/client/create/PetSection/Form'
 import petDuck from '@reducers/pet'
 import petDetailDuck from '@reducers/pet/detail'
 import { useChangeStatusEffect, useDebounceText } from '@hooks/Shared'
+import { useHistory } from 'react-router-dom'
 
 const PetList = ({ pet, petDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const history  = useHistory()
 
   useEffect(() => {
     props.getPets()
@@ -26,10 +28,13 @@ const PetList = ({ pet, petDetail, ...props }) => {
   })
 
   const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
+    // props.setItem(item, 'UPDATE')
+    history.push(`/pet/${item.id}`)
   }
   const _handleRowOptionClick = (option , item) => {
-    if(option === 'edit') {props.setItem(item, 'UPDATE')}
+    if(option === 'edit') {
+      history.push(`/pet/${item.id}`)
+    }
     else if(option === 'delete') {
       props.setItem(item)
       _handleOpen()

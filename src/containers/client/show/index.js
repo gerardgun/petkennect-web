@@ -58,7 +58,7 @@ const ClientShow = ({ clientDetail,clientPet ,...props }) => {
           </Grid.Column >
 
         </Grid>
-        <div className='flex mt35'>
+        <div className='flex mt36'>
           <div  className='flex align-center w30'>
             <Image avatar className='img-40' src={clientDetail.item.thumbnail_path || defaultImage}/>
             <div className='c-thumbnail'>
