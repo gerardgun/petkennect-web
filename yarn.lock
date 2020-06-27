@@ -9459,6 +9459,13 @@ react-app-rewired@^2.1.5:
   dependencies:
     semver "^5.6.0"
 
+react-avatar-editor@^11.0.9:
+  version "11.0.9"
+  resolved "https://registry.yarnpkg.com/react-avatar-editor/-/react-avatar-editor-11.0.9.tgz#74d11f0ccb61dd2aca9c0c1d777d13cfd6ed5530"
+  integrity sha512-FGYdygcY1ca9PVScHCsm4H28ZLaBPxc/jz2cRhPFjmgMD7fwdYTE5AjBGDCr28jIlRNC1Vm4WERTKxSdDscFDA==
+  dependencies:
+    prop-types "^15.5.8"
+
 react-beautiful-dnd@^13.0.0:
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-13.0.0.tgz#f70cc8ff82b84bc718f8af157c9f95757a6c3b40"

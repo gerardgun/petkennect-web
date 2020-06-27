@@ -1,0 +1,32 @@
+.c-picker-wrapper {
+  .images-wrapper {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 350px;
+    max-height: 400px;
+    overflow-y: auto;
+    justify-content: space-evenly;
+    img.image-item {
+      object-fit: contain;
+      cursor: pointer;
+      margin-top: 16px;
+      @media (min-width: 900px ) {
+        width: 257px;
+        height: 257px;
+      }
+      @media (min-width: 600px) and (max-width: 900px) {
+        width: 200px;
+        height: 200px;
+      }
+      @media (min-width: 400px) and (max-width: 600px) {
+        width: 150px;
+        height: 150px;
+      }
+      &.selected {
+        border: 4px solid #00aa9f;
+      }
+      border-radius: 4px;
+    }
+  }
+}
