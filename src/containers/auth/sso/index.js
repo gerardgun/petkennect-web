@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Container, Divider, Header, List, Radio } from 'semantic-ui-react'
-
 import { useHistory } from 'react-router-dom'
+
+import { getAbbreviature } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 
@@ -23,15 +24,6 @@ const SSO = props => {
     if(status === 'REHYDRATED_TENANT' && !auth.tenant) history.push('/organization')
     if(status === 'REHYDRATED_TENANT') history.push('/dashboard')
   }, [ status ])
-
-  const getAbbrev = ({ legal_name = '' }) => {
-    const matches = legal_name.match(/([\w']+)/g)
-    let abbreviature = matches[0].substring(0, 2)
-
-    if(matches.length >= 2) abbreviature = matches[0][0] + matches[1][0]
-
-    return abbreviature.toUpperCase()
-  }
 
   const _handleContinueAsManagerClick = () => rehydrateTenant(undefined)
 
@@ -57,7 +49,7 @@ const SSO = props => {
                 <div className='item-radio'>
                   <Radio checked={item.id === company.id}/>
                 </div>
-                <div className='item-logo' style={{ backgroundColor: item.theme_color }}>{getAbbrev(item)}</div>
+                <div className='item-logo' style={{ backgroundColor: item.theme_color }}>{getAbbreviature(item.legal_name)}</div>
                 <div>
                   <div className='item-title'>{item.legal_name}</div>
                   <div className='item-description'>Administrador</div> {/* <- Role name must be here */}

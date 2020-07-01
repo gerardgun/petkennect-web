@@ -51,7 +51,7 @@ const LocationCreate = props => {
       open={isOpened}
       size='small'>
       <Modal.Content>
-        <Header as='h2' className='segment-content-header cls-MainHeader'>{isUpdating ? 'Update' : 'New'} Location</Header>
+        <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'New'} Location</Header>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Form.Group widths='equal'>
@@ -102,7 +102,6 @@ const LocationCreate = props => {
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
-                className='cls-cancelButton'
                 content='Cancel'
                 disabled={submitting}
                 onClick={_handleClose}

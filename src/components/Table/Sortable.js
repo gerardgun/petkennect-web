@@ -114,7 +114,7 @@ const TableSortableList = ({ duckDetail, list,detail, ...props }) => {
   return (
     <Dimmer.Dimmable
       as={Segment}
-      className='table-primary-segment-dimmable'
+      className='table-primary-segment'
       dimmed={loading}
       raised>
       <Dimmer active={loading} inverted>

@@ -52,7 +52,7 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
         }
         <div style={{ textAlign: 'center' }}>
           <Button
-            className='cls-cancelButton' content='Add person' onClick={_handleAddBtnClick}
+            content='Add person' onClick={_handleAddBtnClick}
             type='button'/>
         </div>
         {

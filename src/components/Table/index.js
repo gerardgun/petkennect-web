@@ -2,41 +2,48 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { Checkbox, Dimmer, Dropdown, Image, Loader, Segment, Table, Button, Icon, Label } from 'semantic-ui-react'
+import { Checkbox, Dimmer, Dropdown, Grid, Image, Input, Loader, Segment, Table, Button } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
+import { useDebounceText } from '@hooks/Shared'
 
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
 const TableList = ({ duck, list, ...props }) => {
+  const {
+    options: configOptions = []
+  } = list.config
+
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
 
-    if(column.type  === 'avatar') {
+    if(typeof column.formatter === 'function') {
+      content = column.formatter(content, item)
+    } else if(column.type  === 'avatar') {
       const avatar_image = _get(item, column.avatar_image, null)
       const avatar_name = column.avatar_name.map(_name=> _get(item, _name , null)).join(' ')
+
       content = (
         <div className='flex align-center'>
           <Image rounded size='mini' src={avatar_image || defaultImage}/>
           <Link className='text-underline pl8' to={`${column.avatar_link}${item.id}`}>{avatar_name}</Link>
         </div>
       )
+    } else if(column.type === 'boolean') {
+      content = content ? 'Yes' : 'No'
+    } else if(column.type === 'image') {
+      content = <Image rounded size='mini' src={content || defaultImage}/>
     }
-
-    if(column.type === 'boolean')
-      if(column.labels) {
-        content = content
-          ? <Label circular color='teal'>{ column.labels.positive }</Label>
-          : <Label circular color='red'>{ column.labels.positive }</Label>
-      } else {
-        content = content ? 'Yes' : 'No'
-      }
-
-    else if(column.type === 'image') content = <Image rounded size='mini' src={content || defaultImage}/>
-    else if(column.type === 'date') content = (new Date(content)).toLocaleString('en-US').split(', ').shift()
-    else if(column.type === 'datetime') content = (new Date(content)).toLocaleString('en-US')
-    else if(column.type === 'string') content = content || <span style={{ color: 'grey' }}>-</span>
+    else if(column.type === 'date') {
+      content = (new Date(content)).toLocaleString('en-US').split(', ').shift()
+    }
+    else if(column.type === 'datetime') {
+      content = (new Date(content)).toLocaleString('en-US')
+    }
+    else if(column.type === 'string') {
+      content = content || <span style={{ color: 'grey' }}>-</span>
+    }
 
     return content
   }
@@ -84,24 +91,22 @@ const TableList = ({ duck, list, ...props }) => {
     )
   }
 
-  const _handleDropdownChange = (e, { value }) => {
-    const itemId = +e.currentTarget.closest('.ui.dropdown').dataset.itemId
-    const item = list.items.find(({ id }) => id === itemId)
-
-    props.onRowOptionClick(value, item)
-  }
-
-  const _handleOptionClick = (value, item)=> (e) => {
-    e.stopPropagation()
-    props.onRowOptionClick(value, item)
-  }
-
   const _handlePaginationChange = (e, { activePage }) => {
     props.dispatch(
       duck.creators.get({
         page: activePage
       })
     )
+  }
+
+  const _handleOptionDropdownChange = (e, { value: optionName }) => {
+    props.onOptionClick(optionName)
+  }
+
+  const _handleOptionBtnClick = e => {
+    const optionName = e.currentTarget.dataset.optionName
+
+    props.onOptionClick(optionName)
   }
 
   const _handleRowClick = e => {
@@ -112,6 +117,24 @@ const TableList = ({ duck, list, ...props }) => {
       if(props.onRowClick) props.onRowClick(e, item)
       else if(list.config.base_uri) props.history.push(`${list.config.base_uri}/${item.id}`)
   }
+
+  const _handleRowOptionClick = e => {
+    const itemId = +e.currentTarget.dataset.itemId
+    const optionName = e.currentTarget.dataset.optionName
+    const item = list.items.find(({ id }) => id === itemId)
+
+    props.onRowOptionClick(optionName, item)
+  }
+
+  // BEGIN Improve
+  const { _handleChangeText: _handleSearchInputChange } = useDebounceText(str => {
+    props.dispatch(
+      duck.creators.get({
+        search: str
+      })
+    )
+  })
+  // END Improve
 
   const _handleSelectorCheckboxChange = (e, { checked }) => {
     const itemId = +e.currentTarget.dataset.itemId
@@ -130,15 +153,68 @@ const TableList = ({ duck, list, ...props }) => {
   const loading = list.status === 'GETTING'
   const areAllItemsChecked = list.selector && list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
 
+  // List options only available when the list has extended the selector reducer
+  const basicOptions = configOptions.filter(item => !('is_multiple' in item))
+  const optionsForSingle = list.selector && list.selector.selected_items.length === 1 ? configOptions.filter(item => item.is_multiple === false) : []
+  const optionsForMultiple = list.selector && list.selector.selected_items.length >= 1 ? configOptions.filter(item => item.is_multiple === true) : []
+  const selectionOptions = optionsForMultiple.concat(optionsForSingle)
+
   return (
     <Dimmer.Dimmable
       as={Segment}
-      className='table-primary-segment-dimmable pd0'
+      className='table-primary-segment'
       dimmed={loading}
       raised>
       <Dimmer active={loading} inverted>
         <Loader>Loading...</Loader>
       </Dimmer>
+
+      <Grid className='table-primary-header'>
+        <Grid.Column width={6}>
+          {
+            basicOptions.length > 0 && (
+              <Dropdown
+                disabled={basicOptions.length === 0}
+                icon={null}
+                onChange={_handleOptionDropdownChange}
+                options={
+                  basicOptions.map((item, index) => ({
+                    key  : `c-option-${index}`,
+                    icon : item.icon,
+                    value: item.name,
+                    text : item.display_name
+                  }))
+                }
+                selectOnBlur={false}
+                trigger={(
+                  <Button basic icon='ellipsis vertical'/>
+                )}
+                value={null}/>
+            )
+          }
+          {
+            selectionOptions.length > 0 && (
+              selectionOptions.map(({ icon, name, display_name, ...rest }, index) => (
+                <Button
+                  basic content={display_name} data-option-name={name}
+                  icon={icon} key={`nc-option-${index}`} onClick={_handleOptionBtnClick}
+                  {...rest}/>
+              ))
+            )
+          }
+        </Grid.Column >
+        <Grid.Column textAlign='right' width={10}>
+          <Button basic content='Filters' disabled/>
+          {/* {
+            pet.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
+          } */}
+          <Input
+            icon='search'
+            iconPosition='left'
+            onChange={_handleSearchInputChange}
+            placeholder='Search'/>
+        </Grid.Column>
+      </Grid>
 
       <Table
         basic='very' className='table-primary' selectable
@@ -169,7 +245,7 @@ const TableList = ({ duck, list, ...props }) => {
 
             {/* Row options */}
             {
-              list.config.row.options && (<Table.HeaderCell textAlign='center'>OPTIONS</Table.HeaderCell>)
+              list.config.row.options.length > 0 && (<Table.HeaderCell textAlign='center'>OPTIONS</Table.HeaderCell>)
             }
           </Table.Row>
         </Table.Header>
@@ -203,33 +279,17 @@ const TableList = ({ duck, list, ...props }) => {
 
                     {/* Row options */}
                     {
-                      list.config.row.options && (
+                      list.config.row.options.length > 0 && (
                         <Table.Cell textAlign='center'>
-                          {list.config.row.options
-                            .filter(_option=> _option.is_inline)
-                            .map((_item, index)=> (
+                          {
+                            list.config.row.options.map(({ icon, name, display_name, ...rest }, index)=> (
                               <Button
-                                icon key={index}
-                                onClick={_handleOptionClick(_item.name, item)}>
-                                <Icon name={_item.icon}/>
-                              </Button>
-                            ))}
-                          <Dropdown
-                            data-item-id={item.id}
-                            onChange={_handleDropdownChange}
-                            options={
-                              list.config.row.options
-                                .filter(_option => !_option.is_inline)
-                                .map((item, index) => ({
-                                  key  : index,
-                                  icon : item.icon,
-                                  value: item.name,
-                                  text : item.display_name
-                                }))
-                            }
-                            selectOnBlur={false}
-                            text='Options'
-                            value={null}/>
+                                basic content={display_name}
+                                data-item-id={item.id} data-option-name={name}
+                                icon={icon} key={index} onClick={_handleRowOptionClick}
+                                {...rest}/>
+                            ))
+                          }
                         </Table.Cell>
                       )
                     }
@@ -238,7 +298,7 @@ const TableList = ({ duck, list, ...props }) => {
               })
             ) : (
               <Table.Row disabled>
-                <Table.Cell colSpan={list.config.columns.length + Number(Boolean(list.config.row.options))} textAlign='center'>No items.</Table.Cell>
+                <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
               </Table.Row>
             )
           }
@@ -262,6 +322,7 @@ const TableList = ({ duck, list, ...props }) => {
 
 TableList.defaultProps = {
   duck            : null,
+  onOptionClick   : () => {},
   onRowOptionClick: () => {},
   onRowClick      : null
 }

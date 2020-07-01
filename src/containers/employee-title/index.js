@@ -45,11 +45,10 @@ const EmployeeTitleList = ({ employeeTitleDetail, ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column width={4}>
-            <Header as='h2' className='cls-MainHeader'>Employee Titles </Header>
+            <Header as='h2'>Employee Titles </Header>
           </Grid.Column >
           <Grid.Column textAlign='right' width={12}>
             <Button
-              className='cls-cancelButton'
               content='Filter'
               disabled
               icon='filter'

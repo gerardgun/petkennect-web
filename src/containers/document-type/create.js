@@ -48,7 +48,7 @@ const DocumentTypeForm = props => {
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header cls-MainHeader'>{isUpdating ? 'Update' : 'Add'} Document Type</Header>
+          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Document Type</Header>
           <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
@@ -73,7 +73,6 @@ const DocumentTypeForm = props => {
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
-                className='cls-cancelButton'
                 content='Cancel'
                 disabled={submitting}
                 onClick={_handleClose}

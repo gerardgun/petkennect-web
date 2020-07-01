@@ -65,11 +65,7 @@ export default {
       type        : 'boolean',
       width       : null,
       align       : 'left',
-      labels      : {
-        positive: 'Active',
-        negative: 'Active'
-      },
-      sort: false
+      sort        : false
     },
     {
       display_name: 'Created At',

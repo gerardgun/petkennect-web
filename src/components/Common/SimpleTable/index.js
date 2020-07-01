@@ -35,7 +35,7 @@ const SimpleTableList = ({ items, config, ...props }) => {
   return (
     <Dimmer.Dimmable
       as={Segment}
-      className='table-primary-segment-dimmable'
+      className='table-primary-segment'
       dimmed={props.loading}
       raised>
       <Dimmer active={props.loading} inverted>

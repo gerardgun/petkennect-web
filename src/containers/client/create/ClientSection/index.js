@@ -107,7 +107,7 @@ const ClientSection = props => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2' className='cls-MainHeader'>{isUpdating ? 'Update' : 'Create'} Client</Header>
+                <Header as='h2'>{isUpdating ? 'Update' : 'Create'} Client</Header>
               </Grid.Column>
             </Grid>
 
@@ -160,18 +160,10 @@ const ClientSection = props => {
               onClick={_handleOpen} size='large'/>)
           }
           <Divider horizontal>other</Divider>
-          <Button
-            className='cls-cancelButton' content='Send Email' fluid
-            icon='mail outline'/>
-          <Button
-            className='cls-cancelButton' content='Print' fluid
-            icon='print'/>
-          <Button
-            className='cls-cancelButton' content='View Records' fluid
-            icon='file alternate outline'/>
-          <Button
-            className='cls-cancelButton' content='Email Records' fluid
-            icon='share square'/>
+          <Button content='Send Email' fluid icon='mail outline'/>
+          <Button content='Print' fluid icon='print'/>
+          <Button content='View Records' fluid icon='file alternate outline'/>
+          <Button content='Email Records' fluid icon='share square'/>
         </Grid.Column>
       </Grid>
 

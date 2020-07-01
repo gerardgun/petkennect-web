@@ -5,17 +5,14 @@ export default {
     //   {
     //     name     : 'view_pdf',
     //     icon     : 'file pdf outline',
-    //     is_inline: true
     //   },
     //   {
     //     name     : 'edit',
     //     icon     : 'edit outline',
-    //     is_inline: true
     //   },
     //   {
     //     name     : 'delete',
     //     icon     : 'trash alternate outline',
-    //     is_inline: true
     //   },
     //   {
     //     display_name: 'Email Report',

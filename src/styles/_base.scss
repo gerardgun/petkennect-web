@@ -3,6 +3,11 @@ body {
   background-color: #fafcff;
 }
 
+.app-content {
+  height: 100vh;
+  overflow-y: auto;
+}
+
 .detail-view {
   &-tab {
     .ui.tabular.menu {
@@ -76,6 +81,8 @@ body {
 
   &-header.ui.grid {
     margin-bottom: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .ui.secondary.pointing.menu {
@@ -132,50 +139,6 @@ body {
   }
 }
 
-.table-primary {
-  &.ui.basic.table {
-    margin-bottom: 3rem;
-    margin-top: 0rem;
-
-    thead th {
-      color: #222b3b;
-    }
-
-    tbody {
-      tr.active {
-        background-color: #00b5ad0a !important;
-      }
-
-      td {
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
-        color: #222b3bd9;
-      }
-    }
-  }
-
-  .ui.checkbox {
-    input:checked ~ label {
-      &::after {
-        color: #fff;
-        font-size: 0.8rem;
-      }
-
-      &::before {
-        border-color: #00b5ad;
-        background-color: #00b5ad;
-      }
-    }
-  }
-
-  &-segment-dimmable.ui.segment {
-    padding: 0rem 2rem 0rem;
-    border: none;
-    box-shadow: none;
-    margin: 0;
-  }
-}
-
 .ui.fluid.container {
   max-width: 1500px !important;
 }
@@ -195,31 +158,7 @@ body {
 .drop-down-group {
   font-weight: 600;
 }
-.table-primary-segment-dimmable.pd0 {
-  padding: 0 !important;
-}
-.ui.table-primary {
-  border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
-  border-radius: 0px;
-  th {
-    font-weight: normal !important;
-    font-size: 11px;
-    color: #616468 !important;
-    line-height: 16px;
-    letter-spacing: -0.04em;
-    border-left: none !important;
-  }
-  td {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: -0.04em;
-    color: #1c1d1e;
-  }
-  thead {
-  }
-}
+
 .ui.form-section-header {
   font-style: normal !important;
   font-weight: normal !important;
@@ -265,13 +204,10 @@ img.ui.img-40 {
   height: 40px !important;
 }
 
-
 .segment-content {
   .segment-content-header {
     .column {
       @include buttonFunction();
-
-      @include mainHeaderFunction();
     }
   }
   @include tabHeaderFunction();
@@ -284,11 +220,6 @@ img.ui.img-40 {
     .header {
       @include pageHeadingFunction();
     }
-  }
-
-  .table-primary.ui.basic.table thead th {
-    @include tableHeadFunction();
-    border-left: 0px;
   }
 }
 
@@ -303,7 +234,6 @@ img.ui.img-40 {
 .modals {
   .modal {
     @include buttonFunction();
-    @include mainHeaderFunction();
     @include labelFunction();
     @include tabHeaderFunction();
 
@@ -319,26 +249,6 @@ img.ui.img-40 {
 .grid {
   .column {
     @include tabHeaderFunction();
-  }
-}
-
-.ui.raised.segment.dimmable.table-primary-segment-dimmable {
-  table {
-    td {
-      button {
-        line-height: 0px;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 11px;
-        letter-spacing: -0.04em;
-        border-radius: 15px;
-
-        left: 76.86%;
-        right: 16.44%;
-        top: 7.89%;
-        bottom: 42.11%;
-      }
-    }
   }
 }
 

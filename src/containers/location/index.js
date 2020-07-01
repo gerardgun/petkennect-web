@@ -51,11 +51,10 @@ const Location = props => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2' className='cls-MainHeader'>Locations</Header>
+            <Header as='h2'>Locations</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
             <Button
-              className='cls-cancelButton'
               content='Download' disabled icon='cloud download'
               labelPosition='left'/>
             <Button

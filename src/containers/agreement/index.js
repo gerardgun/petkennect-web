@@ -42,7 +42,7 @@ const AgreementList = ({ agreementDetail ,...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column width={4}>
-            <Header as='h2' className='cls-MainHeader'>Agreements</Header>
+            <Header as='h2'>Agreements</Header>
           </Grid.Column >
           <Grid.Column textAlign='right' width={12}>
             <Button

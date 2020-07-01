@@ -46,12 +46,11 @@ const Client = ({ client, clientDetail, ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2' className='cls-MainHeader'>Clients</Header>
+            <Header as='h2'>Clients</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
             <Button
-              as={Link}
-              className='w120' color='teal' content='New Client'
+              as={Link} color='teal' content='New Client'
               onClick={_handleNewClick}/>
           </Grid.Column>
 

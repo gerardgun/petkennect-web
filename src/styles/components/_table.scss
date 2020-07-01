@@ -1,0 +1,62 @@
+.table-primary {
+  &.ui.basic.table {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    margin-top: 0rem;
+
+    thead th {
+      border-left: none;
+      color: #616468;
+      font-size: 0.8rem;
+      font-weight: normal;
+      padding-top: 0.8rem;
+      padding-bottom: 0.8rem;
+    }
+
+    tbody {
+      tr.active {
+        background-color: #00b5ad0a !important;
+      }
+
+      td {
+        font-size: 0.9rem;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        color: #222b3bd9;
+        vertical-align: middle;
+
+        a {
+          color: #005987;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .ui.checkbox {
+    vertical-align: middle;
+
+    input:checked ~ label {
+      &::after {
+        color: #fff;
+        font-size: 0.8rem;
+      }
+
+      &::before {
+        border-color: #00b5ad;
+        background-color: #00b5ad;
+      }
+    }
+  }
+
+  &-segment.ui.segment.dimmable {
+    padding: 0rem 1rem 0rem;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  &-header.ui.grid {
+    margin-bottom: 0.3em;
+  }
+}

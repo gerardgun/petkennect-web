@@ -55,7 +55,7 @@ const DocumentForm = props => {
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header cls-MainHeader'>{isUpdating ? 'Update' : 'Add'} Document</Header>
+          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Document</Header>
           <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field

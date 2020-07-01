@@ -39,15 +39,14 @@ const ServiceList = ({ serviceDetail ,...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column width={4}>
-            <Header as='h2' className='cls-MainHeader'>Services</Header>
+            <Header as='h2'>Services</Header>
           </Grid.Column >
           <Grid.Column textAlign='right' width={12}>
             <Input
               icon='search' onChange={_handleChangeText}
               placeholder='Search...'/>
-            <Button className='cls-cancelButton' content='Download' disabled/>
+            <Button content='Download' disabled/>
             <Button
-              className='cls-cancelButton'
               content='Filter' disabled icon='filter'
               labelPosition='left'/>
             <Button

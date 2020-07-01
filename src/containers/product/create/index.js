@@ -82,7 +82,7 @@ const ProductSection = (props) => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2' className='cls-MainHeader'>Info Product</Header>
+                <Header as='h2'>Info Product</Header>
               </Grid.Column>
             </Grid>
 
@@ -127,7 +127,7 @@ const ProductSection = (props) => {
         <Grid.Column className='form-primary-actions vertical' width='three'>
 
           <Button
-            as={Link} className='cls-cancelButton' content='Cancel'
+            as={Link} content='Cancel'
             disabled={saving}
             fluid size='large' to='/product'/>
           <Button
@@ -148,11 +148,9 @@ const ProductSection = (props) => {
           <Divider horizontal>Quick Actions</Divider>
 
           <Button
-            className='cls-cancelButton'
             content='Send Reminder' disabled fluid
             icon='mail outline'/>
           <Button
-            className='cls-cancelButton'
             content='Print' disabled fluid
             icon='print'/>
         </Grid.Column>

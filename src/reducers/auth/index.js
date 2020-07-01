@@ -9,7 +9,11 @@ export default base({
   store       : 'auth',
   initialState: {
     auth_status: 'NOT_EXISTS',
-    tenant     : ''
+    item       : {
+      is_superadmin: false,
+      companies    : [] // for employee profiles
+    },
+    tenant: ''
   }
 })
   .extend(detail)
@@ -155,5 +159,10 @@ export default base({
         [WAIT_FOR_ACTION]: REHYDRATE_TENANT_FULFILLED,
         [ERROR_ACTION]   : REHYDRATE_TENANT_FAILURE
       })
+    }),
+    selectors: () => ({
+      getCurrentTenant: authState => {
+        return authState.item.companies.find(item => item.subdomain_prefix === authState.tenant)
+      }
     })
   })

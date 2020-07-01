@@ -1,76 +1,51 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Grid, Header, Segment, Input } from 'semantic-ui-react'
+import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import Form from '@containers/client/create/PetSection/Form'
+import { useChangeStatusEffect } from '@hooks/Shared'
 
 import petDuck from '@reducers/pet'
 import petDetailDuck from '@reducers/pet/detail'
-import { useChangeStatusEffect, useDebounceText } from '@hooks/Shared'
-import { useHistory } from 'react-router-dom'
+
+import './styles.scss'
 
 const PetList = ({ pet, petDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
-  const history  = useHistory()
+  useChangeStatusEffect(props.getPets,petDetail.status)
 
   useEffect(() => {
     props.getPets()
   }, [])
 
-  const { _handleChangeText } = useDebounceText((text)=> {
-    props.setFilters({ search: text })
-    props.getPets()
-  })
-
-  const _handleRowClick = (e, item) => {
-    // props.setItem(item, 'UPDATE')
-    history.push(`/pet/${item.id}`)
-  }
-  const _handleRowOptionClick = (option , item) => {
-    if(option === 'edit') {
-      history.push(`/pet/${item.id}`)
-    }
-    else if(option === 'delete') {
-      props.setItem(item)
+  const _handleOptionClick = option => {
+    if(option === 'delete') {
+      props.setItem(pet.selector.selected_items[0], 'DELETE')
       _handleOpen()
     }
   }
 
-  useChangeStatusEffect(props.getPets,petDetail.status)
-
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
+      <Segment className='segment-content pet' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column width={4}>
-            <Header as='h2' className='cls-MainHeader'>Pets</Header>
+            <Header as='h2'>Pets</Header>
           </Grid.Column >
           <Grid.Column textAlign='right' width={12}>
-            <Input
-              icon='search' onChange={_handleChangeText}
-              placeholder='Search...'/>
-            <Button className='cls-cancelButton' content='Download' disabled/>
-            <Button
-              className='cls-cancelButton'
-              content='Filter' disabled icon='filter'
-              labelPosition='left'/>
-            {
-              pet.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
-            }
+            <Button color='teal' content='New Pet' disabled/>
           </Grid.Column>
         </Grid>
-        <Table
-          duck={petDuck}  onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
+        <Table duck={petDuck} onOptionClick={_handleOptionClick}/>
       </Segment>
+
       <Form/>
       <ModalDelete
-        duck={petDuck}
         duckDetail={petDetailDuck}
         onClose={_handleClose}
         open={open}/>
@@ -85,8 +60,7 @@ export default compose(
       pet,
       petDetail: petDetailDuck.selectors.detail(state)
     }), {
-      getPets   : petDuck.creators.get,
-      setFilters: petDuck.creators.setFilters,
-      setItem   : petDetailDuck.creators.setItem
+      getPets: petDuck.creators.get,
+      setItem: petDetailDuck.creators.setItem
     })
 )(PetList)

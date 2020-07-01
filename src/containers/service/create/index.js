@@ -115,7 +115,7 @@ const ServiceCreate = props => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2' className='cls-MainHeader'>{isUpdating ? `Update ${ServiceTypes[serviceDetail.item.type]}` : 'Create'} Service</Header>
+                <Header as='h2'>{isUpdating ? `Update ${ServiceTypes[serviceDetail.item.type]}` : 'Create'} Service</Header>
               </Grid.Column>
             </Grid>
 
@@ -142,7 +142,7 @@ const ServiceCreate = props => {
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
           <Button
-            as={Link} className='cls-cancelButton' content='Cancel'
+            as={Link} content='Cancel'
             fluid
             size='large' to='/service'/>
           <Button
