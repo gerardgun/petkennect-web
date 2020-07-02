@@ -4,5 +4,5 @@ export default {
   D: 'DayCamp',
   G: 'Grooming',
   T: 'Training ',
-  C: ''
+  C: 'Custom'
 }

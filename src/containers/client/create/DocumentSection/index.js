@@ -52,7 +52,7 @@ const DocumentSection = ({ document, documentDetail, ...props }) => {
                 document.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
               }
               <Button
-                className='cls-saveButton' color='teal' content='Add Document'
+                color='teal' content='Add Document'
                 onClick={_handleAddBtnClick}/>
             </Grid.Column>
           </Grid>

@@ -120,7 +120,6 @@ const VaccinationUploadForm = (props) => {
                 onClick={_handleClose}
                 type='button'/>
               <Button
-                className='cls-saveButton'
                 color='teal'
                 content='Done'
                 disabled={submitting}

@@ -1,12 +1,5 @@
 // function use for button style change
 @mixin buttonFunction(){
-  .cls-saveButton{
-      background-color: $green !important;
-      color: $white-Color ;
-      &:hover {
-          background-color: $greenHover !important; 
-      }
-  }
   .cls-deleteButton{
       background-color: $delete-Color !important;
       color: $white-Color ;

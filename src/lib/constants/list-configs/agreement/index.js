@@ -1,18 +1,29 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 export default {
-  base_uri: null,
-  row     : {
-    options: [
-      {
-        display_name: 'Edit',
-        name        : 'edit',
-        icon        : 'edit outline'
-      },
-      {
-        display_name: 'Delete',
-        name        : 'delete',
-        icon        : 'trash alternate outline'
-      }
-    ]
+  base_uri: '/setup/agreement',
+  options : [
+    {
+      display_name: 'Download',
+      name        : 'download',
+      icon        : 'download'
+    },
+    {
+      display_name: 'Print',
+      name        : 'print',
+      icon        : 'print'
+    },
+    {
+      display_name: null,
+      name        : 'delete',
+      icon        : 'trash alternate outline',
+      is_multiple : false,
+      color       : 'red'
+    }
+  ],
+  row: {
+    options: []
   },
   columns: [
     {
@@ -26,7 +37,18 @@ export default {
     {
       display_name: 'Registered By',
       name        : 'employee_first_name',
-      type        : 'string', // image, boolean, date, datetime, money, label
+      type        : null,
+      width       : null,
+      align       : 'left',
+      sort        : false,
+      formatter   : (cell, row) => {
+        return <Link to={`/employee/show/${row.employee}`}>{cell} {row.employee_last_name}</Link>
+      }
+    },
+    {
+      display_name: 'Active',
+      name        : 'is_active',
+      type        : 'boolean_active',
       width       : null,
       align       : 'left',
       sort        : false

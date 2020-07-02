@@ -12,7 +12,7 @@ function* deleteItem({ ids }) {
     yield put({ type: types.DELETE_PENDING })
 
     yield call(Post, 'clean-clients/', {
-      customer_ids: ids
+      client_ids: ids
     })
 
     yield put({ type: types.DELETE_FULFILLED })

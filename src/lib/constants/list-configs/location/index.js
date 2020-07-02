@@ -1,24 +1,32 @@
 export default {
   base_uri: null,
-  row     : {
-    options: [
-      {
-        display_name: 'Edit',
-        name        : 'edit',
-        icon        : 'edit outline'
-      },
-      {
-        display_name: 'Delete',
-        name        : 'delete',
-        icon        : 'trash alternate outline'
-      }
-    ]
+  options : [
+    {
+      display_name: 'Download',
+      name        : 'download',
+      icon        : 'download'
+    },
+    {
+      display_name: 'Print',
+      name        : 'print',
+      icon        : 'print'
+    },
+    {
+      display_name: null,
+      name        : 'delete',
+      icon        : 'trash alternate outline',
+      is_multiple : false,
+      color       : 'red'
+    }
+  ],
+  row: {
+    options: []
   },
   columns: [
     {
       display_name: 'Code',
       name        : 'code',
-      type        : 'string', // image, boolean, date, datetime, money, label
+      type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
@@ -32,8 +40,16 @@ export default {
       sort        : false
     },
     {
-      display_name: 'Address 1',
+      display_name: 'First Address',
       name        : 'addresses[0]',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false
+    },
+    {
+      display_name: 'Description',
+      name        : 'description',
       type        : 'string',
       width       : null,
       align       : 'left',

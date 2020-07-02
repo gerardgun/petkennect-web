@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
@@ -9,20 +8,18 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import PetIncidentBehaviorForm from  './Form'
+import { useChangeStatusEffect } from '@hooks/Shared'
 
 import petIncidentBehaviorDuck from '@reducers/pet/incident-behavior'
 import petIncidentBehaviorDetailDuck from '@reducers/pet/incident-behavior/detail'
-import { useChangeStatusEffect } from '@hooks/Shared'
 
-const PetIncidentBehaviorList = ({ ...props }) => {
-  const { petIncidentBehaviorDetail : { status } = {} } = props
+const PetIncidentBehaviorList = ({ petIncidentBehavior, petIncidentBehaviorDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+  useChangeStatusEffect(props.getPetIncidentBehaviors, petIncidentBehaviorDetail.status)
 
   useEffect(() => {
     props.getPetIncidentBehaviors()
   }, [])
-
-  useChangeStatusEffect(props.getPetIncidentBehaviors, status)
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
@@ -32,10 +29,9 @@ const PetIncidentBehaviorList = ({ ...props }) => {
     props.setItem(item, 'UPDATE')
   }
 
-  const _handleRowOptionClick = (option , item) => {
-    if(option === 'edit') {props.setItem(item, 'UPDATE')}
-    else if(option === 'delete') {
-      props.setItem(item)
+  const _handleOptionClick = option => {
+    if(option === 'delete') {
+      props.setItem(petIncidentBehavior.selector.selected_items[0], 'DELETE')
       _handleOpen()
     }
   }
@@ -48,22 +44,17 @@ const PetIncidentBehaviorList = ({ ...props }) => {
             <Header as='h2'>Incident Behavior</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button content='Download' disabled/>
             <Button
-              content='Filter'
-              disabled
-              icon='filter'
-              labelPosition='left'/>
-            <Button
-              as={Link} color='teal' content='New Behavior'
+              color='teal' content='New Behavior'
               onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
         <Table
           duck={petIncidentBehaviorDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
+          onOptionClick={_handleOptionClick}
+          onRowClick={_handleRowClick}/>
       </Segment>
+
       <PetIncidentBehaviorForm/>
       <ModalDelete
         duckDetail={petIncidentBehaviorDetailDuck}
@@ -77,6 +68,7 @@ const PetIncidentBehaviorList = ({ ...props }) => {
 export default compose(
   connect(
     state => ({
+      petIncidentBehavior      : petIncidentBehaviorDuck.selectors.list(state),
       petIncidentBehaviorDetail: petIncidentBehaviorDetailDuck.selectors.detail(state)
     }), {
       getPetIncidentBehaviors: petIncidentBehaviorDuck.creators.get,

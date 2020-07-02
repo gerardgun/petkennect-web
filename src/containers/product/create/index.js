@@ -131,7 +131,6 @@ const ProductSection = (props) => {
             disabled={saving}
             fluid size='large' to='/product'/>
           <Button
-            className='cls-saveButton'
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Product`}
             disabled={saving}

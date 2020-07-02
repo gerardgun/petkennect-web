@@ -52,7 +52,7 @@ const PetSection = (props) => {
                 content='Filter' disabled icon='filter'
                 labelPosition='left'/>
               <Button
-                className='cls-saveButton' color='teal' content='Add Pet'
+                color='teal' content='Add Pet'
                 onClick={_handleAddBtnClick}/>
             </Grid.Column>
           </Grid>

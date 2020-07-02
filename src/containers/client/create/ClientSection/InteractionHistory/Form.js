@@ -137,7 +137,6 @@ const CommentForm = (props) => {
                 onClick={_handleClose}
                 type='button'/>
               <Button
-                className='cls-saveButton'
                 color='teal'
                 content={isUpdating ? 'Save changes' : 'Create'}
                 disabled={submitting}

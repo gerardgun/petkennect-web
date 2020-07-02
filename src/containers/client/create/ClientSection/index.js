@@ -146,7 +146,7 @@ const ClientSection = props => {
             fluid
             size='large' to='/client'/>
           <Button
-            className='cls-saveButton' color='teal'
+            color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Client`}
             disabled={saving}
             fluid

@@ -146,7 +146,6 @@ const ServiceCreate = props => {
             fluid
             size='large' to='/service'/>
           <Button
-            className='cls-saveButton'
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Service`}
             disabled={saving}

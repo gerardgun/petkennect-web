@@ -55,19 +55,16 @@ const Company = props => {
             <Header as='h2'>Companies</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button
-              content='Download' disabled icon='cloud download'
-              labelPosition='left'/>
             <Button color='teal' content='New Company' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
+
         <Table
           duck={companyDuck}
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
 
         <Form/>
-
         <ModalDelete
           duckDetail={companyDetailDuck}
           onClose={_handleClose}

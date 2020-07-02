@@ -12,8 +12,8 @@ function* get(/* { payload } */) {
 
     const filters = yield select(selectors.filters)
     const list = yield select(selectors.list)
-    // yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-    const { results, ...meta } = yield call(Get, '/pets/',filters)
+
+    const { results, ...meta } = yield call(Get, '/pets/', filters)
 
     yield put({
       type   : types.GET_FULFILLED,

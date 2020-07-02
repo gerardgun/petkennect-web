@@ -64,7 +64,7 @@ const CategoryList = ({ ...props }) => {
           <Grid.Column textAlign='right'>
             <Button content='Download' disabled/>
             <Button
-              as={Link} className='cls-saveButton' color='teal'
+              as={Link} color='teal'
               content='New Category'
               onClick={_handleAddBtnClick}/>
           </Grid.Column>

@@ -1,43 +1,50 @@
 export default {
   base_uri: null,
-  row     : {
-    options: [
-      {
-        display_name: 'Edit',
-        name        : 'edit',
-        icon        : 'edit outline'
-      },
-      {
-        display_name: 'Delete',
-        name        : 'delete',
-        icon        : 'trash alternate outline'
-      }
-    ]
+  options : [
+    {
+      display_name: 'Download',
+      name        : 'download',
+      icon        : 'download'
+    },
+    {
+      display_name: 'Print',
+      name        : 'print',
+      icon        : 'print'
+    },
+    {
+      display_name: null,
+      name        : 'delete',
+      icon        : 'trash alternate outline',
+      is_multiple : false,
+      color       : 'red'
+    }
+  ],
+  row: {
+    options: []
   },
   columns: [
-    // {
-    //   display_name: 'ID',
-    //   name        : 'id',
-    //   type        : 'number',
-    //   width       : null,
-    //   align       : 'left',
-    //   sort        : false
-    // },
     {
-      display_name: 'Name',
+      display_name: 'Action name',
       name        : 'name',
-      type        : 'string', // image, boolean, date, datetime, money, label
-      width       : null,
+      type        : 'string',
+      width       : 4,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'Result',
+      display_name: 'Action outcome',
       name        : 'result_type',
       type        : 'string',
-      width       : null,
+      width       : 11,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : cell => {
+        let result_str = 'Neither'
+
+        if(cell === 'R') result_str = 'Removal for DayCamp'
+
+        return result_str
+      }
     }
   ]
 }

@@ -145,7 +145,6 @@ const PetSection = props => {
             content='Cancel' fluid onClick={_handleCancelBtnClick}
             size='large'/>
           <Button
-            className='cls-saveButton'
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Pet`}
             disabled={saving}

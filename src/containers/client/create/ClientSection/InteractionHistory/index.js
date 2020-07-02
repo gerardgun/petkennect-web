@@ -48,7 +48,7 @@ const InteractionHistory = props => {
             props.clientComment.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
           }
           <Button
-            className='cls-saveButton' color='teal'
+            color='teal'
             content='Add Comment'
             onClick={_handleAddBtnClick}/>
         </Grid.Column>

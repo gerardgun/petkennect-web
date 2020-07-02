@@ -122,7 +122,6 @@ const AgreementCreate = props => {
             as={Link} content='Cancel' fluid
             size='large' to='/setup/agreement/'/>
           <Button
-            className='cls-saveButton'
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Agreement`}
             disabled={saving}

@@ -23,9 +23,6 @@ const Organization = props => {
           </Grid.Column>
           <Grid.Column textAlign='right'>
             <Button
-              content='Download' disabled icon='cloud download'
-              labelPosition='left'/>
-            <Button
               as={Link} color='teal' content='New Organization'
               to='/organization/create'/>
           </Grid.Column>

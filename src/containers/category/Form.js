@@ -111,7 +111,6 @@ const CategoryForm = props => {
                 onClick={_handleClose}
                 type='button'/>
               <Button
-                className='cls-saveButton'
                 color='teal'
                 content={isUpdating ? 'Save changes' : 'Save'}
                 disabled={submitting}
