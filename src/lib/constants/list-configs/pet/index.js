@@ -1,14 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Label } from 'semantic-ui-react'
+import { Image, Label } from 'semantic-ui-react'
+
+import { defaultImageUrl } from '@lib/constants'
 
 export default {
-  base_uri: null,
-  options : [
+  base_uri          : null,
+  search_placeholder: 'Search by pet name',
+  options           : [
     {
-      display_name: 'Download Excel',
-      name        : 'download-excel',
-      icon        : 'file excel outline'
+      display_name: 'Download',
+      name        : 'download',
+      icon        : 'download'
+    },
+    {
+      display_name: 'Print',
+      name        : 'print',
+      icon        : 'print'
     },
     {
       display_name: null,
@@ -36,7 +44,14 @@ export default {
       align       : 'left',
       sort        : true,
       formatter   : (cell, row) => {
-        return <Link to={`/pet/${row.id}`}>{cell}</Link>
+        return (
+          <Link to={`/pet/${row.id}`}>
+            <Image
+              className='profile' rounded size='mini'
+              src={row.image_filepath || defaultImageUrl}/>
+            <span>{cell}</span>
+          </Link>
+        )
       }
     },
     {
@@ -46,6 +61,7 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
+      sort_name   : 'client__user__first_name',
       formatter   : (cell, row) => {
         return <Link to={`/client/show/${row.client}`}>{cell}</Link>
       }
@@ -56,7 +72,8 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : true,
+      sort_name   : 'breed__name'
     },
     {
       display_name: 'Vaccination',
