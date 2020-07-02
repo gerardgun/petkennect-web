@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Checkbox, Dimmer, Dropdown, Grid, Image, Input, Loader, Segment, Table, Button } from 'semantic-ui-react'
+import { Checkbox, Dimmer, Dropdown, Grid, Image, Input, Label, Loader, Segment, Table, Button } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
 import { useDebounceText } from '@hooks/Shared'
 
-const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
+import { defaultImageUrl } from '@lib/constants'
 
 const TableList = ({ duck, list, ...props }) => {
   const {
@@ -18,76 +18,47 @@ const TableList = ({ duck, list, ...props }) => {
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
 
-    if(typeof column.formatter === 'function') {
+    if(typeof column.formatter === 'function')
       content = column.formatter(content, item)
-    } else if(column.type  === 'avatar') {
-      const avatar_image = _get(item, column.avatar_image, null)
-      const avatar_name = column.avatar_name.map(_name=> _get(item, _name , null)).join(' ')
-
-      content = (
-        <div className='flex align-center'>
-          <Image rounded size='mini' src={avatar_image || defaultImage}/>
-          <Link className='text-underline pl8' to={`${column.avatar_link}${item.id}`}>{avatar_name}</Link>
-        </div>
-      )
-    } else if(column.type === 'boolean') {
+    else if(column.type === 'boolean')
       content = content ? 'Yes' : 'No'
-    } else if(column.type === 'image') {
-      content = <Image rounded size='mini' src={content || defaultImage}/>
-    }
-    else if(column.type === 'date') {
+    else if(column.type === 'boolean_active')
+      content = (
+        <Label
+          circular color={content ? 'green' : 'red'} horizontal
+          style={{ minWidth: '6rem' }}>{content ? 'Active' : 'Inactive'}</Label>
+      )
+    else if(column.type === 'image')
+      content = <Image rounded size='mini' src={content || defaultImageUrl}/>
+    else if(column.type === 'date')
       content = (new Date(content)).toLocaleString('en-US').split(', ').shift()
-    }
-    else if(column.type === 'datetime') {
+    else if(column.type === 'datetime')
       content = (new Date(content)).toLocaleString('en-US')
-    }
-    else if(column.type === 'string') {
+    else if(column.type === 'money')
+      content = new Intl.NumberFormat('en-US', {
+        style                : 'currency',
+        currency             : 'USD',
+        minimumFractionDigits: 2
+      }).format(content)
+    else if(column.type === 'string')
       content = content || <span style={{ color: 'grey' }}>-</span>
-    }
 
     return content
   }
 
-  const getSortOrder = (name, sort)  => {
-    if(!sort)
-      return undefined
+  const _handleHeaderToggleSortClick = e => {
+    const columnName = e.currentTarget.dataset.columnName
+    const column = list.config.columns.find(item => item.name === columnName)
 
-    switch (list.filters.ordering) {
-      case name:
-        return  'ascending'
-
-      case '-' + name:
-        return  'descending'
-
-      default:
-        return undefined
-    }
-  }
-
-  const _handleToggleSort = (name,sort)  => ()=>  {
-    if(!sort)
+    if(!column.sort)
       return
 
-    if(list.filters.ordering === name) {
-      props.dispatch(
-        duck.creators.setFilters({
-          ordering: '-' + name
-        })
-      )
-      props.dispatch(
-        duck.creators.get()
-      )
-
-      return
-    }
+    const finalSortName = column.sort_name || column.name
 
     props.dispatch(
-      duck.creators.setFilters({
-        ordering: name
-      }))
-
-    props.dispatch(
-      duck.creators.get()
+      duck.creators.get({
+        ordering: list.filters.ordering === finalSortName ? `-${finalSortName}` : finalSortName
+      })
     )
   }
 
@@ -204,15 +175,10 @@ const TableList = ({ duck, list, ...props }) => {
           }
         </Grid.Column >
         <Grid.Column textAlign='right' width={10}>
-          <Button basic content='Filters' disabled/>
-          {/* {
-            pet.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
-          } */}
+          {/* <Button basic content='Filters' disabled/> */}
           <Input
-            icon='search'
-            iconPosition='left'
-            onChange={_handleSearchInputChange}
-            placeholder='Search'/>
+            icon='search' iconPosition='left' onChange={_handleSearchInputChange}
+            placeholder={list.config.search_placeholder || 'Search'} type='search'/>
         </Grid.Column>
       </Grid>
 
@@ -234,13 +200,23 @@ const TableList = ({ duck, list, ...props }) => {
 
             {/* Row data header */}
             {
-              list.config.columns.map(({ display_name, sort ,name, ordering_name }, index) => (
-                <Table.HeaderCell
-                  key={index}
-                  onClick={_handleToggleSort(ordering_name || name,sort)}
-                  sorted={getSortOrder(name,sort)}>{display_name.toUpperCase()}
-                </Table.HeaderCell>
-              ))
+              list.config.columns.map(({ display_name, name, sort, sort_name }, index) => {
+                const finalSortName = sort_name || name
+                let sorted = sort ? 'sorted' : ''
+
+                if(list.filters.ordering === finalSortName)
+                  sorted = sorted + ' descending'
+                else if(list.filters.ordering === '-' + finalSortName)
+                  sorted = sorted + ' ascending'
+
+                return (
+                  <Table.HeaderCell
+                    className={sorted} data-column-name={name} key={index}
+                    onClick={_handleHeaderToggleSortClick}>
+                    {display_name}
+                  </Table.HeaderCell>
+                )
+              })
             }
 
             {/* Row options */}

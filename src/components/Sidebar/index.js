@@ -153,13 +153,10 @@ const categories = [
     subcategories: [
       { href: '/setup/location', label: 'Locations' },
       { href: '/setup/document-type', label: 'Document Types' },
-      { href: '/setup/agreement', label: 'Agreement' },
+      { href: '/setup/agreement', label: 'Agreements' },
       { href: '/not-defined', label: 'Enable Decline Portal Client' },
-      { href: '/not-defined', label: 'Price Master' },
-      { href: '/not-defined', label: 'Breed' },
       { href: '/not-defined', label: 'Calendar' },
       { href: '/not-defined', label: 'Notifications' },
-      { href: '/not-defined', label: 'Pet Behaviors' },
       { href: '/not-defined', label: 'Overview' },
       { href: '/not-defined', label: 'Cancellation Reason' },
       { href: '/not-defined', label: 'Client Rating' }
