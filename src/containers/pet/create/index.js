@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import './styles.scss'
 import { connect } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
@@ -7,6 +7,7 @@ import { Grid, Segment, Breadcrumb, Image, Tab, Header, Dropdown, Button, Icon }
 import moment from 'moment'
 
 import Layout from '@components/Common/Layout'
+import ImageEditor from '@components/Common/ImageEditor'
 import FormInformation from './FormInformation'
 import BookingSection from './BookingSection'
 import VaccinationSection from './VaccinationSection'
@@ -15,15 +16,22 @@ import NotesSection from './NotesSection'
 import GallerySection from './GallerySection'
 
 import petDetailDuck from '@reducers/pet/detail'
+import petImageDuck from '@reducers/pet/image'
 
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
-const PetShow = ({ petDetail ,...props }) => {
+const PetShow = ({ petDetail , petImage, ...props }) => {
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
+  const  [ openImageEditorModal,setOpenImageEditorModal ] = useState(false)
+  const [ initialStep, setInitialStep ] = useState(null)
+  const [ initialImageURL, setInitialImageURL ] = useState(null)
   const { id } = useParams()
+
+  const inputFileRef = useRef()
 
   useEffect(() => {
     props.getPet(id)
+    props.getPetImages({ pet_id: id })
 
     return () => {
       props.resetItem()
@@ -56,6 +64,49 @@ const PetShow = ({ petDetail ,...props }) => {
         return `${months} months`
     }
   }
+  const _handleFileChange = e => {
+    if(e.target.files && e.target.files[0]) {
+      setInitialImageURL(URL.createObjectURL(e.target.files[0]))
+      setInitialStep('EDITOR')
+      setOpenImageEditorModal(true)
+    }
+  }
+
+  const _handlePhotoAction = (e , data)=>{
+    switch (data.value) {
+      case 'view_photo':
+        setInitialImageURL(petDetail.item.what_ever_thumbnail_path)
+        setInitialStep('VIEW')
+        setOpenImageEditorModal(true)
+
+        return
+      case 'take_photo':
+        setInitialStep('CAMERA')
+        setOpenImageEditorModal(true)
+
+        return
+      case 'upload_photo':
+        if(inputFileRef.current)
+          inputFileRef.current.click()
+
+        return
+      case 'select_photo':
+        setInitialStep('PICKER')
+        setOpenImageEditorModal(true)
+
+        return
+
+      default:
+
+        return
+    }
+  }
+
+  const  _handleCloseImageEditorModal = ()=> {
+    setOpenImageEditorModal(false)
+    setInitialImageURL(null)
+    setInitialStep(null)
+  }
 
   const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
 
@@ -79,6 +130,10 @@ const PetShow = ({ petDetail ,...props }) => {
             <Image
               circular className='c-square-140 mh-auto mt40 mb16' size='mini'
               src={petDetail.item.thumbnail_path || defaultImage}/>
+            <input
+              accept='image/*'
+              hidden onChange={_handleFileChange} ref={inputFileRef}
+              type='file'/>
             <div className='flex justify-between align-center mb24'>
               <div>
                 <Header className='c-title mv0'>{fullname}</Header>
@@ -88,12 +143,13 @@ const PetShow = ({ petDetail ,...props }) => {
                 </Header>
               </div>
               <Dropdown
-                // onChange={_handleSessionDropdownChange}
                 icon={null}
+                onChange={_handlePhotoAction}
                 options={[
                   { key: 'view_photo', value: 'view_photo', text: 'View photo' },
-                  { key: 'take_photo', value: 'take_photo', text: 'Take a photo ' },
-                  { key: 'upload_photo', value: 'upload_photo', text: 'Upload photo' }
+                  { key: 'take_photo', value: 'take_photo', text: 'Take photo' },
+                  { key: 'upload_photo', value: 'upload_photo', text: 'Upload photo' },
+                  { key: 'select_photo', value: 'select_photo', text: 'Select photo' }
                 ]}
                 selectOnBlur={false}
                 trigger={(
@@ -164,6 +220,17 @@ const PetShow = ({ petDetail ,...props }) => {
             {activeTabIndex === 5 && <GallerySection/>}
 
           </Grid.Column>
+
+          <ImageEditor
+            initialImageURL={initialImageURL}
+            initialStep={initialStep}
+            key={`${initialStep}${openImageEditorModal}`}
+            onClose={_handleCloseImageEditorModal}
+            open={openImageEditorModal} pickerImages={petImage.items.map(_petImage=> ({
+              ..._petImage,
+              url: _petImage.filepath
+            }))}/>
+
         </Grid>
       </Segment>
 
@@ -174,9 +241,12 @@ const PetShow = ({ petDetail ,...props }) => {
 export default compose(
   connect(
     ({ ...state }) => ({
-      petDetail: petDetailDuck.selectors.detail(state)
+      petDetail: petDetailDuck.selectors.detail(state),
+      petImage : petImageDuck.selectors.list(state)
+
     }), {
-      getPet   : petDetailDuck.creators.get,
-      resetItem: petDetailDuck.creators.resetItem
+      getPetImages: petImageDuck.creators.get,
+      getPet      : petDetailDuck.creators.get,
+      resetItem   : petDetailDuck.creators.resetItem
     })
 )(PetShow)
