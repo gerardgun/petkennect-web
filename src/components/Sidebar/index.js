@@ -2,9 +2,14 @@ import React, { useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Link, withRouter } from 'react-router-dom'
-import { Image } from 'semantic-ui-react'
+import { Button, Dropdown, Icon, Image } from 'semantic-ui-react'
 
 import Sidebar from '@components/Common/Sidebar'
+import { getAbbreviature } from '@lib/utils/functions'
+
+import authDuck from '@reducers/auth'
+
+import './styles.scss'
 
 const categoriesForSuperAdmin = [
   {
@@ -148,13 +153,10 @@ const categories = [
     subcategories: [
       { href: '/setup/location', label: 'Locations' },
       { href: '/setup/document-type', label: 'Document Types' },
-      { href: '/setup/agreement', label: 'Agreement' },
+      { href: '/setup/agreement', label: 'Agreements' },
       { href: '/not-defined', label: 'Enable Decline Portal Client' },
-      { href: '/not-defined', label: 'Price Master' },
-      { href: '/not-defined', label: 'Breed' },
       { href: '/not-defined', label: 'Calendar' },
       { href: '/not-defined', label: 'Notifications' },
-      { href: '/not-defined', label: 'Pet Behaviors' },
       { href: '/not-defined', label: 'Overview' },
       { href: '/not-defined', label: 'Cancellation Reason' },
       { href: '/not-defined', label: 'Client Rating' }
@@ -164,6 +166,7 @@ const categories = [
 
 const AppSidebar = ({ auth, ...props }) => {
   const [ activeCategoryIndex, setActiveCategoryIndex ] = useState(null)
+  const [ show, setShow ] = useState(false)
 
   const getCategories = () => auth.item.is_superadmin ? categoriesForSuperAdmin : categories
 
@@ -175,54 +178,156 @@ const AppSidebar = ({ auth, ...props }) => {
     else if(!category.href) setActiveCategoryIndex(index)
   }
 
+  const _handleEditProfileBtnClick = () => {
+
+  }
+
+  const _handleSessionDropdownItemClick = (e, { value }) => {
+    if(value === 'sign-out')
+      props.signOut()
+  }
+
+  const _handleSessionDropdownOpen = (e, { open }) => setShow(!open)
+
+  const _handleTenantDropdownItemClick = (e, { value }) => {
+    props.rehydrateTenant(value)
+  }
+
   const categoriesToRender = useMemo(() => getCategories(), [ auth.item.id ])
+  const userFullName = `${auth.item.first_name} ${auth.item.last_name}`
+  const userAbbrev = getAbbreviature(userFullName)
 
   return (
-    <Sidebar>
-      <Image src='/images/logo.png' style={{ padding: '3rem 1rem' }}/>
-      {
-        categoriesToRender.map(({ subcategories = [], ...rest }, index) => {
-          const rgx = new RegExp(`^${rest.href}.*`)
-          const active = activeCategoryIndex === index
-            || rgx.test(props.match.path)
-            || subcategories.some(item => {
-              const rgx = new RegExp(`^${item.href}.*`)
+    <div className='app-sidebar'>
+      <Sidebar>
+        <Image src='/images/logo.png' style={{ padding: '3rem' }}/>
+        {
+          categoriesToRender.map(({ subcategories = [], ...rest }, index) => {
+            const rgx = new RegExp(`^${rest.href}.*`)
+            const active = activeCategoryIndex === index
+              || rgx.test(props.match.path)
+              || subcategories.some(item => {
+                const rgx = new RegExp(`^${item.href}.*`)
 
-              return rgx.test(props.match.path)
-            })
+                return rgx.test(props.match.path)
+              })
 
-          return (
-            <Sidebar.Category
-              active={active}
-              data-index={index}
-              key={index}
-              onClick={_handleCategoryClick}
-              {...rest}>
-              {
-                subcategories.length > 0 ? (
-                  subcategories.map(({ href: to, label }, index) => {
-                    const active = props.match.path === to
+            return (
+              <Sidebar.Category
+                active={active}
+                data-index={index}
+                key={index}
+                onClick={_handleCategoryClick}
+                {...rest}>
+                {
+                  subcategories.length > 0 ? (
+                    subcategories.map(({ href: to, label }, index) => {
+                      const active = props.match.path === to
 
-                    return <Link className={active ? 'active' : ''} key={index} to={to}>{label}</Link>
-                  })
-                ) : null
-              }
-            </Sidebar.Category>
-          )
-        })
-      }
-    </Sidebar>
+                      return <Link className={active ? 'active' : ''} key={index} to={to}>{label}</Link>
+                    })
+                  ) : null
+                }
+              </Sidebar.Category>
+            )
+          })
+        }
+      </Sidebar>
+
+      {/* Session User Dropdown */}
+      <div className='auth-session-dropdown'>
+        <Dropdown
+          className='avatar'
+          icon={null}
+          onClose={_handleSessionDropdownOpen}
+          onOpen={_handleSessionDropdownOpen}
+          open={show}
+          trigger={(
+            <div className='avatar-trigger'>
+              <div>
+                <div className='avatar-circle'>{userAbbrev}</div>
+              </div>
+              <div className='avatar-user'>{userFullName}</div>
+              <div className='avatar-icon'>
+                <Icon name={show ? 'caret up' : 'caret down'}/>
+              </div>
+            </div>
+          )}>
+          <Dropdown.Menu>
+            <Dropdown.Header
+              content={
+                <div>
+                  <div className='avatar-trigger'>
+                    <div>
+                      <div className='avatar-circle'>{userAbbrev}</div>
+                    </div>
+                    <div className='avatar-user'>
+                      <p>{userFullName}</p>
+                      <span>{auth.item.email}</span>
+                    </div>
+                  </div>
+                  <Button
+                    as={Link} basic
+                    color='teal' content='Edit Profile'
+                    onClick={_handleEditProfileBtnClick}/>
+                </div>
+              }/>
+            <Dropdown.Divider/>
+            <Dropdown.Header
+              content={
+                <div>
+                  <p>Signed as</p>
+                  <strong>
+                    {
+                      props.currentTenant && `${props.currentTenant.legal_name} - ${props.currentTenant.is_main_admin ? 'Super Administrador' : 'Administrador'}`
+                    }
+                    {
+                      auth.item.is_superadmin && 'Petkennect Manager'
+                    }
+                  </strong>
+                </div>
+              }/>
+            <Dropdown.Divider/>
+            {
+              !auth.item.is_superadmin && (
+                <>
+                  <Dropdown.Header content='Change to'/>
+                  <Dropdown.Menu scrolling>
+                    {
+                      auth.item.companies.map((item, index) => (
+                        <Dropdown.Item
+                          className={item.id === props.currentTenant.id ? 'selected' : ''}
+                          key={index} onClick={_handleTenantDropdownItemClick} text={`${item.legal_name} - Administrador`}
+                          value={item.subdomain_prefix}/>
+                      ))
+                    }
+                  </Dropdown.Menu>
+                  <Dropdown.Divider/>
+                </>
+              )
+            }
+            <Dropdown.Item text='Help' value='help'/>
+            <Dropdown.Item text='Settings' value='settings'/>
+            <Dropdown.Item onClick={_handleSessionDropdownItemClick} text='Sign Out' value='sign-out'/>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+    </div>
   )
 }
 
 export default compose(
   withRouter,
   connect(
-    ({ auth }) => ({
-      auth
-    }),
+    ({ auth }) => {
+      return {
+        auth,
+        currentTenant: authDuck.selectors.getCurrentTenant(auth)
+      }
+    },
     {
-      // Nothing
+      signOut        : authDuck.creators.signOut,
+      rehydrateTenant: authDuck.creators.rehydrateTenant
     }
   )
 )(AppSidebar)

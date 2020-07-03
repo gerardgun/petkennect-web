@@ -1,25 +1,52 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Image } from 'semantic-ui-react'
+
+import { defaultImageUrl } from '@lib/constants'
+
 export default {
-  base_uri: null,
-  row     : {
-    options: [
-      {
-        display_name: 'Edit',
-        name        : 'edit',
-        icon        : 'edit outline'
-      }
-    ]
+  base_uri          : null,
+  search_placeholder: 'Search by name or email',
+  options           : [
+    {
+      display_name: 'Download',
+      name        : 'download',
+      icon        : 'download'
+    },
+    {
+      display_name: 'Print',
+      name        : 'print',
+      icon        : 'print'
+    },
+    {
+      display_name: null,
+      name        : 'delete',
+      icon        : 'trash alternate outline',
+      is_multiple : false,
+      color       : 'red'
+    }
+  ],
+  row: {
+    options: []
   },
   columns: [
     {
       display_name: 'Client Name',
-      name        : 'first_name', // for sorting
-      type        : 'avatar', // image, avatar, multiple, boolean, date, datetime, money, label
+      name        : 'first_name',
+      type        : null, // string, image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      avatar_image: 'thumbnail_path',
-      avatar_name : [ 'first_name', 'last_name' ],
-      avatar_link : '/client/show/',
-      sort        : true
+      sort        : true,
+      formatter   : (cell, row) => {
+        return (
+          <Link to={`/client/show/${row.id}`}>
+            <Image
+              className='profile' rounded size='mini'
+              src={row.thumbnail_path || defaultImageUrl}/>
+            <span>{`${cell} ${row.last_name}`}</span>
+          </Link>
+        )
+      }
     },
     {
       display_name: 'Email',
@@ -30,6 +57,14 @@ export default {
       sort        : true
     },
     {
+      display_name: 'State',
+      name        : 'state_code',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false
+    },
+    {
       display_name: 'City',
       name        : 'city',
       type        : 'string',
@@ -38,16 +73,8 @@ export default {
       sort        : false
     },
     {
-      display_name: 'State',
-      name        : 'state',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
       display_name: 'Location',
-      name        : 'location_name',
+      name        : 'location_code',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -64,14 +91,10 @@ export default {
     {
       display_name: 'Status',
       name        : 'status',
-      type        : 'boolean',
+      type        : 'boolean_active',
       width       : null,
       align       : 'left',
-      labels      : {
-        positive: 'Active',
-        negative: 'Active'
-      },
-      sort: false
+      sort        : false
     },
     {
       display_name: 'Created At',

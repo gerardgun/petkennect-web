@@ -1,8 +1,14 @@
 .ui.image {
+  &.mini {
+    height: 35px;
+    object-fit: cover;
+  }
+
   &.c-square-140 {
     width: 140px !important;
     height: 140px !important;
   }
+
   &.c-crop-picker {
     width: 569px;
     height: 538px;

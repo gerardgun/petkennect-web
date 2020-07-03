@@ -110,7 +110,7 @@ const AgreementCreate = props => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2' className='cls-MainHeader'>{isUpdating ? 'Update' : 'Create'} Agreement</Header>
+                <Header as='h2'>{isUpdating ? 'Update' : 'Create'} Agreement</Header>
               </Grid.Column>
             </Grid>
             <FormInformation onSubmit={_handleSubmit}/>
@@ -119,11 +119,9 @@ const AgreementCreate = props => {
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
           <Button
-            as={Link} className='cls-cancelButton' content='Cancel'
-            fluid
+            as={Link} content='Cancel' fluid
             size='large' to='/setup/agreement/'/>
           <Button
-            className='cls-saveButton'
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Agreement`}
             disabled={saving}

@@ -2,19 +2,19 @@ import React from 'react'
 import { Container, Grid } from 'semantic-ui-react'
 
 import Sidebar from '@components/Sidebar'
-import AppBar from '@components/AppBar'
 
 const Layout = ({ children }) => (
   <Container fluid>
     <Grid>
-      <Grid.Column width='three'>
+      <Grid.Column style={{ paddingBottom: 0, paddingRight: 0 }} width='three'>
         <Sidebar/>
       </Grid.Column>
-      <Grid.Column width='thirteen'>
-        <AppBar/>
+      <Grid.Column style={{ paddingBottom: 0, paddingLeft: 0 }} width='thirteen'>
 
-        {/* Content */}
-        {children}
+        <div className='app-content'>
+          {/* Content */}
+          {children}
+        </div>
 
       </Grid.Column>
     </Grid>

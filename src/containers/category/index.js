@@ -59,12 +59,12 @@ const CategoryList = ({ ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2' className='cls-MainHeader'>Categories</Header>
+            <Header as='h2'>Categories</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button className='cls-cancelButton' content='Download' disabled/>
+            <Button content='Download' disabled/>
             <Button
-              as={Link} className='cls-saveButton' color='teal'
+              as={Link} color='teal'
               content='New Category'
               onClick={_handleAddBtnClick}/>
           </Grid.Column>

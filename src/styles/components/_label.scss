@@ -1,0 +1,13 @@
+.ui.label {
+  &.orange {
+    background-color: $orange !important;
+  }
+
+  &.black {
+    background-color: $light-black !important;
+  }
+
+  &.red {
+    background-color: $red !important;
+  }
+}

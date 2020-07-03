@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { Button, Grid, Header, Segment, Input } from 'semantic-ui-react'
+import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
@@ -12,9 +12,8 @@ import useModal from '@components/Modal/useModal'
 
 import productDuck from '@reducers/product'
 import productDetailDuck from '@reducers/product/detail'
-import { useDebounceText } from '@hooks/Shared'
 
-const ProductList = ({ /* product ,*/  productDetail, ...props }) => {
+const ProductList = ({ product, productDetail, ...props }) => {
   const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
   const [ openFilterModal, { _handleOpen: _handleOpenFilterModal, _handleClose: _handleCloseFilterModal } ] = useModal()
 
@@ -26,24 +25,13 @@ const ProductList = ({ /* product ,*/  productDetail, ...props }) => {
     props.getProducts()
   }, [])
 
-  const { _handleChangeText } = useDebounceText((text)=> {
-    props.setFilters({ search: text })
-    props.getProducts()
-  })
-
-  const _handleRowOptionClick = (option, item) => {
-    if(option === 'edit')
-    {props.history.push(`product/${item.id}`)}
-
-    else if(option === 'delete')
-    {
-      props.setItem(item)
+  const _handleOptionClick = option => {
+    if(option === 'delete') {
+      props.setItem(product.selector.selected_items[0], 'DELETE')
       _handleOpenDeleteModal()
     }
   }
-  const  _handleRowClick = (option,item) => {
-    props.history.push(`product/${item.id}`)
-  }
+
   const _handleCreateClick = ()=> {
     props.setItem(null, 'CREATE')
   }
@@ -53,32 +41,20 @@ const ProductList = ({ /* product ,*/  productDetail, ...props }) => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column width={4}>
-            <Header as='h2' className='cls-MainHeader'>Products</Header>
+            <Header as='h2'>Products</Header>
           </Grid.Column>
           <Grid.Column textAlign='right' width={12}>
-            <Input
-              icon='search' onChange={_handleChangeText}
-              placeholder='Search...'/>
             <Button
-              className='cls-cancelButton'
-              content='Download' disabled icon='cloud download'
-              labelPosition='left'/>
-            <Button
-              className='cls-cancelButton'
-              content='Filter' icon='filter'
-              labelPosition='left'
+              basic content='Filter'
               onClick={_handleOpenFilterModal}/>
             <Button
-              as={Link} className='cls-saveButton' color='teal'
+              as={Link} color='teal'
               content='New Product'
               onClick={_handleCreateClick}
               to='/product/create'/>
           </Grid.Column>
         </Grid>
-        <Table
-          duck={productDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
+        <Table duck={productDuck} onOptionClick={_handleOptionClick}/>
       </Segment>
 
       <ModalDelete
@@ -102,7 +78,6 @@ export default compose(
     }),
     {
       getProducts: productDuck.creators.get,
-      setFilters : productDuck.creators.setFilters,
       setItem    : productDetailDuck.creators.setItem
     }
   )

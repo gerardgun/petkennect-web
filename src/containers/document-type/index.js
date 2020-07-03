@@ -1,27 +1,25 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
 import Layout from '@components/Common/Layout'
+import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import DocumentTypeCreate from './create'
-
-import clientDocumentTypeDuck from '@reducers/client/document/type'
-import clientDocumentTypeDetailDuck from '@reducers/client/document/type/detail'
 import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
 
-const DocumentType = props => {
-  const { clientDocumentTypeDetail : { status } = {} } = props
+import clientDocumentTypeDuck from '@reducers/client/document/type'
+import clientDocumentTypeDetailDuck from '@reducers/client/document/type/detail'
+
+const DocumentType = ({ clientDocumentType, clientDocumentTypeDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+  useChangeStatusEffect(props.getDocumentTypes, clientDocumentTypeDetail.status)
+
   useEffect(() => {
     props.getDocumentTypes()
   }, [])
-
-  useChangeStatusEffect(props.getDocumentTypes, status)
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
@@ -31,10 +29,9 @@ const DocumentType = props => {
     props.setItem(item, 'UPDATE')
   }
 
-  const _handleRowOptionClick = (option , item) => {
-    if(option === 'edit') {props.setItem(item, 'UPDATE')}
-    else if(option === 'delete') {
-      props.setItem(item)
+  const _handleOptionClick = option => {
+    if(option === 'delete') {
+      props.setItem(clientDocumentType.selector.selected_items[0], 'DELETE')
       _handleOpen()
     }
   }
@@ -44,30 +41,23 @@ const DocumentType = props => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2' className='cls-MainHeader'>Document Types</Header>
+            <Header as='h2'>Document Types</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button
-              className='cls-cancelButton'
-              content='Download' disabled icon='cloud download'
-              labelPosition='left'/>
-
-            <Button
-              as={Link} className='cls-saveButton' color='teal'
-              content='New Document Type'
-              onClick={_handleAddBtnClick}/>
+            <Button color='teal' content='New Document Type' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
         <Table
           duck={clientDocumentTypeDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
-        <DocumentTypeCreate/>
-        <ModalDelete
-          duckDetail={clientDocumentTypeDetailDuck}
-          onClose={_handleClose}
-          open={open}/>
+          onOptionClick={_handleOptionClick}
+          onRowClick={_handleRowClick}/>
       </Segment>
+
+      <DocumentTypeCreate/>
+      <ModalDelete
+        duckDetail={clientDocumentTypeDetailDuck}
+        onClose={_handleClose}
+        open={open}/>
 
     </Layout>
   )
@@ -76,7 +66,7 @@ const DocumentType = props => {
 export default compose(
   connect(
     (state) => ({
-      // clientDocumentTypes     : clientDocumentTypeDuck.selectors.list(state),
+      clientDocumentType      : clientDocumentTypeDuck.selectors.list(state),
       clientDocumentTypeDetail: clientDocumentTypeDetailDuck.selectors.detail(state)
 
     }),

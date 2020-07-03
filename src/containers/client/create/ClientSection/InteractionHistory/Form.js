@@ -72,7 +72,7 @@ const CommentForm = (props) => {
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header cls-MainHeader'>
+          <Header as='h2' className='segment-content-header'>
             {isUpdating ? 'Update' : 'Create'} Comment
           </Header>
           <Form.Group widths='equal'>
@@ -137,7 +137,6 @@ const CommentForm = (props) => {
                 onClick={_handleClose}
                 type='button'/>
               <Button
-                className='cls-saveButton'
                 color='teal'
                 content={isUpdating ? 'Save changes' : 'Create'}
                 disabled={submitting}

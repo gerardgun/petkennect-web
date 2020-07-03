@@ -55,9 +55,6 @@ const Transaction = props => {
             <Header as='h2'>Transactions</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button
-              content='Download' disabled icon='cloud download'
-              labelPosition='left'/>
             <Button color='teal' content='New Transaction' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
@@ -67,7 +64,6 @@ const Transaction = props => {
           onRowOptionClick={_handleRowOptionClick}/>
 
         <Form/>
-
         <ModalDelete
           duckDetail={transactionDetailDuck}
           onClose={_handleClose}

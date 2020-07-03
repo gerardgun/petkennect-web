@@ -1,23 +1,10 @@
 // function use for button style change
 @mixin buttonFunction(){
-  .cls-saveButton{
-      background-color: $green !important;
-      color: $white-Color ;
-      &:hover {
-          background-color: $greenHover !important; 
-      }
-  }
   .cls-deleteButton{
       background-color: $delete-Color !important;
       color: $white-Color ;
       &:hover {
           background-color: $delete-ColorHover !important; 
-      }
-  }
-  .cls-cancelButton{
-      background-color: $cancel-Color !important;
-      &:hover {
-          background-color: $cancel-ColorHover !important; 
       }
   }
 }
@@ -38,14 +25,6 @@
           background-color: $white-Color; 
           color: $green;
       }
-  }
-}
-
-//function use for main header style change
-@mixin mainHeaderFunction {
-  .cls-MainHeader{
-      font-weight: 700;
-      color: $black;
   }
 }
 
@@ -80,9 +59,4 @@
       // font-size: 1.07142857rem;
       font-size: 12px;
       line-height: 16px;
-}
-
-@mixin tableHeadFunction {
-  font-weight: 400 ;
-  color: $black;
 }

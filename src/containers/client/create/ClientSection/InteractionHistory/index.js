@@ -42,16 +42,13 @@ const InteractionHistory = props => {
       <Grid className='segment-content-header'>
         <Grid.Column textAlign='right'>
           <Button
-            className='cls-cancelButton'
-            content='Download'
-            disabled
-            icon='cloud download'
+            content='Download' disabled icon='cloud download'
             labelPosition='left'/>
           {
             props.clientComment.selector.selected_items.length > 0 && (<Button color='google plus' content='Delete' onClick={_handleOpen}/>)
           }
           <Button
-            className='cls-saveButton' color='teal'
+            color='teal'
             content='Add Comment'
             onClick={_handleAddBtnClick}/>
         </Grid.Column>

@@ -6,18 +6,13 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
 import Form from './create'
+import useModal from '@components/Modal/useModal'
 
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
 
-const Location = props => {
-  const {
-    locationDetail
-  } = props
-
-  // For Modal Delete
+const Location = ({ location, locationDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
@@ -37,12 +32,10 @@ const Location = props => {
     props.setItem(item, 'UPDATE')
   }
 
-  const _handleRowOptionClick = (option, item) => {
+  const _handleOptionClick = option => {
     if(option === 'delete') {
-      props.setItem(item)
+      props.setItem(location.selector.selected_items[0], 'DELETE')
       _handleOpen()
-    } else if(option === 'edit') {
-      props.setItem(item, 'UPDATE')
     }
   }
 
@@ -51,27 +44,19 @@ const Location = props => {
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2' className='cls-MainHeader'>Locations</Header>
+            <Header as='h2'>Locations</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button
-              className='cls-cancelButton'
-              content='Download' disabled icon='cloud download'
-              labelPosition='left'/>
-            <Button
-              className='cls-saveButton'
-              color='teal' content='New Location'
-              onClick={_handleAddBtnClick}/>
+            <Button color='teal' content='New Location' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
         <Table
           duck={locationDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
+          onOptionClick={_handleOptionClick}
+          onRowClick={_handleRowClick}/>
       </Segment>
 
       <Form/>
-
       <ModalDelete
         duckDetail={locationDetailDuck}
         onClose={_handleClose}

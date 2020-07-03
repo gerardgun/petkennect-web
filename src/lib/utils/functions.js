@@ -4,6 +4,15 @@ import { SubmissionError } from 'redux-form'
 import * as Yup from 'yup'
 import { Get } from '@lib/utils/http-client'
 
+export const getAbbreviature = (str = '') => {
+  const matches = str.match(/([\w']+)/g)
+  let abbreviature = matches[0].substring(0, 2)
+
+  if(matches.length >= 2) abbreviature = matches[0][0] + matches[1][0]
+
+  return abbreviature.toUpperCase()
+}
+
 export const getMessageError = e => {
   let currentMessage = 'Error'
 

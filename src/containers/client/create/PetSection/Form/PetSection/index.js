@@ -111,7 +111,7 @@ const PetSection = props => {
           <Segment className='segment-content' padded='very'>
             <Grid className='segment-content-header'>
               <Grid.Column>
-                <Header as='h2' className='cls-MainHeader'>
+                <Header as='h2'>
                   <Image rounded src='https://react.semantic-ui.com/images/wireframe/square-image.png'/>
                   {isUpdating ? 'Update' : 'Create'} Pet
                 </Header>
@@ -145,7 +145,6 @@ const PetSection = props => {
             content='Cancel' fluid onClick={_handleCancelBtnClick}
             size='large'/>
           <Button
-            className='cls-saveButton'
             color='teal'
             content={`${isUpdating ? 'Update' : 'Create'} Pet`}
             disabled={saving}
@@ -161,20 +160,16 @@ const PetSection = props => {
           }
           <Divider horizontal>other</Divider>
           <Button
-            className='cls-cancelButton'
             content='Send Reminder' disabled fluid
             icon='bell outline'/>
           <Button
-            className='cls-cancelButton'
             content='Print' disabled fluid
             icon='print'/>
           <Button
-            className='cls-cancelButton'
             content='Incident Report' disabled fluid
             icon='file alternate outline'/>
           {isUpdating && !client && <Button
             as={Link}
-            className='cls-cancelButton'
             content='Go to client' fluid
             icon='share square'
             onClick={_handleCancelBtnClick} to={`/client/${petDetail.item.client}`}/>
