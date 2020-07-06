@@ -50,7 +50,9 @@ const categories = [
       { href: '/pet/breed', label: 'Breeds' },
       { href: '/pet/incident-type', label: 'Incident Types' },
       { href: '/pet/incident-action', label: 'Incident Actions' },
-      { href: '/pet/incident-behavior', label: 'Incident Behaviors' }
+      { href: '/pet/incident-behavior', label: 'Incident Behaviors' },
+      { href: '/pet/retire-reason', label: 'Retire Reason' },
+      { href: '/pet/vaccination-type', label: 'Vaccination Type' }
     ]
   },
   {
@@ -154,6 +156,9 @@ const categories = [
       { href: '/setup/location', label: 'Locations' },
       { href: '/setup/document-type', label: 'Document Types' },
       { href: '/setup/agreement', label: 'Agreements' },
+      { href: '/setup/training-reason', label: 'Training Reason' },
+      { href: '/setup/training-method', label: 'Training Method' },
+      { href: '/setup/training-command', label: 'Training Command' },
       { href: '/not-defined', label: 'Enable Decline Portal Client' },
       { href: '/not-defined', label: 'Calendar' },
       { href: '/not-defined', label: 'Notifications' },

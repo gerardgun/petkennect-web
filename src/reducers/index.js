@@ -43,8 +43,12 @@ import petIncidentBehavior from '@reducers/pet/incident-behavior'
 import petIncidentBehaviorDetail from '@reducers/pet/incident-behavior/detail'
 import petIncident from '@reducers/pet/incident'
 import petIncidentDetail from '@reducers/pet/incident/detail'
+import petRetireReason from '@reducers/pet/retire-reason'
+import petRetireReasonDetail from '@reducers/pet/retire-reason/detail'
 import petVaccination from '@reducers/pet/vaccination'
 import petVaccinationDetail from '@reducers/pet/vaccination/detail'
+import petVaccinationType from '@reducers/pet/vaccination-type'
+import petVaccinationTypeDetail from '@reducers/pet/vaccination-type/detail'
 import petNote from '@reducers/pet/note'
 import petNoteDetail from '@reducers/pet/note/detail'
 import product from '@reducers/product'
@@ -64,6 +68,12 @@ import serviceAddon from '@reducers/service/addon'
 import serviceAddonDetail from '@reducers/service/addon/detail'
 import serviceAddonGroup from '@reducers/service/addon/group'
 import serviceAddonGroupDetail from '@reducers/service/addon/group/detail'
+import trainingCommand from '@reducers/training-command'
+import trainingCommandDetail from '@reducers/training-command/detail'
+import trainingMethod from '@reducers/training-method'
+import trainingMethodDetail from '@reducers/training-method/detail'
+import trainingReason from '@reducers/training-reason'
+import trainingReasonDetail from '@reducers/training-reason/detail'
 import transaction from '@reducers/transaction'
 import transactionDetail from '@reducers/transaction/detail'
 import user from '@reducers/user'
@@ -115,8 +125,12 @@ const createRootReducer = history => combineReducers({
   [petIncidentBehaviorDetail.store]: petIncidentBehaviorDetail.reducer,
   [petIncident.store]              : petIncident.reducer,
   [petIncidentDetail.store]        : petIncidentDetail.reducer,
+  [petRetireReason.store]          : petRetireReason.reducer,
+  [petRetireReasonDetail.store]    : petRetireReasonDetail.reducer,
   [petVaccination.store]           : petVaccination.reducer,
   [petVaccinationDetail.store]     : petVaccinationDetail.reducer,
+  [petVaccinationType.store]       : petVaccinationType.reducer,
+  [petVaccinationTypeDetail.store] : petVaccinationTypeDetail.reducer,
   [petNote.store]                  : petNote.reducer,
   [petNoteDetail.store]            : petNoteDetail.reducer,
   [product.store]                  : product.reducer,
@@ -137,6 +151,13 @@ const createRootReducer = history => combineReducers({
   [serviceAddonDetail.store]       : serviceAddonDetail.reducer,
   [serviceAddonGroup.store]        : serviceAddonGroup.reducer,
   [serviceAddonGroupDetail.store]  : serviceAddonGroupDetail.reducer,
+  [trainingCommand.store]          : trainingCommand.reducer,
+  [trainingCommandDetail.store]    : trainingCommandDetail.reducer,
+  [trainingMethod.store]           : trainingMethod.reducer,
+  [trainingMethodDetail.store]     : trainingMethodDetail.reducer,
+  [trainingReason.store]           : trainingReason.reducer,
+  [trainingReasonDetail.store]     : trainingReasonDetail.reducer,
+  [transactionDetail.store]        : transactionDetail.reducer,
   [transactionDetail.store]        : transactionDetail.reducer,
   [user.store]                     : user.reducer,
   [userDetail.store]               : userDetail.reducer,
