@@ -1,15 +1,18 @@
 .text-regular {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: -0.04em;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 14px !important;
+  line-height: 21px !important;
+  letter-spacing: -0.04em !important;
 }
 .text-black {
-  color: #1c1d1e;
+  color: #1c1d1e !important;
 }
 .text-gray {
-  color: #9b9fa4;
+  color: #9b9fa4 !important;
+}
+.text-white {
+  color: #ffffff !important;
 }
 .text-center {
   text-align: center;
@@ -44,4 +47,8 @@
 }
 .bg-gray {
   background-color: #9b9fa4;
+}
+
+.shadow-0 {
+  box-shadow: none !important;
 }

@@ -45,7 +45,7 @@ const IncidentSectionList = ({ ...props }) => {
 
   const _warningIncidentTypes = useMemo(()=> {
     return  petDetail.item.summary.incident_types
-      .filter(_incidentType=>  _incidentType.limit && _incidentType.limit - _incidentType.count <= 2)
+      .filter(_incidentType=>  _incidentType.limit && _incidentType.limit - _incidentType.count <= 1)
       .map(_incidentType => ({
         ..._incidentType,
         name: (petIncidentType.items.find(_type => _type.id === _incidentType.id) || {}).name

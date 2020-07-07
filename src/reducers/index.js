@@ -43,10 +43,12 @@ import petIncidentBehavior from '@reducers/pet/incident-behavior'
 import petIncidentBehaviorDetail from '@reducers/pet/incident-behavior/detail'
 import petIncident from '@reducers/pet/incident'
 import petIncidentDetail from '@reducers/pet/incident/detail'
-import petVaccination from '@reducers/pet/vaccination'
-import petVaccinationDetail from '@reducers/pet/vaccination/detail'
 import petNote from '@reducers/pet/note'
 import petNoteDetail from '@reducers/pet/note/detail'
+import petReservation from '@reducers/pet/reservation'
+import petReservationDetail from '@reducers/pet/reservation/detail'
+import petVaccination from '@reducers/pet/vaccination'
+import petVaccinationDetail from '@reducers/pet/vaccination/detail'
 import product from '@reducers/product'
 import productDetail from '@reducers/product/detail'
 import productImage from '@reducers/product/image'
@@ -115,10 +117,12 @@ const createRootReducer = history => combineReducers({
   [petIncidentBehaviorDetail.store]: petIncidentBehaviorDetail.reducer,
   [petIncident.store]              : petIncident.reducer,
   [petIncidentDetail.store]        : petIncidentDetail.reducer,
-  [petVaccination.store]           : petVaccination.reducer,
-  [petVaccinationDetail.store]     : petVaccinationDetail.reducer,
   [petNote.store]                  : petNote.reducer,
   [petNoteDetail.store]            : petNoteDetail.reducer,
+  [petReservation.store]           : petReservation.reducer,
+  [petReservationDetail.store]     : petReservationDetail.reducer,
+  [petVaccination.store]           : petVaccination.reducer,
+  [petVaccinationDetail.store]     : petVaccinationDetail.reducer,
   [product.store]                  : product.reducer,
   [productDetail.store]            : productDetail.reducer,
   [productImage.store]             : productImage.reducer,

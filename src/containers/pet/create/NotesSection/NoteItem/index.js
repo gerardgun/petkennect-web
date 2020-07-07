@@ -4,7 +4,7 @@ import './styles.scss'
 import moment  from 'moment'
 import { Button, Icon } from 'semantic-ui-react'
 
-function NoteItem({ item , onUpdate, onDelete }) {
+function NoteItem({ item , onUpdate, onDelete , enableUpdate }) {
   const  _handleUpdateBtnClick = () => {
     onUpdate(item)
   }
@@ -32,12 +32,14 @@ function NoteItem({ item , onUpdate, onDelete }) {
             size='small'>
             <Icon name='trash alternate outline'/>
           </Button>
-          <Button
-            basic
-            className='ml16' icon onClick={_handleUpdateBtnClick}
-            size='small'>
-            <Icon name='edit outline'/>
-          </Button>
+          {enableUpdate && (
+            <Button
+              basic
+              className='ml16' icon onClick={_handleUpdateBtnClick}
+              size='small'>
+              <Icon name='edit outline'/>
+            </Button>
+          )}
         </div>
       </div>
       <div className='description'>
@@ -47,8 +49,12 @@ function NoteItem({ item , onUpdate, onDelete }) {
     </div>)
 }
 
-NoteItem.propTypes = { onUpdate: PropTypes.func.isRequired, onDelete: PropTypes.func.isRequired }
+NoteItem.propTypes = {
+  onUpdate    : PropTypes.func.isRequired,
+  onDelete    : PropTypes.func.isRequired,
+  enableUpdate: PropTypes.bool
+}
 
-NoteItem.defaultProps = {  }
+NoteItem.defaultProps = { }
 
 export default NoteItem

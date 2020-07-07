@@ -6,15 +6,20 @@ import { compose } from 'redux'
 import Table from '@components/Table'
 import Alert from '@components/Alert'
 
+import useModal from '@components/Modal/useModal'
 import VaccinationUploadForm from './VaccinationUploadForm'
+import EmailReminderForm from './EmailReminderForm'
 
-import vaccinationDuck from '@reducers/pet/vaccination'
-import vaccinationDetailDuck from '@reducers/pet/vaccination/detail'
+import petVaccinationDuck from '@reducers/pet/vaccination'
+import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
 
 function VacinationSection(props) {
   const { petVaccinationDetail , petVaccination } = props
+
+  const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
+
   useEffect(()=> {
-    props.getVaccinations()
+    props.getPetVaccinations()
   }, [])
 
   const _handleRowClick = () => {
@@ -24,7 +29,10 @@ function VacinationSection(props) {
     // wip
   }
 
-  const _handleCancelBtnClick = ()=> {}
+  const _handleSaveReminderBtnClick = ()=> {
+    _handleOpenEmailFormModal()
+  }
+
   const _handleSaveBtnClick = ()=> {
     props.setItem(null, 'CREATE')
   }
@@ -32,12 +40,11 @@ function VacinationSection(props) {
   const saving = [ 'PUTTING', 'POSTING' ].includes(petVaccinationDetail.status)
 
   return (
-    <div>
+    <div className='c-vaccination-section'>
       <div className='flex align-center justify-between ph40 pt40 pb16'>
         <Header className='c-title mv0'>
           Vaccinations
         </Header>
-        <Header as='h5'>working in progress ...</Header>
 
       </div>
       <Divider className='m0'/>
@@ -46,8 +53,9 @@ function VacinationSection(props) {
         <Button
           basic
           color='teal'
-          content='Send Reminder' disabled={saving}
-          onClick={_handleCancelBtnClick}
+          content='Send Reminder'
+          disabled={saving || !petVaccination.selector.selected_items.length}
+          onClick={_handleSaveReminderBtnClick}
           size='small'/>
         <Button
           className='ml16'
@@ -62,11 +70,13 @@ function VacinationSection(props) {
 
       <div className='mh40 mt20'>
         <Table
-          duck={vaccinationDuck}
+          duck={petVaccinationDuck}
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
 
       </div>
+      <EmailReminderForm onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
+
       <VaccinationUploadForm/>
     </div>
   )
@@ -79,11 +89,11 @@ VacinationSection.defaultProps = {  }
 export default compose(
   connect(
     ({ ...state }) => ({
-      petVaccination      : vaccinationDuck.selectors.list(state),
-      petVaccinationDetail: vaccinationDetailDuck.selectors.detail(state)
+      petVaccination      : petVaccinationDuck.selectors.list(state),
+      petVaccinationDetail: petVaccinationDetailDuck.selectors.detail(state)
     }), {
-      getVaccinations: vaccinationDuck.creators.get,
-      setItem        : vaccinationDetailDuck.creators.setItem
+      getPetVaccinations: petVaccinationDuck.creators.get,
+      setItem           : petVaccinationDetailDuck.creators.setItem
     })
 )(VacinationSection)
 
