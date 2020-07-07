@@ -9,7 +9,7 @@ import moment from 'moment'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import { syncValidate } from '@lib/utils/functions'
+import { syncValidate, parseResponseError } from '@lib/utils/functions'
 
 import petVaccinationDuck from '@reducers/pet/vaccination'
 import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
@@ -32,16 +32,11 @@ const VaccinationUploadForm = (props) => {
     props.removeSelectedItem()
   }
 
-  const _handleSubmit = (/* values*/) => {
-    alert('Working in progress')
-    props.reset()
-    props.resetItem()
-    props.removeSelectedItem()
-
-    // return props
-    //   .post({ ...values })
-    //   .then(_handleClose)
-    //   .catch(parseResponseError)
+  const _handleSubmit = (values) => {
+    return props
+      .post({ ...values })
+      .then(_handleClose)
+      .catch(parseResponseError)
   }
 
   const isOpened = useMemo(() => getIsOpened(petVaccinationDetail.mode), [
@@ -146,7 +141,7 @@ export default compose(
       }
     },
     {
-      put               : petVaccinationDetailDuck.creators.put,
+      post              : petVaccinationDetailDuck.creators.post,
       resetItem         : petVaccinationDetailDuck.creators.resetItem,
       removeSelectedItem: petVaccinationDuck.creators.removeSelectedIds
     }

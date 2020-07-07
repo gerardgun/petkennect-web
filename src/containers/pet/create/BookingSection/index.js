@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react'
+import  './styles.scss'
 import { connect } from 'react-redux'
-import { Header, Button , Divider } from 'semantic-ui-react'
+import { Header , Divider } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
 
-import reservationDuck from '@reducers/reservation'
+import petReservationDuck from '@reducers/pet/reservation'
 
 function BookingSection(props) {
+  const { petReservation : { filters = {} }  = {} } = props
+
   useEffect(()=> {
-    props.getReservations()
+    props.setFilters({ service_type_what_ever_name: 'T'  })
+    props.getPetReservations()
   }, [])
 
   const _handleRowClick = () => {
@@ -19,8 +23,13 @@ function BookingSection(props) {
     // wip
   }
 
+  const _handleFilterBtnClick = type => () => {
+    props.setFilters({ service_type_what_ever_name: type })
+    props.getPetReservations()
+  }
+
   return (
-    <div>
+    <div className='c-booking'>
       <div className='flex align-center justify-between ph40 pt40 pb16'>
         <Header className='c-title mv0'>
           Booking
@@ -28,29 +37,37 @@ function BookingSection(props) {
       </div>
       <Divider className='m0'/>
       <div className='mh40 mv32'>
-        <Button basic color='blue'>
+        <button
+          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'T' && 'selected'}`} color='blue '
+          onClick={_handleFilterBtnClick('T')}>
           Training
-        </Button>
-        <Button basic disabled>
+        </button>
+        <button
+          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'F' && 'selected'}`} color='blue '
+          onClick={_handleFilterBtnClick('F')}>
           Fitness
-        </Button>
-        <Button basic disabled>
+        </button>
+        <button
+          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'D' && 'selected'}`} color='blue '
+          onClick={_handleFilterBtnClick('D')}>
           Day Camp
-        </Button>
-        <Button basic disabled>
+        </button>
+        <button
+          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'B' && 'selected'}`} color='blue '
+          onClick={_handleFilterBtnClick('B')}>
           Boarding
-        </Button>
-        <Button basic disabled>
+        </button>
+        <button
+          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'G' && 'selected'}`} color='blue '
+          onClick={_handleFilterBtnClick('G')}>
           Grooming
-        </Button>
+        </button>
       </div>
-      <Header as='h5'> working in progress ...</Header>
       <div className='mh40'>
         <Table
-          duck={reservationDuck}
+          duck={petReservationDuck}
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
-
       </div>
     </div>
   )
@@ -62,9 +79,12 @@ BookingSection.defaultProps = {  }
 
 export default compose(
   connect(
-    () => ({
+    (state) => ({
+      petReservation: petReservationDuck.selectors.list(state)
     }), {
-      getReservations: reservationDuck.creators.get
+      getPetReservations: petReservationDuck.creators.get,
+      setFilters        : petReservationDuck.creators.setFilters
+
     })
 )(BookingSection)
 

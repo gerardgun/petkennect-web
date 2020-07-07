@@ -1,30 +1,68 @@
 export default {
-  base_uri: null,
-  row     : {
-    // options: [
-    //   {
-    //     name     : 'view_pdf',
-    //     icon     : 'file pdf outline',
-    //   },
-    //   {
-    //     name     : 'edit',
-    //     icon     : 'edit outline',
-    //   },
-    //   {
-    //     name     : 'delete',
-    //     icon     : 'trash alternate outline',
-    //   },
-    //   {
-    //     display_name: 'Email Report',
-    //     name        : 'preview_report',
-    //     icon        : 'print'
-    //   },
-    //   {
-    //     display_name: 'Download Report',
-    //     name        : 'download_report',
-    //     icon        : 'download'
-    //   }
-    // ]
+  base_uri : null,
+  no_search: true,
+  options  : [
+    {
+      display_name: 'Download',
+      name        : 'download',
+      icon        : 'download'
+    },
+    {
+      display_name: 'Print',
+      name        : 'print',
+      icon        : 'print'
+    },
+    {
+      display_name: null,
+      name        : 'view_pdf',
+      icon        : 'file pdf outline',
+      is_multiple : false
+    },
+    {
+      display_name: null,
+      name        : 'edit',
+      icon        : 'edit outline',
+      is_multiple : false
+    },
+    {
+      display_name: null,
+      name        : 'preview_report',
+      icon        : 'envelope outline',
+      is_multiple : false
+    },
+    {
+      display_name: null,
+      name        : 'delete',
+      icon        : 'trash alternate outline',
+      is_multiple : false,
+      color       : 'red'
+    }
+  ],
+  row: {
+    options: [
+      // {
+      //   name     : 'view_pdf',
+      //   icon     : 'file pdf outline',
+      // },
+      // {
+      //   name     : 'edit',
+      //   icon     : 'edit outline',
+      // },
+      // {
+      //   name     : 'delete',
+      //   icon     : 'trash alternate outline',
+      // },
+      // {
+      //   display_name: 'Email Report',
+      //   name        : 'preview_report',
+      //   icon        : 'print'
+      // },
+      // {
+      //   display_name: 'Download Report',
+      //   name        : 'download_report',
+      //   icon        : 'download'
+      // }
+    ]
   },
   columns: [
     {

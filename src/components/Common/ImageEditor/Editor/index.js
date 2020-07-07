@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Header, Button, Icon } from 'semantic-ui-react'
 import  AvatarEditor from 'react-avatar-editor'
 
-function Editor({ imageURL, onClose : _handleClose , onSaveImage }) {
+function Editor({ imageURL, onClose : _handleClose , onSaveImage, circularCropper }) {
   const avatarEditorRef =  useRef()
   const [ scale, setScale ] = useState(1)
   const [ rotate, setRotate ] = useState(0)
@@ -63,7 +63,7 @@ function Editor({ imageURL, onClose : _handleClose , onSaveImage }) {
         <div className='image-wrapper'>
           {imageURL && (
             <AvatarEditor
-              borderRadius={217}
+              borderRadius={circularCropper ? 217 : 0}
               className='editor-canvas'
               color={[ 0, 0, 0, 0.4 ]}
               crossOrigin='anonymous'
@@ -127,9 +127,10 @@ function Editor({ imageURL, onClose : _handleClose , onSaveImage }) {
 }
 
 Editor.propTypes = {
-  onClose    : PropTypes.func.isRequired,
-  imageURL   : PropTypes.string.isRequired,
-  onSaveImage: PropTypes.func.isRequired
+  onClose        : PropTypes.func.isRequired,
+  imageURL       : PropTypes.string.isRequired,
+  onSaveImage    : PropTypes.func.isRequired,
+  circularCropper: PropTypes.bool.isRequired
 }
 
 Editor.defaultProps = {  }

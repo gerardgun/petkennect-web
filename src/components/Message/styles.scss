@@ -1,0 +1,23 @@
+.c-message {
+  &.c-message-wrapper {
+    display: flex;
+    border: 1px solid #FAFCFF;
+    border-radius: 4px;
+    box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
+    &.warning {
+      border-left: 6px solid #f2994a;
+    }
+    &.danger {
+      border-left: 6px solid #eb5757;
+    }
+    .c-message__icon {
+      margin: 16px;
+      &.warning {
+        color: #f2994a;
+      }
+      &.danger {
+        color: #eb5757;
+      }
+    }
+  }
+}

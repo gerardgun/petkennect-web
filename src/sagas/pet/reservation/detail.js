@@ -4,19 +4,18 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import petDetailDuck from '@reducers/pet/detail'
-import petVaccinationDuck from '@reducers/pet/vaccination'
-import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
-const { types } = petVaccinationDetailDuck
+const { types } = petReservationDetailDuck
 
 function* deleteItem(/* { ids } */) {
   try {
     const petDetail = yield select(petDetailDuck.selectors.detail)
-    const petVaccinationDetail = yield select(petVaccinationDetailDuck.selectors.detail)
+    const petResetvationDetail = yield select(petReservationDetailDuck.selectors.detail)
 
     yield put({ type: types.DELETE_PENDING })
 
-    yield call(Delete, `pets/${petDetail.item.id}/vaccinations/${petVaccinationDetail.item.id}/`)
+    yield call(Delete, `pets/${petDetail.item.id}/reservations/${petResetvationDetail.item.id}/`)
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -32,7 +31,7 @@ function* get({ id }) {
     yield put({ type: types.GET_PENDING })
     const petDetail = yield select(petDetailDuck.selectors.detail)
 
-    const item = yield call(Get, `pets/${petDetail.item.id}/vaccinations/${id}/`)
+    const item = yield call(Get, `pets/${petDetail.item.id}/reservations/${id}/`)
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
@@ -53,7 +52,7 @@ function* post({ payload: { ...payload } }) {
 
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, `pets/${petDetail.item.id}/vaccinations/`, {
+    yield call(Post, `pets/${petDetail.item.id}/reservations/`, {
       ...payload
     })
 
@@ -69,11 +68,11 @@ function* post({ payload: { ...payload } }) {
 function* _put({ payload : { ...payload } }) {
   try {
     const petDetail = yield select(petDetailDuck.selectors.detail)
-    const petVaccinationDetail = yield select(petVaccinationDetailDuck.selectors.detail)
+    const petReservartionDetail = yield select(petReservationDetailDuck.selectors.detail)
 
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `pets/${petDetail.item.id}/vaccinations/${petVaccinationDetail.item.id}/`, payload)
+    yield call(Patch, `pets/${petDetail.item.id}/reservations/${petReservartionDetail.item.id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
@@ -84,35 +83,9 @@ function* _put({ payload : { ...payload } }) {
   }
 }
 
-function* sendEmail({ payload }) {
-  try {
-    // selector.selected_items
-    const { item : { id:pet_id } = {} } = yield select(petDetailDuck.selectors.detail)
-    const { selector : { selected_items = [] } = {} } = yield select(petVaccinationDuck.selectors.list)
-
-    yield put({ type: types.SEND_EMAIL_PENDING })
-    const result = yield call(Post, `pets/${pet_id}/send-reminder-vaccinations/`, {
-      body_title     : payload.subject,
-      vaccination_ids: selected_items.map(({ id })=> id),
-      ...payload
-    })
-
-    yield put({
-      type   : types.SEND_EMAIL_FULFILLED,
-      payload: result
-    })
-  } catch (e) {
-    yield put({
-      type : types.SEND_EMAIL_FAILURE,
-      error: e
-    })
-  }
-}
-
 export default [
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
-  takeEvery(types.PUT, _put),
-  takeEvery(types.SEND_EMAIL, sendEmail)
+  takeEvery(types.PUT, _put)
 ]
