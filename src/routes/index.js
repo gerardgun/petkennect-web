@@ -23,6 +23,8 @@ import PetBreed from '@containers/pet-breed'
 import PetIncidentType from '@containers/pet-incident-type'
 import PetIncidentAction from '@containers/pet-incident-action'
 import PetIncidentBehavior from '@containers/pet-incident-behavior'
+import PetRetireReason from '@containers/pet-retire-reason'
+import PetVaccinationType from '@containers/pet-vaccination-type'
 import Product from '@containers/product'
 import ProductCreate from '@containers/product/create/RootProvider'
 import Category from '@containers/category'
@@ -37,6 +39,9 @@ import ServiceCreate from '@containers/service/create'
 import Company from '@containers/company'
 import Organization from '@containers/organization'
 import OrganizationCreate from '@containers/organization/create'
+import TrainingCommand from '@containers/training-command'
+import TrainingMethod from '@containers/training-method'
+import TrainingReason from '@containers/training-reason'
 import Transaction from '@containers/transaction'
 // import Grant from '@containers/grant'
 // import GrantAdd from '@containers/grant/add'
@@ -123,6 +128,14 @@ const privateRoutes = [
     component: PetIncidentBehavior
   },
   {
+    path     : '/pet/vaccination-type',
+    component: PetVaccinationType
+  },
+  {
+    path     : '/pet/retire-reason',
+    component: PetRetireReason
+  },
+  {
     path     : '/pet',
     component: Pet
   },
@@ -205,6 +218,18 @@ const privateRoutes = [
   {
     path     : '/organization/:organization',
     component: OrganizationCreate
+  },
+  {
+    path     : '/setup/training-command',
+    component: TrainingCommand
+  },
+  {
+    path     : '/setup/training-method',
+    component: TrainingMethod
+  },
+  {
+    path     : '/setup/training-reason',
+    component: TrainingReason
   },
   {
     path     : '/transaction',

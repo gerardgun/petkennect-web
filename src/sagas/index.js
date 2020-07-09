@@ -42,10 +42,14 @@ import petIncident from './pet/incident'
 import petIncidentDetail from './pet/incident/detail'
 import petNote from './pet/note'
 import petNoteDetail from './pet/note/detail'
+import petRetireReason from './pet/retire-reason'
+import petRetireReasonDetail from './pet/retire-reason/detail'
 import petReservation from './pet/reservation'
 import petReservationDetail from './pet/reservation/detail'
 import petVaccination from './pet/vaccination'
 import petVaccinationDetail from './pet/vaccination/detail'
+import petVaccinationType from './pet/vaccination-type'
+import petVaccinationTypeDetail from './pet/vaccination-type/detail'
 import product from './product'
 import productDetail from './product/detail'
 import productImage from './product/image'
@@ -63,6 +67,12 @@ import serviceAddon from './service/addon'
 import serviceAddonDetail from './service/addon/detail'
 import serviceAddonGroup from './service/addon/group'
 import serviceAddonGroupDetail from './service/addon/group/detail'
+import trainingCommand from './training-command'
+import trainingCommandDetail from './training-command/detail'
+import trainingMethod from './training-method'
+import trainingMethodDetail from './training-method/detail'
+import trainingReason from './training-reason'
+import trainingReasonDetail from './training-reason/detail'
 import transaction from './transaction'
 import transactionDetail from './transaction/detail'
 import user from './user'
@@ -114,10 +124,14 @@ export default function* rootSaga() {
     ...petIncidentDetail,
     ...petNote,
     ...petNoteDetail,
+    ...petRetireReason,
+    ...petRetireReasonDetail,
     ...petReservation,
     ...petReservationDetail,
     ...petVaccination,
     ...petVaccinationDetail,
+    ...petVaccinationType,
+    ...petVaccinationTypeDetail,
     ...product,
     ...productDetail,
     ...productImage,
@@ -135,6 +149,12 @@ export default function* rootSaga() {
     ...serviceAddonDetail,
     ...serviceAddonGroup,
     ...serviceAddonGroupDetail,
+    ...trainingCommand,
+    ...trainingCommandDetail,
+    ...trainingMethod,
+    ...trainingMethodDetail,
+    ...trainingReason,
+    ...trainingReasonDetail,
     ...transaction,
     ...transactionDetail,
     ...user,
