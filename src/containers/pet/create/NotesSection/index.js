@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import './styles.scss'
 import { connect } from 'react-redux'
-import { Header, Button , Divider } from 'semantic-ui-react'
+import { Header, Button , Divider, Segment, Dimmer, Loader } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import ModalDelete from '@components/Modal/Delete'
@@ -14,8 +15,11 @@ import petNoteDetailDuck from '@reducers/pet/note/detail'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
 function NotesSection(props) {
-  const {  petNoteDetail, petNote } = props
+  const {  petNoteDetail, petNote, auth } = props
   const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
+
+  /** client filter */
+  const [ filter, setFilter ] = useState({ type: 'B' })
 
   useEffect(()=> {
     props.getNotes()
@@ -34,10 +38,15 @@ function NotesSection(props) {
     _handleOpenDeleteModal()
   }
 
+  const _handleFilterBtnClick = type => () => {
+    setFilter({ type })
+    props.getNotes()
+  }
+
   const saving = [ 'PUTTING', 'POSTING' ].includes(petNoteDetail.status)
 
   return (
-    <div>
+    <div className='c-notes'>
       <div className='flex align-center justify-between ph40 pt40 pb16'>
         <Header className='c-title mv0'>
           Notes
@@ -45,21 +54,26 @@ function NotesSection(props) {
       </div>
       <Divider className='m0'/>
       <div className='mh40 mv32'>
-
-        <Button basic color='blue'>
+        <button
+          className={`filter-button ${filter.type === 'B' && 'selected'}`} color='blue '
+          onClick={_handleFilterBtnClick('B')}>
           Behavioral
-        </Button>
-        <Button basic disabled>
+        </button>
+        <button
+          basic className={`filter-button ml16 ${filter.type === 'M' && 'selected'}`} color='blue'
+          onClick={_handleFilterBtnClick('M')}>
           Medical
-        </Button>
-        <Button basic disabled>
+        </button>
+        <button
+          basic className={`filter-button ml16 ${filter.type === 'G' && 'selected'}`} color='blue'
+          onClick={_handleFilterBtnClick('G')}>
           General
-        </Button>
-        <Button basic disabled>
+        </button>
+        <button
+          basic className={`filter-button ml16 ${filter.type === 'O' && 'selected'}`} color='blue'
+          onClick={_handleFilterBtnClick('O')}>
           Owner
-        </Button>
-        <Header as='h5'> working in progress ...</Header>
-
+        </button>
       </div>
       <div className='mh40 mv32 flex justify-end'>
         <Button
@@ -72,14 +86,18 @@ function NotesSection(props) {
           onClick={_handleAddBtnClick}
           size='small'/>
       </div>
-      <div className='mh40'>
-
-        {petNote.items.map((item)=> (
+      <Segment className='mh40 border-none shadow-0'>
+        {petNote.status === 'GETTING' && (
+          <Dimmer active inverted>
+            <Loader inverted>Loading</Loader>
+          </Dimmer>
+        )}
+        {petNote.items.filter(({ type })=> type === filter.type).map((item)=> (
           <NoteItem
-            item={item} key={item.id} onDelete={_handleDeleteBtnClick}
-            onUpdate={_handleEditBtnClick}/>
+            enableUpdate={item.employee === auth.item.employee_id} item={item} key={item.id}
+            onDelete={_handleDeleteBtnClick} onUpdate={_handleEditBtnClick}/>
         ))}
-      </div>
+      </Segment>
       <Form/>
       <ModalDelete
         duckDetail={petNoteDetailDuck}
@@ -96,9 +114,10 @@ NotesSection.defaultProps = {  }
 
 export default compose(
   connect(
-    ({ ...state }) => ({
+    ({ auth, ...state }) => ({
       petNoteDetail: petNoteDetailDuck.selectors.detail(state),
-      petNote      : petNoteDuck.selectors.list(state)
+      petNote      : petNoteDuck.selectors.list(state),
+      auth
     }), {
       getNotes: petNoteDuck.creators.get,
       setItem : petNoteDetailDuck.creators.setItem

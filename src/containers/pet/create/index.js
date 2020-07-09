@@ -17,12 +17,13 @@ import GallerySection from './GallerySection'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petImageDuck from '@reducers/pet/image'
+import useCameraAvailable from '@hooks/useCameraAvailable'
 
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
 const PetShow = ({ petDetail , petImage, ...props }) => {
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
-  const  [ openImageEditorModal,setOpenImageEditorModal ] = useState(false)
+  const [ openImageEditorModal,setOpenImageEditorModal ] = useState(false)
   const [ initialStep, setInitialStep ] = useState(null)
   const [ initialImageURL, setInitialImageURL ] = useState(null)
   const { id } = useParams()
@@ -37,6 +38,7 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
       props.resetItem()
     }
   }, [])
+  const  cameraIsAvailable = useCameraAvailable()
 
   const getAge = (date) => {
     if(!date) return '-'
@@ -75,7 +77,7 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
   const _handlePhotoAction = (e , data)=>{
     switch (data.value) {
       case 'view_photo':
-        setInitialImageURL(petDetail.item.what_ever_thumbnail_path)
+        setInitialImageURL(petDetail.item.image_filepath)
         setInitialStep('VIEW')
         setOpenImageEditorModal(true)
 
@@ -108,6 +110,13 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
     setInitialStep(null)
   }
 
+  const _handleImageEditorSave = (_imageFile) => {
+    return props.put({ id: petDetail.item.id, image: _imageFile })
+      .then(()=> props.getPet(id))
+      .catch(()=> {})
+      .finally(_handleCloseImageEditorModal)
+  }
+
   const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
 
   const fullname = `${petDetail.item.name || ''}`
@@ -127,9 +136,37 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
                 {fullname}
               </Breadcrumb.Section>
             </Breadcrumb>
-            <Image
-              circular className='c-square-140 mh-auto mt40 mb16' size='mini'
-              src={petDetail.item.thumbnail_path || defaultImage}/>
+            <div className='flex justify-center align-center mt40 mb16'>
+              <Dropdown
+                direction='right'
+                icon={null}
+                onChange={_handlePhotoAction}
+                selectOnBlur={false}
+                trigger={(
+                  <div className='c-image-profile mh-auto'>
+                    <Image
+                      circular className='c-square-140' size='mini'
+                      src={petDetail.item.image_filepath || defaultImage}/>
+                    <div className='c-image-profile__overlay'>
+                      <Icon className='text-white' name='camera'/>
+                      <span className='text-regular text-white text-center'>CHANGE <br/>PHOTO</span>
+                    </div>
+
+                  </div>
+                )}
+                value={null}>
+                <Dropdown.Menu className='c-image-profile__menu'>
+                  {[
+                    { key: 'view_photo', value: 'view_photo', text: 'View photo' },
+                    { key: 'take_photo', value: 'take_photo', text: 'Take photo'  },
+                    { key: 'upload_photo', value: 'upload_photo', text: 'Upload photo' },
+                    { key: 'select_photo', value: 'select_photo', text: 'Select photo' }
+                  ].filter(_item=> _item.value !== 'take_photo' || (_item.value === 'take_photo' && cameraIsAvailable)).map(_item=> (
+                    <Dropdown.Item  key={_item.key} onClick={_handlePhotoAction} value={_item.value}>{_item.text}</Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
             <input
               accept='image/*'
               hidden onChange={_handleFileChange} ref={inputFileRef}
@@ -142,22 +179,11 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
                   <Link className='text-underline pl8 block'to={`/client/show/${petDetail.item.client}`}>{clientFullName}</Link>
                 </Header>
               </div>
-              <Dropdown
-                icon={null}
-                onChange={_handlePhotoAction}
-                options={[
-                  { key: 'view_photo', value: 'view_photo', text: 'View photo' },
-                  { key: 'take_photo', value: 'take_photo', text: 'Take photo' },
-                  { key: 'upload_photo', value: 'upload_photo', text: 'Upload photo' },
-                  { key: 'select_photo', value: 'select_photo', text: 'Select photo' }
-                ]}
-                selectOnBlur={false}
-                trigger={(
-                  <Button icon>
-                    <Icon name='ellipsis vertical'/>
-                  </Button>
-                )}
-                value={null}/>
+
+              <Button icon>
+                <Icon name='ellipsis vertical'/>
+              </Button>
+
             </div>
             <div className='flex justify-between'>
               <div className='w40'>
@@ -222,11 +248,14 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
           </Grid.Column>
 
           <ImageEditor
+            circularCropper
             initialImageURL={initialImageURL}
             initialStep={initialStep}
             key={`${initialStep}${openImageEditorModal}`}
             onClose={_handleCloseImageEditorModal}
-            open={openImageEditorModal} pickerImages={petImage.items.map(_petImage=> ({
+            onSaveImage={
+              _handleImageEditorSave
+            } open={openImageEditorModal} pickerImages={petImage.items.map(_petImage=> ({
               ..._petImage,
               url: _petImage.filepath
             }))}/>
@@ -247,6 +276,7 @@ export default compose(
     }), {
       getPetImages: petImageDuck.creators.get,
       getPet      : petDetailDuck.creators.get,
+      put         : petDetailDuck.creators.put,
       resetItem   : petDetailDuck.creators.resetItem
     })
 )(PetShow)

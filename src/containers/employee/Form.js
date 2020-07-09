@@ -213,7 +213,7 @@ const EmployeeForm = (props) => {
               control={Form.Input}
               icon='upload'
               label='Profile Picture'
-              name='prfile_picture'
+              name='thumbnail_path'
               placeholder='Upload image'
               style={{ width: '74%' }}
               type='file'/>

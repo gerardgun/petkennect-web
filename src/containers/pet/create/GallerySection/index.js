@@ -1,8 +1,8 @@
 import  './styles.scss'
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import {  Form, Header, Divider  } from 'semantic-ui-react'
+import {  Form, Header, Divider, Button  } from 'semantic-ui-react'
 
 import ModalDelete from '@components/Modal/Delete'
 
@@ -14,6 +14,8 @@ import PetGallery from './PetGallery'
 
 import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
+import ImageEditor from '@components/Common/ImageEditor'
+import { useChangeStatusEffect } from '@hooks/Shared'
 
 const FormInformation = props => {
   const {
@@ -21,10 +23,14 @@ const FormInformation = props => {
     petImage,
     petImageDetail,
     getPetImages
-
   } = props
 
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+
+  const [ openImageEditorModal, setOpenImageEditorModal ] = useState(false)
+
+  const [ initialStep, setInitialStep ] = useState(null)
+  const [ initialImageURL, setInitialImageURL ] = useState(null)
 
   useEffect(()=> {
     getPetImages({ pet_id: petDetail.item.id })
@@ -32,8 +38,52 @@ const FormInformation = props => {
 
   const _handleDrop = useCallback((_acceptedFiles, _rejectedFiles , event) => {
     const images = event.dataTransfer ? event.dataTransfer.files : event.target.files
-    props.post({ pet_id: petDetail.item.id ,images })
+
+    if(images && images[0]) {
+      setInitialImageURL(URL.createObjectURL(images[0]))
+      setInitialStep('EDITOR')
+      setOpenImageEditorModal(true)
+    }
   }, [])
+
+  useChangeStatusEffect(
+    ()=> getPetImages({ pet_id: petDetail.item.id }),
+    petImageDetail.status
+  )
+
+  const  _handleCloseImageEditorModal = ()=> {
+    props.resetItem()
+    setOpenImageEditorModal(false)
+    setInitialImageURL(null)
+    setInitialStep(null)
+  }
+
+  const _handleImageEditorSave = (_imageFile) => {
+    if(petImageDetail.mode === 'UPDATE')
+      return props.put({
+        pet_id      : petDetail.item.id ,
+        pet_image_id: petImageDetail.item.id,
+        image       : _imageFile
+      })
+        .catch(()=>{})
+        .finally(_handleCloseImageEditorModal)
+
+    return props.post({ pet_id: petDetail.item.id ,images: _imageFile })
+      .catch(()=>{})
+      .finally(_handleCloseImageEditorModal)
+  }
+
+  const _handleTakePhotoBtnClick = () => {
+    setInitialStep('CAMERA')
+    setOpenImageEditorModal(true)
+  }
+
+  const _handleUpdate = (item) => ()=> {
+    props.setItem(item, 'UPDATE')
+    setInitialImageURL(item.filepath)
+    setInitialStep('EDITOR')
+    setOpenImageEditorModal(true)
+  }
 
   const {
     getRootProps,
@@ -45,9 +95,7 @@ const FormInformation = props => {
     _handleOpen()
   }
 
-  const _handleUpdate = pet_images => {
-    props.put({ pet_id: petDetail.item.id, pet_images })
-  }
+  const saving = [ 'POSTING', 'PUTTING' ].includes(petDetail.status)
 
   return (
     <div>
@@ -57,25 +105,56 @@ const FormInformation = props => {
         </Header>
       </div>
       <Divider className='m0'/>
+
+      <div className='flex justify-end mh40 mt32'>
+        <div {...getRootProps()}  >
+          <input {...getInputProps()}/>
+
+          <Button
+            basic
+            color='teal'
+            content='Upload' disabled={saving}
+            // onClick={_handleCancelBtnClick}
+            size='small'/>
+        </div>
+
+        <Button
+          className='ml16'
+          color='teal'
+          content='Take Photo'
+          disabled={saving}
+          loading={saving}
+          onClick={_handleTakePhotoBtnClick}
+          // eslint-disable-next-line react/jsx-handler-names
+          // onClick={_handleSaveBtnClick}
+          size='small'/>
+      </div>
       <div className='mh40 mv32'>
         <Form className='pets-form-gallery'  loading={petImage.status === 'GETTING' || petImageDetail.status === 'PUTTING'}>
-          <Header as='h4'>Redesign working in progress ...</Header>
-          <div className='gallery'>
-            <div {...getRootProps()}  className='gallery_drop-zone'>
-              <input {...getInputProps()}/>
-              <div>Drag and Drop a Image</div>
-            </div>
-            <PetGallery
-              items={[ ...petImage.items ].sort((_firstItem,_secondItem)=>_firstItem.order - _secondItem.order)}
-              onDelete={_handleDeleteImage} onUpdate={_handleUpdate}/>
-          </div>
-
+          <PetGallery
+            // items={petImage.items}
+            items={[ ...petImage.items ]
+              .sort((_firstItem,_secondItem)=>  new Date(_secondItem.updated_at) - new Date(_firstItem.updated_at))
+            }
+            onDelete={_handleDeleteImage} onUpdate={_handleUpdate}/>
           <ModalDelete
             duckDetail={petImageDetailDuck}
             onClose={_handleClose}
             open={open}/>
         </Form>
       </div>
+      <ImageEditor
+        initialImageURL={initialImageURL}
+        initialStep={initialStep}
+        key={`${initialStep}${openImageEditorModal}`}
+        onClose={_handleCloseImageEditorModal}
+        onSaveImage={
+          _handleImageEditorSave
+        }
+        open={openImageEditorModal} pickerImages={petImage.items.map(_petImage=> ({
+          ..._petImage,
+          url: _petImage.filepath
+        }))}/>
     </div>
   )
 }
@@ -96,7 +175,8 @@ export default compose(
       getPetImages: petImageDuck.creators.get,
       post        : petImageDetailDuck.creators.post,
       put         : petImageDetailDuck.creators.put,
-      setItem     : petImageDetailDuck.creators.setItem
+      setItem     : petImageDetailDuck.creators.setItem,
+      resetItem   : petImageDetailDuck.creators.resetItem
     }
   )
 )(FormInformation)

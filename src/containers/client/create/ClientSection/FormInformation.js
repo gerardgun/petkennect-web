@@ -76,7 +76,7 @@ const FormInformation = props => {
             control={Form.Input}
             icon='upload'
             label='Profile Picture'
-            name='prfile_picture'
+            name='thumbnail_path'
             placeholder='Upload image'
             style={{ width: '77%' }}
             type='file'/>

@@ -1,18 +1,21 @@
+import React from 'react'
+import { Label } from 'semantic-ui-react'
+
 export default {
   base_uri: null,
   row     : {
-    // options: [
-    // {
-    //   display_name: 'Edit',
-    //   name        : 'edit',
-    //   icon        : 'edit outline'
-    // },
-    // {
-    //   display_name: 'Delete',
-    //   name        : 'delete',
-    //   icon        : 'trash alternate outline'
-    // }
-    // ]
+    options: [
+      // {
+      //   display_name: 'Edit',
+      //   name        : 'edit',
+      //   icon        : 'edit outline'
+      // },
+      // {
+      //   display_name: 'Delete',
+      //   name        : 'delete',
+      //   icon        : 'trash alternate outline'
+      // }
+    ]
   },
   columns: [
     {
@@ -21,6 +24,24 @@ export default {
       type        : 'string', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left'
+    },
+    {
+      display_name: 'FILE',
+      name        : 'document_path',
+      type        : null, // image, boolean, date, datetime, money, label
+      width       : null,
+      align       : 'left',
+      formatter   : (value)=> {
+        return value ? (
+          <a href={value} rel='noopener noreferrer'  target='_blank'>
+            <span>File</span>
+          </a>
+        ) : '-'
+      }
+      // action      : {
+      //   name : 'document_path',
+      //   label: 'File'
+      // }
     },
     {
       display_name: 'EXPIRED DATE',
@@ -41,13 +62,18 @@ export default {
       display_name: 'STATUS',
       name        : 'status',
       type        : 'badge',
-      badge       : {
-        colors: {
-          'Comming due': 'amber',
-          'Verify!"'   : 'blue',
-          'Expired!"'  : 'red',
-          Current      : 'green'
+      formatter   : (value)=> {
+        const color = {
+          'Comming due': 'yellow',
+          'Verify!'    : 'blue',
+          Expired      : 'red',
+          Current      : 'teal'
         }
+
+        return  (
+          <Label
+            circular color={color[value]} horizontal
+            style={{ minWidth: '6rem' }}>{value}</Label>)
       },
       width: null,
       align: 'left'

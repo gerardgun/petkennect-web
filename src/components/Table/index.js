@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { Checkbox, Dimmer, Dropdown, Grid, Image, Input, Label, Loader, Segment, Table, Button } from 'semantic-ui-react'
+import { Checkbox, Dimmer, Dropdown, Grid, Image, Input, Label, Loader, Segment, Table, Button, Icon } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
@@ -42,6 +42,10 @@ const TableList = ({ duck, list, ...props }) => {
       }).format(content)
     else if(column.type === 'string')
       content = content || <span style={{ color: 'grey' }}>-</span>
+    else if(column.type === 'action')
+      content =  (<Link to={'#'}>
+        <span>{`${column.action.label}`}</span>
+      </Link>)
 
     return content
   }
@@ -121,6 +125,52 @@ const TableList = ({ duck, list, ...props }) => {
     )
   }
 
+  const _renderRow = (item, index) => {
+    const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
+
+    return (
+      <Table.Row
+        active={checked} data-item-id={item.id} key={index}
+        onClick={_handleRowClick}>
+        {/* Row selection */}
+        {
+          list.selector && (
+            <Table.Cell>
+              <Checkbox
+                checked={checked} data-item-id={item.id}
+                onChange={_handleSelectorCheckboxChange}/>
+            </Table.Cell>
+          )
+        }
+
+        {/* Row data */}
+        {
+          list.config.columns.map(({ width = null, align = null, ...column }, index) => (
+            <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
+          ))
+        }
+
+        {/* Row options */}
+        {
+          list.config.row.options.length > 0 && (
+            <Table.Cell textAlign='center'>
+              {
+                list.config.row.options.map(({ icon, name, display_name, ...rest }, index)=> (
+                  <Button
+                    basic content={display_name}
+                    data-item-id={item.id} data-option-name={name}
+                    icon={icon} key={index} onClick={_handleRowOptionClick}
+                    {...rest}/>
+                ))
+              }
+            </Table.Cell>
+          )
+        }
+      </Table.Row>
+
+    )
+  }
+
   const loading = list.status === 'GETTING'
   const areAllItemsChecked = list.selector && list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
 
@@ -174,12 +224,14 @@ const TableList = ({ duck, list, ...props }) => {
             )
           }
         </Grid.Column >
-        <Grid.Column textAlign='right' width={10}>
-          {/* <Button basic content='Filters' disabled/> */}
-          <Input
-            icon='search' iconPosition='left' onChange={_handleSearchInputChange}
-            placeholder={list.config.search_placeholder || 'Search'} type='search'/>
-        </Grid.Column>
+        {!list.config.no_search && (
+          <Grid.Column textAlign='right' width={10}>
+            {/* <Button basic content='Filters' disabled/> */}
+            <Input
+              icon='search' iconPosition='left' onChange={_handleSearchInputChange}
+              placeholder={list.config.search_placeholder || 'Search'} type='search'/>
+          </Grid.Column>
+        )}
       </Grid>
 
       <Table
@@ -227,56 +279,37 @@ const TableList = ({ duck, list, ...props }) => {
         </Table.Header>
         <Table.Body>
           {
-            list.items.length > 0 ? (
-              list.items.map((item, index) => {
-                const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
-
-                return (
-                  <Table.Row
-                    active={checked} data-item-id={item.id} key={index}
-                    onClick={_handleRowClick}>
-                    {/* Row selection */}
+            (()=>{
+              if(list.config.group_by)
+                return  list.config.group_by.groups.map(_group => (
+                  <>
+                    <Table.Row disabled>
+                      <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='left'>
+                        <Icon name={_group.icon_label}/> {_group.text_label}
+                      </Table.Cell>
+                    </Table.Row>
                     {
-                      list.selector && (
-                        <Table.Cell>
-                          <Checkbox
-                            checked={checked} data-item-id={item.id}
-                            onChange={_handleSelectorCheckboxChange}/>
-                        </Table.Cell>
-                      )
+                      list.items
+                        .filter(_item=> _item[list.config.group_by.column_name] === _group.value).length > 0 ? (
+                          list.items.map(_renderRow)
+                        ) : (
+                          <Table.Row disabled>
+                            <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
+                          </Table.Row>
+                        )
                     }
+                  </>
+                ))
 
-                    {/* Row data */}
-                    {
-                      list.config.columns.map(({ width = null, align = null, ...column }, index) => (
-                        <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
-                      ))
-                    }
+              return list.items.length > 0 ? (
+                list.items.map(_renderRow)
+              ) : (
+                <Table.Row disabled>
+                  <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
+                </Table.Row>
+              )
+            })()
 
-                    {/* Row options */}
-                    {
-                      list.config.row.options.length > 0 && (
-                        <Table.Cell textAlign='center'>
-                          {
-                            list.config.row.options.map(({ icon, name, display_name, ...rest }, index)=> (
-                              <Button
-                                basic content={display_name}
-                                data-item-id={item.id} data-option-name={name}
-                                icon={icon} key={index} onClick={_handleRowOptionClick}
-                                {...rest}/>
-                            ))
-                          }
-                        </Table.Cell>
-                      )
-                    }
-                  </Table.Row>
-                )
-              })
-            ) : (
-              <Table.Row disabled>
-                <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
-              </Table.Row>
-            )
           }
         </Table.Body>
       </Table>

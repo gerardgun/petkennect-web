@@ -1,3 +1,30 @@
-.p-pet-show{
-  
+.p-pet-show {
+  .c-image-profile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    .c-image-profile__overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(97, 100, 104, 0.9);
+      cursor: pointer;
+    }
+    &:hover .c-image-profile__overlay {
+      display: flex;
+    }
+  }
+  .c-image-profile__menu {
+    top: 70px !important;
+    right: -60px !important;
+    left: auto !important;
+  }
 }

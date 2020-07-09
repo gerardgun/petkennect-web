@@ -1,0 +1,29 @@
+.c-incident-section {
+  .message__title {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: -0.04em;
+    color: #1c1d1e;
+  }
+  .message__subtitle {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: -0.04em;
+    color: #1c1d1e;
+  }
+  .message__description {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: -0.04em;
+    color: #9b9fa4;
+    &.danger {
+      color: #dd4b39;
+    }
+  }
+}

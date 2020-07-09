@@ -1,6 +1,21 @@
 export default {
   base_uri: null,
-  row     : {
+  group_by: {
+    column_name: 'is_pending',
+    groups     : [
+      {
+        value     : true,
+        icon_label: 'flag outline',
+        text_label: 'Pending'
+      },
+      {
+        value     : false,
+        icon_label: 'flag outline',
+        text_label: 'History'
+      }
+    ]
+  },
+  row: {
     options: [
       // {
       //   display_name: 'View Report',
@@ -49,6 +64,28 @@ export default {
       align       : 'left',
       sort        : true,
       sort_name   : 'employee__user__last_name'
+    },
+    {
+      display_name: 'Report',
+      name        : 'report-client-side',
+      type        : 'action',
+      width       : null,
+      align       : 'left',
+      action      : {
+        name : 'show_report',
+        label: 'View'
+      }
+    },
+    {
+      display_name: 'Detail',
+      name        : 'detail-client-side',
+      type        : 'action',
+      width       : null,
+      align       : 'left',
+      action      : {
+        name : 'show_detail',
+        label: 'View'
+      }
     }
   ]
 }
