@@ -17,11 +17,12 @@ import GallerySection from './GallerySection'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petImageDuck from '@reducers/pet/image'
+import petImageDetailDuck from '@reducers/pet/image/detail'
 import useCameraAvailable from '@hooks/useCameraAvailable'
 
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
-const PetShow = ({ petDetail , petImage, ...props }) => {
+const PetShow = ({ petDetail, petImage, ...props }) => {
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
   const [ openImageEditorModal,setOpenImageEditorModal ] = useState(false)
   const [ initialStep, setInitialStep ] = useState(null)
@@ -104,17 +105,15 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
     }
   }
 
-  const  _handleCloseImageEditorModal = ()=> {
+  const _handleCloseImageEditorModal = ()=> {
     setOpenImageEditorModal(false)
     setInitialImageURL(null)
     setInitialStep(null)
   }
 
-  const _handleImageEditorSave = (_imageFile) => {
-    return props.put({ id: petDetail.item.id, image: _imageFile })
-      .then(()=> props.getPet(id))
-      .catch(()=> {})
-      .finally(_handleCloseImageEditorModal)
+  const _handleImageEditorSave = imageFile => {
+    props.postPetImage({ images: imageFile, is_profile: true })
+      .then(_handleCloseImageEditorModal)
   }
 
   const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
@@ -276,6 +275,7 @@ export default compose(
     }), {
       getPetImages: petImageDuck.creators.get,
       getPet      : petDetailDuck.creators.get,
+      postPetImage: petImageDetailDuck.creators.post,
       put         : petDetailDuck.creators.put,
       resetItem   : petDetailDuck.creators.resetItem
     })

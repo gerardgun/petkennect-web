@@ -11,7 +11,7 @@ function Show({ petDetail  }) {
 
   return (
     <div className='ph40 pv32'>
-      <Header as='h4' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
+      <Header as='h6' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'
@@ -53,7 +53,7 @@ function Show({ petDetail  }) {
           value={petDetail.item.retired ? 'Yes' : 'No'}/>
       </div>
 
-      <Header as='h4' className='form-section-header mt36' color='blue'>APPEARANCE</Header>
+      <Header as='h6' className='form-section-header mt36' color='blue'>APPEARANCE</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'
@@ -71,7 +71,7 @@ function Show({ petDetail  }) {
           value={petDetail.item.info_coloring || '-'}/>
       </div>
 
-      <Header as='h4' className='form-section-header mt36' color='blue'>TEMPERAMENT</Header>
+      <Header as='h6' className='form-section-header mt36' color='blue'>TEMPERAMENT</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'
@@ -119,7 +119,7 @@ function Show({ petDetail  }) {
           value={petDetail.item.temp_dog_fights ? 'Yes' : 'No'}/>
       </div>
 
-      <Header as='h4' className='form-section-header mt36' color='blue'>HEALTH</Header>
+      <Header as='h6' className='form-section-header mt36' color='blue'>HEALTH</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w100'
@@ -143,7 +143,7 @@ function Show({ petDetail  }) {
           value={petDetail.item.health_is_allergic ? 'Yes' : 'No'}/>
       </div>
 
-      <Header as='h4' className='form-section-header mt36' color='blue'>HESITATES TO EAT</Header>
+      <Header as='h6' className='form-section-header mt36' color='blue'>HESITATES TO EAT</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'
@@ -161,7 +161,7 @@ function Show({ petDetail  }) {
           value={petDetail.item.hesitate_wet_food ? 'Yes' : 'No'}/>
       </div>
 
-      <Header as='h4' className='form-section-header mt36' color='blue'>ADITIONAL INFO</Header>
+      <Header as='h6' className='form-section-header mt36' color='blue'>ADITIONAL INFO</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'

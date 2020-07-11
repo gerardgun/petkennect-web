@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Image, Button, Icon } from 'semantic-ui-react'
 
-function PetGallery({ items , onDelete: _handleDelete , onUpdate:_handleUpdate }) {
+function PetGallery({ items , onDelete: _handleDelete /* onUpdate:_handleUpdate */ }) {
   return (
     <div className='gallery'>
       {items.map(item=> (
@@ -18,10 +18,10 @@ function PetGallery({ items , onDelete: _handleDelete , onUpdate:_handleUpdate }
             onClick={_handleDelete(item)}>
             <Icon color='red' name='trash alternate outline'/>
           </Button>
-          <Button
+          {/* <Button
             className='gallery_button-edit'
             icon='edit'
-            onClick={_handleUpdate(item)}/>
+            onClick={_handleUpdate(item)}/> */}
         </div>))}
     </div>
   )

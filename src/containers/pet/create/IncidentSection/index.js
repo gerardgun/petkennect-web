@@ -1,28 +1,30 @@
 import React, { useEffect, useMemo } from 'react'
-import './styles.scss'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { Header, Button , Divider } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
 import IncidentForm from './Form'
 import ModalDelete from '@components/Modal/Delete'
+import useModal from '@components/Modal/useModal'
+import Summary from './Summary'
+import { useChangeStatusEffect } from '@hooks/Shared'
+import { openIncidentPDF } from '@lib/utils/functions'
 
 import petIncidentDuck from '@reducers/pet/incident'
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
 import petIncidentActionsDuck from '@reducers/pet/incident-action'
 import petIncidentTypeDuck from '@reducers/pet/incident-type'
 import petDetailDuck from '@reducers/pet/detail'
-import { useChangeStatusEffect } from '@hooks/Shared'
-import Summary from './Summary'
-import { useParams } from 'react-router-dom'
-import useModal from '@components/Modal/useModal'
-import { openIncidentPDF } from '@lib/utils/functions'
+
+import './styles.scss'
 
 function IncidentSection(props) {
   const { petDetail } = props
   const [ open, { _handleOpen, _handleClose } ] = useModal()
   const { id } = useParams()
+
   useEffect(()=> {
     props.getPetIncidents()
     props.getPetIncidentTypes()
@@ -86,7 +88,7 @@ function IncidentSection(props) {
       </div>
       <IncidentForm/>
       <ModalDelete
-        duckDetail={petDetailDuck}
+        duckDetail={petIncidentDetailDuck}
         onClose={_handleClose}
         open={open}/>
     </div>

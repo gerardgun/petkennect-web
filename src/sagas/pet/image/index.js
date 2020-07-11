@@ -28,7 +28,7 @@ function* get({ payload : { pet_id } }) {
   } catch (e) {
     yield put({
       type : types.GET_FAILURE,
-      error: e,
+      error: e
     })
   }
 }

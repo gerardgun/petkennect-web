@@ -3,6 +3,10 @@
   font-family: Poppins;
   font-weight: 600;
 
+  &.blue {
+    color: $blue !important;
+  }
+
   &.c-title {
     font-style: normal;
     font-weight: normal;

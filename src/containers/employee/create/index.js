@@ -113,7 +113,7 @@ const EmployeeCreateForm = (props) => {
           <Field
             component='input' defaultValue={true} name='user_exists'
             type='hidden'/>
-          <Header as='h4' className='form-section-header ' color='blue'>SEARCH USER</Header>
+          <Header as='h6' className='form-section-header' color='blue'>SEARCH USER</Header>
 
           <Form.Group widths='equal'>
             <Field
@@ -164,7 +164,7 @@ const EmployeeCreateForm = (props) => {
               readOnly={!!props.user_exists}/>
           </Form.Group>
 
-          <Header as='h4' className='form-section-header ' color='blue'>BASIC INFORMATION</Header>
+          <Header as='h6' className='form-section-header' color='blue'>BASIC INFORMATION</Header>
 
           <Form.Group widths='equal'>
             <Field

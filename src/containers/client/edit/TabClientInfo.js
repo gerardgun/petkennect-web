@@ -42,7 +42,7 @@ function TabClientInfo(props) {
       <Form onReset={reset} onSubmit={handleSubmit}>
         <Field component='input' name='id' type='hidden'/>
         <Field component='input' name='user' type='hidden'/>
-        <Header as='h4' className='form-section-header ' color='blue'>BASIC INFORMATION</Header>
+        <Header as='h6' className='form-section-header' color='blue'>BASIC INFORMATION</Header>
 
         <Form.Group widths='equal'>
           <Field
@@ -101,7 +101,7 @@ function TabClientInfo(props) {
             selectOnBlur={false}/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>CONTACT DETAILS</Header>
+        <Header as='h6' className='form-section-header' color='blue'>CONTACT DETAILS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
@@ -164,7 +164,7 @@ function TabClientInfo(props) {
 
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>COMPANY ADDRESS</Header>
+        <Header as='h6' className='form-section-header' color='blue'>COMPANY ADDRESS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
