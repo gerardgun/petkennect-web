@@ -104,12 +104,12 @@ export default class Request {
     })
   }
 
-  reHydrateToken = token => {
+  reHydrateToken = (token = null) => {
     this.token = token
     this.http()
   }
 
-  reHydrateTenant= tenant => {
+  reHydrateTenant= (tenant = null) => {
     this.tenant = tenant
     this.http()
   }

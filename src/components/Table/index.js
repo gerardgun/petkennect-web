@@ -315,7 +315,7 @@ const TableList = ({ duck, list, ...props }) => {
       </Table>
 
       {
-        list.pagination && (
+        list.pagination && list.pagination.meta.last_page && (
           <Pagination
             activePage={list.pagination.params.page}
             from={list.pagination.meta.from}

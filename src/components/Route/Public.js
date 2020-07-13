@@ -5,15 +5,10 @@ import { compose } from 'redux'
 
 import authDuck from '@reducers/auth'
 
-const PublicRoute = ({ auth, check, get, component: Component, ...rest }) => {
+const PublicRoute = ({ auth, check, component: Component, ...rest }) => {
   useEffect(() => {
-    check()
+    if(!auth.session_status) check()
   }, [])
-
-  useEffect(() => {
-    if(auth.auth_status === 'EXISTS')
-      get() // Recover auth user detail
-  }, [ auth.auth_status ])
 
   useEffect(() => {
     if(auth.status === 'GOT' || auth.status === 'SIGNED_IN')
@@ -42,8 +37,7 @@ export default compose(
   connect(
     ({ auth }) => ({ auth }),
     {
-      check: authDuck.creators.check,
-      get  : authDuck.creators.get
+      check: authDuck.creators.check
     }
   )
 )(PublicRoute)
