@@ -6,9 +6,14 @@ import petDetailDuck from '@reducers/pet/detail'
 import vaccinationDuck from '@reducers/pet/vaccination'
 import moment from 'moment'
 
-const { types, selectors } = vaccinationDuck
+import { v4 as uuidv4 } from 'uuid'
+
+const { types } = vaccinationDuck
 
 function getStatus(item) {
+  if(!item.created_at)
+    return 'Missing'
+
   if(item.verified_at)
     return 'Verify!'
   if(moment
@@ -34,9 +39,22 @@ function* get(/* { payload } */) {
 
     const petDetail = yield select(petDetailDuck.selectors.detail)
 
-    const filters = yield select(selectors.filters)
-    const list = yield select(selectors.list)
-    const { results, ...meta } = yield call(Get, `/pets/${petDetail.item.id}/vaccinations/`,filters)
+    const petVaccinationTypes = yield call(Get, '/pet-vaccination-types/')
+
+    petDetail.item.vaccinations.filter(_vaccination => _vaccination.type)
+
+    const results = petVaccinationTypes.map(_vaccinationType => {
+      const _vaccination = petDetail.item.vaccinations.find(_vaccination=> _vaccination.type === _vaccinationType.id)
+
+      if(_vaccination)
+        return _vaccination
+
+      return {
+        id       : uuidv4(),
+        type     : _vaccinationType.id,
+        type_name: _vaccinationType.name
+      }
+    })
 
     yield put({
       type   : types.GET_FULFILLED,
@@ -45,11 +63,11 @@ function* get(/* { payload } */) {
           employee_fullname: `${verifier_employee_name} ${verifier_employee_lastname}`,
           status           : getStatus(rest),
           ...rest
-        })),
-        pagination: {
-          ...list.pagination,
-          meta
-        }
+        }))
+        // pagination: {
+        //   ...list.pagination,
+        //   meta
+        // }
       }
     })
   } catch (e) {

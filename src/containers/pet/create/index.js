@@ -276,7 +276,6 @@ export default compose(
       getPetImages: petImageDuck.creators.get,
       getPet      : petDetailDuck.creators.get,
       postPetImage: petImageDetailDuck.creators.post,
-      put         : petDetailDuck.creators.put,
       resetItem   : petDetailDuck.creators.resetItem
     })
 )(PetShow)

@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Header, Form } from 'semantic-ui-react'
 import moment from 'moment'
+import _get from 'lodash/get'
 import * as Yup from 'yup'
 
 import PetBreedForm from '@containers/pet-breed/create'
@@ -127,8 +128,8 @@ function Edit(props) {
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Input
-            label='Vaccination'
-            readOnly value='Current'/>
+            label='Vaccination' placeholder='-' readOnly
+            value={_get(petDetail, 'item.summary.vaccination_status')}/>
           <Field
             className='flex align-center'
             component={FormField}

@@ -19,23 +19,26 @@ export default {
       is_multiple : false
     },
     {
-      display_name: null,
-      name        : 'edit',
-      icon        : 'edit outline',
-      is_multiple : false
+      display_name      : null,
+      name              : 'edit',
+      icon              : 'edit outline',
+      is_multiple       : false,
+      conditional_render: (item) => !item.is_client_notified
     },
     {
-      display_name: null,
-      name        : 'preview_report',
-      icon        : 'envelope outline',
-      is_multiple : false
+      display_name      : null,
+      name              : 'preview_report',
+      icon              : 'envelope outline',
+      is_multiple       : false,
+      conditional_render: (item) => !item.is_client_notified
     },
     {
-      display_name: null,
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
+      display_name      : null,
+      name              : 'delete',
+      icon              : 'trash alternate outline',
+      is_multiple       : false,
+      color             : 'red',
+      conditional_render: (item) => !item.is_client_notified
     }
   ],
   row: {

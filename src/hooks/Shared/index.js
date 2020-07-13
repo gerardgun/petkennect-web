@@ -29,13 +29,14 @@ function useStateDerivedFromProps(value) {
   return [ state,setState ]
 }
 
-function useChangeStatusEffect(callback = () => {}, status = 'RESET_ITEM') {
+function useChangeStatusEffect(callback = () => {}, status = 'RESET_ITEM', otherStatus  = []) {
   const prevStatus = usePrevious(status)
   useEffect(() => {
     if(
       prevStatus !== status
       && prevStatus !== 'RESET_ITEM'
-      && (status === 'DELETED' || status === 'POSTED' || status === 'PUT')
+      && ([ 'DELETED','POSTED','PUT' , ...otherStatus ].includes(status))
+      // && (status === 'DELETED' || status === 'POSTED' || status === 'PUT')
     )
       callback()
   }, [ status, prevStatus ])

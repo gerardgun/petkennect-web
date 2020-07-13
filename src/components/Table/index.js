@@ -31,7 +31,7 @@ const TableList = ({ duck, list, ...props }) => {
     else if(column.type === 'image')
       content = <Image rounded size='mini' src={content || defaultImageUrl}/>
     else if(column.type === 'date')
-      content = (new Date(content)).toLocaleString('en-US').split(', ').shift()
+      content = content ? (new Date(content)).toLocaleString('en-US').split(', ').shift() : '-'
     else if(column.type === 'datetime')
       content = (new Date(content)).toLocaleString('en-US')
     else if(column.type === 'money')
@@ -112,7 +112,7 @@ const TableList = ({ duck, list, ...props }) => {
   // END Improve
 
   const _handleSelectorCheckboxChange = (e, { checked }) => {
-    const itemId = +e.currentTarget.dataset.itemId
+    const itemId = +e.currentTarget.dataset.itemId || e.currentTarget.dataset.itemId
 
     props.dispatch(
       checked === true ? duck.creators.selectIds(itemId) : duck.creators.removeSelectedIds(itemId)
@@ -215,12 +215,14 @@ const TableList = ({ duck, list, ...props }) => {
           }
           {
             selectionOptions.length > 0 && (
-              selectionOptions.map(({ icon, name, display_name, ...rest }, index) => (
-                <Button
-                  basic content={display_name} data-option-name={name}
-                  icon={icon} key={`nc-option-${index}`} onClick={_handleOptionBtnClick}
-                  {...rest}/>
-              ))
+              selectionOptions
+                .filter(({ conditional_render })=> !conditional_render || (conditional_render && conditional_render(list.selector.selected_items[0])))
+                .map(({ icon, name, display_name, ...rest }, index) => (
+                  <Button
+                    basic content={display_name} data-option-name={name}
+                    icon={icon} key={`nc-option-${index}`} onClick={_handleOptionBtnClick}
+                    {...rest}/>
+                ))
             )
           }
         </Grid.Column >
