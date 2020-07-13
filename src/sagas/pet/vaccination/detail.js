@@ -1,5 +1,5 @@
 
-import { call, put, takeEvery, select } from 'redux-saga/effects'
+import { call, put, takeEvery, select, all } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
@@ -49,13 +49,38 @@ function* get({ id }) {
 
 function* post({ payload: { ...payload } }) {
   try {
-    const petDetail = yield select(petDetailDuck.selectors.detail)
-
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, `pets/${petDetail.item.id}/vaccinations/`, {
-      ...payload
+    /** Get id for vaccinationDocumentType for this tenant */
+    const documenTypes = yield call(Get, 'client-document-types/')
+
+    const { id : documentTypeId } = documenTypes.find(_documentType => _documentType.type === 'V') || {}
+
+    /** * */
+
+    /** creating document */
+
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+
+    const { id: upload_employee } = localStorage.getItem('@auth_user')
+
+    const [ resultDocument ] = yield call(Post, `clients/${petDetail.item.client}/documents/`, {
+      files: payload.file,
+      type : documentTypeId ,
+      upload_employee
     })
+
+    /** creating all vaccinations listed*/
+    yield all(payload.vaccinations.map(_vaccination =>
+      call(Post, `pets/${petDetail.item.id}/vaccinations/`, {
+        expired_at: _vaccination.expired_at,
+        type      : _vaccination.type,
+        document  : resultDocument.id
+      })
+    ))
+    // yield call(Post, `pets/${petDetail.item.id}/vaccinations/`, {
+    //   ...payload
+    // })
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {

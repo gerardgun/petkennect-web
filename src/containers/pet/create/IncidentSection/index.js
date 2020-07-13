@@ -6,6 +6,7 @@ import { compose } from 'redux'
 
 import Table from '@components/Table'
 import IncidentForm from './Form'
+import SendReportForm from './SendReportForm'
 import ModalDelete from '@components/Modal/Delete'
 
 import petIncidentDuck from '@reducers/pet/incident'
@@ -22,6 +23,8 @@ import { openIncidentPDF } from '@lib/utils/functions'
 function IncidentSection(props) {
   const { petDetail } = props
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const [ openSendReportModal, { _handleOpen :  _handleOpenSendReportModal, _handleClose : _handleCloseSendReportModal } ] = useModal()
+
   const { id } = useParams()
   useEffect(()=> {
     props.getPetIncidents()
@@ -43,6 +46,8 @@ function IncidentSection(props) {
       openIncidentPDF(petDetail.item.id,item.id, `pet-incident-${item.id}-${item.action}-${item.type}`)
     if(option === 'edit')
       props.setItem(props.petIncident.selector.selected_items[0], 'UPDATE')
+    if(option === 'preview_report')
+      _handleOpenSendReportModal()
 
     if(option === 'delete') {
       props.setItem(props.petIncident.selector.selected_items[0], 'DELETE')
@@ -62,7 +67,7 @@ function IncidentSection(props) {
   useChangeStatusEffect(()=> {
     props.getPetIncidents()
     props.getPet(id)
-  }, props.petIncidentDetail.status)
+  }, props.petIncidentDetail.status, [ 'SENT_EMAIL' ])
 
   return (
     <div className='c-incident-section'>
@@ -85,6 +90,7 @@ function IncidentSection(props) {
           duck={petIncidentDuck} onOptionClick={_handleOptionClick}/>
       </div>
       <IncidentForm/>
+      <SendReportForm onClose={_handleCloseSendReportModal} open={openSendReportModal}/>
       <ModalDelete
         duckDetail={petDetailDuck}
         onClose={_handleClose}

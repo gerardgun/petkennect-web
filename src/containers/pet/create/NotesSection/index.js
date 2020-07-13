@@ -12,10 +12,11 @@ import Form from './Form'
 
 import petNoteDuck from '@reducers/pet/note'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
+import authDuck from '@reducers/auth'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
 function NotesSection(props) {
-  const {  petNoteDetail, petNote, auth } = props
+  const {  petNoteDetail, petNote } = props
   const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
 
   /** client filter */
@@ -94,7 +95,7 @@ function NotesSection(props) {
         )}
         {petNote.items.filter(({ type })=> type === filter.type).map((item)=> (
           <NoteItem
-            enableUpdate={item.employee === auth.item.employee_id} item={item} key={item.id}
+            enableUpdate={item.employee === props.currentTenant.employee_id} item={item} key={item.id}
             onDelete={_handleDeleteBtnClick} onUpdate={_handleEditBtnClick}/>
         ))}
       </Segment>
@@ -117,6 +118,8 @@ export default compose(
     ({ auth, ...state }) => ({
       petNoteDetail: petNoteDetailDuck.selectors.detail(state),
       petNote      : petNoteDuck.selectors.list(state),
+      currentTenant: authDuck.selectors.getCurrentTenant(auth),
+
       auth
     }), {
       getNotes: petNoteDuck.creators.get,

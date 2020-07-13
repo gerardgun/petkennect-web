@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, FieldArray } from 'redux-form'
 import { Button, Form, Header, Modal, Divider } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import moment from 'moment'
@@ -16,7 +16,6 @@ import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
 
 const VaccinationUploadForm = (props) => {
   const {
-    petVaccination,
     petVaccinationDetail,
     error,
     handleSubmit,
@@ -57,37 +56,33 @@ const VaccinationUploadForm = (props) => {
           </Header>
           <Field component='input' name='id' type='hidden'/>
 
-          {petVaccination.selector.selected_items.map((item, index)=> (
-            <Form.Group key={index} widths='equal'>
-              <Form.Field>
-                <label>Vaccine</label>
-                <input placeholder='Enter vaccine' readOnly value={item.type_name}/>
-              </Form.Field>
-              <Form.Field>
-                <label>Expiry date*</label>
-                <input
-                  placeholder='Enter expiry date' readOnly type='date'
-                  value={moment(item.expired_at).format('YYYY-MM-DD')}/>
-              </Form.Field>
-              {/* <Field
-                autoFocus
-                component={FormField}
-                control={Form.Input}
-                label='Vaccine'
-                // name='type_name'
-                placeholder='Enter vaccine'
-                readOnly
-                value={item.type_name}/> */}
-              {/* <Field
-                component={FormField}
-                control={Form.Input}
-                label='Expiry date*'
-                // name='expired_at'
-                placeholder='Enter expiry date'
-                readOnly
-                value={moment(item.expired_at).format('YYYY-MM-DD')}/> */}
-            </Form.Group>
-          ))}
+          <FieldArray
+            component={({ fields  })=> {
+              return  fields.map((_vaccination, index)=>  {
+                return (
+                  <Form.Group key={index} widths='equal'>
+                    <Field component='input' name={`${_vaccination}.type`} type='hidden'/>
+                    <Field
+                      component={FormField}
+                      control={Form.Input}
+                      label='Vaccine'
+                      name={`${_vaccination}.type_name`}
+                      placeholder='Enter vaccine'
+                      readOnly/>
+
+                    <Field
+                      component={FormField}
+                      control={Form.Input}
+                      format={value => value ? moment(value,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : null}
+                      label='Expiry date*'
+                      name={`${_vaccination}.expired_at`}
+
+                      parse={value=> moment(value).format('YYYY-MM-DD[T]HH:mm:ss')}
+                      placeholder='Enter expiry date'
+                      type='date'/>
+                  </Form.Group>)
+              })
+            }} name='vaccinations'/>
 
           <Divider/>
           <Form.Group widths='equal'>
@@ -96,7 +91,7 @@ const VaccinationUploadForm = (props) => {
               component={FormField}
               control={Form.Input}
               label='Attachments (PDF, jpg, png) *'
-              name='files'
+              name='file'
               type='file'/>
           </Form.Group>
           {error && (
@@ -137,7 +132,13 @@ export default compose(
       return {
         petVaccinationDetail,
         petVaccination,
-        initialValues: {}
+        initialValues: {
+          vaccinations: petVaccination.selector.selected_items.map(_vaccination => ({
+            type     : _vaccination.type,
+            type_name: _vaccination.type_name
+            // expired_at: _vaccination.expired_at
+          }))
+        }
       }
     },
     {
@@ -152,7 +153,12 @@ export default compose(
     enableReinitialize: true,
     validate          : (values) => {
       const schema = {
-        // pet_class: YupFields.num_required
+        vaccinations: Yup.array().of(Yup.object().shape({
+          type      : Yup.mixed(),
+          type_name : Yup.mixed(),
+          expired_at: Yup.mixed().required('Expired at is required')
+        })),
+        file: Yup.mixed().required('File is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

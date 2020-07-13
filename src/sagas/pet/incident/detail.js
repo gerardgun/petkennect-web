@@ -3,6 +3,7 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
+import petIncidentDuck from '@reducers/pet/incident'
 import petDetailDuck from '@reducers/pet/detail'
 
 const { types } = petIncidentDetailDuck
@@ -89,10 +90,11 @@ function* _put({ payload }) {
 function* sendEmail({ payload }) {
   try {
     const { item : { id:pet_id } = {} } = yield select(petDetailDuck.selectors.detail)
-    const { item : { id: pet_incident_id } = {} } = yield select(petIncidentDetailDuck.selectors.detail)
+    // const { item : { id: pet_incident_id } = {} } = yield select(petIncidentDetailDuck.selectors.detail)
+    const { selector : { selected_items : [ selectItem ]  = [] } = {} } = yield select(petIncidentDuck.selectors.list)
 
     yield put({ type: types.SEND_EMAIL_PENDING })
-    const result = yield call(Post, `pets/${pet_id}/incidents/${pet_incident_id}/send-report/`, payload)
+    const result = yield call(Post, `pets/${pet_id}/incidents/${selectItem.id}/send-report/`, { body_title: payload.subject ,...payload })
 
     yield put({
       type   : types.SEND_EMAIL_FULFILLED,
