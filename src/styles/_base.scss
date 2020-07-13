@@ -3,6 +3,10 @@ body {
   background-color: #fafcff;
 }
 
+textarea {
+  font-family: "Poppins";
+}
+
 .app-content {
   height: 100vh;
   overflow-y: auto;
@@ -157,15 +161,6 @@ body {
 }
 .drop-down-group {
   font-weight: 600;
-}
-
-.ui.form-section-header {
-  font-style: normal !important;
-  font-weight: normal !important;
-  font-size: 11px !important;
-  line-height: 16px !important;
-  letter-spacing: -0.04em !important;
-  color: #005987 !important;
 }
 
 .ui.grid.gray {

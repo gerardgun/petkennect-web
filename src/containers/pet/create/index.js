@@ -22,7 +22,7 @@ import useCameraAvailable from '@hooks/useCameraAvailable'
 
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
-const PetShow = ({ petDetail , petImage, ...props }) => {
+const PetShow = ({ petDetail, petImage, ...props }) => {
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
   const [ openImageEditorModal,setOpenImageEditorModal ] = useState(false)
   const [ initialStep, setInitialStep ] = useState(null)
@@ -105,30 +105,15 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
     }
   }
 
-  const  _handleCloseImageEditorModal = ()=> {
+  const _handleCloseImageEditorModal = ()=> {
     setOpenImageEditorModal(false)
     setInitialImageURL(null)
     setInitialStep(null)
   }
 
-  const _handleImageEditorSave = (_imageFile) => {
-    if(initialStep === 'select_photo')
-      return props.put({ id: petDetail.item.id, image: _imageFile })
-        .then(()=> props.getPet(id))
-        .catch(()=> {})
-        .finally(_handleCloseImageEditorModal)
-    /** on conflicts discarts  some this lines,
-     *  I saw that you had also modified this part in the saga */
-
-    return props.postPetImage({ pet_id: petDetail.item.id,images: _imageFile })
-      .then((result = [])=> {
-        return Promise.all([
-          props.putPetImage({ pet_id: petDetail.item.id, pet_image_id: result[0].id, is_profile: true }),
-          props.getPet(id)
-        ])
-      })
-      .catch(()=> {})
-      .finally(_handleCloseImageEditorModal)
+  const _handleImageEditorSave = imageFile => {
+    props.postPetImage({ images: imageFile, is_profile: true })
+      .then(_handleCloseImageEditorModal)
   }
 
   const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
@@ -290,7 +275,6 @@ export default compose(
     }), {
       getPetImages: petImageDuck.creators.get,
       getPet      : petDetailDuck.creators.get,
-      putPetImage : petImageDetailDuck.creators.put,
       postPetImage: petImageDetailDuck.creators.post,
       resetItem   : petDetailDuck.creators.resetItem
     })

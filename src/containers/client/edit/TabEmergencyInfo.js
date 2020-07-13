@@ -24,7 +24,7 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
   return (
     <>
       <Divider/>
-      <Header as='h4' className='form-section-header ' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
+      <Header as='h6' className='form-section-header' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
       <Segment className='form-primary-segment' padded='very'>
         {
           fields.map((item, index) => (
@@ -88,7 +88,7 @@ function TabEmergencyInfo(props) {
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form onReset={reset} onSubmit={handleSubmit}>
 
-        <Header as='h4' className='form-section-header ' color='blue'>EMERGENCY CONTACT</Header>
+        <Header as='h6' className='form-section-header' color='blue'>EMERGENCY CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
@@ -114,7 +114,7 @@ function TabEmergencyInfo(props) {
             type='tel'/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>VETERINARIAN CONTACT</Header>
+        <Header as='h6' className='form-section-header' color='blue'>VETERINARIAN CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'

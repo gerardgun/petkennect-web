@@ -31,7 +31,7 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
   return (
     <>
       <Divider/>
-      <Header as='h4' className='form-section-header ' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
+      <Header as='h6' className='form-section-header' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
       <Segment className='form-primary-segment' padded='very'>
         {
           fields.map((item, index) => (
@@ -103,7 +103,7 @@ const ClientCreateFormStep2 = (props) => {
         <span className='text-regular text-gray'>
           Complete Emergency Data
         </span>
-        <Header as='h4' className='form-section-header ' color='blue'>EMERGENCY CONTACT</Header>
+        <Header as='h6' className='form-section-header' color='blue'>EMERGENCY CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
@@ -129,7 +129,7 @@ const ClientCreateFormStep2 = (props) => {
             type='tel'/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>VETERINARIAN CONTACT</Header>
+        <Header as='h6' className='form-section-header' color='blue'>VETERINARIAN CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'

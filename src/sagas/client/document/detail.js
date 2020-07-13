@@ -2,6 +2,7 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 
 import { Post, Put } from '@lib/utils/http-client'
 
+import authDuck from '@reducers/auth'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 import clientDetailDuck from '@reducers/client/detail'
 
@@ -52,9 +53,11 @@ function* get(/* { id } */) {
 function* post({ payload :{ client_id,  ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
-    const { id: upload_employee } = localStorage.getItem('@auth_user')
 
-    yield call(Post, `clients/${client_id}/documents/`, { ...payload, upload_employee })
+    // Get authenticated user data
+    const authDetail = yield select(authDuck.selectors.detail)
+
+    yield call(Post, `clients/${client_id}/documents/`, { ...payload, upload_employee: authDetail.item.id })
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {

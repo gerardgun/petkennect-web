@@ -22,7 +22,6 @@ function NoteItem({ item , onUpdate, onDelete , enableUpdate }) {
           <div>
             <div className='thumbnail-title'>{item.employee_fullname}</div>
             <div className='thumbnail-date'>{(item.updated_at && moment(item.updated_at).format('MM/DD/YYYY HH:mm')) || '-'}</div>
-
           </div>
         </div>
         <div>

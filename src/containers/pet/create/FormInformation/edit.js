@@ -1,20 +1,21 @@
 import React, { useEffect } from 'react'
-import { Header, Form } from 'semantic-ui-react'
-import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
-import * as Yup from 'yup'
-import YupFields from '@lib/constants/yup-fields'
-import { formatIntToBool, parseBoolToInt, syncValidate } from '@lib/utils/functions'
+import { compose } from 'redux'
+import { Field, formValueSelector, reduxForm } from 'redux-form'
+import { Header, Form } from 'semantic-ui-react'
 import moment from 'moment'
 import _get from 'lodash/get'
+import * as Yup from 'yup'
 
 import PetBreedForm from '@containers/pet-breed/create'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
+import YupFields from '@lib/constants/yup-fields'
+import { formatIntToBool, parseBoolToInt, syncValidate } from '@lib/utils/functions'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petBreedDuck from '@reducers/pet/breed'
+import petRetireReasonDuck from '@reducers/pet/retire-reason'
 import petBreedDetailDuck from '@reducers/pet/breed/detail'
 
 function Edit(props) {
@@ -22,7 +23,7 @@ function Edit(props) {
     petDetail,
     petBreed,
     petBreedDetail,
-    getPetBreeds,
+    petRetireReason,
     error,
     handleSubmit,
     initialized,
@@ -30,11 +31,13 @@ function Edit(props) {
   } = props
 
   useEffect(()=> {
-    getPetBreeds()
+    props.getPetBreeds()
+    props.getPetRetireReasons()
   },[])
+
   useEffect(()=> {
     if(petBreedDetail.status === 'POSTED')
-      getPetBreeds()
+      props.getPetBreeds()
   },[ petBreedDetail.status ])
 
   useEffect(() => {
@@ -53,7 +56,7 @@ function Edit(props) {
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Field component='input' name='id' type='hidden'/>
-        <Header as='h4' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
+        <Header as='h6' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
         <Form.Group widths='equal'>
 
           <Field
@@ -114,6 +117,7 @@ function Edit(props) {
             name='born_at'
             type='date'/>
           <Field
+            className='flex align-center'
             component={FormField}
             control={Form.Checkbox}
             format={Boolean}
@@ -123,11 +127,11 @@ function Edit(props) {
             type='checkbox'/>
         </Form.Group>
         <Form.Group widths='equal'>
-          <Form.Field>
-            <label>Vaccination</label>
-            <input placeholder='-' readOnly value={_get(petDetail, 'item.summary.vaccination_status')}/>
-          </Form.Field>
+          <Form.Input
+            label='Vaccination' placeholder='-' readOnly
+            value={_get(petDetail, 'item.summary.vaccination_status')}/>
           <Field
+            className='flex align-center'
             component={FormField}
             control={Form.Checkbox}
             format={Boolean}
@@ -137,7 +141,29 @@ function Edit(props) {
             type='checkbox'/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header mt36' color='blue'>APPEARANCE</Header>
+        {
+          props.hasRetiredChecked && (
+            <Form.Group widths={2}>
+              <Field
+                component={FormField}
+                control={Form.Select}
+                label='Reason *'
+                name='reason'
+                options={
+                  petRetireReason.items.map(item => ({
+                    key  : item.id ,
+                    value: item.id ,
+                    text : item.name
+                  }))
+                }
+                placeholder='Select reason'
+                search
+                selectOnBlur={false}/>
+            </Form.Group>
+          )
+        }
+
+        <Header as='h6' className='form-section-header mt36' color='blue'>APPEARANCE</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -170,7 +196,7 @@ function Edit(props) {
           <Form.Field/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header mt36' color='blue'>TEMPERAMENT</Header>
+        <Header as='h6' className='form-section-header mt36' color='blue'>TEMPERAMENT</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -258,7 +284,7 @@ function Edit(props) {
             type='checkbox'/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header mt36' color='blue'>HEALTH</Header>
+        <Header as='h6' className='form-section-header mt36' color='blue'>HEALTH</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -298,7 +324,7 @@ function Edit(props) {
           <Form.Field/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header mt36' color='blue'>HESITATES TO EAT</Header>
+        <Header as='h6' className='form-section-header mt36' color='blue'>HESITATES TO EAT</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -329,7 +355,7 @@ function Edit(props) {
           <Form.Field/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header mt36' color='blue'>ADITIONAL INFO</Header>
+        <Header as='h6' className='form-section-header mt36' color='blue'>ADITIONAL INFO</Header>
         <Form.Group widths='equal'>
           <Form.Field>
             <label>Created at</label>
@@ -398,20 +424,23 @@ export default compose(
 
       return {
         petDetail,
-        initialValues : petDetail.item,
-        petBreed      : petBreedDuck.selectors.list(state),
-        petBreedDetail: petBreedDetailDuck.selectors.detail(state)
+        petBreed         : petBreedDuck.selectors.list(state),
+        petBreedDetail   : petBreedDetailDuck.selectors.detail(state),
+        petRetireReason  : petRetireReasonDuck.selectors.list(state),
+        // for redux form
+        initialValues    : petDetail.item,
+        hasRetiredChecked: Boolean(formValueSelector('pet-edit-information')(state, 'retired'))
       }
-    }
-    ,
+    },
     {
-      getPetBreeds: petBreedDuck.creators.get,
-      setBreedItem: petBreedDetailDuck.creators.setItem
+      getPetBreeds       : petBreedDuck.creators.get,
+      getPetRetireReasons: petRetireReasonDuck.creators.get,
+      setBreedItem       : petBreedDetailDuck.creators.setItem
     }
   ),
   reduxForm({
     form            : 'pet-edit-information',
-    destroyOnUnmount: false,
+    destroyOnUnmount: true,
     validate        : values  => {
       const schema = {
         name                       : YupFields.name,
@@ -419,7 +448,8 @@ export default compose(
         info_crate_trained         : Yup.mixed().required(),
         info_housebroken           : Yup.mixed().required(),
         info_formal_training       : Yup.mixed().required(),
-        health_flea_tick_preventive: Yup.mixed().required()
+        health_flea_tick_preventive: Yup.mixed().required(),
+        reason                     : Yup.mixed().when('retired', (retired, schema) => (retired ? schema.required('The reason is required') : schema.nullable()))
         // daycare_attended           : Yup.mixed().required(),
         // daycare_removed            : Yup.mixed().required()
       }

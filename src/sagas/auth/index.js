@@ -1,10 +1,10 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects'
 
-import { Post, Put, reHydrateToken, reHydrateTenant as _reHydrateTenant } from '@lib/utils/http-client'
+import { Get, Post, Put, reHydrateToken, reHydrateTenant as _reHydrateTenant } from '@lib/utils/http-client'
 
 import authDuck from '@reducers/auth'
 
-const { types } = authDuck
+const { selectors, types } = authDuck
 
 function* check() {
   try {
@@ -13,22 +13,44 @@ function* check() {
     const token = localStorage.getItem('@token')
     const tenant = localStorage.getItem('@auth_tenant')
 
-    if(token) reHydrateToken(token)
-    if(tenant) _reHydrateTenant(tenant)
+    if(token) {
+      // Get session user data if token exists
+      reHydrateToken(token)
+      _reHydrateTenant(tenant)
 
-    yield put({
-      type   : types.CHECK_FULFILLED,
-      payload: {
-        auth_status: token ? authDuck.statuses.EXISTS : authDuck.statuses.NOT_EXISTS,
-        tenant     : tenant || ''
-      }
-    })
+      yield* get()
+    }
+
+    // Get authenticated user data
+    const authDetail = yield select(selectors.detail)
+
+    let sessionExists = Boolean(authDetail.item.id)
+
+    if(sessionExists) {
+      yield put({
+        type   : types.CHECK_FULFILLED,
+        payload: {
+          session_status: authDuck.statuses.EXISTS,
+          tenant        : tenant
+        }
+      })
+    } else {
+      yield* signOut() // Remove local storage variables and rehydrate request
+
+      yield put({
+        type   : types.CHECK_FULFILLED,
+        payload: {
+          session_status: authDuck.statuses.NOT_EXISTS,
+          tenant        : ''
+        }
+      })
+    }
   } catch (e) {
     yield put({
       type   : types.CHECK_FAILURE,
       error  : e,
       payload: {
-        auth_status: authDuck.statuses.NOT_EXISTS
+        session_status: authDuck.statuses.NOT_EXISTS
       }
     })
   }
@@ -38,29 +60,16 @@ function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    /* BEGIN Delete */
-    const user = localStorage.getItem('@auth_user')
+    // Recover authenticated user data
+    const me = yield call(Get, 'get_my_info/')
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: JSON.parse(user)
+        item: me
       }
     })
-    /* END Delete */
-
-    // const me = yield call(Get, 'auth/me')
-
-    // yield put({
-    //   type   : types.GET_FULFILLED,
-    //   payload: {
-    //     item: me
-    //   }
-    // })
   } catch (e) {
-    localStorage.removeItem('@token')
-    localStorage.removeItem('@auth_tenant')
-
     yield put({
       type : types.GET_FAILURE,
       error: e
@@ -117,20 +126,17 @@ function* signIn({ payload }) {
     localStorage.setItem('@token', token)
     reHydrateToken(token)
 
-    // BEGIN Delete
-    // Setting the auth user data
-    localStorage.setItem('@auth_user', JSON.stringify(user))
-    // END Delete
     const is_employee_and_belong_one_company =  !user.is_superadmin && rest.companies.length === 1
+
     if(is_employee_and_belong_one_company)
       localStorage.setItem('@auth_tenant', rest.companies[0].subdomain_prefix)
 
     yield put({
       type   : types.SIGN_IN_FULFILLED,
       payload: {
-        item       : user,
-        auth_status: token ? authDuck.statuses.EXISTS : authDuck.statuses.NOT_EXISTS,
-        tenant     : is_employee_and_belong_one_company ?  rest.companies[0].subdomain_prefix : ''
+        item          : user,
+        session_status: token ? authDuck.statuses.EXISTS : authDuck.statuses.NOT_EXISTS,
+        tenant        : is_employee_and_belong_one_company ?  rest.companies[0].subdomain_prefix : ''
       }
     })
   } catch (e) {
@@ -154,6 +160,7 @@ function* signOut() {
     })
 
     reHydrateToken()
+    _reHydrateTenant()
 
     yield put({
       type: types.SIGN_OUT_FULFILLED
@@ -200,17 +207,18 @@ function* requestPasswordReset({ payload }) {
   }
 }
 
-function* rehydrateTenant({ payload }) {
+function* rehydrateTenant({ payload: tenant }) {
   try {
     yield put({ type: types.REHYDRATE_TENANT_PENDING })
 
-    localStorage.setItem('@auth_tenant', payload)
+    localStorage.setItem('@auth_tenant', tenant)
 
-    _reHydrateTenant(payload)
+    _reHydrateTenant(tenant)
+
     yield put({
       type   : types.REHYDRATE_TENANT_FULFILLED,
       payload: {
-        tenant: payload
+        tenant
       }
     })
   } catch (e) {

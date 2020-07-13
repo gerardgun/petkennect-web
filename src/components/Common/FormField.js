@@ -12,6 +12,8 @@ const FormField = React.forwardRef((props, ref) => {
       ...input
     },
     meta,
+    // Custom properties for the wrapped component
+    className = '',
     ...rest
   } = props
 
@@ -42,7 +44,7 @@ const FormField = React.forwardRef((props, ref) => {
   const computedInput = getComputedInput()
 
   return (
-    <Form.Field>
+    <Form.Field className={className}>
       <Ref innerRef={ref}>
         <WrappedComponent
           onBlur={_handleBlur}

@@ -8,12 +8,12 @@ export default base({
   namespace   : '@@pet-kennect',
   store       : 'auth',
   initialState: {
-    auth_status: 'NOT_EXISTS',
-    item       : {
+    session_status: null,
+    tenant        : null,
+    item          : {
       is_superadmin: false,
       companies    : [] // for employee profiles
-    },
-    tenant: ''
+    }
   }
 })
   .extend(detail)

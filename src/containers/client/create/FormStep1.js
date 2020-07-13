@@ -99,9 +99,9 @@ const ClientCreateFormStep1 = (props) => {
         <span className='text-regular text-gray'>
           Complete Client Info
         </span>
-        <Header as='h4' className='form-section-header ' color='blue'>SEARCH USER</Header>
 
-        <Form.Group widths='equal'>
+        <Header as='h6' className='form-section-header' color='blue'>Search user</Header>
+        <Form.Group widths={3}>
           <Field
             additionLabel='Invite '
             allowAdditions
@@ -109,9 +109,7 @@ const ClientCreateFormStep1 = (props) => {
             component={FormField}
             control={Form.Dropdown}
             fluid
-            format={value=>
-              [ value ]
-            }
+            format={value => [ value ]}
             icon='search'
             label='Email user *'
             multiple
@@ -144,13 +142,13 @@ const ClientCreateFormStep1 = (props) => {
           <Field
             component={FormField}
             control={Form.Input}
-            label='Lastname'
+            label='Lastname *'
             name='last_name'
             placeholder='Enter lastname'
             readOnly={!!props.user_exists}/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>BASIC INFORMATION</Header>
+        <Header as='h6' className='form-section-header' color='blue'>BASIC INFORMATION</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -161,7 +159,7 @@ const ClientCreateFormStep1 = (props) => {
           <Field
             component={FormField}
             control={Form.Select}
-            label='Location'
+            label='Location *'
             name='location'
             options={location.items.map(_location =>
               ({ key: _location.id, value: _location.id, text: `${_location.name}` }))
@@ -183,7 +181,7 @@ const ClientCreateFormStep1 = (props) => {
             selectOnBlur={false}/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>CONTACT DETAILS</Header>
+        <Header as='h6' className='form-section-header' color='blue'>CONTACT DETAILS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
@@ -246,7 +244,7 @@ const ClientCreateFormStep1 = (props) => {
 
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>COMPANY ADDRESS</Header>
+        <Header as='h6' className='form-section-header' color='blue'>COMPANY ADDRESS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'

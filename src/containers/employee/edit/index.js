@@ -108,7 +108,7 @@ const EmployeeEditForm = (props) => {
           <Field
             component='input' defaultValue={true} name='user_exists'
             type='hidden'/>
-          <Header as='h4' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
+          <Header as='h6' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
 
           <Form.Group widths='equal'>
 
