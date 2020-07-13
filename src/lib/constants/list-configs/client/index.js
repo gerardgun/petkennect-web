@@ -39,7 +39,7 @@ export default {
       sort        : true,
       formatter   : (cell, row) => {
         return (
-          <Link to={`/client/show/${row.id}`}>
+          <Link to={`/client/form/${row.id}`}>
             <Image
               className='profile' rounded size='mini'
               src={row.thumbnail_path || defaultImageUrl}/>

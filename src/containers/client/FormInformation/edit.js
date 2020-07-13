@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react'
-import { Header, Tab, Form } from 'semantic-ui-react'
-import './styles.scss'
-import { Field, reduxForm } from 'redux-form'
-import { syncValidate } from '@lib/utils/functions'
-import { connect } from 'react-redux'
+import { Header, Form, Button, Divider } from 'semantic-ui-react'
 import { compose } from 'redux'
-import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Field, reduxForm,FieldArray } from 'redux-form'
 import * as Yup from 'yup'
 import YupFields from '@lib/constants/yup-fields'
+import { syncValidate } from '@lib/utils/functions'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
@@ -20,13 +18,72 @@ import zipDetailDuck from '@reducers/zip/detail'
 
 import useZipInputSearch from '@components/useZipInputSearch'
 
-function TabClientInfo(props) {
+function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
+  const _handleAddBtnClick = () => fields.push({ ...authorizedPersonInitialState })
+  const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
+
+  const authorizedPersonInitialState = {
+    name    : '',
+    relation: ''
+  }
+
+  return (
+    <>
+      <Divider/>
+      <Header as='h4' className='form-section-header ' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
+      <div>
+        {
+          fields.map((item, index) => (
+            <Form.Group key={index} widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Form.Input}
+                label='Name'
+                name={`${item}.name`}
+                placeholder='Enter names'/>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Form.Input}
+                label='Relation'
+                name={`${item}.relation`}
+                placeholder='Enter relation'/>
+              <Form.Button
+                data-index={index} icon='trash alternate outline' label='&nbsp;'
+                onClick={_handleRemoveBtnClick}
+                type='button'/>
+            </Form.Group>
+          ))
+        }
+        <div>
+          <Button
+            content='Add person' onClick={_handleAddBtnClick}
+            type='button'/>
+        </div>
+        {
+          submitFailed && error && (
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <FormError message={error}/>
+              </Form.Field>
+            </Form.Group>
+          )
+        }
+      </div>
+    </>
+  )
+}
+
+function Edit(props) {
   const {
+    clientDetail,
     location,
     zip,
     zipDetail,
     error,
     handleSubmit,
+    initialized,
     reset
   } = props
 
@@ -36,12 +93,15 @@ function TabClientInfo(props) {
     props.getLocations()
   }, [])
 
+  useEffect(() => {
+    if(clientDetail.status === 'GOT' && !initialized) props.initialize(clientDetail.item)
+  }, [ clientDetail.status ])
+
   return (
-    <Tab.Pane className='border-none'>
+    <div className='ph40 pv32'>
       {/* eslint-disable-next-line react/jsx-handler-names */}
-      <Form onReset={reset} onSubmit={handleSubmit}>
+      <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Field component='input' name='id' type='hidden'/>
-        <Field component='input' name='user' type='hidden'/>
         <Header as='h4' className='form-section-header ' color='blue'>BASIC INFORMATION</Header>
 
         <Form.Group widths='equal'>
@@ -60,22 +120,27 @@ function TabClientInfo(props) {
             name='first_name'
             placeholder='Enter name'
             readOnly/>
-          <Field
-            component={FormField}
-            control={Form.Input}
-            label='Lastname'
-            name='last_name'
-            placeholder='Enter lastname'
-            readOnly/>
         </Form.Group>
         <Form.Group widths='equal'>
 
           <Field
             component={FormField}
             control={Form.Input}
-            label='Contact date *'
+            label='Last Name'
+            name='last_name'
+            placeholder='Enter lastname'
+            readOnly/>
+
+          <Field
+            component={FormField}
+            control={Form.Input}
+            label='Contact Date *'
             name='contact_date'
             type='date'/>
+
+        </Form.Group>
+
+        <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Form.Select}
@@ -87,18 +152,12 @@ function TabClientInfo(props) {
             placeholder='Contact Location'
             selectOnBlur={false}/>
           <Field
+            className='mt36'
             component={FormField}
-            control={Form.Select}
-            label='Status'
-            name='status'
-            options={[
-              { key: 1, value: 1, text: 'DECLINED' },
-              { key: 2, value: 2, text: 'GREEN' },
-              { key: 3, value: 3, text: 'RED - See notes' },
-              { key: 4, value: 4, text: 'VIP CLIENT' }
-            ]}
-            placeholder='Select status'
-            selectOnBlur={false}/>
+            control={Form.Checkbox}
+            label='Active'
+            name='is_active'
+            type='checkbox'/>
         </Form.Group>
 
         <Header as='h4' className='form-section-header ' color='blue'>CONTACT DETAILS</Header>
@@ -120,6 +179,10 @@ function TabClientInfo(props) {
             name='phones[1]'
             placeholder='Enter phone number'
             type='tel'/>
+        </Form.Group>
+
+        <Form.Group widths='equal'>
+
           <Field
             autoComplete='off'
             component={FormField}
@@ -128,9 +191,6 @@ function TabClientInfo(props) {
             name='phones[2]'
             placeholder='Enter phone number'
             type='tel'/>
-        </Form.Group>
-
-        <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
@@ -139,6 +199,10 @@ function TabClientInfo(props) {
             name='phones[3]'
             placeholder='Enter phone number'
             type='tel'/>
+
+        </Form.Group>
+
+        <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
@@ -204,6 +268,8 @@ function TabClientInfo(props) {
               readOnly
               value={zipDetail.item.country_code}/>
           </Form.Field>
+        </Form.Group>
+        <Form.Group widths='equal'>
           <Form.Field>
             <Form.Input
               autoComplete='off'
@@ -211,8 +277,6 @@ function TabClientInfo(props) {
               readOnly
               value={zipDetail.item.state}/>
           </Form.Field>
-        </Form.Group>
-        <Form.Group widths='equal'>
           <Form.Field>
             <Form.Input
               autoComplete='off'
@@ -220,9 +284,70 @@ function TabClientInfo(props) {
               readOnly
               value={zipDetail.item.city}/>
           </Form.Field>
-          <Form.Field/>
+        </Form.Group>
+
+        <Header as='h4' className='form-section-header ' color='blue'>EMERGENCY CONTACT</Header>
+        <Form.Group widths='equal'>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Form.Input}
+            label='Name *'
+            name='emergency_contact_name'
+            placeholder='Enter names'/>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Form.Input}
+            label='Relation *'
+            name='emergency_contact_relationship'
+            placeholder='Enter relationship'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Form.Input}
+            label='Phone'
+            name='emergency_contact_phones[0]'
+            placeholder='Enter phone number'
+            type='tel'/>
           <Form.Field/>
         </Form.Group>
+
+        <Header as='h4' className='form-section-header ' color='blue'>VETERINARIAN CONTACT</Header>
+        <Form.Group widths='equal'>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Form.Input}
+            label='Vet Name'
+            name='emergency_vet_name'
+            placeholder='Enter vet name'/>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Form.Input}
+            label='Vet Location'
+            name='emergency_vet_location'
+            placeholder='Enter vet location'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Form.Input}
+            label='Vet Phone'
+            name='emergency_vet_phones[0]'
+            placeholder='Enter phone number'
+            type='tel'/>
+          <Form.Field/>
+        </Form.Group>
+
+        <FieldArray
+          component={AuthorizedPeopleList}
+          name='authorized_people_pick_up'
+          title='People Authorized to Pick Up'/>
 
         {error && (
           <Form.Group widths='equal'>
@@ -232,16 +357,11 @@ function TabClientInfo(props) {
           </Form.Group>
         )}
       </Form>
-    </Tab.Pane>
+    </div>
   )
 }
 
-TabClientInfo.propTypes = {  }
-
-TabClientInfo.defaultProps = {  }
-
 export default compose(
-  withRouter,
   connect(
     ({ zip ,...state }) => {
       const zipDetail = zipDetailDuck.selectors.detail(state)
@@ -263,7 +383,7 @@ export default compose(
     }
   ),
   reduxForm({
-    form              : 'client-edit-step-1-form',
+    form              : 'client-edit-information',
     destroyOnUnmount  : false,
     enableReinitialize: true,
     validate          : (values) => {
@@ -277,4 +397,4 @@ export default compose(
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(TabClientInfo)
+)(Edit)
