@@ -2,13 +2,14 @@ import React, { useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import moment from 'moment'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
+import Message from '@components/Message'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
@@ -62,9 +63,13 @@ const IncidentSectionForm = (props) => {
   ])
   const isUpdating = Boolean(petIncidentDetail.item.id)
 
+  const  isActionSerius = petIncidentAction.items
+    .find(_incidentAction=> _incidentAction.id === props.watchedAction
+  && _incidentAction.result_type === 'R')
+
   return (
     <Modal
-      className='form-modal'
+      className='form-modal c-incident-section-form'
       onClose={_handleClose}
       open={isOpened}
       size='small'>
@@ -113,6 +118,17 @@ const IncidentSectionForm = (props) => {
               placeholder='Select action taken'
               selectOnBlur={false}/>
 
+          </Form.Group>
+          <Form.Group className='ph4'>
+            {
+              isActionSerius ? <Message
+                className='w100'
+                content={
+                  <div className='flex align-center h100'>
+                    <div className='message__title'>The action to be taken will be added  as serius.</div>
+                  </div>
+                } type={'warning'}/>
+                : null}
           </Form.Group>
 
           <Form.Group widths='equal'>
@@ -195,7 +211,9 @@ export default compose(
         petIncidentBehavior,
         initialValues: {
           ...petIncidentDetail.item
-        }
+        },
+        watchedAction: formValueSelector('pet-incident-section-form')(state,'action')
+
       }
     },
     {

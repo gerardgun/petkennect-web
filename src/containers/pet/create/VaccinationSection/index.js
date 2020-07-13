@@ -11,16 +11,28 @@ import VaccinationUploadForm from './VaccinationUploadForm'
 import EmailReminderForm from './EmailReminderForm'
 
 import petVaccinationDuck from '@reducers/pet/vaccination'
+import petDetailDuck from '@reducers/pet/detail'
 import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
+import { useParams } from 'react-router-dom'
+import moment from 'moment'
 
 function VacinationSection(props) {
-  const { petVaccinationDetail , petVaccination } = props
+  const { petVaccinationDetail , petVaccination , petDetail } = props
 
   const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
 
+  const { id } = useParams()
+
   useEffect(()=> {
     props.getPetVaccinations()
-  }, [])
+  }, [ ])
+
+  useEffect(()=> {
+    if(petVaccinationDetail.status === 'POSTED' || petVaccinationDetail.status === 'SENT_EMAIL') {
+      props.getPet(id)
+      props.getPetVaccinations()
+    }
+  }, [ petVaccinationDetail.status ])
 
   const _handleRowClick = () => {
   // wip
@@ -39,6 +51,15 @@ function VacinationSection(props) {
 
   const saving = [ 'PUTTING', 'POSTING' ].includes(petVaccinationDetail.status)
 
+  const getAlertMessage = () => {
+    if(!(petDetail.item.vaccination_alert || []).length)
+      return  ''
+
+    return `The last reminder was sent on ${
+      moment(petDetail.item.vaccination_alert[0].notified_at).format('MM/DD/YYYY HH:mm')
+    } for ${petDetail.item.vaccination_alert.map(({ type_name })=> type_name).join(', ')} vaccines.`
+  }
+
   return (
     <div className='c-vaccination-section'>
       <div className='flex align-center justify-between ph40 pt40 pb16'>
@@ -48,7 +69,9 @@ function VacinationSection(props) {
 
       </div>
       <Divider className='m0'/>
-      <Alert className='mh40 mt32' open/>
+      <Alert
+        className='mh40 mt32' message={getAlertMessage()}
+        open={!!petDetail.item.vaccination_alert.length}/>
       <div className='flex justify-end mh40 mt32'>
         <Button
           basic
@@ -90,9 +113,12 @@ export default compose(
   connect(
     ({ ...state }) => ({
       petVaccination      : petVaccinationDuck.selectors.list(state),
-      petVaccinationDetail: petVaccinationDetailDuck.selectors.detail(state)
+      petVaccinationDetail: petVaccinationDetailDuck.selectors.detail(state),
+      petDetail           : petDetailDuck.selectors.detail(state)
+
     }), {
       getPetVaccinations: petVaccinationDuck.creators.get,
+      getPet            : petDetailDuck.creators.get,
       setItem           : petVaccinationDetailDuck.creators.setItem
     })
 )(VacinationSection)

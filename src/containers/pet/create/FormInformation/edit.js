@@ -7,6 +7,7 @@ import * as Yup from 'yup'
 import YupFields from '@lib/constants/yup-fields'
 import { formatIntToBool, parseBoolToInt, syncValidate } from '@lib/utils/functions'
 import moment from 'moment'
+import _get from 'lodash/get'
 
 import PetBreedForm from '@containers/pet-breed/create'
 import FormField from '@components/Common/FormField'
@@ -122,19 +123,10 @@ function Edit(props) {
             type='checkbox'/>
         </Form.Group>
         <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Form.Select}
-            label='Vaccination'
-            name='vaccination'
-            options={[
-              { key: 1, value: 'Current', text: 'Current' },
-              { key: 2, value: 'Comming due', text: 'Comming due' },
-              { key: 3, value: 'Expired', text: 'Expired' },
-              { key: 4, value: 'Verify!', text: 'Verify!' }
-            ]}
-            placeholder='Select'
-            selectOnBlur={false}/>
+          <Form.Field>
+            <label>Vaccination</label>
+            <input placeholder='-' readOnly value={_get(petDetail, 'item.summary.vaccination_status')}/>
+          </Form.Field>
           <Field
             component={FormField}
             control={Form.Checkbox}

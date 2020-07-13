@@ -5,6 +5,7 @@ import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import petDetailDuck from '@reducers/pet/detail'
 import clientDetailDuck from '@reducers/client/detail'
+import moment from 'moment'
 
 const { types } = petDetailDuck
 
@@ -33,7 +34,21 @@ function* get({ id }) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item
+        item: {
+          ...item,
+          vaccination_alert: item.vaccinations.filter((_vaccination)=> {
+            return  moment(_vaccination.notified_at).add(30 ,'days').isSameOrAfter(moment())
+          })
+            .sort((_first, _second)=> (
+              moment(_second.notified_at).format('YYYY-MM-DD-HH:mm:ss').localeCompare(moment(_first.notified_at).format('YYYY-MM-DD-HH:mm:ss'))
+            ))
+            .reduce((accumulator, currentValue, index, array) => {
+              if(index == 0  || (index > 0 && array[index - 1].notified_at === currentValue.notified_at))
+                return [ ...accumulator , currentValue ]
+
+              return accumulator
+            },[])
+        }
       }
     })
   } catch (e) {

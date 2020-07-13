@@ -17,6 +17,7 @@ import GallerySection from './GallerySection'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petImageDuck from '@reducers/pet/image'
+import petImageDetailDuck from '@reducers/pet/image/detail'
 import useCameraAvailable from '@hooks/useCameraAvailable'
 
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
@@ -111,8 +112,21 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
   }
 
   const _handleImageEditorSave = (_imageFile) => {
-    return props.put({ id: petDetail.item.id, image: _imageFile })
-      .then(()=> props.getPet(id))
+    if(initialStep === 'select_photo')
+      return props.put({ id: petDetail.item.id, image: _imageFile })
+        .then(()=> props.getPet(id))
+        .catch(()=> {})
+        .finally(_handleCloseImageEditorModal)
+    /** on conflicts discarts  some this lines,
+     *  I saw that you had also modified this part in the saga */
+
+    return props.postPetImage({ pet_id: petDetail.item.id,images: _imageFile })
+      .then((result = [])=> {
+        return Promise.all([
+          props.putPetImage({ pet_id: petDetail.item.id, pet_image_id: result[0].id, is_profile: true }),
+          props.getPet(id)
+        ])
+      })
       .catch(()=> {})
       .finally(_handleCloseImageEditorModal)
   }
@@ -276,7 +290,8 @@ export default compose(
     }), {
       getPetImages: petImageDuck.creators.get,
       getPet      : petDetailDuck.creators.get,
-      put         : petDetailDuck.creators.put,
+      putPetImage : petImageDetailDuck.creators.put,
+      postPetImage: petImageDetailDuck.creators.post,
       resetItem   : petDetailDuck.creators.resetItem
     })
 )(PetShow)

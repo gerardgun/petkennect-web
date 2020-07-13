@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import InputReadOnly from '@components/Common/InputReadOnly'
 import { Header } from 'semantic-ui-react'
 import moment from 'moment'
+import  _get from 'lodash/get'
 
 import SizeTypes from '@lib/constants/SizeTypes'
 
@@ -46,7 +47,7 @@ function Show({ petDetail  }) {
         <InputReadOnly
           className='w50'
           label='Vaccination'
-          value={petDetail.item.vaccination || '-'}/>
+          value={_get(petDetail,'item.summary.vaccination_status', '-')}/>
         <InputReadOnly
           className='w50'
           label='Retired'

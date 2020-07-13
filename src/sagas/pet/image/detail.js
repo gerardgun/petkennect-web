@@ -1,6 +1,6 @@
 import { call, put,select, takeEvery } from 'redux-saga/effects'
 
-import { Delete, Get, Post } from '@lib/utils/http-client'
+import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import petImageDetailDuck from '@reducers/pet/image/detail'
 import petDetailDuck from '@reducers/pet/detail'
@@ -73,7 +73,7 @@ function* _put({ payload: { pet_id, pet_image_id, ...payload } }) {
 
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Post, `pets/${pet_id}/images/${pet_image_id}/`, payload)
+    yield call(Patch, `pets/${pet_id}/images/${pet_image_id}/`, payload)
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
     yield put({
