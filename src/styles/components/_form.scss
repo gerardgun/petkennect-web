@@ -1,5 +1,55 @@
 .ui.form {
   .field {
+    &.error {
+      label {
+        color: inherit;
+      }
+      
+      .message {
+        padding-top: 0.3rem;
+        font-size: 0.9rem;
+        color: unquote($red + 'C5');
+      }
+
+      .ui.input {
+        &.action {
+          .ui.button {
+            border-color: #e0b4b4 !important;
+            color: #9f3a38 !important;
+
+            &.basic {
+              background-color: #fff6f6 !important;
+            }
+          }
+        }
+      }
+    }
+
+    &:not(.error) {
+      .ui.input {
+        input {
+          border-color: $light-gray;
+  
+          &:focus {
+            background-color: unquote($green + '07');
+            border-color: $green;
+          }
+        }
+      }
+    }
+
+    &.action-wo-border {
+      .ui.input.action {
+        input {
+          border-right-style: none;
+        }
+
+        .ui.button.basic {
+          border-left-style: none;
+        }
+      }
+    }
+
     & > label {
       color: $black;
       font-weight: 400;

@@ -1,6 +1,16 @@
 .input-file.ui.input {
+  &.action {
+    input {
+      border-right-style: none;
+    }
+
+    .ui.button.basic {
+      border-left-style: none;
+    }
+  }
+
   .ui.label {
-    border-color: #BDC3C9 !important;
+    border-right-width: 0 !important;
 
     &.image {
       overflow: hidden;
@@ -19,10 +29,6 @@
       margin-right: 0.15rem;
       margin-left: 0.15rem;
     }
-  }
-
-  input {
-    border-left-width: 0 !important;
   }
 
   input:read-only {

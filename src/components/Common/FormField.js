@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form } from 'semantic-ui-react'
 
-import FormFieldError from '@components/Common/FormFieldError'
+import FormError from '@components/Common/FormError'
 
 const FormField = props => {
   const {
@@ -48,9 +48,10 @@ const FormField = props => {
   }
 
   const computedInput = getComputedInput()
+  const hasError = meta.touched && meta.error
 
   return (
-    <Form.Field className={className} required={required}>
+    <Form.Field className={className} error={hasError} required={required}>
       {
         WrappedComponent.name !== 'Checkbox' ? <label>{label}</label> : <label>&nbsp;</label>
       }
@@ -59,7 +60,12 @@ const FormField = props => {
         onChange={_handleChange}
         {...computedInput}
         {...rest}/>
-      <FormFieldError input={computedInput} meta={meta}/>
+
+      {/* Error Message */}
+      {
+        hasError && <FormError message={meta.error}/>
+      }
+
     </Form.Field>
   )
 }
