@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -70,13 +70,13 @@ const PetBreedForm = (props) => {
             <Field
               autoFocus
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Name'
               name='name'
               placeholder='Enter name'/>
             <Field
               component={FormField}
-              control={Form.Select}
+              control={Select}
               label='Size'
               name='size'
               options={[
@@ -91,7 +91,7 @@ const PetBreedForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Select}
+              control={Select}
               label='Pet Class'
               name='pet_class'
               options={petClass.items.map(_petClass=>({

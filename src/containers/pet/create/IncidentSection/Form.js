@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Select, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import moment from 'moment'
 
@@ -86,8 +86,8 @@ const IncidentSectionForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Incident Type *'
+              control={Select}
+              label='Incident Type'
               name='type'
               options={petIncidentType.items.map(_type=>({
                 key  : _type.id,
@@ -95,20 +95,22 @@ const IncidentSectionForm = (props) => {
                 text : `${_type.name}`
               }))}
               placeholder='Select type'
+              required
               selectOnBlur={false}/>
 
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               format={value => value ? moment(value,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : null}
-              label='Incident date *'
+              label='Incident date'
               name='incised_at'
               parse={value=> moment(value).format('YYYY-MM-DD[T]HH:mm:ss')}
+              required
               type='date'/>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Action taken *'
+              control={Select}
+              label='Action taken'
               name='action'
               options={petIncidentAction.items.map(_action=>({
                 key  : _action.id,
@@ -116,6 +118,7 @@ const IncidentSectionForm = (props) => {
                 text : `${_action.name}`
               }))}
               placeholder='Select action taken'
+              required
               selectOnBlur={false}/>
 
           </Form.Group>
@@ -134,7 +137,7 @@ const IncidentSectionForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.TextArea}
+              control={TextArea}
               label='Internal comment'
               name='internal_description'
               placeholder='Input comment (Optional)'/>
@@ -143,8 +146,8 @@ const IncidentSectionForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Behavior Observed *'
+              control={Select}
+              label='Behavior Observed'
               multiple
               name='behaviors'
               options={petIncidentBehavior.items.map(behavior=>({
@@ -153,18 +156,20 @@ const IncidentSectionForm = (props) => {
                 text : `${behavior.name}`
               }))}
               placeholder='Select action'
+              required
               selectOnBlur={false}/>
 
           </Form.Group>
 
-          <Header as='h6' className='form-section-header mt36' color='blue'>INFORMATION FOR THE CLIENT</Header>
+          <Header as='h6' className='section-header mt36' color='blue'>INFORMATION FOR THE CLIENT</Header>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.TextArea}
-              label='Comments *'
+              control={TextArea}
+              label='Comments'
               name='description'
-              placeholder='Input comment'/>
+              placeholder='Input comment'
+              required/>
           </Form.Group>
 
           {error && (

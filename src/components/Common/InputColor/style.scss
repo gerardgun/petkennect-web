@@ -1,22 +1,13 @@
-.c-input-color {
-  &.pop-up {
-    border: none !important;
-    background-color: transparent !important;
-    padding: 0 !important;
+.input-color {
+  i.circular.inverted.icon {
+    opacity: 1 !important;
   }
-  &.form-field{
-    position: relative;
-  }
-  &.icon{
-    position: absolute;
-    top: 31px;
-    left: 12px;
-    border-radius: 2px;
-    border: 2px solid #d4d4d4;
-    width: 36px;
-    height: 20px;
-  }
-  &.input{
-    padding-left: 44px !important;
+
+  &-pop-up.ui.popup {
+    padding: 0;
+
+    .sketch-picker {
+      box-shadow: none !important;
+    }
   }
 }

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Form, Header, Modal, Divider } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Divider } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -110,7 +110,7 @@ const SendReportForm = (props) => {
             <Field
               autoFocus
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Email'
               name='client_email'
               placeholder=''
@@ -121,7 +121,7 @@ const SendReportForm = (props) => {
             <Field
               autoFocus
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Subject'
               name='subject'
               onChange={_handleSubjectChange}
@@ -140,7 +140,7 @@ const SendReportForm = (props) => {
 
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label=''
               name='files'
               type='file'/>
@@ -185,7 +185,7 @@ export default compose(
     ({ auth,...state }) => {
       const client = clientDuck.selectors.list(state)
       const petDetail = petDetailDuck.selectors.detail(state)
-      const currentTenant =  authDuck.selectors.getCurrentTenant(auth)
+      const currentTenant = authDuck.selectors.getCurrentTenant(auth)
 
       const clientFullName = `${petDetail.item.client_first_name || ''} ${petDetail.item.client_last_name || ''}`
 

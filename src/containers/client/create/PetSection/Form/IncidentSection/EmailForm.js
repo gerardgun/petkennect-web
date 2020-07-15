@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Modal, Divider } from 'semantic-ui-react'
+import { Button, Divider, Form, Header, Input, Modal, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -69,7 +69,7 @@ const EmailForm = (props) => {
             <Field
               autoFocus
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='To'
               name='client_email'
               placeholder=''
@@ -80,7 +80,7 @@ const EmailForm = (props) => {
             <Field
               autoFocus
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Subject'
               name='subject'
               onChange={_handleSubjectChange}
@@ -89,7 +89,7 @@ const EmailForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.TextArea}
+              control={TextArea}
               label=''
               name='body_text'
               placeholder='Enter message...'
@@ -104,7 +104,7 @@ const EmailForm = (props) => {
 
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label=''
               name='files'
               type='file'/>

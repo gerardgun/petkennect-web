@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -66,23 +66,25 @@ const PetIncidentActionForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Input}
-              label='Name *'
+              control={Input}
+              label='Name'
               name='name'
-              placeholder='Enter name'/>
+              placeholder='Enter name'
+              required/>
           </Form.Group>
 
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Result *'
+              control={Select}
+              label='Result'
               name='result_type'
               options={[
                 { key: 'N', value: 'N',text: 'Neither' } ,
                 { key: 'R',value: 'R', text: 'Removal from Camp' }
               ]}
               placeholder='Select an option'
+              required
               selectOnBlur={false}/>
           </Form.Group>
           {error && (

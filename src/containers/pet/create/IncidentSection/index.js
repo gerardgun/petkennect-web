@@ -15,7 +15,7 @@ import { openIncidentPDF } from '@lib/utils/functions'
 
 import petIncidentDuck from '@reducers/pet/incident'
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
-import petIncidentActionsDuck from '@reducers/pet/incident-action'
+import petIncidentActionDuck from '@reducers/pet/incident-action'
 import petIncidentTypeDuck from '@reducers/pet/incident-type'
 import petDetailDuck from '@reducers/pet/detail'
 
@@ -110,13 +110,13 @@ export default compose(
     (state) => ({
       petIncident      : petIncidentDuck.selectors.list(state),
       petIncidentDetail: petIncidentDetailDuck.selectors.detail(state),
-      petIncidentAction: petIncidentActionsDuck.selectors.list(state),
+      petIncidentAction: petIncidentActionDuck.selectors.list(state),
       petIncidentType  : petIncidentTypeDuck.selectors.list(state),
       petDetail        : petDetailDuck.selectors.detail(state)
     }), {
       getPetIncidents      : petIncidentDuck.creators.get,
       getPet               : petDetailDuck.creators.get,
-      getPetIncidentActions: petIncidentActionsDuck.creators.get,
+      getPetIncidentActions: petIncidentActionDuck.creators.get,
       getPetIncidentTypes  : petIncidentTypeDuck.creators.get,
       setItem              : petIncidentDetailDuck.creators.setItem,
       removeSelectedIds    : petIncidentDuck.creators.removeSelectedIds

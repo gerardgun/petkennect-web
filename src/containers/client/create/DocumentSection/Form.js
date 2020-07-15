@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Select, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -61,7 +61,7 @@ const DocumentForm = props => {
             <Field
               autoFocus
               component={FormField}
-              control={Form.TextArea}
+              control={TextArea}
               label='Description'
               name='description'
               placeholder='Enter description'/>
@@ -69,8 +69,8 @@ const DocumentForm = props => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Document Type *'
+              control={Select}
+              label='Document Type'
               name='type'
               options={props.clientDocumentTypes.items.map(_documentType => ({
                 key  : _documentType.id,
@@ -78,13 +78,15 @@ const DocumentForm = props => {
                 text : `${_documentType.name}`
               }))}
               placeholder='Select type'
+              required
               search
               selectOnBlur={false}/>
             <Field
               component={FormField}
-              control={Form.Input}
-              label='File *'
+              control={Input}
+              label='File'
               name='files'
+              required
               type='file'/>
           </Form.Group>
 

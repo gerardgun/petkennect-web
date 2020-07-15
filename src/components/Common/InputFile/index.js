@@ -1,96 +1,87 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import PropTypes from 'prop-types'
-import { Field } from 'redux-form'
-import FormField from '../FormField'
-import { Form, Input, Label, Icon } from 'semantic-ui-react'
+import { Button, Image, Input, Label, Icon } from 'semantic-ui-react'
+import _truncate from 'lodash/truncate'
+
 import './styles.scss'
-import { useState } from 'react'
+import { useEffect } from 'react'
 
-function InputFile({ label, placeholder, name, change, onlyImage }) {
-  const [ value, setValue ] = useState('')
+function InputFile(props) {
+  const { accept, multiple, value, ...rest } = props
+
+  const [ filename, setFilename ] = useState('')
   const [ tempURL, setTempURL ] = useState('')
-  const inputRef = useRef()
 
-  const _handleFileChange = (e)=> {
-    const { files = [] } = e.target
-    if(files.length)
-    {
-      const newValue = e.target.files[0].name + ''
-      setValue(newValue.length <= 14 ? newValue : (newValue + '').substr(0, 11) + '...')
-      setTempURL(URL.createObjectURL(e.target.files[0]))
-
-      return
+  useEffect(() => {
+    if(value) {
+      setFilename(_truncate(value.split('/').pop(), { length: 30 }))
+      setTempURL(value)
     }
-    _handleFileRemove()
-  }
-  const _handleFileRemove = ()=> {
-    setValue('')
+  }, [])
+
+  const _handleDeleteClick = () => {
+    setFilename('')
     setTempURL('')
-    change(name, null)
   }
 
-  const _handleFakeInputClick = ()=>{
-    if(inputRef.current) {
-      inputRef.current.querySelector('input[type="file"]').focus()
-      inputRef.current.querySelector('input[type="file"]').click()
+  const _handleDrop = useCallback((acceptedFiles, fileRejections, e) => {
+    const [ file ] = acceptedFiles
+
+    setFilename(_truncate(file.name, { length: 30 }))
+    setTempURL(URL.createObjectURL(file))
+
+    const data = {
+      ...props,
+      value: acceptedFiles
     }
-  }
 
-  const _handleFakeInputBlur = ()=>{
-    if(inputRef.current)
-      inputRef.current.querySelector('input[type="file"]').blur()
-  }
+    props.onChange.call(this, e, data)
+  }, [])
+
+  const { getRootProps, getInputProps/* , isDragActive */ } = useDropzone({ onDrop: _handleDrop })
 
   return (
-    <Form.Field className='c-input-file wrapper' >
-      <label>{label}</label>
-
-      <Input
-        className='input-visible'
-        icon='upload'
-        iconPosition='left' onBlur={_handleFakeInputBlur}
-        onClick={_handleFakeInputClick}
-        placeholder={placeholder}
-        readOnly value={value ? ' ' : value}/>
-      {value && (
-        <Label
-          className='chip' image >
-          <img src={tempURL}/>
-          <span>{value}</span>
-          <Icon name='delete' onClick={_handleFileRemove}/>
-        </Label>
-      )}
-      <Field
-        {...(onlyImage ? { accept: 'image/*' } : {})}
-        className='input-hidden'
-        component={FormField}
-        control={Form.Input}
-        icon='upload'
-        iconPosition='left'
-        label={label}
-        name={name}
-        props={{
-          onChange: _handleFileChange,
-          ref     : inputRef
-        }}
-
-        type='file'/>
-    </Form.Field>
-
+    <Input
+      action={Boolean(tempURL)}
+      className='input-file'
+      labelPosition='left' {...rest} {...getRootProps()}>
+      {
+        tempURL ? (
+          <Label basic image>
+            <Image src={tempURL}/>
+          </Label>
+        ) : (
+          <Label basic>
+            <Icon name='cloud upload'/>
+          </Label>
+        )
+      }
+      <input readOnly value={filename}/>
+      <input
+        type='hidden' {...getInputProps()} accept={accept}
+        multiple={multiple}/>
+      {
+        tempURL && (
+          <Button
+            basic icon='delete' onClick={_handleDeleteClick}
+            type='button'/>
+        )
+      }
+    </Input>
   )
 }
 
 InputFile.propTypes = {
-  label      : PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  name       : PropTypes.string.isRequired,
-  change     : PropTypes.func.isRequired,
-  onlyImage  : PropTypes.bool
+  onChange   : PropTypes.func.isRequired,
+  placeholder: PropTypes.string
 }
 
 InputFile.defaultProps = {
-  placeholder: '',
-  onlyImage  : false
+  onChange   : () => {},
+  placeholder: 'Choose file...',
+  accept     : 'image/*',
+  multiple   : false
 }
 
 export default InputFile

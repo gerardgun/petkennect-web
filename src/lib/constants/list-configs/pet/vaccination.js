@@ -2,9 +2,9 @@ import React from 'react'
 import { Label } from 'semantic-ui-react'
 
 export default {
-  base_uri : null,
-  no_search: true,
-  row      : {
+  base_uri      : null,
+  search_enabled: false,
+  row           : {
     options: [
       // {
       //   display_name: 'Edit',

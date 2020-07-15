@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Grid, Header, Segment, Image, Breadcrumb, Form } from 'semantic-ui-react'
+import { Button, Checkbox, Grid, Header, Input, Segment, Select, Image, Breadcrumb, Form } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import Layout from '@components/Common/Layout'
@@ -108,27 +108,29 @@ const EmployeeEditForm = (props) => {
           <Field
             component='input' defaultValue={true} name='user_exists'
             type='hidden'/>
-          <Header as='h6' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
+          <Header as='h6' className='section-header mt36' color='blue'>BASIC INFORMATION</Header>
 
           <Form.Group widths='equal'>
 
             <Field
               component={FormField}
-              control={Form.Input}
-              label='Email *'
+              control={Input}
+              label='Email'
               name='email'
               placeholder='Enter email'
-              readOnly/>
+              readOnly
+              required/>
             <Field
               component={FormField}
-              control={Form.Input}
-              label='Name *'
+              control={Input}
+              label='Name'
               name='first_name'
               placeholder='Enter name'
-              readOnly/>
+              readOnly
+              required/>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Lastname'
               name='last_name'
               placeholder='Enter lastname'
@@ -138,8 +140,8 @@ const EmployeeEditForm = (props) => {
 
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Title *'
+              control={Select}
+              label='Title'
               name='title'
               options={employeeTitle.items.map((_employeeTitle) => ({
                 key  : _employeeTitle.id,
@@ -147,13 +149,14 @@ const EmployeeEditForm = (props) => {
                 text : `${_employeeTitle.name}`
               }))}
               placeholder='Select title'
+              required
               search
               selectOnBlur={false}/>
 
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Role *'
+              control={Select}
+              label='Role'
               name='role'
               options={role.items.map((_location) => ({
                 key  : _location.id,
@@ -161,13 +164,14 @@ const EmployeeEditForm = (props) => {
                 text : `${_location.name}`
               }))}
               placeholder='Select role'
+              required
               search
               selectOnBlur={false}/>
 
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Location *'
+              control={Select}
+              label='Location'
               name='location'
               options={location.items.map((_location) => ({
                 key  : _location.id,
@@ -175,6 +179,7 @@ const EmployeeEditForm = (props) => {
                 text : `${_location.name}`
               }))}
               placeholder='Select location'
+              required
               search
               selectOnBlur={false}/>
           </Form.Group>
@@ -183,7 +188,7 @@ const EmployeeEditForm = (props) => {
             <Field
               className='mt36'
               component={FormField}
-              control={Form.Checkbox}
+              control={Checkbox}
               label='Active'
               name='status'
               type='checkbox'/>

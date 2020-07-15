@@ -6,7 +6,6 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
-import ModalFilter from '@components/Modal/Filter'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 
@@ -15,7 +14,6 @@ import productDetailDuck from '@reducers/product/detail'
 
 const ProductList = ({ product, productDetail, ...props }) => {
   const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
-  const [ openFilterModal, { _handleOpen: _handleOpenFilterModal, _handleClose: _handleCloseFilterModal } ] = useModal()
 
   useEffect(() => {
     if(productDetail.status === 'DELETED') props.getProducts()
@@ -45,9 +43,6 @@ const ProductList = ({ product, productDetail, ...props }) => {
           </Grid.Column>
           <Grid.Column textAlign='right' width={12}>
             <Button
-              basic content='Filter'
-              onClick={_handleOpenFilterModal}/>
-            <Button
               as={Link} color='teal'
               content='New Product'
               onClick={_handleCreateClick}
@@ -61,10 +56,6 @@ const ProductList = ({ product, productDetail, ...props }) => {
         duckDetail={productDetailDuck}
         onClose={_handleCloseDeleteModal}
         open={openDeleteModal}/>
-      <ModalFilter
-        duck={productDuck}
-        onClose={_handleCloseFilterModal}
-        open={openFilterModal}/>
 
     </Layout>
   )

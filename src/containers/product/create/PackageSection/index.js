@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import {  Tab, Grid, Button, Form } from 'semantic-ui-react'
+import { Dropdown, Tab, Grid, Button, Form } from 'semantic-ui-react'
 
 import TableSortableList from '@components/Table/Sortable'
 
@@ -57,7 +57,7 @@ const ProductPackageSection = props => {
         <Form.Group widths={3}>
           <Form.Field
             clearable
-            control={Form.Dropdown}
+            control={Dropdown}
             fluid
             icon='search'
             loading={product.status === 'GETTING'}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Header, Modal, Select, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -78,8 +78,8 @@ const CommentForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Location *'
+              control={Select}
+              label='Location'
               name='location'
               options={locations.items.map((_location) => ({
                 key  : _location.id,
@@ -87,12 +87,13 @@ const CommentForm = (props) => {
                 text : _location.code
               }))}
               placeholder='Select location'
+              required
               search
               selectOnBlur={false}/>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Staff *'
+              control={Select}
+              label='Staff'
               name='employee'
               options={employees.items.map(_employee=>({
                 key  : _employee.id,
@@ -100,21 +101,23 @@ const CommentForm = (props) => {
                 text : `${_employee.first_name} ${_employee.last_name}`
               }))}
               placeholder='Select staff'
+              required
               search
               selectOnBlur={false}/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.TextArea}
-              label='Comments *'
+              control={TextArea}
+              label='Comments'
               name='comment'
-              placeholder='Enter comments'/>
+              placeholder='Enter comments'
+              required/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Checkbox}
+              control={Checkbox}
               label='Follow up'
               name='follow_up'
               type='checkbox'/>

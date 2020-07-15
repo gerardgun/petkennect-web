@@ -1,9 +1,9 @@
 import React from 'react'
-import { Form, Ref } from 'semantic-ui-react'
+import { Form } from 'semantic-ui-react'
 
 import FormFieldError from '@components/Common/FormFieldError'
 
-const FormField = React.forwardRef((props, ref) => {
+const FormField = props => {
   const {
     control: WrappedComponent,
     input: {
@@ -12,13 +12,19 @@ const FormField = React.forwardRef((props, ref) => {
       ...input
     },
     meta,
-    // Custom properties for the wrapped component
+    // Properties for Form.Field
     className = '',
+    label = '',
+    required = false,
+    // Properties for the wrapped component
     ...rest
   } = props
 
   const getComputedInput = () => {
     let { ...computed } = input
+
+    if(WrappedComponent.name === 'Checkbox')
+      computed.label = label
 
     if(props.type === 'file')
       delete computed.value
@@ -44,17 +50,18 @@ const FormField = React.forwardRef((props, ref) => {
   const computedInput = getComputedInput()
 
   return (
-    <Form.Field className={className}>
-      <Ref innerRef={ref}>
-        <WrappedComponent
-          onBlur={_handleBlur}
-          onChange={_handleChange}
-          {...computedInput}
-          {...rest}/>
-      </Ref>
+    <Form.Field className={className} required={required}>
+      {
+        WrappedComponent.name !== 'Checkbox' ? <label>{label}</label> : <label>&nbsp;</label>
+      }
+      <WrappedComponent
+        onBlur={_handleBlur}
+        onChange={_handleChange}
+        {...computedInput}
+        {...rest}/>
       <FormFieldError input={computedInput} meta={meta}/>
     </Form.Field>
   )
-})
+}
 
 export default FormField

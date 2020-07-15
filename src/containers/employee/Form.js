@@ -3,18 +3,12 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import {
-  Button,
-  Form,
-  Header,
-  Modal,
-  FormGroup
-
-} from 'semantic-ui-react'
+import { Button, Checkbox, Dropdown, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
+import { useDebounce } from '@hooks/Shared'
 
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
@@ -22,7 +16,6 @@ import employeeDetailDuck from '@reducers/employee/detail'
 import employeeTitleDuck from '@reducers/employee/title'
 import locationDuck from '@reducers/location'
 import userDuck from '@reducers/user'
-import { useDebounce } from '@hooks/Shared'
 
 const EmployeeForm = (props) => {
   const {
@@ -124,48 +117,15 @@ const EmployeeForm = (props) => {
           <Field
             component='input' defaultValue={true} name='user_exists'
             type='hidden'/>
-          {/* <FormGroup widths='equal'>
-            <Field
-              additionLabel='Invite '
-              allowAdditions
-              closeOnChange
-              component={FormField}
-              control={Form.Dropdown}
-              fluid
-              format={value=>
-                [ value ]
-              }
-              label='Add or Search some PetKennect User*'
-              multiple
-              name='email'
-              onAddItem={_handleUserOptionAddItem}
-              onChange={_handleUserOptionChange}
-              onSearchChange={_handleSearchChange}
-              options={[ ...user.items,customUser ].map((_user) => ({
-                key  : _user.id,
-                value: _user.email,
-                text : `${_user.email}`
-              }))}
-              parse={value =>
-                value[value.length > 0 ? value.length - 1 : 0]
-              }
-              placeholder='Search user by email'
-              readOnly={isUpdating}
-              search
-              selection
-              selectOnBlur={false}/>
-          </FormGroup> */}
-
           <Header as='h4' className='cls-ModelHeader'>SEARCH USER</Header>
 
-          <FormGroup widths='equal'>
+          <Form.Group widths='equal'>
             <Field
               additionLabel='Invite '
               allowAdditions
-              className='clsLabel'
               closeOnChange
               component={FormField}
-              control={Form.Dropdown}
+              control={Dropdown}
               fluid
               format={value=>
                 [ value ]
@@ -186,31 +146,32 @@ const EmployeeForm = (props) => {
               }
               placeholder='Search email'
               readOnly={isUpdating}
+              required
               search
               selection
               selectOnBlur={false}/>
             <Field
               autoFocus
-              className='clsLabel'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Name'
               name='first_name'
               placeholder='Enter name'
-              readOnly={!!props.user_exists || isUpdating}/>
+              readOnly={!!props.user_exists || isUpdating}
+              required/>
             <Field
-              className='clsLabel'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Last name'
               name='last_name'
               placeholder='Enter lastname'
-              readOnly={!!props.user_exists || isUpdating}/>
-          </FormGroup>
+              readOnly={!!props.user_exists || isUpdating}
+              required/>
+          </Form.Group>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               icon='upload'
               label='Profile Picture'
               name='thumbnail_path'
@@ -225,9 +186,8 @@ const EmployeeForm = (props) => {
 
           <Form.Group widths='equal'>
             <Field
-              className='clsLabel'
               component={FormField}
-              control={Form.Select}
+              control={Select}
               label='Title'
               name='title'
               options={employeeTitle.items.map((_employeeTitle) => ({
@@ -236,12 +196,12 @@ const EmployeeForm = (props) => {
                 text : `${_employeeTitle.name}`
               }))}
               placeholder='Select title'
+              required
               search
               selectOnBlur={false}/>
             <Field
-              className='clsLabel'
               component={FormField}
-              control={Form.Select}
+              control={Select}
               label='Location'
               name='location'
               options={location.items.map((_location) => ({
@@ -250,22 +210,23 @@ const EmployeeForm = (props) => {
                 text : `${_location.name}`
               }))}
               placeholder='Select location'
+              required
               search
               selectOnBlur={false}/>
             <Field
-              className='clsLabel'
               component={FormField}
-              control={Form.Select}
+              control={Select}
               label='Role'
               name='Role'
               placeholder='Select Role'
+              required
               search
               selectOnBlur={false}/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Checkbox}
+              control={Checkbox}
               label='ACTIVE'
               name='status'
               toggle

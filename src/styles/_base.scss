@@ -119,11 +119,6 @@ textarea {
     }
   }
 
-  .ui.divider {
-    margin-top: 2.3rem;
-    margin-bottom: 1.8rem;
-  }
-
   &.ui.modal {
     & > .content {
       padding: 2.5rem 3rem 2rem;
@@ -131,11 +126,17 @@ textarea {
   }
 
   &-actions {
+    padding-top: 2rem;
     margin-bottom: 0rem !important;
 
     .field {
       text-align: right;
     }
+  }
+
+  .ui.divider {
+    margin-top: 2.3rem;
+    margin-bottom: 1.8rem;
   }
 
   .ui.header {
@@ -199,57 +200,19 @@ img.ui.img-40 {
   height: 40px !important;
 }
 
-.segment-content {
-  .segment-content-header {
-    .column {
-      @include buttonFunction();
-    }
-  }
-  @include tabHeaderFunction();
-
-  .field {
-    @include labelFunction();
-  }
-
-  .form {
-    .header {
-      @include pageHeadingFunction();
-    }
-  }
-}
-
 .form-primary {
   .column {
-    @include buttonFunction();
-
     @include transparentCancelButton();
   }
 }
 
 .modals {
   .modal {
-    @include buttonFunction();
-    @include labelFunction();
-    @include tabHeaderFunction();
-
     @include transparentCancelButton();
     .cls-ModelHeader {
       font-size: 11px;
       line-height: 16px;
       color: #005987;
     }
-  }
-}
-
-.grid {
-  .column {
-    @include tabHeaderFunction();
-  }
-}
-
-.clsLabel {
-  label:after {
-    content: " *";
-    color: $green;
   }
 }

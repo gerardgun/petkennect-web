@@ -3,13 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, FieldArray } from 'redux-form'
-import {
-  Button,
-  Form,
-  Header,
-  Divider,
-  Segment
-} from 'semantic-ui-react'
+import { Button, Form, Header, Input, Divider, Segment } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -31,7 +25,7 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
   return (
     <>
       <Divider/>
-      <Header as='h6' className='form-section-header' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
+      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
       <Segment className='form-primary-segment' padded='very'>
         {
           fields.map((item, index) => (
@@ -39,14 +33,14 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
               <Field
                 autoComplete='off'
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Name'
                 name={`${item}.name`}
                 placeholder='Enter names'/>
               <Field
                 autoComplete='off'
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Relation'
                 name={`${item}.relation`}
                 placeholder='Enter relation'/>
@@ -103,52 +97,54 @@ const ClientCreateFormStep2 = (props) => {
         <span className='text-regular text-gray'>
           Complete Emergency Data
         </span>
-        <Header as='h6' className='form-section-header' color='blue'>EMERGENCY CONTACT</Header>
+        <Header as='h6' className='section-header' color='blue'>EMERGENCY CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='emergency_contact_name'
-            placeholder='Enter names'/>
+            placeholder='Enter names'
+            required/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Relation *'
+            control={Input}
+            label='Relation'
             name='emergency_contact_relationship'
-            placeholder='Enter relationship'/>
+            placeholder='Enter relationship'
+            required/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Phone'
             name='emergency_contact_phones[0]'
             placeholder='Enter phone number'
             type='tel'/>
         </Form.Group>
 
-        <Header as='h6' className='form-section-header' color='blue'>VETERINARIAN CONTACT</Header>
+        <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Vet name'
             name='emergency_vet_name'
             placeholder='Enter vet name'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Vet location'
             name='emergency_vet_location'
             placeholder='Enter vet location'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Vet phone'
             name='emergency_vet_phones[0]'
             placeholder='Enter phone number'

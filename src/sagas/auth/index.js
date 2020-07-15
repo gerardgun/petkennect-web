@@ -61,12 +61,15 @@ function* get() {
     yield put({ type: types.GET_PENDING })
 
     // Recover authenticated user data
-    const me = yield call(Get, 'get_my_info/')
+    const { is_staff, ...me } = yield call(Get, 'get_my_info/')
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: me
+        item: {
+          ...me,
+          is_superadmin: is_staff
+        }
       }
     })
   } catch (e) {

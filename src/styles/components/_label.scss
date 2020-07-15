@@ -1,4 +1,11 @@
 .ui.label {
+  &.basic {
+    &.blue {
+      border-color: $blue !important;
+      color: $blue !important;
+    }
+  }
+
   &.orange {
     background-color: $orange !important;
   }
