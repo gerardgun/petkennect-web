@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Container, Form, Grid, Image, Header } from 'semantic-ui-react'
+import { Button, Checkbox, Container, Form, Grid, Header, Image, Input } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -60,7 +60,7 @@ const SignIn = props => {
                 autoComplete='off'
                 autoFocus
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Email'
                 name='email'
                 placeholder='Enter email'
@@ -70,13 +70,14 @@ const SignIn = props => {
               <Field
                 action={{
                   basic  : true,
+                  color  : 'teal',
                   icon   : isPassShown ? 'eye' : 'eye slash',
                   onClick: _handlePassIconClick,
                   type   : 'button'
                 }}
                 autoComplete='off'
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Password'
                 name='password'
                 placeholder='Enter your password'
@@ -96,7 +97,7 @@ const SignIn = props => {
             <Form.Group widths='equal checkbox-group'>
               <Field
                 component={FormField}
-                control={Form.Checkbox}
+                control={Checkbox}
                 label='Remember me'/>
               <Form.Field className='link'>
                 <Link to='/auth/forgot-password'>Forgot your password?</Link>

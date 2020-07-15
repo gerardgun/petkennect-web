@@ -1,7 +1,10 @@
+import petIncidentActionDuck from '@reducers/pet/incident-action'
+import petIncidentTypeDuck from '@reducers/pet/incident-type'
+
 export default {
-  base_uri : null,
-  no_search: true,
-  options  : [
+  base_uri      : null,
+  search_enabled: false,
+  options       : [
     {
       display_name: 'Download',
       name        : 'download',
@@ -42,30 +45,7 @@ export default {
     }
   ],
   row: {
-    options: [
-      // {
-      //   name     : 'view_pdf',
-      //   icon     : 'file pdf outline',
-      // },
-      // {
-      //   name     : 'edit',
-      //   icon     : 'edit outline',
-      // },
-      // {
-      //   name     : 'delete',
-      //   icon     : 'trash alternate outline',
-      // },
-      // {
-      //   display_name: 'Email Report',
-      //   name        : 'preview_report',
-      //   icon        : 'print'
-      // },
-      // {
-      //   display_name: 'Download Report',
-      //   name        : 'download_report',
-      //   icon        : 'download'
-      // }
-    ]
+    options: []
   },
   columns: [
     {
@@ -83,10 +63,11 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
+      sort_name   : 'type__name',
       filter      : {
-        selectable: true,
-        label     : 'Incident Type',
-        name      : 'type'
+        type        : 'dropdown',
+        name        : 'type__id',
+        source_store: petIncidentTypeDuck.store
       }
     },
     {
@@ -96,16 +77,17 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
+      sort_name   : 'action__name',
       filter      : {
-        selectable: true,
-        label     : 'Incident Action',
-        name      : 'action'
+        type        : 'dropdown',
+        name        : 'action__id',
+        source_store: petIncidentActionDuck.store
       }
     },
     {
       display_name: 'Registered By',
       name        : 'employee_fullname',
-      type        : 'string', // image, boolean, date, datetime, money, label
+      type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false

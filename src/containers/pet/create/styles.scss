@@ -1,10 +1,28 @@
-.p-pet-show {
+.pet-profile {
+  &-menu.ui.menu.vertical {
+    box-shadow: none;
+
+    .item {
+      padding: 1.1rem 2rem;
+
+      &.active {
+        background-color: #00b5ad0a !important;
+      }
+
+      i {
+        line-height: 1.2rem;
+      }
+    }
+  }
+
   .c-image-profile {
     position: relative;
     overflow: hidden;
     border-radius: 50%;
-    width: 140px;
-    height: 140px;
+    width: 14rem;
+    height: 14rem;
+    margin-bottom: 2.5rem;
+
     .c-image-profile__overlay {
       display: none;
       position: absolute;

@@ -6,7 +6,7 @@ export default base({
   store       : 'company/detail',
   initialState: {
     item: {
-      theme_color: '#ffffff'
+      theme_color: '#00AA9F'
     }
   }
 })

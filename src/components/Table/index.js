@@ -2,10 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { Checkbox, Dimmer, Dropdown, Grid, Image, Input, Label, Loader, Segment, Table, Button, Icon } from 'semantic-ui-react'
+import { Button, Checkbox, Dimmer, Dropdown, Grid, Icon, Image, Input, Label, Loader, Popup, Segment, Table } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
+import useModal from '@components/Modal/useModal'
+import FilterForm from './Filter/Form'
+import FilterTagManager from './Filter/TagManager'
 import { useDebounceText } from '@hooks/Shared'
 
 import { defaultImageUrl } from '@lib/constants'
@@ -14,6 +17,9 @@ const TableList = ({ duck, list, ...props }) => {
   const {
     options: configOptions = []
   } = list.config
+
+  // For Filter Popup
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
@@ -226,14 +232,34 @@ const TableList = ({ duck, list, ...props }) => {
             )
           }
         </Grid.Column >
-        {!list.config.no_search && (
-          <Grid.Column textAlign='right' width={10}>
-            {/* <Button basic content='Filters' disabled/> */}
+        <Grid.Column textAlign='right' width={10}>
+          {
+            props.filterColumns.length > 0 && (
+              <Popup
+                basic
+                on='click' onClose={_handleClose} onOpen={_handleOpen}
+                open={open} position='bottom right'
+                trigger={<Button basic={!open} color={open ? 'blue' : null} content='Filters'/>}>
+                <Popup.Content style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
+                  <FilterForm duck={duck}/>
+                </Popup.Content>
+              </Popup>
+            )
+          }
+          {_get(list.config, 'search_enabled', true) && (
             <Input
               icon='search' iconPosition='left' onChange={_handleSearchInputChange}
               placeholder={list.config.search_placeholder || 'Search'} type='search'/>
-          </Grid.Column>
-        )}
+          )}
+        </Grid.Column>
+
+        {
+          props.selectedFilterColumns.length > 0 && (
+            <Grid.Column style={{ paddingTop: 0 }} width={16}>
+              <FilterTagManager duck={duck}/>
+            </Grid.Column>
+          )
+        }
       </Grid>
 
       <Table
@@ -341,8 +367,10 @@ TableList.defaultProps = {
 export default compose(
   withRouter,
   connect(
-    (state, props) => ({
-      list: state[props.duck.store]
+    (state, { duck }) => ({
+      list                 : duck.selectors.list(state),
+      filterColumns        : duck.selectors.filterColumns(state),
+      selectedFilterColumns: duck.selectors.selectedFilterColumns(state)
     }),
     dispatch => ({ dispatch })
   )

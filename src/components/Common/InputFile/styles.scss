@@ -1,19 +1,31 @@
-.c-input-file {
-  &.wrapper {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    .input-hidden {
-      height: 0;
-      width: 0;
-      opacity: 0;
+.input-file.ui.input {
+  .ui.label {
+    border-color: #BDC3C9 !important;
+
+    &.image {
       overflow: hidden;
+      padding: 0 !important;
     }
 
-    .chip {
-      position: absolute !important;
-      top: 28px;
-      left: 48px;
+    & > img {
+      height: 100% !important;
+      width: 3.3rem !important;
+      margin: 0 !important;
+      object-fit: cover;
+      border-radius: 0;
     }
+
+    & > .icon {
+      margin-right: 0.15rem;
+      margin-left: 0.15rem;
+    }
+  }
+
+  input {
+    border-left-width: 0 !important;
+  }
+
+  input:read-only {
+    background-color: #fff !important;
   }
 }

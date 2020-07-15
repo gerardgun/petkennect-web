@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Container, Form, Grid, Image, Header } from 'semantic-ui-react'
+import { Button, Container, Form, Grid, Header, Image, Input } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -58,7 +58,7 @@ const RecoverAccount = props => {
             <Form.Group widths='equal'>
               <Field
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='New password'
                 name='password'
                 placeholder='Enter new password'
@@ -68,7 +68,7 @@ const RecoverAccount = props => {
             <Form.Group widths='equal'>
               <Field
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Confirm password'
                 name='confirm_password'
                 placeholder='Confirm password'

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, FieldArray } from 'redux-form'
-import { Button, Form, Header, Modal, Divider } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Divider } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import moment from 'moment'
 
@@ -64,7 +64,7 @@ const VaccinationUploadForm = (props) => {
                     <Field component='input' name={`${_vaccination}.type`} type='hidden'/>
                     <Field
                       component={FormField}
-                      control={Form.Input}
+                      control={Input}
                       label='Vaccine'
                       name={`${_vaccination}.type_name`}
                       placeholder='Enter vaccine'
@@ -72,13 +72,14 @@ const VaccinationUploadForm = (props) => {
 
                     <Field
                       component={FormField}
-                      control={Form.Input}
+                      control={Input}
                       format={value => value ? moment(value,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : null}
-                      label='Expiry date*'
+                      label='Expiry date'
                       name={`${_vaccination}.expired_at`}
-
                       parse={value=> moment(value).format('YYYY-MM-DD[T]HH:mm:ss')}
+
                       placeholder='Enter expiry date'
+                      required
                       type='date'/>
                   </Form.Group>)
               })
@@ -89,9 +90,10 @@ const VaccinationUploadForm = (props) => {
             <Field
               accept='image/jpg, image/png, application/pdf'
               component={FormField}
-              control={Form.Input}
-              label='Attachments (PDF, jpg, png) *'
+              control={Input}
+              label='Attachments (PDF, jpg, png)'
               name='file'
+              required
               type='file'/>
           </Form.Group>
           {error && (

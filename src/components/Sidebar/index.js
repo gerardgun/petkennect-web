@@ -239,90 +239,84 @@ const AppSidebar = ({ auth, ...props }) => {
         }
       </Sidebar>
 
-      {
-        props.currentTenant && (
-          <>
-            {/* Session User Dropdown */}
-            <div className='auth-session-dropdown'>
-              <Dropdown
-                className='avatar'
-                icon={null}
-                onClose={_handleSessionDropdownOpen}
-                onOpen={_handleSessionDropdownOpen}
-                open={show}
-                trigger={(
+      {/* Session User Dropdown */}
+      <div className='auth-session-dropdown'>
+        <Dropdown
+          className='avatar'
+          icon={null}
+          onClose={_handleSessionDropdownOpen}
+          onOpen={_handleSessionDropdownOpen}
+          open={show}
+          trigger={(
+            <div className='avatar-trigger'>
+              <div>
+                <div className='avatar-circle'>{userAbbrev}</div>
+              </div>
+              <div className='avatar-user'>{userFullName}</div>
+              <div className='avatar-icon'>
+                <Icon name={show ? 'caret up' : 'caret down'}/>
+              </div>
+            </div>
+          )}>
+          <Dropdown.Menu>
+            <Dropdown.Header
+              content={
+                <div>
                   <div className='avatar-trigger'>
                     <div>
                       <div className='avatar-circle'>{userAbbrev}</div>
                     </div>
-                    <div className='avatar-user'>{userFullName}</div>
-                    <div className='avatar-icon'>
-                      <Icon name={show ? 'caret up' : 'caret down'}/>
+                    <div className='avatar-user'>
+                      <p>{userFullName}</p>
+                      <span>{auth.item.email}</span>
                     </div>
                   </div>
-                )}>
-                <Dropdown.Menu>
-                  <Dropdown.Header
-                    content={
-                      <div>
-                        <div className='avatar-trigger'>
-                          <div>
-                            <div className='avatar-circle'>{userAbbrev}</div>
-                          </div>
-                          <div className='avatar-user'>
-                            <p>{userFullName}</p>
-                            <span>{auth.item.email}</span>
-                          </div>
-                        </div>
-                        <Button
-                          as={Link} basic
-                          color='teal' content='Edit Profile'
-                          onClick={_handleEditProfileBtnClick}/>
-                      </div>
-                    }/>
+                  <Button
+                    as={Link} basic
+                    color='teal' content='Edit Profile'
+                    onClick={_handleEditProfileBtnClick}/>
+                </div>
+              }/>
+            <Dropdown.Divider/>
+            <Dropdown.Header
+              content={
+                <div>
+                  <p>Signed as</p>
+                  <strong>
+                    {
+                      props.currentTenant && `${props.currentTenant.legal_name} - ${props.currentTenant.is_main_admin ? 'Super Administrador' : 'Administrador'}`
+                    }
+                    {
+                      auth.item.is_superadmin && 'Petkennect Manager'
+                    }
+                  </strong>
+                </div>
+              }/>
+            <Dropdown.Divider/>
+            {
+              !auth.item.is_superadmin && (
+                <>
+                  <Dropdown.Header content='Change to'/>
+                  <Dropdown.Menu scrolling>
+                    {
+                      auth.item.companies.map((item, index) => (
+                        <Dropdown.Item
+                          className={item.id === props.currentTenant.id ? 'selected' : ''}
+                          key={index} onClick={_handleTenantDropdownItemClick} text={`${item.legal_name} - Administrador`}
+                          value={item.subdomain_prefix}/>
+                      ))
+                    }
+                  </Dropdown.Menu>
                   <Dropdown.Divider/>
-                  <Dropdown.Header
-                    content={
-                      <div>
-                        <p>Signed as</p>
-                        <strong>
-                          {
-                            props.currentTenant && `${props.currentTenant.legal_name} - ${props.currentTenant.is_main_admin ? 'Super Administrador' : 'Administrador'}`
-                          }
-                          {
-                            auth.item.is_superadmin && 'Petkennect Manager'
-                          }
-                        </strong>
-                      </div>
-                    }/>
-                  <Dropdown.Divider/>
-                  {
-                    !auth.item.is_superadmin && (
-                      <>
-                        <Dropdown.Header content='Change to'/>
-                        <Dropdown.Menu scrolling>
-                          {
-                            auth.item.companies.map((item, index) => (
-                              <Dropdown.Item
-                                className={item.id === props.currentTenant.id ? 'selected' : ''}
-                                key={index} onClick={_handleTenantDropdownItemClick} text={`${item.legal_name} - Administrador`}
-                                value={item.subdomain_prefix}/>
-                            ))
-                          }
-                        </Dropdown.Menu>
-                        <Dropdown.Divider/>
-                      </>
-                    )
-                  }
-                  <Dropdown.Item text='Help' value='help'/>
-                  <Dropdown.Item text='Settings' value='settings'/>
-                  <Dropdown.Item onClick={_handleSessionDropdownItemClick} text='Sign Out' value='sign-out'/>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-          </>
-        )
-      }
+                </>
+              )
+            }
+            <Dropdown.Item text='Help' value='help'/>
+            <Dropdown.Item text='Settings' value='settings'/>
+            <Dropdown.Item onClick={_handleSessionDropdownItemClick} text='Sign Out' value='sign-out'/>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
     </div>
   )
 }

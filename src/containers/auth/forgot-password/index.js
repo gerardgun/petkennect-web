@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Container, Form, Grid, Image, Header, Modal } from 'semantic-ui-react'
+import { Button, Container, Form, Grid, Image, Input, Header, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -55,7 +55,7 @@ const ForgotPassword = props => {
                 autoComplete='off'
                 autoFocus
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Email'
                 name='email'
                 placeholder='Enter email'

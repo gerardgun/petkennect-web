@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Form, Tab } from 'semantic-ui-react'
+import { Form, Input, Select, Tab } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -35,7 +35,7 @@ const FormContactData = props => {
             autoComplete='off'
             autoFocus
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Cell Phone'
             name='phones[0]'
             placeholder='Enter phone number'
@@ -43,7 +43,7 @@ const FormContactData = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Home Phone'
             name='phones[1]'
             placeholder='Enter phone number'
@@ -51,7 +51,7 @@ const FormContactData = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Work Phone'
             name='phones[2]'
             placeholder='Enter phone number'
@@ -61,16 +61,15 @@ const FormContactData = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Other Phone'
             name='phones[3]'
             placeholder='Enter phone number'
             type='tel'/>
           <Field
             autoComplete='off'
-            className='clsLabel'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Email'
             name='email'
             placeholder='Enter email'
@@ -79,7 +78,7 @@ const FormContactData = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Alt Email'
             name='alt_email'
             placeholder='Enter email'
@@ -88,7 +87,7 @@ const FormContactData = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Referred'
             name='referred'
             options={[
@@ -106,7 +105,7 @@ const FormContactData = props => {
         {/* <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='Send email'
             name='send_email'
             type='checkbox'/>

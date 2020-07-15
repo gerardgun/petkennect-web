@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Form, Tab, Header } from 'semantic-ui-react'
+import { Checkbox, Dropdown, Form, Tab, TextArea, Header, Input, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -73,15 +73,16 @@ const FormInformation = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='name'
-            placeholder='Name'/>
+            placeholder='Name'
+            required/>
 
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Slug'
             name='slug'
             placeholder={getPosibleSlug(props.watchedName)}
@@ -92,9 +93,9 @@ const FormInformation = props => {
           <Field
             closeOnChange
             component={FormField}
-            control={Form.Dropdown}
+            control={Dropdown}
             fluid
-            label='Categories *'
+            label='Categories'
             multiple
             name='categories'
             options={groupAndCategories.map(_category=> ({
@@ -105,6 +106,7 @@ const FormInformation = props => {
               content : _renderItemCategory(_category)
             }))}
             placeholder='Search categories'
+            required
             search
             selection
             selectOnBlur={false}/>
@@ -112,17 +114,18 @@ const FormInformation = props => {
         <Form.Group className='text-area-container' widths='equal'>
           <Field
             component={FormField}
-            control={Form.TextArea}
-            label='Short Description *'
+            control={TextArea}
+            label='Short Description'
             maxLength='160'
             name='short_description'
-            placeholder='Short Description'/>
+            placeholder='Short Description'
+            required/>
           <Header className='text-area-counter' color='grey' size='tiny'>{watchedShortDescription.length}/160 characteres</Header>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.TextArea}
+            control={TextArea}
             label='Description'
             name='description'
             placeholder='Description'/>
@@ -131,24 +134,26 @@ const FormInformation = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Price *'
+            control={Input}
+            label='Price'
             name='price'
             placeholder='Price'
+            required
             type='number'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Stock *'
+            control={Input}
+            label='Stock'
             name='stock'
             placeholder='Stock'
+            required
             type='number'/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             disabled={props.watchedIsPackage && Boolean(props.productPackage.items.length)}
-            label='Is Package *'
+            label='Is Package'
             name='is_package'
             options={[
               {
@@ -163,17 +168,18 @@ const FormInformation = props => {
 
               }
             ]}
-            placeholder='Select option'/>
+            placeholder='Select option'
+            required/>
         </Form.Group>
         <Form.Group>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='Outstanding'
             name='is_outstanding'/>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='Active'
             name='is_active'/>
         </Form.Group>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -92,7 +92,7 @@ const TransactionForm = props => {
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Select}
+              control={Select}
               disabled={isUpdating}
               label='Seller Organization'
               name='seller'
@@ -104,7 +104,7 @@ const TransactionForm = props => {
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Select}
+              control={Select}
               disabled={isUpdating}
               label='Buyer Organization'
               name='buyer'
@@ -117,7 +117,7 @@ const TransactionForm = props => {
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Select}
+              control={Select}
               disabled={isUpdating}
               label='Company'
               name='company'
@@ -131,7 +131,7 @@ const TransactionForm = props => {
               selectOnBlur={false}/>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Transacted at'
               name='transacted_at'
               type='date'/>

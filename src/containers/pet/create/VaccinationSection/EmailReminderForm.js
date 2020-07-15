@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Form, Header, Modal, Divider } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Divider } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import moment from 'moment'
 
@@ -111,7 +111,7 @@ const EmailReminderForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Email'
               name='client_email'
               placeholder=''
@@ -121,7 +121,7 @@ const EmailReminderForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Subject'
               name='subject'
               onChange={_handleSubjectChange}

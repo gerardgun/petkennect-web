@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, change } from 'redux-form'
-import { Form, Tab } from 'semantic-ui-react'
+import { Form, Input, Tab, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import YupFields from '@lib/constants/yup-fields'
@@ -69,20 +70,22 @@ const FormInformation = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='name'
-            placeholder='Enter name'/>
+            placeholder='Enter name'
+            required/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.TextArea}
+            control={TextArea}
             hidden={true}
-            label='Body *'
+            label='Body'
             name='body'
-            placeholder='Enter Body'/>
+            placeholder='Enter Body'
+            required/>
         </Form.Group>
 
         <CKEditor

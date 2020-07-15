@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
-import { Header, Tab, Form } from 'semantic-ui-react'
-import './styles.scss'
-import { Field, reduxForm } from 'redux-form'
-import { syncValidate } from '@lib/utils/functions'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
 import { withRouter } from 'react-router-dom'
+import { compose } from 'redux'
+import { Field, reduxForm } from 'redux-form'
+import { Header, Input, Tab, Select, Form } from 'semantic-ui-react'
 import * as Yup from 'yup'
-import YupFields from '@lib/constants/yup-fields'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
+import useZipInputSearch from '@components/useZipInputSearch'
+import YupFields from '@lib/constants/yup-fields'
+import { syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
 import locationDuck from '@reducers/location'
@@ -18,7 +18,7 @@ import rolDuck from '@reducers/rol'
 import zipDuck from '@reducers/zip'
 import zipDetailDuck from '@reducers/zip/detail'
 
-import useZipInputSearch from '@components/useZipInputSearch'
+import './styles.scss'
 
 function TabClientInfo(props) {
   const {
@@ -42,27 +42,29 @@ function TabClientInfo(props) {
       <Form onReset={reset} onSubmit={handleSubmit}>
         <Field component='input' name='id' type='hidden'/>
         <Field component='input' name='user' type='hidden'/>
-        <Header as='h6' className='form-section-header' color='blue'>BASIC INFORMATION</Header>
+        <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
 
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Email *'
+            control={Input}
+            label='Email'
             name='email'
             placeholder='Enter email'
-            readOnly/>
+            readOnly
+            required/>
 
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='first_name'
             placeholder='Enter name'
-            readOnly/>
+            readOnly
+            required/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Lastname'
             name='last_name'
             placeholder='Enter lastname'
@@ -72,13 +74,14 @@ function TabClientInfo(props) {
 
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Contact date *'
+            control={Input}
+            label='Contact date'
             name='contact_date'
+            required
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Location'
             name='location'
             options={location.items.map(_location =>
@@ -88,7 +91,7 @@ function TabClientInfo(props) {
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Status'
             name='status'
             options={[
@@ -101,13 +104,13 @@ function TabClientInfo(props) {
             selectOnBlur={false}/>
         </Form.Group>
 
-        <Header as='h6' className='form-section-header' color='blue'>CONTACT DETAILS</Header>
+        <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             autoFocus
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Cell Phone'
             name='phones[0]'
             placeholder='Enter phone number'
@@ -115,7 +118,7 @@ function TabClientInfo(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Home Phone'
             name='phones[1]'
             placeholder='Enter phone number'
@@ -123,7 +126,7 @@ function TabClientInfo(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Work Phone'
             name='phones[2]'
             placeholder='Enter phone number'
@@ -134,7 +137,7 @@ function TabClientInfo(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Other Phone'
             name='phones[3]'
             placeholder='Enter phone number'
@@ -142,14 +145,14 @@ function TabClientInfo(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Alt Email'
             name='alt_email'
             placeholder='Enter email'
             type='email'/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Referred'
             name='referred'
             options={[
@@ -164,12 +167,12 @@ function TabClientInfo(props) {
 
         </Form.Group>
 
-        <Header as='h6' className='form-section-header' color='blue'>COMPANY ADDRESS</Header>
+        <Header as='h6' className='section-header' color='blue'>COMPANY ADDRESS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Address 1'
             name='addresses[0]'
             placeholder='Enter address'/>
@@ -178,7 +181,7 @@ function TabClientInfo(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Address 2'
             name='addresses[1]'
             placeholder='Enter address'/>
@@ -186,15 +189,16 @@ function TabClientInfo(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             disabled={zip.status === 'GETTING'}
-            label='Zip *'
+            label='Zip'
             loading={zip.status === 'GETTING'}
             name='zip_code'
             onChange={_handleZipChange}
             onSearchChange={_handleZipSearchChange}
             options={zipOptions}
             placeholder='Search zip'
+            required
             search
             selectOnBlur={false}/>
           <Form.Field>

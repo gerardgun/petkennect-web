@@ -3,10 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import {
-  Form,
-  Header
-} from 'semantic-ui-react'
+import { Dropdown, Form, Header, Input, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import YupFields from '@lib/constants/yup-fields'
 
@@ -100,18 +97,18 @@ const ClientCreateFormStep1 = (props) => {
           Complete Client Info
         </span>
 
-        <Header as='h6' className='form-section-header' color='blue'>Search user</Header>
+        <Header as='h6' className='section-header' color='blue'>Search user</Header>
         <Form.Group widths={3}>
           <Field
             additionLabel='Invite '
             allowAdditions
             closeOnChange
             component={FormField}
-            control={Form.Dropdown}
+            control={Dropdown}
             fluid
             format={value => [ value ]}
             icon='search'
-            label='Email user *'
+            label='Email user'
             multiple
             name='email'
             onAddItem={_handleUserOptionAddItem}
@@ -126,49 +123,51 @@ const ClientCreateFormStep1 = (props) => {
               value[value.length > 0 ? value.length - 1 : 0]
             }
             placeholder='Search email'
-            props={{
-              iconPosition: 'left'
-            }}
+            required
             search
             selection
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='first_name'
             placeholder='Enter name'
-            readOnly={!!props.user_exists}/>
+            readOnly={!!props.user_exists}
+            required/>
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Lastname *'
+            control={Input}
+            label='Lastname'
             name='last_name'
             placeholder='Enter lastname'
-            readOnly={!!props.user_exists}/>
+            readOnly={!!props.user_exists}
+            required/>
         </Form.Group>
 
-        <Header as='h6' className='form-section-header' color='blue'>BASIC INFORMATION</Header>
+        <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Contact date *'
+            control={Input}
+            label='Contact date'
             name='contact_date'
+            required
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Select}
-            label='Location *'
+            control={Select}
+            label='Location'
             name='location'
             options={location.items.map(_location =>
               ({ key: _location.id, value: _location.id, text: `${_location.name}` }))
             }
             placeholder='Contact Location'
+            required
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Status'
             name='status'
             options={[
@@ -181,13 +180,13 @@ const ClientCreateFormStep1 = (props) => {
             selectOnBlur={false}/>
         </Form.Group>
 
-        <Header as='h6' className='form-section-header' color='blue'>CONTACT DETAILS</Header>
+        <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             autoFocus
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Cell Phone'
             name='phones[0]'
             placeholder='Enter phone number'
@@ -195,7 +194,7 @@ const ClientCreateFormStep1 = (props) => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Home Phone'
             name='phones[1]'
             placeholder='Enter phone number'
@@ -203,7 +202,7 @@ const ClientCreateFormStep1 = (props) => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Work Phone'
             name='phones[2]'
             placeholder='Enter phone number'
@@ -214,7 +213,7 @@ const ClientCreateFormStep1 = (props) => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Other Phone'
             name='phones[3]'
             placeholder='Enter phone number'
@@ -222,14 +221,14 @@ const ClientCreateFormStep1 = (props) => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Alt Email'
             name='alt_email'
             placeholder='Enter email'
             type='email'/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Referred'
             name='referred'
             options={[
@@ -244,12 +243,12 @@ const ClientCreateFormStep1 = (props) => {
 
         </Form.Group>
 
-        <Header as='h6' className='form-section-header' color='blue'>COMPANY ADDRESS</Header>
+        <Header as='h6' className='section-header' color='blue'>COMPANY ADDRESS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Address 1'
             name='addresses[0]'
             placeholder='Enter address'/>
@@ -258,7 +257,7 @@ const ClientCreateFormStep1 = (props) => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Address 2'
             name='addresses[1]'
             placeholder='Enter address'/>
@@ -266,15 +265,16 @@ const ClientCreateFormStep1 = (props) => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             disabled={zip.status === 'GETTING'}
-            label='Zip *'
+            label='Zip'
             loading={zip.status === 'GETTING'}
             name='zip_code'
             onChange={_handleZipChange}
             onSearchChange={_handleZipSearchChange}
             options={zipOptions}
             placeholder='Search zip'
+            required
             search
             selectOnBlur={false}/>
           <Form.Field>

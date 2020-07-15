@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react'
-import { Header, Tab, Form, Button, Divider, Segment } from 'semantic-ui-react'
-import './styles.scss'
-import { Field, reduxForm, FieldArray } from 'redux-form'
-import FormField from '@components/Common/FormField'
-import { syncValidate } from '@lib/utils/functions'
-import * as Yup from 'yup'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
 import { withRouter } from 'react-router-dom'
+import { compose } from 'redux'
+import { Field, reduxForm, FieldArray } from 'redux-form'
+import { Button, Header, Input, Tab, Form, Divider, Segment } from 'semantic-ui-react'
+import * as Yup from 'yup'
+
+import FormField from '@components/Common/FormField'
+import FormError from '@components/Common/FormError'
+import { syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
-import FormError from '@components/Common/FormError'
+
+import './styles.scss'
 
 function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
   const _handleAddBtnClick = () => fields.push({ ...authorizedPersonInitialState })
@@ -24,7 +26,7 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
   return (
     <>
       <Divider/>
-      <Header as='h6' className='form-section-header' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
+      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
       <Segment className='form-primary-segment' padded='very'>
         {
           fields.map((item, index) => (
@@ -32,14 +34,14 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
               <Field
                 autoComplete='off'
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Name'
                 name={`${item}.name`}
                 placeholder='Enter names'/>
               <Field
                 autoComplete='off'
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Relation'
                 name={`${item}.relation`}
                 placeholder='Enter relation'/>
@@ -88,52 +90,54 @@ function TabEmergencyInfo(props) {
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form onReset={reset} onSubmit={handleSubmit}>
 
-        <Header as='h6' className='form-section-header' color='blue'>EMERGENCY CONTACT</Header>
+        <Header as='h6' className='section-header' color='blue'>EMERGENCY CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='emergency_contact_name'
-            placeholder='Enter names'/>
+            placeholder='Enter names'
+            req/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Relation *'
+            control={Input}
+            label='Relation'
             name='emergency_contact_relationship'
-            placeholder='Enter relationship'/>
+            placeholder='Enter relationship'
+            required/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Phone'
             name='emergency_contact_phones[0]'
             placeholder='Enter phone number'
             type='tel'/>
         </Form.Group>
 
-        <Header as='h6' className='form-section-header' color='blue'>VETERINARIAN CONTACT</Header>
+        <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Vet name'
             name='emergency_vet_name'
             placeholder='Enter vet name'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Vet location'
             name='emergency_vet_location'
             placeholder='Enter vet location'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Vet phone'
             name='emergency_vet_phones[0]'
             placeholder='Enter phone number'

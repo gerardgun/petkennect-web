@@ -3,22 +3,24 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Form, Header, Modal, Divider } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import _times from 'lodash/times'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
+import InputColor from '@components/Common/InputColor'
+import InputFile from '@components/Common/InputFile'
 import YupFields from '@lib/constants/yup-fields'
+import useZipInputSearch from '@components/useZipInputSearch'
+import { useDebounce } from '@hooks/Shared'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import companyDetailDuck from '@reducers/company/detail'
 import organizationDuck from '@reducers/organization'
+import userDuck from '@reducers/user'
 import zipDuck from '@reducers/zip'
 import zipDetailDuck from '@reducers/zip/detail'
-import userDuck from '@reducers/user'
-import { useDebounce } from '@hooks/Shared'
-import InputColor from '@components/Common/InputColor'
 
 const divisions = _times(2, index => ({ key: index, value: index, text: `Division ${index + 1}` }))
 const regions = _times(2, index => ({ key: index, value: index, text: `Region ${index + 1}` }))
@@ -30,44 +32,26 @@ const CompanyForm = props => {
     user,
     zip,
     zipDetail,
-    error, handleSubmit, reset, submitting // redux-form
+    destroy, error, handleSubmit, reset, submitting // redux-form
   } = props
 
-  const [ zipOptions, setZipOptions ] = useState([])
-
   const [ customUser, setCustomUser ] = useState({ id: 'CUSTOM_USER_OPTION_ID', email: '' })
+  const [ zipOptions, { _handleZipChange, _handleZipSearchChange } ] = useZipInputSearch(zip, zipDetail, props.getZipes, props.setZip)
 
-  useEffect(()=> {
+  useEffect(() => {
+    props.getUsers()
+  }, [])
+
+  useEffect(() => {
     if(companyDetail.item.id)
       props.getCompany(companyDetail.item.id)
   }, [ companyDetail.item.id ])
 
-  useEffect(()=> {
-    props.getUsers()
-  }, [])
   useEffect(() => {
-    if(companyDetail.mode === 'CREATE') {
+    if(companyDetail.mode === 'CREATE')
       if(organization.items.length === 0)
         props.getOrganizations()
-
-      setZipOptions([])
-    }
   }, [ companyDetail.mode ])
-
-  useEffect(() => {
-    if(zip.status === 'GOT')
-      setZipOptions(
-        zip.items.map((item, index) => ({
-          key  : index++,
-          value: item.id,
-          text : `${item.postal_code} - ${item.state_code}, ${item.city}`
-        }))
-      )
-  }, [ zip.status ])
-
-  useEffect(() => {
-    if(zipDetail.status === 'GOT') setZipOptionsFromDetail()
-  }, [ zipDetail.status ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
   const getOrganizationOptions = () => {
@@ -76,17 +60,9 @@ const CompanyForm = props => {
     }))
   }
 
-  const setZipOptionsFromDetail = () => setZipOptions([
-    {
-      key  : 1,
-      value: zipDetail.item.id,
-      text : `${zipDetail.item.postal_code} - ${zipDetail.item.state_code}, ${zipDetail.item.city}`
-    }
-  ])
-
   const _handleClose = () => {
     props.resetItem()
-    reset()
+    destroy()
   }
 
   const _handleSubmit = values => {
@@ -111,23 +87,6 @@ const CompanyForm = props => {
     }
   }
 
-  const _handleZipBlur = () => {
-    setZipOptionsFromDetail()
-  }
-
-  const _handleZipChange = zipId => {
-    props.setZip(
-      zip.items.find(item => item.id === zipId)
-    )
-  }
-
-  const _handleZipSearchChange = (e, data) => {
-    if(data.searchQuery.length > 3)
-      props.getZipes({
-        search: data.searchQuery
-      })
-  }
-
   const { _handleDebounce } = useDebounce((text)=> {
     props.setUserFilters({ search: text })
     props.getUsers()
@@ -137,12 +96,14 @@ const CompanyForm = props => {
 
   const _handleUserOptionChange = (value) => {
     const latestValue = value[value.length  ? value.length - 1 : 0]
+
     if(!latestValue) {
       props.setUserFilters({ search: '' })
       props.getUsers()
     }
 
     const _user = user.items.find(_user => _user.email === latestValue)
+
     if(_user) {
       props.change('user_exists', true)
       props.change('main_admin_first_name', _user.first_name)
@@ -157,13 +118,12 @@ const CompanyForm = props => {
     props.change('main_admin_last_name', '')
     props.change('main_admin_email', null)
   }
+
   const _handleUserOptionAddItem = (_, data) => {
     setCustomUser({
       id: 'CUSTOM_USER_OPTION_ID', email: data.value
     })
   }
-  const _handleChangeThemeColor = (value)=>{
-    props.change('theme_color',value)}
 
   const organizations = useMemo(() => getOrganizationOptions(), [ organization.status ])
   const isOpened = useMemo(() => getIsOpened(companyDetail.mode), [ companyDetail.mode ])
@@ -172,67 +132,65 @@ const CompanyForm = props => {
 
   return (
     <Modal
-      className='form-modal side'
+      className='form-modal'
       onClose={_handleClose}
       open={isOpened}
       size='large'>
       <Modal.Content>
-        <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'New'} Company</Header>
+        <Header as='h2'>{isUpdating ? 'Update' : 'New'} Company</Header>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Field component='input' name='id' type='hidden'/>
           <Field component='input' name='user' type='hidden'/>
           <Field
-            component='input' defaultValue={true} name='user_exists'
-            type='hidden'/>
+            component='input'
+            defaultValue={true} name='user_exists' type='hidden'/>
 
-          <Divider/>
-          <Header as='h4'>Company information</Header>
-
+          <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
           <Form.Group widths='equal'>
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
-              label='Legal name *'
+              control={Input}
+              label='Legal name'
               name='legal_name'
-              placeholder='Enter legal name'/>
+              placeholder='Enter legal name'
+              required/>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={InputFile}
               label='Logo'
-              name='logo'
-              type='file'/>
+              name='logo'/>
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='DBA'
               name='dba'
               placeholder='Enter DBA'/>
-
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
-              label='Subdomain prefix *'
+              control={Input}
+              label='Subdomain prefix'
               name='subdomain_prefix'
-              placeholder='Enter subdomain'/>
+              placeholder='Enter subdomain'
+              required/>
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Tax ID'
               name='tax_id'
               placeholder='Enter tax ID'/>
-            <InputColor
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={InputColor}
               label='Theme color'
-              onChange={_handleChangeThemeColor}
-              placeholder='#ffffff'
-              value={props.watchedThemeColor}/>
-
+              name='theme_color'/>
           </Form.Group>
           {
             (!isUpdating && isFromCompanyModule) && (
@@ -240,7 +198,7 @@ const CompanyForm = props => {
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Form.Select}
+                  control={Select}
                   label='Organization'
                   name='organization'
                   options={organizations}
@@ -252,20 +210,20 @@ const CompanyForm = props => {
               </Form.Group>
             )
           }
-          <Divider/>
-          <Header as='h4'>Contact Details</Header>
+
+          <Header as='h6' className='section-header' color='blue'>Contact Details</Header>
           <Form.Group widths='equal'>
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Phone'
               name='phones[0]'
               placeholder='Enter phone'/>
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Email'
               name='email'
               placeholder='Enter email'
@@ -273,20 +231,18 @@ const CompanyForm = props => {
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Website'
               name='website'
               placeholder='www.example.com'/>
           </Form.Group>
 
-          <Divider/>
-          <Header as='h4'>Company address</Header>
-
+          <Header as='h6' className='section-header' color='blue'>Company address</Header>
           <Form.Group widths='equal'>
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Address 1'
               name='addresses[0]'
               placeholder='Enter address'/>
@@ -295,7 +251,7 @@ const CompanyForm = props => {
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Address 2'
               name='addresses[1]'
               placeholder='Enter address'/>
@@ -303,16 +259,16 @@ const CompanyForm = props => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Select}
+              control={Select}
               disabled={zip.status === 'GETTING'}
               label='Zip'
               loading={zip.status === 'GETTING'}
               name='zip_code'
-              onBlur={_handleZipBlur}
               onChange={_handleZipChange}
               onSearchChange={_handleZipSearchChange}
               options={zipOptions}
               placeholder='Search zip'
+              required
               search
               selectOnBlur={false}/>
             <Form.Field>
@@ -329,7 +285,6 @@ const CompanyForm = props => {
                 readOnly
                 value={zipDetail.item.state}/>
             </Form.Field>
-
           </Form.Group>
           <Form.Group widths='equal'>
             <Form.Field>
@@ -341,7 +296,7 @@ const CompanyForm = props => {
             </Form.Field>
             <Field
               component={FormField}
-              control={Form.Select}
+              control={Select}
               label='Division'
               name='division'
               options={divisions}
@@ -349,7 +304,7 @@ const CompanyForm = props => {
               selectOnBlur={false}/>
             <Field
               component={FormField}
-              control={Form.Select}
+              control={Select}
               label='Region'
               name='region'
               options={regions}
@@ -359,14 +314,14 @@ const CompanyForm = props => {
           <Form.Group>
             <Field
               component={FormField}
-              control={Form.Checkbox}
+              control={Checkbox}
               label='Multilocation'
               name='multilocation'
               type='checkbox'/>
             {isUpdating && (
               <Field
                 component={FormField}
-                control={Form.Checkbox}
+                control={Checkbox}
                 label='Active'
                 name='status'
                 type='checkbox'/>
@@ -374,27 +329,22 @@ const CompanyForm = props => {
             )}
           </Form.Group>
 
-          <Divider/>
-          <Header as='h4'>Admin user</Header>
-
+          <Header as='h6' className='section-header' color='blue'>Add admin user</Header>
           <Form.Group widths='equal'>
             <Field
               additionLabel='Invite '
               allowAdditions
               closeOnChange
               component={FormField}
-              control={Form.Dropdown}
-              fluid
-              format={value=>
-                [ value ]
-              }
-              label='Add or Search some PetKennect User*'
+              control={Select}
+              format={value=> [ value ]}
+              label='Add or Search some PetKennect User'
               multiple
               name='main_admin_email'
               onAddItem={_handleUserOptionAddItem}
               onChange={_handleUserOptionChange}
               onSearchChange={_handleSearchChange}
-              options={[ ...user.items,customUser ].map((_user) => ({
+              options={[ ...user.items, customUser ].map((_user) => ({
                 key  : _user.id,
                 value: _user.email,
                 text : `${_user.email}`
@@ -403,26 +353,27 @@ const CompanyForm = props => {
                 value[value.length > 0 ? value.length - 1 : 0]
               }
               placeholder='Search user by email'
-              // readOnly={isUpdating}
+              required
               search
-              selection
               selectOnBlur={false}/>
 
             <Field
               autoFocus
               component={FormField}
-              control={Form.Input}
-              label='Name *'
+              control={Input}
+              label='Name'
               name='main_admin_first_name'
               placeholder='Enter name'
-              readOnly={!!props.user_exists || (isUpdating && props.pristine)}/>
+              readOnly={!!props.user_exists || (isUpdating && props.pristine)}
+              required/>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Lastname'
               name='main_admin_last_name'
               placeholder='Enter lastname'
-              readOnly={!!props.user_exists || (isUpdating && props.pristine)}/>
+              readOnly={!!props.user_exists || (isUpdating && props.pristine)}
+              required/>
           </Form.Group>
 
           {
@@ -438,13 +389,16 @@ const CompanyForm = props => {
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
+                basic
+                className='w120'
+                color='teal'
                 content='Cancel'
                 disabled={submitting}
                 onClick={_handleClose}
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save'}
+                content={isUpdating ? 'Save changes' : 'Add Company'}
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>
@@ -462,21 +416,14 @@ export default compose(
       const companyDetail = companyDetailDuck.selectors.detail(state)
       const zipDetail = zipDetailDuck.selectors.detail(state)
 
-      let initialValues = { ...companyDetail.item }
-
-      delete initialValues.logo
-      delete initialValues.thumbnail
-
       return {
         organization,
         companyDetail,
         zip,
         zipDetail,
-        user             : userDuck.selectors.list(state),
-        initialValues,
-        user_exists      : formValueSelector('organization-company-form')(state, 'user_exists'),
-        watchedThemeColor: formValueSelector('organization-company-form')(state, 'theme_color'),
-        watchedMainAdmin : formValueSelector('organization-company-form')(state, 'main_admin')
+        user         : userDuck.selectors.list(state),
+        initialValues: { ...companyDetail.item },
+        user_exists  : formValueSelector('organization-company-form')(state, 'user_exists')
       }
     },
     {
@@ -493,15 +440,13 @@ export default compose(
   ),
   reduxForm({
     form              : 'organization-company-form',
-    destroyOnUnmount  : false,
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        organization    : YupFields.num_required,
-        legal_name      : YupFields.name,
-        subdomain_prefix: YupFields.subdomain,
-        theme_color     : YupFields.theme_color,
-
+        organization         : YupFields.num_required,
+        legal_name           : YupFields.name,
+        subdomain_prefix     : YupFields.subdomain,
+        theme_color          : YupFields.theme_color,
         main_admin_first_name: Yup.mixed().when('user_exists', {
           is  : true,
           then: (m) => m.required('User is Required')

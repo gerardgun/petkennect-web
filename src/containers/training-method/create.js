@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -56,14 +56,15 @@ const TrainingMethodForm = props => {
             <Field
               autoFocus
               component={FormField}
-              control={Form.Input}
-              label='Name *'
+              control={Input}
+              label='Name'
               name='name'
-              placeholder='Enter name'/>
+              placeholder='Enter name'
+              required/>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Reason *'
+              control={Select}
+              label='Reason'
               name='reason'
               options={trainingReason.items.map((_trainingReason) => ({
                 key  : _trainingReason.id,
@@ -71,6 +72,7 @@ const TrainingMethodForm = props => {
                 text : `${_trainingReason.name}`
               }))}
               placeholder='Select reason'
+              required
               search
               selectOnBlur={false}/>
           </Form.Group>

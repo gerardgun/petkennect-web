@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Divider, Form, Grid, Header, Segment } from 'semantic-ui-react'
+import { Button, Divider, Form, Grid, Header, Input, Segment, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -74,21 +74,22 @@ const OrganizationSection = props => {
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Form.Input}
-                  label='Legal name *'
+                  control={Input}
+                  label='Legal name'
                   name='legal_name'
-                  placeholder='Enter legal name'/>
+                  placeholder='Enter legal name'
+                  required/>
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Form.Input}
+                  control={Input}
                   label='DBA'
                   name='dba'
                   placeholder='Enter DBA'/>
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Form.Input}
+                  control={Input}
                   label='Tax ID'
                   name='tax_id'
                   placeholder='Enter tax ID'/>
@@ -97,14 +98,14 @@ const OrganizationSection = props => {
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Form.Input}
+                  control={Input}
                   label='Phone'
                   name='phones[0]'
                   placeholder='Enter phone'/>
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Form.Input}
+                  control={Input}
                   label='Email'
                   name='email'
                   placeholder='Enter email'
@@ -112,7 +113,7 @@ const OrganizationSection = props => {
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Form.Input}
+                  control={Input}
                   label='Website'
                   name='website'
                   placeholder='www.example.com'/>
@@ -121,7 +122,7 @@ const OrganizationSection = props => {
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Form.Input}
+                  control={Input}
                   label='Address 1'
                   name='addresses[0]'
                   placeholder='Enter address'/>
@@ -130,7 +131,7 @@ const OrganizationSection = props => {
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Form.Input}
+                  control={Input}
                   label='Address 2'
                   name='addresses[1]'
                   placeholder='Enter address'/>
@@ -161,7 +162,7 @@ const OrganizationSection = props => {
               <Form.Group widths='equal'>
                 <Field
                   component={FormField}
-                  control={Form.Select}
+                  control={Select}
                   disabled={zip.status === 'GETTING'}
                   label='Zip'
                   loading={zip.status === 'GETTING'}
@@ -178,7 +179,7 @@ const OrganizationSection = props => {
               <Form.Group>
                 <Field
                   component={FormField}
-                  control={Form.Input}
+                  control={Input}
                   label='Logo'
                   name='logo'
                   type='file'/>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Divider, Form, Header, Tab } from 'semantic-ui-react'
+import { Checkbox, Divider, Form, Header, Input, Select, Tab, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -37,14 +37,15 @@ const FormInformation = props => {
             autoComplete='off'
             autoFocus
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='name'
-            placeholder='Enter name'/>
+            placeholder='Enter name'
+            required/>
           <Field
             component={FormField}
-            control={Form.Select}
-            label='Breed *'
+            control={Select}
+            label='Breed'
             name='breed'
             options={petBreed.items.map(_petBreed => ({
               key  : _petBreed.id ,
@@ -52,11 +53,12 @@ const FormInformation = props => {
               text : _petBreed.name
             }))}
             placeholder='Select breed'
+            required
             search
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Date of birth'
             name='born_at'
             type='date'/>
@@ -64,14 +66,14 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Weight'
             name='weight'
             placeholder='Enter weight'
             type='number'/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Sex'
             name='sex'
             options={[
@@ -83,7 +85,7 @@ const FormInformation = props => {
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Dog size'
             name='size'
             options={[
@@ -98,7 +100,7 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Reason'
             name='reason'
             options={[
@@ -112,7 +114,7 @@ const FormInformation = props => {
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Standing Reservation'
             name='standing_reservation'
             options={[
@@ -123,7 +125,7 @@ const FormInformation = props => {
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Days'
             name='standing_reservation_days'
             placeholder='Days'/>
@@ -131,7 +133,7 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.TextArea}
+            control={TextArea}
             label='Special instructions'
             name='special_instructions'
             placeholder='Enter description'/>
@@ -139,7 +141,7 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.TextArea}
+            control={TextArea}
             label='Behavioral' // backend issue
             name='behaviorial_comments'
             placeholder='Enter description'/>
@@ -147,7 +149,7 @@ const FormInformation = props => {
         <Form.Group>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={Boolean}
             label='Fixed'
             name='fixed'
@@ -155,7 +157,7 @@ const FormInformation = props => {
             type='checkbox'/>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={Boolean}
             label='Retire'
             name='retired'
@@ -169,19 +171,19 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Rabies'
             name='vac_rabies_date'
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Bordetella'
             name='vac_bortedella_date'
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Notification set on'
             name='vac_notification_sent_on'
             type='date'/>
@@ -189,19 +191,19 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='DHLPP'
             name='vac_dhlpp_date'
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Neg. Fecal'
             name='vac_neg_fecal_date'
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Influenza'
             name='vac_influenza_date'
             type='date'/>
@@ -209,7 +211,7 @@ const FormInformation = props => {
         <Form.Group>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='All current'
             name='vac_all_current'
             type='checkbox'/>
@@ -221,13 +223,13 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Tested'
             name='tem_test_date'
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Result'
             name='temp_test_result'
             options={[
@@ -241,7 +243,7 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.TextArea}
+            control={TextArea}
             label='Temperament test observations'
             name='temp_test_observations'
             placeholder='Enter description'/>
@@ -249,19 +251,19 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Strike 1'
             name='temp_strikes[0]'
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Strike 2'
             name='temp_strikes[1]'
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Strike 3'
             name='temp_strikes[2]'
             type='date'/>
@@ -269,13 +271,13 @@ const FormInformation = props => {
         <Form.Group>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='Daycare'
             name='temp_daycare'
             type='checkbox'/>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='Aggressive'
             name='temp_aggressive'
             type='checkbox'/>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
-import { Header, Form } from 'semantic-ui-react'
+import { Checkbox, Header, Form, Input, Select } from 'semantic-ui-react'
 import moment from 'moment'
 import _get from 'lodash/get'
 import * as Yup from 'yup'
@@ -56,17 +56,18 @@ function Edit(props) {
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Field component='input' name='id' type='hidden'/>
-        <Header as='h6' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
+        <Header as='h6' className='section-header mt36' color='blue'>BASIC INFORMATION</Header>
         <Form.Group widths='equal'>
 
           <Field
             autoComplete='off'
             autoFocus
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='name'
-            placeholder='Enter name'/>
+            placeholder='Enter name'
+            required/>
           <Form.Field>
             <label>Owner</label>
             <input placeholder='Owner name' readOnly value={clientFullName}/>
@@ -76,8 +77,8 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Select}
-            label='Breed *'
+            control={Select}
+            label='Breed'
             name='breed'
             options={[
               ...petBreed.items.map(_petBreed => ({
@@ -94,11 +95,12 @@ function Edit(props) {
               }
             ]}
             placeholder='Select breed'
+            required
             search
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Sex'
             name='sex'
             options={[
@@ -112,14 +114,14 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Date of birth (Refer)'
             name='born_at'
             type='date'/>
           <Field
             className='flex align-center'
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={Boolean}
             label='Fixed'
             name='fixed'
@@ -133,7 +135,7 @@ function Edit(props) {
           <Field
             className='flex align-center'
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={Boolean}
             label='Retired'
             name='retired'
@@ -146,8 +148,8 @@ function Edit(props) {
             <Form.Group widths={2}>
               <Field
                 component={FormField}
-                control={Form.Select}
-                label='Reason *'
+                control={Select}
+                label='Reason'
                 name='reason'
                 options={
                   petRetireReason.items.map(item => ({
@@ -157,24 +159,25 @@ function Edit(props) {
                   }))
                 }
                 placeholder='Select reason'
+                required
                 search
                 selectOnBlur={false}/>
             </Form.Group>
           )
         }
 
-        <Header as='h6' className='form-section-header mt36' color='blue'>APPEARANCE</Header>
+        <Header as='h6' className='section-header mt36' color='blue'>APPEARANCE</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Weight (lbs)'
             name='weight'
             placeholder='Enter weight'
             type='number'/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Size'
             name='size'
             options={[
@@ -189,18 +192,18 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Coloring'
             name='info_coloring'
             placeholder='Enter coloring'/>
           <Form.Field/>
         </Form.Group>
 
-        <Header as='h6' className='form-section-header mt36' color='blue'>TEMPERAMENT</Header>
+        <Header as='h6' className='section-header mt36' color='blue'>TEMPERAMENT</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Day camp result'
             name='temp_test_result'
             options={[
@@ -211,7 +214,7 @@ function Edit(props) {
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Prefer'
             name='temp_prefer'
             options={[
@@ -225,13 +228,13 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='Attend other day camp'
             name='temp_daycare'
             type='checkbox'/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Where'
             name='temp_daycare_where'
             placeholder='Enter where'/>
@@ -239,7 +242,7 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Any Fear'
             name='temp_any_fears'
             placeholder='Enter any fears'/>
@@ -248,7 +251,7 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Jumped fences'
             name='temp_jumped_fences'
@@ -256,7 +259,7 @@ function Edit(props) {
             type='checkbox'/>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Shared water bowls'
             name='temp_shared_water_bowls'
@@ -266,7 +269,7 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Bitten humans'
             name='temp_bitten_human'
@@ -275,7 +278,7 @@ function Edit(props) {
             type='checkbox'/>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Involved in dog fights'
             name='temp_dog_fights'
@@ -284,11 +287,11 @@ function Edit(props) {
             type='checkbox'/>
         </Form.Group>
 
-        <Header as='h6' className='form-section-header mt36' color='blue'>HEALTH</Header>
+        <Header as='h6' className='section-header mt36' color='blue'>HEALTH</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Medical restrictions'
             name='health_medical_restrictions'
             placeholder='Enter medical restrictions'/>
@@ -296,7 +299,7 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='On heart prevention'
             name='health_heartworm_preventive'
@@ -304,7 +307,7 @@ function Edit(props) {
             type='checkbox'/>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='On flea tick prevention'
             name='health_flea_tick_preventive'
@@ -315,7 +318,7 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Allergies'
             name='health_is_allergic'
@@ -324,11 +327,11 @@ function Edit(props) {
           <Form.Field/>
         </Form.Group>
 
-        <Header as='h6' className='form-section-header mt36' color='blue'>HESITATES TO EAT</Header>
+        <Header as='h6' className='section-header mt36' color='blue'>HESITATES TO EAT</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Water'
             name='hesitate_water'
@@ -336,7 +339,7 @@ function Edit(props) {
             type='checkbox'/>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Peanut butter'
             name='hesitate_peanut_butter'
@@ -346,7 +349,7 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Wet food'
             name='hesitate_wet_food'
@@ -355,7 +358,7 @@ function Edit(props) {
           <Form.Field/>
         </Form.Group>
 
-        <Header as='h6' className='form-section-header mt36' color='blue'>ADITIONAL INFO</Header>
+        <Header as='h6' className='section-header mt36' color='blue'>ADITIONAL INFO</Header>
         <Form.Group widths='equal'>
           <Form.Field>
             <label>Created at</label>
@@ -371,7 +374,7 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Formal training'
             name='info_formal_training'
@@ -379,7 +382,7 @@ function Edit(props) {
             type='checkbox'/>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Received dog from'
             name='info_received_from'
             placeholder='Enter received dog from'/>
@@ -387,7 +390,7 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Crate trained'
             name='info_crate_trained'
@@ -395,7 +398,7 @@ function Edit(props) {
             type='checkbox'/>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             format={formatIntToBool}
             label='Housebroken'
             name='info_housebroken'
