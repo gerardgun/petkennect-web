@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Header, Form, Button, Divider } from 'semantic-ui-react'
+import { Header, Form, Button, Divider,Input,Select } from 'semantic-ui-react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Field, reduxForm,FieldArray } from 'redux-form'
@@ -38,19 +38,19 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
               <Field
                 autoComplete='off'
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Name'
                 name={`${item}.name`}
                 placeholder='Enter names'/>
               <Field
                 autoComplete='off'
                 component={FormField}
-                control={Form.Input}
+                control={Input}
                 label='Relation'
                 name={`${item}.relation`}
                 placeholder='Enter relation'/>
               <Form.Button
-                data-index={index} icon='trash alternate outline' label='&nbsp;'
+                data-index={index} icon='trash alternate outline'
                 onClick={_handleRemoveBtnClick}
                 type='button'/>
             </Form.Group>
@@ -107,16 +107,16 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Email *'
+            control={Input}
+            label='Email'
             name='email'
             placeholder='Enter email'
             readOnly/>
 
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='first_name'
             placeholder='Enter name'
             readOnly/>
@@ -125,7 +125,7 @@ function Edit(props) {
 
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Last Name'
             name='last_name'
             placeholder='Enter lastname'
@@ -133,8 +133,8 @@ function Edit(props) {
 
           <Field
             component={FormField}
-            control={Form.Input}
-            label='Contact Date *'
+            control={Input}
+            label='Contact Date'
             name='contact_date'
             type='date'/>
 
@@ -143,7 +143,7 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Location'
             name='location'
             options={location.items.map(_location =>
@@ -152,7 +152,7 @@ function Edit(props) {
             placeholder='Contact Location'
             selectOnBlur={false}/>
           <Field
-            className='mt36'
+            className='mt8'
             component={FormField}
             control={Form.Checkbox}
             label='Active'
@@ -166,7 +166,7 @@ function Edit(props) {
             autoComplete='off'
             autoFocus
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Cell Phone'
             name='phones[0]'
             placeholder='Enter phone number'
@@ -174,7 +174,7 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Home Phone'
             name='phones[1]'
             placeholder='Enter phone number'
@@ -186,7 +186,7 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Work Phone'
             name='phones[2]'
             placeholder='Enter phone number'
@@ -194,7 +194,7 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Other Phone'
             name='phones[3]'
             placeholder='Enter phone number'
@@ -206,14 +206,14 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Alt Email'
             name='alt_email'
             placeholder='Enter email'
             type='email'/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Referred'
             name='referred'
             options={[
@@ -233,7 +233,7 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Address 1'
             name='addresses[0]'
             placeholder='Enter address'/>
@@ -242,7 +242,7 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Address 2'
             name='addresses[1]'
             placeholder='Enter address'/>
@@ -250,9 +250,9 @@ function Edit(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             disabled={zip.status === 'GETTING'}
-            label='Zip *'
+            label='Zip'
             loading={zip.status === 'GETTING'}
             name='zip_code'
             onChange={_handleZipChange}
@@ -262,7 +262,7 @@ function Edit(props) {
             search
             selectOnBlur={false}/>
           <Form.Field>
-            <Form.Input
+            <Input
               autoComplete='off'
               label='Country'
               readOnly
@@ -271,14 +271,14 @@ function Edit(props) {
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Field>
-            <Form.Input
+            <Input
               autoComplete='off'
               label='State'
               readOnly
               value={zipDetail.item.state}/>
           </Form.Field>
           <Form.Field>
-            <Form.Input
+            <Input
               autoComplete='off'
               label='City'
               readOnly
@@ -291,15 +291,15 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='emergency_contact_name'
             placeholder='Enter names'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Relation *'
+            control={Input}
+            label='Relation'
             name='emergency_contact_relationship'
             placeholder='Enter relationship'/>
         </Form.Group>
@@ -307,7 +307,7 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Phone'
             name='emergency_contact_phones[0]'
             placeholder='Enter phone number'
@@ -320,14 +320,14 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Vet Name'
             name='emergency_vet_name'
             placeholder='Enter vet name'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Vet Location'
             name='emergency_vet_location'
             placeholder='Enter vet location'/>
@@ -336,7 +336,7 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Vet Phone'
             name='emergency_vet_phones[0]'
             placeholder='Enter phone number'
