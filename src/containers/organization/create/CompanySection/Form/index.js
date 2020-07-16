@@ -11,6 +11,7 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import InputColor from '@components/Common/InputColor'
 import InputFile from '@components/Common/InputFile'
+import InputMask from '@components/Common/InputMask'
 import YupFields from '@lib/constants/yup-fields'
 import useZipInputSearch from '@components/useZipInputSearch'
 import { useDebounce } from '@hooks/Shared'
@@ -150,6 +151,7 @@ const CompanyForm = props => {
           <Form.Group widths='equal'>
             <Field
               autoComplete='off'
+              autoFocus
               component={FormField}
               control={Input}
               label='Legal name'
@@ -216,10 +218,11 @@ const CompanyForm = props => {
             <Field
               autoComplete='off'
               component={FormField}
-              control={Input}
+              control={InputMask}
               label='Phone'
+              mask='+1 999-999-9999'
               name='phones[0]'
-              placeholder='Enter phone'/>
+              placeholder='+1 999-999-9999'/>
             <Field
               autoComplete='off'
               component={FormField}
@@ -358,7 +361,6 @@ const CompanyForm = props => {
               selectOnBlur={false}/>
 
             <Field
-              autoFocus
               component={FormField}
               control={Input}
               label='Name'
