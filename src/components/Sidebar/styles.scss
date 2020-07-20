@@ -53,6 +53,11 @@
     }
 
     &.ui.dropdown {
+      .ui.dropdown.selection {
+        width: 12rem;
+        min-width: initial;
+      }
+
       .scrolling.menu {
         border-top: none;
 

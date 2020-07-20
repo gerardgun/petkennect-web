@@ -36,7 +36,7 @@ export default {
       type        : null,
       width       : null,
       align       : 'left',
-      sort        : true,
+      sort        : false,
       formatter   : (cell, row) => {
         return (
           <Link to={`/client/show/${row.id}`}>
@@ -62,7 +62,7 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : false
     },
     {
       display_name: 'Title',

@@ -1,24 +1,21 @@
 import React from 'react'
-import './styles.scss'
 import PropTypes from 'prop-types'
+import { Grid } from 'semantic-ui-react'
 
-function InputReadOnly({ value, label, className }) {
-  return (<div className={`c-input-read-only wrapper ${className}`}>
-    <div className='label'>
-      {label}
-    </div>
-    <div className='input'>
+import './styles.scss'
+
+function InputReadOnly({ value, label }) {
+  return (
+    <Grid.Column className='input-read-only'>
+      <label>{label}</label>
       {value}
-    </div>
-  </div>)
+    </Grid.Column>
+  )
 }
 
 InputReadOnly.propTypes = {
-  value    : PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]).isRequired,
-  label    : PropTypes.string.isRequired,
-  className: PropTypes.string
+  value: PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]).isRequired,
+  label: PropTypes.string.isRequired
 }
-
-InputReadOnly.defaultProps = { className: '' }
 
 export default InputReadOnly

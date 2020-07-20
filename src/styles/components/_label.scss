@@ -1,4 +1,9 @@
 .ui.label {
+  & > img {
+    width: 2.1666em !important;
+    object-fit: cover;
+  }
+
   &.basic {
     &.blue {
       border-color: $blue !important;

@@ -7,14 +7,14 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
 import Table from '@components/Table'
-import Form from '@containers/organization/create/CompanySection/Form'
+import CompanyFormModal from '@containers/company/form/modal'
 
 import companyDuck from '@reducers/company'
 import companyDetailDuck from '@reducers/company/detail'
 
 const Company = props => {
   const {
-    // company,
+    company,
     companyDetail
   } = props
 
@@ -34,16 +34,10 @@ const Company = props => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleRowOptionClick = (option, item) => {
+  const _handleOptionClick = option => {
     if(option === 'delete') {
-      props.setItem(item)
+      props.setItem(company.selector.selected_items[0], 'DELETE')
       _handleOpen()
-    } else if(option === 'edit') {
-      props.setItem(item, 'UPDATE')
     }
   }
 
@@ -61,10 +55,9 @@ const Company = props => {
 
         <Table
           duck={companyDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
+          onOptionClick={_handleOptionClick}/>
 
-        <Form/>
+        <CompanyFormModal/>
         <ModalDelete
           duckDetail={companyDetailDuck}
           onClose={_handleClose}

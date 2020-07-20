@@ -17,6 +17,7 @@ const FormField = props => {
     label = '',
     required = false,
     // Properties for the wrapped component
+    children,
     ...rest
   } = props
 
@@ -59,7 +60,9 @@ const FormField = props => {
         onBlur={_handleBlur}
         onChange={_handleChange}
         {...computedInput}
-        {...rest}/>
+        {...rest}>
+        {children}
+      </WrappedComponent>
 
       {/* Error Message */}
       {

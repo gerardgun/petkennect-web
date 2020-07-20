@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Link, withRouter } from 'react-router-dom'
 import { Button, Dropdown, Icon, Image } from 'semantic-ui-react'
+import _truncate from 'lodash/truncate'
 
 import Sidebar from '@components/Common/Sidebar'
 import { getAbbreviature } from '@lib/utils/functions'
@@ -169,7 +170,7 @@ const categories = [
   }
 ]
 
-const AppSidebar = ({ auth, ...props }) => {
+const AppSidebar = ({ auth, location, ...props }) => {
   const [ activeCategoryIndex, setActiveCategoryIndex ] = useState(null)
   const [ show, setShow ] = useState(false)
 
@@ -183,8 +184,10 @@ const AppSidebar = ({ auth, ...props }) => {
     else if(!category.href) setActiveCategoryIndex(index)
   }
 
-  const _handleEditProfileBtnClick = () => {
-
+  const _handleLocationChange = (e, { value }) => {
+    props.set({
+      location: value
+    })
   }
 
   const _handleSessionDropdownItemClick = (e, { value }) => {
@@ -201,6 +204,13 @@ const AppSidebar = ({ auth, ...props }) => {
   const categoriesToRender = useMemo(() => getCategories(), [ auth.item.id ])
   const userFullName = `${auth.item.first_name} ${auth.item.last_name}`
   const userAbbrev = getAbbreviature(userFullName)
+  const locationItems = useMemo(() => {
+    return location.items.map(item => ({
+      key  : item.id,
+      text : _truncate(item.code, { length: 16 }),
+      value: item.id
+    }))
+  }, [ location.status ])
 
   return (
     <div className='app-sidebar'>
@@ -274,7 +284,12 @@ const AppSidebar = ({ auth, ...props }) => {
                   <Button
                     as={Link} basic
                     color='teal' content='Edit Profile'
-                    onClick={_handleEditProfileBtnClick}/>
+                    to='auth/me'/>
+                  <Dropdown
+                    onChange={_handleLocationChange}
+                    options={locationItems}
+                    selection
+                    value={auth.location}/>
                 </div>
               }/>
             <Dropdown.Divider/>
@@ -301,7 +316,7 @@ const AppSidebar = ({ auth, ...props }) => {
                     {
                       auth.item.companies.map((item, index) => (
                         <Dropdown.Item
-                          className={item.id === props.currentTenant.id ? 'selected' : ''}
+                          // className={item.id === props.currentTenant.id ? 'selected' : ''}
                           key={index} onClick={_handleTenantDropdownItemClick} text={`${item.legal_name} - Administrador`}
                           value={item.subdomain_prefix}/>
                       ))
@@ -324,15 +339,17 @@ const AppSidebar = ({ auth, ...props }) => {
 export default compose(
   withRouter,
   connect(
-    ({ auth }) => {
+    ({ auth, location }) => {
       return {
         auth,
+        location,
         currentTenant: authDuck.selectors.getCurrentTenant(auth)
       }
     },
     {
       signOut        : authDuck.creators.signOut,
-      rehydrateTenant: authDuck.creators.rehydrateTenant
+      rehydrateTenant: authDuck.creators.rehydrateTenant,
+      set            : authDuck.creators.set
     }
   )
 )(AppSidebar)

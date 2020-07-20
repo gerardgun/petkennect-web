@@ -44,8 +44,8 @@ export default {
       // Propios del reducer
       RESET,
       RESET_ITEM,
-      SET_ITEM,
-      UPDATE
+      SET,
+      SET_ITEM
     },
     modes: { READ }
   }) => ({
@@ -77,10 +77,10 @@ export default {
       [ERROR_ACTION]   : PUT_FAILURE
     }),
     // Reducer creators
+    set      : payload => ({ type: SET, payload }),
     reset    : () => ({ type: RESET }),
     resetItem: () => ({ type: RESET_ITEM }),
-    setItem  : (item, mode = READ) => ({ type: SET_ITEM, item, mode }),
-    update   : payload => ({ type: UPDATE, payload })
+    setItem  : (item, mode = READ) => ({ type: SET_ITEM, item, mode })
   }),
   selectors: ({ store }) => ({
     detail: state => state[store]

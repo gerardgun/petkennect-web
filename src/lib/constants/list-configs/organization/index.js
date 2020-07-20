@@ -9,9 +9,14 @@ export default {
   search_placeholder: 'Search by legal name',
   options           : [
     {
-      display_name: 'Download Excel',
-      name        : 'download-excel',
-      icon        : 'file excel outline'
+      display_name: 'Download',
+      name        : 'download',
+      icon        : 'download'
+    },
+    {
+      display_name: 'Print',
+      name        : 'print',
+      icon        : 'print'
     },
     {
       display_name: null,
