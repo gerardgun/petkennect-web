@@ -23,7 +23,7 @@ export default {
     produce(state, draft => {
       switch (action.type) {
         case types.GET: {
-          const { payload } = action
+          const { payload = {} } = action
 
           // Filter params to apply
           const paramKeys = Object.keys(payload)

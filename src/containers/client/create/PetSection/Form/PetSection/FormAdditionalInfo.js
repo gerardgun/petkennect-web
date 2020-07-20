@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import { syncValidate, formatIntToBool, parseBoolToInt } from '@lib/utils/functions'
+import { syncValidate } from '@lib/utils/functions'
 
 import petDetailDuck from '@reducers/pet/detail'
 
@@ -47,26 +47,26 @@ const FormAdditionalInfo = props => {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Crate Trained'
             name='info_crate_trained'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Housebroken'
             name='info_housebroken'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Formal training'
             name='info_formal_training'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
         </Form.Group>
 
@@ -91,10 +91,10 @@ const FormAdditionalInfo = props => {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Flea/Tick Preventive'
             name='health_flea_tick_preventive'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
         </Form.Group>
 
@@ -105,26 +105,26 @@ const FormAdditionalInfo = props => {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Peanut Butter'
             name='hesitate_peanut_butter'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Wet Food'
             name='hesitate_wet_food'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Water'
             name='hesitate_water'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
         </Form.Group>
 
@@ -177,18 +177,18 @@ const FormAdditionalInfo = props => {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Jumped Fences'
             name='temp_jumped_fences'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Shared Water Bowls'
             name='temp_shared_water_bowls'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
         </Form.Group>
 

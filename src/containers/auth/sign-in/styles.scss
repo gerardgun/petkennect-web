@@ -19,20 +19,28 @@
     }
 
     .ui.form {
-      .field > label {
-        margin-bottom: 0.6rem;
-        font-size: 0.95rem;
-      }
-
-      .fields {
+      .field {
         .ui.input {
           input {
             padding-left: 1.5rem;
             padding-right: 1.5rem;
           }
         }
+        
+        &:not(.error) {
+          .ui.input {
+            .ui.button.basic {
+              color: #00aa9f !important;
+            }
+          }
+        }
 
-        .field.link {
+        & > label {
+          margin-bottom: 0.6rem;
+          font-size: 0.95rem;
+        }
+
+        &.link {
           text-align: right;
           flex: 1;
         }

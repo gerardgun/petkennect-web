@@ -36,8 +36,11 @@ import Service from '@containers/service'
 import ServiceCreate from '@containers/service/create'
 // import FoundationDetail from '@containers/foundation/detail'
 import Company from '@containers/company'
+import CompanyEdit from '@containers/company/edit'
+import CompanyShow from '@containers/company/show'
 import Organization from '@containers/organization'
-import OrganizationCreate from '@containers/organization/create'
+import OrganizationEdit from '@containers/organization/edit'
+import OrganizationShow from '@containers/organization/show'
 import TrainingCommand from '@containers/training-command'
 import TrainingMethod from '@containers/training-method'
 import TrainingReason from '@containers/training-reason'
@@ -97,6 +100,14 @@ const privateRoutes = [
   {
     path     : '/company',
     component: Company
+  },
+  {
+    path     : '/company/:id',
+    component: CompanyShow
+  },
+  {
+    path     : '/company/:id/edit',
+    component: CompanyEdit
   },
   {
     path     : '/dashboard',
@@ -207,12 +218,12 @@ const privateRoutes = [
     component: Organization
   },
   {
-    path     : '/organization/create',
-    component: OrganizationCreate
+    path     : '/organization/:organization',
+    component: OrganizationShow
   },
   {
-    path     : '/organization/:organization',
-    component: OrganizationCreate
+    path     : '/organization/:organization/edit',
+    component: OrganizationEdit
   },
   {
     path     : '/setup/training-command',

@@ -1,20 +1,7 @@
-.c-input-read-only {
-  &.wrapper {
-    .label {
-      width: 100%;
-      font-style: normal;
-      font-weight: normal;
-      line-height: 21px;
-      letter-spacing: -0.04em;
-      color: #9b9fa4;
-    }
-    .input {
-      width: 100%;
-      font-style: normal;
-      font-weight: normal;
-      line-height: 21px;
-      letter-spacing: -0.04em;
-      color: #1c1d1e;
-    }
+.input-read-only {
+  label {
+    display: block;
+    color: #9b9fa4;
+    margin-bottom: 0.3rem;
   }
 }

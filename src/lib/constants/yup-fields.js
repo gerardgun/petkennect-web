@@ -18,7 +18,7 @@ export default {
     .required('The password is required'),
   second_lastname: Yup.string().required('Second lastname is required'),
   state          : Yup.number().required('State is required'),
-  subdomain      : Yup.string().lowercase('The subdomain must be lowercase').matches(/^\w+$/, 'Spaces are not allowed').required('Subdomain is required'),
+  subdomain      : Yup.string().lowercase('The subdomain must be lowercase').matches(/^[\w-]+$/, 'Enter a valid subdomain').required('Subdomain is required'),
   theme_color    : Yup.string().matches(/^#[0-9a-fA-F]{3,6}\s*$/, 'Example: #CCCCCC'),
   whenIsUpdating : (then, otherwise) => Yup.mixed().when('id', (id /* , schema */) => (id ? then : otherwise)),
   zip            : Yup.number().required('Zip is required')

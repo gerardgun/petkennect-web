@@ -140,7 +140,6 @@ const ProductSection = (props) => {
             size='large'/>
           {
             isUpdating && (<Button
-              className='cls-deleteButton'
               color='google plus' content='Delete Product' fluid
               onClick={_handleOpen} size='large'/>)
           }
