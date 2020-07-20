@@ -7,6 +7,7 @@ import { Button, Grid, Segment, Header, Image, Breadcrumb,Dropdown, Tab,Icon } f
 
 import FormInformation from './FormInformation'
 import PetSection from './PetsSection'
+import CommentsSection from './CommentsSection'
 import Layout from '@components/Common/Layout'
 
 import clientDetailDuck from '@reducers/client/detail'
@@ -98,13 +99,14 @@ const ClientShow = ({ clientDetail,clientPet ,...props }) => {
               panes={[
                 { menuItem: 'Client Info', render: () => null },
                 { menuItem: 'Pets', render: () => null },
-                { menuItem: 'Comments', render: () => null }
+                { menuItem: 'Internal Comments', render: () => null }
               ]
               }/>
           </Grid.Column>
           <Grid.Column className='shadow-2 p0' width={11}>
             {activeTabIndex === 0 && <FormInformation/>}
             {activeTabIndex === 1 && <PetSection clientPet={clientPet}/>}
+            {activeTabIndex === 2 && <CommentsSection/>}
 
           </Grid.Column>
 

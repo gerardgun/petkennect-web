@@ -49,7 +49,7 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
                 name={`${item}.relation`}
                 placeholder='Enter relation'/>
               <Form.Button
-                data-index={index} icon='trash alternate outline' label='&nbsp;'
+                data-index={index} icon='trash alternate outline'
                 onClick={_handleRemoveBtnClick}
                 type='button'/>
             </Form.Group>
@@ -261,7 +261,7 @@ function Edit(props) {
             search
             selectOnBlur={false}/>
           <Form.Field>
-            <Form.Input
+            <Input
               autoComplete='off'
               label='Country'
               readOnly
@@ -270,14 +270,14 @@ function Edit(props) {
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Field>
-            <Form.Input
+            <Input
               autoComplete='off'
               label='State'
               readOnly
               value={zipDetail.item.state}/>
           </Form.Field>
           <Form.Field>
-            <Form.Input
+            <Input
               autoComplete='off'
               label='City'
               readOnly
