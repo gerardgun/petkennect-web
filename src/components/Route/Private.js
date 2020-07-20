@@ -5,17 +5,15 @@ import { compose } from 'redux'
 
 import authDuck from '@reducers/auth'
 
-const PrivateRoute = ({ auth, check, get, component: Component, ...rest }) => {
+const PrivateRoute = ({ auth, check, component: Component, ...rest }) => {
   useEffect(() => {
-    check()
+    if(!auth.session_status) check()
   }, [])
 
   useEffect(() => {
-    if(auth.auth_status === 'EXISTS')
-      get() // Recover auth user detail
-    else if(auth.auth_status === 'NOT_EXISTS')
+    if(auth.session_status === 'NOT_EXISTS')
       rest.history.replace('/auth/sign-in')
-  }, [ auth.auth_status ])
+  }, [ auth.session_status ])
 
   useEffect(() => {
     if(auth.status === 'SIGNED_OUT')
@@ -32,8 +30,7 @@ export default compose(
   connect(
     ({ auth }) => ({ auth }),
     {
-      check: authDuck.creators.check,
-      get  : authDuck.creators.get
+      check: authDuck.creators.check
     }
   )
 )(PrivateRoute)

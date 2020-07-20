@@ -1,52 +1,68 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import {  Form ,Popup } from 'semantic-ui-react'
+import { Icon, Input, Popup } from 'semantic-ui-react'
 import { SketchPicker } from 'react-color'
+import { v4 as uuidv4 } from 'uuid'
+
 import './style.scss'
 
-function InputColor({ value, onChange, label, placeholder }) {
-  const _handleChange = ({ hex })=> {
-    onChange(hex)
+function InputColor(props) {
+  const _handlePickerChange = ({ hex }, e) => {
+    const data = {
+      ...props,
+      value: hex.toUpperCase()
+    }
+
+    props.onChange.call(this, e, data)
   }
 
-  return (
-    <Popup
-      className='c-input-color pop-up'
-      content={()=>(
-        <SketchPicker
-          color={value}
-          disableAlpha
-          onChangeComplete={_handleChange}/>
-      )}
-      on='click'
-      pinned
-      position='bottom center'
-      trigger={
-        <Form.Field className='c-input-color form-field'>
-          <label>{label}</label>
-          <div
-            className='c-input-color icon'
-            style={{ backgroundColor: value }}/>
-          <input
-            className='c-input-color input'
-            placeholder={placeholder}
-            readOnly
-            type='text' value={value}/>
-        </Form.Field>
-      }/>
+  const uuidClassName = useMemo(() => `input-color-icon-${uuidv4()}`, [])
 
+  return (
+    <>
+      <style>
+        {
+          `
+            i.circular.inverted.icon.${uuidClassName} {
+              background-color: ${props.value} !important;
+            }
+          `
+        }
+      </style>
+      <Input
+        className='input-color'
+        icon={
+          <Popup
+            basic
+            className='input-color-pop-up'
+            content={()=>(
+              <SketchPicker
+                color={props.value}
+                disableAlpha
+                onChangeComplete={_handlePickerChange}/>
+            )}
+            on='click'
+            pinned
+            position='bottom center'
+            trigger={
+              <Icon
+                circular className={`input-color-icon ${uuidClassName}`} inverted
+                link name='eye dropper'/>
+            }/>
+        }
+        {...props}/>
+    </>
   )
 }
 
 InputColor.propTypes = {
-  value      : PropTypes.string.isRequired,
-  label      : PropTypes.string.isRequired,
   onChange   : PropTypes.func.isRequired,
   placeholder: PropTypes.string
 }
 
 InputColor.defaultProps = {
-  placeholder: 'Select a color'
+  onChange   : () => {},
+  placeholder: 'Pick color'
 }
 
 export default InputColor

@@ -3,11 +3,13 @@ import './styles.scss'
 import { connect } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { compose } from 'redux'
-import { Grid, Segment, Breadcrumb, Image, Tab, Header, Dropdown, Button, Icon } from 'semantic-ui-react'
+import { Grid, Segment, Breadcrumb, Image, Label, Menu, Header, Dropdown, Button, Icon } from 'semantic-ui-react'
 import moment from 'moment'
+import _get from 'lodash/get'
 
 import Layout from '@components/Common/Layout'
 import ImageEditor from '@components/Common/ImageEditor'
+import PetProfileProperty from '@components/Common/Pet/Profile/Property'
 import FormInformation from './FormInformation'
 import BookingSection from './BookingSection'
 import VaccinationSection from './VaccinationSection'
@@ -17,13 +19,14 @@ import GallerySection from './GallerySection'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petImageDuck from '@reducers/pet/image'
+import petImageDetailDuck from '@reducers/pet/image/detail'
 import useCameraAvailable from '@hooks/useCameraAvailable'
 
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
-const PetShow = ({ petDetail , petImage, ...props }) => {
-  const [ activeTabIndex, setTabActiveIndex ] = useState(0)
-  const [ openImageEditorModal,setOpenImageEditorModal ] = useState(false)
+const PetShow = ({ petDetail, petImage, ...props }) => {
+  const [ activeMenuItem, setActiveMenuItem ] = useState('info')
+  const [ openImageEditorModal, setOpenImageEditorModal ] = useState(false)
   const [ initialStep, setInitialStep ] = useState(null)
   const [ initialImageURL, setInitialImageURL ] = useState(null)
   const { id } = useParams()
@@ -66,12 +69,17 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
         return `${months} months`
     }
   }
+
   const _handleFileChange = e => {
     if(e.target.files && e.target.files[0]) {
       setInitialImageURL(URL.createObjectURL(e.target.files[0]))
       setInitialStep('EDITOR')
       setOpenImageEditorModal(true)
     }
+  }
+
+  const _handleOptionDropdownChange = () => {
+    alert('In development...')
   }
 
   const _handlePhotoAction = (e , data)=>{
@@ -104,27 +112,25 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
     }
   }
 
-  const  _handleCloseImageEditorModal = ()=> {
+  const _handleCloseImageEditorModal = ()=> {
     setOpenImageEditorModal(false)
     setInitialImageURL(null)
     setInitialStep(null)
   }
 
-  const _handleImageEditorSave = (_imageFile) => {
-    return props.put({ id: petDetail.item.id, image: _imageFile })
-      .then(()=> props.getPet(id))
-      .catch(()=> {})
-      .finally(_handleCloseImageEditorModal)
+  const _handleImageEditorSave = imageFile => {
+    props.postPetImage({ images: imageFile, is_profile: true })
+      .then(_handleCloseImageEditorModal)
   }
 
-  const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
+  const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
 
   const fullname = `${petDetail.item.name || ''}`
   const clientFullName = `${petDetail.item.client_first_name || ''} ${petDetail.item.client_last_name || ''}`
 
   return (
     <Layout>
-      <Segment className='segment-content p-pet-show'>
+      <Segment className='segment-content pet-profile'>
         <Grid>
           <Grid.Column className='p40' width={5}>
             <Breadcrumb>
@@ -136,7 +142,7 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
                 {fullname}
               </Breadcrumb.Section>
             </Breadcrumb>
-            <div className='flex justify-center align-center mt40 mb16'>
+            <div className='flex justify-center align-center mt40'>
               <Dropdown
                 direction='right'
                 icon={null}
@@ -144,11 +150,9 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
                 selectOnBlur={false}
                 trigger={(
                   <div className='c-image-profile mh-auto'>
-                    <Image
-                      circular className='c-square-140' size='mini'
-                      src={petDetail.item.image_filepath || defaultImage}/>
+                    <Image circular src={petDetail.item.image_filepath || defaultImage}/>
                     <div className='c-image-profile__overlay'>
-                      <Icon className='text-white' name='camera'/>
+                      <Icon className='text-white mb8' name='camera'/>
                       <span className='text-regular text-white text-center'>CHANGE <br/>PHOTO</span>
                     </div>
 
@@ -173,78 +177,103 @@ const PetShow = ({ petDetail , petImage, ...props }) => {
               type='file'/>
             <div className='flex justify-between align-center mb24'>
               <div>
-                <Header className='c-title mv0'>{fullname}</Header>
-                <Header className='c-label mv0 flex'>
-                  Owner :
-                  <Link className='text-underline pl8 block'to={`/client/show/${petDetail.item.client}`}>{clientFullName}</Link>
-                </Header>
+                <Header as='h2'>{fullname}</Header>
+
+                {/* Owner data */}
+                <div className='flex align-center'>
+                  <div className='mr8'>
+                    <span style={{ color: '#888888' }}>Owner :</span>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <Link className='text-underline' to={`/client/show/${petDetail.item.client}`}>{clientFullName}</Link>
+                  </div>
+                </div>
               </div>
 
-              <Button icon>
-                <Icon name='ellipsis vertical'/>
-              </Button>
+              <Dropdown
+                direction='left'
+                icon={null}
+                onChange={_handleOptionDropdownChange}
+                options={[
+                  { key: 1, icon: 'download', value: 'download-profile', text: 'Download Profile' },
+                  { key: 2, icon: 'paper plane outline', value: 'send-email', text: 'Send Email' }
+                ]}
+                selectOnBlur={false}
+                trigger={(
+                  <Button basic icon='ellipsis vertical'/>
+                )}
+                value={null}/>
 
             </div>
-            <div className='flex justify-between'>
-              <div className='w40'>
-                <Header as='span' className='c-label'>
-                  Breed :{'  '}
-                </Header>
-                <Header as='span' className='c-value'>
-                  {petDetail.item.breed_name || '-'}
-                </Header>
-              </div>
-              <div className='w40'>
-                <Header as='span' className='c-label'>
-                Age    :{'  '}
-                </Header>
-                <Header as='span' className='c-value'>
-                  {getAge(petDetail.item.born_at)}
-                </Header>
-              </div>
-            </div>
-            <div className='flex justify-between'>
-              <div className='w40'>
-                <Header as='span' className='c-label'>
-                Sex    :{'  '}
-                </Header>
-                <Header as='span' className='c-value'>
-                  {(petDetail.item.sex === 'F' ? 'Female' : 'Male')}
-                </Header>
-              </div>
-              <div className='w40'>
-                <Header as='span' className='c-label'>
-                Fixed  :{'  '}
-                </Header>
-                <Header as='span' className='c-value'>
-                  {petDetail.item.fixed ? 'Yes' : 'No'}
-                </Header>
-              </div>
-            </div>
-            <Tab
-              activeIndex={activeTabIndex}
-              grid={{ paneWidth: 0, tabWidth: 16 }}
-              menu={{ color: 'teal', fluid: true, vertical: true }}
-              menuPosition='right'
-              onTabChange={_handleTabChange}
-              panes={[
-                { menuItem: 'Pet Info', render: () => null },
-                { menuItem: 'Booking', render: () => null },
-                { menuItem: 'Vaccinations', render: () => null },
-                { menuItem: 'Incidents', render: () => null },
-                { menuItem: 'Notes', render: () => null },
-                { menuItem: 'Gallery', render: () => null }
-              ]
-              }/>
+
+            <Grid>
+              <Grid.Row columns={2} verticalAlign='middle'>
+                <Grid.Column>
+                  <PetProfileProperty name='Breed&nbsp;' value={_get(petDetail.item, 'breed_name', '-')}/>
+                </Grid.Column>
+                <Grid.Column>
+                  <PetProfileProperty name='Age&nbsp;&nbsp;&nbsp;&nbsp;' value={getAge(petDetail.item.born_at)}/>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row columns={2} style={{ paddingTop: 0 }} verticalAlign='middle'>
+                <Grid.Column>
+                  <PetProfileProperty name='Sex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' value={petDetail.item.sex === 'F' ? 'Female' : 'Male'}/>
+                </Grid.Column>
+                <Grid.Column>
+                  <PetProfileProperty name='Fixed&nbsp;' value={petDetail.item.fixed ? 'Yes' : 'No'}/>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+
+            <br/>
+
+            <Menu
+              className='pet-profile-menu' color='teal' fluid
+              vertical>
+              <Menu.Item
+                active={activeMenuItem === 'info'} link name='info'
+                onClick={_handleMenuItemClick}>
+                Pet Info
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'bookings'} link name='bookings'
+                onClick={_handleMenuItemClick}>
+                Bookings
+                <Label color='teal'>4</Label>
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'vaccinations'} link name='vaccinations'
+                onClick={_handleMenuItemClick}>
+                Vaccinations
+                <Icon color='orange' name='warning circle' size='large'/>
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'incidents'} link name='incidents'
+                onClick={_handleMenuItemClick}>
+                Incidents
+                <Icon color='orange' name='warning circle' size='large'/>
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'notes'} link name='notes'
+                onClick={_handleMenuItemClick}>
+                Notes
+                <Label color='teal'>3</Label>
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'gallery'} link name='gallery'
+                onClick={_handleMenuItemClick}>
+                Gallery
+                <Label color='teal'>58</Label>
+              </Menu.Item>
+            </Menu>
           </Grid.Column>
           <Grid.Column className='shadow-2 p0' width={11}>
-            {activeTabIndex === 0 && <FormInformation/>}
-            {activeTabIndex === 1 && <BookingSection/>}
-            {activeTabIndex === 2 && <VaccinationSection/>}
-            {activeTabIndex === 3 && <IncidentSection/>}
-            {activeTabIndex === 4 && <NotesSection/>}
-            {activeTabIndex === 5 && <GallerySection/>}
-
+            {activeMenuItem === 'info' && <FormInformation/>}
+            {activeMenuItem === 'bookings' && <BookingSection/>}
+            {activeMenuItem === 'vaccinations' && <VaccinationSection/>}
+            {activeMenuItem === 'incidents' && <IncidentSection/>}
+            {activeMenuItem === 'notes' && <NotesSection/>}
+            {activeMenuItem === 'gallery' && <GallerySection/>}
           </Grid.Column>
 
           <ImageEditor
@@ -276,7 +305,7 @@ export default compose(
     }), {
       getPetImages: petImageDuck.creators.get,
       getPet      : petDetailDuck.creators.get,
-      put         : petDetailDuck.creators.put,
+      postPetImage: petImageDetailDuck.creators.post,
       resetItem   : petDetailDuck.creators.resetItem
     })
 )(PetShow)

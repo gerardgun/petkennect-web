@@ -68,7 +68,7 @@ const FormInformation = props => {
         .catch(()=>{})
         .finally(_handleCloseImageEditorModal)
 
-    return props.post({ pet_id: petDetail.item.id ,images: _imageFile })
+    return props.post({ images: _imageFile })
       .catch(()=>{})
       .finally(_handleCloseImageEditorModal)
   }

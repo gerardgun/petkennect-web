@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Form, Tab } from 'semantic-ui-react'
+import { Checkbox, Form, Input, Select, Tab } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -45,26 +45,26 @@ const FormInformation = props => {
           <Field
             autoComplete='off'
             autoFocus
-            className='clsLabel'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Name'
             name='first_name'
             placeholder='Enter names'
-            readOnly={isUpdating}/>
+            readOnly={isUpdating}
+            required/>
           <Field
             autoComplete='off'
-            className='clsLabel'
             component={FormField}
-            control={Form.Input}
-            label='Lastname'
+            control={Input}
+            label='Last name'
             name='last_name'
             placeholder='Enter lastname'
-            readOnly={isUpdating}/>
+            readOnly={isUpdating}
+            required/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Spouse'
             name='spouse'
             placeholder='Enter spouse'/>
@@ -73,7 +73,7 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             icon='upload'
             label='Profile Picture'
             name='thumbnail_path'
@@ -83,7 +83,7 @@ const FormInformation = props => {
           <Form.Field/>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='ACTIVE'
             name=''
             style={{ 'padding-top': '30px', 'margin-left': '-34px' }}
@@ -93,13 +93,13 @@ const FormInformation = props => {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Contact date'
             name='contact_date'
             type='date'/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Contact Location'
             name='contact_location_id'
             options={[
@@ -112,7 +112,7 @@ const FormInformation = props => {
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Form.Select}
+            control={Select}
             label='Status'
             name='status'
             options={[
@@ -128,7 +128,7 @@ const FormInformation = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Address1'
             name='addresses[0]'
             placeholder='Enter address'/>
@@ -137,7 +137,7 @@ const FormInformation = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
+            control={Input}
             label='Address2'
             name=''
             placeholder='Enter address2'/>
@@ -167,9 +167,8 @@ const FormInformation = props => {
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
-            className='clsLabel'
             component={FormField}
-            control={Form.Select}
+            control={Select}
             disabled={zip.status === 'GETTING'}
             label='Zip'
             loading={zip.status === 'GETTING'}
@@ -178,6 +177,7 @@ const FormInformation = props => {
             onSearchChange={_handleZipSearchChange}
             options={zipOptions}
             placeholder='Search zip'
+            required
             search
             selectOnBlur={false}/>
           <Form.Field/>

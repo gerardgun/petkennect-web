@@ -64,9 +64,8 @@ export default {
       align       : 'left',
       sort        : true,
       filter      : {
-        range: true,
-        lt   : 'price__lt',
-        gt   : 'price__gt'
+        type: 'range',
+        name: [ 'price__gt', 'price__lt' ]
       }
     },
     {
@@ -77,9 +76,8 @@ export default {
       align       : 'left',
       sort        : true,
       filter      : {
-        range: true,
-        lt   : 'stock__lt',
-        gt   : 'stock__gt'
+        type: 'range',
+        name: [ 'stock__gt', 'stock__lt' ]
       }
     },
     {

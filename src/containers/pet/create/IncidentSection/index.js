@@ -1,28 +1,33 @@
 import React, { useEffect, useMemo } from 'react'
-import './styles.scss'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { Header, Button , Divider } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
 import IncidentForm from './Form'
+import SendReportForm from './SendReportForm'
 import ModalDelete from '@components/Modal/Delete'
+import useModal from '@components/Modal/useModal'
+import Summary from './Summary'
+import { useChangeStatusEffect } from '@hooks/Shared'
+import { openIncidentPDF } from '@lib/utils/functions'
 
 import petIncidentDuck from '@reducers/pet/incident'
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
-import petIncidentActionsDuck from '@reducers/pet/incident-action'
+import petIncidentActionDuck from '@reducers/pet/incident-action'
 import petIncidentTypeDuck from '@reducers/pet/incident-type'
 import petDetailDuck from '@reducers/pet/detail'
-import { useChangeStatusEffect } from '@hooks/Shared'
-import Summary from './Summary'
-import { useParams } from 'react-router-dom'
-import useModal from '@components/Modal/useModal'
-import { openIncidentPDF } from '@lib/utils/functions'
+
+import './styles.scss'
 
 function IncidentSection(props) {
   const { petDetail } = props
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const [ openSendReportModal, { _handleOpen :  _handleOpenSendReportModal, _handleClose : _handleCloseSendReportModal } ] = useModal()
+
   const { id } = useParams()
+
   useEffect(()=> {
     props.getPetIncidents()
     props.getPetIncidentTypes()
@@ -43,6 +48,8 @@ function IncidentSection(props) {
       openIncidentPDF(petDetail.item.id,item.id, `pet-incident-${item.id}-${item.action}-${item.type}`)
     if(option === 'edit')
       props.setItem(props.petIncident.selector.selected_items[0], 'UPDATE')
+    if(option === 'preview_report')
+      _handleOpenSendReportModal()
 
     if(option === 'delete') {
       props.setItem(props.petIncident.selector.selected_items[0], 'DELETE')
@@ -62,7 +69,7 @@ function IncidentSection(props) {
   useChangeStatusEffect(()=> {
     props.getPetIncidents()
     props.getPet(id)
-  }, props.petIncidentDetail.status)
+  }, props.petIncidentDetail.status, [ 'SENT_EMAIL' ])
 
   return (
     <div className='c-incident-section'>
@@ -85,8 +92,9 @@ function IncidentSection(props) {
           duck={petIncidentDuck} onOptionClick={_handleOptionClick}/>
       </div>
       <IncidentForm/>
+      <SendReportForm onClose={_handleCloseSendReportModal} open={openSendReportModal}/>
       <ModalDelete
-        duckDetail={petDetailDuck}
+        duckDetail={petIncidentDetailDuck}
         onClose={_handleClose}
         open={open}/>
     </div>
@@ -102,13 +110,13 @@ export default compose(
     (state) => ({
       petIncident      : petIncidentDuck.selectors.list(state),
       petIncidentDetail: petIncidentDetailDuck.selectors.detail(state),
-      petIncidentAction: petIncidentActionsDuck.selectors.list(state),
+      petIncidentAction: petIncidentActionDuck.selectors.list(state),
       petIncidentType  : petIncidentTypeDuck.selectors.list(state),
       petDetail        : petDetailDuck.selectors.detail(state)
     }), {
       getPetIncidents      : petIncidentDuck.creators.get,
       getPet               : petDetailDuck.creators.get,
-      getPetIncidentActions: petIncidentActionsDuck.creators.get,
+      getPetIncidentActions: petIncidentActionDuck.creators.get,
       getPetIncidentTypes  : petIncidentTypeDuck.creators.get,
       setItem              : petIncidentDetailDuck.creators.setItem,
       removeSelectedIds    : petIncidentDuck.creators.removeSelectedIds

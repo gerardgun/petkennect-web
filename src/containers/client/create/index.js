@@ -3,19 +3,14 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { getFormValues, getFormSyncErrors, getFormSubmitErrors, submit, destroy } from 'redux-form'
-import {
-  Header,
-  Modal,
-  Form,
-  Button
-} from 'semantic-ui-react'
+import { Header, Modal, Form, Button } from 'semantic-ui-react'
+
+import FormStep1 from './FormStep1'
+import FormStep2 from './FormStep2'
 
 import { parseResponseError } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
-
-import FormStep1 from './FormStep1'
-import FormStep2 from './FormStep2'
 
 const formIds = [ 'client-create-step-1-form','client-create-step-2-form' ]
 
@@ -107,7 +102,7 @@ const ClientCreateForm = (props) => {
       className='form-modal'
       onClose={_handleClose}
       open={isOpened}
-      size='small'>
+      size='large'>
       <Modal.Content>
         <Header as='h2' className='segment-content-header'>
             New Client
@@ -120,7 +115,9 @@ const ClientCreateForm = (props) => {
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
             <Button
+              basic
               className='w120'
+              color='teal'
               content='Cancel'
               disabled={saving}
               onClick={_handleClose}

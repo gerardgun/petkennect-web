@@ -68,24 +68,20 @@ function FormInformation(props) {
             className='w120'
             color='teal'
             content='Cancel' disabled={saving}
-            onClick={_handleCancelBtnClick}
-            size='small'/>
+            onClick={_handleCancelBtnClick}/>
           <Button
-            className='ml16'
             color='teal'
             content='Save Changes'
             disabled={saving}
             loading={saving}
-            // eslint-disable-next-line react/jsx-handler-names
-            onClick={_handleSaveBtnClick}
-            size='small'/>
+            onClick={_handleSaveBtnClick}/>
         </div> : (
 
           <Button
             as={Link}
+            basic
             icon='edit'
-            onClick={_handleEditClick}
-            size='small'/>
+            onClick={_handleEditClick}/>
         )}
       </div>
       <Divider className='m0'/>

@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Form, Header, Modal, Divider } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Divider } from 'semantic-ui-react'
 import * as Yup from 'yup'
+import moment from 'moment'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
@@ -14,6 +15,8 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import clientDuck from '@reducers/client'
+import authDuck from '@reducers/auth'
+import petVaccinationDuck from '@reducers/pet/vaccination'
 import petDetailDuck from '@reducers/pet/detail'
 import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
 
@@ -59,6 +62,10 @@ const EmailReminderForm = (props) => {
 
   useEffect(()=> {
     props.getClients()
+
+    return  ()=> {
+      props.removeSelectedItems()
+    }
   },[])
   useEffect(()=> {
     if(petDetail.item.client && open)
@@ -68,6 +75,7 @@ const EmailReminderForm = (props) => {
   const _handleClose = () => {
     props.reset()
     onClose()
+    props.removeSelectedItems()
   }
 
   const _handleSubmit = (values) => {
@@ -103,7 +111,7 @@ const EmailReminderForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Email'
               name='client_email'
               placeholder=''
@@ -113,7 +121,7 @@ const EmailReminderForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Subject'
               name='subject'
               onChange={_handleSubjectChange}
@@ -164,34 +172,39 @@ EmailReminderForm.defaultProps = {}
 export default compose(
   withRouter,
   connect(
-    (state) => {
+    ({ auth,...state }) => {
       const client = clientDuck.selectors.list(state)
       const petDetail = petDetailDuck.selectors.detail(state)
+      const clientFullName = `${petDetail.item.client_first_name || ''} ${petDetail.item.client_last_name || ''}`
+      const currentTenant =  authDuck.selectors.getCurrentTenant(auth)
+
+      const     petVaccination      = petVaccinationDuck.selectors.list(state)
 
       return {
         client,
         petDetail,
         initialValues: {
-          subject  : 'Attention Required - Vaccinations due for {{pet_name}}',
-          body_text: 'Dear *{{client_name}} {{client_lastname}}*,<br/><br/>'
-          + "*{{pet_name}}* is coming due for vaccinations.  Please remember we cannot accept your dog into {{company_name}} without current vaccinations.  Please email us or bring in an updated copy of your dog's vaccination records.  Below are the expiration dates we currently have on file:<br/><br/>"
+          subject  : `Attention Required - Vaccinations due for ${petDetail.item.name}`,
+          body_text: `Dear ${clientFullName},`
+          + '<br/><br/>'
+          // eslint-disable-next-line max-len
+          + `${petDetail.item.name} is coming due for vaccinations.  Please remember we cannot accept your dog into ${currentTenant.legal_name} without current vaccinations.  Please email us or bring in an updated copy of your dog's vaccination records.  Below are the expiration dates we currently have on file:<br/><br/>`
+           + petVaccination.selector.selected_items.map((_vaccination)=> `${_vaccination.type_name}: ${moment.utc(_vaccination.expired_at, 'YYYY-MM-DD HH-mm:ss Z').format('MM/DD/YYYY')}<br/>`)
 
-          + '*{{vaccination_type_name}}*: {{vaccination_expired_at}}<br/>'
-          + '*{{vaccination_type_name}}*: {{vaccination_expired_at}}<br/>'
-          + '*{{vaccination_type_name}}*: {{vaccination_expired_at}}<br/>'
-          + '*{{vaccination_type_name}}*: {{vaccination_expired_at}}<br/><br/>'
+          + '<br/>'
 
           + 'Please remember that while we require all vaccinations, your dog can still contract kennel cough. Kennel Cough is contracted by an airborne virus and the vaccine is not 100% effective.  Kennel cough is similar to the human cold; any time dogs come in contact with other dogs, there is a risk of infection.  Please consult with your veterinarian for questions on vaccinations.<br/><br/>'
 
           + 'Thank You,<br/>'
-          + '*{{company_name}}*'
+          + `${currentTenant.legal_name}`
         },
         watchedBodyText: formValueSelector('pet-vaccination-email-reminder-form')(state,'body_text')
       }
     },
     {
-      getClients: clientDuck.creators.get,
-      sendEmail : petVaccinationDetailDuck.creators.sendEmail
+      getClients         : clientDuck.creators.get,
+      sendEmail          : petVaccinationDetailDuck.creators.sendEmail,
+      removeSelectedItems: petVaccinationDuck.creators.removeSelectedIds
     }
   ),
   reduxForm({

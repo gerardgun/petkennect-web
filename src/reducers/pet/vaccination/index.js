@@ -1,6 +1,6 @@
 import base from '@reducers/base'
 import list from '@reducers/common/list'
-import pagination from '@reducers/common/pagination'
+// import pagination from '@reducers/common/pagination'
 
 import config from '@lib/constants/list-configs/pet/vaccination'
 import selector from '@reducers/common/selector'
@@ -13,6 +13,6 @@ export default base({
   }
 })
   .extend(list)
-  .extend(pagination)
+  // .extend(pagination)
   .extend(selector)
 

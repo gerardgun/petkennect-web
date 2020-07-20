@@ -2,8 +2,9 @@ import React from 'react'
 import { Label } from 'semantic-ui-react'
 
 export default {
-  base_uri: null,
-  row     : {
+  base_uri      : null,
+  search_enabled: false,
+  row           : {
     options: [
       // {
       //   display_name: 'Edit',
@@ -49,7 +50,7 @@ export default {
       type        : 'date',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : false
     },
     {
       display_name: 'VERIFY BY',
@@ -64,6 +65,7 @@ export default {
       type        : 'badge',
       formatter   : (value)=> {
         const color = {
+          Missing      : 'black',
           'Comming due': 'yellow',
           'Verify!'    : 'blue',
           Expired      : 'red',

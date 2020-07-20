@@ -3,6 +3,10 @@
   font-family: Poppins;
   font-weight: 600;
 
+  &.blue {
+    color: $blue !important;
+  }
+
   &.c-title {
     font-style: normal;
     font-weight: normal;
@@ -22,13 +26,10 @@
     letter-spacing: -0.04em;
     color: #9b9fa4;
   }
+}
 
-  &.c-value {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 18px;
-    letter-spacing: -0.04em;
-    color: #1c1d1e;
-  }
+h6.ui.header.section-header {
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: 400;
 }

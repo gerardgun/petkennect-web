@@ -8,7 +8,7 @@ import _get from 'lodash/get'
 function Show({ clientDetail  }) {
   return (
     <div className='ph40 pv32'>
-      <Header as='h4' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
+      <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'
@@ -39,7 +39,7 @@ function Show({ clientDetail  }) {
           label='Status'
           value={clientDetail.item.is_active ? 'Active' : 'Inactive'}/>
       </div>
-      <Header as='h4' className='form-section-header mt36' color='blue'>CONTACT DETAILS</Header>
+      <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'
@@ -70,7 +70,7 @@ function Show({ clientDetail  }) {
           label='Referred'
           value={clientDetail.item.referred || '-'}/>
       </div>
-      <Header as='h4' className='form-section-header mt36' color='blue'>CLIENT ADDRESS</Header>
+      <Header as='h6' className='section-header' color='blue'>CLIENT ADDRESS</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'
@@ -105,7 +105,7 @@ function Show({ clientDetail  }) {
           label='State'
           value={clientDetail.item.state || '-'}/>
       </div>
-      <Header as='h4' className='form-section-header mt36' color='blue'>EMERGENCY CONTACT</Header>
+      <Header as='h6' className='section-header' color='blue'>EMERGENCY CONTACT</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'
@@ -122,7 +122,7 @@ function Show({ clientDetail  }) {
           label='Phone'
           value={_get(clientDetail.item,'emergency_contact_phones[0]','-')}/>
       </div>
-      <Header as='h4' className='form-section-header mt36' color='blue'>VETERINARIAN CONTACT</Header>
+      <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
       <div className='flex flex-row align-center mv20'>
         <InputReadOnly
           className='w50'
@@ -139,7 +139,7 @@ function Show({ clientDetail  }) {
           label='Vet Phone'
           value={_get(clientDetail.item, 'emergency_vet_phones[0]', '-')}/>
       </div>
-      <Header as='h4' className='form-section-header mt36' color='blue'>PEOPLE AUTORIZED TO PICK UP</Header>
+      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTORIZED TO PICK UP</Header>
       {clientDetail.item.authorized_people_pick_up == null ? '-' : clientDetail.item.authorized_people_pick_up.map((_person,index) => (
         <div className='flex flex-row align-center mv20' key={index}>
           <div className='w33 text-regular flex justify-between'>

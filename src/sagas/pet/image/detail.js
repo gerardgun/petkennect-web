@@ -1,6 +1,6 @@
 import { call, put,select, takeEvery } from 'redux-saga/effects'
 
-import { Delete, Get, Post } from '@lib/utils/http-client'
+import { Delete, Get, Patch, Post } from '@lib/utils/http-client'
 
 import petImageDetailDuck from '@reducers/pet/image/detail'
 import petDetailDuck from '@reducers/pet/detail'
@@ -49,11 +49,36 @@ function* get({ id }) {
   }
 }
 
-function* post({ payload: { pet_id , ...payload } }) {
+function* post({ payload }) {
+  const { images, is_profile } = payload
+
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, `pets/${pet_id}/images/`, payload)
+    // Get current pet detail item
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+
+    // Upload new pet image
+    let [ result ] = yield call(Post, `pets/${petDetail.item.id}/images/`, { images })
+
+    // Set image as profile if is_profile=true
+    if(is_profile === true) {
+      yield call(Patch, `pets/${petDetail.item.id}/images/${result.id}/`, { is_profile })
+
+      result.is_profile = true
+
+      // Update current pet detail item
+      // image_filepath
+      yield put({
+        type   : petDetailDuck.types.SET,
+        payload: {
+          item: {
+            ...petDetail.item,
+            image_filepath: result.filepath
+          }
+        }
+      })
+    }
 
     yield put({
       type   : types.POST_FULFILLED,
@@ -73,7 +98,7 @@ function* _put({ payload: { pet_id, pet_image_id, ...payload } }) {
 
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Post, `pets/${pet_id}/images/${pet_image_id}/`, payload)
+    yield call(Patch, `pets/${pet_id}/images/${pet_image_id}/`, payload)
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
     yield put({

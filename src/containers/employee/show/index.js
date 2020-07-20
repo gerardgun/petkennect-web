@@ -74,7 +74,7 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
           </div>
         </div>
 
-        <Header as='h4' className='form-section-header mt36' color='blue'>BASIC INFORMATION</Header>
+        <Header as='h6' className='section-header mt36' color='blue'>BASIC INFORMATION</Header>
         <div className='flex flex-row align-center mv20'>
           <InputReadOnly
             className='w33'

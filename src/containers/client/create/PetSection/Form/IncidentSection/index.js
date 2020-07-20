@@ -5,7 +5,6 @@ import { compose } from 'redux'
 import { Button, Grid, Header, Segment, Icon } from 'semantic-ui-react'
 
 import ModalDelete from '@components/Modal/Delete'
-import ModalFilter from '@components/Modal/Filter'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import PetIncidentForm from  './Form'
@@ -13,7 +12,6 @@ import EmailForm from  './EmailForm'
 
 import petIncidentDuck from '@reducers/pet/incident'
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
-import petIncidentActionsDuck from '@reducers/pet/incident-action'
 import petIncidentTypeDuck from '@reducers/pet/incident-type'
 import petDetailDuck from '@reducers/pet/detail'
 
@@ -22,15 +20,13 @@ import { useChangeStatusEffect } from '@hooks/Shared'
 import { downloadIncidentPDF, openIncidentPDF } from '@lib/utils/functions'
 
 const IncidentSectionList = ({ ...props }) => {
-  const { petIncidentDetail : { status } = {}, petIncidentAction, petIncidentType , petDetail } = props
+  const { petIncidentDetail : { status } = {}, petIncidentType , petDetail } = props
   const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
-  const [ openFilterModal, { _handleOpen: _handleOpenFilterModal, _handleClose: _handleCloseFilterModal } ] = useModal()
   const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
 
   useEffect(() => {
     props.getPetIncidents()
     props.getPetIncidentTypes()
-    props.getPetIncidentActions()
   }, [])
 
   useChangeStatusEffect(props.getPetIncidents, status)
@@ -123,10 +119,6 @@ const IncidentSectionList = ({ ...props }) => {
             </Grid.Column>
             <Grid.Column textAlign='right'>
               <Button
-                content='Filter' icon='filter'
-                labelPosition='left'
-                onClick={_handleOpenFilterModal}/>
-              <Button
                 as={Link} color='teal' content='New Incident'
                 onClick={_handleAddBtnClick}/>
             </Grid.Column>
@@ -136,16 +128,9 @@ const IncidentSectionList = ({ ...props }) => {
             onRowClick={_handleRowClick}
             onRowOptionClick={_handleRowOptionClick}/>
         </Segment>
+
         <PetIncidentForm/>
         <EmailForm onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
-        <ModalFilter
-          duck={petIncidentDuck}
-          onClose={_handleCloseFilterModal}
-          open={openFilterModal}
-          options={{
-            action_name: petIncidentAction.items,
-            type_name  : petIncidentType.items
-          }}/>
         <ModalDelete
           duckDetail={petIncidentDetailDuck}
           onClose={_handleCloseDeleteModal}
@@ -160,13 +145,11 @@ export default compose(
     state => ({
       petIncident      : petIncidentDuck.selectors.list(state),
       petIncidentDetail: petIncidentDetailDuck.selectors.detail(state),
-      petIncidentAction: petIncidentActionsDuck.selectors.list(state),
       petIncidentType  : petIncidentTypeDuck.selectors.list(state),
       petDetail        : petDetailDuck.selectors.detail(state)
     }), {
-      getPetIncidents      : petIncidentDuck.creators.get,
-      getPetIncidentActions: petIncidentActionsDuck.creators.get,
-      getPetIncidentTypes  : petIncidentTypeDuck.creators.get,
-      setItem              : petIncidentDetailDuck.creators.setItem
+      getPetIncidents    : petIncidentDuck.creators.get,
+      getPetIncidentTypes: petIncidentTypeDuck.creators.get,
+      setItem            : petIncidentDetailDuck.creators.setItem
     })
 )(IncidentSectionList)

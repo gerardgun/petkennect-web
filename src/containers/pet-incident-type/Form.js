@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Header, Input, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -79,15 +79,16 @@ const PetIncidentTypeForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Input}
-              label='Name *'
+              control={Input}
+              label='Name'
               name='name'
-              placeholder='Enter name'/>
+              placeholder='Enter name'
+              required/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Checkbox}
+              control={Checkbox}
               label='Apply limit of incidents'
               name='has_limit'
               onChange={_handleToggleHasLimit}
@@ -99,11 +100,12 @@ const PetIncidentTypeForm = (props) => {
               <Form.Group widths='equal'>
                 <Field
                   component={FormField}
-                  control={Form.Input}
-                  label='Limit of accidents *'
+                  control={Input}
+                  label='Limit of accidents'
                   name='limit'
                   onBlur={_handleBlurLimit}
                   placeholder='Enter size'
+                  required
                   type='number'/>
               </Form.Group>
             )

@@ -2,10 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { Checkbox, Dimmer, Dropdown, Grid, Image, Input, Label, Loader, Segment, Table, Button, Icon } from 'semantic-ui-react'
+import { Button, Checkbox, Dimmer, Dropdown, Grid, Icon, Image, Input, Label, Loader, Popup, Segment, Table } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
+import useModal from '@components/Modal/useModal'
+import FilterForm from './Filter/Form'
+import FilterTagManager from './Filter/TagManager'
 import { useDebounceText } from '@hooks/Shared'
 
 import { defaultImageUrl } from '@lib/constants'
@@ -14,6 +17,9 @@ const TableList = ({ duck, list, ...props }) => {
   const {
     options: configOptions = []
   } = list.config
+
+  // For Filter Popup
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
@@ -31,7 +37,7 @@ const TableList = ({ duck, list, ...props }) => {
     else if(column.type === 'image')
       content = <Image rounded size='mini' src={content || defaultImageUrl}/>
     else if(column.type === 'date')
-      content = (new Date(content)).toLocaleString('en-US').split(', ').shift()
+      content = content ? (new Date(content)).toLocaleString('en-US').split(', ').shift() : '-'
     else if(column.type === 'datetime')
       content = (new Date(content)).toLocaleString('en-US')
     else if(column.type === 'money')
@@ -112,7 +118,7 @@ const TableList = ({ duck, list, ...props }) => {
   // END Improve
 
   const _handleSelectorCheckboxChange = (e, { checked }) => {
-    const itemId = +e.currentTarget.dataset.itemId
+    const itemId = +e.currentTarget.dataset.itemId || e.currentTarget.dataset.itemId
 
     props.dispatch(
       checked === true ? duck.creators.selectIds(itemId) : duck.creators.removeSelectedIds(itemId)
@@ -215,23 +221,45 @@ const TableList = ({ duck, list, ...props }) => {
           }
           {
             selectionOptions.length > 0 && (
-              selectionOptions.map(({ icon, name, display_name, ...rest }, index) => (
-                <Button
-                  basic content={display_name} data-option-name={name}
-                  icon={icon} key={`nc-option-${index}`} onClick={_handleOptionBtnClick}
-                  {...rest}/>
-              ))
+              selectionOptions
+                .filter(({ conditional_render })=> !conditional_render || (conditional_render && conditional_render(list.selector.selected_items[0])))
+                .map(({ icon, name, display_name, ...rest }, index) => (
+                  <Button
+                    basic content={display_name} data-option-name={name}
+                    icon={icon} key={`nc-option-${index}`} onClick={_handleOptionBtnClick}
+                    {...rest}/>
+                ))
             )
           }
         </Grid.Column >
-        {!list.config.no_search && (
-          <Grid.Column textAlign='right' width={10}>
-            {/* <Button basic content='Filters' disabled/> */}
+        <Grid.Column textAlign='right' width={10}>
+          {
+            props.filterColumns.length > 0 && (
+              <Popup
+                basic
+                on='click' onClose={_handleClose} onOpen={_handleOpen}
+                open={open} position='bottom right'
+                trigger={<Button basic={!open} color={open ? 'blue' : null} content='Filters'/>}>
+                <Popup.Content style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
+                  <FilterForm duck={duck}/>
+                </Popup.Content>
+              </Popup>
+            )
+          }
+          {_get(list.config, 'search_enabled', true) && (
             <Input
               icon='search' iconPosition='left' onChange={_handleSearchInputChange}
               placeholder={list.config.search_placeholder || 'Search'} type='search'/>
-          </Grid.Column>
-        )}
+          )}
+        </Grid.Column>
+
+        {
+          props.selectedFilterColumns.length > 0 && (
+            <Grid.Column style={{ paddingTop: 0 }} width={16}>
+              <FilterTagManager duck={duck}/>
+            </Grid.Column>
+          )
+        }
       </Grid>
 
       <Table
@@ -315,7 +343,7 @@ const TableList = ({ duck, list, ...props }) => {
       </Table>
 
       {
-        list.pagination && (
+        list.pagination && list.pagination.meta.last_page && (
           <Pagination
             activePage={list.pagination.params.page}
             from={list.pagination.meta.from}
@@ -339,8 +367,10 @@ TableList.defaultProps = {
 export default compose(
   withRouter,
   connect(
-    (state, props) => ({
-      list: state[props.duck.store]
+    (state, { duck }) => ({
+      list                 : duck.selectors.list(state),
+      filterColumns        : duck.selectors.filterColumns(state),
+      selectedFilterColumns: duck.selectors.selectedFilterColumns(state)
     }),
     dispatch => ({ dispatch })
   )

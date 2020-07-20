@@ -3,6 +3,10 @@ body {
   background-color: #fafcff;
 }
 
+textarea {
+  font-family: "Poppins";
+}
+
 .app-content {
   height: 100vh;
   overflow-y: auto;
@@ -115,11 +119,6 @@ body {
     }
   }
 
-  .ui.divider {
-    margin-top: 2.3rem;
-    margin-bottom: 1.8rem;
-  }
-
   &.ui.modal {
     & > .content {
       padding: 2.5rem 3rem 2rem;
@@ -127,11 +126,17 @@ body {
   }
 
   &-actions {
+    padding-top: 2rem;
     margin-bottom: 0rem !important;
 
     .field {
       text-align: right;
     }
+  }
+
+  .ui.divider {
+    margin-top: 2.3rem;
+    margin-bottom: 1.8rem;
   }
 
   .ui.header {
@@ -157,15 +162,6 @@ body {
 }
 .drop-down-group {
   font-weight: 600;
-}
-
-.ui.form-section-header {
-  font-style: normal !important;
-  font-weight: normal !important;
-  font-size: 11px !important;
-  line-height: 16px !important;
-  letter-spacing: -0.04em !important;
-  color: #005987 !important;
 }
 
 .ui.grid.gray {
@@ -204,57 +200,19 @@ img.ui.img-40 {
   height: 40px !important;
 }
 
-.segment-content {
-  .segment-content-header {
-    .column {
-      @include buttonFunction();
-    }
-  }
-  @include tabHeaderFunction();
-
-  .field {
-    @include labelFunction();
-  }
-
-  .form {
-    .header {
-      @include pageHeadingFunction();
-    }
-  }
-}
-
 .form-primary {
   .column {
-    @include buttonFunction();
-
     @include transparentCancelButton();
   }
 }
 
 .modals {
   .modal {
-    @include buttonFunction();
-    @include labelFunction();
-    @include tabHeaderFunction();
-
     @include transparentCancelButton();
     .cls-ModelHeader {
       font-size: 11px;
       line-height: 16px;
       color: #005987;
     }
-  }
-}
-
-.grid {
-  .column {
-    @include tabHeaderFunction();
-  }
-}
-
-.clsLabel {
-  label:after {
-    content: " *";
-    color: $green;
   }
 }

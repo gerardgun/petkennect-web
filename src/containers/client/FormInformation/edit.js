@@ -1,22 +1,21 @@
 import React, { useEffect } from 'react'
-import { Header, Form, Button, Divider,Input,Select } from 'semantic-ui-react'
-import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Field, reduxForm,FieldArray } from 'redux-form'
+import { compose } from 'redux'
+import { Field, FieldArray, reduxForm } from 'redux-form'
+import { Button, Checkbox, Divider, Header, Input, Select, Form } from 'semantic-ui-react'
 import * as Yup from 'yup'
-import YupFields from '@lib/constants/yup-fields'
-import { syncValidate } from '@lib/utils/functions'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
+import useZipInputSearch from '@components/useZipInputSearch'
+import YupFields from '@lib/constants/yup-fields'
+import { syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
 import locationDuck from '@reducers/location'
 import rolDuck from '@reducers/rol'
 import zipDuck from '@reducers/zip'
 import zipDetailDuck from '@reducers/zip/detail'
-
-import useZipInputSearch from '@components/useZipInputSearch'
 
 function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
   const _handleAddBtnClick = () => fields.push({ ...authorizedPersonInitialState })
@@ -30,7 +29,7 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
   return (
     <>
       <Divider/>
-      <Header as='h4' className='form-section-header ' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
+      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
       <div>
         {
           fields.map((item, index) => (
@@ -102,8 +101,8 @@ function Edit(props) {
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
         <Field component='input' name='id' type='hidden'/>
-        <Header as='h4' className='form-section-header ' color='blue'>BASIC INFORMATION</Header>
 
+        <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -111,7 +110,8 @@ function Edit(props) {
             label='Email'
             name='email'
             placeholder='Enter email'
-            readOnly/>
+            readOnly
+            required/>
 
           <Field
             component={FormField}
@@ -119,10 +119,10 @@ function Edit(props) {
             label='Name'
             name='first_name'
             placeholder='Enter name'
-            readOnly/>
+            readOnly
+            required/>
         </Form.Group>
         <Form.Group widths='equal'>
-
           <Field
             component={FormField}
             control={Input}
@@ -130,14 +130,13 @@ function Edit(props) {
             name='last_name'
             placeholder='Enter lastname'
             readOnly/>
-
           <Field
             component={FormField}
             control={Input}
-            label='Contact Date'
+            label='Contact date'
             name='contact_date'
+            required
             type='date'/>
-
         </Form.Group>
 
         <Form.Group widths='equal'>
@@ -152,15 +151,14 @@ function Edit(props) {
             placeholder='Contact Location'
             selectOnBlur={false}/>
           <Field
-            className='mt8'
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='Active'
             name='is_active'
             type='checkbox'/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>CONTACT DETAILS</Header>
+        <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
@@ -228,7 +226,7 @@ function Edit(props) {
 
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>COMPANY ADDRESS</Header>
+        <Header as='h6' className='section-header' color='blue'>COMPANY ADDRESS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
@@ -259,6 +257,7 @@ function Edit(props) {
             onSearchChange={_handleZipSearchChange}
             options={zipOptions}
             placeholder='Search zip'
+            required
             search
             selectOnBlur={false}/>
           <Form.Field>
@@ -286,7 +285,7 @@ function Edit(props) {
           </Form.Field>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>EMERGENCY CONTACT</Header>
+        <Header as='h6' className='section-header' color='blue'>EMERGENCY CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
@@ -294,14 +293,16 @@ function Edit(props) {
             control={Input}
             label='Name'
             name='emergency_contact_name'
-            placeholder='Enter names'/>
+            placeholder='Enter names'
+            required/>
           <Field
             autoComplete='off'
             component={FormField}
             control={Input}
             label='Relation'
             name='emergency_contact_relationship'
-            placeholder='Enter relationship'/>
+            placeholder='Enter relationship'
+            required/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
@@ -315,7 +316,7 @@ function Edit(props) {
           <Form.Field/>
         </Form.Group>
 
-        <Header as='h4' className='form-section-header ' color='blue'>VETERINARIAN CONTACT</Header>
+        <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'

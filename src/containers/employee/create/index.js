@@ -3,12 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import {
-  Button,
-  Form,
-  Header,
-  Modal
-} from 'semantic-ui-react'
+import { Button, Checkbox, Dropdown, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -113,7 +108,7 @@ const EmployeeCreateForm = (props) => {
           <Field
             component='input' defaultValue={true} name='user_exists'
             type='hidden'/>
-          <Header as='h4' className='form-section-header ' color='blue'>SEARCH USER</Header>
+          <Header as='h6' className='section-header' color='blue'>SEARCH USER</Header>
 
           <Form.Group widths='equal'>
             <Field
@@ -121,13 +116,13 @@ const EmployeeCreateForm = (props) => {
               allowAdditions
               closeOnChange
               component={FormField}
-              control={Form.Dropdown}
+              control={Dropdown}
               fluid
               format={value=>
                 [ value ]
               }
               icon='search'
-              label='Email user *'
+              label='Email user'
               multiple
               name='email'
               onAddItem={_handleUserOptionAddItem}
@@ -142,35 +137,34 @@ const EmployeeCreateForm = (props) => {
                 value[value.length > 0 ? value.length - 1 : 0]
               }
               placeholder='Search email'
-              props={{
-                iconPosition: 'left'
-              }}
+              required
               search
               selection
               selectOnBlur={false}/>
             <Field
               component={FormField}
-              control={Form.Input}
-              label='Name *'
+              control={Input}
+              label='Name'
               name='first_name'
               placeholder='Enter name'
-              readOnly={!!props.user_exists}/>
+              readOnly={!!props.user_exists}
+              required/>
             <Field
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Lastname'
               name='last_name'
               placeholder='Enter lastname'
               readOnly={!!props.user_exists}/>
           </Form.Group>
 
-          <Header as='h4' className='form-section-header ' color='blue'>BASIC INFORMATION</Header>
+          <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
 
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Title *'
+              control={Select}
+              label='Title'
               name='title'
               options={employeeTitle.items.map((_employeeTitle) => ({
                 key  : _employeeTitle.id,
@@ -178,12 +172,13 @@ const EmployeeCreateForm = (props) => {
                 text : `${_employeeTitle.name}`
               }))}
               placeholder='Select title'
+              required
               search
               selectOnBlur={false}/>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Location *'
+              control={Select}
+              label='Location'
               name='location'
               options={location.items.map((_location) => ({
                 key  : _location.id,
@@ -191,12 +186,13 @@ const EmployeeCreateForm = (props) => {
                 text : `${_location.name}`
               }))}
               placeholder='Select location'
+              required
               search
               selectOnBlur={false}/>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Role *'
+              control={Select}
+              label='Role'
               name='role'
               options={role.items.map((_location) => ({
                 key  : _location.id,
@@ -204,13 +200,14 @@ const EmployeeCreateForm = (props) => {
                 text : `${_location.name}`
               }))}
               placeholder='Select role'
+              required
               search
               selectOnBlur={false}/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Checkbox}
+              control={Checkbox}
               label='Active'
               name='status'
               type='checkbox'/>

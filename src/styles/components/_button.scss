@@ -1,6 +1,14 @@
 .ui.button {
   font-family: Poppins;
 
+  &.blue {
+    background-color: $blue !important;
+  }
+
+  &.red {
+    background-color: $red !important;
+  }
+
   &.bg-gray {
     background: #f7f9fc !important; 
     

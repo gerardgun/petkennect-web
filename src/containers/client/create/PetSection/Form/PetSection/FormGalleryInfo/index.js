@@ -21,7 +21,6 @@ const FormInformation = props => {
     petImage,
     petImageDetail,
     getPetImages
-
   } = props
 
   const [ open, { _handleOpen, _handleClose } ] = useModal()
@@ -32,7 +31,7 @@ const FormInformation = props => {
 
   const _handleDrop = useCallback((_acceptedFiles, _rejectedFiles , event) => {
     const images = event.dataTransfer ? event.dataTransfer.files : event.target.files
-    props.post({ pet_id: petDetail.item.id ,images })
+    props.post({ images })
   }, [])
 
   const {

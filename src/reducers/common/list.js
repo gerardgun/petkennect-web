@@ -1,3 +1,4 @@
+import Duck from 'extensible-duck'
 import produce from 'immer'
 
 export default {
@@ -97,6 +98,25 @@ export default {
         ...filters,
         ...(pagination.params || {})
       }
-    }
+    },
+    filterColumns: new Duck.Selector(selectors => state => {
+      return selectors.list(state).config.columns
+        .filter(item => Boolean(item.filter))
+    }),
+    selectedFilterColumns: new Duck.Selector(selectors => state => {
+      const filters = selectors.filters(state)
+
+      return selectors.filterColumns(state)
+        .filter(item => {
+          const filterNames = [].concat(item.filter.name) // get a flat array of filter names
+
+          return filterNames.every(item => item in filters)
+        })
+    }),
+    filterColumnSources: new Duck.Selector(selectors => state => {
+      return selectors.filterColumns(state)
+        .filter(item => 'source_store' in item.filter)
+        .reduce((a, b) => ({ ...a, [b.filter.name]: state[b.filter.source_store] }), {})
+    })
   })
 }

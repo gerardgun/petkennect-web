@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Modal, Select, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -64,16 +64,17 @@ const PetNotesForm = (props) => {
             <Field
               autoFocus
               component={FormField}
-              control={Form.TextArea}
-              label='Description *'
+              control={TextArea}
+              label='Description'
               name='description'
-              placeholder='Enter description'/>
+              placeholder='Enter description'
+              required/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Form.Select}
-              label='Type *'
+              control={Select}
+              label='Type'
               name='type'
               options={[
                 { key: 1, value: 'B', text: 'Behavioral' },
@@ -82,6 +83,7 @@ const PetNotesForm = (props) => {
                 { key: 4, value: 'O', text: 'Owner' }
               ]}
               placeholder='Select type'
+              required
               selectOnBlur={false}/>
           </Form.Group>
           {error && (

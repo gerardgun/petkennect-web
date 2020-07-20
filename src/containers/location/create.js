@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -58,23 +58,25 @@ const LocationCreate = props => {
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
-              label='Code *'
+              control={Input}
+              label='Code'
               name='code'
-              placeholder='Enter code'/>
+              placeholder='Enter code'
+              required/>
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
-              label='Name *'
+              control={Input}
+              label='Name'
               name='name'
-              placeholder='Enter name'/>
+              placeholder='Enter name'
+              required/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Address 1'
               name='addresses[0]'
               placeholder='Enter address'/>
@@ -83,7 +85,7 @@ const LocationCreate = props => {
             <Field
               autoComplete='off'
               component={FormField}
-              control={Form.Input}
+              control={Input}
               label='Address 2'
               name='addresses[1]'
               placeholder='Enter address'/>

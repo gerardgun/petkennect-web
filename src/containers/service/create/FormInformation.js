@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Form, Tab } from 'semantic-ui-react'
+import { Checkbox, Form, Input, Tab, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -39,25 +39,27 @@ const FormInformation = props => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.Input}
-            label='Name *'
+            control={Input}
+            label='Name'
             name='name'
-            placeholder='Enter name'/>
+            placeholder='Enter name'
+            required/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Form.TextArea}
-            label='Description *'
+            control={TextArea}
+            label='Description'
             name='description'
-            placeholder='Enter description'/>
+            placeholder='Enter description'
+            required/>
 
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Form.Checkbox}
+            control={Checkbox}
             label='Active'
             name='is_active'
             type='checkbox'/>
