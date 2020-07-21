@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment, Image, Breadcrumb } from 'semantic-ui-react'
+import _defaultTo from 'lodash/defaultTo'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
@@ -15,6 +16,8 @@ import InputReadOnly from '@components/Common/InputReadOnly'
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
 const EmployeeShow = ({ employeeDetail ,...props }) => {
+  const { item: employee } = employeeDetail
+
   const [ open, { _handleOpen, _handleClose } ] = useModal()
   const { id } = useParams()
   const history = useHistory()
@@ -55,14 +58,13 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
           <Grid.Column textAlign='right' width={8}>
             <Button
               as={Link}
+              basic
               icon='edit'
-              size='small'
               to={`/employee/edit/${employeeDetail.item.id}`}/>
             <Button
-              color='google plus'
-              icon='trash alternate outline' onClick={_handleDeleteClick}
-              size='small'/>
-            <Button disabled icon='ellipsis vertical' size='small'/>
+              basic
+              color='red'
+              icon='trash alternate outline' onClick={_handleDeleteClick}/>
           </Grid.Column>
 
         </Grid>
@@ -74,49 +76,38 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
           </div>
         </div>
 
-        <Header as='h6' className='section-header mt36' color='blue'>BASIC INFORMATION</Header>
-        <div className='flex flex-row align-center mv20'>
+        <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
+        <Grid columns={3}>
           <InputReadOnly
-            className='w33'
             label='Email'
-            value={employeeDetail.item.email || ''}/>
+            value={_defaultTo(employee.email, '-')}/>
           <InputReadOnly
-            className='w33'
             label='Name'
-            value={employeeDetail.item.first_name || ''}/>
+            value={_defaultTo(employee.first_name, '-')}/>
           <InputReadOnly
-            className='w33'
             label='Last Name'
-            value={employeeDetail.item.last_name || ''}/>
-        </div>
+            value={_defaultTo(employee.last_name, '-')}/>
 
-        <div className='flex flex-row align-center mv20'>
           <InputReadOnly
-            className='w33'
             label='Profile Picture'
             value={<Image rounded size='mini' src={employeeDetail.item.thumbnail_path || defaultImage}/>}/>
           <InputReadOnly
-            className='w33'
             label='Title'
-            value={employeeDetail.item.title_name || ''}/>
+            value={_defaultTo(employee.title_name, '-')}/>
           <InputReadOnly
-            className='w33'
             label='Location'
-            value={employeeDetail.item.location_name || ''}/>
+            value={employee.location ? `${employee.location_code} - ${employee.location_name}` : ''}/>
 
-        </div>
-        <div className='flex flex-row align-center mv20 justify-start'>
           <InputReadOnly
-            className='w33'
             label='Role'
-            value={employeeDetail.item.role || ''}/>
+            value={_defaultTo(employee.role_name, '-')}/>
           <InputReadOnly
-            className='w33'
             label='Status'
-            value={employeeDetail.item.status ? 'Active' : 'Inactive'}/>
-        </div>
+            value={employee.status ? 'Active' : 'Inactive'}/>
 
+        </Grid>
       </Segment>
+
       <ModalDelete
         duckDetail={employeeDetailDuck}
         onClose={_handleClose}
