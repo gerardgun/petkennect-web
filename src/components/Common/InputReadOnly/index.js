@@ -4,9 +4,9 @@ import { Grid } from 'semantic-ui-react'
 
 import './styles.scss'
 
-function InputReadOnly({ value, label }) {
+function InputReadOnly({ value, label, ...rest }) {
   return (
-    <Grid.Column className='input-read-only'>
+    <Grid.Column className='input-read-only' {...rest}>
       <label>{label}</label>
       {value}
     </Grid.Column>
