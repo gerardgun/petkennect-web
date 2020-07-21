@@ -37,6 +37,7 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
+      sort_name   : 'user__first_name',
       formatter   : (cell, row) => {
         return (
           <Link to={`/client/form/${row.id}`}>
@@ -54,7 +55,8 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : true,
+      sort_name   : 'user__email'
     },
     {
       display_name: 'State',
@@ -62,7 +64,8 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'zip_code__state'
     },
     {
       display_name: 'City',
@@ -70,7 +73,8 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'zip_code__city'
     },
     {
       display_name: 'Location',
@@ -78,7 +82,8 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'location__code'
     },
     {
       display_name: 'Phone Mobile',
@@ -94,7 +99,8 @@ export default {
       type        : 'boolean_active',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'status'
     },
     {
       display_name: 'Created At',
@@ -102,7 +108,7 @@ export default {
       type        : 'date',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     }
   ]
 }

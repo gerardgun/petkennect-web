@@ -80,7 +80,7 @@ function FormInformation(props) {
           <Button
             as={Link}
             basic
-            icon='edit'
+            icon='edit outline'
             onClick={_handleEditClick}/>
         )}
       </div>

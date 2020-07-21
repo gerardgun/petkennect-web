@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
@@ -28,12 +28,26 @@ function* get({ id }) {
 
     const company = yield call(Get, `companies/${id}/`)
 
+    const zipDetail = yield select(zipDetailDuck.selectors.detail)
+
+    if(company.zip_code !== zipDetail.item.id)
+      yield put({
+        type: zipDetailDuck.types.RESET_ITEM
+      })
+
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
         item: company
       }
     })
+
+    // Load zip data if zip code exists and it isn't loaded yet
+    if(company.zip_code !== zipDetail.item.id)
+      yield put({
+        type: zipDetailDuck.types.GET,
+        id  : company.zip_code
+      })
   } catch (e) {
     yield put({
       type : types.GET_FAILURE,
@@ -42,32 +56,13 @@ function* get({ id }) {
   }
 }
 
-function* post({ payload: {
-  main_admin_email,
-  main_admin_first_name,
-  main_admin_last_name,
-  user,
-  user_exists,
-  phones,
-  addresses,
-  ...payload } }) {
+function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const main_admin = JSON.stringify({
-      status: true ,
-      ...(user_exists
-        ? { user }
-        : {
-          status: 'true', first_name: main_admin_first_name, last_name: main_admin_last_name , email: main_admin_email
-        })
-    })
-    const result = yield call(Post, 'companies/', {
-      ...payload,
-      phones   : JSON.stringify(phones),
-      addresses: JSON.stringify(addresses),
-      main_admin
-    })
+    payload.is_formdata = true
+
+    const result = yield call(Post, 'companies/', payload)
 
     yield put({
       type   : types.POST_FULFILLED,
@@ -81,34 +76,13 @@ function* post({ payload: {
   }
 }
 
-function* _put({
-  payload: {
-    main_admin_email,
-    main_admin_first_name,
-    main_admin_last_name,
-    user,
-    user_exists,
-    phones,
-    addresses,
-    ...payload } }) {
+function* _put({ payload: { id, ...payload } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    const main_admin = JSON.stringify({
-      status: true ,
-      ...(user_exists
-        ? { user }
-        : {
-          status: 'true', first_name: main_admin_first_name, last_name: main_admin_last_name , email: main_admin_email
-        })
-    })
+    payload.is_formdata = true
 
-    yield call(Patch, `companies/${payload.id}/`, {
-      ...payload,
-      phones    : JSON.stringify(phones),
-      addresses : JSON.stringify(addresses),
-      main_admin,
-      isFormData: true })
+    yield call(Patch, `companies/${id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
@@ -120,17 +94,20 @@ function* _put({
 }
 
 function* setItem({ item, mode }) {
-  if(mode === 'UPDATE') {
-    yield put({
-      type: zipDetailDuck.types.RESET_ITEM
-    })
+  const zipDetail = yield select(zipDetailDuck.selectors.detail)
 
-    if(item.zip_code)
+  if(mode === 'UPDATE')
+    // Load zip data if zip code exists and it isn't loaded yet
+    if(item.zip_code !== zipDetail.item.id) {
+      yield put({
+        type: zipDetailDuck.types.RESET_ITEM
+      })
+
       yield put({
         type: zipDetailDuck.types.GET,
         id  : item.zip_code
       })
-  }
+    }
 }
 
 export default [

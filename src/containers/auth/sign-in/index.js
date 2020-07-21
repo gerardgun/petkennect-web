@@ -70,12 +70,12 @@ const SignIn = props => {
               <Field
                 action={{
                   basic  : true,
-                  color  : 'teal',
                   icon   : isPassShown ? 'eye' : 'eye slash',
                   onClick: _handlePassIconClick,
                   type   : 'button'
                 }}
                 autoComplete='off'
+                className='action-wo-border'
                 component={FormField}
                 control={Input}
                 label='Password'

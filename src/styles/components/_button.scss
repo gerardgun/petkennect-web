@@ -1,7 +1,7 @@
 .ui.button {
   font-family: Poppins;
 
-  &.blue {
+  &.blue:not(.basic) {
     background-color: $blue !important;
   }
 

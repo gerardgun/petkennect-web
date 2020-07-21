@@ -10,6 +10,7 @@ export default base({
   initialState: {
     session_status: null,
     tenant        : null,
+    location      : null, // the selected location id
     item          : {
       is_superadmin: false,
       companies    : [] // for employee profiles

@@ -1,198 +1,167 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import InputReadOnly from '@components/Common/InputReadOnly'
-import { Header } from 'semantic-ui-react'
+import { Header, Grid } from 'semantic-ui-react'
 import moment from 'moment'
 import  _get from 'lodash/get'
+import _defaultTo from 'lodash/defaultTo'
 
 import SizeTypes from '@lib/constants/SizeTypes'
 
 function Show({ petDetail  }) {
-  const clientFullName = `${petDetail.item.client_first_name || ''} ${petDetail.item.client_last_name || ''}`
+  const { item: pet } = petDetail
+  const clientFullName = `${pet.client_first_name || ''} ${pet.client_last_name || ''}`
 
   return (
     <div className='ph40 pv32'>
-      <Header as='h6' className='section-header mt36' color='blue'>BASIC INFORMATION</Header>
-      <div className='flex flex-row align-center mv20'>
+
+      <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
+      <Grid columns={2}>
         <InputReadOnly
-          className='w50'
           label='Name Pet'
-          value={petDetail.item.name || '-'}/>
+          value={_defaultTo(pet.name, '-')}/>
         <InputReadOnly
-          className='w50'
           label='Owner'
-          value={clientFullName || '-'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={_defaultTo(clientFullName, '-')}/>
+
         <InputReadOnly
-          className='w50'
           label='Breed'
-          value={petDetail.item.breed_name || '-'}/>
+          value={_defaultTo(pet.breed_name, '-')}/>
         <InputReadOnly
-          className='w50'
           label='Sex'
-          value={(petDetail.item.sex === 'F' ? 'Female' : 'Male')}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={pet.sex === 'F' ? 'Female' : 'Male'}/>
+
         <InputReadOnly
-          className='w50'
           label='Date of Birth'
-          value={(petDetail.item.born_at && moment(petDetail.item.born_at).format('MM/DD/YYYY')) || '-'}/>
+          value={(pet.born_at && moment(pet.born_at).format('MM/DD/YYYY')) || '-'}/>
         <InputReadOnly
-          className='w50'
           label='Fixed'
-          value={petDetail.item.fixed ? 'Yes' : 'No'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={pet.fixed ? 'Yes' : 'No'}/>
+
         <InputReadOnly
-          className='w50'
           label='Vaccination'
-          value={_get(petDetail,'item.summary.vaccination_status', '-')}/>
+          value={_get(pet,'summary.vaccination_status', '-')}/>
         <InputReadOnly
-          className='w50'
           label='Retired'
-          value={petDetail.item.retired ? 'Yes' : 'No'}/>
-      </div>
+          value={pet.retired ? 'Yes' : 'No'}/>
+      </Grid>
+      <br/>
 
-      <Header as='h6' className='section-header mt36' color='blue'>APPEARANCE</Header>
-      <div className='flex flex-row align-center mv20'>
+      <Header as='h6' className='section-header' color='blue'>APPEARANCE</Header>
+      <Grid columns={2}>
         <InputReadOnly
-          className='w50'
           label='Weight'
-          value={petDetail.item.weight || '-'}/>
+          value={_defaultTo(pet.weight, '-')}/>
         <InputReadOnly
-          className='w50'
           label='Size'
-          value={SizeTypes[petDetail.item.size] || '-'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={_defaultTo(SizeTypes[petDetail.item.size], '-')}/>
+
         <InputReadOnly
-          className='w50'
           label='Color'
-          value={petDetail.item.info_coloring || '-'}/>
-      </div>
+          value={_defaultTo(pet.info_coloring, '-')}/>
+      </Grid>
+      <br/>
 
-      <Header as='h6' className='section-header mt36' color='blue'>TEMPERAMENT</Header>
-      <div className='flex flex-row align-center mv20'>
+      <Header as='h6' className='section-header' color='blue'>TEMPERAMENT</Header>
+      <Grid columns={2}>
         <InputReadOnly
-          className='w50'
           label='Day Camp Result'
-          value={petDetail.item.temp_test_result ? 'Pass' : 'Fail'}/>
+          value={pet.temp_test_result ? 'Pass' : 'Fail'}/>
         <InputReadOnly
-          className='w50'
           label='Prefer'
-          value={petDetail.item.temp_prefer || '-'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={_defaultTo(pet.temp_prefer, '-')}/>
+
         <InputReadOnly
-          className='w50'
           label='Attend other day camp'
-          value={petDetail.item.temp_daycare ? 'Yes' : 'No'}/>
+          value={pet.temp_daycare ? 'Yes' : 'No'}/>
         <InputReadOnly
-          className='w50'
           label='Where'
-          value={petDetail.item.temp_daycare_where || '-'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={_defaultTo(pet.temp_daycare_where, '-')}/>
+      </Grid>
+      <Grid>
         <InputReadOnly
-          className='w50'
           label='Any Fear'
-          value={petDetail.item.temp_any_fears || '-'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={_defaultTo(pet.temp_any_fears, '-')}/>
+      </Grid>
+      <Grid columns={2}>
         <InputReadOnly
-          className='w50'
           label='Jumped Fences'
-          value={petDetail.item.temp_jumped_fences ? 'Yes' : 'No'}/>
+          value={pet.temp_jumped_fences ? 'Yes' : 'No'}/>
         <InputReadOnly
-          className='w50'
           label='Shared water bowls'
-          value={petDetail.item.temp_shared_water_bowls ? 'Yes' : 'No'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={pet.temp_shared_water_bowls ? 'Yes' : 'No'}/>
+
         <InputReadOnly
-          className='w50'
           label='Bitten Humans'
-          value={petDetail.item.temp_bitten_human ? 'Yes' : 'No'}/>
+          value={pet.temp_bitten_human ? 'Yes' : 'No'}/>
         <InputReadOnly
-          className='w50'
           label='Involved in dog fights'
-          value={petDetail.item.temp_dog_fights ? 'Yes' : 'No'}/>
-      </div>
+          value={pet.temp_dog_fights ? 'Yes' : 'No'}/>
+      </Grid>
+      <br/>
 
-      <Header as='h6' className='section-header mt36' color='blue'>HEALTH</Header>
-      <div className='flex flex-row align-center mv20'>
+      <Header as='h6' className='section-header' color='blue'>HEALTH</Header>
+      <Grid>
         <InputReadOnly
-          className='w100'
           label='Medical Restrictions'
-          value={petDetail.item.health_medical_restrictions}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={_defaultTo(pet.health_medical_restrictions, '-')}/>
+      </Grid>
+      <Grid columns={2}>
         <InputReadOnly
-          className='w50'
           label='On heart prevention'
-          value={petDetail.item.health_heartworm_preventive ? 'Yes' : 'No'}/>
+          value={pet.health_heartworm_preventive ? 'Yes' : 'No'}/>
         <InputReadOnly
-          className='w50'
           label='On flea tick prevention'
-          value={petDetail.item.health_flea_tick_preventive ? 'Yes' : 'No'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={pet.health_flea_tick_preventive ? 'Yes' : 'No'}/>
+
         <InputReadOnly
-          className='w50'
           label='Allergies'
-          value={petDetail.item.health_is_allergic ? 'Yes' : 'No'}/>
-      </div>
+          value={pet.health_is_allergic ? 'Yes' : 'No'}/>
+      </Grid>
+      <br/>
 
-      <Header as='h6' className='section-header mt36' color='blue'>HESITATES TO EAT</Header>
-      <div className='flex flex-row align-center mv20'>
+      <Header as='h6' className='section-header' color='blue'>HESITATES TO EAT</Header>
+      <Grid columns={2}>
         <InputReadOnly
-          className='w50'
           label='Water'
-          value={petDetail.item.hesitate_water ? 'Yes' : 'No'}/>
+          value={pet.hesitate_water ? 'Yes' : 'No'}/>
         <InputReadOnly
-          className='w50'
           label='Peanut butter'
-          value={petDetail.item.hesitate_peanut_butter ? 'Yes' : 'No'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Wet food'
-          value={petDetail.item.hesitate_wet_food ? 'Yes' : 'No'}/>
-      </div>
+          value={pet.hesitate_peanut_butter ? 'Yes' : 'No'}/>
 
-      <Header as='h6' className='section-header mt36' color='blue'>ADITIONAL INFO</Header>
-      <div className='flex flex-row align-center mv20'>
         <InputReadOnly
-          className='w50'
+          label='Wet food'
+          value={pet.hesitate_wet_food ? 'Yes' : 'No'}/>
+      </Grid>
+      <br/>
+
+      <Header as='h6' className='section-header' color='blue'>ADITIONAL INFO</Header>
+      <Grid columns={2}>
+        <InputReadOnly
           label='Created at'
-          value={(petDetail.item.created_at && moment(petDetail.item.created_at).format('MM/DD/YYYY')) || '-'}/>
+          value={(pet.created_at && moment(pet.created_at).format('MM/DD/YYYY')) || '-'}/>
         <InputReadOnly
-          className='w50'
           label='Created by'
-          value={`${petDetail.item.employee_first_name || ''} ${petDetail.item.employee_last_name || ''}`}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={`${pet.employee_first_name || ''} ${pet.employee_last_name || ''}`}/>
+
         <InputReadOnly
-          className='w50'
           label='Formal training'
-          value={petDetail.item.info_formal_training ? 'Yes' : 'No'}/>
+          value={pet.info_formal_training ? 'Yes' : 'No'}/>
         <InputReadOnly
-          className='w50'
           label='Received dog from'
-          value={petDetail.item.info_received_from ? 'Yes' : 'No'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={_defaultTo(pet.info_received_from, '-')}/>
+      </Grid>
+      <br/>
+
+      <Header as='h6' className='section-header' color='blue'>HESITATES TO EAT</Header>
+      <Grid columns={2}>
         <InputReadOnly
-          className='w50'
           label='Created trained'
-          value={petDetail.item.info_crate_trained ? 'Yes' : 'No'}/>
+          value={pet.info_crate_trained ? 'Yes' : 'No'}/>
         <InputReadOnly
-          className='w50'
           label='Housebroken'
-          value={petDetail.item.info_housebroken ? 'Yes' : 'No'}/>
-      </div>
+          value={pet.info_housebroken ? 'Yes' : 'No'}/>
+      </Grid>
     </div>
   )
 }

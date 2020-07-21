@@ -11,7 +11,7 @@ import PetBreedForm from '@containers/pet-breed/create'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import YupFields from '@lib/constants/yup-fields'
-import { formatIntToBool, parseBoolToInt, syncValidate } from '@lib/utils/functions'
+import { syncValidate } from '@lib/utils/functions'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petBreedDuck from '@reducers/pet/breed'
@@ -252,37 +252,37 @@ function Edit(props) {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Jumped fences'
             name='temp_jumped_fences'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Shared water bowls'
             name='temp_shared_water_bowls'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Bitten humans'
             name='temp_bitten_human'
-            parse={parseBoolToInt}
+            parse={Number}
             placeholder='Enter bitten human'
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Involved in dog fights'
             name='temp_dog_fights'
-            parse={parseBoolToInt}
+            parse={Number}
             placeholder='Enter dog fights'
             type='checkbox'/>
         </Form.Group>
@@ -300,18 +300,18 @@ function Edit(props) {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='On heart prevention'
             name='health_heartworm_preventive'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='On flea tick prevention'
             name='health_flea_tick_preventive'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
 
         </Form.Group>
@@ -319,10 +319,10 @@ function Edit(props) {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Allergies'
             name='health_is_allergic'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Form.Field/>
         </Form.Group>
@@ -332,28 +332,28 @@ function Edit(props) {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Water'
             name='hesitate_water'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Peanut butter'
             name='hesitate_peanut_butter'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Wet food'
             name='hesitate_wet_food'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Form.Field/>
         </Form.Group>
@@ -375,10 +375,10 @@ function Edit(props) {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Formal training'
             name='info_formal_training'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
@@ -391,18 +391,18 @@ function Edit(props) {
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Crate trained'
             name='info_crate_trained'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
           <Field
             component={FormField}
             control={Checkbox}
-            format={formatIntToBool}
+            format={Boolean}
             label='Housebroken'
             name='info_housebroken'
-            parse={parseBoolToInt}
+            parse={Number}
             type='checkbox'/>
         </Form.Group>
         {

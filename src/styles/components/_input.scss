@@ -1,23 +1,31 @@
 .ui.input {
+  .ui.label {
+    border-color: $light-gray;
+  }
+
   input {
     border: 1px solid $light-gray !important;
-    //wtf? este es el issue del mal responsive de los input  v:
+    //este es el issue del mal responsive de los input ? dude
     // font-family: Poppins !important; 
-
     &:read-only {
       background-color: rgba(0, 0, 0, 0.04) !important;
     }
   }
 
-  &.action input {
-    border-right-style: none !important;
-  }
+  &.action {
+    input {
+      &:focus + .ui.button.basic,
+      &:focus + input + .ui.button.basic {
+        background-color: unquote($green + '07') !important;
+        border-color: $green !important;
+      }
+    }
 
-  // Input Button Actions
-  .ui.basic.button {
-    box-shadow: none !important;
-    background-color: #fff !important;
-    border: solid 1px $light-gray;
-    border-left-style: none;
+    .ui.button {
+      &.basic {
+        box-shadow: none;
+        border: solid 1px $light-gray;
+      }
+    }
   }
 }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Link, withRouter } from 'react-router-dom'
 import { Button, Dropdown, Icon, Image } from 'semantic-ui-react'
+import _truncate from 'lodash/truncate'
 
 import Sidebar from '@components/Common/Sidebar'
 import { getAbbreviature } from '@lib/utils/functions'
@@ -41,19 +42,9 @@ const categories = [
     label: 'Clients'
   },
   {
-    href         : null,
-    icon         : 'gitlab',
-    label        : 'Pets',
-    subcategories: [
-      { href: '/pet', label: 'Pets' },
-      { href: '/pet/class', label: 'Classes' },
-      { href: '/pet/breed', label: 'Breeds' },
-      { href: '/pet/incident-type', label: 'Incident Types' },
-      { href: '/pet/incident-action', label: 'Incident Actions' },
-      { href: '/pet/incident-behavior', label: 'Incident Behaviors' },
-      { href: '/pet/retire-reason', label: 'Retire Reason' },
-      { href: '/pet/vaccination-type', label: 'Vaccination Type' }
-    ]
+    href : '/pet',
+    icon : 'gitlab',
+    label: 'Pets'
   },
   {
     href         : null,
@@ -84,70 +75,70 @@ const categories = [
     icon : 'dollar sign',
     label: 'Retail Sales'
   },
-  {
-    href         : null,
-    icon         : 'chart line',
-    label        : 'Daily Reporting',
-    subcategories: [
-      { href: '/not-defined', label: 'Boarding Schedule' },
-      { href: '/not-defined', label: 'Day Camp Schedule' },
-      { href: '/not-defined', label: 'Fitness Schedule' },
-      { href: '/not-defined', label: 'Grooming Schedule' },
-      { href: '/not-defined', label: 'EOD Sales Report' },
-      { href: '/not-defined', label: 'Calendar' }
-    ]
-  },
-  {
-    href         : null,
-    icon         : 'chart pie',
-    label        : 'Day Camp Reports',
-    subcategories: [
-      { href: '/not-defined', label: 'Day Camp Head Count Schedule' },
-      { href: '/not-defined', label: 'Day Camp Refund Calculator' },
-      { href: '/not-defined', label: 'Daycampers W/ Balance' },
-      { href: '/not-defined', label: 'Online Day Camp Reservations' }
-    ]
-  },
-  {
-    href         : null,
-    icon         : 'chart area',
-    label        : 'Boarding Reports',
-    subcategories: [
-      { href: '/not-defined', label: 'Boarding Activity' },
-      { href: '/not-defined', label: 'Boarding Medication Schedule' },
-      { href: '/not-defined', label: 'Boarding Availability' },
-      { href: '/not-defined', label: 'Boarding No Shows' },
-      { href: '/not-defined', label: 'Online Boarding Reservations' }
-    ]
-  },
-  {
-    href         : null,
-    icon         : 'chart bar outline',
-    label        : 'Training Reports',
-    subcategories: [
-      { href: '/not-defined', label: 'Agility Class Certificatess' },
-      { href: '/not-defined', label: 'Day Training Report Cards' },
-      { href: '/not-defined', label: 'Day Trainer Daily Email' },
-      { href: '/not-defined', label: 'Day Trainer Performance Log' },
-      { href: '/not-defined', label: 'Puppy Class Certificates' },
-      { href: '/not-defined', label: 'Training Follow Ups' },
-      { href: '/not-defined', label: 'Training Outstanding Balances' },
-      { href: '/not-defined', label: 'Weekly Day Training' }
-    ]
-  },
-  {
-    href         : null,
-    icon         : 'dna',
-    label        : 'Management Functions',
-    subcategories: [
-      { href: '/not-defined', label: 'Weekly EOD Issues' },
-      { href: '/not-defined', label: 'Search Invoices' },
-      { href: '/not-defined', label: 'Open Register Functions' },
-      { href: '/not-defined', label: 'A/R And Aging Report' },
-      { href: '/not-defined', label: 'Occupancy Status' },
-      { href: '/not-defined', label: 'Retail Sales Report' }
-    ]
-  },
+  // {
+  //   href         : null,
+  //   icon         : 'chart line',
+  //   label        : 'Daily Reporting',
+  //   subcategories: [
+  //     { href: '/not-defined', label: 'Boarding Schedule' },
+  //     { href: '/not-defined', label: 'Day Camp Schedule' },
+  //     { href: '/not-defined', label: 'Fitness Schedule' },
+  //     { href: '/not-defined', label: 'Grooming Schedule' },
+  //     { href: '/not-defined', label: 'EOD Sales Report' },
+  //     { href: '/not-defined', label: 'Calendar' }
+  //   ]
+  // },
+  // {
+  //   href         : null,
+  //   icon         : 'chart pie',
+  //   label        : 'Day Camp Reports',
+  //   subcategories: [
+  //     { href: '/not-defined', label: 'Day Camp Head Count Schedule' },
+  //     { href: '/not-defined', label: 'Day Camp Refund Calculator' },
+  //     { href: '/not-defined', label: 'Daycampers W/ Balance' },
+  //     { href: '/not-defined', label: 'Online Day Camp Reservations' }
+  //   ]
+  // },
+  // {
+  //   href         : null,
+  //   icon         : 'chart area',
+  //   label        : 'Boarding Reports',
+  //   subcategories: [
+  //     { href: '/not-defined', label: 'Boarding Activity' },
+  //     { href: '/not-defined', label: 'Boarding Medication Schedule' },
+  //     { href: '/not-defined', label: 'Boarding Availability' },
+  //     { href: '/not-defined', label: 'Boarding No Shows' },
+  //     { href: '/not-defined', label: 'Online Boarding Reservations' }
+  //   ]
+  // },
+  // {
+  //   href         : null,
+  //   icon         : 'chart bar outline',
+  //   label        : 'Training Reports',
+  //   subcategories: [
+  //     { href: '/not-defined', label: 'Agility Class Certificatess' },
+  //     { href: '/not-defined', label: 'Day Training Report Cards' },
+  //     { href: '/not-defined', label: 'Day Trainer Daily Email' },
+  //     { href: '/not-defined', label: 'Day Trainer Performance Log' },
+  //     { href: '/not-defined', label: 'Puppy Class Certificates' },
+  //     { href: '/not-defined', label: 'Training Follow Ups' },
+  //     { href: '/not-defined', label: 'Training Outstanding Balances' },
+  //     { href: '/not-defined', label: 'Weekly Day Training' }
+  //   ]
+  // },
+  // {
+  //   href         : null,
+  //   icon         : 'dna',
+  //   label        : 'Management Functions',
+  //   subcategories: [
+  //     { href: '/not-defined', label: 'Weekly EOD Issues' },
+  //     { href: '/not-defined', label: 'Search Invoices' },
+  //     { href: '/not-defined', label: 'Open Register Functions' },
+  //     { href: '/not-defined', label: 'A/R And Aging Report' },
+  //     { href: '/not-defined', label: 'Occupancy Status' },
+  //     { href: '/not-defined', label: 'Retail Sales Report' }
+  //   ]
+  // },
   {
     href         : null,
     icon         : 'cogs',
@@ -159,17 +150,23 @@ const categories = [
       { href: '/setup/training-reason', label: 'Training Reason' },
       { href: '/setup/training-method', label: 'Training Method' },
       { href: '/setup/training-command', label: 'Training Command' },
-      { href: '/not-defined', label: 'Enable Decline Portal Client' },
-      { href: '/not-defined', label: 'Calendar' },
-      { href: '/not-defined', label: 'Notifications' },
-      { href: '/not-defined', label: 'Overview' },
-      { href: '/not-defined', label: 'Cancellation Reason' },
-      { href: '/not-defined', label: 'Client Rating' }
+      { href: '/pet/breed', label: 'Breeds' },
+      { href: '/pet/incident-type', label: 'Incident Types' },
+      { href: '/pet/incident-action', label: 'Incident Actions' },
+      { href: '/pet/incident-behavior', label: 'Incident Behaviors' },
+      { href: '/pet/retire-reason', label: 'Retire Reason' },
+      { href: '/pet/vaccination-type', label: 'Vaccination Type' }
+      // { href: '/not-defined', label: 'Enable Decline Portal Client' },
+      // { href: '/not-defined', label: 'Calendar' },
+      // { href: '/not-defined', label: 'Notifications' },
+      // { href: '/not-defined', label: 'Overview' },
+      // { href: '/not-defined', label: 'Cancellation Reason' },
+      // { href: '/not-defined', label: 'Client Rating' }
     ]
   }
 ]
 
-const AppSidebar = ({ auth, ...props }) => {
+const AppSidebar = ({ auth, location, ...props }) => {
   const [ activeCategoryIndex, setActiveCategoryIndex ] = useState(null)
   const [ show, setShow ] = useState(false)
 
@@ -183,8 +180,10 @@ const AppSidebar = ({ auth, ...props }) => {
     else if(!category.href) setActiveCategoryIndex(index)
   }
 
-  const _handleEditProfileBtnClick = () => {
-
+  const _handleLocationChange = (e, { value }) => {
+    props.set({
+      location: value
+    })
   }
 
   const _handleSessionDropdownItemClick = (e, { value }) => {
@@ -201,6 +200,13 @@ const AppSidebar = ({ auth, ...props }) => {
   const categoriesToRender = useMemo(() => getCategories(), [ auth.item.id ])
   const userFullName = `${auth.item.first_name} ${auth.item.last_name}`
   const userAbbrev = getAbbreviature(userFullName)
+  const locationItems = useMemo(() => {
+    return location.items.map(item => ({
+      key  : item.id,
+      text : _truncate(item.code, { length: 16 }),
+      value: item.id
+    }))
+  }, [ location.status ])
 
   return (
     <div className='app-sidebar'>
@@ -274,7 +280,12 @@ const AppSidebar = ({ auth, ...props }) => {
                   <Button
                     as={Link} basic
                     color='teal' content='Edit Profile'
-                    onClick={_handleEditProfileBtnClick}/>
+                    to='auth/me'/>
+                  <Dropdown
+                    onChange={_handleLocationChange}
+                    options={locationItems}
+                    selection
+                    value={auth.location}/>
                 </div>
               }/>
             <Dropdown.Divider/>
@@ -301,7 +312,7 @@ const AppSidebar = ({ auth, ...props }) => {
                     {
                       auth.item.companies.map((item, index) => (
                         <Dropdown.Item
-                          className={item.id === props.currentTenant.id ? 'selected' : ''}
+                          // className={item.id === props.currentTenant.id ? 'selected' : ''}
                           key={index} onClick={_handleTenantDropdownItemClick} text={`${item.legal_name} - Administrador`}
                           value={item.subdomain_prefix}/>
                       ))
@@ -324,15 +335,17 @@ const AppSidebar = ({ auth, ...props }) => {
 export default compose(
   withRouter,
   connect(
-    ({ auth }) => {
+    ({ auth, location }) => {
       return {
         auth,
+        location,
         currentTenant: authDuck.selectors.getCurrentTenant(auth)
       }
     },
     {
       signOut        : authDuck.creators.signOut,
-      rehydrateTenant: authDuck.creators.rehydrateTenant
+      rehydrateTenant: authDuck.creators.rehydrateTenant,
+      set            : authDuck.creators.set
     }
   )
 )(AppSidebar)
