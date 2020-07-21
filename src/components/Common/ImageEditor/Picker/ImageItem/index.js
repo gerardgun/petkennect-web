@@ -8,7 +8,7 @@ function ImageItem({ image, onSelectImage, selected }) {
   }
 
   return (
-    <Image className={`image-item  shadow-2 ${ selected && 'selected'}`} onClick={_handleSelectImage} src={image.url}/>
+    <Image className={`image-item  shadow-2 ${ selected && 'selected'}`} onClick={_handleSelectImage} src={image.filepath}/>
   )
 }
 

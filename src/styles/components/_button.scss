@@ -5,7 +5,7 @@
     background-color: $blue !important;
   }
 
-  &.red {
+  &.red:not(.basic) {
     background-color: $red !important;
   }
 

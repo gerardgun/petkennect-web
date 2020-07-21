@@ -28,6 +28,11 @@ export default {
           draft.status = statuses.SENDING_EMAIL
 
           return
+        case types.SEND_EMAIL_FAILURE:
+          draft.status = statuses.ERROR
+          draft.error = action.error
+
+          return
         default:
           return
       }
