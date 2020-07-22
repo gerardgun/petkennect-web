@@ -10,3 +10,19 @@
     flex: 1;
   }
 }
+
+
+.document-upload-choose-file
+{
+  padding: 20px;
+  text-align: center;
+  background: #E5EAEE;
+  border: 1px solid #BDC3C9;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.ck.ck-reset, .ck.ck-reset_all, .ck.ck-reset_all *
+{
+  width:100%;
+}
