@@ -1,8 +1,7 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects'
 
-import { Post, Put } from '@lib/utils/http-client'
+import { Post, Patch } from '@lib/utils/http-client'
 
-import authDuck from '@reducers/auth'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 import clientDetailDuck from '@reducers/client/detail'
 
@@ -54,10 +53,7 @@ function* post({ payload :{ client_id,  ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    // Get authenticated user data
-    const authDetail = yield select(authDuck.selectors.detail)
-
-    yield call(Post, `clients/${client_id}/documents/`, { ...payload, upload_employee: authDetail.item.id })
+    yield call(Post, `clients/${client_id}/documents/`, { ...payload })
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {
@@ -72,7 +68,7 @@ function* _put({ payload: { client_id, id, ...payload } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Put, `clients/${client_id}/documents/${id}/`, payload)
+    yield call(Patch, `clients/${client_id}/documents/${id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
@@ -83,9 +79,34 @@ function* _put({ payload: { client_id, id, ...payload } }) {
   }
 }
 
+function* sendEmail({ payload }) {
+  try {
+    // selector.selected_items
+    const { item : { id:client_id } = {} } = yield select(clientDetailDuck.selectors.detail)
+    const { item : { id: client_document_id } = {} } = yield select(clientDocumentDetailDuck.selectors.detail)
+
+    yield put({ type: types.SEND_EMAIL_PENDING })
+    const result = yield call(Post, `clients/${client_id}/documents/${client_document_id}/send-email/`, {
+      body_title: payload.subject,
+      ...payload
+    })
+
+    yield put({
+      type   : types.SEND_EMAIL_FULFILLED,
+      payload: result
+    })
+  } catch (e) {
+    yield put({
+      type : types.SEND_EMAIL_FAILURE,
+      error: e
+    })
+  }
+}
+
 export default [
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
-  takeEvery(types.PUT, _put)
+  takeEvery(types.PUT, _put),
+  takeEvery(types.SEND_EMAIL, sendEmail)
 ]

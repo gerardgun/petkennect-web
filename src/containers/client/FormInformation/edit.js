@@ -49,7 +49,7 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
                 name={`${item}.relation`}
                 placeholder='Enter relation'/>
               <Form.Button
-                data-index={index} icon='trash alternate outline'
+                data-index={index} icon='trash alternate outline' label='&nbsp;'
                 onClick={_handleRemoveBtnClick}
                 type='button'/>
             </Form.Group>
