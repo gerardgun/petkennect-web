@@ -49,8 +49,6 @@ function Edit(props) {
     props.setBreedItem(null, 'CREATE')
   }
 
-  const clientFullName = `${petDetail.item.client_first_name || ''} ${petDetail.item.client_last_name || ''}`
-
   return (
     <div className='ph40 pv32'>
       {/* eslint-disable-next-line react/jsx-handler-names */}
@@ -64,16 +62,18 @@ function Edit(props) {
             autoFocus
             component={FormField}
             control={Input}
-            label='Name'
+            label='Pet Name'
             name='name'
             placeholder='Enter name'
             required/>
-          <Form.Field>
-            <label>Owner</label>
-            <input placeholder='Owner name' readOnly value={clientFullName}/>
-          </Form.Field>
-        </Form.Group>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Date of birth (Refer)'
+            name='born_at'
+            type='date'/>
 
+        </Form.Group>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -101,6 +101,22 @@ function Edit(props) {
           <Field
             component={FormField}
             control={Select}
+            label='Size'
+            name='size'
+            options={[
+              { key: 1, value: 'S', text: 'Small' },
+              { key: 2, value: 'M', text: 'Medium' },
+              { key: 3, value: 'L', text: 'Large' },
+              { key: 4, value: 'G', text: 'Giant' }
+            ]}
+            placeholder='Select size'
+            selectOnBlur={false}/>
+        </Form.Group>
+
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Select}
             label='Sex'
             name='sex'
             options={[
@@ -110,23 +126,12 @@ function Edit(props) {
             placeholder='Select sex'
             search
             selectOnBlur={false}/>
-        </Form.Group>
-        <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Input}
-            label='Date of birth (Refer)'
-            name='born_at'
-            type='date'/>
-          <Field
-            className='flex align-center'
-            component={FormField}
-            control={Checkbox}
-            format={Boolean}
-            label='Fixed'
-            name='fixed'
-            parse={Number}
-            type='checkbox'/>
+            label='Altered'
+            name='altered'
+            placeholder='Enter altered'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Input
@@ -142,10 +147,9 @@ function Edit(props) {
             parse={Number}
             type='checkbox'/>
         </Form.Group>
-
-        {
-          props.hasRetiredChecked && (
-            <Form.Group widths={2}>
+        <Form.Group widths='equal'>
+          {
+            props.hasRetiredChecked && (
               <Field
                 component={FormField}
                 control={Select}
@@ -162,11 +166,59 @@ function Edit(props) {
                 required
                 search
                 selectOnBlur={false}/>
-            </Form.Group>
-          )
-        }
+            )
+          }
+
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Received dog from'
+            name='info_received_from'
+            placeholder='Enter received dog from'/>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            format={Boolean}
+            label='Housebroken'
+            name='info_housebroken'
+            parse={Number}
+            type='checkbox'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            format={Boolean}
+            label='Create trained'
+            name='info_crate_trained'
+            parse={Number}
+            type='checkbox'/>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            format={Boolean}
+            label='Formal training'
+            name='info_formal_training'
+            parse={Number}
+            type='checkbox'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Form.Field>
+            <label>Created at</label>
+            <input
+              placeholder='Owner name' readOnly type='date'
+              value={(petDetail.item.created_at && moment(petDetail.item.created_at).format('YYYY-MM-DD')) || null}/>
+          </Form.Field>
+          <Form.Field>
+            <label>Created by</label>
+            <input readOnly value={`${petDetail.item.employee_first_name || ''} ${petDetail.item.employee_last_name || ''}`}/>
+          </Form.Field>
+        </Form.Group>
 
         <Header as='h6' className='section-header mt36' color='blue'>APPEARANCE</Header>
+
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -177,26 +229,81 @@ function Edit(props) {
             type='number'/>
           <Field
             component={FormField}
-            control={Select}
-            label='Size'
-            name='size'
-            options={[
-              { key: 1, value: 'S', text: 'Small' },
-              { key: 2, value: 'M', text: 'Medium' },
-              { key: 3, value: 'L', text: 'Large' },
-              { key: 4, value: 'G', text: 'Giant' }
-            ]}
-            placeholder='Select size'
-            selectOnBlur={false}/>
+            control={Input}
+            label='Coloring'
+            name='info_coloring'
+            placeholder='Enter coloring'/>
+
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Input}
-            label='Coloring'
-            name='info_coloring'
-            placeholder='Enter coloring'/>
+            label='Markings'
+            name='markings'
+            placeholder='Enter markings'/>
           <Form.Field/>
+        </Form.Group>
+
+        <Header as='h6' className='section-header mt36' color='blue'>HESITATES TO EAT</Header>
+
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            format={Boolean}
+            label='Elegible'
+            name='hesitate_elegible'
+            parse={Number}
+            type='checkbox'/>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Reason for No'
+            name='hesitate_reason_for_no'
+            placeholder='Enter reason for no'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Date of Testing'
+            name='hesitate_date_for_testing'
+            type='date'/>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Link to Day Camp Evaluations results'
+            name='hesitate_link_to_day_camp'
+            placeholder='Enter link'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            label='Attended  Day Care Previusly'
+            name='temp_daycare'
+            type='checkbox'/>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Previus Day Care'
+            name='temp_daycare_where'
+            placeholder='Enter where'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            label='Ever Removed from Another Day Care'
+            name='daycare_removed'
+            type='checkbox'/>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Reason for Removal'
+            name='daycare_removed_reason'
+            placeholder='Enter reason for removal'/>
         </Form.Group>
 
         <Header as='h6' className='section-header mt36' color='blue'>TEMPERAMENT</Header>
@@ -204,18 +311,7 @@ function Edit(props) {
           <Field
             component={FormField}
             control={Select}
-            label='Day camp result'
-            name='temp_test_result'
-            options={[
-              { key: 1, value: true, text: 'Pass' },
-              { key: 2, value: false, text: 'Fail' }
-            ]}
-            placeholder='Select result'
-            selectOnBlur={false}/>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Prefer'
+            label='People Preference'
             name='temp_prefer'
             options={[
               { key: 1, value: true, text: 'Men' }, // backend issue
@@ -223,48 +319,12 @@ function Edit(props) {
             ]}
             placeholder='Select preference'
             selectOnBlur={false}/>
-        </Form.Group>
-
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Checkbox}
-            label='Attend other day camp'
-            name='temp_daycare'
-            type='checkbox'/>
           <Field
             component={FormField}
             control={Input}
-            label='Where'
-            name='temp_daycare_where'
-            placeholder='Enter where'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Input}
-            label='Any Fear'
+            label='Fears'
             name='temp_any_fears'
-            placeholder='Enter any fears'/>
-          <Form.Field/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Checkbox}
-            format={Boolean}
-            label='Jumped fences'
-            name='temp_jumped_fences'
-            parse={Number}
-            type='checkbox'/>
-          <Field
-            component={FormField}
-            control={Checkbox}
-            format={Boolean}
-            label='Shared water bowls'
-            name='temp_shared_water_bowls'
-            parse={Number}
-            type='checkbox'/>
+            placeholder='Enter fears'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
@@ -278,13 +338,45 @@ function Edit(props) {
             type='checkbox'/>
           <Field
             component={FormField}
+            control={Select}
+            label='People'
+            name='temp_test_result'
+            options={[
+              { key: 1, value: true, text: 'Yes' },
+              { key: 2, value: false, text: 'No' }
+            ]}
+            placeholder='Select result'
+            selectOnBlur={false}/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
             control={Checkbox}
             format={Boolean}
-            label='Involved in dog fights'
+            label='Dogs'
             name='temp_dog_fights'
             parse={Number}
             placeholder='Enter dog fights'
             type='checkbox'/>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            format={Boolean}
+            label='Fence Jumping'
+            name='temp_jumped_fences'
+            parse={Number}
+            type='checkbox'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            format={Boolean}
+            label='Can Share Water Bowl'
+            name='temp_shared_water_bowls'
+            parse={Number}
+            type='checkbox'/>
+          <Form.Field/>
         </Form.Group>
 
         <Header as='h6' className='section-header mt36' color='blue'>HEALTH</Header>
@@ -295,27 +387,6 @@ function Edit(props) {
             label='Medical restrictions'
             name='health_medical_restrictions'
             placeholder='Enter medical restrictions'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Checkbox}
-            format={Boolean}
-            label='On heart prevention'
-            name='health_heartworm_preventive'
-            parse={Number}
-            type='checkbox'/>
-          <Field
-            component={FormField}
-            control={Checkbox}
-            format={Boolean}
-            label='On flea tick prevention'
-            name='health_flea_tick_preventive'
-            parse={Number}
-            type='checkbox'/>
-
-        </Form.Group>
-        <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Checkbox}
@@ -324,11 +395,49 @@ function Edit(props) {
             name='health_is_allergic'
             parse={Number}
             type='checkbox'/>
-          <Form.Field/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            format={Boolean}
+            label='Flea or Tick Preventative'
+            name='health_flea_tick_preventive'
+            parse={Number}
+            type='checkbox'/>
+          <Field
+            component={FormField}
+            control={Checkbox}
+            format={Boolean}
+            label='Hearthworm Presentative'
+            name='health_heartworm_preventive'
+            parse={Number}
+            type='checkbox'/>
         </Form.Group>
 
-        <Header as='h6' className='section-header mt36' color='blue'>HESITATES TO EAT</Header>
+        <Header as='h6' className='section-header' color='blue'>FEEDING</Header>
         <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Type of food'
+            name='feed_type_of_food'
+            placeholder='Enter type of food'/>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Quantity'
+            name='feed_quantity'
+            placeholder='Enter quantity'
+            type='number'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Specials Directions'
+            name='feed_special_directions'
+            placeholder='Enter special directions'/>
           <Field
             component={FormField}
             control={Checkbox}
@@ -337,6 +446,8 @@ function Edit(props) {
             name='hesitate_water'
             parse={Number}
             type='checkbox'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Checkbox}
@@ -345,8 +456,6 @@ function Edit(props) {
             name='hesitate_peanut_butter'
             parse={Number}
             type='checkbox'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Checkbox}
@@ -355,56 +464,8 @@ function Edit(props) {
             name='hesitate_wet_food'
             parse={Number}
             type='checkbox'/>
-          <Form.Field/>
         </Form.Group>
 
-        <Header as='h6' className='section-header mt36' color='blue'>ADITIONAL INFO</Header>
-        <Form.Group widths='equal'>
-          <Form.Field>
-            <label>Created at</label>
-            <input
-              placeholder='Owner name' readOnly type='date'
-              value={(petDetail.item.created_at && moment(petDetail.item.created_at).format('YYYY-MM-DD')) || null}/>
-          </Form.Field>
-          <Form.Field>
-            <label>Created by</label>
-            <input readOnly value={`${petDetail.item.employee_first_name || ''} ${petDetail.item.employee_last_name || ''}`}/>
-          </Form.Field>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Checkbox}
-            format={Boolean}
-            label='Formal training'
-            name='info_formal_training'
-            parse={Number}
-            type='checkbox'/>
-          <Field
-            component={FormField}
-            control={Input}
-            label='Received dog from'
-            name='info_received_from'
-            placeholder='Enter received dog from'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Checkbox}
-            format={Boolean}
-            label='Crate trained'
-            name='info_crate_trained'
-            parse={Number}
-            type='checkbox'/>
-          <Field
-            component={FormField}
-            control={Checkbox}
-            format={Boolean}
-            label='Housebroken'
-            name='info_housebroken'
-            parse={Number}
-            type='checkbox'/>
-        </Form.Group>
         {
           error && (
             <Form.Group widths='equal'>
