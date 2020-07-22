@@ -10,11 +10,11 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import petClassDetailDuck from '@reducers/pet/class/detail'
+import petKindDetailDuck from '@reducers/pet/kind/detail'
 
-const PetClassForm = props => {
+const PetKindForm = props => {
   const {
-    petClassDetail,
+    petKindDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
@@ -27,7 +27,7 @@ const PetClassForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ id: petClassDetail.item.id, ...values })
+      return props.put({ id: petKindDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -36,8 +36,8 @@ const PetClassForm = props => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(petClassDetail.mode), [ petClassDetail.mode ])
-  const isUpdating = Boolean(petClassDetail.item.id)
+  const isOpened = useMemo(() => getIsOpened(petKindDetail.mode), [ petKindDetail.mode ])
+  const isUpdating = Boolean(petKindDetail.item.id)
 
   return (
     <Modal
@@ -48,7 +48,7 @@ const PetClassForm = props => {
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Pet Class</Header>
+          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Pet Species</Header>
           <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
@@ -94,21 +94,21 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const petClassDetail = petClassDetailDuck.selectors.detail(state)
+      const petKindDetail = petKindDetailDuck.selectors.detail(state)
 
       return {
-        petClassDetail ,
-        initialValues: petClassDetail.item
+        petKindDetail ,
+        initialValues: petKindDetail.item
       }
     },
     {
-      post     : petClassDetailDuck.creators.post,
-      put      : petClassDetailDuck.creators.put,
-      resetItem: petClassDetailDuck.creators.resetItem
+      post     : petKindDetailDuck.creators.post,
+      put      : petKindDetailDuck.creators.put,
+      resetItem: petKindDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
-    form              : 'pet-class-form',
+    form              : 'pet-kind-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
     validate          : values  => {
@@ -119,4 +119,4 @@ export default compose(
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(PetClassForm)
+)(PetKindForm)

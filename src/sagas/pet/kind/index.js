@@ -2,21 +2,21 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
-import petClassDuck from '@reducers/pet/class'
+import petKindDuck from '@reducers/pet/kind'
 
-const { types } = petClassDuck
+const { types } = petKindDuck
 
 function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
     // const filters = yield select(selectors.filters)
-    const petClasses = yield call(Get, '/pet-classes/')
+    const petKinds = yield call(Get, '/pet-classes/')
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: petClasses
+        items: petKinds
       }
     })
   } catch (e) {

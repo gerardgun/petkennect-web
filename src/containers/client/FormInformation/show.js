@@ -1,154 +1,140 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import InputReadOnly from '@components/Common/InputReadOnly'
-import { Header } from 'semantic-ui-react'
+import { Header, Grid } from 'semantic-ui-react'
 import moment from 'moment'
 import _get from 'lodash/get'
+import _defaultTo from 'lodash/defaultTo'
 
 function Show({ clientDetail  }) {
+  const { item: client } = clientDetail
+
+  const peopleToPickup = Array.isArray(client.authorized_people_pick_up) ? client.authorized_people_pick_up : []
+
   return (
     <div className='ph40 pv32'>
       <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
-      <div className='flex flex-row align-center mv20'>
+      <Grid columns={2}>
         <InputReadOnly
-          className='w50'
           label='Email'
-          value={clientDetail.item.email || '-'}/>
+          value={_defaultTo(client.email, '-')}/>
         <InputReadOnly
-          className='w50'
           label='Name'
-          value={clientDetail.item.first_name || '-'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+          value={_defaultTo(client.first_name, '-')}/>
+
         <InputReadOnly
-          className='w50'
           label='Last Name'
-          value={clientDetail.item.last_name || '-'}/>
+          value={_defaultTo(client.last_name, '-')}/>
         <InputReadOnly
-          className='w50'
           label='Contact Date'
           value={(clientDetail.item.contact_date && moment(clientDetail.item.contact_date).format('MM/DD/YYYY')) || '-'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
+
         <InputReadOnly
-          className='w50'
           label='Location'
-          value={clientDetail.item.location_name || '-'}/>
+          value={client.location ? `${client.location_code} - ${client.location_name}` : '-'}/>
         <InputReadOnly
-          className='w33'
-          label='Status'
-          value={clientDetail.item.is_active ? 'Active' : 'Inactive'}/>
-      </div>
-      <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Cell Phone'
-          value={_get(clientDetail.item,'phones[0]','-')}/>
-        <InputReadOnly
-          className='w50'
-          label='Home Phone'
-          value={_get(clientDetail.item,'phones[1]','-')}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Work Phone'
-          value={_get(clientDetail.item,'phones[2]','-')}/>
-        <InputReadOnly
-          className='w50'
-          label='Other Phone'
-          value={_get(clientDetail.item,'phones[3]','-')}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Alt Email'
-          value={clientDetail.item.alt_email || '-'}/>
-        <InputReadOnly
-          className='w50'
-          label='Referred'
-          value={clientDetail.item.referred || '-'}/>
-      </div>
-      <Header as='h6' className='section-header' color='blue'>CLIENT ADDRESS</Header>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Address1'
-          value={_get(clientDetail.item,'addresses[0]','-')}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Address2'
-          value={_get(clientDetail.item,'addresses[1]','-')}/>
-      </div>
-
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Zip'
-          value={clientDetail.item.zip_code || '-'}/>
-        <InputReadOnly
-          className='w50'
-          label='Country'
-          value={clientDetail.item.country || '-'}/>
-      </div>
-
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='City'
-          value={clientDetail.item.city || '-'}/>
-        <InputReadOnly
-          className='w50'
-          label='State'
-          value={clientDetail.item.state || '-'}/>
-      </div>
-      <Header as='h6' className='section-header' color='blue'>EMERGENCY CONTACT</Header>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
           label='Name'
-          value={clientDetail.item.emergency_contact_name || '-'}/>
-        <InputReadOnly
-          className='w50'
-          label='Relation'
-          value={clientDetail.item.emergency_contact_relationship || '-'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Phone'
-          value={_get(clientDetail.item,'emergency_contact_phones[0]','-')}/>
-      </div>
-      <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Vet Name'
-          value={clientDetail.item.emergency_vet_name || '-'}/>
-        <InputReadOnly
-          className='w50'
-          label='Vet Locatoin'
-          value={clientDetail.item.emergency_vet_location || '-'}/>
-      </div>
-      <div className='flex flex-row align-center mv20'>
-        <InputReadOnly
-          className='w50'
-          label='Vet Phone'
-          value={_get(clientDetail.item, 'emergency_vet_phones[0]', '-')}/>
-      </div>
-      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTORIZED TO PICK UP</Header>
-      {clientDetail.item.authorized_people_pick_up == null ? '-' : clientDetail.item.authorized_people_pick_up.map((_person,index) => (
-        <div className='flex flex-row align-center mv20' key={index}>
-          <div className='w33 text-regular flex justify-between'>
-            <span className='text-black'>{_person.name}</span>
-            <span className='text-gray'>{_person.relation}</span>
-          </div>
-        </div>
-      ))}
+          value={client.is_active ? 'Active' : 'Inactive'}/>
+      </Grid>
+      <br/>
 
+      <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
+      <Grid columns={2}>
+        <InputReadOnly
+          label='Cell Phone'
+          value={_get(client, 'phones[0]', '-')}/>
+        <InputReadOnly
+          label='Home Phone'
+          value={_get(client, 'phones[1]', '-')}/>
+
+        <InputReadOnly
+          label='Work Phone'
+          value={_get(client, 'phones[2]', '-')}/>
+        <InputReadOnly
+          label='Other Phone'
+          value={_get(client, 'phones[3]', '-')}/>
+
+        <InputReadOnly
+          label='Alt Email'
+          value={_defaultTo(client.alt_email, '-')}/>
+        <InputReadOnly
+          label='Referred'
+          value={_defaultTo(client.referred, '-')}/>
+      </Grid>
+      <br/>
+
+      <Header as='h6' className='section-header' color='blue'>CLIENT ADDRESS</Header>
+      <Grid columns={2}>
+        <InputReadOnly
+          label='Address1'
+          value={_get(client, 'addresses[0]', '-')}/>
+        <InputReadOnly
+          label='Address2'
+          value={_get(client, 'addresses[1]', '-')}/>
+
+        <InputReadOnly
+          label='Zip'
+          value={_defaultTo(client.zip_code, '-')}/>
+        <InputReadOnly
+          label='Country'
+          value={_defaultTo(client.country, '-')}/>
+
+        <InputReadOnly
+          label='City'
+          value={_defaultTo(client.city, '-')}/>
+        <InputReadOnly
+          label='State'
+          value={_defaultTo(client.state, '-')}/>
+      </Grid>
+      <br/>
+
+      <Header as='h6' className='section-header' color='blue'>EMERGENCY CONTACT</Header>
+      <Grid columns={2}>
+        <InputReadOnly
+          label='Name'
+          value={_defaultTo(client.emergency_contact_name, '-')}/>
+        <InputReadOnly
+          label='Relation'
+          value={_defaultTo(client.emergency_contact_relationship, '-')}/>
+
+        <InputReadOnly
+          label='Phone'
+          value={_get(client, 'emergency_contact_phones[0]', '-')}/>
+      </Grid>
+      <br/>
+
+      <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
+      <Grid columns={2}>
+        <InputReadOnly
+          label='Vet Name'
+          value={_defaultTo(client.emergency_vet_name, '-')}/>
+        <InputReadOnly
+          label='Vet Locatoin'
+          value={_defaultTo(client.emergency_vet_location, '-')}/>
+
+        <InputReadOnly
+          label='Vet Phone'
+          value={_get(client, 'emergency_vet_phones[0]', '-')}/>
+      </Grid>
+      <br/>
+
+      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTORIZED TO PICK UP</Header>
+      <Grid columns={1}>
+        {
+          peopleToPickup.length > 0 ? (
+            peopleToPickup.map((_person,index) => (
+              <Grid.Column key={index}>
+                <span className='mr40'>{_person.name}</span>
+                <span className='text-gray'>{_person.relation}</span>
+              </Grid.Column>
+            ))
+          ) : (
+            <Grid.Column>
+              <p className='text-gray'>The are not authorized people to pick up.</p>
+            </Grid.Column>
+          )
+        }
+      </Grid>
     </div>
   )
 }
@@ -157,4 +143,4 @@ Show.propTypes = { petDetail: PropTypes.shape({}) }
 
 Show.defaultProps = { petDetail: { item: {} } }
 
-export default (Show)
+export default Show

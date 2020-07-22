@@ -150,12 +150,13 @@ const categories = [
       { href: '/setup/training-reason', label: 'Training Reason' },
       { href: '/setup/training-method', label: 'Training Method' },
       { href: '/setup/training-command', label: 'Training Command' },
+      { href: '/pet/kind', label: 'Species' },
       { href: '/pet/breed', label: 'Breeds' },
       { href: '/pet/incident-type', label: 'Incident Types' },
       { href: '/pet/incident-action', label: 'Incident Actions' },
       { href: '/pet/incident-behavior', label: 'Incident Behaviors' },
-      { href: '/pet/retire-reason', label: 'Retire Reason' },
-      { href: '/pet/vaccination-type', label: 'Vaccination Type' }
+      { href: '/pet/retire-reason', label: 'Retire Reasons' },
+      { href: '/pet/vaccination-type', label: 'Vaccination Types' }
       // { href: '/not-defined', label: 'Enable Decline Portal Client' },
       // { href: '/not-defined', label: 'Calendar' },
       // { href: '/not-defined', label: 'Notifications' },

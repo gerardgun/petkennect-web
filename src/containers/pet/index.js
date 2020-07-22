@@ -10,8 +10,10 @@ import useModal from '@components/Modal/useModal'
 import Form from '@containers/client/create/PetSection/Form'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
+import locationDuck from '@reducers/location'
 import petDuck from '@reducers/pet'
 import petDetailDuck from '@reducers/pet/detail'
+import petBreedDuck from '@reducers/pet/breed'
 
 import './styles.scss'
 
@@ -21,6 +23,8 @@ const PetList = ({ pet, petDetail, ...props }) => {
 
   useEffect(() => {
     props.getPets()
+    props.getLocations()
+    props.getPetBreeds()
   }, [])
 
   const _handleOptionClick = option => {
@@ -60,7 +64,9 @@ export default compose(
       pet,
       petDetail: petDetailDuck.selectors.detail(state)
     }), {
-      getPets: petDuck.creators.get,
-      setItem: petDetailDuck.creators.setItem
+      getLocations: locationDuck.creators.get,
+      getPets     : petDuck.creators.get,
+      getPetBreeds: petBreedDuck.creators.get,
+      setItem     : petDetailDuck.creators.setItem
     })
 )(PetList)
