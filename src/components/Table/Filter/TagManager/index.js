@@ -35,7 +35,7 @@ const FilterTagManager = props => {
                 let value = props.filters[item]
 
                 if(item in props.filterColumnSources)
-                  value = props.filterColumnSources[item].items.find(_item => _item.id === +value).name
+                  value = props.filterColumnSources[item].find(_item => _item.value === value).text
 
                 return value
               })

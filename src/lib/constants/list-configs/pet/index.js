@@ -4,6 +4,9 @@ import { Image, Label } from 'semantic-ui-react'
 
 import { defaultImageUrl } from '@lib/constants'
 
+import locationDuck from '@reducers/location'
+import petBreedDuck from '@reducers/pet/breed'
+
 export default {
   base_uri          : null,
   search_placeholder: 'Search by pet name',
@@ -73,7 +76,12 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
-      sort_name   : 'breed__name'
+      sort_name   : 'breed__name',
+      filter      : {
+        type        : 'dropdown',
+        name        : 'breed__id',
+        source_store: petBreedDuck.store
+      }
     },
     {
       display_name: 'Vaccination',
@@ -106,12 +114,40 @@ export default {
       }
     },
     {
+      display_name: 'Location',
+      name        : 'client_location_code',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true,
+      sort_name   : 'client__location__code',
+      filter      : {
+        type        : 'dropdown',
+        name        : 'client__location__id',
+        source_store: locationDuck.store
+      }
+    },
+    {
       display_name: 'Retired',
       name        : 'retired',
       type        : 'boolean',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : true,
+      filter      : {
+        type        : 'dropdown',
+        name        : 'retired',
+        source_store: [
+          {
+            value: true,
+            text : 'Yes'
+          },
+          {
+            value: false,
+            text : 'No'
+          }
+        ]
+      }
     },
     {
       display_name: 'Sex',
@@ -120,7 +156,21 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
-      formatter   : cell => {
+      filter      : {
+        type        : 'dropdown',
+        name        : 'sex',
+        source_store: [
+          {
+            value: 'M',
+            text : 'Male'
+          },
+          {
+            value: 'F',
+            text : 'Female'
+          }
+        ]
+      },
+      formatter: cell => {
         return cell === 'F' ? 'Female' : 'Male'
       }
     }

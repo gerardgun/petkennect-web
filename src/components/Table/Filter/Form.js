@@ -43,7 +43,7 @@ const FilterForm = props => {
     return (
       <Form.Group key={column.name} widths='equal'>
         {
-          column.filter.type === 'range' ? (
+          column.filter.type === 'range' || column.filter.type === 'range_date' ? (
             <>
               <Field
                 autoComplete='off'
@@ -51,14 +51,16 @@ const FilterForm = props => {
                 control={Input}
                 label={`${column.display_name} from`}
                 name={column.filter.name[0]}
-                placeholder={`Enter ${column.display_name}`}/>
+                placeholder={`Enter ${column.display_name}`}
+                type={column.filter.type === 'range_date' ? 'date' : 'text'}/>
               <Field
                 autoComplete='off'
                 component={FormField}
                 control={Input}
                 label='To'
                 name={column.filter.name[1]}
-                placeholder={`Enter ${column.display_name}`}/>
+                placeholder={`Enter ${column.display_name}`}
+                type={column.filter.type === 'range_date' ? 'date' : 'text'}/>
             </>
           ) : column.filter.type === 'dropdown' ? (
             <Field
@@ -66,14 +68,7 @@ const FilterForm = props => {
               control={Select}
               label={column.display_name}
               name={column.filter.name}
-              options={
-                props.filterColumnSources[column.filter.name].items
-                  .map(item => ({
-                    key  : item.id,
-                    value: item.id,
-                    text : item.name
-                  }))
-              }
+              options={props.filterColumnSources[column.filter.name]}
               placeholder={`Select ${column.display_name}`}
               search
               selectOnBlur={false}/>

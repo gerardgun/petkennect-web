@@ -1,67 +1,70 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
 export default {
-  base_uri: null,
-  row     : {
-    // options: [
-    //   {
-    //     display_name: 'Preview',
-    //     name        : 'preview',
-    //     icon        : 'search plus'
-    //   },
-    //   {
-    //     display_name: 'Email',
-    //     name        : 'email',
-    //     icon        : 'paper plane outline'
-    //   }
-    // ]
+  base_uri          : null,
+  search_placeholder: 'Search',
+  options           : [
+    {
+      display_name: null,
+      name        : 'view_pdf',
+      icon        : 'file pdf outline',
+      is_multiple : false
+    },
+    {
+      display_name: null,
+      name        : 'edit',
+      icon        : 'edit outline',
+      is_multiple : false
+    },
+    {
+      display_name: null,
+      name        : 'send_document',
+      icon        : 'envelope outline',
+      is_multiple : false
+    },
+    {
+      display_name: null,
+      name        : 'delete',
+      icon        : 'trash alternate outline',
+      is_multiple : true,
+      color       : 'red'
+    }
+  ],
+  row: {
+    options: []
   },
   columns: [
     {
-      display_name: 'Owner Name',
-      name        : 'client',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Document Name',
+      display_name: 'DOCUMENT NAME',
       name        : 'filename',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      formatter   : (cell) => {
+        return (
+          <Link>
+            <span>{`${cell}`}</span>
+          </Link>
+        )
+      }
     },
     {
-      display_name: 'Document Type',
-      name        : 'type',
+      display_name: 'TYPE',
+      name        : 'type_name',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
-      display_name: 'Description',
+      display_name: 'COMMENT',
       name        : 'description',
       type        : 'string',
-      width       : 'three',
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Upload User',
-      name        : 'upload_employee',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Date of Upload',
-      name        : 'updated_at',
-      type        : 'date',
       width       : null,
       align       : 'left',
       sort        : false
     }
+
   ]
 }

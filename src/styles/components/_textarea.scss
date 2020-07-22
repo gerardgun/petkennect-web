@@ -1,8 +1,7 @@
 .ui {
   textarea {
-    border: 1px solid $light-gray !important;
-    //este es el issue del mal responsive de los input ? dude
-    // font-family: Poppins !important; 
+    font-family: Poppins !important;
+
     &:read-only {
       background-color: rgba(0, 0, 0, 0.04) !important;
     }

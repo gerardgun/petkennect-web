@@ -17,7 +17,7 @@ import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
 import PetCreate from '@containers/pet/create'
-import PetClass from '@containers/pet-class'
+import PetKind from '@containers/pet-kind'
 import PetBreed from '@containers/pet-breed'
 import PetIncidentType from '@containers/pet-incident-type'
 import PetIncidentAction from '@containers/pet-incident-action'
@@ -114,8 +114,8 @@ const privateRoutes = [
     component: Dashboard
   },
   {
-    path     : '/pet/class',
-    component: PetClass
+    path     : '/pet/kind',
+    component: PetKind
   },
   {
     path     : '/pet/breed',

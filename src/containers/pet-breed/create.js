@@ -12,13 +12,13 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 import YupFields from '@lib/constants/yup-fields'
 
 import petBreedDetailDuck from '@reducers/pet/breed/detail'
-import petClassDuck from '@reducers/pet/class'
+import petKindDuck from '@reducers/pet/kind'
 
 const PetBreedForm = (props) => {
   const {
     petBreedDetail,
-    petClass,
-    getPetClasses,
+    petKind,
+    getPetKinds,
     error,
     handleSubmit,
     reset,
@@ -26,7 +26,7 @@ const PetBreedForm = (props) => {
   } = props
 
   useEffect(()=> {
-    getPetClasses()
+    getPetKinds()
   }, [ petBreedDetail.item.id ])
   const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
 
@@ -92,12 +92,12 @@ const PetBreedForm = (props) => {
             <Field
               component={FormField}
               control={Select}
-              label='Pet Class'
+              label='Pet Species'
               name='pet_class'
-              options={petClass.items.map(_petClass=>({
-                key  : _petClass.id,
-                value: _petClass.id,
-                text : `${_petClass.name}`
+              options={petKind.items.map(item=>({
+                key  : item.id,
+                value: item.id,
+                text : `${item.name}`
               }))}
               placeholder='Select an option'
               selectOnBlur={false}/>
@@ -135,19 +135,19 @@ export default compose(
   connect(
     (state) => {
       const petBreedDetail = petBreedDetailDuck.selectors.detail(state)
-      const petClass = petClassDuck.selectors.list(state)
+      const petKind = petKindDuck.selectors.list(state)
 
       return {
         petBreedDetail,
-        petClass,
+        petKind,
         initialValues: petBreedDetail.item
       }
     },
     {
-      getPetClasses: petClassDuck.creators.get,
-      post         : petBreedDetailDuck.creators.post,
-      put          : petBreedDetailDuck.creators.put,
-      resetItem    : petBreedDetailDuck.creators.resetItem
+      getPetKinds: petKindDuck.creators.get,
+      post       : petBreedDetailDuck.creators.post,
+      put        : petBreedDetailDuck.creators.put,
+      resetItem  : petBreedDetailDuck.creators.resetItem
     }
   ),
   reduxForm({

@@ -116,7 +116,27 @@ export default {
     filterColumnSources: new Duck.Selector(selectors => state => {
       return selectors.filterColumns(state)
         .filter(item => 'source_store' in item.filter)
-        .reduce((a, b) => ({ ...a, [b.filter.name]: state[b.filter.source_store] }), {})
+        .reduce((a, b) => {
+          const source = b.filter.source_store
+          let sourceItems = []
+
+          if(typeof source === 'string' && source in state)  // is a reducer store
+            sourceItems = state[source].items
+              .map(item => ({
+                key  : item.id,
+                value: item.id,
+                text : item.code || item.name
+              }))
+          else if(Array.isArray(source)) // is a customize dropdown
+            sourceItems = source
+              .map((item, index) => ({
+                key  : index,
+                value: item.value,
+                text : item.text
+              }))
+
+          return { ...a, [b.filter.name]: sourceItems }
+        }, {})
     })
   })
 }

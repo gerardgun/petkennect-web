@@ -50,7 +50,7 @@ export default {
       }
     },
     {
-      display_name: 'Pet class',
+      display_name: 'Pet species',
       name        : 'pet_class_name',
       type        : 'string',
       width       : 8,

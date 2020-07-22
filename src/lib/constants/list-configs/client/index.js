@@ -4,6 +4,8 @@ import { Image } from 'semantic-ui-react'
 
 import { defaultImageUrl } from '@lib/constants'
 
+import locationDuck from '@reducers/location'
+
 export default {
   base_uri          : null,
   search_placeholder: 'Search by name or email',
@@ -83,7 +85,12 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
-      sort_name   : 'location__code'
+      sort_name   : 'location__code',
+      filter      : {
+        type        : 'dropdown',
+        name        : 'location__id',
+        source_store: locationDuck.store
+      }
     },
     {
       display_name: 'Phone Mobile',
@@ -108,7 +115,11 @@ export default {
       type        : 'date',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : true,
+      filter      : {
+        type: 'range_date',
+        name: [ 'created_at__gt', 'created_at__lt' ]
+      }
     }
   ]
 }

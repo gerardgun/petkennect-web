@@ -2,7 +2,7 @@ import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
-import authDuck from '@reducers/auth'
+// import authDuck from '@reducers/auth'
 import petDuck from '@reducers/pet'
 
 const { types, selectors } = petDuck
@@ -11,12 +11,12 @@ export function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const authDetail = yield select(authDuck.selectors.detail)
+    // const authDetail = yield select(authDuck.selectors.detail)
     const filters = yield select(selectors.filters)
     const list = yield select(selectors.list)
 
     const { results, ...meta } = yield call(Get, '/pets/', {
-      client__location__id: authDetail.location,
+      // client__location__id: authDetail.location,
       ...filters
     })
 
