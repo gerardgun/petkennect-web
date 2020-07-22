@@ -24,11 +24,8 @@ import useCameraAvailable from '@hooks/useCameraAvailable'
 
 const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
-const PetShow = ({ petDetail, petImage, ...props }) => {
+const PetShow = ({ petDetail, ...props }) => {
   const [ activeMenuItem, setActiveMenuItem ] = useState('info')
-  const [ openImageEditorModal, setOpenImageEditorModal ] = useState(false)
-  const [ initialStep, setInitialStep ] = useState(null)
-  const [ initialImageURL, setInitialImageURL ] = useState(null)
   const { id } = useParams()
 
   const inputFileRef = useRef()
@@ -71,11 +68,8 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
   }
 
   const _handleFileChange = e => {
-    if(e.target.files && e.target.files[0]) {
-      setInitialImageURL(URL.createObjectURL(e.target.files[0]))
-      setInitialStep('EDITOR')
-      setOpenImageEditorModal(true)
-    }
+    if(e.target.files && e.target.files[0])
+      props.setEditorItem({ filepath: URL.createObjectURL(e.target.files[0]) ,  is_profile: true }, 'EDITOR_CREATE', 'EDITOR')
   }
 
   const _handleOptionDropdownChange = () => {
@@ -85,14 +79,11 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
   const _handlePhotoAction = (e , data)=>{
     switch (data.value) {
       case 'view_photo':
-        setInitialImageURL(petDetail.item.image_filepath)
-        setInitialStep('VIEW')
-        setOpenImageEditorModal(true)
+        props.setEditorItem({ filepath: petDetail.item.image_filepath , is_profile: true }, 'EDITOR_CREATE', 'VIEW')
 
         return
       case 'take_photo':
-        setInitialStep('CAMERA')
-        setOpenImageEditorModal(true)
+        props.setEditorItem({ is_profile: true }, 'EDITOR_CREATE', 'CAMERA')
 
         return
       case 'upload_photo':
@@ -101,8 +92,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
 
         return
       case 'select_photo':
-        setInitialStep('PICKER')
-        setOpenImageEditorModal(true)
+        props.setEditorItem({ is_profile: true }, 'EDITOR_CREATE', 'PICKER')
 
         return
 
@@ -110,17 +100,6 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
 
         return
     }
-  }
-
-  const _handleCloseImageEditorModal = ()=> {
-    setOpenImageEditorModal(false)
-    setInitialImageURL(null)
-    setInitialStep(null)
-  }
-
-  const _handleImageEditorSave = imageFile => {
-    props.postPetImage({ images: imageFile, is_profile: true })
-      .then(_handleCloseImageEditorModal)
   }
 
   const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
@@ -278,16 +257,8 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
 
           <ImageEditor
             circularCropper
-            initialImageURL={initialImageURL}
-            initialStep={initialStep}
-            key={`${initialStep}${openImageEditorModal}`}
-            onClose={_handleCloseImageEditorModal}
-            onSaveImage={
-              _handleImageEditorSave
-            } open={openImageEditorModal} pickerImages={petImage.items.map(_petImage=> ({
-              ..._petImage,
-              url: _petImage.filepath
-            }))}/>
+            duck={petImageDuck}
+            duckDetail={petImageDetailDuck}/>
 
         </Grid>
       </Segment>
@@ -303,9 +274,11 @@ export default compose(
       petImage : petImageDuck.selectors.list(state)
 
     }), {
-      getPetImages: petImageDuck.creators.get,
-      getPet      : petDetailDuck.creators.get,
-      postPetImage: petImageDetailDuck.creators.post,
-      resetItem   : petDetailDuck.creators.resetItem
+      getPetImages : petImageDuck.creators.get,
+      getPet       : petDetailDuck.creators.get,
+      postPetImage : petImageDetailDuck.creators.post,
+      putPetImage  : petImageDetailDuck.creators.put,
+      resetItem    : petDetailDuck.creators.resetItem,
+      setEditorItem: petImageDetailDuck.creators.setEditorItem
     })
 )(PetShow)

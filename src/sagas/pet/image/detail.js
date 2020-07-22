@@ -108,9 +108,78 @@ function* _put({ payload: { pet_id, pet_image_id, ...payload } }) {
   }
 }
 
+function* editorPost({ payload }) {
+  const { file: images, description = '', is_profile , type = 'image' } = payload
+
+  try {
+    yield put({ type: types.EDITOR_POST_PENDING })
+
+    // Get current pet detail item
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+
+    // Upload new pet image
+    let [ result ] = yield call(Post, `pets/${petDetail.item.id}/images/`, { images , description , type })
+
+    // Set image as profile if is_profile=true
+    if(is_profile === true) {
+      yield call(Patch, `pets/${petDetail.item.id}/images/${result.id}/`, { is_profile })
+
+      result.is_profile = true
+
+      // Update current pet detail item
+      // image_filepath
+      yield put({
+        type   : petDetailDuck.types.SET,
+        payload: {
+          item: {
+            ...petDetail.item,
+            image_filepath: result.filepath
+          }
+        }
+      })
+    }
+
+    yield put({
+      type   : types.EDITOR_POST_FULFILLED,
+      payload: result
+    })
+  } catch (e) {
+    yield put({
+      type : types.EDITOR_POST_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* editorPut({ payload }) {
+  const { file: images, is_profile , description , type = 'image' } = payload
+
+  try {
+    yield put({ type: types.EDITOR_PUT_PENDING })
+
+    // Get current pet detail item
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+
+    // Upload new pet image
+    let [ result ] = yield call(Patch, `pets/${petDetail.item.id}/images/`, { images, is_profile , description, type })
+
+    yield put({
+      type   : types.EDITOR_PUT_FULFILLED,
+      payload: result
+    })
+  } catch (e) {
+    yield put({
+      type : types.EDITOR_PUT_FAILURE,
+      error: e
+    })
+  }
+}
+
 export default [
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
-  takeEvery(types.PUT, _put)
+  takeEvery(types.PUT, _put),
+  takeEvery(types.EDITOR_POST, editorPost),
+  takeEvery(types.EDITOR_PUT, editorPut)
 ]
