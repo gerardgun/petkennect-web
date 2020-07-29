@@ -15,7 +15,7 @@ import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
-const FormInformation = props => {
+const GallerySection = props => {
   const {
     petDetail,
     petImage,
@@ -161,5 +161,5 @@ export default compose(
 
     }
   )
-)(FormInformation)
+)(GallerySection)
 

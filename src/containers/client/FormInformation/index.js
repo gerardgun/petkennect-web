@@ -16,7 +16,7 @@ const formId = 'client-edit-information'
 function FormInformation(props) {
   const { clientDetail , destroy, submit } = props
 
-  const { id } = useParams()
+  const { client: clientId } = useParams()
 
   const [ isUpdating, setIsUpdating ] = useState(false)
   const _handleEditClick = () => {
@@ -25,8 +25,7 @@ function FormInformation(props) {
 
   const _handleCancelBtnClick = () => {
     setIsUpdating(false)
-    // Verify if is modal
-    props.getClient(id)
+    props.getClient(clientId)
     destroy([ formId ])
   }
 

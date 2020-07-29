@@ -18,13 +18,10 @@ import clientDocumentTypesDuck from '@reducers/client/document/type'
 const UploadDocumentForm = (props) => {
   const {
     clientDocumentDetail,
-    error,
-    handleSubmit,
-    reset,
-    submitting // redux-form
+    error, handleSubmit, reset, submitting // redux-form
   } = props
 
-  const { id } = useParams()
+  const { client: clientId } = useParams()
 
   function ClientDocumentList({ fields, meta: { error, submitFailed } }) {
     const inputFileRef = useRef()
@@ -65,9 +62,9 @@ const UploadDocumentForm = (props) => {
         {
           fields.length <= 0 ? (
             <div className='description'>
-You have still not uploaded any document
-            </div>) : ''
-
+              You have still not uploaded any document
+            </div>
+          ) : ''
         }
         <input
           accept='image/*'
@@ -145,9 +142,7 @@ You have still not uploaded any document
 
   useEffect(()=> {
     props.getDocumentTypes()
-  }, [ id ])
-
-  const getIsOpened = (mode) => mode === 'CREATE'
+  }, [ clientId ])
 
   const _handleClose = () => {
     props.reset()
@@ -161,15 +156,13 @@ You have still not uploaded any document
       if(value.type && value.filename)
 
         props
-          .post({ client_id: id, ...value })
+          .post({ client_id: clientId, ...value })
           .then(_handleClose)
           .catch(parseResponseError)
     })
   }
 
-  const isOpened = useMemo(() => getIsOpened(clientDocumentDetail.mode), [
-    clientDocumentDetail.mode
-  ])
+  const isOpened = useMemo(() => clientDocumentDetail.mode === 'CREATE', [ clientDocumentDetail.mode ])
 
   return (
     <Modal

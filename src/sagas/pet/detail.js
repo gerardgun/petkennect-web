@@ -4,7 +4,6 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import petDetailDuck from '@reducers/pet/detail'
-import clientDetailDuck from '@reducers/client/detail'
 import moment from 'moment'
 
 const { types } = petDetailDuck
@@ -59,18 +58,16 @@ function* get({ id }) {
   }
 }
 
-function* post({ payload: { ...payload } }) {
+function* post({ payload }) {
   try {
-    const clientDetail = yield select(clientDetailDuck.selectors.detail)
-
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, `clients/${clientDetail.item.id}/pets/`, {
-      ...payload,
-      employee: 5 // delete
-    })
+    const result = yield call(Post, 'pets/', payload)
 
-    yield put({ type: types.POST_FULFILLED })
+    yield put({
+      type   : types.POST_FULFILLED,
+      payload: result
+    })
   } catch (e) {
     yield put({
       type : types.POST_FAILURE,
@@ -79,14 +76,11 @@ function* post({ payload: { ...payload } }) {
   }
 }
 
-function* _put({ payload : { ...payload } }) {
+function* _put({ payload: { id, ...payload } }) {
   try {
-    const petDetail = yield select(petDetailDuck.selectors.detail)
-    const clientDetail = yield select(clientDetailDuck.selectors.detail)
-
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `clients/${clientDetail.item.id || petDetail.item.client}/pets/${petDetail.item.id}/`, payload)
+    yield call(Patch, `pets/${id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

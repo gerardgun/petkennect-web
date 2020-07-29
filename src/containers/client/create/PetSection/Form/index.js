@@ -12,28 +12,13 @@ import petDetailDuck from '@reducers/pet/detail'
 const PetCreate = props => {
   const {
     petDetail,
-    // match,
     destroy
-    // get
-    // getDocuments,
-    // getComments,
-    // getPets,
   } = props
 
   useEffect(() => {
     if(petDetail.item.id)
       props.get(petDetail.item.id)
   }, [ petDetail.item.id ])
-  /** future behavior with route and hashes, it seems to me */
-  // useEffect(() => {
-  //   if(clientPetDetail.status === 'SET_ITEM' && isUpdating)
-  //     // Verify if is modal
-  //     if(isModal) {
-  //       get(clientPetDetail.item.id)
-  //     } else {
-  //       get(match.params.pet)
-  //     }
-  // }, [ clientPetDetail.status ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
@@ -43,9 +28,6 @@ const PetCreate = props => {
   }
 
   const isOpened = useMemo(() => getIsOpened(petDetail.mode), [ petDetail.mode ])
-  /** future behavior with route and hashes, it seems to me */
-  // const isUpdating = Boolean(clientPetDetail.item.id)
-  // const isModal = true
 
   return (
     <Modal
@@ -121,9 +103,6 @@ export default compose(
       destroy,
       get      : petDetailDuck.creators.get,
       resetItem: petDetailDuck.creators.resetItem
-      // getDocuments   : clientDocumentDuck.creators.get,
-      // getComments: clientCommentDuck.creators.get,
-      // getPets        : clientPetDuck.creators.get,
     }
   )
 )(PetCreate)

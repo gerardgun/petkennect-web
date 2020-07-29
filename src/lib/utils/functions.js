@@ -2,6 +2,8 @@ import _set from 'lodash/set'
 import _get from 'lodash/get'
 import { SubmissionError } from 'redux-form'
 import * as Yup from 'yup'
+import moment from 'moment'
+
 import { Get } from '@lib/utils/http-client'
 
 export const getAbbreviature = (str = '') => {
@@ -11,6 +13,33 @@ export const getAbbreviature = (str = '') => {
   if(matches.length >= 2) abbreviature = matches[0][0] + matches[1][0]
 
   return abbreviature.toUpperCase()
+}
+
+export const getAge = (date) => {
+  if(!date) return '-'
+
+  const years = moment().diff(date, 'year')
+  const months = moment().diff(date, 'month')
+  const days = moment().diff(date, 'day')
+  if(years < 0  || months < 0 || days < 0)
+    return ' -'
+
+  if(years === 1)
+    return `${years} year`
+
+  if(years > 1)
+    return `${years} years`
+
+  if(years === 0) {
+    if(months === 0)
+      return `${days} days`
+
+    if(months === 1)
+      return `${months} month`
+
+    if(months > 1)
+      return `${months} months`
+  }
 }
 
 export const getMessageError = e => {
@@ -78,7 +107,13 @@ export const parsePayload = payload => {
 
   if(is_formdata === false)
     // If payload contains some File or FileList, create a FormData payload
-    is_formdata = Object.values(payload).some(value => value instanceof FileList || value instanceof File)
+    is_formdata = Object.values(payload).some(value => {
+      return (
+        value instanceof FileList
+        || value instanceof File
+        || (value instanceof Array && value.length > 0 && value[0] instanceof File)
+      )
+    })
 
   if(is_formdata) {
     body = new FormData()

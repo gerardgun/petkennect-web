@@ -1,7 +1,7 @@
 import { getLocation } from 'connected-react-router'
 import { call, fork, put, select, take, takeEvery } from 'redux-saga/effects'
 
-import { Get, Post, Put, reHydrateToken, reHydrateTenant as _reHydrateTenant } from '@lib/utils/http-client'
+import { Get, Patch, Post, Put, reHydrateToken, reHydrateTenant as _reHydrateTenant } from '@lib/utils/http-client'
 
 import { get as getPets } from '@sagas/pet'
 
@@ -85,6 +85,21 @@ function* get() {
   } catch (e) {
     yield put({
       type : types.GET_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* patch({ payload }) {
+  try {
+    yield put({ type: types.PATCH_PENDING })
+
+    yield call(Patch, 'auth/me/', payload)
+
+    yield put({ type: types.PATCH_FULFILLED })
+  } catch (e) {
+    yield put({
+      type : types.PATCH_FAILURE,
       error: e
     })
   }
@@ -268,14 +283,15 @@ function* nextLocationChange() {
 }
 
 export default [
-  fork(nextLocationChange),
-  takeEvery(types.CHECK, check),
   takeEvery(types.GET, get),
+  takeEvery(types.PATCH, patch),
   takeEvery(types.POST, post),
   takeEvery(types.PUT, _put),
+  takeEvery(types.CHECK, check),
   takeEvery(types.RECOVER_ACCOUNT, recoverAccount),
   takeEvery(types.SIGN_IN, signIn),
   takeEvery(types.SIGN_OUT, signOut),
-  takeEvery(types.PATCH, requestPasswordReset),
-  takeEvery(types.REHYDRATE_TENANT, rehydrateTenant)
+  takeEvery(types.PATCH_PASSWORD, requestPasswordReset),
+  takeEvery(types.REHYDRATE_TENANT, rehydrateTenant),
+  fork(nextLocationChange)
 ]

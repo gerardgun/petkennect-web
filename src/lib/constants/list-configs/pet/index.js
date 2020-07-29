@@ -66,7 +66,7 @@ export default {
       sort        : true,
       sort_name   : 'client__user__first_name',
       formatter   : (cell, row) => {
-        return <Link to={`/client/form/${row.client}`}>{cell}</Link>
+        return <Link to={`/client/${row.client}`}>{cell}</Link>
       }
     },
     {

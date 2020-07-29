@@ -10,21 +10,20 @@ import PetSection from './PetsSection'
 import CommentsSection from './CommentsSection'
 import DocumentsSection from './DocumentsSection'
 import Layout from '@components/Common/Layout'
+import { defaultImageUrl } from '@lib/constants'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientPetDuck from '@reducers/client/pet'
 
-const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
-
-const ClientShow = ({ clientDetail,clientPet ,...props }) => {
+const ClientShow = ({ clientDetail, ...props }) => {
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
-  const { id } = useParams()
+  const { client: clientId } = useParams()
   const history = useHistory()
 
   useEffect(() => {
-    props.getClient(id)
-    props.getPets({
-      client_id: id
+    props.getClient(clientId)
+    props.getClientPets({
+      client__id: clientId
     })
 
     return () => {
@@ -57,7 +56,7 @@ const ClientShow = ({ clientDetail,clientPet ,...props }) => {
 
             <Image
               circular className='c-square-140 mh-auto mt40 mb16' size='mini'
-              src={clientDetail.item.thumbnail_path || defaultImage}/>
+              src={clientDetail.item.thumbnail_path || defaultImageUrl}/>
 
             <input
               accept='image/*'
@@ -107,10 +106,9 @@ const ClientShow = ({ clientDetail,clientPet ,...props }) => {
           </Grid.Column>
           <Grid.Column className='shadow-2 p0' width={11}>
             {activeTabIndex === 0 && <FormInformation/>}
-            {activeTabIndex === 1 && <PetSection clientPet={clientPet}/>}
+            {activeTabIndex === 1 && <PetSection/>}
             {activeTabIndex === 2 && <CommentsSection/>}
             {activeTabIndex === 3 && <DocumentsSection/>}
-
           </Grid.Column>
 
         </Grid>
@@ -122,12 +120,11 @@ const ClientShow = ({ clientDetail,clientPet ,...props }) => {
 export default compose(
   connect(
     ({ ...state }) => ({
-      clientDetail: clientDetailDuck.selectors.detail(state),
-      clientPet   : clientPetDuck.selectors.list(state)
+      clientDetail: clientDetailDuck.selectors.detail(state)
     }), {
-      getClient: clientDetailDuck.creators.get,
-      setItem  : clientDetailDuck.creators.setItem,
-      resetItem: clientDetailDuck.creators.resetItem,
-      getPets  : clientPetDuck.creators.get
+      getClient    : clientDetailDuck.creators.get,
+      setItem      : clientDetailDuck.creators.setItem,
+      resetItem    : clientDetailDuck.creators.resetItem,
+      getClientPets: clientPetDuck.creators.get
     })
 )(ClientShow)

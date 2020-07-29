@@ -7,13 +7,12 @@ import _defaultTo from 'lodash/defaultTo'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
+import InputReadOnly from '@components/Common/InputReadOnly'
 import useModal from '@components/Modal/useModal'
+import { defaultImageUrl } from '@lib/constants'
 
 import employeeDuck from '@reducers/employee'
 import employeeDetailDuck from '@reducers/employee/detail'
-import InputReadOnly from '@components/Common/InputReadOnly'
-
-const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
 const EmployeeShow = ({ employeeDetail ,...props }) => {
   const { item: employee } = employeeDetail
@@ -41,7 +40,6 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
 
   return (
     <Layout>
-
       <Segment className='segment-content' padded='very'>
         <Grid>
           <Grid.Column textAlign='left' width={8}>
@@ -69,7 +67,7 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
 
         </Grid>
         <div  className='flex align-center mt36'>
-          <Image avatar className='img-40' src={employeeDetail.item.thumbnail_path || defaultImage}/>
+          <Image avatar className='img-40' src={employeeDetail.item.thumbnail_path || defaultImageUrl}/>
           <div className='c-thumbnail'>
             <div className='title'>{fullname}</div>
             <div className='description'>Employee</div>
@@ -90,7 +88,7 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
 
           <InputReadOnly
             label='Profile Picture'
-            value={<Image rounded size='mini' src={employeeDetail.item.thumbnail_path || defaultImage}/>}/>
+            value={<Image rounded size='mini' src={employeeDetail.item.thumbnail_path || defaultImageUrl}/>}/>
           <InputReadOnly
             label='Title'
             value={_defaultTo(employee.title_name, '-')}/>

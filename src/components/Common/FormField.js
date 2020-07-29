@@ -36,7 +36,7 @@ const FormField = props => {
   const _handleBlur = (e, data = {}) => {
     let value = ''
 
-    if(data.value)
+    if(typeof data.value !== 'undefined')
       value = data.value
     else
       value = e

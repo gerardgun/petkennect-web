@@ -7,7 +7,7 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
-import Form from '@containers/client/create/PetSection/Form'
+import PetFormModal from './form/modal'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
 import locationDuck from '@reducers/location'
@@ -22,10 +22,14 @@ const PetList = ({ pet, petDetail, ...props }) => {
   useChangeStatusEffect(props.getPets,petDetail.status)
 
   useEffect(() => {
-    props.getPets()
+    props.getPets({ retired: false })
     props.getLocations()
     props.getPetBreeds()
   }, [])
+
+  const _handleAddBtnClick = () => {
+    props.setItem(null, 'CREATE')
+  }
 
   const _handleOptionClick = option => {
     if(option === 'delete') {
@@ -42,13 +46,13 @@ const PetList = ({ pet, petDetail, ...props }) => {
             <Header as='h2'>Pets</Header>
           </Grid.Column >
           <Grid.Column textAlign='right' width={12}>
-            <Button color='teal' content='New Pet' disabled/>
+            <Button color='teal' content='New Pet' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
         <Table duck={petDuck} onOptionClick={_handleOptionClick}/>
       </Segment>
 
-      <Form/>
+      <PetFormModal/>
       <ModalDelete
         duckDetail={petDetailDuck}
         onClose={_handleClose}

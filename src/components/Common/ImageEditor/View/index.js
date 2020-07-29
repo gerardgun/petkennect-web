@@ -2,9 +2,10 @@ import React  from 'react'
 import PropTypes from 'prop-types'
 import { Header, Button, Icon, Image } from 'semantic-ui-react'
 import ReactPlayer from 'react-player'
-import  './styles.scss'
 
-const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
+import { defaultImageUrl } from '@lib/constants'
+
+import  './styles.scss'
 
 function View({ onClose : _handleClose, item }) {
   return (
@@ -27,7 +28,7 @@ function View({ onClose : _handleClose, item }) {
           width='100%'/> : (
           <Image
             className='web-camera'
-            src={item.filepath || defaultImage}/>
+            src={item.filepath || defaultImageUrl}/>
 
         )}
         <div className='overlay'>

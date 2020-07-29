@@ -30,7 +30,7 @@ const PetSection = props => {
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
-  const { client } = useParams()
+  const { client: clientId } = useParams()
 
   useEffect(() => {
     if(petDetail.status === 'DELETED')
@@ -167,11 +167,14 @@ const PetSection = props => {
           <Button
             content='Incident Report' disabled fluid
             icon='file alternate outline'/>
-          {isUpdating && !client && <Button
-            as={Link}
-            content='Go to client' fluid
-            icon='share square'
-            onClick={_handleCancelBtnClick} to={`/client/${petDetail.item.client}`}/>
+          {
+            isUpdating && !clientId && (
+              <Button
+                as={Link}
+                content='Go to client' fluid
+                icon='share square'
+                onClick={_handleCancelBtnClick} to={`/client/${petDetail.item.client}`}/>
+            )
           }
         </Grid.Column>
       </Grid>

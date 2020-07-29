@@ -15,7 +15,7 @@ import { syncValidate } from '@lib/utils/functions'
 
 import agreementDetailDuck from '@reducers/agreement/detail'
 
-const FormInformation = props => {
+const AgreementCreate = props => {
   const {
     agreementDetail,
     // match,
@@ -128,4 +128,4 @@ export default compose(
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(FormInformation)
+)(AgreementCreate)

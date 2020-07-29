@@ -281,7 +281,7 @@ const AppSidebar = ({ auth, location, ...props }) => {
                   <Button
                     as={Link} basic
                     color='teal' content='Edit Profile'
-                    to='auth/me'/>
+                    to='/auth/me'/>
                   <Dropdown
                     onChange={_handleLocationChange}
                     options={locationItems}
