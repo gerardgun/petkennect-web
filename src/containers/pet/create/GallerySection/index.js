@@ -1,141 +1,112 @@
-import  './styles.scss'
-import React, { useEffect, useCallback } from 'react'
+import React, { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { compose } from 'redux'
-import {  Form, Header, Divider, Button  } from 'semantic-ui-react'
+import { Container, Header, Grid, Button } from 'semantic-ui-react'
 
 import ModalDelete from '@components/Modal/Delete'
+import useModal from '@components/Modal/useModal'
+import Gallery from './Gallery'
+import { useChangeStatusEffect } from '@hooks/Shared'
+import useCameraAvailable from '@hooks/useCameraAvailable'
 
 import petDetailDuck from '@reducers/pet/detail'
-import { useDropzone } from 'react-dropzone'
-import useModal from '@components/Modal/useModal'
-import PetGallery from './PetGallery'
-
 import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
-import { useChangeStatusEffect } from '@hooks/Shared'
 
 const GallerySection = props => {
   const {
     petDetail,
     petImage,
-    petImageDetail,
-    getPetImages
+    petImageDetail
   } = props
 
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const { id: petId } = useParams()
+  const cameraIsAvailable = useCameraAvailable()
+  useChangeStatusEffect(() => props.getPetImages({ pet_id: petId }), petImageDetail.status, [ 'POSTED', 'PUT' ])
 
-  useEffect(()=> {
-    getPetImages({ pet_id: petDetail.item.id })
-  }, [  ])
-
-  const _handleDrop = useCallback((_acceptedFiles, _rejectedFiles , event) => {
+  const _handleDrop = useCallback((_acceptedFiles, _rejectedFiles, event) => {
     const images = event.dataTransfer ? event.dataTransfer.files : event.target.files
 
     if(images && images[0]) {
       const isImage = new RegExp('image').test(images[0].type)
-      props.setEditorItem({ filepath: URL.createObjectURL(images[0]), video_file: images[0], type: isImage ? 'image' : 'video' },'EDITOR_CREATE','EDITOR')
+
+      props.setItem({
+        filepath: images[0],
+        filename: images[0].name,
+        filetype: isImage ? 'image' : 'video'
+      }, 'CREATE')
     }
   }, [])
 
-  useChangeStatusEffect(
-    ()=> getPetImages({ pet_id: petDetail.item.id }),
-    petImageDetail.status, [ 'EDITOR_POSTED','EDITOR_PUTED' ]
-  )
+  const _handleItemClick = (e, { item_id }) => {
+    const item = petImage.items.find(({ id }) => id === item_id)
 
-  const _handleTakePhotoBtnClick = () => {
-    props.setEditorItem(null,'EDITOR_CREATE','CAMERA')
+    props.setItem(item, 'READ')
   }
 
-  const  _handleOptionSelect =  (item)=> (e, data) => {
-    switch (data.value) {
-      case 'view_photo':
-        props.setEditorItem(item, 'EDITOR_READ','VIEW')
+  const _handleTakePhotoBtnClick = () => {
+    props.setItem(null, 'TAKE')
+  }
+
+  const _handleItemOptionClick = (e, { item_id, value }) => {
+    const item = petImage.items.find(({ id }) => id === item_id)
+
+    switch (value) {
+      case 'edit':
+        props.setItem(item, 'UPDATE')
 
         return
-      case 'view_video':
-        props.setEditorItem({ ...item, type: 'video' }, 'EDITOR_READ','VIEW')
-
-        return
-      case 'edit_photo':
-        props.setEditorItem(item, 'EDITOR_UPDATE','EDITOR')
-
-        return
-
-      case 'delete_photo':
-        _handleDeleteImage(item)
-
-        return
-      case 'delete_video':
-        _handleDeleteImage(item)
-
-        return
-
-      default:
+      case 'delete':
+        props.setItem(item, 'DELETE')
+        _handleOpen()
 
         return
     }
   }
 
-  const {
-    getRootProps,
-    getInputProps
-  } = useDropzone({ onDrop: _handleDrop, accept: 'image/*, video/*' ,multiple: false })
-
-  const _handleDeleteImage = (_image)=>{
-    props.setItem(_image)
-    _handleOpen()
-  }
+  const { getRootProps, getInputProps } = useDropzone({ onDrop: _handleDrop, accept: 'image/*, video/*', multiple: false })
 
   const saving = [ 'POSTING', 'PUTTING' ].includes(petDetail.status)
 
   return (
-    <div>
-      <div className='flex align-center justify-between ph40 pt40 pb16'>
-        <Header className='c-title mv0'>
-          Gallery
-        </Header>
-      </div>
-      <Divider className='m0'/>
+    <Container fluid>
+      <Grid className='petkennect-profile-body-header' columns={2}>
+        <Grid.Column verticalAlign='middle'>
+          <Header as='h2'>Gallery</Header>
+        </Grid.Column>
+        <Grid.Column textAlign='right'>
+          <div style={{ display: 'inline-block' }} {...getRootProps()}>
+            <input {...getInputProps()}/>
+            <Button
+              basic
+              className='w120' color='teal' content='Upload'
+              disabled={saving} loading={saving}/>
+          </div>
+          {
+            cameraIsAvailable && (
+              <Button
+                color='teal' content='Take Photo'
+                disabled={saving} loading={saving} onClick={_handleTakePhotoBtnClick}/>
+            )
+          }
+        </Grid.Column>
+      </Grid>
 
-      <div className='flex justify-end mh40 mt32'>
-        <div {...getRootProps()}>
-          <input {...getInputProps()}/>
-
-          <Button
-            basic
-            color='teal'
-            content='Upload' disabled={saving}
-            // onClick={_handleCancelBtnClick}
-            size='small'/>
-        </div>
-
-        <Button
-          className='ml16'
-          color='teal'
-          content='Take Photo'
-          disabled={saving}
-          loading={saving}
-          onClick={_handleTakePhotoBtnClick}
-          // eslint-disable-next-line react/jsx-handler-names
-          // onClick={_handleSaveBtnClick}
-          size='small'/>
-      </div>
-      <div className='mh40 mv32'>
-        <Form className='pets-form-gallery'  loading={petImage.status === 'GETTING' || petImageDetail.status === 'PUTTING'}>
-          <PetGallery
-            items={[ ...petImage.items ]
-              .sort((_firstItem,_secondItem)=>  new Date(_secondItem.updated_at) - new Date(_firstItem.updated_at))
-            }
-            onOptionSelect={_handleOptionSelect}/>
-          <ModalDelete
-            duckDetail={petImageDetailDuck}
-            onClose={_handleClose}
-            open={open}/>
-        </Form>
+      <div className='mh24 mv32'>
+        <Gallery
+          list={petImage}
+          onItemClick={_handleItemClick}
+          onItemOptionClick={_handleItemOptionClick}/>
       </div>
 
-    </div>
+      <ModalDelete
+        duckDetail={petImageDetailDuck}
+        onClose={_handleClose}
+        open={open}/>
+    </Container>
   )
 }
 
@@ -149,16 +120,10 @@ export default compose(
         petImageDetail: petImageDetailDuck.selectors.detail(state),
         petDetail     : petDetailDuck.selectors.detail(state)
       }
-    }
-    ,
+    },
     {
-      getPetImages : petImageDuck.creators.get,
-      post         : petImageDetailDuck.creators.post,
-      put          : petImageDetailDuck.creators.put,
-      setItem      : petImageDetailDuck.creators.setItem,
-      resetItem    : petImageDetailDuck.creators.resetItem,
-      setEditorItem: petImageDetailDuck.creators.setEditorItem
-
+      getPetImages: petImageDuck.creators.get,
+      setItem     : petImageDetailDuck.creators.setItem
     }
   )
 )(GallerySection)

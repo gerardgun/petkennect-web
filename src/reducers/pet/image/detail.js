@@ -1,6 +1,6 @@
 import base from '@reducers/base'
 import detail from '@reducers/common/detail'
-import editorImage from '@reducers/common/editor-image'
+import mediaEditor from '@reducers/common/media-editor'
 
 export default base({
   namespace   : '@@pet-kennect',
@@ -8,4 +8,4 @@ export default base({
   initialState: {}
 })
   .extend(detail)
-  .extend(editorImage)
+  .extend(mediaEditor)

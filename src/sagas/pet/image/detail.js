@@ -6,11 +6,9 @@ import petImageDetailDuck from '@reducers/pet/image/detail'
 import petDetailDuck from '@reducers/pet/detail'
 
 const { types } = petImageDetailDuck
-// const { types :listTypes } = petImageDuck
 
 function* deleteItem(/* { payload }*/) {
   try {
-    // const petImage = yield select(petImageDuck.selectors.list)
     const petDetail = yield select(petDetailDuck.selectors.detail)
     const pet_id = petDetail.item.id
     const petImageDetail = yield select(petImageDetailDuck.selectors.detail)
@@ -50,7 +48,7 @@ function* get({ id }) {
 }
 
 function* post({ payload }) {
-  const { images, is_profile } = payload
+  const { files, filename = null, is_profile = false } = payload
 
   try {
     yield put({ type: types.POST_PENDING })
@@ -59,16 +57,25 @@ function* post({ payload }) {
     const petDetail = yield select(petDetailDuck.selectors.detail)
 
     // Upload new pet image
-    let [ result ] = yield call(Post, `pets/${petDetail.item.id}/images/`, { images })
+    let [ result ] = yield call(Post, `pets/${petDetail.item.id}/images/`, { files })
 
     // Set image as profile if is_profile=true
-    if(is_profile === true) {
-      yield call(Patch, `pets/${petDetail.item.id}/images/${result.id}/`, { is_profile })
+    if(filename || is_profile === true) {
+      let payloadForPatch = {}
 
-      result.is_profile = true
+      if(filename) payloadForPatch.filename = filename
+      if(is_profile) payloadForPatch.is_profile = is_profile
 
+      const patchedImage = yield call(Patch, `pets/${petDetail.item.id}/images/${result.id}/`, payloadForPatch)
+
+      result = {
+        ...result,
+        ...patchedImage
+      }
+    }
+
+    if(is_profile === true)
       // Update current pet detail item
-      // image_filepath
       yield put({
         type   : petDetailDuck.types.SET,
         payload: {
@@ -78,7 +85,6 @@ function* post({ payload }) {
           }
         }
       })
-    }
 
     yield put({
       type   : types.POST_FULFILLED,
@@ -94,11 +100,10 @@ function* post({ payload }) {
 
 function* _put({ payload: { pet_id, pet_image_id, ...payload } }) {
   try {
-    // const petImage = yield select(petImageDuck.selectors.list)
-
     yield put({ type: types.PUT_PENDING })
 
     yield call(Patch, `pets/${pet_id}/images/${pet_image_id}/`, payload)
+
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
     yield put({
@@ -108,78 +113,9 @@ function* _put({ payload: { pet_id, pet_image_id, ...payload } }) {
   }
 }
 
-function* editorPost({ payload }) {
-  const { file: images, description = '', is_profile , type = 'image' } = payload
-
-  try {
-    yield put({ type: types.EDITOR_POST_PENDING })
-
-    // Get current pet detail item
-    const petDetail = yield select(petDetailDuck.selectors.detail)
-
-    // Upload new pet image
-    let [ result ] = yield call(Post, `pets/${petDetail.item.id}/images/`, { images , description , type })
-
-    // Set image as profile if is_profile=true
-    if(is_profile === true) {
-      yield call(Patch, `pets/${petDetail.item.id}/images/${result.id}/`, { is_profile })
-
-      result.is_profile = true
-
-      // Update current pet detail item
-      // image_filepath
-      yield put({
-        type   : petDetailDuck.types.SET,
-        payload: {
-          item: {
-            ...petDetail.item,
-            image_filepath: result.filepath
-          }
-        }
-      })
-    }
-
-    yield put({
-      type   : types.EDITOR_POST_FULFILLED,
-      payload: result
-    })
-  } catch (e) {
-    yield put({
-      type : types.EDITOR_POST_FAILURE,
-      error: e
-    })
-  }
-}
-
-function* editorPut({ payload }) {
-  const { file: images, is_profile , description , type = 'image' } = payload
-
-  try {
-    yield put({ type: types.EDITOR_PUT_PENDING })
-
-    // Get current pet detail item
-    const petDetail = yield select(petDetailDuck.selectors.detail)
-
-    // Upload new pet image
-    let [ result ] = yield call(Patch, `pets/${petDetail.item.id}/images/`, { images, is_profile , description, type })
-
-    yield put({
-      type   : types.EDITOR_PUT_FULFILLED,
-      payload: result
-    })
-  } catch (e) {
-    yield put({
-      type : types.EDITOR_PUT_FAILURE,
-      error: e
-    })
-  }
-}
-
 export default [
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
-  takeEvery(types.PUT, _put),
-  takeEvery(types.EDITOR_POST, editorPost),
-  takeEvery(types.EDITOR_PUT, editorPut)
+  takeEvery(types.PUT, _put)
 ]

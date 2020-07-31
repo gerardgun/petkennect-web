@@ -42,6 +42,12 @@ export const getAge = (date) => {
   }
 }
 
+export const getFileType = filepath => {
+  const fileExt = filepath.split('.').pop()
+
+  return [ 'png', 'jpg', 'jpeg' ].includes(fileExt) ? 'image' : 'video'
+}
+
 export const getMessageError = e => {
   let currentMessage = 'Error'
 

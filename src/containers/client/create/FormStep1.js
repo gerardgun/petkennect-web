@@ -160,7 +160,7 @@ const ClientCreateFormStep1 = (props) => {
             label='Location'
             name='location'
             options={location.items.map(_location =>
-              ({ key: _location.id, value: _location.id, text: `${_location.name}` }))
+              ({ key: _location.id, value: _location.id, text: `${_location.code}` }))
             }
             placeholder='Contact Location'
             required

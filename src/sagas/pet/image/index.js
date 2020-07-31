@@ -1,24 +1,28 @@
 import { call, put, takeEvery ,select } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
+import { getFileType } from '@lib/utils/functions'
 
 import petImageDuck from '@reducers/pet/image'
 
 const { types, selectors } = petImageDuck
 
-function* get({ payload : { pet_id } }) {
+function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const { ...filters } = yield select(selectors.filters)
+    const { pet_id, ...filters } = yield select(selectors.filters)
     const list = yield select(selectors.list)
 
-    const { results,...meta } = yield call(Get, `/pets/${pet_id}/images/`,filters)
+    const { results, ...meta } = yield call(Get, `/pets/${pet_id}/images/`, filters)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items     : results,
+        items: results.map(item => ({
+          ...item,
+          filetype: getFileType(item.filepath)
+        })),
         pagination: {
           ...list.pagination,
           meta

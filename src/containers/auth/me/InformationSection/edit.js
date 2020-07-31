@@ -14,8 +14,8 @@ function AuthMeInformationEdit({ auth, ...props }) {
     props.setItem(user, 'READ')
   }
 
-  const saved = [ 'POSTED', 'PUT' ].includes(auth.status)
-  const saving = [ 'POSTING', 'PUTTING' ].includes(auth.status)
+  const saved = [ 'PATCHED' ].includes(auth.status)
+  const saving = [ 'PATCHING' ].includes(auth.status)
 
   return (
     <Container fluid>
