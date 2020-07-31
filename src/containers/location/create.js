@@ -16,6 +16,8 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
 
+import { googleApiKey } from '@lib/constants'
+
 const LocationCreate = props => {
   const {
     locationDetail,
@@ -240,8 +242,7 @@ export default compose(
       const locationDetail = locationDetailDuck.selectors.detail(state)
       const  location     = locationDuck.selectors.list(state)
       const initialValues = { ...locationDetail.item }
-      const googleMapApiKey = 'AIzaSyBw9IUp8bxca_FWHVXNXd35ORconeSAV8w'
-      // const googleMapApiKey = 'AIzaSyCfpVlD00XavbYX316nWjHrTYoMDWN1reI'
+      const googleMapApiKey = googleApiKey
 
       return {
         locationDetail,
