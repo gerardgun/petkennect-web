@@ -18,13 +18,7 @@ import '@containers/auth/sign-in/styles.scss'
 const ForgotPassword = props => {
   const {
     auth,
-    requestPasswordReset,
-    // from redux form
-    error,
-    handleSubmit,
-    pristine,
-    reset,
-    submitting
+    error, handleSubmit, pristine, reset, submitting // redux-form
   } = props
 
   const _handleConfirmBtnClick = () => {
@@ -32,7 +26,7 @@ const ForgotPassword = props => {
   }
 
   const _handleSubmit = values => {
-    return requestPasswordReset(values)
+    return props.requestPasswordReset(values)
       .catch(parseResponseError)
   }
 

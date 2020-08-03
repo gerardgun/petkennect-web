@@ -1,55 +1,35 @@
 import React  from 'react'
-import PropTypes from 'prop-types'
-import { Header, Button, Icon, Image } from 'semantic-ui-react'
+import { Header, Image } from 'semantic-ui-react'
 import ReactPlayer from 'react-player'
-import  './styles.scss'
 
-const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
-
-function View({ onClose : _handleClose, item }) {
+function View({ item }) {
   return (
-    <div className='c-view-wrapper'>
-      <div className='flex justify-end'>
-        <Button basic icon onClick={_handleClose}>
-          <Icon name='delete'/>
-        </Button>
-      </div>
-      <div className='flex justify-between'>
-        <Header content='View photo'/>
-      </div>
-
-      <div className='c-view__image-wrapper'>
-        {item.type === 'video' ? <ReactPlayer
-          className='react-player'
-          controls
-          height='100%'
-          url={item.filepath}
-          width='100%'/> : (
+    <>
+      <Header as='h2'>
+        <Header.Content>
+          View {item.filetype === 'video' ? 'Video' : 'Photo'}
+          <Header.Subheader>{item.filename}</Header.Subheader>
+        </Header.Content>
+      </Header>
+      {
+        item.filetype === 'video' ? (
+          <div className='player-wrapper mb16'>
+            <ReactPlayer
+              className='react-player'
+              controls
+              height='100%'
+              url={item.filepath}
+              width='100%'/>
+          </div>
+        ) : (
           <Image
-            className='web-camera'
-            src={item.filepath || defaultImage}/>
-
-        )}
-        <div className='overlay'>
-          {
-            item.description && <Header className='description' content={item.description}/>
-          }
-        </div>
-
-      </div>
-    </div>
+            className='mb16'
+            rounded
+            src={item.filepath}/>
+        )
+      }
+    </>
   )
-}
-
-View.propTypes = {
-  onClose    : PropTypes.func.isRequired,
-  url        : PropTypes.string,
-  description: PropTypes.string
-}
-
-View.defaultProps = {
-  url        : '',
-  description: ''
 }
 
 export default View

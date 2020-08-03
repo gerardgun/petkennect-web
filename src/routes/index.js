@@ -9,7 +9,7 @@ import Error404 from '@containers/page/error-404'
 // Private Containers
 import Agreement from '@containers/agreement'
 import AgreementCreate from '@containers/agreement/create'
-import Me from '@containers/auth/me'
+import AuthMe from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
 import ClientForm from '@containers/client/form'
@@ -86,6 +86,10 @@ const publicRoutes = [
 
 const privateRoutes = [
   {
+    path     : '/auth/me',
+    component: AuthMe
+  },
+  {
     path     : '/auth/sso',
     component: AuthSSO
   },
@@ -94,7 +98,7 @@ const privateRoutes = [
     component: Client
   },
   {
-    path     : '/client/form/:id',
+    path     : '/client/:client',
     component: ClientForm
   },
   {
@@ -240,10 +244,6 @@ const privateRoutes = [
   {
     path     : '/transaction',
     component: Transaction
-  },
-  {
-    path     : '/me',
-    component: Me
   },
   // {
   //   path     : '/program-evaluation',

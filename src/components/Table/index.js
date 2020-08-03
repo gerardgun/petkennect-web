@@ -133,11 +133,12 @@ const TableList = ({ duck, list, ...props }) => {
 
   const _renderRow = (item, index) => {
     const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
+    const isActive = Boolean('active' in item ? item.active : true)
 
     return (
       <Table.Row
-        active={checked} data-item-id={item.id} key={index}
-        onClick={_handleRowClick}>
+        active={checked} className={isActive ? '' : 'inactive'} data-item-id={item.id}
+        key={index} onClick={_handleRowClick}>
         {/* Row selection */}
         {
           list.selector && (

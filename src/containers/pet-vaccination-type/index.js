@@ -7,7 +7,7 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
-import PetVaccinationTypeForm from  './Form'
+import PetVaccinationTypeForm from  './form'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
 import petVaccinationTypeDuck from '@reducers/pet/vaccination-type'

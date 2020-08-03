@@ -24,32 +24,16 @@ export default base({
         'CHECKING', 'CHECKED', 'EXISTS', 'NOT_EXISTS',
         'SIGNING_OUT', 'SIGNED_OUT',
         'SIGNING_IN', 'SIGNED_IN',
-        'REHYDRATING_TENANT',
-        'REHYDRATED_TENANT'
+        'REHYDRATING_TENANT', 'REHYDRATED_TENANT'
       ]
     },
     types: [
-      'CHECK',
-      'CHECK_CANCEL',
-      'CHECK_FAILURE',
-      'CHECK_FULFILLED',
-      'CHECK_PENDING',
-      'RECOVER_ACCOUNT',
-      'SIGN_IN',
-      'SIGN_IN_CANCEL',
-      'SIGN_IN_FAILURE',
-      'SIGN_IN_FULFILLED',
-      'SIGN_IN_PENDING',
-      'SIGN_OUT',
-      'SIGN_OUT_CANCEL',
-      'SIGN_OUT_FAILURE',
-      'SIGN_OUT_FULFILLED',
-      'SIGN_OUT_PENDING',
-      'REHYDRATE_TENANT',
-      'REHYDRATE_TENANT_CANCEL',
-      'REHYDRATE_TENANT_FAILURE',
-      'REHYDRATE_TENANT_FULFILLED',
-      'REHYDRATE_TENANT_PENDING'
+      'CHECK', 'CHECK_CANCEL', 'CHECK_FAILURE', 'CHECK_FULFILLED', 'CHECK_PENDING',
+      'SIGN_IN', 'SIGN_IN_CANCEL', 'SIGN_IN_FAILURE', 'SIGN_IN_FULFILLED', 'SIGN_IN_PENDING',
+      'SIGN_OUT', 'SIGN_OUT_CANCEL', 'SIGN_OUT_FAILURE', 'SIGN_OUT_FULFILLED', 'SIGN_OUT_PENDING',
+      'REHYDRATE_TENANT', 'REHYDRATE_TENANT_CANCEL', 'REHYDRATE_TENANT_FAILURE', 'REHYDRATE_TENANT_FULFILLED', 'REHYDRATE_TENANT_PENDING',
+      'PATCH_PASSWORD',
+      'RECOVER_ACCOUNT'
     ],
     reducer: (state, action, { types, statuses }) => produce(state, draft => {
       switch (action.type) {
@@ -115,8 +99,9 @@ export default base({
     creators: ({
       types: {
         CHECK, CHECK_FULFILLED, CHECK_FAILURE,
-        PATCH, PATCH_FULFILLED, PATCH_FAILURE,
+        /* PATCH, */ PATCH_FULFILLED, PATCH_FAILURE,
         /* POST, */ POST_FULFILLED, POST_FAILURE,
+        PATCH_PASSWORD,
         RECOVER_ACCOUNT,
         SIGN_IN, SIGN_IN_FULFILLED, SIGN_IN_FAILURE,
         SIGN_OUT, SIGN_OUT_FULFILLED, SIGN_OUT_FAILURE,
@@ -137,7 +122,7 @@ export default base({
         [ERROR_ACTION]   : POST_FAILURE
       }),
       requestPasswordReset: payload => ({
-        type             : PATCH,
+        type             : PATCH_PASSWORD,
         payload,
         [WAIT_FOR_ACTION]: PATCH_FULFILLED,
         [ERROR_ACTION]   : PATCH_FAILURE

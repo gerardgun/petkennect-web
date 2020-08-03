@@ -1,4 +1,4 @@
-.pet-profile {
+.petkennect-profile {
   &-menu.ui.menu.vertical {
     box-shadow: none;
 
@@ -15,6 +15,26 @@
     }
   }
 
+  &-body {
+    border-left: solid 1px rgba(34, 36, 38, 0.15);
+
+    &-header {
+      border-bottom: solid 1px rgba(34, 36, 38, 0.15);
+      margin-bottom: 0rem !important;
+      padding-left: 1.8rem !important;
+      padding-right: 1.8rem !important;
+      padding-top: 1rem !important;
+
+      .ui.header {
+        font-weight: 400;
+      }
+    }
+
+    &-content {
+      padding: 2.5rem 1.8rem 1.5rem;
+    }
+  }
+
   .c-image-profile {
     position: relative;
     overflow: hidden;
@@ -22,6 +42,12 @@
     width: 14rem;
     height: 14rem;
     margin-bottom: 2.5rem;
+
+    .ui.image {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
 
     .c-image-profile__overlay {
       display: none;
@@ -36,10 +62,12 @@
       background: rgba(97, 100, 104, 0.9);
       cursor: pointer;
     }
+
     &:hover .c-image-profile__overlay {
       display: flex;
     }
   }
+
   .c-image-profile__menu {
     top: 70px !important;
     right: -60px !important;

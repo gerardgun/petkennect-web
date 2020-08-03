@@ -1,54 +1,49 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
+
 import Camera from './Camera'
 import Editor from './Editor'
 import Picker from './Picker'
 import View from './View'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { useEffect } from 'react'
+
+import './styles.scss'
 
 function ImageEditor(props) {
   const {
-    list,
     circularCropper,
+    detail,
     duckDetail,
-    detail
+    list
   } = props
 
   useEffect(()=> {
-    if(detail.status === 'EDITOR_POSTED' || detail.status === 'EDITOR_PUT')
-      _handleClose()
+    if(detail.status === 'POSTED' || detail.status === 'PUT') _handleClose()
   }, [ detail.status ])
 
   const _handleClose = () => {
     props.dispatch(
-      duckDetail.creators.resetEditorItem()
-    )
-    props.dispatch(
-      duckDetail.creators.reset()
+      duckDetail.creators.resetItem()
     )
   }
 
   const _handleTakePhoto = (_imageURL) => {
-    props
-      .dispatch(
-        duckDetail.creators.setEditorItem({ ...detail.editorItem , filepath: _imageURL }, detail.editorMode, 'EDITOR')
-      )
+    props.dispatch(
+      duckDetail.creators.setItem({ ...detail.item , filepath: _imageURL }, 'CREATE')
+    )
   }
 
   const _handleSelectPhoto = (_imageURL) => {
     props.dispatch(
-      duckDetail.creators.setEditorItem({ ...detail.editorItem, filepath: _imageURL }, detail.editorMode, 'EDITOR')
+      duckDetail.creators.setItem({ ...detail.item, filepath: _imageURL }, 'CREATE')
     )
   }
 
-  const getIsOpened = mode => (mode === 'EDITOR_CREATE' || mode === 'EDITOR_UPDATE' || mode === 'EDITOR_READ')
-
-  const isOpened = useMemo(() => getIsOpened(detail.editorMode), [ detail.editorMode ])
-
-  const saving = detail.status === 'EDITOR_POSTING' || detail.status === 'EDITOR_PUTTING'
+  const isOpened = useMemo(() => {
+    return [ 'CREATE', 'READ', 'PICK', 'TAKE', 'UPDATE' ].includes(detail.mode)
+  }, [ detail.mode ])
 
   return (
     <Modal
@@ -57,35 +52,36 @@ function ImageEditor(props) {
       open={isOpened}
       size='small'>
       <Modal.Content>
-        {detail.editorStep === 'VIEW' && <View item={detail.editorItem} onClose={_handleClose}/>}
-        {detail.editorStep  === 'CAMERA' && (
-          <Camera onClose={_handleClose} onTakePhoto={_handleTakePhoto}/>
-        )}
-        {detail.editorStep  === 'PICKER' && (
-          <Picker
-            images={list.items}
-            onClose={_handleClose}
-            onSavePhotoSelected={_handleSelectPhoto}/>
-        )}
-        {detail.editorStep  === 'EDITOR' && (
-          <Editor
-            circularCropper={circularCropper}
-            detail={detail}
-            duckDetail={duckDetail}
-            item={detail.editorItem}
-            loading={saving}
-            onClose={_handleClose}/>
-        )}
-
+        {
+          (detail.mode === 'CREATE' || detail.mode === 'UPDATE') && (
+            <Editor
+              circularCropper={circularCropper}
+              detail={detail}
+              duckDetail={duckDetail}
+              onClose={_handleClose}/>
+          )
+        }
+        {
+          detail.mode === 'READ' && <View item={detail.item}/>
+        }
+        {
+          detail.mode === 'PICK' && (
+            <Picker
+              images={list.items}
+              onClose={_handleClose}
+              onSavePhotoSelected={_handleSelectPhoto}/>
+          )
+        }
+        {
+          detail.mode === 'TAKE' && <Camera onClose={_handleClose} onTakePhoto={_handleTakePhoto}/>
+        }
       </Modal.Content>
     </Modal>
   )
 }
 
 ImageEditor.propTypes = {
-
   circularCropper: PropTypes.bool
-
 }
 
 ImageEditor.defaultProps = {
@@ -100,6 +96,6 @@ export default compose(
       list  : duck.selectors.list(state),
       detail: state[duckDetail.store]
     }),
-    (dispatch) => ({ dispatch })
+    dispatch => ({ dispatch })
   )
 )(ImageEditor)

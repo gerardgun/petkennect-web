@@ -56,21 +56,15 @@ function* post({ payload: { ...payload } }) {
 
     const { id : documentTypeId } = documenTypes.find(_documentType => _documentType.type === 'V') || {}
 
-    /** * */
-
-    /** creating document */
-
+    /** Creating client document */
     const petDetail = yield select(petDetailDuck.selectors.detail)
 
-    const { id: upload_employee } = localStorage.getItem('@auth_user')
-
-    const [ resultDocument ] = yield call(Post, `clients/${petDetail.item.client}/documents/`, {
-      files: payload.file,
-      type : documentTypeId ,
-      upload_employee
+    const resultDocument = yield call(Post, `clients/${petDetail.item.client}/documents/`, {
+      file: payload.file,
+      type: documentTypeId
     })
 
-    /** creating all vaccinations listed*/
+    /** Creating all vaccinations listed */
     yield all(payload.vaccinations.map(_vaccination =>
       call(Post, `pets/${petDetail.item.id}/vaccinations/`, {
         expired_at: _vaccination.expired_at,
@@ -78,9 +72,6 @@ function* post({ payload: { ...payload } }) {
         document  : resultDocument.id
       })
     ))
-    // yield call(Post, `pets/${petDetail.item.id}/vaccinations/`, {
-    //   ...payload
-    // })
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {

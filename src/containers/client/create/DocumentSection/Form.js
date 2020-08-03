@@ -19,11 +19,11 @@ const DocumentForm = props => {
     clientDocumentDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
-  const { client: client_id } = useParams()
+  const { client: clientId } = useParams()
 
   useEffect(()=> {
     props.getDocumentTypes()
-  }, [ client_id ])
+  }, [ clientId ])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
@@ -34,11 +34,11 @@ const DocumentForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ client_id, id: clientDocumentDetail.item.id, ...values })
+      return props.put({ client_id: clientId, id: clientDocumentDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props.post({ client_id ,...values })
+      return props.post({ client_id: clientId ,...values })
         .then(_handleClose)
         .catch(parseResponseError)
   }

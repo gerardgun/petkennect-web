@@ -1,75 +1,56 @@
-import React, { useEffect, useState, useRef } from 'react'
-import './styles.scss'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Grid, Segment, Breadcrumb, Image, Label, Menu, Header, Dropdown, Button, Icon } from 'semantic-ui-react'
-import moment from 'moment'
 import _get from 'lodash/get'
 
 import Layout from '@components/Common/Layout'
 import ImageEditor from '@components/Common/ImageEditor'
 import PetProfileProperty from '@components/Common/Pet/Profile/Property'
-import FormInformation from './FormInformation'
+import InformationSection from './InformationSection'
 import BookingSection from './BookingSection'
 import VaccinationSection from './VaccinationSection'
 import IncidentSection from './IncidentSection'
 import NotesSection from './NotesSection'
 import GallerySection from './GallerySection'
+import useCameraAvailable from '@hooks/useCameraAvailable'
+import { defaultImageUrl } from '@lib/constants'
+import { getAge } from '@lib/utils/functions'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
-import useCameraAvailable from '@hooks/useCameraAvailable'
+import petRetireReasonDuck from '@reducers/pet/retire-reason'
 
-const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
-
-const PetShow = ({ petDetail, ...props }) => {
+const PetShow = ({ petDetail, petImage, ...props }) => {
   const [ activeMenuItem, setActiveMenuItem ] = useState('info')
-  const { id } = useParams()
-
   const inputFileRef = useRef()
+  const { id: petId } = useParams()
+  const cameraIsAvailable = useCameraAvailable()
 
   useEffect(() => {
-    props.getPet(id)
-    props.getPetImages({ pet_id: id })
+    props.getPet(petId)
+    props.getPetImages({ pet_id: petId })
+    props.getPetRetireReasons()
 
     return () => {
       props.resetItem()
     }
   }, [])
-  const  cameraIsAvailable = useCameraAvailable()
 
-  const getAge = (date) => {
-    if(!date) return '-'
-
-    const years = moment().diff(date, 'year')
-    const months = moment().diff(date, 'month')
-    const days = moment().diff(date, 'day')
-    if(years < 0  || months < 0 || days < 0)
-      return ' -'
-
-    if(years === 1)
-      return `${years} year`
-
-    if(years > 1)
-      return `${years} years`
-
-    if(years === 0) {
-      if(months === 0)
-        return `${days} days`
-
-      if(months === 1)
-        return `${months} month`
-
-      if(months > 1)
-        return `${months} months`
-    }
-  }
+  useEffect(() => {
+    if(petDetail.status === 'PUT') props.getPet(petId)
+  }, [ petDetail.status ])
 
   const _handleFileChange = e => {
     if(e.target.files && e.target.files[0])
-      props.setEditorItem({ filepath: URL.createObjectURL(e.target.files[0]) ,  is_profile: true }, 'EDITOR_CREATE', 'EDITOR')
+      props.setPetImage({
+        filepath  : e.target.files[0],
+        filetype  : 'image',
+        filename  : e.target.files[0].name,
+        is_profile: true
+      }, 'CREATE')
   }
 
   const _handleOptionDropdownChange = () => {
@@ -79,11 +60,11 @@ const PetShow = ({ petDetail, ...props }) => {
   const _handlePhotoAction = (e , data)=>{
     switch (data.value) {
       case 'view_photo':
-        props.setEditorItem({ filepath: petDetail.item.image_filepath , is_profile: true }, 'EDITOR_CREATE', 'VIEW')
+        props.setPetImage({ filepath: petDetail.item.image_filepath }, 'READ')
 
         return
       case 'take_photo':
-        props.setEditorItem({ is_profile: true }, 'EDITOR_CREATE', 'CAMERA')
+        props.setPetImage({ is_profile: true }, 'TAKE')
 
         return
       case 'upload_photo':
@@ -92,32 +73,46 @@ const PetShow = ({ petDetail, ...props }) => {
 
         return
       case 'select_photo':
-        props.setEditorItem({ is_profile: true }, 'EDITOR_CREATE', 'PICKER')
+        props.setPetImage({ is_profile: true }, 'PICK')
 
         return
-
       default:
-
         return
     }
   }
 
   const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
+  const imageProfileOptions = useMemo(() => {
+    let options = []
+
+    if(petDetail.item.image_filepath)
+      options.push({ key: 'view_photo', value: 'view_photo', text: 'View photo' })
+
+    if(cameraIsAvailable)
+      options.push({ key: 'take_photo', value: 'take_photo', text: 'Take photo' })
+
+    options.push(
+      { key: 'upload_photo', value: 'upload_photo', text: 'Upload photo' },
+      { key: 'select_photo', value: 'select_photo', text: 'Select photo' }
+    )
+
+    return options
+  }, [ petDetail.status ])
 
   const fullname = `${petDetail.item.name || ''}`
   const clientFullName = `${petDetail.item.client_first_name || ''} ${petDetail.item.client_last_name || ''}`
 
   return (
     <Layout>
-      <Segment className='segment-content pet-profile'>
+      <Segment className='segment-content petkennect-profile'>
         <Grid>
           <Grid.Column className='p40' width={5}>
             <Breadcrumb>
-              <Breadcrumb.Section link>
+              <Breadcrumb.Section>
                 <Link to='/pet'>Pets</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider/>
-              <Breadcrumb.Section active link>
+              <Breadcrumb.Section active>
                 {fullname}
               </Breadcrumb.Section>
             </Breadcrumb>
@@ -128,25 +123,21 @@ const PetShow = ({ petDetail, ...props }) => {
                 onChange={_handlePhotoAction}
                 selectOnBlur={false}
                 trigger={(
-                  <div className='c-image-profile mh-auto'>
-                    <Image circular src={petDetail.item.image_filepath || defaultImage}/>
+                  <div className='c-image-profile'>
+                    <Image circular src={petDetail.item.image_filepath || defaultImageUrl}/>
                     <div className='c-image-profile__overlay'>
-                      <Icon className='text-white mb8' name='camera'/>
-                      <span className='text-regular text-white text-center'>CHANGE <br/>PHOTO</span>
+                      <Icon className='text-white mb8' name='camera' size='big'/>
+                      <span className='text-regular text-white text-center'>{petDetail.item.image_filepath ? 'CHANGE' : 'UPLOAD'} <br/>PHOTO</span>
                     </div>
-
                   </div>
                 )}
                 value={null}>
                 <Dropdown.Menu className='c-image-profile__menu'>
-                  {[
-                    { key: 'view_photo', value: 'view_photo', text: 'View photo' },
-                    { key: 'take_photo', value: 'take_photo', text: 'Take photo'  },
-                    { key: 'upload_photo', value: 'upload_photo', text: 'Upload photo' },
-                    { key: 'select_photo', value: 'select_photo', text: 'Select photo' }
-                  ].filter(_item=> _item.value !== 'take_photo' || (_item.value === 'take_photo' && cameraIsAvailable)).map(_item=> (
-                    <Dropdown.Item  key={_item.key} onClick={_handlePhotoAction} value={_item.value}>{_item.text}</Dropdown.Item>
-                  ))}
+                  {
+                    imageProfileOptions.map(_item => (
+                      <Dropdown.Item  key={_item.key} onClick={_handlePhotoAction} value={_item.value}>{_item.text}</Dropdown.Item>
+                    ))
+                  }
                 </Dropdown.Menu>
               </Dropdown>
             </div>
@@ -191,7 +182,7 @@ const PetShow = ({ petDetail, ...props }) => {
                   <PetProfileProperty name='Breed&nbsp;' value={_get(petDetail.item, 'breed_name', '-')}/>
                 </Grid.Column>
                 <Grid.Column>
-                  <PetProfileProperty name='Age&nbsp;&nbsp;&nbsp;&nbsp;' value={getAge(petDetail.item.born_at)}/>
+                  <PetProfileProperty name='Age&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' value={getAge(petDetail.item.born_at)}/>
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row columns={2} style={{ paddingTop: 0 }} verticalAlign='middle'>
@@ -199,7 +190,7 @@ const PetShow = ({ petDetail, ...props }) => {
                   <PetProfileProperty name='Sex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' value={petDetail.item.sex === 'F' ? 'Female' : 'Male'}/>
                 </Grid.Column>
                 <Grid.Column>
-                  <PetProfileProperty name='Fixed&nbsp;' value={petDetail.item.fixed ? 'Yes' : 'No'}/>
+                  <PetProfileProperty name='Altered&nbsp;' value={petDetail.item.fixed ? 'Yes' : 'No'}/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -207,7 +198,7 @@ const PetShow = ({ petDetail, ...props }) => {
             <br/>
 
             <Menu
-              className='pet-profile-menu' color='teal' fluid
+              className='petkennect-profile-menu' color='teal' fluid
               vertical>
               <Menu.Item
                 active={activeMenuItem === 'info'} link name='info'
@@ -242,26 +233,25 @@ const PetShow = ({ petDetail, ...props }) => {
                 active={activeMenuItem === 'gallery'} link name='gallery'
                 onClick={_handleMenuItemClick}>
                 Gallery
-                <Label color='teal'>58</Label>
+                <Label color='teal'>{petImage.pagination.meta.total_items || '...'}</Label>
               </Menu.Item>
             </Menu>
           </Grid.Column>
-          <Grid.Column className='shadow-2 p0' width={11}>
-            {activeMenuItem === 'info' && <FormInformation/>}
+          <Grid.Column className='petkennect-profile-body' width={11}>
+            {activeMenuItem === 'info' && <InformationSection/>}
             {activeMenuItem === 'bookings' && <BookingSection/>}
             {activeMenuItem === 'vaccinations' && <VaccinationSection/>}
             {activeMenuItem === 'incidents' && <IncidentSection/>}
             {activeMenuItem === 'notes' && <NotesSection/>}
             {activeMenuItem === 'gallery' && <GallerySection/>}
           </Grid.Column>
-
-          <ImageEditor
-            circularCropper
-            duck={petImageDuck}
-            duckDetail={petImageDetailDuck}/>
-
         </Grid>
       </Segment>
+
+      <ImageEditor
+        circularCropper
+        duck={petImageDuck}
+        duckDetail={petImageDetailDuck}/>
 
     </Layout>
   )
@@ -272,13 +262,11 @@ export default compose(
     ({ ...state }) => ({
       petDetail: petDetailDuck.selectors.detail(state),
       petImage : petImageDuck.selectors.list(state)
-
     }), {
-      getPetImages : petImageDuck.creators.get,
-      getPet       : petDetailDuck.creators.get,
-      postPetImage : petImageDetailDuck.creators.post,
-      putPetImage  : petImageDetailDuck.creators.put,
-      resetItem    : petDetailDuck.creators.resetItem,
-      setEditorItem: petImageDetailDuck.creators.setEditorItem
+      getPetImages       : petImageDuck.creators.get,
+      getPetRetireReasons: petRetireReasonDuck.creators.get,
+      getPet             : petDetailDuck.creators.get,
+      resetItem          : petDetailDuck.creators.resetItem,
+      setPetImage        : petImageDetailDuck.creators.setItem
     })
 )(PetShow)

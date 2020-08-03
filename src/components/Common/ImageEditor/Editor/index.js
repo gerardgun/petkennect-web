@@ -1,75 +1,53 @@
-import React, { useRef, useState, useEffect } from 'react'
-import './styles.scss'
+import React, { useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Header, Button, Icon, Form, Input } from 'semantic-ui-react'
 import AvatarEditor from 'react-avatar-editor'
-import { compose } from 'redux'
+import ReactPlayer from 'react-player'
 import { connect } from 'react-redux'
-import * as Yup from 'yup'
-import { syncValidate, parseResponseError } from '@lib/utils/functions'
+import { compose } from 'redux'
 import { reduxForm, Field } from 'redux-form'
-
+import { Header, Button, Icon, Image, Form, Input } from 'semantic-ui-react'
 import  { v4 as uuidv4 } from 'uuid'
+import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import ReactPlayer from 'react-player'
+import { syncValidate, parseResponseError } from '@lib/utils/functions'
 
 function Editor(props) {
   const {
-    item,
     onClose: _handleClose,
     circularCropper,
-    loading,
-    detail,
-    error,
-    handleSubmit,
-    reset
+    detail: { item, ...detail },
+    error, handleSubmit, reset, submitting // redux-form
   } = props
-  useEffect(()=> {
-    return ()=> {
-      reset()
-    }
-  }, [])
+
   const avatarEditorRef = useRef()
   const [ scale, setScale ] = useState(1)
   const [ rotate, setRotate ] = useState(0)
 
-  const _handleSubmit = (values) => {
-    if(item.type === 'video') {
-      if(props.detail.editorMode === 'EDITOR_UPDATE')
+  const _handleSubmit = values => {
+    if(detail.mode === 'CREATE') {
+      if(item.filetype === 'video') {
         return props.dispatch(
-          props.duckDetail.creators.editorPut({ ...item,...values  }, detail.editorMode)
+          props.duckDetail.creators.post({ ...item,...values, files: item.filepath })
         ).catch(parseResponseError)
+      } else if(item.filetype === 'image' && avatarEditorRef.current) {
+        const dataURL = avatarEditorRef.current.getImage().toDataURL()
 
-      return props.dispatch(
-        props.duckDetail.creators.editorPost({ ...item,...values ,file: item.video_file  }, detail.editorMode)
-      ).catch(parseResponseError)
-    }
-    if(avatarEditorRef.current) {
-      // const img = avatarEditorRef.current.getImageScaledToCanvas().toDataURL()
-      const filepathlocal = avatarEditorRef.current.getImage().toDataURL()
-      // onSaveImage({ filepath: img, ...values })
-      const url = filepathlocal
+        return fetch(dataURL)
+          .then(res => res.blob())
+          .then(blob => {
+            const file = new File([ blob ], `${uuidv4()}.png`, { type: 'image/png' })
 
-      return  fetch(url)
-        .then((res) => res.blob())
-        .then((blob) => {
-          const file = new File([ blob ], `${uuidv4()}.png`, { type: 'image/png' })
-
-          if(props.detail.editorMode === 'EDITOR_UPDATE')
             return props.dispatch(
-              props.duckDetail.creators.editorPut({ ...item,...values, file }, detail.editorMode)
+              props.duckDetail.creators.post({ ...item, ...values, files: file })
             ).catch(parseResponseError)
-
-          return props.dispatch(
-            props.duckDetail.creators.editorPost({ ...item,...values , file  }, detail.editorMode)
-          ).catch(parseResponseError)
-
-          // onSaveImage(file)
-
-        // eslint-disable-next-line no-restricted-syntax
-        }).catch(parseResponseError)
+          })
+      }
+    } else if(detail.mode === 'UPDATE') {
+      return props.dispatch(
+        props.duckDetail.creators.put({ ...item, ...values, pet_id: item.pet, pet_image_id: item.id })
+      ).catch(parseResponseError)
     }
   }
 
@@ -111,83 +89,101 @@ function Editor(props) {
     }
   }
 
+  const objectURL = useMemo(() => {
+    return item.filepath instanceof File ? URL.createObjectURL(item.filepath) : null
+  }, [])
+
   return (
-    <div className='c-editor-wrapper'>
-      <div className='flex '>
-        <Header content={`Edit ${item.type === 'video' ? 'Video' : 'Photo'}`}/>
-      </div>
-      {item.type === 'video'  ? <div className='c-editor__image-wrapper'>
-
-        <ReactPlayer
-          className='react-player'
-          controls
-          height='100%'
-          url={item.filepath}
-          width='100%'/>
-      </div> : (
-        <div className='flex align-center justify-center'>
-          {item.filepath ? (
-            <AvatarEditor
-              borderRadius={circularCropper ? 217 : 0}
-              // className='web-camera'
-              color={[ 0, 0, 0, 0.4 ]}
-              crossOrigin='anonymous'
-              height={434}
-              image={item.filepath}
-              onImageReady={_handleLogEvent('onImageReady')}
-              onLoadFailure={_handleLogEvent('onLoadFailed')}
-              onLoadSuccess={_handleLogEvent('onLoadSuccess')}
-              ref={avatarEditorRef}
-              rotate={parseFloat(rotate)}
-              scale={parseFloat(scale)}
-              width={434}/>
-          ) : null}
-        </div>
-      )}
-
-      {item.type !== 'video' && (
-        <div className='flex justify-between mt16'>
-
-          <Button icon onClick={_handleRotateClick}>
-            <Icon name='undo'/>
-          </Button>
-          <div className='flex w100 ml16'>
-            <Button
-              basic className='mr4' icon
-              onClick={_handleMinusBtnClick}>
-              <Icon name='minus'/>
-            </Button>
-            <input
-              className='w100'
-              defaultValue='1'
-              max='2'
-              min='1'
-              name='scale'
-              onChange={_handleScale}
-              step='0.01'
-              type='range'
-              value={scale}/>
-            <Button
-              basic className='ml4' icon
-              onClick={_handlePlusBtnClick}>
-              <Icon name='plus'/>
-            </Button>
+    <>
+      <Header as='h2'>
+        <Header.Content>
+          Edit {item.filetype === 'video' ? 'Video' : 'Photo'}
+          <Header.Subheader>{item.filename}</Header.Subheader>
+        </Header.Content>
+      </Header>
+      {
+        item.filetype === 'video' && (
+          <div className='player-wrapper mb16'>
+            <ReactPlayer
+              className='react-player'
+              controls
+              height='100%'
+              url={objectURL || item.filepath}
+              width='100%'/>
           </div>
-        </div>
-      )
+        )
+      }
+      {
+        item.filetype === 'image' && detail.mode === 'UPDATE' && (
+          <Image
+            className='mb16'
+            rounded
+            src={item.filepath}/>
+        )
+      }
+      {
+        item.filetype === 'image' && detail.mode === 'CREATE' && (
+          <>
+            <div className='flex align-center justify-center'>
+              {objectURL ? (
+                <AvatarEditor
+                  borderRadius={circularCropper ? 217 : 0}
+                  color={[ 0, 0, 0, 0.4 ]}
+                  crossOrigin='anonymous'
+                  height={434}
+                  image={objectURL}
+                  onImageReady={_handleLogEvent('onImageReady')}
+                  onLoadFailure={_handleLogEvent('onLoadFailed')}
+                  onLoadSuccess={_handleLogEvent('onLoadSuccess')}
+                  ref={avatarEditorRef}
+                  rotate={parseFloat(rotate)}
+                  scale={parseFloat(scale)}
+                  width={434}/>
+              ) : null}
+            </div>
+            <div className='flex justify-between mt16'>
+              <Button icon onClick={_handleRotateClick}>
+                <Icon name='undo'/>
+              </Button>
+              <div className='flex w100 ml16'>
+                <Button
+                  basic className='mr4' icon
+                  onClick={_handleMinusBtnClick}>
+                  <Icon name='minus'/>
+                </Button>
+                <input
+                  className='w100'
+                  defaultValue='1'
+                  max='2'
+                  min='1'
+                  name='scale'
+                  onChange={_handleScale}
+                  step='0.01'
+                  type='range'
+                  value={scale}/>
+                <Button
+                  basic className='ml4' icon
+                  onClick={_handlePlusBtnClick}>
+                  <Icon name='plus'/>
+                </Button>
+              </div>
+            </div>
+          </>
+        )
       }
 
       {/* eslint-disable-next-line react/jsx-handler-names */}
-      <Form className='mt16' onSubmit={handleSubmit(_handleSubmit)}>
+      <Form className='mt16' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
         <Form.Group widths='equal'>
           <Field
             autoFocus
             component={FormField}
             control={Input}
             // label='Description'
-            name='description'
-            placeholder='Enter description'/>
+            name='filename'
+            placeholder='Enter some description'/>
         </Form.Group>
+
         {
           error && (
             <Form.Group widths='equal'>
@@ -197,54 +193,51 @@ function Editor(props) {
             </Form.Group>
           )
         }
+
+        <Form.Group widths='equal'>
+          <Form.Field style={{ textAlign: 'right' }}>
+            <Button
+              basic
+              className='w120'
+              color='teal'
+              content='Cancel'
+              disabled={submitting}
+              onClick={_handleClose}
+              type='button'/>
+            <Button
+              className='w120'
+              color='teal'
+              content='Done'
+              disabled={submitting}
+              loading={submitting}/>
+          </Form.Field>
+        </Form.Group>
       </Form>
-      <div className='flex justify-end mt36'>
-        <Button
-          className='w120'
-          content='Cancel'
-          disabled={loading}
-          onClick={_handleClose}
-          type='button'/>
-        <Button
-          className='w120'
-          color='teal'
-          content='Done'
-          disabled={loading}
-          loading={loading}
-          /* eslint-disable-next-line react/jsx-handler-names */
-          onClick={handleSubmit(_handleSubmit)}/>
-        {/* onClick={_handleSave}/> */}
-      </div>
-    </div>
+    </>
   )
 }
 
 Editor.propTypes = {
   onClose        : PropTypes.func.isRequired,
-  item           : PropTypes.shape({}),
-  onSaveImage    : PropTypes.func.isRequired,
-  circularCropper: PropTypes.bool.isRequired,
-  loading        : PropTypes.bool
+  detail         : PropTypes.shape({}),
+  circularCropper: PropTypes.bool.isRequired
 }
-
-Editor.defaultProps = { item: {}, loading: false }
 
 export default compose(
   connect(
-    (state,  { item }) => {
+    (state, { detail }) => {
       return {
-        initialValues: item
+        initialValues: { ...detail.item }
       }
     },
-    (dispatch) => ({ dispatch })
+    dispatch => ({ dispatch })
   ),
   reduxForm({
-    form              : 'editor-create-form',
-    destroyOnUnmount  : false,
+    form              : 'gallery-editor',
     enableReinitialize: true,
     validate          : (values) => {
       const schema = {
-
+        filename: Yup.string().required('Filename is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

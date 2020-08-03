@@ -17,7 +17,7 @@ const PetSection = (props) => {
   const { getClientPets, petDetail } = props
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
-  const { client: client_id } = useParams()
+  const { client: clientId } = useParams()
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
@@ -35,8 +35,8 @@ const PetSection = (props) => {
     }
   }
 
-  useChangeStatusEffect(()=> getClientPets({
-    client_id
+  useChangeStatusEffect(() => getClientPets({
+    client_id: clientId
   }), petDetail.status)
 
   return (

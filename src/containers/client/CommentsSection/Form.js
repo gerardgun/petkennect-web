@@ -21,9 +21,9 @@ const ClientCommentForm = (props) => {
     reset,
     submitting // redux-form
   } = props
-  const { id } = useParams()
+  const { client: clientId } = useParams()
 
-  const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
+  const getIsOpened = mode => mode === 'CREATE' || mode === 'UPDATE'
 
   const _handleClose = () => {
     props.reset()
@@ -33,12 +33,12 @@ const ClientCommentForm = (props) => {
   const _handleSubmit = (values) => {
     if(isUpdating)
       return props
-        .put({ client_id: id, id: clientCommentDetail.item.id, ...values })
+        .put({ client_id: clientId, id: clientCommentDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
       return props
-        .post({ client_id: id, ...values })
+        .post({ client_id: clientId, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
   }

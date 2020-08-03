@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Image, Label } from 'semantic-ui-react'
 
 import { defaultImageUrl } from '@lib/constants'
+import { VaccinationStatus } from '@lib/constants/pet'
 
 import locationDuck from '@reducers/location'
 import petBreedDuck from '@reducers/pet/breed'
@@ -66,7 +67,7 @@ export default {
       sort        : true,
       sort_name   : 'client__user__first_name',
       formatter   : (cell, row) => {
-        return <Link to={`/client/form/${row.client}`}>{cell}</Link>
+        return <Link to={`/client/${row.client}`}>{cell}</Link>
       }
     },
     {
@@ -91,26 +92,9 @@ export default {
       align       : 'left',
       sort        : false,
       formatter   : (cell, row) => {
-        let color, text
+        const vaccinationStatus = VaccinationStatus[row.summary.vaccination_request ? 'requested' : cell]
 
-        if(row.summary.vaccination_request) {
-          color = 'blue'
-          text = 'Verify!'
-        } else if(cell === 'missing') {
-          color = 'black'
-          text = 'Missing'
-        } else if(cell === 'expired') {
-          color = 'red'
-          text = 'Expired'
-        } else if(cell === 'coming_due') {
-          color = 'orange'
-          text = 'Coming Due'
-        } else if(cell === 'vaccinated') {
-          color = 'green'
-          text = 'Current'
-        }
-
-        return <Label circular color={color} horizontal>{text}</Label>
+        return <Label circular color={vaccinationStatus.color} horizontal>{vaccinationStatus.text}</Label>
       }
     },
     {

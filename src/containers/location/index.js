@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Grid, Header, Segment } from 'semantic-ui-react'
+import { Button, Grid,Header,Dimmer,Loader, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
-import Table from '@components/Table'
 import Form from './create'
 import useModal from '@components/Modal/useModal'
+
+import LocationsItem from './LocationsItem'
 
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
@@ -28,15 +29,13 @@ const Location = ({ location, locationDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
+  const _handleEditBtnClick = (item) => {
     props.setItem(item, 'UPDATE')
   }
 
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(location.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
+  const _handleDeleteBtnClick = (item) => {
+    props.setItem(item)
+    _handleOpen()
   }
 
   return (
@@ -50,10 +49,18 @@ const Location = ({ location, locationDetail, ...props }) => {
             <Button color='teal' content='New Location' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
-        <Table
-          duck={locationDuck}
-          onOptionClick={_handleOptionClick}
-          onRowClick={_handleRowClick}/>
+        <Segment className='border-none shadow-0'>
+          {location.status === 'GETTING' && (
+            <Dimmer active inverted>
+              <Loader inverted>Loading</Loader>
+            </Dimmer>
+          )}
+          {location.items && location.items.map((item)=> (
+            <LocationsItem
+              item={item} key={item.id}
+              onDelete={_handleDeleteBtnClick} onUpdate={_handleEditBtnClick}/>
+          ))}
+        </Segment>
       </Segment>
 
       <Form/>

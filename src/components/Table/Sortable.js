@@ -16,6 +16,7 @@ import { useDebounce } from '@hooks/Shared'
 import _get from 'lodash/get'
 import useModal from '@components/Modal/useModal'
 import { useStateDerivedFromProps } from '@hooks/Shared'
+import { defaultImageUrl } from '@lib/constants'
 
 const portal = document.getElementById('root')
 
@@ -28,7 +29,7 @@ const TableSortableList = ({ duckDetail, list,detail, ...props }) => {
     let content = _get(item, column.name, null)
 
     if(column.type === 'boolean') content = content ? 'Yes' : 'No'
-    else if(column.type === 'image') content = <Image rounded size='mini' src={content || 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'}/>
+    else if(column.type === 'image') content = <Image rounded size='mini' src={content || defaultImageUrl}/>
     else if(column.type === 'date') content = (new Date(content)).toLocaleString().split(' ').shift()
     else if(column.type === 'datetime') content = (new Date(content)).toLocaleString()
     else if(column.type === 'string') content = content || <span style={{ color: 'grey' }}>-</span>

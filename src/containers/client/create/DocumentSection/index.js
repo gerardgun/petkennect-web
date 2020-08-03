@@ -14,13 +14,14 @@ import { useParams } from 'react-router-dom'
 
 const DocumentSection = ({ document, documentDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
-  const { client: client_id } = useParams()
+  const { client: clientId } = useParams()
+
   useEffect(() => {
     const { status } =  documentDetail
 
     if(status === 'DELETED' || status  === 'POSTED' || status === 'PUT')
       props.getDocuments({
-        client_id
+        client_id: clientId
       })
   }, [ documentDetail.status ])
   const _handleAddBtnClick = () => {

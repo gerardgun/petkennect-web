@@ -32,8 +32,26 @@
     }
 
     tbody {
-      tr.active {
-        background-color: #00b5ad0a !important;
+      tr {
+        &.active {
+          background-color: #00b5ad0a !important;
+        }
+
+        &.inactive {
+          td {
+            pointer-events: initial;
+            color: $light-gray;
+          }
+
+          .ui.label {
+            background-color: $light-gray !important;
+          }
+
+          .ui.image {
+            cursor: default;
+            opacity: .45;
+          }
+        }
       }
 
       td {

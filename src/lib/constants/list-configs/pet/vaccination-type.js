@@ -32,10 +32,18 @@ export default {
       sort        : false
     },
     {
+      display_name: 'Pet Species',
+      name        : 'pet_class_name',
+      type        : 'string',
+      width       : 4,
+      align       : 'left',
+      sort        : false
+    },
+    {
       display_name: 'Required',
       name        : 'is_required',
       type        : 'boolean',
-      width       : 12,
+      width       : 8,
       align       : 'left',
       sort        : false
     }

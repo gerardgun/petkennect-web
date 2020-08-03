@@ -14,10 +14,9 @@ import locationDuck from '@reducers/location'
 import userDuck from '@reducers/user'
 import rolDuck from '@reducers/rol'
 import { syncValidate, parseResponseError } from '@lib/utils/functions'
+import { defaultImageUrl } from '@lib/constants'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-
-const defaultImage = 'https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1584058305895%2Fassets%2F1nc3EzWKau3OuwCwQhjvlZJPxyD55ospy%2Fsystem-icons-design-priniciples-02.png'
 
 const EmployeeEditForm = (props) => {
   const {
@@ -94,7 +93,7 @@ const EmployeeEditForm = (props) => {
 
         </Grid>
         <div  className='flex align-center mt36'>
-          <Image avatar className='img-40' src={employeeDetail.item.thumbnail_path || defaultImage}/>
+          <Image avatar className='img-40' src={employeeDetail.item.thumbnail_path || defaultImageUrl}/>
           <div className='c-thumbnail'>
             <div className='title'>{fullname}</div>
             <div className='description'>Employee</div>

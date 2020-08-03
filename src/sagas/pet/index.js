@@ -25,6 +25,7 @@ export function* get(/* { payload } */) {
       payload: {
         items: results.map(({ client_first_name, client_last_name, ...rest }) => ({
           client_fullname: `${client_first_name} ${client_last_name}`,
+          active         : !rest.retired,
           ...rest
         })),
         pagination: {

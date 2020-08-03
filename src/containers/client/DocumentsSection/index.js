@@ -18,22 +18,19 @@ import clientDocumentDetailDuck from '@reducers/client/document/detail'
 function DocumentsSection({ clientDocument, clientDocumentDetail, ...props })
 {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
-
   const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
-
   const [ openEditDocumentFormModal, { _handleOpen: _handleOpenEditDocumentFormModal, _handleClose: _handleCloseEditDocumentFormModal } ] = useModal()
-
-  const { id } = useParams()
+  const { client: clientId } = useParams()
 
   useEffect(()=> {
-    props.getClientDocuments({ client_id: id })
+    props.getClientDocuments({ client_id: clientId })
   }, [])
 
   useEffect(() => {
     const { status } =  clientDocumentDetail
 
     if(status === 'DELETED' || status  === 'POSTED' || status === 'PUT')
-      props.getClientDocuments({ client_id: id })
+      props.getClientDocuments({ client_id: clientId })
   }, [ clientDocumentDetail.status ])
 
   const _handleOptionClick = option => {
