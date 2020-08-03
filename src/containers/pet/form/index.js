@@ -11,7 +11,7 @@ import PetBreedForm from '@containers/pet-breed/create'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import YupFields from '@lib/constants/yup-fields'
-import { TemperamentPeoplePreferenceOptions } from '@lib/constants/pet'
+import { TemperamentPeoplePreferenceOptions, VaccinationStatus } from '@lib/constants/pet'
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
 import { useDebounce } from '@hooks/Shared'
 
@@ -125,6 +125,7 @@ function PetForm(props) {
 
     return options
   }, [ petBreed.status ])
+  const vaccinationStatus = VaccinationStatus[petDetail.item.summary.vaccination_request ? 'requested' : petDetail.item.summary.vaccination_status]
 
   return (
     <>
@@ -217,7 +218,7 @@ function PetForm(props) {
         <Form.Group widths='equal'>
           <Form.Input
             label='Vaccination Status' placeholder='-' readOnly
-            value={_get(petDetail, 'item.summary.vaccination_status', '-').toUpperCase()}/>
+            value={_get(vaccinationStatus, 'text', '-')}/>
           <Field
             component={FormField}
             control={Select}

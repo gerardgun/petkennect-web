@@ -7,7 +7,7 @@ import  _get from 'lodash/get'
 import _defaultTo from 'lodash/defaultTo'
 
 import SizeTypes from '@lib/constants/SizeTypes'
-import { TemperamentPeoplePreference } from '@lib/constants/pet'
+import { VaccinationStatus, TemperamentPeoplePreference } from '@lib/constants/pet'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
@@ -22,6 +22,8 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
   const selectedRetireReason = useMemo(() => {
     return petRetireReason.items.find(item => item.id === pet.reason)
   }, [ petRetireReason.status, petDetail.status ])
+
+  const vaccinationStatus = VaccinationStatus[pet.summary.vaccination_request ? 'requested' : pet.summary.vaccination_status]
 
   return (
     <Container fluid>
@@ -49,7 +51,7 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
           <Form.Input label='Altered' readOnly value={pet.altered ? 'Yes' : 'No'}/>
         </Form.Group>
         <Form.Group widths={2}>
-          <Form.Input label='Vaccination Status' readOnly value={_get(pet, 'summary.vaccination_status', '-').toUpperCase()}/>
+          <Form.Input label='Vaccination Status' readOnly value={_get(vaccinationStatus, 'text', '-')}/>
           <Form.Input label='Retired' readOnly value={pet.retired ? 'Yes' : 'No'}/>
         </Form.Group>
         {

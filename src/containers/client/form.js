@@ -1,9 +1,8 @@
-import React, { useEffect,useState } from 'react'
-import './styles.scss'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { Button, Grid, Segment, Header, Image, Breadcrumb,Dropdown, Tab,Icon } from 'semantic-ui-react'
+import { Button, Grid, Segment, Header, Image, Breadcrumb,Dropdown, Tab } from 'semantic-ui-react'
 
 import FormInformation from './FormInformation'
 import PetSection from './PetsSection'
@@ -14,6 +13,8 @@ import { defaultImageUrl } from '@lib/constants'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientPetDuck from '@reducers/client/pet'
+
+import './styles.scss'
 
 const ClientShow = ({ clientDetail, ...props }) => {
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
@@ -30,38 +31,39 @@ const ClientShow = ({ clientDetail, ...props }) => {
       props.resetItem()
     }
   }, [])
+
   useEffect(()=> {
     if(clientDetail.status === 'DELETED')
       history.replace('/client')
   }, [ clientDetail.status ])
 
+  const _handleOptionDropdownChange = () => {
+    alert('In development...')
+  }
   const _handleTabChange = (e, { activeIndex }) => setTabActiveIndex(activeIndex)
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
 
   return (
     <Layout>
-
-      <Segment className='segment-content p-pet-show'>
+      <Segment className='segment-content petkennect-profile'>
         <Grid>
           <Grid.Column className='p40' width={5}>
             <Breadcrumb>
-              <Breadcrumb.Section link>
+              <Breadcrumb.Section>
                 <Link to='/client'>Clients</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider/>
-              <Breadcrumb.Section active link>
+              <Breadcrumb.Section active>
                 {fullname}
               </Breadcrumb.Section>
             </Breadcrumb>
 
-            <Image
-              circular className='c-square-140 mh-auto mt40 mb16' size='mini'
-              src={clientDetail.item.thumbnail_path || defaultImageUrl}/>
+            <div className='flex justify-center align-center mt40'>
+              <div className='c-image-profile'>
+                <Image circular src={clientDetail.item.thumbnail_path || defaultImageUrl}/>
+              </div>
+            </div>
 
-            <input
-              accept='image/*'
-              hidden
-              type='file'/>
             <div className='flex justify-between align-center mb24'>
               <div>
                 <Header className='c-title mv0'>{fullname}</Header>
@@ -70,18 +72,16 @@ const ClientShow = ({ clientDetail, ...props }) => {
                 </Header>
               </div>
               <Dropdown
+                direction='left'
                 icon={null}
+                onChange={_handleOptionDropdownChange}
                 options={[
-                  { key: 'view_photo', value: 'view_photo', text: 'View photo' },
-                  { key: 'take_photo', value: 'take_photo', text: 'Take photo' },
-                  { key: 'upload_photo', value: 'upload_photo', text: 'Upload photo' },
-                  { key: 'select_photo', value: 'select_photo', text: 'Select photo' }
+                  { key: 1, icon: 'download', value: 'download-profile', text: 'Download Profile' },
+                  { key: 2, icon: 'paper plane outline', value: 'send-email', text: 'Send Email' }
                 ]}
                 selectOnBlur={false}
                 trigger={(
-                  <Button icon>
-                    <Icon name='ellipsis vertical'/>
-                  </Button>
+                  <Button basic icon='ellipsis vertical'/>
                 )}
                 value={null}/>
             </div>

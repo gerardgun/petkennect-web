@@ -10,7 +10,11 @@ export default base({
       info_crate_trained         : 0,
       info_housebroken           : 0,
       info_formal_training       : 0,
-      health_flea_tick_preventive: 0
+      health_flea_tick_preventive: 0,
+      summary                    : {
+        vaccination_request: null,
+        vaccination_status : null
+      }
     }
   }
 })
