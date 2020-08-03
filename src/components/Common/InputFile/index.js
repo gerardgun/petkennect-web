@@ -1,11 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import PropTypes from 'prop-types'
 import { Button, Image, Input, Label, Icon } from 'semantic-ui-react'
 import _truncate from 'lodash/truncate'
 
 import './styles.scss'
-import { useEffect } from 'react'
 
 function InputFile(props) {
   const { accept, multiple, value, ...rest } = props

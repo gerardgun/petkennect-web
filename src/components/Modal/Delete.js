@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Header, Modal } from 'semantic-ui-react'
+import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
@@ -24,7 +24,7 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
     }
   }
 
-  const isMultipleDeleting = Boolean(list)
+  const isMultipleDeleting = useMemo(() => Boolean(list), [])
   const deleting = detail.status === 'DELETING'
 
   return (
@@ -32,17 +32,22 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
       closeOnDimmerClick={!deleting}
       onClose={props.onClose}
       open={open}
-      size='tiny'>
-      <Header content='Alert!'/>
-      <Modal.Content>
-        <p>
+      size='mini'>
+      <Modal.Content style={{ textAlign: 'center', paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
+        <Icon
+          circular color='red' name='trash alternate outline'
+          size='big' style={{ backgroundColor: 'rgba(221, 75, 57, 0.3)', boxShadow: 'none', fontSize: '2.5rem' }}/>
+        <Header as='h2' style={{ fontWeight: 500 }}>
           {
             isMultipleDeleting ? (
-              `Are you sure to delete the ${list.selector.selected_items.length} selected records?`
+              <span>Are you sure to delete the {list.selector.selected_items.length} selected records?</span>
             ) : (
-              'Are you sure to delete this record?'
+              <span>Are you sure to delete <br/> this record?</span>
             )
           }
+        </Header>
+        <p style={{ color: 'gray' }}>
+          You will not be able to recover them.
         </p>
         {
           (detail.status === 'ERROR' && _get(detail, 'error.response.data.detail', null)) && (
@@ -52,10 +57,11 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
       </Modal.Content>
       <Modal.Actions>
         <Button
-          content='Cancel' disabled={deleting}
+          basic className='w120' content='Cancel'
+          disabled={deleting}
           onClick={props.onClose}/>
         <Button
-          className='cls-deleteButton'
+          className='w120'
           color='google plus' content='Delete' icon='trash'
           loading={deleting} onClick={_handleDeleteBtnClick}/>
       </Modal.Actions>

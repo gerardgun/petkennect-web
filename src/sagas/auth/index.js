@@ -1,8 +1,12 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { getLocation } from 'connected-react-router'
+import { call, fork, put, select, take, takeEvery } from 'redux-saga/effects'
 
 import { Get, Post, Put, reHydrateToken, reHydrateTenant as _reHydrateTenant } from '@lib/utils/http-client'
 
+import { get as getPets } from '@sagas/pet'
+
 import authDuck from '@reducers/auth'
+import locationDuck from '@reducers/location'
 
 const { selectors, types } = authDuck
 
@@ -34,6 +38,12 @@ function* check() {
           tenant        : tenant
         }
       })
+
+      {/* BEGIN Delete */}
+      yield put({
+        type: locationDuck.types.GET
+      })
+      {/* END Delete */}
     } else {
       yield* signOut() // Remove local storage variables and rehydrate request
 
@@ -224,6 +234,12 @@ function* rehydrateTenant({ payload: tenant }) {
         tenant
       }
     })
+
+    {/* BEGIN Delete */}
+    yield put({
+      type: locationDuck.types.GET
+    })
+    {/* END Delete */}
   } catch (e) {
     yield put({
       type : types.REHYDRATE_TENANT_FAILURE,
@@ -232,7 +248,27 @@ function* rehydrateTenant({ payload: tenant }) {
   }
 }
 
+// How to get previous state from sagas, sample in the following link
+// https://github.com/redux-saga/redux-saga/blob/master/examples/async/src/sagas/index.js#L31
+// https://github.com/redux-saga/redux-saga/issues/538
+function* nextLocationChange() {
+  while (true) {
+    const prevAuthDetail = yield select(selectors.detail)
+
+    yield take(types.SET)
+
+    const newAuthDetail = yield select(selectors.detail)
+    const location = yield select(getLocation)
+
+    if(prevAuthDetail.location !== newAuthDetail.location)
+      if(location.pathname === '/pet') {
+        yield fork(getPets)
+      }
+  }
+}
+
 export default [
+  fork(nextLocationChange),
   takeEvery(types.CHECK, check),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),

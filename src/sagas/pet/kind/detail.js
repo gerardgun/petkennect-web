@@ -2,9 +2,9 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
-import petClassDetailDuck from '@reducers/pet/class/detail'
+import petKindDetailDuck from '@reducers/pet/kind/detail'
 
-const { types } = petClassDetailDuck
+const { types } = petKindDetailDuck
 
 function* deleteItem({ ids: [ id ] }) {
   try {
@@ -25,12 +25,12 @@ function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const petClass = yield call(Get, `pet-classes/${id}`)
+    const petKind = yield call(Get, `pet-classes/${id}`)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: petClass
+        item: petKind
       }
     })
   } catch (e) {

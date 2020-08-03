@@ -1,6 +1,9 @@
 .ui.input {
+  .ui.label {
+    border-color: $light-gray;
+  }
+
   input {
-    border: 1px solid $light-gray !important;
     font-family: Poppins !important;
 
     &:read-only {
@@ -8,15 +11,20 @@
     }
   }
 
-  &.action input {
-    border-right-style: none !important;
-  }
+  &.action {
+    input {
+      &:focus + .ui.button.basic,
+      &:focus + input + .ui.button.basic {
+        background-color: unquote($green + '07') !important;
+        border-color: $green !important;
+      }
+    }
 
-  // Input Button Actions
-  .ui.basic.button {
-    box-shadow: none !important;
-    background-color: #fff !important;
-    border: solid 1px $light-gray;
-    border-left-style: none;
+    .ui.button {
+      &.basic {
+        box-shadow: none;
+        border: solid 1px $light-gray;
+      }
+    }
   }
 }

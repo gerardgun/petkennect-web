@@ -2,18 +2,22 @@
   .placeholder {
     // background-color: #9b9fa4;
   }
+  .c-camera__image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    
+  }
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
   .web-camera {
-    @media (min-width: 900px ) {
-      width: 570px;
-      height: 570px;
-    }
-    @media (min-width: 600px) and (max-width: 900px) {
-      width: 500px;
-      height: 500px;
-    }
-    @media (min-width: 400px) and (max-width: 600px) {
-      width: 380px;
-      height: 380px;
-    }
+    position: absolute !important;
+    top:0;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
   }
 }

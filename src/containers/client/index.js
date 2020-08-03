@@ -11,6 +11,7 @@ import ClientCreateForm from './create'
 
 import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
+import locationDuck from '@reducers/location'
 import zipDetailDuck from '@reducers/zip/detail'
 
 const Client = ({ client, clientDetail, ...props }) => {
@@ -22,6 +23,7 @@ const Client = ({ client, clientDetail, ...props }) => {
 
   useEffect(() => {
     props.getClients()
+    props.getLocations()
   }, [])
 
   const _handleNewClick = () => {
@@ -68,9 +70,10 @@ export default compose(
       clientDetail: clientDetailDuck.selectors.detail(state)
     }),
     {
-      getClients: clientDuck.creators.get,
-      setItem   : clientDetailDuck.creators.setItem,
-      setZip    : zipDetailDuck.creators.setItem
+      getClients  : clientDuck.creators.get,
+      getLocations: locationDuck.creators.get,
+      setItem     : clientDetailDuck.creators.setItem,
+      setZip      : zipDetailDuck.creators.setItem
     }
   )
 )(Client)

@@ -65,21 +65,35 @@ export const syncValidate = (schema, values) => {
   }
 }
 
-export const parsePayload = payload => {
-  const containsFileOrFileList = Object.values(payload).some(value => value instanceof FileList || value instanceof File)
-  // const containsFileList = Object.values(payload).some(value => value instanceof FileList)
-  let body = payload // Raw payload
+export const parseFormValues = payload => {
+  let values = Object.entries(payload)
+    .filter(([ , value ]) => !(value === null || typeof value === 'undefined'))
+    .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
 
-  // If payload contains some FileList, create a FormData payload
-  if(containsFileOrFileList || body.isFormData) {
+  return values
+}
+
+export const parsePayload = payload => {
+  let { is_formdata = false, ...body } = payload // Raw payload
+
+  if(is_formdata === false)
+    // If payload contains some File or FileList, create a FormData payload
+    is_formdata = Object.values(payload).some(value => value instanceof FileList || value instanceof File)
+
+  if(is_formdata) {
     body = new FormData()
 
     Object.entries(payload).forEach(([ key, value ]) => {
       if(typeof value !== 'undefined')
         if(value instanceof Array) {
-          value.forEach((value, index) => {
-            body.append(`${key}[${index}]`, value)
-          })
+          const isAnArrayOfFiles = value.some(item => item instanceof File)
+
+          if(isAnArrayOfFiles)
+            body.append(key, value.length > 1 ? value : value[0])
+          else
+            value.forEach((value, index) => {
+              body.append(`${key}[${index}]`, value)
+            })
         } else if(value instanceof FileList) {
           if(value.length > 0) body.append(key, value[0])
         } else {
@@ -111,12 +125,6 @@ export const parseResponseError = e => {
 
   throw new SubmissionError(errors)
 }
-
-/** temp utils, until backend update TINY_INT to BOOL fields
- * PD: solo es hasta que corrijan lo de backend, ahi noma lo dejo :D*/
-export const formatIntToBool = value => !!value
-
-export const parseBoolToInt = value => value ? 1 : 0
 
 export const openIncidentPDF = (petId, incidentId) => {
   Get(`/pets/${petId}/incidents/${incidentId}/view-report`,{}, {

@@ -31,8 +31,8 @@ import pet from '@reducers/pet'
 import petDetail from '@reducers/pet/detail'
 import petBreed from '@reducers/pet/breed'
 import petBreedDetail from '@reducers/pet/breed/detail'
-import petClass from '@reducers/pet/class'
-import petClassDetail from '@reducers/pet/class/detail'
+import petKind from '@reducers/pet/kind'
+import petKindDetail from '@reducers/pet/kind/detail'
 import petImage from '@reducers/pet/image'
 import petImageDetail from '@reducers/pet/image/detail'
 import petIncidentType from '@reducers/pet/incident-type'
@@ -115,8 +115,8 @@ const createRootReducer = history => combineReducers({
   [petDetail.store]                : petDetail.reducer,
   [petBreed.store]                 : petBreed.reducer,
   [petBreedDetail.store]           : petBreedDetail.reducer,
-  [petClass.store]                 : petClass.reducer,
-  [petClassDetail.store]           : petClassDetail.reducer,
+  [petKind.store]                  : petKind.reducer,
+  [petKindDetail.store]            : petKindDetail.reducer,
   [petImage.store]                 : petImage.reducer,
   [petImageDetail.store]           : petImageDetail.reducer,
   [petIncidentType.store]          : petIncidentType.reducer,

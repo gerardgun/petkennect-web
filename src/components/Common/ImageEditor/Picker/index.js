@@ -12,7 +12,7 @@ function Picker({ onClose : _handleClose , onSavePhotoSelected, images }) {
   }
 
   const _handleDoneBtnClick = () => {
-    onSavePhotoSelected(currentImage.url)
+    onSavePhotoSelected(currentImage.filepath)
   }
 
   return (
@@ -44,7 +44,7 @@ function Picker({ onClose : _handleClose , onSavePhotoSelected, images }) {
           className='w120'
           color='teal'
           content='Done'
-          disabled={!currentImage.url}
+          disabled={!currentImage.filepath}
           onClick={_handleDoneBtnClick}/>
       </div>
     </div>

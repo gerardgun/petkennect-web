@@ -31,7 +31,7 @@ function Camera({ onClose : _handleClose , onTakePhoto }) {
         <Header content='Take photo'/>
       </div>
 
-      <div className='flex flex-column align-center mh-auto'>
+      <div className='c-camera__image-wrapper'>
         <Webcam
           audio={false}
           className='web-camera'
@@ -39,6 +39,8 @@ function Camera({ onClose : _handleClose , onTakePhoto }) {
           ref={webcamRef}
           screenshotFormat='image/jpeg'
           videoConstraints={videoConstraints}/>
+      </div>
+      <div className='flex flex-column align-center mh-auto'>
         <Button
           color='teal' content='Take photo'
           onClick={_handleTakePhotoBtnClick}/>

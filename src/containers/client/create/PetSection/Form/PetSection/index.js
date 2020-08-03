@@ -154,7 +154,6 @@ const PetSection = props => {
             size='large'/>
           {
             isUpdating && (<Button
-              className='cls-deleteButton'
               color='google plus' content='Delete Pet' fluid
               onClick={_handleOpen} size='large'/>)
           }

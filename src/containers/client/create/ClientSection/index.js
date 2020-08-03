@@ -155,8 +155,7 @@ const ClientSection = props => {
             size='large'/>
           {
             isUpdating && (<Button
-              className='cls-deleteButton' color='google plus' content='Delete Client'
-              fluid
+              color='google plus' content='Delete Client' fluid
               onClick={_handleOpen} size='large'/>)
           }
           <Divider horizontal>other</Divider>

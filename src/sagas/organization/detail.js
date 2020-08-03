@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
@@ -30,6 +30,14 @@ function* get({ id }) {
 
     const { companies, ...organization } = yield call(Get, `organizations/${id}`)
 
+    const zipDetail = yield select(zipDetailDuck.selectors.detail)
+
+    if(organization.zip_code !== zipDetail.item.id)
+      yield put({
+        type: zipDetailDuck.types.RESET_ITEM
+      })
+
+    // Setting data of organization
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
@@ -44,7 +52,8 @@ function* get({ id }) {
       }
     })
 
-    if(organization.zip_code)
+    // Load zip data if zip code exists and it isn't loaded yet
+    if(organization.zip_code !== zipDetail.item.id)
       yield put({
         type: zipDetailDuck.types.GET,
         id  : organization.zip_code
@@ -60,6 +69,8 @@ function* get({ id }) {
 function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
+
+    payload.is_formdata = true
 
     const result = yield call(Post, 'organizations/', payload)
 
@@ -78,6 +89,8 @@ function* post({ payload }) {
 function* _put({ payload }) {
   try {
     yield put({ type: types.PUT_PENDING })
+
+    payload.is_formdata = true
 
     yield call(Patch, `organizations/${payload.id}/`, payload)
 
