@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import Iframe from 'react-iframe'
 import { Button,Form,Grid, Header, Modal } from 'semantic-ui-react'
 
 import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
@@ -30,7 +29,7 @@ const ShowAgreementPdfForm = props => {
         <Header as='h2' className='segment-content-header'>View Agreement</Header>
         <Grid>
           <Grid.Column className='grid-show-pdf' width='sixteen'>
-		  <Iframe
+            <iframe
               className='iframeViewDocument'
               height='430px'
               id='iframeViewDocument'
