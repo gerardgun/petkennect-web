@@ -10,6 +10,8 @@ import categoryDetail from '@reducers/category/detail'
 import client from '@reducers/client'
 import clientDetail from '@reducers/client/detail'
 import clientComment from '@reducers/client/comment'
+import clientAgreement from '@reducers/client/agreement'
+import clientAgreementDetail from '@reducers/client/agreement/detail'
 import clientCommentDetail from '@reducers/client/comment/detail'
 import clientDocument from '@reducers/client/document'
 import clientDocumentDetail from '@reducers/client/document/detail'
@@ -97,6 +99,8 @@ const createRootReducer = history => combineReducers({
   [clientDocumentDetail.store]     : clientDocumentDetail.reducer,
   [clientDocumentType.store]       : clientDocumentType.reducer,
   [clientDocumentTypeDetail.store] : clientDocumentTypeDetail.reducer,
+  [clientAgreement.store]          : clientAgreement.reducer,
+  [clientAgreementDetail.store]    : clientAgreementDetail.reducer,
   [clientComment.store]            : clientComment.reducer,
   [clientCommentDetail.store]      : clientCommentDetail.reducer,
   [clientPet.store]                : clientPet.reducer,

@@ -36,12 +36,12 @@ const UploadDocumentForm = (props) => {
     const documentListInitialState = {
       type       : '',
       description: '',
-      files      : '',
+      file       : '',
       filename   : ''
     }
     const _handleFileChange = e => {
       if(e.target.files && e.target.files[0])
-        documentListInitialState.files = e.target.files[0]
+        documentListInitialState.file = e.target.files[0]
       documentListInitialState.filename = e.target.files[0].name
       fields.push({ ...documentListInitialState })
     }
@@ -76,9 +76,9 @@ const UploadDocumentForm = (props) => {
             <div  key={index} >
 
               <input
-                accept='image/*'
+                accept='image/jpg, image/png, application/pdf'
                 hidden
-                name={`${item}.files`}
+                name={`${item}.file`}
                 type='file'/>
               <Form.Group widths='equal'>
 

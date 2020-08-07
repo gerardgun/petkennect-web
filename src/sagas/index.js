@@ -7,6 +7,8 @@ import category from './category'
 import categoryDetail from './category/detail'
 import client from './client'
 import clientDetail from './client/detail'
+import clientAgreement from './client/agreement'
+import clientAgreementDetail from './client/agreement/detail'
 import clientComment from './client/comment'
 import clientCommentDetail from './client/comment/detail'
 import clientDocument from './client/document'
@@ -90,6 +92,8 @@ export default function* rootSaga() {
     ...client,
     ...clientDetail,
     ...clientComment,
+    ...clientAgreement,
+    ...clientAgreementDetail,
     ...clientCommentDetail,
     ...clientDocument,
     ...clientDocumentDetail,

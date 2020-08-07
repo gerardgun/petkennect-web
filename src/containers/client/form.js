@@ -8,15 +8,18 @@ import FormInformation from './FormInformation'
 import PetSection from './PetsSection'
 import CommentsSection from './CommentsSection'
 import DocumentsSection from './DocumentsSection'
+import AgreementsSection from './AgreementsSection'
 import Layout from '@components/Common/Layout'
 import { defaultImageUrl } from '@lib/constants'
+import Message from '@components/Message'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientPetDuck from '@reducers/client/pet'
+import clientAgreementDuck from '@reducers/client/agreement'
 
 import './styles.scss'
 
-const ClientShow = ({ clientDetail, ...props }) => {
+const ClientShow = ({ clientDetail,clientAgreement, ...props }) => {
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
   const { client: clientId } = useParams()
   const history = useHistory()
@@ -26,6 +29,7 @@ const ClientShow = ({ clientDetail, ...props }) => {
     props.getClientPets({
       client__id: clientId
     })
+    props.getClientAgreements()
 
     return () => {
       props.resetItem()
@@ -90,6 +94,22 @@ const ClientShow = ({ clientDetail, ...props }) => {
                 className='w100' color='teal'
                 content='Book!'/>
             </div>
+            <div className='mt20 comment_message'>
+              {
+                clientAgreement.items && clientAgreement.items.filter(item => item.is_pending && item.is_active).length > 0
+                  ? (
+                    <Message
+                      content={
+                        <Grid padded style={{ marginLeft: -16 }}>
+                          <Grid.Column className='mb0 pb0' width='16'>
+                            <div className='message__title'>Client hasn&apos;t signed agreements.</div>
+                          </Grid.Column>
+                        </Grid>
+                      } type='warning'/>
+                  ) : ''
+              }
+            </div>
+
             <Tab
               activeIndex={activeTabIndex}
               grid={{ paneWidth: 0, tabWidth: 16 }}
@@ -100,7 +120,8 @@ const ClientShow = ({ clientDetail, ...props }) => {
                 { menuItem: 'Client Info', render: () => null },
                 { menuItem: 'Pets', render: () => null },
                 { menuItem: 'Internal Comments', render: () => null },
-                { menuItem: 'Documents', render: () => null }
+                { menuItem: 'Documents', render: () => null },
+                { menuItem: 'Agreements', render: () => null }
               ]
               }/>
           </Grid.Column>
@@ -109,6 +130,7 @@ const ClientShow = ({ clientDetail, ...props }) => {
             {activeTabIndex === 1 && <PetSection/>}
             {activeTabIndex === 2 && <CommentsSection/>}
             {activeTabIndex === 3 && <DocumentsSection/>}
+            {activeTabIndex === 4 && <AgreementsSection/>}
           </Grid.Column>
 
         </Grid>
@@ -120,11 +142,13 @@ const ClientShow = ({ clientDetail, ...props }) => {
 export default compose(
   connect(
     ({ ...state }) => ({
-      clientDetail: clientDetailDuck.selectors.detail(state)
+      clientDetail   : clientDetailDuck.selectors.detail(state),
+      clientAgreement: clientAgreementDuck.selectors.list(state)
     }), {
-      getClient    : clientDetailDuck.creators.get,
-      setItem      : clientDetailDuck.creators.setItem,
-      resetItem    : clientDetailDuck.creators.resetItem,
-      getClientPets: clientPetDuck.creators.get
+      getClient          : clientDetailDuck.creators.get,
+      setItem            : clientDetailDuck.creators.setItem,
+      resetItem          : clientDetailDuck.creators.resetItem,
+      getClientPets      : clientPetDuck.creators.get,
+      getClientAgreements: clientAgreementDuck.creators.get
     })
 )(ClientShow)

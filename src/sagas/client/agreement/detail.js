@@ -1,0 +1,86 @@
+import { call, put,select, takeEvery } from 'redux-saga/effects'
+
+import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
+
+import aggreementDetailDuck from '@reducers/client/agreement/detail'
+import clientDetailDuck from '@reducers/client/detail'
+
+const { types } = aggreementDetailDuck
+
+function* deleteItem({ ids: [ id ] }) {
+  try {
+    yield put({ type: types.DELETE_PENDING })
+
+    yield call(Delete, `agreements/${id}/`)
+
+    yield put({ type: types.DELETE_FULFILLED })
+  } catch (e) {
+    yield put({
+      type : types.DELETE_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* get({ id }) {
+  try {
+    yield put({ type: types.GET_PENDING })
+
+    const agreements = yield call(Get, `agreements/${id}`)
+
+    yield put({
+      type   : types.GET_FULFILLED,
+      payload: {
+        item: agreements
+      }
+    })
+  } catch (e) {
+    yield put({
+      type : types.GET_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* post({ payload }) {
+  ('post call')
+  try {
+    yield put({ type: types.POST_PENDING })
+
+    const clientDetail = yield select(clientDetailDuck.selectors.detail)
+
+    const result = yield call(Post, `clients/${clientDetail.item.id}/agreements/`, payload)
+
+    yield put({
+      type   : types.POST_FULFILLED,
+      payload: result
+    })
+  } catch (e) {
+    yield put({
+      type : types.POST_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* _put({ payload }) {
+  try {
+    yield put({ type: types.PUT_PENDING })
+
+    yield call(Patch, `agreements/${payload.id}/`, payload)
+
+    yield put({ type: types.PUT_FULFILLED })
+  } catch (e) {
+    yield put({
+      type : types.PUT_FAILURE,
+      error: e
+    })
+  }
+}
+
+export default [
+  takeEvery(types.DELETE, deleteItem),
+  takeEvery(types.GET, get),
+  takeEvery(types.POST, post),
+  takeEvery(types.PUT, _put)
+]
