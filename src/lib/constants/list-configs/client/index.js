@@ -102,7 +102,7 @@ export default {
     },
     {
       display_name: 'Status',
-      name        : 'status',
+      name        : 'is_active',
       type        : 'boolean_active',
       width       : null,
       align       : 'left',

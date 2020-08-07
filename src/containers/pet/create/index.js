@@ -47,8 +47,8 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
     if(e.target.files && e.target.files[0])
       props.setPetImage({
         filepath  : e.target.files[0],
-        filetype  : 'image',
         filename  : e.target.files[0].name,
+        filetype  : 'image',
         is_profile: true
       }, 'CREATE')
   }
@@ -106,7 +106,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
     <Layout>
       <Segment className='segment-content petkennect-profile'>
         <Grid>
-          <Grid.Column className='p40' width={5}>
+          <Grid.Column className='petkennect-profile-sidebar p40' width={5}>
             <Breadcrumb>
               <Breadcrumb.Section>
                 <Link to='/pet'>Pets</Link>
@@ -233,7 +233,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
                 active={activeMenuItem === 'gallery'} link name='gallery'
                 onClick={_handleMenuItemClick}>
                 Gallery
-                <Label color='teal'>{petImage.pagination.meta.total_items || '...'}</Label>
+                <Label color='teal'>{petImage.pagination.meta.total_items || petImage.items.length}</Label>
               </Menu.Item>
             </Menu>
           </Grid.Column>

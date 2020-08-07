@@ -142,8 +142,7 @@ const ClientSection = props => {
         </Grid.Column>
         <Grid.Column className='form-primary-actions vertical' width='three'>
           <Button
-            as={Link} className='cls-TransCancelBtn' content='Cancel'
-            fluid
+            as={Link} content='Cancel' fluid
             size='large' to='/client'/>
           <Button
             color='teal'

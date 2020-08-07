@@ -24,6 +24,7 @@ function View({ item }) {
         ) : (
           <Image
             className='mb16'
+            fluid
             rounded
             src={item.filepath}/>
         )

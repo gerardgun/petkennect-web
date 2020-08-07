@@ -2,6 +2,7 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
+import employeeTitleDuck from '@reducers/employee/title'
 import employeeTitleDetailDuck from '@reducers/employee/title/detail'
 
 const { types } = employeeTitleDetailDuck
@@ -11,6 +12,8 @@ function* deleteItem({ ids: [ id ] }) {
     yield put({ type: types.DELETE_PENDING })
 
     yield call(Delete, `employee-titles/${id}/`)
+
+    yield put({ type: employeeTitleDuck.types.REMOVE_IDS })
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {

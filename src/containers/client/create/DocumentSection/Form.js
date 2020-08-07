@@ -103,7 +103,6 @@ const DocumentForm = props => {
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
-                className='cls-TransCancelBtn'
                 content='Cancel'
                 disabled={submitting}
                 onClick={_handleClose}

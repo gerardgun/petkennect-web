@@ -11,11 +11,10 @@ const PublicRoute = ({ auth, check, component: Component, ...rest }) => {
   }, [])
 
   useEffect(() => {
-    if(auth.status === 'GOT' || auth.status === 'SIGNED_IN')
+    if(auth.status === 'CHECKED' || auth.status === 'SIGNED_IN')
       if(
         (
-          (auth.item.is_superadmin && auth.item.companies.length > 0)
-          || (auth.item.companies.length > 1)
+          (auth.item.is_superadmin && auth.item.companies.length > 0) || auth.item.companies.length > 1
         )
         && !auth.tenant
       ) {

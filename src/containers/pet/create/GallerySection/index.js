@@ -18,7 +18,6 @@ import petImageDetailDuck from '@reducers/pet/image/detail'
 const GallerySection = props => {
   const {
     petDetail,
-    petImage,
     petImageDetail
   } = props
 
@@ -41,9 +40,7 @@ const GallerySection = props => {
     }
   }, [])
 
-  const _handleItemClick = (e, { item_id }) => {
-    const item = petImage.items.find(({ id }) => id === item_id)
-
+  const _handleItemClick = (e, { item }) => {
     props.setItem(item, 'READ')
   }
 
@@ -51,9 +48,7 @@ const GallerySection = props => {
     props.setItem(null, 'TAKE')
   }
 
-  const _handleItemOptionClick = (e, { item_id, value }) => {
-    const item = petImage.items.find(({ id }) => id === item_id)
-
+  const _handleItemOptionClick = (e, { item, value }) => {
     switch (value) {
       case 'edit':
         props.setItem(item, 'UPDATE')
@@ -97,7 +92,7 @@ const GallerySection = props => {
 
       <div className='mh24 mv32'>
         <Gallery
-          list={petImage}
+          duck={petImageDuck}
           onItemClick={_handleItemClick}
           onItemOptionClick={_handleItemOptionClick}/>
       </div>
@@ -112,15 +107,10 @@ const GallerySection = props => {
 
 export default compose(
   connect(
-    state => {
-      const petImage = petImageDuck.selectors.list(state)
-
-      return {
-        petImage,
-        petImageDetail: petImageDetailDuck.selectors.detail(state),
-        petDetail     : petDetailDuck.selectors.detail(state)
-      }
-    },
+    state => ({
+      petImageDetail: petImageDetailDuck.selectors.detail(state),
+      petDetail     : petDetailDuck.selectors.detail(state)
+    }),
     {
       getPetImages: petImageDuck.creators.get,
       setItem     : petImageDetailDuck.creators.setItem

@@ -29,7 +29,7 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
   return (
     <>
       <Divider/>
-      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTORIZED TO PICKE UP</Header>
+      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTORIZED TO PICK UP</Header>
       <div>
         {
           fields.map((item, index) => (

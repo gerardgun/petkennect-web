@@ -15,8 +15,8 @@ function ImageEditor(props) {
   const {
     circularCropper,
     detail,
-    duckDetail,
-    list
+    duck,
+    duckDetail
   } = props
 
   useEffect(()=> {
@@ -35,9 +35,9 @@ function ImageEditor(props) {
     )
   }
 
-  const _handleSelectPhoto = (_imageURL) => {
+  const _handlePickConfirm = () => {
     props.dispatch(
-      duckDetail.creators.setItem({ ...detail.item, filepath: _imageURL }, 'CREATE')
+      duckDetail.creators.setItem(detail.item, 'CREATE')
     )
   }
 
@@ -67,9 +67,11 @@ function ImageEditor(props) {
         {
           detail.mode === 'PICK' && (
             <Picker
-              images={list.items}
+              detail={detail}
+              duck={duck}
+              duckDetail={duckDetail}
               onClose={_handleClose}
-              onSavePhotoSelected={_handleSelectPhoto}/>
+              onConfirm={_handlePickConfirm}/>
           )
         }
         {
@@ -92,8 +94,7 @@ ImageEditor.defaultProps = {
 
 export default compose(
   connect(
-    (state, { duck, duckDetail }) => ({
-      list  : duck.selectors.list(state),
+    (state, { duckDetail }) => ({
       detail: state[duckDetail.store]
     }),
     dispatch => ({ dispatch })

@@ -24,9 +24,10 @@ export function* get(/* { payload } */) {
       type   : types.GET_FULFILLED,
       payload: {
         items: results.map(({ client_first_name, client_last_name, ...rest }) => ({
-          client_fullname: `${client_first_name} ${client_last_name}`,
+          ...rest,
           active         : !rest.retired,
-          ...rest
+          client_fullname: `${client_first_name} ${client_last_name}`,
+          image_filepath : rest.image_filepath ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${rest.image_filepath}` : null
         })),
         pagination: {
           ...list.pagination,
