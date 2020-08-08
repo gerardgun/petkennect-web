@@ -19,7 +19,6 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props })
 {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
   const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
-  const [ openEditDocumentFormModal, { _handleOpen: _handleOpenEditDocumentFormModal, _handleClose: _handleCloseEditDocumentFormModal } ] = useModal()
   const { client: clientId } = useParams()
 
   useEffect(()=> {
@@ -42,7 +41,6 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props })
 
       case 'edit':
         props.setItem(clientDocument.selector.selected_items[0], 'UPDATE')
-        _handleOpenEditDocumentFormModal()
 
         return
 
@@ -65,7 +63,6 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props })
 
   const _handleRowClick = (e, item) => {
     props.setItem(item, 'Show')
-    _handleOpenEditDocumentFormModal()
   }
 
   const _handleSaveBtnClick = ()=> {
@@ -105,9 +102,9 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props })
 
       <DocumentUploadForm/>
 
-      <EditDocumentForm onClose={_handleCloseEditDocumentFormModal} open={openEditDocumentFormModal}/>
+      <EditDocumentForm/>
 
-      <ShowDocumentForm onClose={_handleCloseEditDocumentFormModal} open={openEditDocumentFormModal}/>
+      <ShowDocumentForm/>
 
       <ModalDelete
         duck={clientDocumentDuck}

@@ -3,19 +3,19 @@
     text-align: justify;
 }
 
-.sigCanvas
+.sign-canvas
 {
     border: 1px solid #BDC3C9;
 }
 
-.btnClearSignature
+.btn-clear-signature
 {
     width: 300px;
 }
 
 .grid-sign-detail
 {
-    background: #FAFCFF;
+background: #FAFCFF;
 border: 1px solid #BDC3C9;
 overflow-y: scroll;
 height: 520px;
@@ -26,7 +26,12 @@ height: 520px;
     text-align:center;
 }
 
-.iframeViewDocument
+.text-align-right
+{
+    text-align:right;
+}
+
+.iframe-view-document
 {
     padding: 0px;
 }
@@ -34,4 +39,9 @@ height: 520px;
 .grid-show-pdf
 {
     height: 450px;
+}
+
+.w140
+{
+    width:140px;
 }

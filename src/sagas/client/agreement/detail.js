@@ -43,7 +43,6 @@ function* get({ id }) {
 }
 
 function* post({ payload }) {
-  ('post call')
   try {
     yield put({ type: types.POST_PENDING })
 

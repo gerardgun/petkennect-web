@@ -98,7 +98,7 @@ const ClientShow = ({ clientDetail,clientAgreement, ...props }) => {
             </div>
             <div className='mt20 comment_message'>
               {
-                clientAgreement.items && clientAgreement.items.filter(item => item.is_pending && item.is_active).length > 0
+                clientAgreement.items && clientAgreement.items.filter(item => !item.signed && item.is_active).length > 0
                   ? (
                     <Message
                       content={

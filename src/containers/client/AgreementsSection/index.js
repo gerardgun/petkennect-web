@@ -5,10 +5,11 @@ import { compose } from 'redux'
 import { Header , Divider } from 'semantic-ui-react'
 
 import Table from '@components/Table'
-import SignAgreementForm from './SignAgreementForm'
-import SendAgreementEmail from './SendAgreementForm'
-import ShowAgreementPdfEmail from './ShowAgreementPdfForm'
 import useModal from '@components/Modal/useModal'
+
+import SignAgreementForm from './SignAgreementForm'
+import SendDocumentEmail from '../DocumentsSection/SendDocumentForm'
+import ShowAgreement from './ShowAgreement'
 
 import clientAgreementDuck from '@reducers/client/agreement'
 import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
@@ -16,10 +17,8 @@ import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
 import './styles.scss'
 
 function AgreementsSection({ clientAgreementDetail, ...props }) {
-  const { client: clientId } = useParams()
   const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
-  const [ openShowPdfFormModal, { _handleOpen: _handleOpenPdfFormModal, _handleClose: _handleClosePdfFormModal } ] = useModal()
-
+  const { client: clientId } = useParams()
   useEffect(()=> {
     props.getClientAgreements({
       client_id: clientId
@@ -38,13 +37,11 @@ function AgreementsSection({ clientAgreementDetail, ...props }) {
       switch (option) {
         case 'view_pdf':
           props.setItem(item, 'ShowPdf')
-          _handleOpenPdfFormModal()
 
           return
 
         case 'print':
           props.setItem(item, 'ShowPdf')
-          _handleOpenPdfFormModal()
 
           return
 
@@ -86,8 +83,9 @@ function AgreementsSection({ clientAgreementDetail, ...props }) {
           onRowOptionClick={_handleRowOptionClick}/>
 
         <SignAgreementForm/>
-        <SendAgreementEmail onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
-        <ShowAgreementPdfEmail onClose={_handleClosePdfFormModal} open={openShowPdfFormModal}/>
+        <SendDocumentEmail onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
+
+        <ShowAgreement/>
       </div>
     </div>
   )

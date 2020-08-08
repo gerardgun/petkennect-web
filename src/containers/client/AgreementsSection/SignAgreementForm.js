@@ -6,13 +6,12 @@ import * as Yup from 'yup'
 import { reduxForm } from 'redux-form'
 
 import FormError from '@components/Common/FormError'
-import { Button,Form,Grid, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Modal } from 'semantic-ui-react'
+import { parseResponseError,syncValidate } from '@lib/utils/functions'
 
 import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
 
 import SignatureCanvas from 'react-signature-canvas'
-
-import { parseResponseError,syncValidate } from '@lib/utils/functions'
 
 function dataURLtoFile(dataurl, filename) {
   var arr = dataurl.split(','),
@@ -27,7 +26,7 @@ function dataURLtoFile(dataurl, filename) {
   return new File([ u8arr ], filename, { type: mime })
 }
 
-const ShowDocumentForm = props => {
+const SignAgreementForm = props => {
   const {
     error,
     clientAgreementDetail,handleSubmit, reset,submitting
@@ -86,14 +85,14 @@ const ShowDocumentForm = props => {
             <Grid.Column width='six'>
               <Header as='h2' className='segment-content-header text-align-center'>Sign Document</Header>
               <SignatureCanvas
-                canvasProps={{ width: 300, height: 200, className: 'sigCanvas' }}
+                canvasProps={{ width: 300, height: 200, className: 'sign-canvas' }}
                 penColor='green' ref={sigCanvas}/>
 
               <Form.Group widths='equal'>
                 <Form.Field>
                   <Button
                     basic
-                    className='btnClearSignature'
+                    className='btn-clear-signature'
                     color='teal'
                     content='Clear Signature'
                     disabled={submitting}
@@ -119,16 +118,18 @@ const ShowDocumentForm = props => {
                 <Form.Field>
                   <Button
                     basic
-                    className='w120'
+                    className='w140'
                     color='teal'
                     content='Cancel'
                     disabled={submitting}
                     onClick={_handleClose}
                     size='small'/>
                   <Button
+                    className='w140'
                     color='teal'
                     content='Apply Signature'
-                    disabled={submitting}/>
+                    disabled={submitting}
+                    size='small'/>
                 </Form.Field>
               </Form.Group>
 
@@ -169,4 +170,4 @@ export default compose(
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(ShowDocumentForm)
+)(SignAgreementForm)

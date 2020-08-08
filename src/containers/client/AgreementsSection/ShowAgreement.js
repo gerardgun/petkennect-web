@@ -2,11 +2,11 @@ import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Button,Form,Grid, Header, Modal } from 'semantic-ui-react'
+import { Button, Grid, Header, Modal } from 'semantic-ui-react'
 
 import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
 
-const ShowAgreementPdfForm = props => {
+const ShowAgreement = props => {
   const {
     clientAgreementDetail
   } = props
@@ -30,30 +30,21 @@ const ShowAgreementPdfForm = props => {
         <Grid>
           <Grid.Column className='grid-show-pdf' width='sixteen'>
             <iframe
-              className='iframeViewDocument'
+              className='iframe-view-document'
               height='430px'
-              id='iframeViewDocument'
               position='absolute'
-              src={clientAgreementDetail.item.document_filepath}
+              src='http://africau.edu/images/default/sample.pdf'
               width='100%'/>
           </Grid.Column>
-        </Grid>
-        <Form.Group className='form-modal-actions' widths='equal'>
-          <Form.Field>
-            <Button
-              basic
-              className='w120'
-              color='teal'
-              content='Cancel'
-              onClick={_handleClose}
-              size='small'/>
+          <Grid.Column className='text-align-right' width='sixteen'>
             <Button
               className='w120'
               color='teal'
               content='Done'
-              onClick={_handleClose}/>
-          </Form.Field>
-        </Form.Group>
+              onClick={_handleClose}
+              size='small'/>
+          </Grid.Column>
+        </Grid>
       </Modal.Content>
     </Modal>
   )
@@ -75,4 +66,4 @@ export default compose(
       resetItem: clientAgreementDetailDuck.creators.resetItem
     }
   )
-)(ShowAgreementPdfForm)
+)(ShowAgreement)
