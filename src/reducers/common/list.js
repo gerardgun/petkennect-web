@@ -99,6 +99,7 @@ export default {
         ...(pagination.params || {})
       }
     },
+    // Filters
     filterColumns: new Duck.Selector(selectors => state => {
       return selectors.list(state).config.columns
         .filter(item => Boolean(item.filter))
@@ -137,6 +138,23 @@ export default {
 
           return { ...a, [b.filter.name]: sourceItems }
         }, {})
+    }),
+    // Grouping
+    groups: new Duck.Selector(selectors => state => {
+      const list = selectors.list(state)
+      const config = list.config.group_by
+
+      if(!config) return []
+
+      return config.groups
+        .map(group => {
+          const items = list.items.filter(item => item[config.column_name] === group.value)
+
+          return {
+            ...group,
+            items
+          }
+        })
     })
   })
 }

@@ -2,23 +2,20 @@
 export default {
   base_uri: null,
   group_by: {
-    column_name: 'is_pending',
+    column_name: 'signed',
     groups     : [
       {
-        value     : true,
+        value     : false,
         icon_label: 'flag outline',
         text_label: 'Pending'
       },
       {
-        value     : false,
+        value     : true,
         icon_label: 'flag outline',
         text_label: 'Signed'
       }
-    ],
-    options: [
     ]
   },
-
   row: {
     options: [
       {
@@ -74,25 +71,9 @@ export default {
       display_name: 'Size',
       name        : 'size',
       type        : 'string',
-      width       : null,
+      width       : 2,
       align       : 'left',
       sort        : false
     }
-    // {
-    //   display_name: 'Action',
-    //   name        : 'is_pending',
-    //   type        : 'action',
-    //   width       : null,
-    //   align       : 'left',
-    //   formatter   : (cell, row) => {
-    //     return (
-    //       <button
-    //         className='ui basic icon button'  data-index='0'
-    //         type='button'>
-    //         <i aria-hidden='true' className={row.is_pending ? 'file pdf outline icon' : 'playstation outline icon'} ></i>
-    //       </button>
-    //     )
-    //   }
-
   ]
 }

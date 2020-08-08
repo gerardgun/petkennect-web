@@ -1,36 +1,40 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Header , Divider } from 'semantic-ui-react'
+import { useParams } from 'react-router-dom'
 import { compose } from 'redux'
-import useModal from '@components/Modal/useModal'
-import './styles.scss'
+import { Header , Divider } from 'semantic-ui-react'
+
+import Table from '@components/Table'
 import SignAgreementForm from './SignAgreementForm'
 import SendAgreementEmail from './SendAgreementForm'
 import ShowAgreementPdfEmail from './ShowAgreementPdfForm'
-
-import Table from '@components/Table'
+import useModal from '@components/Modal/useModal'
 
 import clientAgreementDuck from '@reducers/client/agreement'
-
 import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
 
+import './styles.scss'
+
 function AgreementsSection({ clientAgreementDetail, ...props }) {
+  const { client: clientId } = useParams()
   const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
   const [ openShowPdfFormModal, { _handleOpen: _handleOpenPdfFormModal, _handleClose: _handleClosePdfFormModal } ] = useModal()
 
   useEffect(()=> {
-    props.getClientAgreements()
+    props.getClientAgreements({
+      client_id: clientId
+    })
   }, [])
 
   useEffect(() => {
-    const { status } =  clientAgreementDetail
+    const { status } = clientAgreementDetail
 
     if(status  === 'POSTED' || status === 'PUT')
       props.getClientAgreements()
   }, [ clientAgreementDetail.status ])
 
   const _handleRowOptionClick = (option, item) => {
-    if(!item.is_pending)
+    if(item.signed)
       switch (option) {
         case 'view_pdf':
           props.setItem(item, 'ShowPdf')

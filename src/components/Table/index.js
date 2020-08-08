@@ -37,7 +37,7 @@ const TableList = ({ duck, list, ...props }) => {
     else if(column.type === 'image')
       content = <Image rounded size='mini' src={content || defaultImageUrl}/>
     else if(column.type === 'date')
-      content = content ? (new Date(content)).toLocaleString('en-US').split(', ').shift() : '-'
+      content = content ? (new Date(content)).toLocaleString('en-US').split(', ').shift() : <span style={{ color: 'grey' }}>-</span>
     else if(column.type === 'datetime')
       content = (new Date(content)).toLocaleString('en-US')
     else if(column.type === 'money')
@@ -48,10 +48,14 @@ const TableList = ({ duck, list, ...props }) => {
       }).format(content)
     else if(column.type === 'string')
       content = content || <span style={{ color: 'grey' }}>-</span>
+    // BEGIN Improve
     else if(column.type === 'action')
-      content =  (<Link to={'#'}>
-        <span>{`${column.action.label}`}</span>
-      </Link>)
+      content =  (
+        <Link to={'#'}>
+          <span>{`${column.action.label}`}</span>
+        </Link>
+      )
+    // END Improve
 
     return content
   }
@@ -118,7 +122,7 @@ const TableList = ({ duck, list, ...props }) => {
   // END Improve
 
   const _handleSelectorCheckboxChange = (e, { checked }) => {
-    const itemId = +e.currentTarget.dataset.itemId || e.currentTarget.dataset.itemId
+    const itemId = +e.currentTarget.dataset.itemId
 
     props.dispatch(
       checked === true ? duck.creators.selectIds(itemId) : duck.creators.removeSelectedIds(itemId)
@@ -131,7 +135,7 @@ const TableList = ({ duck, list, ...props }) => {
     )
   }
 
-  const _renderRow = (item, index) => {
+  const renderTableRow = (item, index) => {
     const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
     const isActive = Boolean('active' in item ? item.active : true)
 
@@ -160,7 +164,7 @@ const TableList = ({ duck, list, ...props }) => {
         {/* Row options */}
         {
           list.config.row.options.length > 0 && (
-            <Table.Cell textAlign='center'>
+            <Table.Cell>
               {
                 list.config.row.options.map(({ icon, name, display_name, ...rest }, index)=> (
                   <Button
@@ -174,7 +178,6 @@ const TableList = ({ duck, list, ...props }) => {
           )
         }
       </Table.Row>
-
     )
   }
 
@@ -223,7 +226,11 @@ const TableList = ({ duck, list, ...props }) => {
           {
             selectionOptions.length > 0 && (
               selectionOptions
-                .filter(({ conditional_render })=> !conditional_render || (conditional_render && conditional_render(list.selector.selected_items[0])))
+                // BEGIN Improve
+                .filter(({ conditional_render }) => {
+                  return !conditional_render || (conditional_render && conditional_render(list.selector.selected_items[0]))
+                })
+                // END Improve
                 .map(({ icon, name, display_name, ...rest }, index) => (
                   <Button
                     basic content={display_name} data-option-name={name}
@@ -247,11 +254,13 @@ const TableList = ({ duck, list, ...props }) => {
               </Popup>
             )
           }
-          {_get(list.config, 'search_enabled', true) && (
-            <Input
-              icon='search' iconPosition='left' onChange={_handleSearchInputChange}
-              placeholder={list.config.search_placeholder || 'Search'} type='search'/>
-          )}
+          {
+            _get(list.config, 'search_enabled', true) && (
+              <Input
+                icon='search' iconPosition='left' onChange={_handleSearchInputChange}
+                placeholder={list.config.search_placeholder || 'Search'} type='search'/>
+            )
+          }
         </Grid.Column>
 
         {
@@ -302,43 +311,40 @@ const TableList = ({ duck, list, ...props }) => {
 
             {/* Row options */}
             {
-              list.config.row.options.length > 0 && (<Table.HeaderCell textAlign='center'>OPTIONS</Table.HeaderCell>)
+              list.config.row.options.length > 0 && (<Table.HeaderCell>Actions</Table.HeaderCell>)
             }
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {
-            (()=>{
-              if(list.config.group_by)
-                return  list.config.group_by.groups.map(_group => (
-                  <>
-                    <Table.Row disabled>
-                      <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='left'>
-                        <Icon name={_group.icon_label}/> {_group.text_label}
-                      </Table.Cell>
-                    </Table.Row>
-                    {
-                      list.items
-                        .filter(_item=> _item[list.config.group_by.column_name] === _group.value).length > 0 ? (
-                          list.items.map(_renderRow)
-                        ) : (
-                          <Table.Row disabled>
-                            <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
-                          </Table.Row>
-                        )
-                    }
-                  </>
-                ))
-
-              return list.items.length > 0 ? (
-                list.items.map(_renderRow)
+            list.config.group_by ? (
+              props.groups.map(group => (
+                <>
+                  <Table.Row disabled>
+                    <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='left'>
+                      <Icon name={group.icon_label}/> {group.text_label}
+                    </Table.Cell>
+                  </Table.Row>
+                  {
+                    group.items.length > 0 ? (
+                      group.items.map(renderTableRow)
+                    ) : (
+                      <Table.Row disabled>
+                        <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
+                      </Table.Row>
+                    )
+                  }
+                </>
+              ))
+            ) : (
+              list.items.length > 0 ? (
+                list.items.map(renderTableRow)
               ) : (
                 <Table.Row disabled>
                   <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
                 </Table.Row>
               )
-            })()
-
+            )
           }
         </Table.Body>
       </Table>
@@ -371,7 +377,8 @@ export default compose(
     (state, { duck }) => ({
       list                 : duck.selectors.list(state),
       filterColumns        : duck.selectors.filterColumns(state),
-      selectedFilterColumns: duck.selectors.selectedFilterColumns(state)
+      selectedFilterColumns: duck.selectors.selectedFilterColumns(state),
+      groups               : duck.selectors.groups(state)
     }),
     dispatch => ({ dispatch })
   )

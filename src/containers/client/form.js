@@ -29,7 +29,9 @@ const ClientShow = ({ clientDetail,clientAgreement, ...props }) => {
     props.getClientPets({
       client__id: clientId
     })
-    props.getClientAgreements()
+    props.getClientAgreements({
+      client_id: clientId
+    })
 
     return () => {
       props.resetItem()
