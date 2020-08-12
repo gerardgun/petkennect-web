@@ -36,20 +36,40 @@ function AgreementsSection({ clientAgreementDetail, ...props }) {
     if(item.signed)
       switch (option) {
         case 'view_pdf':
+        {
           props.setItem(item, 'ShowPdf')
 
           return
-
+        }
         case 'print':
-          props.setItem(item, 'ShowPdf')
+        {
+          const file = new Blob([ item.document_filepath ], { type: 'application/pdf' })
+          const fileURL = window.URL.createObjectURL(file)
+
+          window.frames['print-pdf-frame'].src = fileURL
+
+          window.frames['print-pdf-frame'].print()
 
           return
-
+        }
         case 'download':
-          window.open(item.document_filepath)
+        {
+          const downloadUrl = window.URL.createObjectURL(new Blob([ item.document_filepath ], { type: 'application/pdf' }))
+
+          const link = document.createElement('a')
+
+          link.href = downloadUrl
+
+          link.setAttribute('download', `${item.name}.pdf`) // any other extension
+
+          document.body.appendChild(link)
+
+          link.click()
+
+          link.remove()
 
           return
-
+        }
         case 'send_document':
           props.setItem(item)
           _handleOpenEmailFormModal()
@@ -75,13 +95,17 @@ function AgreementsSection({ clientAgreementDetail, ...props }) {
         <Header className='c-title mv0'>
           Agreements
         </Header>
+        <iframe
+          id='print-pdf-frame'
+          name='print-pdf-frame'
+          style={{ display: 'none' }}
+          width='100%'/>
       </div>
       <Divider className='m0'/>
       <div className='mh40 mt20'>
         <Table
           duck={clientAgreementDuck}
           onRowOptionClick={_handleRowOptionClick}/>
-
         <SignAgreementForm/>
         <SendDocumentEmail onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
 

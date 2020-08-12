@@ -33,7 +33,7 @@ const ShowAgreement = props => {
               className='iframe-view-document'
               height='430px'
               position='absolute'
-              src='http://africau.edu/images/default/sample.pdf'
+              src={clientAgreementDetail.item.document_filepath}
               width='100%'/>
           </Grid.Column>
           <Grid.Column className='text-align-right' width='sixteen'>
