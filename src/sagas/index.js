@@ -52,6 +52,8 @@ import petVaccination from './pet/vaccination'
 import petVaccinationDetail from './pet/vaccination/detail'
 import petVaccinationType from './pet/vaccination-type'
 import petVaccinationTypeDetail from './pet/vaccination-type/detail'
+import priceMaster from './price-master'
+import priceMasterDetail from './price-master/detail'
 import product from './product'
 import productDetail from './product/detail'
 import productImage from './product/image'
@@ -136,6 +138,8 @@ export default function* rootSaga() {
     ...petVaccinationDetail,
     ...petVaccinationType,
     ...petVaccinationTypeDetail,
+    ...priceMaster,
+    ...priceMasterDetail,
     ...product,
     ...productDetail,
     ...productImage,

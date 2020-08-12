@@ -145,6 +145,7 @@ const categories = [
     label        : 'Setup',
     subcategories: [
       { href: '/setup/location', label: 'Locations' },
+      { href: '/setup/price-master', label: 'Price Master' },
       { href: '/setup/document-type', label: 'Document Types' },
       { href: '/setup/agreement', label: 'Agreements' },
       { href: '/setup/training-reason', label: 'Training Reason' },
