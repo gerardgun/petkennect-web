@@ -7,28 +7,24 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
-import ClientCreateForm from './create'
+import ClientFormModal from './form/modal'
 
 import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
-import locationDuck from '@reducers/location'
-import zipDetailDuck from '@reducers/zip/detail'
 
 const Client = ({ client, clientDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
+    props.getClients()
+  }, [])
+
+  useEffect(() => {
     if(clientDetail.status === 'DELETED') props.getClients()
   }, [ clientDetail.status ])
 
-  useEffect(() => {
-    props.getClients()
-    props.getLocations()
-  }, [])
-
-  const _handleNewClick = () => {
+  const _handleNewBtnClick = () => {
     props.setItem(null, 'CREATE')
-    props.setZip()
   }
 
   const _handleOptionClick = option => {
@@ -46,14 +42,13 @@ const Client = ({ client, clientDetail, ...props }) => {
             <Header as='h2'>Clients</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>
-            <Button color='teal' content='New Client' onClick={_handleNewClick}/>
+            <Button color='teal' content='New Client' onClick={_handleNewBtnClick}/>
           </Grid.Column>
         </Grid>
-
         <Table duck={clientDuck} onOptionClick={_handleOptionClick}/>
       </Segment>
 
-      <ClientCreateForm/>
+      <ClientFormModal/>
       <ModalDelete
         duckDetail={clientDetailDuck}
         onClose={_handleClose}
@@ -70,10 +65,8 @@ export default compose(
       clientDetail: clientDetailDuck.selectors.detail(state)
     }),
     {
-      getClients  : clientDuck.creators.get,
-      getLocations: locationDuck.creators.get,
-      setItem     : clientDetailDuck.creators.setItem,
-      setZip      : zipDetailDuck.creators.setItem
+      getClients: clientDuck.creators.get,
+      setItem   : clientDetailDuck.creators.setItem
     }
   )
 )(Client)

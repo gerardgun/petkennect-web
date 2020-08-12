@@ -12,7 +12,7 @@ import AgreementCreate from '@containers/agreement/create'
 import AuthMe from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
-import ClientForm from '@containers/client/form'
+import ClientShow from '@containers/client/show'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
@@ -99,7 +99,7 @@ const privateRoutes = [
   },
   {
     path     : '/client/:client',
-    component: ClientForm
+    component: ClientShow
   },
   {
     path     : '/company',

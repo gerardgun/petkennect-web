@@ -35,7 +35,7 @@ function Gallery({ duckDetail, detail, list, selectable, onItemClick, onItemOpti
                 selected={selectable ? detail.item.id === item.id : null}/>
             ))
           ) : (
-            <p style={{ color: '#CCC', textAlign: 'center', width: '100%' }}>There {'aren\'t'} photos or videos.</p>
+            <p style={{ color: '#AAA', textAlign: 'center', width: '100%' }}>There {'aren\'t'} photos or videos.</p>
           )
         }
       </Card.Group>

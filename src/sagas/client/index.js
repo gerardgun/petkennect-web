@@ -18,7 +18,10 @@ function* get(/* { payload } */) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items     : results,
+        items: results.map(item => ({
+          ...item,
+          thumbnail_path: item.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${item.thumbnail_path}` : null
+        })),
         pagination: {
           ...list.pagination,
           meta

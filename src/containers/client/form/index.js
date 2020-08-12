@@ -1,23 +1,26 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, FieldArray, reduxForm } from 'redux-form'
-import { Button, Checkbox, Divider, Header, Input, Select, Form } from 'semantic-ui-react'
+import { Button, Header, Input, Segment, Select, Form } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
+import InputMask from '@components/Common/InputMask'
 import useZipInputSearch from '@components/useZipInputSearch'
 import YupFields from '@lib/constants/yup-fields'
-import { syncValidate } from '@lib/utils/functions'
+import { ReferredOptions } from '@lib/constants/client'
+import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
-import locationDuck from '@reducers/location'
-import rolDuck from '@reducers/rol'
 import zipDuck from '@reducers/zip'
 import zipDetailDuck from '@reducers/zip/detail'
 
-function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
+export const formId = 'client-form'
+
+export const AuthorizedPeopleList = ({ fields, meta: { error, submitFailed } }) => {
   const _handleAddBtnClick = () => fields.push({ ...authorizedPersonInitialState })
   const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
 
@@ -28,9 +31,8 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
 
   return (
     <>
-      <Divider/>
-      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTORIZED TO PICK UP</Header>
-      <div>
+      <Header as='h6' className='section-header' color='blue'>PEOPLE AUTHORIZED TO PICK UP</Header>
+      <Segment className='form-primary-segment' padded='very'>
         {
           fields.map((item, index) => (
             <Form.Group key={index} widths='equal'>
@@ -55,9 +57,10 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
             </Form.Group>
           ))
         }
-        <div>
+        <div style={{ textAlign: 'center' }}>
           <Button
-            content='Add person' onClick={_handleAddBtnClick}
+            color='teal' content='Add person'
+            onClick={_handleAddBtnClick}
             type='button'/>
         </div>
         {
@@ -69,39 +72,55 @@ function AuthorizedPeopleList({ fields, meta: { error, submitFailed } }) {
             </Form.Group>
           )
         }
-      </div>
+      </Segment>
     </>
   )
 }
 
-function Edit(props) {
+const booleanOptions = [
+  {
+    key  : 1,
+    value: true,
+    text : 'Yes'
+  },
+  {
+    key  : 2,
+    value: false,
+    text : 'No'
+  }
+]
+
+const ClientForm = props => {
   const {
-    clientDetail,
+    clientDetail: { mode },
     location,
     zip,
     zipDetail,
-    error,
-    handleSubmit,
-    initialized,
-    reset
+    error, handleSubmit, reset // redux-form
   } = props
 
+  const history = useHistory()
   const [ zipOptions, { _handleZipChange, _handleZipSearchChange } ] = useZipInputSearch(zip, zipDetail, props.getZipes, props.setZip)
 
-  useEffect(() => {
-    props.getLocations()
-  }, [])
+  const _handleSubmit = values => {
+    values = parseFormValues(values)
 
-  useEffect(() => {
-    if(clientDetail.status === 'GOT' && !initialized) props.initialize(clientDetail.item)
-  }, [ clientDetail.status ])
+    if(mode === 'UPDATE')
+      return props.put(values)
+        .catch(parseResponseError)
+    else
+      return props.post(values)
+        .then(payload => {
+          props.resetItem()
+          history.push(`/client/${payload.id}`)
+        })
+        .catch(parseResponseError)
+  }
 
   return (
-    <div className='ph40 pv32'>
+    <>
       {/* eslint-disable-next-line react/jsx-handler-names */}
-      <Form id={props.form} onReset={reset} onSubmit={handleSubmit}>
-        <Field component='input' name='id' type='hidden'/>
-
+      <Form id={formId} onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
         <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
         <Form.Group widths='equal'>
           <Field
@@ -112,16 +131,16 @@ function Edit(props) {
             placeholder='Enter email'
             readOnly
             required/>
-
           <Field
             component={FormField}
             control={Input}
-            label='Name'
+            label='First Name'
             name='first_name'
             placeholder='Enter name'
             readOnly
             required/>
         </Form.Group>
+
         <Form.Group widths='equal'>
           <Field
             component={FormField}
@@ -129,11 +148,13 @@ function Edit(props) {
             label='Last Name'
             name='last_name'
             placeholder='Enter lastname'
-            readOnly/>
+            readOnly
+            required/>
           <Field
+            autoFocus
             component={FormField}
             control={Input}
-            label='Contact date'
+            label='Contact Date'
             name='contact_date'
             required
             type='date'/>
@@ -152,52 +173,55 @@ function Edit(props) {
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Checkbox}
+            control={Select}
             label='Active'
             name='is_active'
-            type='checkbox'/>
+            options={booleanOptions}
+            placeholder='Select option'
+            selectOnBlur={false}/>
         </Form.Group>
 
         <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
-            autoFocus
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Cell Phone'
+            mask='+1 999-999-9999'
             name='phones[0]'
             placeholder='Enter phone number'
             type='tel'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Home Phone'
+            mask='+1 999-999-9999'
             name='phones[1]'
             placeholder='Enter phone number'
             type='tel'/>
         </Form.Group>
 
         <Form.Group widths='equal'>
-
           <Field
             autoComplete='off'
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Work Phone'
+            mask='+1 999-999-9999'
             name='phones[2]'
             placeholder='Enter phone number'
             type='tel'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Other Phone'
+            mask='+1 999-999-9999'
             name='phones[3]'
             placeholder='Enter phone number'
             type='tel'/>
-
         </Form.Group>
 
         <Form.Group widths='equal'>
@@ -214,25 +238,18 @@ function Edit(props) {
             control={Select}
             label='Referred'
             name='referred'
-            options={[
-              { key: 1, value: 1, text: 'Drive-by' },
-              { key: 2, value: 2, text: 'Event' },
-              { key: 3, value: 3, text: 'Internet search' },
-              { key: 4, value: 4, text: 'Referral' },
-              { key: 5, value: 5, text: 'Other' }
-            ]}
+            options={ReferredOptions}
             placeholder='Select an option'
             selectOnBlur={false}/>
-
         </Form.Group>
 
-        <Header as='h6' className='section-header' color='blue'>COMPANY ADDRESS</Header>
+        <Header as='h6' className='section-header' color='blue'>Client Address</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
             control={Input}
-            label='Address 1'
+            label='First Address'
             name='addresses[0]'
             placeholder='Enter address'/>
         </Form.Group>
@@ -241,7 +258,7 @@ function Edit(props) {
             autoComplete='off'
             component={FormField}
             control={Input}
-            label='Address 2'
+            label='Second Address'
             name='addresses[1]'
             placeholder='Enter address'/>
         </Form.Group>
@@ -261,7 +278,7 @@ function Edit(props) {
             search
             selectOnBlur={false}/>
           <Form.Field>
-            <Input
+            <Form.Input
               autoComplete='off'
               label='Country'
               readOnly
@@ -270,14 +287,14 @@ function Edit(props) {
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Field>
-            <Input
+            <Form.Input
               autoComplete='off'
               label='State'
               readOnly
               value={zipDetail.item.state}/>
           </Form.Field>
           <Form.Field>
-            <Input
+            <Form.Input
               autoComplete='off'
               label='City'
               readOnly
@@ -308,10 +325,12 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Phone'
+            mask='+1 999-999-9999'
             name='emergency_contact_phones[0]'
             placeholder='Enter phone number'
+            required
             type='tel'/>
           <Form.Field/>
         </Form.Group>
@@ -337,8 +356,9 @@ function Edit(props) {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Vet Phone'
+            mask='+1 999-999-9999'
             name='emergency_vet_phones[0]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -350,52 +370,62 @@ function Edit(props) {
           name='authorized_people_pick_up'
           title='People Authorized to Pick Up'/>
 
-        {error && (
-          <Form.Group widths='equal'>
-            <Form.Field>
-              <FormError message={error}/>
-            </Form.Field>
-          </Form.Group>
-        )}
+        {
+          error && (
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <FormError message={error}/>
+              </Form.Field>
+            </Form.Group>
+          )
+        }
+
+        <Field component='input' name='id' type='hidden'/>
       </Form>
-    </div>
+    </>
   )
 }
 
 export default compose(
   connect(
-    ({ zip ,...state }) => {
+    ({ location, zip, ...state }) => {
       const zipDetail = zipDetailDuck.selectors.detail(state)
       const clientDetail = clientDetailDuck.selectors.detail(state)
 
       return {
         clientDetail,
+        location,
         zip,
         zipDetail,
-        initialValues: clientDetail.item ,
-        location     : locationDuck.selectors.list(state),
-        role         : rolDuck.selectors.list(state)
+        initialValues: { ...clientDetail.item }
       }
     },
     {
-      getLocations: locationDuck.creators.get,
-      getZipes    : zipDuck.creators.get,
-      setZip      : zipDetailDuck.creators.setItem
+      getZipes : zipDuck.creators.get,
+      setZip   : zipDetailDuck.creators.setItem,
+      post     : clientDetailDuck.creators.post,
+      put      : clientDetailDuck.creators.put,
+      resetItem: clientDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
-    form              : 'client-edit-information',
-    destroyOnUnmount  : false,
+    form              : formId,
     enableReinitialize: true,
-    validate          : (values) => {
+    validate          : values => {
       const schema = {
-        zip_code    : YupFields.zip,
-        location    : Yup.mixed().required('Location is required'),
-        email       : Yup.string().email().required('Email is required'),
-        contact_date: Yup.mixed().required('Contact date is required')
+        email                         : Yup.string().email().required('Email is required'),
+        first_name                    : Yup.string().required('Name is required'),
+        last_name                     : Yup.string().required('Last name is required'),
+        contact_date                  : Yup.mixed().required('Contact date is required'),
+        location                      : Yup.mixed().required('Location is required'),
+        alt_email                     : Yup.string().email('Email address is not valid').nullable(),
+        zip_code                      : YupFields.zip,
+        emergency_contact_name        : Yup.string().required('Contact name is required'),
+        emergency_contact_relationship: Yup.string().required('Relation is required'),
+        emergency_contact_phone       : Yup.mixed().required('Phone is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(Edit)
+)(ClientForm)

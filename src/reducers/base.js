@@ -51,7 +51,7 @@ export default function createDuck({ namespace, store, initialState = {}, creato
       'RESET',
       'SET'
     ],
-    reducer: (state, action, { types, statuses }) =>
+    reducer: (state, action, { types, statuses, initialState }) =>
       produce(state, draft => {
         switch (action.type) {
           case types.DELETE_CANCEL:
@@ -122,11 +122,7 @@ export default function createDuck({ namespace, store, initialState = {}, creato
 
             return
           case types.RESET:
-            draft = {
-              ...initialState,
-              status: statuses.PRISTINE,
-              error : null
-            }
+            for (let key in initialState) draft[key] = initialState[key]
 
             return
           case types.SET:

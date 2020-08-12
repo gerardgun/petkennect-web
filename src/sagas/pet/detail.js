@@ -35,7 +35,6 @@ function* get({ id }) {
       payload: {
         item: {
           ...item,
-          image_filepath   : item.image_filepath ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${item.image_filepath}` : null,
           vaccination_alert: item.vaccinations.filter((_vaccination)=> {
             return  moment(_vaccination.notified_at).add(30 ,'days').isSameOrAfter(moment())
           })

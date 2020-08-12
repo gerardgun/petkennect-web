@@ -102,7 +102,11 @@ export const syncValidate = (schema, values) => {
 
 export const parseFormValues = payload => {
   let values = Object.entries(payload)
-    .filter(([ , value ]) => !(value === null || typeof value === 'undefined'))
+    .filter(([ , value ]) => {
+      const isNotValidValue = value === null || typeof value === 'undefined'
+
+      return !isNotValidValue
+    })
     .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
 
   return values

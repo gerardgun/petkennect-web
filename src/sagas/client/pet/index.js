@@ -6,7 +6,7 @@ import clientPetDuck from '@reducers/client/pet'
 
 const { types, selectors } = clientPetDuck
 
-function* get(/* { payload  }*/) {
+function* get(/* { payload }*/) {
   try {
     yield put({ type: types.GET_PENDING })
 
@@ -18,7 +18,10 @@ function* get(/* { payload  }*/) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items     : results,
+        items: [
+          ...list.items,
+          ...results
+        ],
         pagination: {
           ...list.pagination,
           meta

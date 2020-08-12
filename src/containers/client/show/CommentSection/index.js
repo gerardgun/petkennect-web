@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react'
-import './styles.scss'
+import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import { Header, Button ,Grid, Divider, Segment, Dimmer, Loader } from 'semantic-ui-react'
+import { Header, Button, Grid, Divider, Segment, Dimmer, Loader } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
-
+import { useChangeStatusEffect } from '@hooks/Shared'
 import Form from './Form'
 import CommentsItem from './CommentsItem'
 
@@ -15,15 +13,12 @@ import Message from '@components/Message'
 import clientCommentDuck from '@reducers/client/comment'
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
 import authDuck from '@reducers/auth'
-import { useChangeStatusEffect } from '@hooks/Shared'
 
-function CommentsSection(props) {
-  const {  clientCommentDetail, clientComment } = props
-  const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
-  useEffect(()=> {
-    props.getComment()
-  }, [])
-  useChangeStatusEffect(props.getComment, clientCommentDetail.status)
+import './styles.scss'
+
+function CommentsSection({ clientCommentDetail, clientComment, ...props }) {
+  const [ openDeleteModal, { _handleOpen, _handleClose } ] = useModal()
+  useChangeStatusEffect(props.getClientComments, clientCommentDetail.status)
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
@@ -35,7 +30,7 @@ function CommentsSection(props) {
 
   const _handleDeleteBtnClick = (item) => {
     props.setItem(item)
-    _handleOpenDeleteModal()
+    _handleOpen()
   }
 
   const saving = [ 'PUTTING', 'POSTING' ].includes(clientCommentDetail.status)
@@ -80,7 +75,6 @@ function CommentsSection(props) {
           content='New Comment'
           disabled={saving}
           loading={saving}
-          // eslint-disable-next-line react/jsx-handler-names
           onClick={_handleAddBtnClick}
           size='small'/>
       </div>
@@ -102,7 +96,7 @@ function CommentsSection(props) {
 
       <ModalDelete
         duckDetail={clientCommentDetailDuck}
-        onClose={_handleCloseDeleteModal}
+        onClose={_handleClose}
         open={openDeleteModal}/>
 
     </div>
@@ -114,7 +108,6 @@ CommentsSection.propTypes = {  }
 CommentsSection.defaultProps = {  }
 
 export default compose(
-  withRouter,
   connect(
     ({ auth, ...state }) => ({
       clientCommentDetail: clientCommentDetailDuck.selectors.detail(state),
@@ -123,7 +116,7 @@ export default compose(
 
       auth
     }), {
-      getComment: clientCommentDuck.creators.get,
-      setItem   : clientCommentDetailDuck.creators.setItem
+      getClientComments: clientCommentDuck.creators.get,
+      setItem          : clientCommentDetailDuck.creators.setItem
     })
 )(CommentsSection)

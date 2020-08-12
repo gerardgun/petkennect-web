@@ -30,7 +30,10 @@ function* get({ id }) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: employee
+        item: {
+          ...employee,
+          thumbnail_path: employee.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${employee.thumbnail_path}` : null
+        }
       }
     })
   } catch (e) {

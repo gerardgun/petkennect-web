@@ -1,36 +1,29 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import { Header , Divider, Button } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
-
 import SendDocumentEmail from './SendDocumentForm'
 import DocumentUploadForm from './UploadDocumentForm'
 import EditDocumentForm from './EditDocumentForm'
 import ShowDocumentForm from './ShowDocumentForm'
+
 import clientDocumentDuck from '@reducers/client/document'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
-function DocumentsSection({ clientDocument, clientDocumentDetail, ...props })
-{
+function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
   const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
   const [ openEditDocumentFormModal, { _handleOpen: _handleOpenEditDocumentFormModal, _handleClose: _handleCloseEditDocumentFormModal } ] = useModal()
-  const { client: clientId } = useParams()
-
-  useEffect(()=> {
-    props.getClientDocuments({ client_id: clientId })
-  }, [])
 
   useEffect(() => {
-    const { status } =  clientDocumentDetail
+    const { status } = clientDocumentDetail
 
     if(status === 'DELETED' || status  === 'POSTED' || status === 'PUT')
-      props.getClientDocuments({ client_id: clientId })
+      props.getClientDocuments()
   }, [ clientDocumentDetail.status ])
 
   const _handleOptionClick = option => {
@@ -99,14 +92,11 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props })
           duck={clientDocumentDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>
-
       </div>
+
       <SendDocumentEmail onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
-
       <DocumentUploadForm/>
-
       <EditDocumentForm onClose={_handleCloseEditDocumentFormModal} open={openEditDocumentFormModal}/>
-
       <ShowDocumentForm onClose={_handleCloseEditDocumentFormModal} open={openEditDocumentFormModal}/>
 
       <ModalDelete

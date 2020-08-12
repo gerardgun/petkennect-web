@@ -79,7 +79,7 @@ const IncidentSectionForm = (props) => {
           <Header as='h2' className='segment-content-header'>
             {isUpdating ? 'Update' : 'New'} incident
           </Header>
-          <Header className='c-label'>
+          <Header>
             Remember  that if the pet reaches the number of incidents it will no longer be able to access the field day service
           </Header>
           <Field component='input' name='id' type='hidden'/>

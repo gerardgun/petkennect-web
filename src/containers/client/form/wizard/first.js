@@ -3,14 +3,17 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Dropdown, Form, Header, Input, Select } from 'semantic-ui-react'
+import { Button, Dropdown, Form, Header, Input, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
-import YupFields from '@lib/constants/yup-fields'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-
+import InputMask from '@components/Common/InputMask'
+import useZipInputSearch from '@components/useZipInputSearch'
+import { useDebounce } from '@hooks/Shared'
 import { syncValidate } from '@lib/utils/functions'
+import YupFields from '@lib/constants/yup-fields'
+import { formId } from './../'
 
 import clientDetailDuck from '@reducers/client/detail'
 import locationDuck from '@reducers/location'
@@ -19,27 +22,26 @@ import rolDuck from '@reducers/rol'
 import zipDuck from '@reducers/zip'
 import zipDetailDuck from '@reducers/zip/detail'
 
-import { useDebounce } from '@hooks/Shared'
-import useZipInputSearch from '@components/useZipInputSearch'
-
-const ClientCreateFormStep1 = (props) => {
+const ClientFormWizardFirst = props => {
   const {
     location,
+    user,
     zip,
     zipDetail,
-    user,
-    error,
-    handleSubmit,
-    reset
+    error, handleSubmit, reset // redux-form
   } = props
 
   const [ zipOptions, { _handleZipChange, _handleZipSearchChange } ] = useZipInputSearch(zip, zipDetail, props.getZipes, props.setZip)
-
   const [ customUser, setCustomUser ] = useState({ id: 'CUSTOM_USER_OPTION_ID', email: '' })
+
   useEffect(() => {
     props.getUsers()
     props.getLocations()
   }, [])
+
+  const _handleClose = () => {
+    props.resetItem()
+  }
 
   const { _handleDebounce } = useDebounce((text)=> {
     props.setUserFilters({ search: text })
@@ -78,22 +80,19 @@ const ClientCreateFormStep1 = (props) => {
   }
 
   return (
-
     <>
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form onReset={reset} onSubmit={handleSubmit}>
-        <Field component='input' name='id' type='hidden'/>
-        <Field component='input' name='user' type='hidden'/>
         <Field
           component='input' defaultValue={true} name='user_exists'
           type='hidden'/>
-        <span className='text-regular'>
+        <span>
           <span className='text-black'>
             Step 1
           </span>
           <span className='text-gray'>{' '}of 2</span>
         </span><br/>
-        <span className='text-regular text-gray'>
+        <span className='text-gray'>
           Complete Client Info
         </span>
 
@@ -114,7 +113,7 @@ const ClientCreateFormStep1 = (props) => {
             onAddItem={_handleUserOptionAddItem}
             onChange={_handleUserOptionChange}
             onSearchChange={_handleSearchChange}
-            options={[ ...user.items,customUser ].map((_user) => ({
+            options={[ ...user.items, customUser ].map((_user) => ({
               key  : _user.id,
               value: _user.email,
               text : `${_user.email}`
@@ -128,6 +127,7 @@ const ClientCreateFormStep1 = (props) => {
             selection
             selectOnBlur={false}/>
           <Field
+            autoFocus
             component={FormField}
             control={Input}
             label='Name'
@@ -184,26 +184,28 @@ const ClientCreateFormStep1 = (props) => {
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
-            autoFocus
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Cell Phone'
+            mask='+1 999-999-9999'
             name='phones[0]'
             placeholder='Enter phone number'
             type='tel'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Home Phone'
+            mask='+1 999-999-9999'
             name='phones[1]'
             placeholder='Enter phone number'
             type='tel'/>
           <Field
             autoComplete='off'
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Work Phone'
+            mask='+1 999-999-9999'
             name='phones[2]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -213,8 +215,9 @@ const ClientCreateFormStep1 = (props) => {
           <Field
             autoComplete='off'
             component={FormField}
-            control={Input}
+            control={InputMask}
             label='Other Phone'
+            mask='+1 999-999-9999'
             name='phones[3]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -243,7 +246,7 @@ const ClientCreateFormStep1 = (props) => {
 
         </Form.Group>
 
-        <Header as='h6' className='section-header' color='blue'>COMPANY ADDRESS</Header>
+        <Header as='h6' className='section-header' color='blue'>Client Address</Header>
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
@@ -304,28 +307,35 @@ const ClientCreateFormStep1 = (props) => {
           <Form.Field/>
         </Form.Group>
 
-        {error && (
-          <Form.Group widths='equal'>
-            <Form.Field>
-              <FormError message={error}/>
-            </Form.Field>
-          </Form.Group>
-        )}
+        {
+          error && (
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <FormError message={error}/>
+              </Form.Field>
+            </Form.Group>
+          )
+        }
 
-        {/* <Form.Group className='form-modal-actions' widths='equal'>
+        <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
             <Button
+              basic
+              className='w120'
+              color='teal'
               content='Cancel'
-              disabled={submitting}
               onClick={_handleClose}
               type='button'/>
             <Button
+              className='w120'
               color='teal'
               content='Continue'
-              disabled={submitting}
-              loading={submitting}/>
+              type='submit'/>
           </Form.Field>
-        </Form.Group> */}
+        </Form.Group>
+
+        <Field component='input' name='id' type='hidden'/>
+        <Field component='input' name='user' type='hidden'/>
       </Form>
     </>
   )
@@ -346,39 +356,35 @@ export default compose(
         user         : userDuck.selectors.list(state),
         location     : locationDuck.selectors.list(state),
         role         : rolDuck.selectors.list(state),
-        user_exists  : formValueSelector('client-create-step-1-form')(state, 'user_exists'),
-        email        : formValueSelector('client-create-step-1-form')(state, 'email')
+        user_exists  : formValueSelector(formId)(state, 'user_exists'),
+        email        : formValueSelector(formId)(state, 'email')
       }
     },
     {
       getUsers      : userDuck.creators.get,
       getLocations  : locationDuck.creators.get,
       getZipes      : zipDuck.creators.get,
+      resetItem     : clientDetailDuck.creators.resetItem,
       setUserFilters: userDuck.creators.setFilters,
       setZip        : zipDetailDuck.creators.setItem
     }
   ),
   reduxForm({
-    form              : 'client-create-step-1-form',
-    destroyOnUnmount  : false,
-    enableReinitialize: true,
-    validate          : (values) => {
+    form                    : formId,
+    destroyOnUnmount        : false,
+    forceUnregisterOnUnmount: true,
+    validate                : (values) => {
       const schema = {
-        first_name: Yup.string().when('user_exists', {
-          is  : true,
-          then: (s) => s.required('Name is required')
-        }),
-        user: Yup.mixed().when('user_exists', {
-          is  : true,
-          then: (m) => m.required('User is Required')
-        }),
-        zip_code    : YupFields.zip,
-        location    : Yup.mixed().required('Location is required'),
         email       : Yup.string().email().required('Email is required'),
-        contact_date: Yup.mixed().required('Contact date is required')
+        first_name  : Yup.string().required('Name is required'),
+        last_name   : Yup.string().required('Last name is required'),
+        contact_date: Yup.mixed().required('Contact date is required'),
+        location    : Yup.mixed().required('Location is required'),
+        alt_email   : Yup.string().email('Email address is not valid').nullable(),
+        zip_code    : YupFields.zip
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(ClientCreateFormStep1)
+)(ClientFormWizardFirst)
