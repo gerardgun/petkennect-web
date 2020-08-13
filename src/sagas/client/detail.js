@@ -33,7 +33,10 @@ function* get({ id }) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: client
+        item: {
+          ...client,
+          thumbnail_path: client.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${client.thumbnail_path}` : null
+        }
       }
     })
 
@@ -54,7 +57,10 @@ function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, 'clients/', payload)
+    let result = null
+
+    if(payload.user) result = yield call(Post, 'profile-clients/', payload)
+    else result = yield call(Post, 'clients/', payload)
 
     yield put({
       type   : types.POST_FULFILLED,

@@ -1,62 +1,44 @@
-import React , { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { Header, Button, Icon } from 'semantic-ui-react'
-import  './styles.scss'
-import ImageItem from './ImageItem'
+import { Header, Button } from 'semantic-ui-react'
 
-function Picker({ onClose : _handleClose , onSavePhotoSelected, images }) {
-  const [ currentImage, setCurrentImage ] = useState({})
+import Gallery from '@containers/pet/create/GallerySection/Gallery'
 
-  const _handleSelectPhoto = (_image) => {
-    setCurrentImage(_image)
-  }
-
-  const _handleDoneBtnClick = () => {
-    onSavePhotoSelected(currentImage.filepath)
-  }
-
+function Picker({ detail, duck, duckDetail, onClose: _handleClose, onConfirm: _handleConfirmBtnClick }) {
   return (
-    <div className='c-picker-wrapper'>
-      <div className='flex justify-end'>
-        <Button basic icon onClick={_handleClose}>
-          <Icon name='delete'/>
-        </Button>
-      </div>
-      <div className='flex justify-between'>
-        <Header content='Select photo'/>
-      </div>
-
-      <div className='images-wrapper'>
-        {images.length === 0 && <Header>Empty gallery</Header>}
-        {images.map(_image => (
-          <ImageItem
-            image={_image} key={_image.id} onSelectImage={_handleSelectPhoto}
-            selected={_image.id === currentImage.id}/>
-        ))}
+    <>
+      <Header as='h2'>
+        <Header.Content>
+          Select Photo
+        </Header.Content>
+      </Header>
+      <div className='mv32'>
+        <Gallery
+          duck={duck}
+          duckDetail={duckDetail}
+          selectable/>
       </div>
       <div className='flex justify-end mt36'>
         <Button
+          basic
           className='w120'
+          color='teal'
           content='Cancel'
-          onClick={_handleClose}
-          type='button'/>
+          onClick={_handleClose}/>
         <Button
           className='w120'
           color='teal'
           content='Done'
-          disabled={!currentImage.filepath}
-          onClick={_handleDoneBtnClick}/>
+          disabled={!detail.item.id}
+          onClick={_handleConfirmBtnClick}/>
       </div>
-    </div>
+    </>
   )
 }
 
 Picker.propTypes = {
-  onClose    : PropTypes.func.isRequired,
-  onTakePhoto: PropTypes.func.isRequired,
-  images     : PropTypes.arrayOf(PropTypes.shape({}))
+  onClose  : PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired
 }
-
-Picker.defaultProps = { images: [] }
 
 export default Picker

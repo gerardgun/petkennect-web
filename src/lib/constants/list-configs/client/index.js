@@ -21,7 +21,7 @@ export default {
       icon        : 'print'
     },
     {
-      display_name: null,
+      display_name: 'Delete Client',
       name        : 'delete',
       icon        : 'trash alternate outline',
       is_multiple : false,
@@ -102,7 +102,7 @@ export default {
     },
     {
       display_name: 'Status',
-      name        : 'status',
+      name        : 'is_active',
       type        : 'boolean_active',
       width       : null,
       align       : 'left',

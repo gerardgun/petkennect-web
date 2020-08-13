@@ -2,6 +2,10 @@
   min-height: 10rem;
 
   .ui.card {
+    & > .image {
+      min-height: 10rem;
+    }
+
     & > .content {
       display: flex;
       position: absolute;

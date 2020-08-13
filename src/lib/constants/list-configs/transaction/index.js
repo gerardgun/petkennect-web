@@ -13,7 +13,7 @@ export default {
       icon        : 'file excel outline'
     },
     {
-      display_name: null,
+      display_name: 'Delete Transaction',
       name        : 'delete',
       icon        : 'trash alternate outline',
       is_multiple : false,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Grid, Segment, Image, Menu, Header, Dropdown, Button } from 'semantic-ui-react'
@@ -8,8 +8,14 @@ import InformationSection from './InformationSection'
 import PreferenceSection from './PreferenceSection'
 import { defaultImageUrl } from '@lib/constants'
 
-const PetShow = ({ auth }) => {
+import authDuck from '@reducers/auth'
+
+const PetShow = ({ auth, ...props }) => {
   const { item: user } = auth
+
+  useEffect(() => {
+    if(auth.status === 'PATCHED') props.get()
+  }, auth.status)
 
   const [ activeMenuItem, setActiveMenuItem ] = useState('info')
 
@@ -23,7 +29,7 @@ const PetShow = ({ auth }) => {
     <Layout>
       <Segment className='segment-content petkennect-profile'>
         <Grid>
-          <Grid.Column className='p40' width={5}>
+          <Grid.Column className='petkennect-profile-sidebar p40' width={5}>
             <div className='flex justify-center align-center mt40'>
               <div className='c-image-profile'>
                 <Image circular src={user.image_path || defaultImageUrl}/>
@@ -77,6 +83,6 @@ export default compose(
     ({ auth }) => ({
       auth
     }), {
-      // nothing
+      get: authDuck.creators.get
     })
 )(PetShow)

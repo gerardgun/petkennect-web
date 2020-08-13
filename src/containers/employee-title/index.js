@@ -6,7 +6,7 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import Form from './Form'
+import EmployeeTitleFormModal from './form/modal'
 import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
@@ -53,7 +53,7 @@ const EmployeeTitleList = ({ employeeTitle, employeeTitleDetail, ...props }) => 
           onRowClick={_handleRowClick}/>
       </Segment>
 
-      <Form/>
+      <EmployeeTitleFormModal/>
       <ModalDelete
         duckDetail={employeeTitleDetailDuck}
         onClose={_handleClose}

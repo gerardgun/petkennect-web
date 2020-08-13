@@ -7,6 +7,8 @@ import category from './category'
 import categoryDetail from './category/detail'
 import client from './client'
 import clientDetail from './client/detail'
+import clientAgreement from './client/agreement'
+import clientAgreementDetail from './client/agreement/detail'
 import clientComment from './client/comment'
 import clientCommentDetail from './client/comment/detail'
 import clientDocument from './client/document'
@@ -50,6 +52,8 @@ import petVaccination from './pet/vaccination'
 import petVaccinationDetail from './pet/vaccination/detail'
 import petVaccinationType from './pet/vaccination-type'
 import petVaccinationTypeDetail from './pet/vaccination-type/detail'
+import priceMaster from './price-master'
+import priceMasterDetail from './price-master/detail'
 import product from './product'
 import productDetail from './product/detail'
 import productImage from './product/image'
@@ -90,6 +94,8 @@ export default function* rootSaga() {
     ...client,
     ...clientDetail,
     ...clientComment,
+    ...clientAgreement,
+    ...clientAgreementDetail,
     ...clientCommentDetail,
     ...clientDocument,
     ...clientDocumentDetail,
@@ -132,6 +138,8 @@ export default function* rootSaga() {
     ...petVaccinationDetail,
     ...petVaccinationType,
     ...petVaccinationTypeDetail,
+    ...priceMaster,
+    ...priceMasterDetail,
     ...product,
     ...productDetail,
     ...productImage,

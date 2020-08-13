@@ -117,6 +117,7 @@ function Editor(props) {
         item.filetype === 'image' && detail.mode === 'UPDATE' && (
           <Image
             className='mb16'
+            fluid
             rounded
             src={item.filepath}/>
         )
@@ -125,21 +126,19 @@ function Editor(props) {
         item.filetype === 'image' && detail.mode === 'CREATE' && (
           <>
             <div className='flex align-center justify-center'>
-              {objectURL ? (
-                <AvatarEditor
-                  borderRadius={circularCropper ? 217 : 0}
-                  color={[ 0, 0, 0, 0.4 ]}
-                  crossOrigin='anonymous'
-                  height={434}
-                  image={objectURL}
-                  onImageReady={_handleLogEvent('onImageReady')}
-                  onLoadFailure={_handleLogEvent('onLoadFailed')}
-                  onLoadSuccess={_handleLogEvent('onLoadSuccess')}
-                  ref={avatarEditorRef}
-                  rotate={parseFloat(rotate)}
-                  scale={parseFloat(scale)}
-                  width={434}/>
-              ) : null}
+              <AvatarEditor
+                borderRadius={circularCropper ? 217 : 0}
+                color={[ 0, 0, 0, 0.4 ]}
+                crossOrigin='anonymous'
+                height={434}
+                image={objectURL || item.filepath}
+                onImageReady={_handleLogEvent('onImageReady')}
+                onLoadFailure={_handleLogEvent('onLoadFailed')}
+                onLoadSuccess={_handleLogEvent('onLoadSuccess')}
+                ref={avatarEditorRef}
+                rotate={parseFloat(rotate)}
+                scale={parseFloat(scale)}
+                width={434}/>
             </div>
             <div className='flex justify-between mt16'>
               <Button icon onClick={_handleRotateClick}>

@@ -145,6 +145,7 @@ const categories = [
     label        : 'Setup',
     subcategories: [
       { href: '/setup/location', label: 'Locations' },
+      { href: '/setup/price-master', label: 'Price Master' },
       { href: '/setup/document-type', label: 'Document Types' },
       { href: '/setup/agreement', label: 'Agreements' },
       { href: '/setup/training-reason', label: 'Training Reason' },
@@ -204,8 +205,8 @@ const AppSidebar = ({ auth, location, ...props }) => {
   const locationItems = useMemo(() => {
     return location.items.map(item => ({
       key  : item.id,
-      text : _truncate(item.code, { length: 16 }),
-      value: item.id
+      value: item.id,
+      text : _truncate(item.code, { length: 16 })
     }))
   }, [ location.status ])
 
@@ -282,11 +283,15 @@ const AppSidebar = ({ auth, location, ...props }) => {
                     as={Link} basic
                     color='teal' content='Edit Profile'
                     to='/auth/me'/>
-                  <Dropdown
-                    onChange={_handleLocationChange}
-                    options={locationItems}
-                    selection
-                    value={auth.location}/>
+                  {
+                    !auth.item.is_superadmin && (
+                      <Dropdown
+                        onChange={_handleLocationChange}
+                        options={locationItems}
+                        selection
+                        value={auth.location}/>
+                    )
+                  }
                 </div>
               }/>
             <Dropdown.Divider/>

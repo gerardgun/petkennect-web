@@ -69,7 +69,7 @@ function IncidentSection(props) {
   useChangeStatusEffect(()=> {
     props.getPetIncidents()
     props.getPet(id)
-  }, props.petIncidentDetail.status, [ 'SENT_EMAIL' ])
+  }, props.petIncidentDetail.status, [ 'SENT' ])
 
   return (
     <div className='c-incident-section'>

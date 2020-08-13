@@ -46,7 +46,7 @@ export default {
 
           return
         case types.REMOVE_IDS:
-          if(action.ids.length) {
+          if('ids' in action && action.ids.length) {
             const items = draft.selector.selected_items.filter(item => !action.ids.includes(item.id))
 
             draft.selector.selected_items = items

@@ -1,8 +1,10 @@
+import axios from 'axios'
 import _set from 'lodash/set'
 import _get from 'lodash/get'
+import moment from 'moment'
+import printJS from 'print-js'
 import { SubmissionError } from 'redux-form'
 import * as Yup from 'yup'
-import moment from 'moment'
 
 import { Get } from '@lib/utils/http-client'
 
@@ -102,7 +104,11 @@ export const syncValidate = (schema, values) => {
 
 export const parseFormValues = payload => {
   let values = Object.entries(payload)
-    .filter(([ , value ]) => !(value === null || typeof value === 'undefined'))
+    .filter(([ , value ]) => {
+      const isNotValidValue = value === null || typeof value === 'undefined'
+
+      return !isNotValidValue
+    })
     .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
 
   return values
@@ -167,6 +173,23 @@ export const parseResponseError = e => {
   throw new SubmissionError(errors)
 }
 
+export const downloadFileURL = (url, filename) => {
+  axios.get(url, { responseType: 'blob' })
+    .then((result) => {
+      const objectURL = URL.createObjectURL(new Blob([ result.data ]))
+      const link = document.createElement('a')
+
+      link.setAttribute('href', objectURL)
+      link.setAttribute('download', filename)
+
+      document.body.appendChild(link)
+
+      link.click()
+
+      document.body.removeChild(link)
+    })
+}
+
 export const openIncidentPDF = (petId, incidentId) => {
   Get(`/pets/${petId}/incidents/${incidentId}/view-report`,{}, {
     responseType: 'arraybuffer'
@@ -176,6 +199,17 @@ export const openIncidentPDF = (petId, incidentId) => {
 
       window.open(downloadUrl)
     })
+}
+
+export const printFileURL = url => {
+  let parts = url.split('/')
+
+  const encodedFilename = parts.pop()
+  const filename = decodeURIComponent(encodedFilename)
+
+  parts.push(filename)
+
+  printJS(parts.join('/'))
 }
 
 export const downloadIncidentPDF = (petId, incidentId, name) => {

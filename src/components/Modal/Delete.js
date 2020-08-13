@@ -50,8 +50,10 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
           You will not be able to recover them.
         </p>
         {
-          (detail.status === 'ERROR' && _get(detail, 'error.response.data.detail', null)) && (
-            <p style={{ color: '#dd4b39' }}>{detail.error.response.data.detail[0]}</p>
+          detail.status === 'ERROR' && _get(detail, 'error.response.data', null) && (
+            <p style={{ color: '#dd4b39' }}>
+              {_get(detail, 'error.response.data.detail', null) ? detail.error.response.data.detail[0] : "You can't delete this item."}
+            </p>
           )
         }
       </Modal.Content>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
@@ -37,7 +37,7 @@ const TableList = ({ duck, list, ...props }) => {
     else if(column.type === 'image')
       content = <Image rounded size='mini' src={content || defaultImageUrl}/>
     else if(column.type === 'date')
-      content = content ? (new Date(content)).toLocaleString('en-US').split(', ').shift() : '-'
+      content = content ? (new Date(content)).toLocaleString('en-US').split(', ').shift() : <span style={{ color: 'grey' }}>-</span>
     else if(column.type === 'datetime')
       content = (new Date(content)).toLocaleString('en-US')
     else if(column.type === 'money')
@@ -48,10 +48,14 @@ const TableList = ({ duck, list, ...props }) => {
       }).format(content)
     else if(column.type === 'string')
       content = content || <span style={{ color: 'grey' }}>-</span>
+    // BEGIN Improve
     else if(column.type === 'action')
-      content =  (<Link to={'#'}>
-        <span>{`${column.action.label}`}</span>
-      </Link>)
+      content =  (
+        <Link to={'#'}>
+          <span>{`${column.action.label}`}</span>
+        </Link>
+      )
+    // END Improve
 
     return content
   }
@@ -118,7 +122,7 @@ const TableList = ({ duck, list, ...props }) => {
   // END Improve
 
   const _handleSelectorCheckboxChange = (e, { checked }) => {
-    const itemId = +e.currentTarget.dataset.itemId || e.currentTarget.dataset.itemId
+    const itemId = +e.currentTarget.dataset.itemId
 
     props.dispatch(
       checked === true ? duck.creators.selectIds(itemId) : duck.creators.removeSelectedIds(itemId)
@@ -131,7 +135,7 @@ const TableList = ({ duck, list, ...props }) => {
     )
   }
 
-  const _renderRow = (item, index) => {
+  const renderTableRow = (item, index) => {
     const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
     const isActive = Boolean('active' in item ? item.active : true)
 
@@ -160,26 +164,41 @@ const TableList = ({ duck, list, ...props }) => {
         {/* Row options */}
         {
           list.config.row.options.length > 0 && (
-            <Table.Cell textAlign='center'>
+            <Table.Cell>
               {
-                list.config.row.options.map(({ icon, name, display_name, ...rest }, index)=> (
-                  <Button
-                    basic content={display_name}
-                    data-item-id={item.id} data-option-name={name}
-                    icon={icon} key={index} onClick={_handleRowOptionClick}
-                    {...rest}/>
-                ))
+                list.config.row.options
+                  // BEGIN Improve
+                  .filter(({ conditional_render }) => {
+                    return !conditional_render || conditional_render(item)
+                  })
+                  // END Improve
+                  .map(({ icon, name, display_name, ...rest }, index) => {
+                    delete rest.conditional_render
+
+                    return (
+                      <Popup
+                        content={display_name} inverted
+                        key={index} position='bottom center'
+                        trigger={
+                          <Button
+                            basic
+                            data-item-id={item.id} data-option-name={name}
+                            icon={icon} onClick={_handleRowOptionClick}
+                            {...rest}/>
+                        }/>
+                    )
+                  })
               }
             </Table.Cell>
           )
         }
       </Table.Row>
-
     )
   }
 
   const loading = list.status === 'GETTING'
   const areAllItemsChecked = list.selector && list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
+  const hasHeader = configOptions.length > 0 || _get(list.config, 'search_enabled', true) || props.filterColumns.length > 0
 
   // List options only available when the list has extended the selector reducer
   const basicOptions = configOptions.filter(item => !('is_multiple' in item))
@@ -197,71 +216,91 @@ const TableList = ({ duck, list, ...props }) => {
         <Loader>Loading...</Loader>
       </Dimmer>
 
-      <Grid className='table-primary-header'>
-        <Grid.Column width={6}>
-          {
-            basicOptions.length > 0 && (
-              <Dropdown
-                disabled={basicOptions.length === 0}
-                icon={null}
-                onChange={_handleOptionDropdownChange}
-                options={
-                  basicOptions.map((item, index) => ({
-                    key  : `c-option-${index}`,
-                    icon : item.icon,
-                    value: item.name,
-                    text : item.display_name
-                  }))
-                }
-                selectOnBlur={false}
-                trigger={(
-                  <Button basic icon='ellipsis vertical'/>
-                )}
-                value={null}/>
-            )
-          }
-          {
-            selectionOptions.length > 0 && (
-              selectionOptions
-                .filter(({ conditional_render })=> !conditional_render || (conditional_render && conditional_render(list.selector.selected_items[0])))
-                .map(({ icon, name, display_name, ...rest }, index) => (
-                  <Button
-                    basic content={display_name} data-option-name={name}
-                    icon={icon} key={`nc-option-${index}`} onClick={_handleOptionBtnClick}
-                    {...rest}/>
-                ))
-            )
-          }
-        </Grid.Column >
-        <Grid.Column textAlign='right' width={10}>
-          {
-            props.filterColumns.length > 0 && (
-              <Popup
-                basic
-                on='click' onClose={_handleClose} onOpen={_handleOpen}
-                open={open} position='bottom right'
-                trigger={<Button basic={!open} color={open ? 'blue' : null} content='Filters'/>}>
-                <Popup.Content style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
-                  <FilterForm duck={duck}/>
-                </Popup.Content>
-              </Popup>
-            )
-          }
-          {_get(list.config, 'search_enabled', true) && (
-            <Input
-              icon='search' iconPosition='left' onChange={_handleSearchInputChange}
-              placeholder={list.config.search_placeholder || 'Search'} type='search'/>
-          )}
-        </Grid.Column>
+      {
+        hasHeader && (
+          <Grid className='table-primary-header'>
+            <Grid.Column width={6}>
+              {
+                basicOptions.length > 0 && (
+                  <Dropdown
+                    disabled={basicOptions.length === 0}
+                    icon={null}
+                    onChange={_handleOptionDropdownChange}
+                    options={
+                      basicOptions.map((item, index) => ({
+                        key  : `c-option-${index}`,
+                        icon : item.icon,
+                        value: item.name,
+                        text : item.display_name
+                      }))
+                    }
+                    selectOnBlur={false}
+                    trigger={(
+                      <Button basic icon='ellipsis vertical'/>
+                    )}
+                    value={null}/>
+                )
+              }
+              {
+                selectionOptions.length > 0 && (
+                  selectionOptions
+                  // BEGIN Improve
+                    .filter(({ conditional_render }) => {
+                      return !conditional_render || conditional_render(list.selector.selected_items[0])
+                    })
+                  // END Improve
+                    .map(({ icon, name, display_name, ...rest }, index) => {
+                      delete rest.conditional_render
 
-        {
-          props.selectedFilterColumns.length > 0 && (
-            <Grid.Column style={{ paddingTop: 0 }} width={16}>
-              <FilterTagManager duck={duck}/>
+                      return (
+                        <Popup
+                          content={display_name} inverted
+                          key={`nc-option-${index}`} position='bottom center'
+                          trigger={
+                            <Button
+                              basic
+                              data-option-name={name}
+                              icon={icon} onClick={_handleOptionBtnClick}
+                              {...rest}/>
+                          }/>
+                      )
+                    })
+                )
+              }
+            </Grid.Column >
+            <Grid.Column textAlign='right' width={10}>
+              {
+                props.filterColumns.length > 0 && (
+                  <Popup
+                    basic
+                    on='click' onClose={_handleClose} onOpen={_handleOpen}
+                    open={open} position='bottom right'
+                    trigger={<Button basic={!open} color={open ? 'blue' : null} content='Filters'/>}>
+                    <Popup.Content style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
+                      <FilterForm duck={duck}/>
+                    </Popup.Content>
+                  </Popup>
+                )
+              }
+              {
+                _get(list.config, 'search_enabled', true) && (
+                  <Input
+                    icon='search' iconPosition='left' onChange={_handleSearchInputChange}
+                    placeholder={list.config.search_placeholder || 'Search'} type='search'/>
+                )
+              }
             </Grid.Column>
-          )
-        }
-      </Grid>
+
+            {
+              props.selectedFilterColumns.length > 0 && (
+                <Grid.Column style={{ paddingTop: 0 }} width={16}>
+                  <FilterTagManager duck={duck}/>
+                </Grid.Column>
+              )
+            }
+          </Grid>
+        )
+      }
 
       <Table
         basic='very' className='table-primary' selectable
@@ -302,43 +341,40 @@ const TableList = ({ duck, list, ...props }) => {
 
             {/* Row options */}
             {
-              list.config.row.options.length > 0 && (<Table.HeaderCell textAlign='center'>OPTIONS</Table.HeaderCell>)
+              list.config.row.options.length > 0 && (<Table.HeaderCell>Actions</Table.HeaderCell>)
             }
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {
-            (()=>{
-              if(list.config.group_by)
-                return  list.config.group_by.groups.map(_group => (
-                  <>
-                    <Table.Row disabled>
-                      <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='left'>
-                        <Icon name={_group.icon_label}/> {_group.text_label}
-                      </Table.Cell>
-                    </Table.Row>
-                    {
-                      list.items
-                        .filter(_item=> _item[list.config.group_by.column_name] === _group.value).length > 0 ? (
-                          list.items.map(_renderRow)
-                        ) : (
-                          <Table.Row disabled>
-                            <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
-                          </Table.Row>
-                        )
-                    }
-                  </>
-                ))
-
-              return list.items.length > 0 ? (
-                list.items.map(_renderRow)
+            list.config.group_by ? (
+              props.groups.map((group, index) => (
+                <Fragment key={index}>
+                  <Table.Row disabled>
+                    <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='left'>
+                      <Icon name={group.icon_label}/> {group.text_label}
+                    </Table.Cell>
+                  </Table.Row>
+                  {
+                    group.items.length > 0 ? (
+                      group.items.map(renderTableRow)
+                    ) : (
+                      <Table.Row disabled>
+                        <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
+                      </Table.Row>
+                    )
+                  }
+                </Fragment>
+              ))
+            ) : (
+              list.items.length > 0 ? (
+                list.items.map(renderTableRow)
               ) : (
                 <Table.Row disabled>
                   <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
                 </Table.Row>
               )
-            })()
-
+            )
           }
         </Table.Body>
       </Table>
@@ -371,7 +407,8 @@ export default compose(
     (state, { duck }) => ({
       list                 : duck.selectors.list(state),
       filterColumns        : duck.selectors.filterColumns(state),
-      selectedFilterColumns: duck.selectors.selectedFilterColumns(state)
+      selectedFilterColumns: duck.selectors.selectedFilterColumns(state),
+      groups               : duck.selectors.groups(state)
     }),
     dispatch => ({ dispatch })
   )

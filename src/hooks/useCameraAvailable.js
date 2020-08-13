@@ -1,5 +1,5 @@
 
-import {  useState , useEffect } from 'react'
+import { useState , useEffect } from 'react'
 
 const useCameraAvailable = () => {
   const [ available , setAvailable ] = useState(false)

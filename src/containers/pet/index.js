@@ -10,7 +10,6 @@ import useModal from '@components/Modal/useModal'
 import PetFormModal from './form/modal'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
-import locationDuck from '@reducers/location'
 import petDuck from '@reducers/pet'
 import petDetailDuck from '@reducers/pet/detail'
 import petBreedDuck from '@reducers/pet/breed'
@@ -23,7 +22,6 @@ const PetList = ({ pet, petDetail, ...props }) => {
 
   useEffect(() => {
     props.getPets({ retired: false })
-    props.getLocations()
     props.getPetBreeds()
   }, [])
 
@@ -64,11 +62,10 @@ const PetList = ({ pet, petDetail, ...props }) => {
 
 export default compose(
   connect(
-    ({ pet ,...state }) => ({
+    ({ pet, ...state }) => ({
       pet,
       petDetail: petDetailDuck.selectors.detail(state)
     }), {
-      getLocations: locationDuck.creators.get,
       getPets     : petDuck.creators.get,
       getPetBreeds: petBreedDuck.creators.get,
       setItem     : petDetailDuck.creators.setItem

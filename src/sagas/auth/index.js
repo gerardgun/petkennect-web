@@ -147,24 +147,26 @@ function* signIn({ payload }) {
   try {
     yield put({ type: types.SIGN_IN_PENDING })
 
-    const { token, is_staff, ...rest } = yield call(Post, 'login/', payload)
-    const user = { ...rest, is_superadmin: is_staff }
+    const { token } = yield call(Post, 'login/', payload)
 
     // Setting the token
     localStorage.setItem('@token', token)
     reHydrateToken(token)
 
-    const is_employee_and_belong_one_company =  !user.is_superadmin && rest.companies.length === 1
+    yield* get()
+
+    const { item: authUser } = yield select(selectors.detail)
+
+    const is_employee_and_belong_one_company = !authUser.is_superadmin && authUser.companies.length === 1
 
     if(is_employee_and_belong_one_company)
-      localStorage.setItem('@auth_tenant', rest.companies[0].subdomain_prefix)
+      localStorage.setItem('@auth_tenant', authUser.companies[0].subdomain_prefix)
 
     yield put({
       type   : types.SIGN_IN_FULFILLED,
       payload: {
-        item          : user,
         session_status: token ? authDuck.statuses.EXISTS : authDuck.statuses.NOT_EXISTS,
-        tenant        : is_employee_and_belong_one_company ?  rest.companies[0].subdomain_prefix : ''
+        tenant        : is_employee_and_belong_one_company ?  authUser.companies[0].subdomain_prefix : ''
       }
     })
   } catch (e) {

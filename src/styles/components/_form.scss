@@ -4,12 +4,6 @@
       label {
         color: inherit;
       }
-      
-      .message {
-        padding-top: 0.3rem;
-        font-size: 0.9rem;
-        color: unquote($red + 'C5');
-      }
 
       .ui.input {
         &.action {
@@ -55,4 +49,10 @@
       font-weight: 400;
     }
   }
+}
+
+.form-error-message {
+  padding-top: 0.3rem;
+  font-size: 0.9rem;
+  color: unquote($red + 'C5');
 }

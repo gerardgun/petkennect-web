@@ -16,32 +16,32 @@ export default {
       icon        : 'print'
     },
     {
-      display_name: null,
+      display_name: 'View Incident',
       name        : 'view_pdf',
       icon        : 'file pdf outline',
       is_multiple : false
     },
     {
-      display_name      : null,
+      display_name      : 'Edit Incident',
       name              : 'edit',
       icon              : 'edit outline',
       is_multiple       : false,
-      conditional_render: (item) => !item.is_client_notified
+      conditional_render: item => !item.is_client_notified
     },
     {
-      display_name      : null,
+      display_name      : 'Preview Incident Report',
       name              : 'preview_report',
       icon              : 'envelope outline',
       is_multiple       : false,
-      conditional_render: (item) => !item.is_client_notified
+      conditional_render: item => !item.is_client_notified
     },
     {
-      display_name      : null,
+      display_name      : 'Delete Incident',
       name              : 'delete',
       icon              : 'trash alternate outline',
       is_multiple       : false,
       color             : 'red',
-      conditional_render: (item) => !item.is_client_notified
+      conditional_render: item => !item.is_client_notified
     }
   ],
   row: {

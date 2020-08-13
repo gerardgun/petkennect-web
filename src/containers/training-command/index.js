@@ -45,7 +45,7 @@ const TrainingCommand = ({ trainingCommand, trainingCommandDetail, ...props }) =
           </Grid.Column>
           <Grid.Column textAlign='right'>
             <Button
-              className='cls-saveButton' color='teal'
+              color='teal'
               content='New Training Command'
               onClick={_handleAddBtnClick}/>
           </Grid.Column>

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { connect } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Grid, Segment, Breadcrumb, Image, Label, Menu, Header, Dropdown, Button, Icon } from 'semantic-ui-react'
 import _get from 'lodash/get'
@@ -24,6 +24,7 @@ import petImageDetailDuck from '@reducers/pet/image/detail'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
 
 const PetShow = ({ petDetail, petImage, ...props }) => {
+  const history = useHistory()
   const [ activeMenuItem, setActiveMenuItem ] = useState('info')
   const inputFileRef = useRef()
   const { id: petId } = useParams()
@@ -47,8 +48,8 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
     if(e.target.files && e.target.files[0])
       props.setPetImage({
         filepath  : e.target.files[0],
-        filetype  : 'image',
         filename  : e.target.files[0].name,
+        filetype  : 'image',
         is_profile: true
       }, 'CREATE')
   }
@@ -82,6 +83,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
   }
 
   const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
+
   const imageProfileOptions = useMemo(() => {
     let options = []
 
@@ -98,19 +100,27 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
 
     return options
   }, [ petDetail.status ])
-
   const fullname = `${petDetail.item.name || ''}`
   const clientFullName = `${petDetail.item.client_first_name || ''} ${petDetail.item.client_last_name || ''}`
+  const comesfromClientShowScreen = useMemo(() => Boolean(history.location.state), [])
 
   return (
     <Layout>
       <Segment className='segment-content petkennect-profile'>
         <Grid>
-          <Grid.Column className='p40' width={5}>
+          <Grid.Column className='petkennect-profile-sidebar p40' width={5}>
             <Breadcrumb>
-              <Breadcrumb.Section>
-                <Link to='/pet'>Pets</Link>
-              </Breadcrumb.Section>
+              {
+                comesfromClientShowScreen ? (
+                  <Breadcrumb.Section>
+                    <Link to={`/client/${history.location.state.client}`}>{history.location.state.client_fullname}</Link>
+                  </Breadcrumb.Section>
+                ) : (
+                  <Breadcrumb.Section>
+                    <Link to='/pet'>Pets</Link>
+                  </Breadcrumb.Section>
+                )
+              }
               <Breadcrumb.Divider/>
               <Breadcrumb.Section active>
                 {fullname}
@@ -127,7 +137,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
                     <Image circular src={petDetail.item.image_filepath || defaultImageUrl}/>
                     <div className='c-image-profile__overlay'>
                       <Icon className='text-white mb8' name='camera' size='big'/>
-                      <span className='text-regular text-white text-center'>{petDetail.item.image_filepath ? 'CHANGE' : 'UPLOAD'} <br/>PHOTO</span>
+                      <span className='text-white text-center'>{petDetail.item.image_filepath ? 'CHANGE' : 'UPLOAD'} <br/>PHOTO</span>
                     </div>
                   </div>
                 )}
@@ -233,7 +243,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
                 active={activeMenuItem === 'gallery'} link name='gallery'
                 onClick={_handleMenuItemClick}>
                 Gallery
-                <Label color='teal'>{petImage.pagination.meta.total_items || '...'}</Label>
+                <Label color='teal'>{petImage.pagination.meta.total_items || petImage.items.length}</Label>
               </Menu.Item>
             </Menu>
           </Grid.Column>

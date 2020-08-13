@@ -10,7 +10,7 @@ function* get(/* { payload }*/) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const { client_id,...filters } = yield select(selectors.filters)
+    const { client_id, ...filters } = yield select(selectors.filters)
     const list = yield select(selectors.list)
 
     const { results, ...meta } = yield call(Get, `clients/${client_id}/documents/`, filters)

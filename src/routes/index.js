@@ -12,7 +12,7 @@ import AgreementCreate from '@containers/agreement/create'
 import AuthMe from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
-import ClientForm from '@containers/client/form'
+import ClientShow from '@containers/client/show'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
@@ -24,6 +24,8 @@ import PetIncidentAction from '@containers/pet-incident-action'
 import PetIncidentBehavior from '@containers/pet-incident-behavior'
 import PetRetireReason from '@containers/pet-retire-reason'
 import PetVaccinationType from '@containers/pet-vaccination-type'
+import PriceMaster from '@containers/price-master'
+import PriceMasterCreate from '@containers/price-master/create'
 import Product from '@containers/product'
 import ProductCreate from '@containers/product/create/RootProvider'
 import Category from '@containers/category'
@@ -99,7 +101,7 @@ const privateRoutes = [
   },
   {
     path     : '/client/:client',
-    component: ClientForm
+    component: ClientShow
   },
   {
     path     : '/company',
@@ -152,6 +154,14 @@ const privateRoutes = [
   {
     path     : '/pet/:id',
     component: PetCreate
+  },
+  {
+    path     : '/setup/price-master',
+    component: PriceMaster
+  },
+  {
+    path     : '/setup/price-master/create',
+    component: PriceMasterCreate
   },
   {
     path     : '/product',

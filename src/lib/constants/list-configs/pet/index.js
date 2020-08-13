@@ -23,13 +23,13 @@ export default {
       icon        : 'print'
     },
     {
-      display_name: null,
+      display_name: 'Fork',
       name        : 'multiple',
       icon        : 'fork',
       is_multiple : true
     },
     {
-      display_name: null,
+      display_name: 'Delete Pet',
       name        : 'delete',
       icon        : 'trash alternate outline',
       is_multiple : false,

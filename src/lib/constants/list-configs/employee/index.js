@@ -4,6 +4,10 @@ import { Image } from 'semantic-ui-react'
 
 import { defaultImageUrl } from '@lib/constants'
 
+import employeeTitleDuck from '@reducers/employee/title'
+import locationDuck from '@reducers/location'
+import rolDuck from '@reducers/rol'
+
 export default {
   base_uri          : '/employee/show',
   search_placeholder: 'Search by name or email',
@@ -19,7 +23,7 @@ export default {
       icon        : 'print'
     },
     {
-      display_name: null,
+      display_name: 'Delete Employee',
       name        : 'delete',
       icon        : 'trash alternate outline',
       is_multiple : false,
@@ -36,7 +40,8 @@ export default {
       type        : null,
       width       : null,
       align       : 'left',
-      sort        : false,
+      sort        : true,
+      sort_name   : 'user__first_name',
       formatter   : (cell, row) => {
         return (
           <Link to={`/client/show/${row.id}`}>
@@ -54,7 +59,8 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'user__email'
     },
     {
       display_name: 'Location',
@@ -62,7 +68,13 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'location__code',
+      filter      : {
+        type        : 'dropdown',
+        name        : 'location__id',
+        source_store: locationDuck.store
+      }
     },
     {
       display_name: 'Title',
@@ -70,7 +82,13 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'title__name',
+      filter      : {
+        type        : 'dropdown',
+        name        : 'title__id',
+        source_store: employeeTitleDuck.store
+      }
     },
     {
       display_name: 'Role',
@@ -78,15 +96,36 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'role__name',
+      filter      : {
+        type        : 'dropdown',
+        name        : 'role__id',
+        source_store: rolDuck.store
+      }
     },
     {
       display_name: 'Status',
-      name        : 'status',
+      name        : 'is_active',
       type        : 'boolean_active',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'is_active',
+      filter      : {
+        type        : 'dropdown',
+        name        : 'is_active',
+        source_store: [
+          {
+            value: true,
+            text : 'Active'
+          },
+          {
+            value: false,
+            text : 'Inactive'
+          }
+        ]
+      }
     },
     {
       display_name: 'Created at',
@@ -94,7 +133,12 @@ export default {
       type        : 'date',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true,
+      sort_name   : 'created_at',
+      filter      : {
+        type: 'range_date',
+        name: [ 'created_at__gt', 'created_at__lt' ]
+      }
     }
   ]
 }

@@ -12,7 +12,7 @@ export default {
       icon        : 'print'
     },
     {
-      display_name: null,
+      display_name: 'Delete Species',
       name        : 'delete',
       icon        : 'trash alternate outline',
       is_multiple : false,

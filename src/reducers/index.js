@@ -10,6 +10,8 @@ import categoryDetail from '@reducers/category/detail'
 import client from '@reducers/client'
 import clientDetail from '@reducers/client/detail'
 import clientComment from '@reducers/client/comment'
+import clientAgreement from '@reducers/client/agreement'
+import clientAgreementDetail from '@reducers/client/agreement/detail'
 import clientCommentDetail from '@reducers/client/comment/detail'
 import clientDocument from '@reducers/client/document'
 import clientDocumentDetail from '@reducers/client/document/detail'
@@ -55,6 +57,8 @@ import petReservation from '@reducers/pet/reservation'
 import petReservationDetail from '@reducers/pet/reservation/detail'
 import product from '@reducers/product'
 import productDetail from '@reducers/product/detail'
+import priceMaster from '@reducers/price-master'
+import priceMasterDetail from '@reducers/price-master/detail'
 import productImage from '@reducers/product/image'
 import productImageDetail from '@reducers/product/image/detail'
 import productPackage from '@reducers/product/package'
@@ -97,6 +101,8 @@ const createRootReducer = history => combineReducers({
   [clientDocumentDetail.store]     : clientDocumentDetail.reducer,
   [clientDocumentType.store]       : clientDocumentType.reducer,
   [clientDocumentTypeDetail.store] : clientDocumentTypeDetail.reducer,
+  [clientAgreement.store]          : clientAgreement.reducer,
+  [clientAgreementDetail.store]    : clientAgreementDetail.reducer,
   [clientComment.store]            : clientComment.reducer,
   [clientCommentDetail.store]      : clientCommentDetail.reducer,
   [clientPet.store]                : clientPet.reducer,
@@ -139,6 +145,8 @@ const createRootReducer = history => combineReducers({
   [petReservationDetail.store]     : petReservationDetail.reducer,
   [petVaccination.store]           : petVaccination.reducer,
   [petVaccinationDetail.store]     : petVaccinationDetail.reducer,
+  [priceMaster.store]              : priceMaster.reducer,
+  [priceMasterDetail.store]        : priceMasterDetail.reducer,
   [product.store]                  : product.reducer,
   [productDetail.store]            : productDetail.reducer,
   [productImage.store]             : productImage.reducer,

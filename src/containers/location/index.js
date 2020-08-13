@@ -6,9 +6,8 @@ import { Button, Grid,Header,Dimmer,Loader, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Form from './create'
+import LocationItem from './Item'
 import useModal from '@components/Modal/useModal'
-
-import LocationsItem from './LocationsItem'
 
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
@@ -38,6 +37,8 @@ const Location = ({ location, locationDetail, ...props }) => {
     _handleOpen()
   }
 
+  const loading = location.status === 'GETTING'
+
   return (
     <Layout>
       <Segment className='segment-content' padded='very'>
@@ -49,18 +50,19 @@ const Location = ({ location, locationDetail, ...props }) => {
             <Button color='teal' content='New Location' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
-        <Segment className='border-none shadow-0'>
-          {location.status === 'GETTING' && (
-            <Dimmer active inverted>
-              <Loader inverted>Loading</Loader>
-            </Dimmer>
-          )}
-          {location.items && location.items.map((item)=> (
-            <LocationsItem
-              item={item} key={item.id}
-              onDelete={_handleDeleteBtnClick} onUpdate={_handleEditBtnClick}/>
-          ))}
-        </Segment>
+        <Dimmer.Dimmable as={Segment} className='border-none shadow-0' dimmed={loading}>
+          <Dimmer active={loading} inverted>
+            <Loader>Loading</Loader>
+          </Dimmer>
+
+          {
+            location.items && location.items.map((item)=> (
+              <LocationItem
+                item={item} key={item.id}
+                onDelete={_handleDeleteBtnClick} onUpdate={_handleEditBtnClick}/>
+            ))
+          }
+        </Dimmer.Dimmable>
       </Segment>
 
       <Form/>
