@@ -9,15 +9,20 @@ export default {
   }),
   consts: {
     statuses: [ 'SET_ITEM', 'RESET_ITEM' ],
-    modes   : [ 'CREATE', 'DELETE', 'DISABLE', 'FORCE_PASSWORD', 'READ', 'UPDATE' ]
+    modes   : [
+      'CREATE', 'READ', 'UPDATE', 'DELETE', // Basic CRUD modes
+      'DISABLE', 'FORCE_PASSWORD' // Other modes
+    ]
   },
   types  : [ 'CREATE', 'RESET_ITEM', 'SET_ITEM' ],
-  reducer: (state, action, { types, statuses, initialState }) =>
+  reducer: (state, action, { types, modes, statuses, initialState }) =>
     produce(state, draft => {
       switch (action.type) {
         case types.SET_ITEM:
           draft.item = typeof action.item === 'undefined' || action.item === null ? initialState.item : action.item
-          draft.mode = action.mode
+
+          if(action.mode in modes) draft.mode = action.mode
+          else throw new Error(`${String(action.mode)} isn't a valid mode.`)
 
           draft.status = statuses.SET_ITEM
 

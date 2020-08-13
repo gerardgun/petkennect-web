@@ -28,7 +28,7 @@ function VacinationSection(props) {
   }, [ ])
 
   useEffect(()=> {
-    if(petVaccinationDetail.status === 'POSTED' || petVaccinationDetail.status === 'SENT_EMAIL') {
+    if(petVaccinationDetail.status === 'POSTED' || petVaccinationDetail.status === 'SENT') {
       props.getPet(id)
       props.getPetVaccinations()
     }

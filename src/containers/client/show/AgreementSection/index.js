@@ -1,108 +1,65 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import { compose } from 'redux'
-import { Header , Divider } from 'semantic-ui-react'
+import { Container, Grid, Header } from 'semantic-ui-react'
 
 import Table from '@components/Table'
+import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
 import SignAgreementForm from './SignAgreementForm'
-import SendAgreementEmail from './SendAgreementForm'
-import ShowAgreementPdfEmail from './ShowAgreementPdfForm'
-import useModal from '@components/Modal/useModal'
+import ShowAgreement from './ShowAgreement'
+import { downloadFileURL, printFileURL } from '@lib/utils/functions'
 
 import clientAgreementDuck from '@reducers/client/agreement'
 import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
+import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
 import './styles.scss'
 
 function AgreementsSection({ clientAgreementDetail, ...props }) {
-  const { client: clientId } = useParams()
-  const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
-  const [ openShowPdfFormModal, { _handleOpen: _handleOpenPdfFormModal, _handleClose: _handleClosePdfFormModal } ] = useModal()
-
-  useEffect(()=> {
-    props.getClientAgreements({
-      client_id: clientId
-    })
-  }, [])
-
   useEffect(() => {
-    const { status } = clientAgreementDetail
-
-    if(status  === 'POSTED' || status === 'PUT')
-      props.getClientAgreements()
+    if(clientAgreementDetail.status  === 'POSTED') props.getClientAgreements()
   }, [ clientAgreementDetail.status ])
 
   const _handleRowOptionClick = (option, item) => {
-    if(item.signed)
-      switch (option) {
-        case 'view_pdf':
-          props.setItem(item, 'ShowPdf')
-          _handleOpenPdfFormModal()
-
-          return
-
-        case 'print':
-          props.setItem(item, 'ShowPdf')
-          _handleOpenPdfFormModal()
-
-          return
-
-        case 'download':
-          window.open(item.document_filepath)
-
-          return
-
-        case 'send_document':
-          props.setItem(item)
-          _handleOpenEmailFormModal()
-
-          return
-        default:
-          return
-      }
-    else
-      switch (option) {
-        case 'sign':
-          props.setItem(item, 'Show')
-
-          return
-        default:
-          return
-      }
+    if(option === 'view_pdf')
+      props.setItem(item, 'READ')
+    else if(option === 'print')
+      printFileURL(item.document_filepath)
+    else if(option === 'download')
+      downloadFileURL(item.document_filepath, `${item.name}.pdf`)
+    else if(option === 'send_document')
+      props.setClientDocument({ id: item.document, filename: item.document_filename }, 'SEND')
+    else if(option === 'sign')
+      props.setItem(item, 'CREATE')
   }
 
   return (
-    <div className='c-booking'>
-      <div className='flex align-center justify-between ph40 pt40 pb16'>
-        <Header className='c-title mv0'>
-          Agreements
-        </Header>
-      </div>
-      <Divider className='m0'/>
-      <div className='mh40 mt20'>
+    <Container fluid>
+      <Grid className='petkennect-profile-body-header'>
+        <Grid.Column verticalAlign='middle'>
+          <Header as='h2'>Agreements</Header>
+        </Grid.Column>
+      </Grid>
+      <div className='mt40 mh8'>
         <Table
           duck={clientAgreementDuck}
           onRowOptionClick={_handleRowOptionClick}/>
 
+        <ClientDocumentFormSendModal/>
+        <ShowAgreement/>
         <SignAgreementForm/>
-        <SendAgreementEmail onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
-        <ShowAgreementPdfEmail onClose={_handleClosePdfFormModal} open={openShowPdfFormModal}/>
       </div>
-    </div>
+    </Container>
   )
 }
 
-AgreementsSection.propTypes = {  }
-
-AgreementsSection.defaultProps = {  }
-
 export default compose(
   connect(
-    (state) => ({
+    state => ({
       clientAgreementDetail: clientAgreementDetailDuck.selectors.detail(state)
     }), {
       setItem            : clientAgreementDetailDuck.creators.setItem,
+      setClientDocument  : clientDocumentDetailDuck.creators.setItem,
       getClientAgreements: clientAgreementDuck.creators.get
     })
 )(AgreementsSection)

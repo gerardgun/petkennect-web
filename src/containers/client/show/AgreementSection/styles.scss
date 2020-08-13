@@ -1,37 +1,48 @@
-.justify-between
-{
-    text-align: justify;
-}
+.show-agreement-modal.ui.basic.modal {
+  & > .close {
+    position: absolute;
+    top: -2.5rem;
+    right: -2.5rem;
+  }
 
-.sigCanvas
-{
-    border: 1px solid #BDC3C9;
-}
-
-.btnClearSignature
-{
-    width: 300px;
-}
-
-.grid-sign-detail
-{
-    background: #FAFCFF;
-border: 1px solid #BDC3C9;
-overflow-y: scroll;
-height: 520px;
-}
-
-.text-align-center
-{
-    text-align:center;
-}
-
-.iframeViewDocument
-{
+  iframe {
     padding: 0px;
+    border: none;
+    width: 100%;
+    height: 85vh;
+  }
 }
 
-.grid-show-pdf
-{
-    height: 450px;
+// For Sign Agreement Form
+.sign-agreement-modal {
+  &.ui.modal {
+    & > .content {
+      padding: 1rem;
+    }
+  }
+
+  &-body {
+    background: #e5eaee;
+    overflow-y: auto;
+    max-height: 70vh;
+    padding: 1.5rem !important;
+
+    & > div {
+      background-color: #fff;
+      padding: 1rem 3rem 3.5rem;
+      min-height: 100%;
+    }
+
+    h1.ui.header {
+      margin-bottom: 2.5rem;
+    }
+  }
+
+  &-form {
+    padding: 2.5rem !important;
+  }
+}
+
+.sign-canvas {
+  border: 1px solid #bdc3c9;
 }

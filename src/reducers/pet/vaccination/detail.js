@@ -1,6 +1,6 @@
 import base from '@reducers/base'
 import detail from '@reducers/common/detail'
-import sendEmail from '@reducers/common/sendEmail'
+import detailSend from '@reducers/common/detail-send'
 
 export default base({
   namespace   : '@@pet-kennect',
@@ -10,4 +10,4 @@ export default base({
   }
 })
   .extend(detail)
-  .extend(sendEmail)
+  .extend(detailSend)

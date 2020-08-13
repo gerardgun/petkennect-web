@@ -5,25 +5,25 @@ export default {
   search_placeholder: 'Search',
   options           : [
     {
-      display_name: null,
+      display_name: 'View Document',
       name        : 'view_pdf',
       icon        : 'file pdf outline',
       is_multiple : false
     },
     {
-      display_name: null,
+      display_name: 'Edit Document',
       name        : 'edit',
       icon        : 'edit outline',
       is_multiple : false
     },
     {
-      display_name: null,
+      display_name: 'Email Document',
       name        : 'send_document',
       icon        : 'envelope outline',
       is_multiple : false
     },
     {
-      display_name: null,
+      display_name: 'Delete Documents',
       name        : 'delete',
       icon        : 'trash alternate outline',
       is_multiple : true,

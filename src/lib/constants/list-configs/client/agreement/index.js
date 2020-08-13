@@ -1,7 +1,10 @@
-// import React from 'react'
+import React from 'react'
+import { Label } from 'semantic-ui-react'
+
 export default {
-  base_uri: null,
-  group_by: {
+  base_uri      : null,
+  search_enabled: false,
+  group_by      : {
     column_name: 'signed',
     groups     : [
       {
@@ -19,34 +22,34 @@ export default {
   row: {
     options: [
       {
-        display_name: null,
-        name        : 'view_pdf',
-        icon        : 'file pdf outline',
-        is_multiple : false
+        display_name      : 'View PDF',
+        name              : 'view_pdf',
+        icon              : 'eye',
+        conditional_render: item => item.signed
       },
       {
-        display_name: null,
-        name        : 'print',
-        icon        : 'print',
-        is_multiple : false
+        display_name      : 'Print PDF',
+        name              : 'print',
+        icon              : 'print',
+        conditional_render: item => item.signed
       },
       {
-        display_name: null,
-        name        : 'download',
-        icon        : 'download',
-        is_multiple : false
+        display_name      : 'Download PDF',
+        name              : 'download',
+        icon              : 'download',
+        conditional_render: item => item.signed
       },
       {
-        display_name: null,
-        name        : 'send_document',
-        icon        : 'envelope outline',
-        is_multiple : false
+        display_name      : 'Email PDF',
+        name              : 'send_document',
+        icon              : 'envelope outline',
+        conditional_render: item => item.signed
       },
       {
-        display_name: null,
-        name        : 'sign',
-        icon        : 'playstation outline',
-        is_multiple : false
+        display_name      : 'Sign Agreement',
+        name              : 'sign',
+        icon              : 'edit outline',
+        conditional_render: item => !item.signed
       }
     ]
   },
@@ -57,7 +60,12 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : cell => (
+        <>
+          <Label color='teal' size='tiny' style={{ paddingTop: '0.8rem', paddingBottom: '0.8rem' }}>PDF</Label>&nbsp;&nbsp;&nbsp; {cell}
+        </>
+      )
     },
     {
       display_name: 'Signed at',

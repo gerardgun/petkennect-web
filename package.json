@@ -19,6 +19,7 @@
     "immer": "^5.3.6",
     "moment": "^2.26.0",
     "node-sass": "^4.13.1",
+    "print-js": "^1.0.63",
     "react": "^16.12.0",
     "react-avatar-editor": "^11.0.9",
     "react-beautiful-dnd": "^13.0.0",

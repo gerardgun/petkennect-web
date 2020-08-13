@@ -1,18 +1,13 @@
-import React, { useEffect, useMemo,useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import SignatureCanvas from 'react-signature-canvas'
 import { compose } from 'redux'
-import * as Yup from 'yup'
-import { reduxForm } from 'redux-form'
+import { Button, Dimmer, Grid, Header, Loader, Modal } from 'semantic-ui-react'
 
 import FormError from '@components/Common/FormError'
-import { Button,Form,Grid, Header, Modal } from 'semantic-ui-react'
 
+import agreementDetailDuck from '@reducers/agreement/detail'
 import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
-
-import SignatureCanvas from 'react-signature-canvas'
-
-import { parseResponseError,syncValidate } from '@lib/utils/functions'
 
 function dataURLtoFile(dataurl, filename) {
   var arr = dataurl.split(','),
@@ -27,146 +22,147 @@ function dataURLtoFile(dataurl, filename) {
   return new File([ u8arr ], filename, { type: mime })
 }
 
-const ShowDocumentForm = props => {
-  const {
-    error,
-    clientAgreementDetail,handleSubmit, reset,submitting
-  } = props
+const SignAgreementForm = ({ agreementDetail, clientAgreementDetail, ...props }) => {
+  const { item: clientAgreement, mode, status } = clientAgreementDetail
 
-  useEffect(()=> {
-    if(isUpdating)
-      props.get(clientAgreementDetail.item.id)
-  }, [ clientAgreementDetail.item.id ])
+  const [ signatureWidth, setSignatureWidth ] = useState(0)
+  const [ error, setError ] = useState(null)
+  const sigCanvas = useRef(null)
 
-  const sigCanvas = useRef({})
+  useEffect(() => {
+    window.addEventListener('resize', _handleWindowResize, true)
 
-  const isUpdating = Boolean(clientAgreementDetail.item.id)
+    return () => {
+      window.removeEventListener('resize', _handleWindowResize, false)
+    }
+  }, [])
 
-  const getIsOpened = mode => (mode === 'Show')
+  useEffect(() => {
+    if(mode === 'CREATE') {
+      props.getAgreement(clientAgreement.id)
+      _handleWindowResize()
+    }
+  }, [ mode ])
 
-  const _handleClose = () => {
-    props.resetItem()
-  }
-
-  const _handleClear = ()=>
-  {
+  const _handleClear = () => {
     sigCanvas.current.clear()
   }
 
-  const _handleSubmit = values => {
-    const file = dataURLtoFile(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png'),'imageSign.png')
-    values =  {
-      sign_image: file,
-      agreement : clientAgreementDetail.item.id
-    }
-
-    return props
-      .post({ ...values })
-      .then(_handleClose)
-      .catch(parseResponseError)
+  const _handleClose = () => {
+    props.resetItem()
+    props.resetAgreement()
+    setError(null)
   }
 
-  const isOpened = useMemo(() => getIsOpened(clientAgreementDetail.mode), [ clientAgreementDetail.mode ])
+  const _handleSubmitBtnClick = () => {
+    if(sigCanvas.current.isEmpty()) {
+      setError('Please, sign the document.')
+    } else {
+      const file = dataURLtoFile(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png'), 'imageSign.png')
+
+      return props.post({
+        sign_image: file,
+        agreement : clientAgreement.id
+      })
+        .then(_handleClose)
+    }
+  }
+
+  const _handleWindowResize = () => {
+    const target = document.querySelector('.sign-agreement-modal-form > h2')
+
+    if(target) setSignatureWidth(target.offsetWidth)
+  }
+
+  const isOpened = useMemo(() => mode === 'CREATE', [ mode ])
+  const submitting = useMemo(() => status === 'POSTING', [ status ])
+  const loading = useMemo(() => agreementDetail.status === 'GETTING', [ agreementDetail.status ])
 
   return (
     <Modal
-      className='form-modal'
+      className='sign-agreement-modal'
       onClose={_handleClose}
-      open={isOpened}>
+      open={isOpened}
+      size='large'>
       <Modal.Content>
-        {/* eslint-disable-next-line react/jsx-handler-names */}
-        <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Grid>
-            <Grid.Column className='grid-sign-detail' width='ten'>
+        <Grid>
+          <Grid.Column className='sign-agreement-modal-body' width={10}>
+            <Dimmer.Dimmable as='div' dimmed={loading}>
+              <Dimmer active={loading} inverted>
+                <Loader>Loading</Loader>
+              </Dimmer>
 
-              <Header as='h2' className='segment-content-header text-align-center'>{clientAgreementDetail.item.name}</Header>
-              {/* <table className='justify-between'>{clientAgreementDetail.item.body}</table> */}
-              <div dangerouslySetInnerHTML={{ __html: clientAgreementDetail.item.body }}/>
-            </Grid.Column>
-            <Grid.Column width='six'>
-              <Header as='h2' className='segment-content-header text-align-center'>Sign Document</Header>
-              <SignatureCanvas
-                canvasProps={{ width: 300, height: 200, className: 'sigCanvas' }}
-                penColor='green' ref={sigCanvas}/>
+              <Header as='h1'>{agreementDetail.item.name}</Header>
+              <div dangerouslySetInnerHTML={{ __html: agreementDetail.item.body }}/>
+            </Dimmer.Dimmable>
+          </Grid.Column>
+          <Grid.Column className='sign-agreement-modal-form' width={6}>
+            <Header as='h2'>Sign Document</Header>
 
-              <Form.Group widths='equal'>
-                <Form.Field>
-                  <Button
-                    basic
-                    className='btnClearSignature'
-                    color='teal'
-                    content='Clear Signature'
-                    disabled={submitting}
-                    onClick={_handleClear}
-                    size='small'
-                    type='button'/>
-                </Form.Field>
-              </Form.Group>
+            <SignatureCanvas
+              canvasProps={{ width: signatureWidth, height: 200, className: 'sign-canvas' }}
+              clearOnResize={false}
+              penColor='black' ref={sigCanvas}/>
+            <br/>
+            <br/>
+            <Button
+              basic
+              color='teal'
+              content='Clear Signature'
+              disabled={submitting}
+              fluid
+              onClick={_handleClear}/>
 
-              <b>Electronic Signature authorization</b>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Integer vel lacus cursus, blandit odio ut, sodales metus.
-                Sed ullamcorper sodales dolor, quis pulvinar mauris interdum
-                id. Sed libero nulla</p>
-              {error && (
-                <Form.Group widths='equal'>
-                  <Form.Field>
-                    <FormError message={error}/>
-                  </Form.Field>
-                </Form.Group>
-              )}
-              <Form.Group className='form-modal-actions' widths='equal'>
-                <Form.Field>
-                  <Button
-                    basic
-                    className='w120'
-                    color='teal'
-                    content='Cancel'
-                    disabled={submitting}
-                    onClick={_handleClose}
-                    size='small'/>
-                  <Button
-                    color='teal'
-                    content='Apply Signature'
-                    disabled={submitting}/>
-                </Form.Field>
-              </Form.Group>
+            <Header as='h3'>Electronic Signature authorization</Header>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Integer vel lacus cursus, blandit odio ut, sodales metus.
+              Sed ullamcorper sodales dolor, quis pulvinar mauris interdum
+              id. Sed libero nulla
+            </p>
+            <br/>
+            <br/>
 
-            </Grid.Column>
-          </Grid>
-        </Form>
+            {
+              error && (
+                <>
+                  <FormError message={error}/>
+                  <br/>
+                </>
+              )
+            }
+
+            <Button
+              basic
+              className='w120'
+              color='teal'
+              content='Cancel'
+              disabled={submitting}
+              onClick={_handleClose}/>
+            <Button
+              color='teal'
+              content='Apply Signature'
+              disabled={submitting}
+              loading={submitting}
+              onClick={_handleSubmitBtnClick}/>
+          </Grid.Column>
+        </Grid>
       </Modal.Content>
     </Modal>
   )
 }
 
 export default compose(
-  withRouter,
   connect(
-    state => {
-      const clientAgreementDetail = clientAgreementDetailDuck.selectors.detail(state)
-      const initialValues = { ...clientAgreementDetail.item }
-
-      return {
-        clientAgreementDetail,
-        initialValues
-      }
-    },
+    state => ({
+      agreementDetail      : agreementDetailDuck.selectors.detail(state),
+      clientAgreementDetail: clientAgreementDetailDuck.selectors.detail(state)
+    }),
     {
-      get      : clientAgreementDetailDuck.creators.get,
-      post     : clientAgreementDetailDuck.creators.post,
-      resetItem: clientAgreementDetailDuck.creators.resetItem
+      getAgreement  : agreementDetailDuck.creators.get,
+      post          : clientAgreementDetailDuck.creators.post,
+      resetItem     : clientAgreementDetailDuck.creators.resetItem,
+      resetAgreement: agreementDetailDuck.creators.resetItem
     }
-  ),
-  reduxForm({
-    form              : 'client-agreement-form',
-    destroyOnUnmount  : false,
-    enableReinitialize: true,
-    validate          : values  => {
-      const schema = {
-      }
-
-      return syncValidate(Yup.object().shape(schema), values)
-    }
-  })
-)(ShowDocumentForm)
+  )
+)(SignAgreementForm)

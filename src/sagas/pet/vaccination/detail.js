@@ -106,7 +106,7 @@ function* sendEmail({ payload }) {
     const { item : { id:pet_id } = {} } = yield select(petDetailDuck.selectors.detail)
     const { selector : { selected_items = [] } = {} } = yield select(petVaccinationDuck.selectors.list)
 
-    yield put({ type: types.SEND_EMAIL_PENDING })
+    yield put({ type: types.SEND_PENDING })
     const result = yield call(Post, `pets/${pet_id}/send-reminder-vaccinations/`, {
       body_title     : payload.subject,
       vaccination_ids: selected_items.map(({ id })=> id),
@@ -114,12 +114,12 @@ function* sendEmail({ payload }) {
     })
 
     yield put({
-      type   : types.SEND_EMAIL_FULFILLED,
+      type   : types.SEND_FULFILLED,
       payload: result
     })
   } catch (e) {
     yield put({
-      type : types.SEND_EMAIL_FAILURE,
+      type : types.SEND_FAILURE,
       error: e
     })
   }
@@ -130,5 +130,5 @@ export default [
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
   takeEvery(types.PUT, _put),
-  takeEvery(types.SEND_EMAIL, sendEmail)
+  takeEvery(types.SEND, sendEmail)
 ]

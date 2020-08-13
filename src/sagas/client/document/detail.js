@@ -2,6 +2,7 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 
 import { Post, Patch } from '@lib/utils/http-client'
 
+import authDuck from '@reducers/auth'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 import clientDetailDuck from '@reducers/client/detail'
 
@@ -79,25 +80,25 @@ function* _put({ payload: { client_id, id, ...payload } }) {
   }
 }
 
-function* sendEmail({ payload }) {
+function* sendEmail({ payload: { id, client_id, ...payload } }) {
   try {
-    // selector.selected_items
-    const { item : { id:client_id } = {} } = yield select(clientDetailDuck.selectors.detail)
-    const { item : { id: client_document_id } = {} } = yield select(clientDocumentDetailDuck.selectors.detail)
+    yield put({ type: types.SEND_PENDING })
 
-    yield put({ type: types.SEND_EMAIL_PENDING })
-    const result = yield call(Post, `clients/${client_id}/documents/${client_document_id}/send-email/`, {
-      body_title: payload.subject,
+    const authDetail = yield select(authDuck.selectors.detail)
+    const authUserFullName = `${authDetail.item.first_name} ${authDetail.item.last_name}`
+
+    const result = yield call(Post, `clients/${client_id}/documents/${id}/send-email/`, {
+      body_title: `${authUserFullName} shared a document with you`,
       ...payload
     })
 
     yield put({
-      type   : types.SEND_EMAIL_FULFILLED,
+      type   : types.SEND_FULFILLED,
       payload: result
     })
   } catch (e) {
     yield put({
-      type : types.SEND_EMAIL_FAILURE,
+      type : types.SEND_FAILURE,
       error: e
     })
   }
@@ -108,5 +109,5 @@ export default [
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),
   takeEvery(types.PUT, _put),
-  takeEvery(types.SEND_EMAIL, sendEmail)
+  takeEvery(types.SEND, sendEmail)
 ]

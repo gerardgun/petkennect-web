@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Header , Divider, Button } from 'semantic-ui-react'
+import { Header, Divider, Button } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
-import SendDocumentEmail from './SendDocumentForm'
+import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
 import DocumentUploadForm from './UploadDocumentForm'
 import EditDocumentForm from './EditDocumentForm'
 import ShowDocumentForm from './ShowDocumentForm'
@@ -16,8 +16,6 @@ import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
 function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
-  const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
-  const [ openEditDocumentFormModal, { _handleOpen: _handleOpenEditDocumentFormModal, _handleClose: _handleCloseEditDocumentFormModal } ] = useModal()
 
   useEffect(() => {
     const { status } = clientDocumentDetail
@@ -32,25 +30,19 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
         window.open(clientDocument.selector.selected_items[0].filepath)
 
         return
-
       case 'edit':
         props.setItem(clientDocument.selector.selected_items[0], 'UPDATE')
-        _handleOpenEditDocumentFormModal()
 
         return
-
       case 'delete':
         props.setItem(clientDocument.selector.selected_items, 'DELETE')
         _handleOpen()
 
         return
-
       case 'send_document':
-        props.setItem(clientDocument.selector.selected_items[0])
-        _handleOpenEmailFormModal()
+        props.setItem(clientDocument.selector.selected_items[0], 'SEND')
 
         return
-
       default:
         return
     }
@@ -58,7 +50,6 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
 
   const _handleRowClick = (e, item) => {
     props.setItem(item, 'Show')
-    _handleOpenEditDocumentFormModal()
   }
 
   const _handleSaveBtnClick = ()=> {
@@ -94,10 +85,10 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
           onRowClick={_handleRowClick}/>
       </div>
 
-      <SendDocumentEmail onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
+      <ClientDocumentFormSendModal/>
       <DocumentUploadForm/>
-      <EditDocumentForm onClose={_handleCloseEditDocumentFormModal} open={openEditDocumentFormModal}/>
-      <ShowDocumentForm onClose={_handleCloseEditDocumentFormModal} open={openEditDocumentFormModal}/>
+      <EditDocumentForm/>
+      <ShowDocumentForm/>
 
       <ModalDelete
         duck={clientDocumentDuck}
@@ -108,13 +99,9 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
   )
 }
 
-DocumentsSection.prototype = {    }
-
-DocumentsSection.defaultProps = {    }
-
 export default compose(
   connect(
-    ({ ...state }) => ({
+    state => ({
       clientDocument      : clientDocumentDuck.selectors.list(state),
       clientDocumentDetail: clientDocumentDetailDuck.selectors.detail(state)
     }),{

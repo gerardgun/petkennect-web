@@ -181,7 +181,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
 
 export default compose(
   connect(
-    ({ ...state }) => ({
+    state => ({
       clientDetail   : clientDetailDuck.selectors.detail(state),
       clientAgreement: clientAgreementDuck.selectors.list(state),
       clientComment  : clientCommentDuck.selectors.list(state),
