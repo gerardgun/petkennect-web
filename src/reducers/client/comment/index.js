@@ -10,7 +10,8 @@ export default base({
   store       : 'client/comment',
   initialState: {
     config,
-    pagination: {
+    pending_comments: [], // Comments to resolve (follow_up = true)
+    pagination      : {
       params: {
         page_size: 4
       }

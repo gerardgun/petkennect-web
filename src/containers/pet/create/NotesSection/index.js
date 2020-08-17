@@ -95,7 +95,7 @@ function NotesSection(props) {
         )}
         {petNote.items.filter(({ type })=> type === filter.type).map((item)=> (
           <NoteItem
-            enableUpdate={item.employee === props.currentTenant.employee} item={item} key={item.id}
+            editable={item.employee === props.currentTenant.employee.id} item={item} key={item.id}
             onDelete={_handleDeleteBtnClick} onUpdate={_handleEditBtnClick}/>
         ))}
       </Segment>

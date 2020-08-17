@@ -10,7 +10,7 @@ const FilterForm = props => {
   const {
     duck,
     list,
-    // from redux form
+    // redux-form
     handleSubmit
   } = props
 

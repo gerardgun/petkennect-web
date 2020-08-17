@@ -19,7 +19,7 @@ const RecoverAccount = props => {
   const {
     auth,
     recoverAccount,
-    // from redux form
+    // redux-form
     error,
     handleSubmit,
     pristine,

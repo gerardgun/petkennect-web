@@ -165,7 +165,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
                     <span style={{ color: '#888888' }}>Owner :</span>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <Link className='text-underline' to={`/client/show/${petDetail.item.client}`}>{clientFullName}</Link>
+                    <Link className='text-underline' to={`/client/${petDetail.item.client}`}>{clientFullName}</Link>
                   </div>
                 </div>
               </div>

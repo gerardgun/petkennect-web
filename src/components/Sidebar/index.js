@@ -301,7 +301,7 @@ const AppSidebar = ({ auth, location, ...props }) => {
                   <p>Signed as</p>
                   <strong>
                     {
-                      props.currentTenant && `${props.currentTenant.legal_name} - ${props.currentTenant.is_main_admin ? 'Super Administrador' : 'Administrador'}`
+                      props.currentTenant && `${props.currentTenant.legal_name} - ${props.currentTenant.employee.is_main_admin ? 'Super Administrador' : 'Administrador'}`
                     }
                     {
                       auth.item.is_superadmin && 'Petkennect Manager'
