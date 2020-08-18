@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Card, Icon, Image, Button, Dropdown } from 'semantic-ui-react'
 
 import useModal from '@components/Modal/useModal'
@@ -31,26 +31,32 @@ const imageOptions = [
   }
 ]
 
-function GalleryItem({ item, selected, onClick, onOptionClick }) {
+function GalleryItem({ item, selectable, selected, onClick, onOptionClick }) {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const _handleCardClick = (e, data) => {
-    onClick.call(this, e, { ...data, item })
+    if(selectable === false || !disabled)
+      onClick.call(this, e, { ...data, item })
   }
 
   const _handleDropdownItemClick = (e, data) => {
     onOptionClick.call(this, e, { ...data, item })
   }
 
+  const disabled = useMemo(() => {
+    return selectable === true && item.filetype === 'video'
+  }, [])
+
   return (
-    <Card onClick={_handleCardClick}>
-      <Image src={item.filetype === 'video' ? '/images/video-icon.png' : item.filepath} ui={false} wrapped/>
+    <Card className={disabled ? 'disabled' : ''} onClick={_handleCardClick}>
+      <Image src={item.filetype === 'video' ? item.thumbnail_path : item.filepath} ui={false} wrapped/>
+      {item.filetype === 'video' && <Icon name='video'/>}
       <Card.Content>
         <Card.Description>
           {item.filename}
         </Card.Description>
         {
-          selected && <Icon color='teal' name='check circle' size='large'/>
+          selected && <Icon color='teal' name='check circle'/>
         }
         {
           selected === null && (
