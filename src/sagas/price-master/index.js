@@ -10,13 +10,14 @@ function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    let priceMaster = yield call(Get, '/pet-breeds/')
+    let priceMaster = yield call(Get, '/training-commands/')
     priceMaster = priceMaster.map(({ ...rest })=> ({
       type       : 'Service',
       subcategory: 'Daycamp',
       name       : 'Happy Day',
-      price      : '2HR_Location',
-      stock      : 'Active',
+      location   : '2HR_Location',
+      price      : '23',
+      stock      : 'Yes',
       ...rest
     }))
 

@@ -13,6 +13,7 @@ import AuthMe from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
 import ClientShow from '@containers/client/show'
+import ClientBook from '@containers/client/reservation'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
@@ -102,6 +103,10 @@ const privateRoutes = [
   {
     path     : '/client/:client',
     component: ClientShow
+  },
+  {
+    path     : '/client/:client/book',
+    component: ClientBook
   },
   {
     path     : '/company',

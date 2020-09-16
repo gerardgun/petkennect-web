@@ -8,9 +8,17 @@ textarea {
 }
 
 .app-content {
-  height: 100vh;
+  height: 80vh;
   overflow-y: auto;
   background-color: $white;
+}
+
+.appbar-grid
+{
+  border-bottom:1px solid #E5EAEE;
+  height: 10rem;
+  margin-left: 0rem !important;
+  margin-right: 0rem !important;
 }
 
 .detail-view {

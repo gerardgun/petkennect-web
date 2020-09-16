@@ -3,6 +3,7 @@ import { all } from 'redux-saga/effects'
 import agreement from './agreement'
 import agreementDetail from './agreement/detail'
 import auth from './auth'
+import application from './application'
 import category from './category'
 import categoryDetail from './category/detail'
 import client from './client'
@@ -88,6 +89,7 @@ export default function* rootSaga() {
   yield all([
     ...agreement,
     ...agreementDetail,
+    ...application,
     ...auth,
     ...category,
     ...categoryDetail,
