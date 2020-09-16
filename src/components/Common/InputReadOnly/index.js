@@ -8,7 +8,7 @@ function InputReadOnly({ value, label, ...rest }) {
   return (
     <Grid.Column className='input-read-only' {...rest}>
       <label>{label}</label>
-      {value}
+      <span style={{ wordBreak: 'break-word' }}>{value}</span>
     </Grid.Column>
   )
 }

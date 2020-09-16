@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { Button, Grid, Segment, Header, Image, Label, Menu, Breadcrumb, Dropdown } from 'semantic-ui-react'
+import { Button, Grid, Message, Segment, Header, Icon, Image, Label, Menu, Breadcrumb, Dropdown } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Layout from '@components/Common/Layout'
-import Message from '@components/Message'
 import AgreementSection from './AgreementSection'
 import CommentSection from './CommentSection'
 import DocumentSection from './DocumentSection'
@@ -45,6 +44,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
     return () => {
       props.resetItem()
       props.resetClientPets()
+      props.resetClientComments()
     }
   }, [])
 
@@ -58,10 +58,12 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
   }, [ clientDetail.status ])
 
   const _handleBookBtnClick = () => {
-    alert('Work in Progress...')
+    history.replace(`/client/${clientId}/book`)
   }
 
   const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
+
+  const _handleMessageClick = () => setActiveMenuItem('agreements')
 
   const _handleOptionDropdownChange = () => {
     alert('Work in Progress...')
@@ -113,22 +115,20 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
             </div>
 
             <Button
-              color='teal' content='Book!' fluid
-              onClick={_handleBookBtnClick} size='large'/>
+              color='teal' content='Book!' disabled={_get(clientDetail, 'item.summary.has_pending_agreements', false)}
+              fluid onClick={_handleBookBtnClick} size='large'/>
 
             {
               _get(clientDetail, 'item.summary.has_pending_agreements', false) && (
-                <>
-                  <br/>
-                  <Message
-                    content={
-                      <Grid padded style={{ marginLeft: -16 }}>
-                        <Grid.Column className='mb0 pb0' width='16'>
-                          <div className='message__title'>Client hasn&apos;t signed agreements.</div>
-                        </Grid.Column>
-                      </Grid>
-                    } type='warning'/>
-                </>
+                <Message
+                  content={
+                    <>
+                      <span>Client hasn&apos;t signed agreements.</span>{' '}
+                      <a onClick={_handleMessageClick}>Update here.</a>
+                    </>
+                  }
+                  icon='warning circle'
+                  warning/>
               )
             }
 
@@ -150,7 +150,13 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
                 active={activeMenuItem === 'comments'} link name='comments'
                 onClick={_handleMenuItemClick}>
                 Internal Comments
-                <Label color='teal'>{clientComment.pagination.meta.total_items || clientComment.items.length}</Label>
+                {
+                  clientComment.pending_comments.length > 0 ? (
+                    <Icon color='orange' name='warning circle' size='large'/>
+                  ) : (
+                    <Label color='teal'>{clientComment.pagination.meta.total_items || clientComment.items.length}</Label>
+                  )
+                }
               </Menu.Item>
               <Menu.Item
                 active={activeMenuItem === 'documents'} link name='documents'
@@ -162,7 +168,13 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
                 active={activeMenuItem === 'agreements'} link name='agreements'
                 onClick={_handleMenuItemClick}>
                 Agreements
-                <Label color='teal'>{clientAgreement.items.length}</Label>
+                {
+                  _get(clientDetail, 'item.summary.has_pending_agreements', false) ? (
+                    <Icon color='orange' name='warning circle' size='large'/>
+                  ) : (
+                    <Label color='teal'>{clientAgreement.items.length}</Label>
+                  )
+                }
               </Menu.Item>
             </Menu>
           </Grid.Column>
@@ -194,6 +206,7 @@ export default compose(
       getClientDocuments : clientDocumentDuck.creators.get,
       getClientPets      : clientPetDuck.creators.get,
       resetItem          : clientDetailDuck.creators.resetItem,
+      resetClientComments: clientCommentDuck.creators.reset,
       resetClientPets    : clientPetDuck.creators.reset
     })
 )(ClientShow)

@@ -1,0 +1,29 @@
+.c-note-item {
+  border-bottom: 1px solid #e5eaee;
+  padding: 1.8rem;
+
+  .avatar-wrapper {
+    display: flex;
+
+    p {
+      margin-bottom: 0.3rem;
+    }
+
+    .avatar {
+      width: 3rem;
+      height: 3rem;
+      font-weight: bold;
+      background-color: #005987;
+      color: #fff;
+      border-radius: 3rem;
+      margin-right: 1.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .description {
+    word-wrap: break-word;
+  }
+}

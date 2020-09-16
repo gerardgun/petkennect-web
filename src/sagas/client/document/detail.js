@@ -1,8 +1,9 @@
-import { call, put, takeEvery, select } from 'redux-saga/effects'
+import { all, call, put, takeEvery, select } from 'redux-saga/effects'
 
 import { Post, Patch } from '@lib/utils/http-client'
 
 import authDuck from '@reducers/auth'
+import clientDocumentDuck from '@reducers/client/document'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 import clientDetailDuck from '@reducers/client/detail'
 
@@ -17,6 +18,8 @@ function* deleteItem({ ids }) {
     yield call(Post, `clients/${clientDetail.item.id}/clean-documents/`, {
       client_document_ids: ids
     })
+
+    yield put({ type: clientDocumentDuck.types.REMOVE_IDS })
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -50,11 +53,19 @@ function* get(/* { id } */) {
   }
 }
 
-function* post({ payload :{ client_id,  ...payload } }) {
+function* post({ payload: { client_id,  ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, `clients/${client_id}/documents/`, { ...payload })
+    payload.files.forEach(item => {
+      if(!String(item.description).trim()) delete item.description
+    })
+
+    yield all(
+      payload.files.map(item => (
+        call(Post, `clients/${client_id}/documents/`, item)
+      ))
+    )
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {
@@ -69,7 +80,11 @@ function* _put({ payload: { client_id, id, ...payload } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
+    if(!String(payload.description).trim()) delete payload.description
+
     yield call(Patch, `clients/${client_id}/documents/${id}/`, payload)
+
+    yield put({ type: clientDocumentDuck.types.REMOVE_IDS })
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

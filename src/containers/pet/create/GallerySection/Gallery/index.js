@@ -32,6 +32,7 @@ function Gallery({ duckDetail, detail, list, selectable, onItemClick, onItemOpti
               <GalleryItem
                 item={item} key={item.id}
                 onClick={_handleItemClick} onOptionClick={_handleItemOptionClick}
+                selectable={selectable}
                 selected={selectable ? detail.item.id === item.id : null}/>
             ))
           ) : (

@@ -16,9 +16,9 @@ export default {
     }
   },
   consts: {
-    statuses: [ 'REMOVED_FILTERS', 'SET_FILTERS','UPDATED' ]
+    statuses: [ 'REMOVED_FILTERS', 'SET_FILTERS' ]
   },
-  types  : [ 'REMOVE_FILTERS', 'SET_FILTERS','UPDATE' ],
+  types  : [ 'REMOVE_FILTERS', 'SET_FILTERS' ],
   reducer: (state, action, { types, statuses }) =>
     produce(state, draft => {
       switch (action.type) {
@@ -58,13 +58,6 @@ export default {
           draft.status = statuses.SET_FILTERS
 
           return
-        case types.UPDATE:
-          draft.items = action.payload
-
-          draft.status = statuses.UPDATED
-
-          return
-
         default:
           return
       }
@@ -73,16 +66,16 @@ export default {
     types: {
       REMOVE_FILTERS,
       RESET,
+      SET,
       SET_FILTERS,
-      UPDATE,
       // Para redux-sagas
       GET
     }
   }) => ({
     removeFilters: (...keys) => ({ type: REMOVE_FILTERS, keys }),
     reset        : () => ({ type: RESET }),
+    set          : payload => ({ type: SET, payload }),
     setFilters   : payload => ({ type: SET_FILTERS, payload }),
-    update       : payload => ({ type: UPDATE, payload }),
     // Creadores para redux-sagas
     get          : (payload = {}) => ({ type: GET, payload })
   }),

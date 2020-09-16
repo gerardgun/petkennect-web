@@ -26,7 +26,7 @@ function IncidentSection(props) {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
   const [ openSendReportModal, { _handleOpen :  _handleOpenSendReportModal, _handleClose : _handleCloseSendReportModal } ] = useModal()
 
-  const { id } = useParams()
+  const { pet: petId } = useParams()
 
   useEffect(()=> {
     props.getPetIncidents()
@@ -68,7 +68,7 @@ function IncidentSection(props) {
 
   useChangeStatusEffect(()=> {
     props.getPetIncidents()
-    props.getPet(id)
+    props.getPet(petId)
   }, props.petIncidentDetail.status, [ 'SENT' ])
 
   return (

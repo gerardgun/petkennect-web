@@ -21,7 +21,7 @@ function VacinationSection(props) {
 
   const [ openEmailFormModal, { _handleOpen: _handleOpenEmailFormModal, _handleClose: _handleCloseEmailFormModal } ] = useModal()
 
-  const { id } = useParams()
+  const { pet: petId } = useParams()
 
   useEffect(()=> {
     props.getPetVaccinations()
@@ -29,7 +29,7 @@ function VacinationSection(props) {
 
   useEffect(()=> {
     if(petVaccinationDetail.status === 'POSTED' || petVaccinationDetail.status === 'SENT') {
-      props.getPet(id)
+      props.getPet(petId)
       props.getPetVaccinations()
     }
   }, [ petVaccinationDetail.status ])

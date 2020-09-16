@@ -20,7 +20,7 @@ const SignIn = props => {
   const {
     auth,
     signIn,
-    // from redux form
+    // redux-form
     error,
     handleSubmit,
     pristine,

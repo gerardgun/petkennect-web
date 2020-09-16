@@ -19,9 +19,12 @@ function* deleteItem({ ids: [ id ] }) {
     yield all(addons.map(_addon =>
       call(deleteAddonItem,{ ids: [ _addon.id ] })
     ))
+
     yield put({
-      type   : listTypes.UPDATE ,
-      payload: items.filter(_item =>_item.id !== id)
+      type   : listTypes.SET,
+      payload: {
+        items: items.filter(_item =>_item.id !== id)
+      }
     })
 
     yield put({ type: types.DELETE_FULFILLED })
@@ -62,9 +65,12 @@ function* post({ payload }) {
     yield put({ type: types.POST_PENDING })
 
     yield put({
-      type   : listTypes.UPDATE,
-      payload: [ ...items, payload ]
+      type   : listTypes.SET,
+      payload: {
+        items: [ ...items, payload ]
+      }
     })
+
     yield put({
       type: types.POST_FULFILLED,
       payload
@@ -90,16 +96,18 @@ function* _put({ payload }) {
     ))
 
     yield put({
-      type   : listTypes.UPDATE,
-      payload: items
-        .map(_item=> _item.id === payload.id
-          ? ({
-            ..._item,
-            id  : payload.name ,
-            name: payload.name
+      type   : listTypes.SET,
+      payload: {
+        items: items
+          .map(_item=> _item.id === payload.id
+            ? ({
+              ..._item,
+              id  : payload.name ,
+              name: payload.name
             // addons: updateAddons
-          })
-          : _item)
+            })
+            : _item)
+      }
     })
 
     yield put({ type: types.PUT_FULFILLED })

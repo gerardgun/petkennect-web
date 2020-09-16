@@ -2,8 +2,22 @@
   min-height: 10rem;
 
   .ui.card {
+    &.disabled {
+      cursor: not-allowed !important;
+      opacity: 0.45;
+    }
+
     & > .image {
       min-height: 10rem;
+    }
+
+    & > i.icon.video {
+      position: absolute;
+      top: 1.3rem;
+      left: 1.3rem;
+      color: #FFF;
+      opacity: 0.55;
+      font-size: 1.85rem;
     }
 
     & > .content {

@@ -1,6 +1,6 @@
 .ui.input {
   .ui.label {
-    border-color: $light-gray;
+    border-color: $gray-2;
   }
 
   input {
@@ -23,7 +23,7 @@
     .ui.button {
       &.basic {
         box-shadow: none;
-        border: solid 1px $light-gray;
+        border: solid 1px $gray-2;
       }
     }
   }
