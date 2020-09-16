@@ -58,7 +58,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
   }, [ clientDetail.status ])
 
   const _handleBookBtnClick = () => {
-    alert('Work in Progress...')
+    history.replace(`/client/${clientId}/book`)
   }
 
   const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)

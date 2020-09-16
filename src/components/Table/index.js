@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment,useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
@@ -20,6 +20,7 @@ const TableList = ({ duck, list, ...props }) => {
 
   // For Filter Popup
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const [ defaultTableBody, setTableBody ] = useState({ expandedRows: [] })
 
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
@@ -94,7 +95,34 @@ const TableList = ({ duck, list, ...props }) => {
     props.onOptionClick(optionName)
   }
 
+  const renderItemDetails = item=> {
+    return (
+      <>
+        <Table.Cell></Table.Cell>
+        <Table.Cell></Table.Cell>
+        <Table.Cell></Table.Cell>
+        <Table.Cell></Table.Cell>
+        <Table.Cell>{item.location}<br/>$23</Table.Cell>
+        <Table.Cell>{item.stock}</Table.Cell>
+        <Table.Cell></Table.Cell>
+      </>
+    )
+  }
+
   const _handleRowClick = e => {
+    const rowIndex = +e.currentTarget.rowIndex - 1
+    const currentExpandedRows = defaultTableBody.expandedRows
+    const isRowCurrentlyExpanded = currentExpandedRows.includes(rowIndex)
+
+    if(list.config.expandable)
+    {
+      const newExpandedRows = isRowCurrentlyExpanded
+        ? currentExpandedRows.filter(id => id !== rowIndex)
+        : currentExpandedRows.concat(rowIndex)
+
+      setTableBody({ expandedRows: newExpandedRows })
+    }
+
     const isCheckbox = e.target.tagName === 'LABEL' && /ui.*checkbox/.test(e.target.parentNode.classList.value)
     const item = list.items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
 
@@ -135,11 +163,20 @@ const TableList = ({ duck, list, ...props }) => {
     )
   }
 
+  const renderItemCaret = rowId=> {
+    const currentExpandedRows = defaultTableBody.expandedRows
+    const isRowCurrentlyExpanded = currentExpandedRows.includes(rowId)
+
+    if(isRowCurrentlyExpanded)
+      return <Icon name='caret down'/>
+    else
+      return <Icon name='caret up'/>
+  }
+
   const renderTableRow = (item, index) => {
     const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
     const isActive = Boolean('active' in item ? item.active : true)
-
-    return (
+    const itemRows = [
       <Table.Row
         active={checked} className={isActive ? '' : 'inactive'} data-item-id={item.id}
         key={index} onClick={_handleRowClick}>
@@ -152,13 +189,6 @@ const TableList = ({ duck, list, ...props }) => {
                 onChange={_handleSelectorCheckboxChange}/>
             </Table.Cell>
           )
-        }
-
-        {/* Row data */}
-        {
-          list.config.columns.map(({ width = null, align = null, ...column }, index) => (
-            <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
-          ))
         }
 
         {/* Row options */}
@@ -192,8 +222,32 @@ const TableList = ({ duck, list, ...props }) => {
             </Table.Cell>
           )
         }
+        {/* Row data */}
+        {
+          list.config.columns.map(({ width = null, align = null, ...column }, index) => (
+            <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
+          ))
+        }
+
+        {/* Row expandable */}
+        {
+          list.config.expandable && (
+            <Table.Cell>
+              {renderItemCaret(index)}
+            </Table.Cell>
+          )
+        }
+
       </Table.Row>
-    )
+    ]
+    if(defaultTableBody.expandedRows.includes(index))
+      itemRows.push(
+        <Table.Row key={'row-expanded-' + index}>
+          {renderItemDetails(item)}
+        </Table.Row>
+      )
+
+    return itemRows
   }
 
   const loading = list.status === 'GETTING'
@@ -337,6 +391,14 @@ const TableList = ({ duck, list, ...props }) => {
                   </Table.HeaderCell>
                 )
               })
+            }
+
+            {/* Row expandable */}
+            {
+              list.config.expandable && (
+                <Table.HeaderCell>
+                </Table.HeaderCell>
+              )
             }
 
             {/* Row options */}

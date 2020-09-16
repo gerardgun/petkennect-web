@@ -1,6 +1,8 @@
+import React from 'react'
 export default {
-  base_uri: null,
-  options : [
+  base_uri  : null,
+  expandable: true,
+  options   : [
     {
       display_name: 'Download',
       name        : 'download',
@@ -20,15 +22,7 @@ export default {
     }
   ],
   row: {
-    options: [
-      {
-        display_name: 'Delete Price',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        is_multiple : false,
-        color       : 'red'
-      }
-    ]
+    options: [ ]
   },
   columns: [
     {
@@ -36,35 +30,40 @@ export default {
       name        : 'type',
       type        : 'string',
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'SUB CATEGORY',
       name        : 'subcategory',
       type        : 'string',
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Name',
       name        : 'name',
       type        : 'string',
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'PRICE',
       name        : 'price',
       type        : 'string',
       align       : 'left',
-      sort        : false
+      sort        : true,
+      formatter   : (cell, row) => {
+        return (
+          <>{row.location}<br/>${cell}</>
+        )
+      }
     },
     {
       display_name: 'STOCK',
       name        : 'stock',
       type        : 'boolean',
       align       : 'left',
-      sort        : false
+      sort        : true
     }
   ]
 }

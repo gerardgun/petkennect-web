@@ -1,0 +1,113 @@
+.petkennect-reservation {
+    .message__title {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 11px;
+        line-height: 16px;
+        letter-spacing: -0.04em;
+        color: #f2994a;
+      }
+      .message__subtitle {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 11px;
+        line-height: 16px;
+        letter-spacing: -0.04em;
+        color: #1c1d1e;
+      }
+
+      .ui.steps{
+        width:100%;
+      }
+
+      .btn-service-type{
+        .ui.button{
+        padding: 1.3rem;
+        margin-right: 2rem;
+      }
+      }
+
+      .section-info-item-step1.ui.segment {
+        box-shadow: none;
+        padding: 1.8rem 12rem;
+      }
+      
+      .section-info-item-step1{
+        margin-top: 3rem !important;
+        .section-info-header{
+          text-align: center;
+        }
+      }
+
+      .btnBack{
+        text-align: left !important;
+      }
+      
+      .section-info-item-form{
+      .div-kannel-selection{
+        box-shadow: none;
+        padding: 1.8rem 25rem;
+      }
+
+      .btn-reservation-calendar{
+    height: 3rem;
+    margin: 0.12rem;
+    padding: .58928571em 1.0em .58928571em !important;
+      }
+.spn-reservation-calendar{
+  margin: 1rem;
+  padding-left: 1rem;
+  padding-right: 3rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+.spn-area{
+  width: 7rem;
+    display: inline-block;
+}
+.btn-avaliable{
+  background: #079477 !important;
+  float: right;
+}
+.btn-spent{
+  background: #DD4B39 !important;
+  float: right;
+}
+
+.div-additional-information{
+  box-shadow: none;
+  padding: 1.8rem 20rem;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.spn-calendar-btn{
+  padding: 3rem;
+}
+
+.btn-reservation-calendar.basic{
+  box-shadow: 0 0 black !important;
+}
+      }
+
+      .btn-service-type{
+        .ui.button{
+          .circle.icon{
+            font-size: 22px;
+          }
+        }
+      }
+
+.list-total-addons > .item {
+  padding: 0.8rem !important;
+}
+
+.ui.ordered.steps .step.active:before, .ui.steps .active.step .icon{
+  color :#079477 !important;
+}
+.ui.steps .step.active .title {
+  color :#079477 !important;
+}
+  }

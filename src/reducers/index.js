@@ -4,6 +4,7 @@ import { reducer as formReducer } from 'redux-form'
 
 import agreement from '@reducers/agreement'
 import agreementDetail from '@reducers/agreement/detail'
+import application from '@reducers/application'
 import auth from '@reducers/auth'
 import category from '@reducers/category'
 import categoryDetail from '@reducers/category/detail'
@@ -93,6 +94,7 @@ const createRootReducer = history => combineReducers({
   [agreement.store]                : agreement.reducer,
   [agreementDetail.store]          : agreementDetail.reducer,
   [auth.store]                     : auth.reducer,
+  [application.store]              : application.reducer,
   [category.store]                 : category.reducer,
   [categoryDetail.store]           : categoryDetail.reducer,
   [client.store]                   : client.reducer,
