@@ -154,7 +154,8 @@ const categories = [
       { href: '/pet/incident-action', label: 'Incident Actions' },
       { href: '/pet/incident-behavior', label: 'Incident Behaviors' },
       { href: '/pet/retire-reason', label: 'Retire Reasons' },
-      { href: '/pet/vaccination-type', label: 'Vaccination Types' }
+      { href: '/pet/vaccination-type', label: 'Vaccination Types' },
+      { href: '/setup/customized-fields', label: 'Customized Fields' }
       // { href: '/not-defined', label: 'Enable Decline Portal Client' },
       // { href: '/not-defined', label: 'Calendar' },
       // { href: '/not-defined', label: 'Notifications' },

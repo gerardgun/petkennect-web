@@ -14,6 +14,7 @@ import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
 import ClientShow from '@containers/client/show'
 import ClientBook from '@containers/client/reservation'
+import CustomizedFields from '@containers/customized-fields'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
@@ -119,6 +120,10 @@ const privateRoutes = [
   {
     path     : '/company/:id/edit',
     component: CompanyEdit
+  },
+  {
+    path     : '/setup/customized-fields',
+    component: CustomizedFields
   },
   {
     path     : '/dashboard',
