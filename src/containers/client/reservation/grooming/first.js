@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Dropdown, Form, Header, Input, Select, Segment, Icon, Step } from 'semantic-ui-react'
+import { Button, Dropdown, Form, Header, Input, Grid, Select, Segment, Icon, Step } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -14,12 +14,20 @@ import clientDetailDuck from '@reducers/client/detail'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
 
-const ClientFormWizardFirst = props => {
+export const groomingFormId = 'grooming-reservation-form'
+
+const GroomingFormWizardFirst = props => {
   const {
     clientPet,
     location,
     error, handleSubmit, reset
   } = props
+
+  const [ reservatoinDayValue, setReservationDay ] = useState()
+
+  const  _handleReservationDayChange = (e)=>{
+    setReservationDay(e)
+  }
 
   useEffect(() => {
     props.getLocations()
@@ -49,7 +57,7 @@ const ClientFormWizardFirst = props => {
         </Step>
       </Step.Group>
       {/* eslint-disable-next-line react/jsx-handler-names */}
-      <Form onReset={reset} onSubmit={handleSubmit}>
+      <Form id={groomingFormId} onReset={reset} onSubmit={handleSubmit}>
 
         <Segment className='section-info-item-step1'>
           <Header as='h3' className='section-info-header'>Select location and pet</Header>
@@ -71,7 +79,6 @@ const ClientFormWizardFirst = props => {
               control={Dropdown}
               fluid
               label='Pet'
-              multiple
               name='pet'
               options={[ ...clientPet.items ].map((_clientPet) => ({
                 key  : _clientPet.id,
@@ -85,66 +92,84 @@ const ClientFormWizardFirst = props => {
           </Form.Group>
         </Segment>
         <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header'>When will this event be?</Header>
+          <Header as='h3' className='section-info-header text-center'>When will this event be?</Header>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
               control={Input}
-              label='Check In'
-              name='check_in'
+              label='Reservation Day'
+              name='reservation_day'
+              onChange={_handleReservationDayChange}
               required
               type='date'/>
             <Field
               component={FormField}
               control={Input}
-              label='Check Out'
-              name='check_out'
-              required
-              type='date'/>
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Departing Time'
-              name='departing_time'
-              required
-              type='time'/>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Arriving Time'
-              name='arriving_time'
+              label='Appointment Time'
+              name='appointment_time'
               required
               type='time'/>
           </Form.Group>
         </Segment>
-        <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header'>Select package and kennel type?</Header>
+
+        <div className='div-section-info-item-single'>
+          <Header as='h3' className='section-info-header'>Select groomer</Header>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
               control={Select}
-              label='Kennel Type'
-              name='kennel_type'
+              label='Groomer'
+              name='groomer'
               options={[
-                { key: 1, value: 1, text: 'Single' },
-                { key: 2, value: 2, text: 'Shared' }
+                { key: 1, value: 1, text: 'Test' }
               ]}
-              placeholder='Select Kennel'
-              selectOnBlur={false}/>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Type of stay'
-              name='type_of_stay'
-              options={[
-                { key: 1, value: 1, text: 'Dog Boarding' },
-                { key: 2, value: 2, text: 'Additional Dog Boarding' }
-              ]}
-              placeholder='Select status'
+              placeholder='Select Groomer'
               selectOnBlur={false}/>
           </Form.Group>
+        </div>
+
+        <Segment>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column textAlign='center' width={16}>
+                {reservatoinDayValue}
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          <Grid className='grid-time-selection'>
+            <Grid.Row>
+              <Grid.Column width={1}>
+               07:00
+              </Grid.Column>
+              <Grid.Column width={15}>
+                <Button active className='w100 btn-groomer-time-select'></Button>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={1}>
+               08:00
+              </Grid.Column>
+              <Grid.Column width={15}>
+                <Button className='w100 btn-groomer-time-select'>Not Avaliable</Button>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={1}>
+               09:00
+              </Grid.Column>
+              <Grid.Column width={15}>
+                <Button active className='w100 btn-groomer-time-select'></Button>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={1}>
+               10:00
+              </Grid.Column>
+              <Grid.Column width={15}>
+                <Button className='w100 btn-groomer-time-select'>Not Avaliable</Button>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         </Segment>
         {
           error && (
@@ -190,25 +215,19 @@ export default compose(
     }
   ),
   reduxForm({
-    form                    : 'reservation-form',
+    form                    : groomingFormId,
     destroyOnUnmount        : false,
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        location: Yup.mixed().required('Location is required'),
-        pet     : Yup.mixed().required('Pet is required'),
-        check_in: Yup
+        location       : Yup.mixed().required('Location is required'),
+        pet            : Yup.mixed().required('Pet is required'),
+        reservation_day: Yup
           .date()
-          .required(),
-        check_out: Yup
-          .date().required()
-          .when(
-            'check_in',
-            (check_in, schema) => (check_in && schema.min(check_in))
-          )
+          .required('Reservation day is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(ClientFormWizardFirst)
+)(GroomingFormWizardFirst)

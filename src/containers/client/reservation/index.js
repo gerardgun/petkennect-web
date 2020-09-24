@@ -9,6 +9,7 @@ import Message from '@components/Message'
 import BoardingReservationFormWizard from './boarding'
 import DaycampReservationFormWizard from './daycamp'
 import FitnessReservationFormWizard from './daycamp'
+import GroomingReservationFormWizard from './grooming'
 
 import clientDetailDuck from '@reducers/client/detail'
 import petDetailDuck from '@reducers/pet/detail'
@@ -87,6 +88,7 @@ function Reservation({ clientDetail, ...props }) {
             {activeReservationItem === 'Boarding' &&  <BoardingReservationFormWizard/>}
             {activeReservationItem === 'Daycamp' &&  <DaycampReservationFormWizard/>}
             {activeReservationItem === 'Fitness' &&  <FitnessReservationFormWizard/>}
+            {activeReservationItem === 'Grooming' &&  <GroomingReservationFormWizard/>}
           </Grid.Column>
         </Grid>
       </Segment>

@@ -2,10 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm } from 'redux-form'
-import { Button, Form, Grid, Header, Segment, Checkbox, List, Icon, Step } from 'semantic-ui-react'
+import { reduxForm, Field } from 'redux-form'
+import { Button, Form, Grid, Header, Segment, Select, Checkbox, List, Icon, Step } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
+import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 
 import clientDetailDuck from '@reducers/client/detail'
@@ -43,7 +44,7 @@ const BoardingFormWizardThird = props => {
       <Form onReset={reset} onSubmit={handleSubmit}>
 
         <Segment className='section-info-item'>
-          <Header as='h3' className='section-info-header text-center'>Summary</Header>
+          <Header as='h3' className='section-info-header'>Summary</Header>
           <Grid>
             <Grid.Column width={8}>
               <Segment style={{ height: '100%' }}>
@@ -111,7 +112,7 @@ const BoardingFormWizardThird = props => {
           </Grid>
         </Segment>
         <Segment>
-          <Header as='h3' className='section-info-header'>Add Ons</Header>
+          <Header as='h3'>Add Ons</Header>
           <List className='list-total-addons' divided verticalAlign='middle'>
             <List.Item>
               <List.Content floated='right'>
@@ -157,6 +158,63 @@ const BoardingFormWizardThird = props => {
             </List.Item>
           </List>
         </Segment>
+
+        <Segment>
+          <Header as='h3' className='mb0'>Check In</Header>
+          <Grid>
+            <Grid.Column width={8}>
+              <Field
+                component={FormField}
+                control={Checkbox}
+                format={Boolean}
+                label='Check In Now'
+                name='check_in_now'
+                type='checkbox'/>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <InputReadOnly
+                label='Check in by'
+                value='Alexandra Minano'/>
+            </Grid.Column>
+          </Grid>
+          <Grid>
+            <Grid.Column width={6}>
+              <Field
+                component={FormField}
+                control={Select}
+                label='Confirmation'
+                name='Confirmation'
+                options={[
+                  { key: 1, value: 1, text: 'Test1' },
+                  { key: 2, value: 1, text: 'Test2' }
+                ]}
+                placeholder='Select Confirmation'
+                required
+                selectOnBlur={false}/>
+            </Grid.Column>
+          </Grid>
+        </Segment>
+
+        <Segment>
+          <Header as='h3' className='mb0'>Check Out</Header>
+          <Grid>
+            <Grid.Column width={8}>
+              <Field
+                component={FormField}
+                control={Checkbox}
+                format={Boolean}
+                label='Check Out Now'
+                name='check_out_now'
+                type='checkbox'/>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <InputReadOnly
+                label='Check out by'
+                value='Alexandra Minano'/>
+            </Grid.Column>
+          </Grid>
+        </Segment>
+
         {
           error && (
             <Form.Group widths='equal'>

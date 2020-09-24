@@ -1,15 +1,35 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { Button, Checkbox, Dropdown, Icon, Grid, Header, Form, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import Message from '@components/Message'
 
+import { useChangeStatusEffect } from 'src/hooks/Shared'
+
+import GroupCreate from './group/create'
+import FieldCreate from './field/create'
+
+import customizedFieldDuck from '@reducers/customized-field'
+import customizedFieldDetailDuck from '@reducers/customized-field/detail'
+
 import './styles.scss'
 
-const CustomizedFields = () => {
+const CustomizedField = ({ customizedFieldDetail, ...props }) => {
   const [ ActiveInfoItem, setActiveInfoItem ] = useState('Client')
 
+  useChangeStatusEffect(props.getcustomizedFields, customizedFieldDetail.status)
+
   const _handleInfoItemClick = (e, { name }) => setActiveInfoItem(name)
+
+  const _handleCreateGroupBtnClick = () => {
+    props.setItem(null, 'UPDATE')
+  }
+
+  const _handleCreateFieldBtnClick = () =>{
+    props.setItem(null, 'CREATE')
+  }
 
   return (
     <Layout>
@@ -48,7 +68,9 @@ const CustomizedFields = () => {
             <>
               <Grid className='mt16'>
                 <Grid.Column columns={16}  textAlign='right'>
-                  <Button color='teal' content='Add Group' icon='plus circle icon'/>
+                  <Button
+                    color='teal' content='Add Group' icon='plus circle icon'
+                    onClick={_handleCreateGroupBtnClick}/>
                 </Grid.Column>
               </Grid>
               <Grid className='mv8' columns={2}>
@@ -56,7 +78,9 @@ const CustomizedFields = () => {
                   <Header as='h2'>Basic information</Header>
                 </Grid.Column >
                 <Grid.Column textAlign='right'>
-                  <Button color='teal'  content='Add Field' icon='plus circle icon'/>
+                  <Button
+                    color='teal' content='Add Field' icon='plus circle icon'
+                    onClick={_handleCreateFieldBtnClick}/>
                   <Button
                     basic icon='edit outline'/>
                   <Button
@@ -241,9 +265,22 @@ const CustomizedFields = () => {
           )}
         </Form>
       </Segment>
-
+      <GroupCreate/>
+      <FieldCreate/>
     </Layout>
   )
 }
 
-export default CustomizedFields
+export default compose(
+  connect(
+    (state) => ({
+      customizedField      : customizedFieldDuck.selectors.list(state),
+      customizedFieldDetail: customizedFieldDetailDuck.selectors.detail(state)
+
+    }),
+    {
+      getcustomizedFields: customizedFieldDuck.creators.get,
+      setItem            : customizedFieldDetailDuck.creators.setItem
+    }
+  )
+)(CustomizedField)

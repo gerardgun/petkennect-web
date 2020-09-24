@@ -103,7 +103,7 @@ const DaycampFormWizardThird = props => {
           </Grid>
 
           <Segment>
-            <Header as='h3' className='section-info-header'>Add Ons</Header>
+            <Header as='h3' className='mb0'>Check In</Header>
             <Grid>
               <Grid.Column width={8}>
                 <Field
@@ -139,7 +139,7 @@ const DaycampFormWizardThird = props => {
           </Segment>
 
           <Segment>
-            <Header as='h3' className='section-info-header'>Check Out</Header>
+            <Header as='h3' className='mb0'>Check Out</Header>
             <Grid>
               <Grid.Column width={8}>
                 <Field

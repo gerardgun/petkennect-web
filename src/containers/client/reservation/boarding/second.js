@@ -91,7 +91,7 @@ const BoardingFormWizardSecond = props => {
                 <Form.Group widths='equal'>
                   <Header as='h3' className='section-info-header'>{fields.get(index)}</Header>
                   <button
-                    className='ui red basic icon button delete-addons'  data-index='0' onClick={_handleRemoveBtnClick}
+                    className='ui red basic icon button delete-addons'  data-index={index} onClick={_handleRemoveBtnClick}
                     type='button'>
                     <i aria-hidden='true' className='trash alternate outline icon' ></i>
                   </button>
@@ -166,7 +166,7 @@ const BoardingFormWizardSecond = props => {
             title='Boarding Reservation List'/>
 
           <div  className='div-kannel-selection div-additional-information'>
-            <Header as='h3' className='section-info-header text-center'>Any additional information?</Header>
+            <Header as='h3' className='section-info-header'>Any additional information?</Header>
             <Form.Group widths='equal'>
               <Field
                 component={FormField}

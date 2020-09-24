@@ -40,9 +40,10 @@
       
       .section-info-item-step1{
         margin-top: 3rem !important;
-        .section-info-header{
-          text-align: center;
-        }
+      }
+      
+      .section-info-header{
+        text-align: center;
       }
 
       .btnBack{
@@ -131,6 +132,58 @@
   color :#079477 !important;
 }
 
+.section-info-item-single.ui.segment {
+  box-shadow: none;
+  padding: 1.8rem 25rem;
+}
+
+.grooming-second-step-form{
+  .div-additional-charge{
+    box-shadow: none;
+    padding: 1.8rem 25rem;
+  }
+  .div-additional-charge-summary{
+    padding: 1.5rem;
+    background: #F7F9FC;
+    border: 1px solid #e5e9ee;
+    border-radius: 3px;
+    padding-right: 2rem;
+    .charge-amount{
+      float: right;
+      color: #00AA9F;
+    }
+  }
+
+  .btn-trash-charge{
+    float: right;
+  }
+
+
+}
+
+.div-section-info-item-single{
+  box-shadow: none;
+padding: 1.8rem 25rem;
+}
+
+.btn-groomer-time-select{
+  height: 3rem;
+}
+
+.btn-groomer-time-select.active{
+  background-color: #079477 !important;
+}
+
+.grid-time-selection{
+  height: 30vh;
+    overflow-y: auto;
+    margin-right: -0.5rem;
+    margin-bottom: 0rem;
+
+    .row{
+      padding-top:0rem !important;
+    }
+}
   }
  
   
@@ -161,3 +214,4 @@ h6.ui.header.section-header{
 }
 
 }
+

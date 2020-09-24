@@ -87,7 +87,7 @@ const DaycampFormWizardFirst = props => {
           </Form.Group>
         </Segment>
         <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header'>When will this event be?</Header>
+          <Header as='h3' className='section-info-header text-center'>When will this event be?</Header>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
