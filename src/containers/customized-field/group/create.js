@@ -10,7 +10,7 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import customizedFieldDetailDuck from '@reducers/customized-field/detail'
+import customizedFieldGroupDetailDuck from '@reducers/customized-field/group/detail'
 
 const GroupCreateForm = props => {
   const {
@@ -18,7 +18,7 @@ const GroupCreateForm = props => {
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
-  const getIsOpened = mode => (mode === 'UPDATE')
+  const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
   const _handleClose = () =>{
     props.reset()
@@ -94,7 +94,7 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const customizedFieldDetail = customizedFieldDetailDuck.selectors.detail(state)
+      const customizedFieldDetail = customizedFieldGroupDetailDuck.selectors.detail(state)
 
       return {
         customizedFieldDetail,
@@ -102,9 +102,9 @@ export default compose(
       }
     },
     {
-      post     : customizedFieldDetailDuck.creators.post,
-      put      : customizedFieldDetailDuck.creators.put,
-      resetItem: customizedFieldDetailDuck.creators.resetItem
+      post     : customizedFieldGroupDetailDuck.creators.post,
+      put      : customizedFieldGroupDetailDuck.creators.put,
+      resetItem: customizedFieldGroupDetailDuck.creators.resetItem
     }
   ),
   reduxForm({

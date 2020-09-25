@@ -4,7 +4,9 @@ import { compose } from 'redux'
 import { Button, Checkbox, Dropdown, Icon, Grid, Header, Form, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
+import ModalDelete from '@components/Modal/Delete'
 import Message from '@components/Message'
+import useModal from '@components/Modal/useModal'
 
 import { useChangeStatusEffect } from 'src/hooks/Shared'
 
@@ -13,10 +15,12 @@ import FieldCreate from './field/create'
 
 import customizedFieldDuck from '@reducers/customized-field'
 import customizedFieldDetailDuck from '@reducers/customized-field/detail'
+import customizedFieldGroupDetailDuck from '@reducers/customized-field/group/detail'
 
 import './styles.scss'
 
 const CustomizedField = ({ customizedFieldDetail, ...props }) => {
+  const [ open, { _handleOpen, _handleClose } ] = useModal()
   const [ ActiveInfoItem, setActiveInfoItem ] = useState('Client')
 
   useChangeStatusEffect(props.getcustomizedFields, customizedFieldDetail.status)
@@ -24,11 +28,24 @@ const CustomizedField = ({ customizedFieldDetail, ...props }) => {
   const _handleInfoItemClick = (e, { name }) => setActiveInfoItem(name)
 
   const _handleCreateGroupBtnClick = () => {
-    props.setItem(null, 'UPDATE')
+    props.setGroupItem(null, 'CREATE')
+  }
+
+  const _handleUpdateGroupBtnClick = () => {
+    props.setGroupItem(null, 'UPDATE')
   }
 
   const _handleCreateFieldBtnClick = () =>{
     props.setItem(null, 'CREATE')
+  }
+
+  const _handleUpdateFieldBtnClick = () =>{
+    props.setItem(null, 'UPDATE')
+  }
+
+  const _handleDeleteFieldBtnClick = () =>{
+    props.setItem(null, 'DELETE')
+    _handleOpen()
   }
 
   return (
@@ -82,9 +99,10 @@ const CustomizedField = ({ customizedFieldDetail, ...props }) => {
                     color='teal' content='Add Field' icon='plus circle icon'
                     onClick={_handleCreateFieldBtnClick}/>
                   <Button
-                    basic icon='edit outline'/>
+                    basic icon='edit outline' onClick={_handleUpdateGroupBtnClick}/>
                   <Button
-                    basic icon='trash alternate outline'/>
+                    basic color='red' icon='trash alternate outline'
+                    onClick={_handleDeleteFieldBtnClick}/>
                 </Grid.Column>
               </Grid>
               <div className='c-note-item wrapper'>
@@ -115,13 +133,13 @@ const CustomizedField = ({ customizedFieldDetail, ...props }) => {
                     <Button
                       basic
                       className='ml16' icon
-                      size='small'>
+                      onClick={_handleUpdateFieldBtnClick} size='small'>
                       <Icon name='edit outline'/>
                     </Button>
                     <Button
                       basic
                       color='red' icon
-                      size='small'>
+                      onClick={_handleDeleteFieldBtnClick} size='small'>
                       <Icon name='trash alternate outline'/>
                     </Button>
                   </div>
@@ -160,7 +178,7 @@ const CustomizedField = ({ customizedFieldDetail, ...props }) => {
                     </Button>
                     <Button
                       basic
-                      color='red' icon
+                      color='red'  icon onClick={_handleDeleteFieldBtnClick}
                       size='small'>
                       <Icon name='trash alternate outline'/>
                     </Button>
@@ -177,7 +195,7 @@ const CustomizedField = ({ customizedFieldDetail, ...props }) => {
                   <Button
                     basic icon='edit outline'/>
                   <Button
-                    basic icon='trash alternate outline'/>
+                    basic  icon='trash alternate outline' onClick={_handleDeleteFieldBtnClick}/>
                 </Grid.Column>
               </Grid>
               <div className='c-note-item wrapper'>
@@ -214,7 +232,7 @@ const CustomizedField = ({ customizedFieldDetail, ...props }) => {
                     <Button
                       basic
                       color='red' icon
-                      size='small'>
+                      onClick={_handleDeleteFieldBtnClick}  size='small'>
                       <Icon name='trash alternate outline'/>
                     </Button>
                   </div>
@@ -254,7 +272,7 @@ const CustomizedField = ({ customizedFieldDetail, ...props }) => {
                     <Button
                       basic
                       color='red' icon
-                      size='small'>
+                      onClick={_handleDeleteFieldBtnClick}  size='small'>
                       <Icon name='trash alternate outline'/>
                     </Button>
                   </div>
@@ -267,6 +285,10 @@ const CustomizedField = ({ customizedFieldDetail, ...props }) => {
       </Segment>
       <GroupCreate/>
       <FieldCreate/>
+      <ModalDelete
+        duckDetail={customizedFieldDetailDuck}
+        onClose={_handleClose}
+        open={open}/>
     </Layout>
   )
 }
@@ -280,7 +302,8 @@ export default compose(
     }),
     {
       getcustomizedFields: customizedFieldDuck.creators.get,
-      setItem            : customizedFieldDetailDuck.creators.setItem
+      setItem            : customizedFieldDetailDuck.creators.setItem,
+      setGroupItem       : customizedFieldGroupDetailDuck.creators.setItem
     }
   )
 )(CustomizedField)

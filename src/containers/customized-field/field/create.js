@@ -64,9 +64,9 @@ const FieldCreateForm = props => {
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
-  const [ InputType, setInputType ] = useState(null)
+  const [ InputType, setInputType ] = useState(1)
 
-  const getIsOpened = mode => (mode === 'CREATE')
+  const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
   const _handleClose = () =>{
     props.reset()
