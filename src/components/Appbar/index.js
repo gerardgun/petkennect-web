@@ -96,10 +96,13 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
           <div className='auth-session-dropdown'>
             {
               !auth.item.is_superadmin && (
-                <Dropdown
-                  onChange={_handleLocationChange}
-                  options={locationItems}
-                  value={auth.location}/>
+                <>
+                  <Dropdown
+                    onChange={_handleLocationChange}
+                    options={locationItems}
+                    value={auth.location}/>
+                  <Icon className='ml8' name='map marker alternate icon'/>
+                </>
               )
             }
             <Dropdown

@@ -12,7 +12,7 @@ export default {
       icon        : 'print'
     },
     {
-      display_name: 'Delete Incident Action',
+      display_name: 'cident Action',
       name        : 'delete',
       icon        : 'trash alternate outline',
       is_multiple : false,

@@ -161,7 +161,7 @@ const IncidentSectionForm = (props) => {
 
           </Form.Group>
 
-          <Header as='h6' className='section-header mt36' color='blue'>INFORMATION FOR THE CLIENT</Header>
+          <Header as='h6' className='section-header mt36' color='teal'>INTERNAL COMMENTS</Header>
           <Form.Group widths='equal'>
             <Field
               component={FormField}

@@ -18,6 +18,7 @@ export default {
     {
       display_name: 'View Incident',
       name        : 'view_pdf',
+      color       : 'teal',
       icon        : 'file pdf outline',
       is_multiple : false
     },
@@ -26,6 +27,7 @@ export default {
       name              : 'edit',
       icon              : 'edit outline',
       is_multiple       : false,
+      color             : 'teal',
       conditional_render: item => !item.is_client_notified
     },
     {
@@ -33,6 +35,7 @@ export default {
       name              : 'preview_report',
       icon              : 'envelope outline',
       is_multiple       : false,
+      color             : 'teal',
       conditional_render: item => !item.is_client_notified
     },
     {
@@ -49,7 +52,7 @@ export default {
   },
   columns: [
     {
-      display_name: 'Incised at',
+      display_name: 'DATE OF INCIDENT',
       name        : 'incised_at',
       type        : 'date',
       width       : null,
@@ -85,7 +88,7 @@ export default {
       }
     },
     {
-      display_name: 'Registered By',
+      display_name: 'EMPLOYEE NAME',
       name        : 'employee_fullname',
       type        : 'string',
       width       : null,
