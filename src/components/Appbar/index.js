@@ -101,7 +101,7 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
                     onChange={_handleLocationChange}
                     options={locationItems}
                     value={auth.location}/>
-                  <Icon className='ml8' name='map marker alternate icon'/>
+                  <Icon className='ml8' name='map marker alternate'/>
                 </>
               )
             }

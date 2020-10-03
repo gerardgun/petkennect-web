@@ -1,15 +1,8 @@
 import base from '@reducers/base'
-import list from '@reducers/common/list'
-import selector from '@reducers/common/selector'
-
-import config from '@lib/constants/list-configs/customized-field'
-
+import detail from '@reducers/common/detail'
 export default base({
   namespace   : '@@pet-kennect',
   store       : 'customized-field',
-  initialState: {
-    config
-  }
+  initialState: {}
 })
-  .extend(list)
-  .extend(selector)
+  .extend(detail)

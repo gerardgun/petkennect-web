@@ -1,5 +1,4 @@
-/* eslint-disable indent */
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -11,7 +10,7 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import customizedFieldDetailDuck from '@reducers/customized-field/detail'
+import customizedFieldDetailDuck from '@reducers/customized-field/field/detail'
 
 export const SelectValueList = ({ fields, meta: { error, submitFailed } }) => {
   const _handleAddBtnClick = () => fields.push({ ...selectValueInitialState })
@@ -24,36 +23,36 @@ export const SelectValueList = ({ fields, meta: { error, submitFailed } }) => {
   return (
     <>
       <Header as='h6' className='section-header'>Values</Header>
-        {
-          fields.map((item, index) => (
-            <Form.Group key={index} widths='equal'>
-              <Field
-                autoComplete='off'
-                component={FormField}
-                control={Input}
-                name={`${item}.value`}
-                placeholder='Enter value'/>
-              <Form.Button
-                data-index={index} icon='trash alternate outline' label=''
-                onClick={_handleRemoveBtnClick}
-                type='button'/>
-            </Form.Group>
-          ))
-        }
-        <div>
-             <Button
-color='teal' content='New Value' icon='plus circle icon'
-onClick={_handleAddBtnClick}/>
-        </div>
-        {
-          submitFailed && error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )
-        }
+      {
+        fields.map((item, index) => (
+          <Form.Group key={index} widths='equal'>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              name={`${item}.name`}
+              placeholder='Enter value'/>
+            <Form.Button
+              data-index={index} icon='trash alternate outline' label=''
+              onClick={_handleRemoveBtnClick}
+              type='button'/>
+          </Form.Group>
+        ))
+      }
+      <div>
+        <Button
+          color='teal' content='New Value' icon='plus circle'
+          onClick={_handleAddBtnClick} type='button'/>
+      </div>
+      {
+        submitFailed && error && (
+          <Form.Group widths='equal'>
+            <Form.Field>
+              <FormError message={error}/>
+            </Form.Field>
+          </Form.Group>
+        )
+      }
     </>
   )
 }
@@ -72,6 +71,10 @@ const FieldCreateForm = props => {
     props.reset()
     props.resetItem()
   }
+
+  useEffect(() => {
+    setInputType(customizedFieldDetail.item.display_type)
+  }, [ customizedFieldDetail ])
 
   const _handleInputTypeChange = (value) => setInputType(value)
 
@@ -100,6 +103,9 @@ const FieldCreateForm = props => {
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Field</Header>
           <Field component='input' name='id' type='hidden'/>
+          <Field component='input' name='eav_entity_id' type='hidden'/>
+          <Field component='input' name='entity_group' type='hidden'/>
+
           <Form.Group widths='equal'>
             <Field
               autoFocus
@@ -111,67 +117,79 @@ const FieldCreateForm = props => {
               required/>
           </Form.Group>
           <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Type'
-            name='type'
-            onChange={_handleInputTypeChange}
-            options={[
-              { key: 1, value: 1, text: 'Text Box' },
-              { key: 2, value: 2, text: 'Text Area' },
-              { key: 3, value: 3, text: 'Radio Button' },
-              { key: 4, value: 4, text: 'Checkbox' },
-              { key: 5, value: 5, text: 'Select Box' }
-            ]}
-            placeholder='Select an option'
-            required
-            selectOnBlur={false}/>
+            <Field
+              autoFocus
+              component={FormField}
+              control={Input}
+              label='Display Name'
+              name='display_name'
+              placeholder='Enter display name'
+              required/>
           </Form.Group>
-        <label>Options</label>
-            <Form.Group widths='equal'>
-              <Field
-                component={FormField}
-                control={Checkbox}
-                format={Boolean}
-                label='Required'
-                name='required'
-                type='checkbox'/>
-            </Form.Group>
-            <Form.Group widths='equal'>
-              <Field
-                component={FormField}
-                control={Checkbox}
-                format={Boolean}
-                label='Editable by Client'
-                name='editable-by-client'
-                type='checkbox'/>
-            </Form.Group>
-            <Form.Group widths='equal'>
-              <Field
-                component={FormField}
-                control={Checkbox}
-                format={Boolean}
-                label='Editable by Employee'
-                name='editable-by-employee'
-                type='checkbox'/>
-            </Form.Group>
-            <Form.Group widths='equal'>
-              <Field
-                component={FormField}
-                control={Checkbox}
-                format={Boolean}
-                label='Visible by Client'
-                name='visible-by-client'
-                type='checkbox'/>
-            </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Select}
+              disabled={isUpdating}
+              label='Type'
+              name='display_type'
+              onChange={_handleInputTypeChange}
+              options={[
+                { key: 1, value: 'C', text: 'Checkbox' },
+                { key: 2, value: 'D', text: 'Dropdown' },
+                { key: 3, value: 'R', text: 'Radio' },
+                { key: 4, value: 'I', text: 'Input Text' },
+                { key: 5, value: 'T', text: 'Text Area' }
+              ]}
+              placeholder='Select an option'
+              required
+              selectOnBlur={false}/>
+          </Form.Group>
+          <label>Options</label>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Checkbox}
+              format={Boolean}
+              label='Required'
+              name='is_required'
+              type='checkbox'/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Checkbox}
+              format={Boolean}
+              label='Editable by Client'
+              name='is_editable_by_client'
+              type='checkbox'/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Checkbox}
+              format={Boolean}
+              label='Editable by Employee'
+              name='is_editable_by_employee'
+              type='checkbox'/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Checkbox}
+              format={Boolean}
+              label='Visible by Client'
+              name='is_visible_by_client'
+              type='checkbox'/>
+          </Form.Group>
 
-            {InputType === 5
+          {
+            (InputType === 'D' || InputType === 'R')
             && <FieldArray
-          component={SelectValueList}
-          name='select-value-list'
-          title='Select Value List'/>
-}
+              component={SelectValueList}
+              name='values'
+              title='Select Value List'/>
+          }
 
           {
             error && (
@@ -211,7 +229,7 @@ export default compose(
 
       return {
         customizedFieldDetail,
-        initialValues: customizedFieldDetail.item
+        initialValues: { ...customizedFieldDetail.item }
       }
     },
     {
@@ -226,7 +244,9 @@ export default compose(
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        name: Yup.string().required()
+        name        : Yup.string().required('Name is required'),
+        display_name: Yup.string().required('Display name is required'),
+        display_type: Yup.string().required('Display type is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

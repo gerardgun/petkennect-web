@@ -2,15 +2,16 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
-import customizedDuck from '@reducers/customized-field'
+import customizedFieldDuck from '@reducers/customized-field/field'
 
-const { types } = customizedDuck
+const { types } = customizedFieldDuck
 
-function* get() {
+function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const entitiesAttributes = yield call(Get, 'eav-entities/')
+    const entitiesAttributes = yield call(Get, `eav-entities/${id}/attributes/`)
+
     yield put({
       type   : types.GET_FULFILLED,
       payload: {

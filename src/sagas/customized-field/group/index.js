@@ -2,19 +2,20 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
-import customizedDuck from '@reducers/customized-field'
+import customizedFieldGroupDuck from '@reducers/customized-field/group'
 
-const { types } = customizedDuck
+const { types } = customizedFieldGroupDuck
 
-function* get() {
+function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const entitiesAttributes = yield call(Get, 'eav-entities/')
+    const entitiesGroups = yield call(Get, `eav-entities/${id}/groups/`)
+
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: entitiesAttributes
+        item: entitiesGroups
       }
     })
   } catch (e) {

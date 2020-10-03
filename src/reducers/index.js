@@ -21,8 +21,9 @@ import clientDocumentTypeDetail from '@reducers/client/document/type/detail'
 import clientPet from '@reducers/client/pet'
 import company from '@reducers/company'
 import companyDetail from '@reducers/company/detail'
-import customizedField from '@reducers/customized-field'
-import customizedFieldDetail from '@reducers/customized-field/detail'
+import customized from '@reducers/customized-field'
+import customizedField from '@reducers/customized-field/field'
+import customizedFieldDetail from '@reducers/customized-field/field/detail'
 import customizedFieldGroup from '@reducers/customized-field/group'
 import customizedFieldGroupDetail from '@reducers/customized-field/group/detail'
 import employee from '@reducers/employee'
@@ -114,6 +115,7 @@ const createRootReducer = history => combineReducers({
   [clientPet.store]                 : clientPet.reducer,
   [company.store]                   : company.reducer,
   [companyDetail.store]             : companyDetail.reducer,
+  [customized.store]                : customized.reducer,
   [customizedField.store]           : customizedField.reducer,
   [customizedFieldDetail.store]     : customizedFieldDetail.reducer,
   [customizedFieldGroup.store]      : customizedFieldGroup.reducer,

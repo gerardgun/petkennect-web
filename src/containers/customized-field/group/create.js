@@ -14,7 +14,7 @@ import customizedFieldGroupDetailDuck from '@reducers/customized-field/group/det
 
 const GroupCreateForm = props => {
   const {
-    customizedFieldDetail,
+    customizedGroupDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
@@ -27,7 +27,7 @@ const GroupCreateForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ id: customizedFieldDetail.item.id, ...values })
+      return props.put({ id: customizedGroupDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -36,8 +36,8 @@ const GroupCreateForm = props => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(customizedFieldDetail.mode), [ customizedFieldDetail.mode ])
-  const isUpdating = Boolean(customizedFieldDetail.item.id)
+  const isOpened = useMemo(() => getIsOpened(customizedGroupDetail.mode), [ customizedGroupDetail.mode ])
+  const isUpdating = Boolean(customizedGroupDetail.item.id)
 
   return (
     <Modal
@@ -50,6 +50,8 @@ const GroupCreateForm = props => {
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Group</Header>
           <Field component='input' name='id' type='hidden'/>
+          <Field
+            component='input' name='eav_entity_id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
               autoFocus
@@ -94,11 +96,13 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const customizedFieldDetail = customizedFieldGroupDetailDuck.selectors.detail(state)
+      const customizedGroupDetail = customizedFieldGroupDetailDuck.selectors.detail(state)
+      const has_entity_id = Boolean(customizedGroupDetail.item.entity)
 
       return {
-        customizedFieldDetail,
-        initialValues: customizedFieldDetail.item
+        customizedGroupDetail,
+        initialValues: { ...customizedGroupDetail.item ,
+          eav_entity_id: has_entity_id == true ? customizedGroupDetail.item.entity : customizedGroupDetail.item }
       }
     },
     {
