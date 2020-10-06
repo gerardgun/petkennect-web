@@ -8,7 +8,7 @@ import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
 import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
 import ClientDocumentFormModal from './form/modal'
-import ClientDocumentShow from './ClientDocumentShow'
+import ClientDocumentShowModal from './show/modal'
 
 import clientDocumentDuck from '@reducers/client/document'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
@@ -34,7 +34,6 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
 
         return
       case 'delete':
-        props.setItem(clientDocument.selector.selected_items, 'DELETE')
         _handleOpen()
 
         return
@@ -75,7 +74,7 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
 
       <ClientDocumentFormSendModal/>
       <ClientDocumentFormModal/>
-      <ClientDocumentShow/>
+      <ClientDocumentShowModal/>
       <ModalDelete
         duck={clientDocumentDuck}
         duckDetail={clientDocumentDetailDuck}
