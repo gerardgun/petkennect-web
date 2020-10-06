@@ -90,7 +90,7 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
   return (
     <Layout>
       <Segment className='segment-content' padded='very'>
-        <Grid className='segment-content-header' columns={2}>
+        <Grid columns={2}>
           <Grid.Column>
             <Header as='h2' className='cls-MainHeader'>Customized Fields</Header>
           </Grid.Column>
@@ -98,14 +98,14 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
 
           </Grid.Column>
         </Grid>
-        <div className='mv32'>
+        <div className='mv32 div-btn-info'>
           {
             // eslint-disable-next-line no-unused-vars
             EavEntities.item.length > 0 && EavEntities.item.map((item,index)=>(
               <>
                 <Button
-                  basic={ActiveInfoItem.name !== item.model_name} color='blue'
-                  content={item.model_name} entitiID={item.id} name={item.model_name}
+                  basic={ActiveInfoItem.name !== item.model_name} color='teal'
+                  content={item.model_name.toUpperCase()} entitiID={item.id} name={item.model_name}
                   onClick={_handleInfoItemClick}/>
               </>
             ))
@@ -163,6 +163,7 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                               </div>
                               <div>
                                 <Dropdown
+                                  disabled={true}
                                   options={[
                                     { key: 1, value: 'C', text: 'Checkbox' },
                                     { key: 2, value: 'D', text: 'Dropdown' },
@@ -171,15 +172,14 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                                     { key: 5, value: 'T', text: 'Text Area' }
                                   ]}
                                   placeholder='All'
-                                  readOnly
                                   selection
                                   value={fieldItem.display_type}/>
                               </div>
                               <div className='permission-checkbox'>
-                                <Checkbox checked={fieldItem.is_required} label='Required'/><br/>
-                                <Checkbox checked={fieldItem.is_editable_by_client} label='Editable by Client'/><br/>
-                                <Checkbox checked={fieldItem.is_editable_by_employee} label='Editable by Employee'/><br/>
-                                <Checkbox checked={fieldItem.is_visible_by_client} label='Visible by Client'/>
+                                <Checkbox checked={fieldItem.is_required} disabled={true} label='Required'/><br/>
+                                <Checkbox checked={fieldItem.is_editable_by_client} disabled={true} label='Editable by Client'/><br/>
+                                <Checkbox checked={fieldItem.is_editable_by_employee} disabled={true} label='Editable by Employee'/><br/>
+                                <Checkbox checked={fieldItem.is_visible_by_client} disabled={true} label='Visible by Client'/>
                               </div>
                               <div>
                                 <Button

@@ -118,7 +118,6 @@ const FieldCreateForm = props => {
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
-              autoFocus
               component={FormField}
               control={Input}
               label='Display Name'
