@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { compose } from 'redux'
@@ -6,7 +6,10 @@ import { Button, Header, Grid, Segment, Breadcrumb } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import Message from '@components/Message'
-import ReservationFormWizard from './wizard'
+import BoardingReservationFormWizard from './boarding'
+import DaycampReservationFormWizard from './daycamp'
+import FitnessReservationFormWizard from './daycamp'
+import GroomingReservationFormWizard from './grooming'
 
 import clientDetailDuck from '@reducers/client/detail'
 import petDetailDuck from '@reducers/pet/detail'
@@ -15,12 +18,14 @@ import './styles.scss'
 
 function Reservation({ clientDetail, ...props }) {
   const { client: clientId } = useParams()
-
+  const [ activeReservationItem, setActiveReservationItem ] = useState('Boarding')
   useEffect(() => {
     props.getClient(clientId)
   }, [])
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
+
+  const _handleReservationTypeClick = (e, { name }) => setActiveReservationItem(name)
 
   return (
     <Layout>
@@ -64,22 +69,26 @@ function Reservation({ clientDetail, ...props }) {
 
             <div className='mv32 btn-service-type'>
               <Button
-                basic={false} color='blue' content='Boarding'
-                icon='circle' name='Client'/>
+                basic={activeReservationItem !== 'Boarding'} color='gray' content='Boarding'
+                icon='circle'
+                name='Boarding' onClick={_handleReservationTypeClick}/>
               <Button
-                basic={true} color='grey' content='Training'
-                icon='circle' name='Client'/>
+                basic={activeReservationItem !== 'Training'} color='gray' content='Training'
+                icon='circle' name='Training' onClick={_handleReservationTypeClick}/>
               <Button
-                basic={true} color='grey' content='Fitness'
-                icon='circle' name='Client'/>
+                basic={activeReservationItem !== 'Fitness'} color='gray' content='Fitness'
+                icon='circle' name='Fitness' onClick={_handleReservationTypeClick}/>
               <Button
-                basic={true} color='grey' content='Daycamp'
-                icon='circle' name='Client'/>
+                basic={activeReservationItem !== 'Daycamp'} color='gray' content='Daycamp'
+                icon='circle' name='Daycamp' onClick={_handleReservationTypeClick}/>
               <Button
-                basic={true} color='grey' content='Grooming'
-                icon='circle' name='Client'/>
+                basic={activeReservationItem !== 'Grooming'} color='gray' content='Grooming'
+                icon='circle' name='Grooming' onClick={_handleReservationTypeClick}/>
             </div>
-            <ReservationFormWizard/>
+            {activeReservationItem === 'Boarding' &&  <BoardingReservationFormWizard/>}
+            {activeReservationItem === 'Daycamp' &&  <DaycampReservationFormWizard/>}
+            {activeReservationItem === 'Fitness' &&  <FitnessReservationFormWizard/>}
+            {activeReservationItem === 'Grooming' &&  <GroomingReservationFormWizard/>}
           </Grid.Column>
         </Grid>
       </Segment>

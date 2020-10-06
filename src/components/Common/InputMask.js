@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactInputMask from 'react-input-mask'
-import { Input } from 'semantic-ui-react'
 
 function InputMask(props) {
   const {
@@ -15,9 +14,7 @@ function InputMask(props) {
     onBlur,
     value,
     disabled,
-    readOnly,
-    // Props for Semantic Input
-    ...rest
+    readOnly
   } = props
 
   const _handleChange = e => {
@@ -45,7 +42,6 @@ function InputMask(props) {
       onChange={_handleChange}
       onFocus={_handleFocus} readOnly={readOnly}
       value={value}>
-      <Input {...rest}/>
     </ReactInputMask>
   )
 }

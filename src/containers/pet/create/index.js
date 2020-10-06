@@ -160,8 +160,10 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
             <div className='flex justify-between align-center mb24'>
               <div>
                 <Header as='h2'>{fullname}</Header>
-
                 {/* Owner data */}
+                <div className='flex align-center'>
+                  <span style={{ color: '#888888' }}>{petDetail.item.active ? 'Active' : 'Inactive'}</span>
+                </div>
                 <div className='flex align-center'>
                   <div className='mr8'>
                     <span style={{ color: '#888888' }}>Owner :</span>
@@ -227,13 +229,13 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
                 active={activeMenuItem === 'vaccinations'} link name='vaccinations'
                 onClick={_handleMenuItemClick}>
                 Vaccinations
-                <Icon color='orange' name='warning circle' size='large'/>
+                <Icon color='red' name='warning circle' size='large'/>
               </Menu.Item>
               <Menu.Item
                 active={activeMenuItem === 'incidents'} link name='incidents'
                 onClick={_handleMenuItemClick}>
                 Incidents
-                <Icon color='orange' name='warning circle' size='large'/>
+                <Icon color='red' name='warning circle' size='large'/>
               </Menu.Item>
               <Menu.Item
                 active={activeMenuItem === 'notes'} link name='notes'

@@ -59,8 +59,8 @@ function PetItem({ checkIn , checkOut, item }) {
         <Field
           component={FormField}
           control={Select}
-          label='Kennel'
-          name='kennel'
+          lebel='kennel'
+          name={`${item[0].id}.kennel`}
           options={[
             { key: 1, value: 1, text: 'Luxury' }
           ]}
@@ -80,7 +80,7 @@ function PetItem({ checkIn , checkOut, item }) {
           component={FormField}
           control={Select}
           label='Activity package'
-          name='activityPackage'
+          name={`${item[0].id}.activityPackage`}
           options={[
             { key: 1, value: 1, text: 'Test' }
           ]}

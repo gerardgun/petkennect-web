@@ -2,15 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm } from 'redux-form'
-import { Button, Form, Grid, Header, Segment, Checkbox, List, Icon, Step } from 'semantic-ui-react'
+import { reduxForm, Field } from 'redux-form'
+import { Button, Form, Grid, Header, Segment, Select, Checkbox, List, Icon, Step } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
+import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 
 import clientDetailDuck from '@reducers/client/detail'
 
-const ClientFormWizardSecond = props => {
+import { groomingFormId } from './first'
+
+const GroomingFormWizardThird = props => {
   const {
     error, handleSubmit, reset // redux-form
   } = props
@@ -57,13 +60,13 @@ const ClientFormWizardSecond = props => {
                     <Grid>
                       <Grid.Column width={8}>
                         <InputReadOnly
-                          label='Check In'
+                          label='Reservation Date'
                           value='28/12/12 3:12AM'/>
                       </Grid.Column>
                       <Grid.Column width={8}>
                         <InputReadOnly
-                          label='Check Out'
-                          value='28/12/12 3:12AM'/>
+                          label='Groomer'
+                          value='Alexandra Valencia'/>
                       </Grid.Column>
                     </Grid>
                   </div>
@@ -75,32 +78,11 @@ const ClientFormWizardSecond = props => {
                 <div className='flex justify-between align-center'>
                   <div className='w100'>
                     <Header as='h3'>
-                   Charges
+                   Reservation note
                     </Header>
-                    <Grid>
-                      <Grid.Column width={5}>
-                        <InputReadOnly
-                          label='Off peach nights'
-                          value='56'/>
-                        <br/>
-                      </Grid.Column >
-                      <Grid.Column width={5}>
-                        <InputReadOnly
-                          label='Pick nights'
-                          value='5'/>
-                      </Grid.Column >
-                      <Grid.Column width={6}>
-                        <InputReadOnly
-                          label='Total night'
-                          value='61'/>
-                      </Grid.Column >
-                    </Grid>
-
-                    <br/>
-                    <Checkbox label='Special Pick Up'/>
                     <div className='mt16'>
-                      <label>Special Pick Up Information</label>
-                      <textarea className='w100' name='specialpickup' rows='5'></textarea>
+                      <label>Instructions</label>
+                      <textarea className='w100' name='instructions' rows='5'></textarea>
                     </div>
                   </div>
                 </div>
@@ -109,14 +91,14 @@ const ClientFormWizardSecond = props => {
           </Grid>
         </Segment>
         <Segment>
-          <Header as='h3' className='section-info-header'>Add Ons</Header>
+          <Header as='h3'>Charges</Header>
           <List className='list-total-addons' divided verticalAlign='middle'>
             <List.Item>
               <List.Content floated='right'>
                 $34
               </List.Content>
               <List.Content>
-                Kennel
+              Lorem Ipsum
               </List.Content>
             </List.Item>
             <List.Item>
@@ -124,12 +106,7 @@ const ClientFormWizardSecond = props => {
                 $34
               </List.Content>
               <List.Content>
-               Activity Package
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content>
-                <b>Add Ons</b>
+              Lorem Ipsum
               </List.Content>
             </List.Item>
             <List.Item>
@@ -137,7 +114,7 @@ const ClientFormWizardSecond = props => {
                 $34
               </List.Content>
               <List.Content>
-                Name
+              Lorem Ipsum
               </List.Content>
             </List.Item>
             <List.Item>
@@ -145,7 +122,7 @@ const ClientFormWizardSecond = props => {
                 $34
               </List.Content>
               <List.Content>
-               Name
+              Lorem Ipsum
               </List.Content>
             </List.Item>
             <List.Item>
@@ -155,6 +132,63 @@ const ClientFormWizardSecond = props => {
             </List.Item>
           </List>
         </Segment>
+
+        <Segment>
+          <Header as='h3' className='mb0'>Check In</Header>
+          <Grid>
+            <Grid.Column width={8}>
+              <Field
+                component={FormField}
+                control={Checkbox}
+                format={Boolean}
+                label='Check In Now'
+                name='check_in_now'
+                type='checkbox'/>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <InputReadOnly
+                label='Check in by'
+                value='Alexandra Minano'/>
+            </Grid.Column>
+          </Grid>
+          <Grid>
+            <Grid.Column width={6}>
+              <Field
+                component={FormField}
+                control={Select}
+                label='Confirmation'
+                name='Confirmation'
+                options={[
+                  { key: 1, value: 1, text: 'Test1' },
+                  { key: 2, value: 1, text: 'Test2' }
+                ]}
+                placeholder='Select Confirmation'
+                required
+                selectOnBlur={false}/>
+            </Grid.Column>
+          </Grid>
+        </Segment>
+
+        <Segment>
+          <Header as='h3' className='mb0'>Check Out</Header>
+          <Grid>
+            <Grid.Column width={8}>
+              <Field
+                component={FormField}
+                control={Checkbox}
+                format={Boolean}
+                label='Check Out Now'
+                name='check_out_now'
+                type='checkbox'/>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <InputReadOnly
+                label='Check out by'
+                value='Alexandra Minano'/>
+            </Grid.Column>
+          </Grid>
+        </Segment>
+
         {
           error && (
             <Form.Group widths='equal'>
@@ -204,8 +238,8 @@ export default compose(
     }
   ),
   reduxForm({
-    form                    : 'reservation-form',
+    form                    : groomingFormId,
     destroyOnUnmount        : false,
     forceUnregisterOnUnmount: true
   })
-)(ClientFormWizardSecond)
+)(GroomingFormWizardThird)

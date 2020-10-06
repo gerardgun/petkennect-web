@@ -11,6 +11,7 @@ import CommentSection from './CommentSection'
 import DocumentSection from './DocumentSection'
 import InformationSection from './InformationSection'
 import PetSection from './PetSection'
+import ReservesSection from './ReservesSection'
 import { defaultImageUrl } from '@lib/constants'
 
 import clientDetailDuck from '@reducers/client/detail'
@@ -176,6 +177,11 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
                   )
                 }
               </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'reserves'} link name='reserves'
+                onClick={_handleMenuItemClick}>
+                Reserves
+              </Menu.Item>
             </Menu>
           </Grid.Column>
           <Grid.Column className='petkennect-profile-body' width={11}>
@@ -184,6 +190,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
             {activeMenuItem === 'comments' && <CommentSection/>}
             {activeMenuItem === 'documents' && <DocumentSection/>}
             {activeMenuItem === 'agreements' && <AgreementSection/>}
+            {activeMenuItem === 'reserves' && <ReservesSection/>}
           </Grid.Column>
         </Grid>
       </Segment>
