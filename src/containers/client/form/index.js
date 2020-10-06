@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, FieldArray, reduxForm } from 'redux-form'
-import { Button, Header, Input, Segment, Select, Form } from 'semantic-ui-react'
+import { Button, Header, Input, TextArea, Segment, Select, Form } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -32,7 +32,7 @@ export const AuthorizedPeopleList = ({ fields, meta: { error, submitFailed } }) 
   return (
     <>
       <Header as='h6' className='section-header' color='blue'>PEOPLE AUTHORIZED TO PICK UP</Header>
-      <Segment className='form-primary-segment' padded='very'>
+      <Segment className='form-primary-segment'>
         {
           fields.map((item, index) => (
             <Form.Group key={index} widths='equal'>
@@ -50,6 +50,15 @@ export const AuthorizedPeopleList = ({ fields, meta: { error, submitFailed } }) 
                 label='Relation'
                 name={`${item}.relation`}
                 placeholder='Enter relation'/>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={InputMask}
+                label='Phone Number'
+                mask='(999) 999-9999'
+                name={`${item}.phone_number`}
+                placeholder='Enter phone number'
+                type='tel'/>
               <Form.Button
                 data-index={index} icon='trash alternate outline' label='&nbsp;'
                 onClick={_handleRemoveBtnClick}
@@ -77,6 +86,66 @@ export const AuthorizedPeopleList = ({ fields, meta: { error, submitFailed } }) 
   )
 }
 
+export const ContactDetailList = ({ fields, meta: { error, submitFailed } }) => {
+  const _handleAddBtnClick = () => fields.push({ ...contactDetailInitialState })
+  const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
+
+  const contactDetailInitialState = {
+    phoneNumber      : '',
+    typeOfPhoneNumber: ''
+  }
+
+  return (
+    <>
+      <Segment className='form-primary-segment'>
+        {
+          fields.map((item, index) => (
+            <Form.Group key={index} widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={InputMask}
+                label='Phone number'
+                mask='(999) 999-9999'
+                name={`${item}.contact_detail_phone_number`}
+                placeholder='Enter phone number'
+                type='tel'/>
+              <Field
+                component={FormField}
+                control={Select}
+                label='Type of phone number'
+                name={`${item}.type_of_phone_number`}
+                options={typeOfPhoneNumberOptions}
+                placeholder='Select option'
+                selectOnBlur={false}/>
+              <Form.Button
+                data-index={index} icon='trash alternate outline' label='&nbsp;'
+                onClick={_handleRemoveBtnClick}
+                type='button'/>
+            </Form.Group>
+          ))
+        }
+        <div style={{ textAlign: 'center' }}>
+          <Button
+            basic
+            color='teal'  icon='plus icon'
+            onClick={_handleAddBtnClick}
+            type='button'/>
+        </div>
+        {
+          submitFailed && error && (
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <FormError message={error}/>
+              </Form.Field>
+            </Form.Group>
+          )
+        }
+      </Segment>
+    </>
+  )
+}
+
 const booleanOptions = [
   {
     key  : 1,
@@ -87,6 +156,28 @@ const booleanOptions = [
     key  : 2,
     value: false,
     text : 'No'
+  }
+]
+const typeOfPhoneNumberOptions = [
+  {
+    key  : 1,
+    value: 'Cell Phone',
+    text : 'Cell Phone'
+  },
+  {
+    key  : 2,
+    value: 'Home Phone',
+    text : 'Home Phone'
+  },
+  {
+    key  : 3,
+    value: 'Work Phone',
+    text : 'Work Phone'
+  },
+  {
+    key  : 4,
+    value: 'Other Phone',
+    text : 'Other Phone'
   }
 ]
 
@@ -126,22 +217,11 @@ const ClientForm = props => {
           <Field
             component={FormField}
             control={Input}
-            label='Email'
-            name='email'
-            placeholder='Enter email'
-            readOnly
-            required/>
-          <Field
-            component={FormField}
-            control={Input}
             label='First Name'
             name='first_name'
             placeholder='Enter name'
             readOnly
             required/>
-        </Form.Group>
-
-        <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Input}
@@ -150,6 +230,19 @@ const ClientForm = props => {
             placeholder='Enter lastname'
             readOnly
             required/>
+        </Form.Group>
+
+        <Form.Group widths={2}>
+          <Field
+            autoFocus
+            component={FormField}
+            control={Input}
+            label='Spouse '
+            name='spouse'
+            required
+            type='text'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
           <Field
             autoFocus
             component={FormField}
@@ -158,9 +251,25 @@ const ClientForm = props => {
             name='contact_date'
             required
             type='date'/>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Referred'
+            name='referred'
+            options={ReferredOptions}
+            placeholder='Select an option'
+            selectOnBlur={false}/>
         </Form.Group>
 
         <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Active'
+            name='is_active'
+            options={booleanOptions}
+            placeholder='Select option'
+            selectOnBlur={false}/>
           <Field
             component={FormField}
             control={Select}
@@ -171,24 +280,22 @@ const ClientForm = props => {
             }
             placeholder='Contact Location'
             selectOnBlur={false}/>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Active'
-            name='is_active'
-            options={booleanOptions}
-            placeholder='Select option'
-            selectOnBlur={false}/>
         </Form.Group>
 
         <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
+
+        <FieldArray
+          component={ContactDetailList}
+          name='contact_detail'
+          title='Contact Details'/>
+
         <Form.Group widths='equal'>
           <Field
             autoComplete='off'
             component={FormField}
             control={InputMask}
             label='Cell Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999-9999'
             name='phones[0]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -197,7 +304,7 @@ const ClientForm = props => {
             component={FormField}
             control={InputMask}
             label='Home Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999-9999'
             name='phones[1]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -209,7 +316,7 @@ const ClientForm = props => {
             component={FormField}
             control={InputMask}
             label='Work Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999-9999'
             name='phones[2]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -218,13 +325,21 @@ const ClientForm = props => {
             component={FormField}
             control={InputMask}
             label='Other Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999-9999'
             name='phones[3]'
             placeholder='Enter phone number'
             type='tel'/>
         </Form.Group>
 
         <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Email'
+            name='email'
+            placeholder='Enter email'
+            readOnly
+            required/>
           <Field
             autoComplete='off'
             component={FormField}
@@ -233,14 +348,6 @@ const ClientForm = props => {
             name='alt_email'
             placeholder='Enter email'
             type='email'/>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Referred'
-            name='referred'
-            options={ReferredOptions}
-            placeholder='Select an option'
-            selectOnBlur={false}/>
         </Form.Group>
 
         <Header as='h6' className='section-header' color='blue'>Client Address</Header>
@@ -327,12 +434,20 @@ const ClientForm = props => {
             component={FormField}
             control={InputMask}
             label='Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999-9999'
             name='emergency_contact_phones[0]'
             placeholder='Enter phone number'
             required
             type='tel'/>
           <Form.Field/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={TextArea}
+            label='Other Notes'
+            name='emergency_contact_other_notes[0]'
+            placeholder='Enter other notes'/>
         </Form.Group>
 
         <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
@@ -348,9 +463,9 @@ const ClientForm = props => {
             autoComplete='off'
             component={FormField}
             control={Input}
-            label='Vet Location'
-            name='emergency_vet_location'
-            placeholder='Enter vet location'/>
+            label='Veterinary Facility Name'
+            name='emergency_vet_facility_name'
+            placeholder='Enter name'/>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
@@ -358,11 +473,17 @@ const ClientForm = props => {
             component={FormField}
             control={InputMask}
             label='Vet Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999-9999'
             name='emergency_vet_phones[0]'
             placeholder='Enter phone number'
             type='tel'/>
-          <Form.Field/>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Input}
+            label='Vet Location'
+            name='emergency_vet_location'
+            placeholder='Enter vet location'/>
         </Form.Group>
 
         <FieldArray

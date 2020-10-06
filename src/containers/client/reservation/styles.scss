@@ -25,6 +25,12 @@
         padding: 1.3rem;
         margin-right: 2rem;
       }
+     
+      .ui.button.gray:not(.basic) {
+        background-color: #005987 !important;
+        color: white !important;
+    }
+
       }
 
       .section-info-item-step1.ui.segment {
@@ -34,9 +40,10 @@
       
       .section-info-item-step1{
         margin-top: 3rem !important;
-        .section-info-header{
-          text-align: center;
-        }
+      }
+      
+      .section-info-header{
+        text-align: center;
       }
 
       .btnBack{
@@ -90,6 +97,20 @@
 .btn-reservation-calendar.basic{
   box-shadow: 0 0 black !important;
 }
+
+.delete-addons{
+  position: absolute;
+  right: 2rem;
+}
+
+.div-addon-summary{
+  padding: 1rem;
+    background: #F7F9FC;
+    border: 1px solid #E5EAEE;
+    text-align: right;
+    border-radius: 3px;
+    padding-right: 2rem;
+}
       }
 
       .btn-service-type{
@@ -110,4 +131,87 @@
 .ui.steps .step.active .title {
   color :#079477 !important;
 }
+
+.section-info-item-single.ui.segment {
+  box-shadow: none;
+  padding: 1.8rem 25rem;
+}
+
+.grooming-second-step-form{
+  .div-additional-charge{
+    box-shadow: none;
+    padding: 1.8rem 25rem;
   }
+  .div-additional-charge-summary{
+    padding: 1.5rem;
+    background: #F7F9FC;
+    border: 1px solid #e5e9ee;
+    border-radius: 3px;
+    padding-right: 2rem;
+    .charge-amount{
+      float: right;
+      color: #00AA9F;
+    }
+  }
+
+  .btn-trash-charge{
+    float: right;
+  }
+
+
+}
+
+.div-section-info-item-single{
+  box-shadow: none;
+padding: 1.8rem 25rem;
+}
+
+.btn-groomer-time-select{
+  height: 3rem;
+}
+
+.btn-groomer-time-select.active{
+  background-color: #079477 !important;
+}
+
+.grid-time-selection{
+  height: 30vh;
+    overflow-y: auto;
+    margin-right: -0.5rem;
+    margin-bottom: 0rem;
+
+    .row{
+      padding-top:0rem !important;
+    }
+}
+  }
+ 
+  
+#add-report-card-form {
+
+h6.ui.header.section-header{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem !important;
+}
+
+.ui.radio.checkbox {
+  padding: 0.5rem;
+}
+
+.report-card-radio{
+  padding: 2rem;
+}
+
+.report-card-header{
+  background: #E5EAEE;
+  padding: 2rem;
+  border-bottom: 1px solid #BDC3C9;
+  margin-bottom: 0rem;
+}
+
+.ui.segment{
+  padding: 0rem;
+}
+
+}
+

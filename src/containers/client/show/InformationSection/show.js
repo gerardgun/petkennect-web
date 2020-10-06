@@ -54,16 +54,19 @@ function ClienInformationShow({ clientDetail, ...props }) {
           <>
             <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
             <Form.Group widths={2}>
-              <Form.Input label='Email' readOnly value={_defaultTo(client.email, '-')}/>
               <Form.Input label='First Name' readOnly value={_defaultTo(client.first_name, '-')}/>
-            </Form.Group>
-            <Form.Group widths={2}>
               <Form.Input label='Last Name' readOnly value={_defaultTo(client.last_name, '-')}/>
-              <Form.Input label='Contact Date' readOnly value={(client.contact_date && moment(client.contact_date).format('MM/DD/YYYY')) || '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Location' readOnly value={client.location ? `${client.location_name} - ${client.location_code}` : '-'}/>
+              <Form.Input label='Spouse' readOnly value={_defaultTo(client.spouse, '-')}/>
+            </Form.Group>
+            <Form.Group widths={2}>
               <Form.Input label='Active' readOnly value={client.is_active ? 'Yes' : 'No'}/>
+              <Form.Input label='Location' readOnly value={client.location ? `${client.location_name} - ${client.location_code}` : '-'}/>
+            </Form.Group>
+            <Form.Group widths={2}>
+              <Form.Input label='Contact Date' readOnly value={(client.contact_date && moment(client.contact_date).format('MM/DD/YYYY')) || '-'}/>
+              <Form.Input label='Referred' readOnly value={_get(Referred, client.referred, '-')}/>
             </Form.Group>
 
             <Header as='h6' className='section-header' color='blue'>Contact Details</Header>
@@ -76,8 +79,8 @@ function ClienInformationShow({ clientDetail, ...props }) {
               <Form.Input label='Other Phone' readOnly value={_get(client, 'phones[3]', '-')}/>
             </Form.Group>
             <Form.Group widths={2}>
+              <Form.Input label='Email' readOnly value={_defaultTo(client.email, '-')}/>
               <Form.Input label='Alt Email' readOnly value={_defaultTo(client.alt_email, '-')}/>
-              <Form.Input label='Referred' readOnly value={_get(Referred, client.referred, '-')}/>
             </Form.Group>
 
             <Header as='h6' className='section-header' color='blue'>Client Address</Header>
@@ -122,6 +125,9 @@ function ClienInformationShow({ clientDetail, ...props }) {
             <Form.Group widths={2}>
               <Form.Input label='Phone' readOnly value={_get(client, 'emergency_contact_phones[0]', '-')}/>
             </Form.Group>
+            <Form.Group widths='equal'>
+              <Form.TextArea label='Other Notes' readOnly value={_defaultTo(client.not_defined, '-')}/>
+            </Form.Group>
           </>
         )}
         {ActiveInfoItem === 'Vet'  && (
@@ -129,10 +135,11 @@ function ClienInformationShow({ clientDetail, ...props }) {
             <Header as='h6' className='section-header' color='blue'>Veterinarian Contact</Header>
             <Form.Group widths={2}>
               <Form.Input label='Vet Name' readOnly value={_defaultTo(client.emergency_vet_name, '-')}/>
-              <Form.Input label='Vet Location' readOnly value={_defaultTo(client.emergency_vet_location, '-')}/>
+              <Form.Input label='Veterinary Facility Name' readOnly value={_defaultTo(client.emergency_vet_facility_name, '-')}/>
             </Form.Group>
             <Form.Group widths={2}>
               <Form.Input label='Vet Phone' readOnly value={_get(client, 'emergency_vet_phones[0]', '-')}/>
+              <Form.Input label='Vet Location' readOnly value={_defaultTo(client.emergency_vet_location, '-')}/>
             </Form.Group>
           </>
         )}

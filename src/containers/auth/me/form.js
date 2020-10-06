@@ -83,7 +83,6 @@ function AuthMeForm(props) {
             format={Boolean}
             label='Change Password?'
             name='change_password'
-            parse={Number}
             type='checkbox'/>
         </Form.Group>
 

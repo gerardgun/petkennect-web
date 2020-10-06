@@ -215,10 +215,18 @@ function PetForm(props) {
             placeholder='Select option'
             selectOnBlur={false}/>
         </Form.Group>
-        <Form.Group widths='equal'>
+        <Form.Group widths={2}>
           <Form.Input
             label='Vaccination Status' placeholder='-' readOnly
             value={_get(vaccinationStatus, 'text', '-')}/>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Received Dog From'
+            name='info_received_from'
+            placeholder='Enter received dog from'/>
+        </Form.Group>
+        <Form.Group widths={2}>
           <Field
             component={FormField}
             control={Select}
@@ -227,72 +235,30 @@ function PetForm(props) {
             options={booleanOptions}
             placeholder='Select option'
             selectOnBlur={false}/>
-        </Form.Group>
-        {
-          props.hasRetiredChecked && (
-            <Form.Group widths={2}>
-              <Field
-                component={FormField}
-                control={Select}
-                label='Reason'
-                name='reason'
-                options={
-                  petRetireReason.items.map(item => ({
-                    key  : item.id,
-                    value: item.id,
-                    text : item.name
-                  }))
-                }
-                placeholder='Select reason'
-                required
-                search
-                selectOnBlur={false}/>
-            </Form.Group>
-          )
-        }
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Input}
-            label='Received Dog From'
-            name='info_received_from'
-            placeholder='Enter received dog from'/>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Housebroken'
-            name='info_housebroken'
-            options={booleanOptions}
-            placeholder='Select option'
-            selectOnBlur={false}/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          {/* <Field
-            component={FormField}
-            control={Checkbox}
-            format={Boolean}
-            label='Create trained'
-            name='info_crate_trained'
-            parse={Number}
-            type='checkbox'/> */}
-          <Field
-            component={FormField}
-            control={Select}
-            label='Crate trained'
-            name='info_crate_trained'
-            options={booleanOptions}
-            placeholder='Select option'
-            selectOnBlur={false}/>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Any Formal Training'
-            name='info_formal_training'
-            options={booleanOptions}
-            placeholder='Select option'
-            selectOnBlur={false}/>
-        </Form.Group>
+          <>
+            {
+              props.hasRetiredChecked && (
+                <Field
+                  component={FormField}
+                  control={Select}
+                  label='Reason'
+                  name='reason'
+                  options={
+                    petRetireReason.items.map(item => ({
+                      key  : item.id,
+                      value: item.id,
+                      text : item.name
+                    }))
+                  }
+                  placeholder='Select reason'
+                  required
+                  search
+                  selectOnBlur={false}/>
 
+              )
+            }
+          </>
+        </Form.Group>
         <Form.Group widths='equal'>
           <Form.Input
             label='Created At' placeholder='-' readOnly
@@ -341,18 +307,25 @@ function PetForm(props) {
             component={FormField}
             control={Select}
             disabled
-            label='Elegible'
+            label='Eligibility'
             name='hesitate_elegible'
             options={booleanOptions}
             placeholder='Select option'
             selectOnBlur={false}/>
-          <Field
-            component={FormField}
-            control={Input}
-            disabled
-            label='Reason for No'
-            name='hesitate_reason_for_no'
-            placeholder='Enter reason for no'/>
+          <>
+            {
+              props.hasEligibilityChecked && (
+                <Field
+                  component={FormField}
+                  control={Input}
+                  disabled
+                  label='Ineligible Reason'
+                  name='hesitate_reason_for_no'
+                  placeholder='Enter reason for no'/>
+
+              )
+            }
+          </>
         </Form.Group>
         <Form.Group widths='equal'>
           <Field
@@ -366,7 +339,7 @@ function PetForm(props) {
             component={FormField}
             control={Input}
             disabled
-            label='Link to Day Camp Evaluations Results'
+            label='Linking to a document in the storage diectly'
             name='hesitate_link_to_day_camp'
             placeholder='Enter link'/>
         </Form.Group>
@@ -374,7 +347,7 @@ function PetForm(props) {
           <Field
             component={FormField}
             control={Select}
-            label='Attended Day Care Previusly'
+            label='Attended Day Care Previously'
             name='temp_daycare'
             options={booleanOptions}
             placeholder='Select option'
@@ -395,7 +368,7 @@ function PetForm(props) {
             component={FormField}
             control={Select}
             disabled
-            label='Ever Removed from Another Day Care'
+            label='Removed from Another Day Care'
             name='daycare_removed'
             options={booleanOptions}
             placeholder='Select option'
@@ -410,11 +383,46 @@ function PetForm(props) {
         </Form.Group>
 
         <Header as='h6' className='section-header' color='blue'>TEMPERAMENT</Header>
+
         <Form.Group widths='equal'>
           <Field
             component={FormField}
             control={Select}
-            label='People Preference'
+            label='Housebroken'
+            name='info_housebroken'
+            options={booleanOptions}
+            placeholder='Select option'
+            selectOnBlur={false}/>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Crate trained'
+            name='info_crate_trained'
+            options={booleanOptions}
+            placeholder='Select option'
+            selectOnBlur={false}/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Has Received Training?'
+            name='info_formal_training'
+            options={booleanOptions}
+            placeholder='Select option'
+            selectOnBlur={false}/>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Overall Temperament'
+            name='overall_temperament'
+            placeholder='Enter overall temperament'/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Gender Preference'
             name='temp_prefer'
             options={TemperamentPeoplePreferenceOptions}
             placeholder='Select preference'
@@ -430,7 +438,7 @@ function PetForm(props) {
           <Field
             component={FormField}
             control={Select}
-            label='People'
+            label='Bitten Humans'
             name='temp_bitten_human'
             options={booleanOptions}
             placeholder='Select option'
@@ -438,7 +446,7 @@ function PetForm(props) {
           <Field
             component={FormField}
             control={Select}
-            label='Dogs'
+            label='Involved in Dog Fights'
             name='temp_dog_fights'
             options={booleanOptions}
             placeholder='Select option'
@@ -456,11 +464,47 @@ function PetForm(props) {
           <Field
             component={FormField}
             control={Select}
-            label='Can Share Water Bowl'
+            label='Shared Water Bowl'
             name='temp_shared_water_bowls'
             options={booleanOptions}
             placeholder='Select option'
             selectOnBlur={false}/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Food Aggressive'
+            name='food_aggressive'
+            options={booleanOptions}
+            placeholder='Select option'
+            selectOnBlur={false}/>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Toy Aggressive'
+            name='toy_aggressive'
+            options={booleanOptions}
+            placeholder='Select option'
+            selectOnBlur={false}/>
+        </Form.Group>
+        <Form.Group widths={2}>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Leash Reactive'
+            name='Leash Reactive'
+            options={booleanOptions}
+            placeholder='Select option'
+            selectOnBlur={false}/>
+        </Form.Group>
+        <Form.Group widths='equal'>
+          <Field
+            component={FormField}
+            control={TextArea}
+            label='Other Notes'
+            name='other_notes'
+            placeholder='Enter other notes'/>
         </Form.Group>
 
         <Header as='h6' className='section-header' color='blue'>HEALTH</Header>
@@ -484,7 +528,7 @@ function PetForm(props) {
           <Field
             component={FormField}
             control={Select}
-            label='Flea/Tick Preventative'
+            label='On Flea or Tick Preventative'
             name='health_flea_tick_preventive'
             options={booleanOptions}
             placeholder='Select option'
@@ -494,7 +538,7 @@ function PetForm(props) {
           <Field
             component={FormField}
             control={Select}
-            label='Heartworm Preventative'
+            label='On Heartworm Preventative'
             name='health_heartworm_preventive'
             options={booleanOptions}
             placeholder='Select option'
@@ -524,11 +568,11 @@ function PetForm(props) {
             component={FormField}
             control={TextArea}
             disabled
-            label='Special Directions'
+            label='Special Instructions'
             name='feed_special_directions'
             placeholder='Enter special directions'/>
         </Form.Group>
-        <label>Hesitates to eat</label>
+        <label>If pet hesitates to eat, add:</label>
         <Form.Group>
           <Field
             component={FormField}
@@ -577,7 +621,7 @@ export default compose(
   connect(
     ({ client, ...state }) => {
       const petDetail = petDetailDuck.selectors.detail(state)
-      const { retired, temp_daycare } = formValueSelector(formId)(state, 'retired', 'temp_daycare')
+      const { retired, temp_daycare, eligibility } = formValueSelector(formId)(state, 'retired', 'temp_daycare', 'hesitate_elegible')
 
       return {
         client,
@@ -588,7 +632,8 @@ export default compose(
         // for redux form
         initialValues        : petDetail.item,
         hasRetiredChecked    : Boolean(retired),
-        hasTempDaycareChecked: Boolean(temp_daycare)
+        hasTempDaycareChecked: Boolean(temp_daycare),
+        hasEligibilityChecked: Boolean(eligibility)
       }
     },
     {

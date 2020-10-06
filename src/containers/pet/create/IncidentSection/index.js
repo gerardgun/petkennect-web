@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Header, Button , Divider } from 'semantic-ui-react'
+import { Header, Button, Container, Grid } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
@@ -72,20 +72,20 @@ function IncidentSection(props) {
   }, props.petIncidentDetail.status, [ 'SENT' ])
 
   return (
-    <div className='c-incident-section'>
-      <div className='flex align-center justify-between ph40 pt40 pb16'>
-        <Header className='c-title mv0'>
-          Incident
-        </Header>
-      </div>
-      <Divider className='m0'/>
+    <Container className='c-incident-section' fluid>
+      <Grid className='petkennect-profile-body-header' columns={2}>
+        <Grid.Column verticalAlign='middle'>
+          <Header as='h2'>Incident</Header>
+        </Grid.Column>
+        <Grid.Column textAlign='right'>
+          <Button
+            color='teal' content='New Incident'
+            onClick={_handleAddBtnClick}/>
+        </Grid.Column>
+      </Grid>
+
       <div className='mh40 mv32' >
         <Summary warningIncidentTypes={_warningIncidentTypes}/>
-      </div>
-      <div className='flex justify-end mh40 mv32'>
-        <Button
-          color='teal' content='New Incident'
-          onClick={_handleAddBtnClick}/>
       </div>
       <div className='mh40'>
         <Table
@@ -97,7 +97,7 @@ function IncidentSection(props) {
         duckDetail={petIncidentDetailDuck}
         onClose={_handleClose}
         open={open}/>
-    </div>
+    </Container>
   )
 }
 

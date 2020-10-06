@@ -7,7 +7,7 @@ import InputReadOnly from '@components/Common/InputReadOnly'
 
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
-const ClientDocumentShow = props => {
+const ClientDocumentShowModal = props => {
   const {
     clientDocumentDetail
   } = props
@@ -74,4 +74,4 @@ export default compose(
       resetItem: clientDocumentDetailDuck.creators.resetItem
     }
   )
-)(ClientDocumentShow)
+)(ClientDocumentShowModal)

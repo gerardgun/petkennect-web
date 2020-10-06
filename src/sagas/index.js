@@ -19,6 +19,11 @@ import clientDocumentTypeDetail from './client/document/type/detail'
 import clientPet from './client/pet'
 import company from './company'
 import companyDetail from './company/detail'
+import customized from './customized-field'
+import customizedField from './customized-field/field'
+import customizedFieldDetail from './customized-field/field/detail'
+import customizedFieldGroup from './customized-field/group'
+import customizedFieldGroupDetail from './customized-field/group/detail'
 import employee from './employee'
 import employeeDetail from './employee/detail'
 import employeeTitle from './employee/title'
@@ -106,6 +111,11 @@ export default function* rootSaga() {
     ...clientPet,
     ...company,
     ...companyDetail,
+    ...customized,
+    ...customizedField,
+    ...customizedFieldDetail,
+    ...customizedFieldGroup,
+    ...customizedFieldGroupDetail,
     ...employee,
     ...employeeDetail,
     ...employeeTitle,
