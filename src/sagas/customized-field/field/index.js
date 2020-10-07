@@ -2,6 +2,8 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
+import { sortByProperty } from '@lib/utils/functions'
+
 import customizedFieldDuck from '@reducers/customized-field/field'
 
 const { types } = customizedFieldDuck
@@ -15,7 +17,7 @@ function* get({ id }) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        item: entitiesAttributes
+        item: entitiesAttributes.sort(sortByProperty('order'))
       }
     })
   } catch (e) {

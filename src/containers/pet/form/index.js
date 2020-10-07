@@ -302,11 +302,10 @@ function PetForm(props) {
 
         <Header as='h6' className='section-header' color='blue'>Group Play</Header>
 
-        <Form.Group widths='equal'>
+        <Form.Group widths={2}>
           <Field
             component={FormField}
             control={Select}
-            disabled
             label='Eligibility'
             name='hesitate_elegible'
             options={booleanOptions}
@@ -314,11 +313,10 @@ function PetForm(props) {
             selectOnBlur={false}/>
           <>
             {
-              props.hasEligibilityChecked && (
+              props.hasEligibilityChecked === false && (
                 <Field
                   component={FormField}
                   control={Input}
-                  disabled
                   label='Ineligible Reason'
                   name='hesitate_reason_for_no'
                   placeholder='Enter reason for no'/>
@@ -519,12 +517,10 @@ function PetForm(props) {
         <Form.Group widths='equal'>
           <Field
             component={FormField}
-            control={Select}
-            label='Allergies'
+            control={Input}
+            label='Allergies (If YES - please describe)'
             name='health_is_allergic'
-            options={booleanOptions}
-            placeholder='Select option'
-            selectOnBlur={false}/>
+            placeholder='Select option'/>
           <Field
             component={FormField}
             control={Select}
@@ -621,7 +617,7 @@ export default compose(
   connect(
     ({ client, ...state }) => {
       const petDetail = petDetailDuck.selectors.detail(state)
-      const { retired, temp_daycare, eligibility } = formValueSelector(formId)(state, 'retired', 'temp_daycare', 'hesitate_elegible')
+      const { retired, temp_daycare, hesitate_elegible } = formValueSelector(formId)(state, 'retired', 'temp_daycare', 'hesitate_elegible')
 
       return {
         client,
@@ -633,7 +629,7 @@ export default compose(
         initialValues        : petDetail.item,
         hasRetiredChecked    : Boolean(retired),
         hasTempDaycareChecked: Boolean(temp_daycare),
-        hasEligibilityChecked: Boolean(eligibility)
+        hasEligibilityChecked: Boolean(hesitate_elegible)
       }
     },
     {

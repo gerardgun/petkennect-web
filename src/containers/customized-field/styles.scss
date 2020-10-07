@@ -1,3 +1,4 @@
+.customized-fields{
 .message__title {
     font-style: normal;
     font-weight: 600;
@@ -21,4 +22,24 @@
   .c-note-item.wrapper {
     padding-left: 0px !important;
     padding-right: 0px !important;
+}
+
+.div-header-sorting{
+  font-size: 1.5rem;
+  display: grid;
+}
+
+.div-sorting-icon{
+  position: absolute;
+}
+
+.div-after-sorting-icon{
+  margin-left: 2.5rem;
+  margin-top: 00.5rem;
+}
+
+i.sort.icon{
+  color:#00b5ad !important;
+  cursor: pointer;
+}
 }

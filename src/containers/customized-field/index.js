@@ -87,9 +87,54 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
     _handleOpenDeleteFieldModal()
   }
 
+  const _handleHeaderGroupSortClick = (e, { index, dataOrderType }) => {
+    const currentItemDetail = customizedFieldGroup.item[index]
+
+    if(dataOrderType == 'up')
+      index = index - 1
+    else
+      index = index + 1
+
+    const nextItemDetail = customizedFieldGroup.item[index]
+    const indexExists = Boolean(nextItemDetail)
+
+    if(indexExists)
+    {
+      props.put({ id: currentItemDetail.id, ...{ eav_entity_id: currentItemDetail.entity,
+        name         : currentItemDetail.name,
+        order        : nextItemDetail.order
+      } })
+
+      props.put({ id: nextItemDetail.id, ...{ eav_entity_id: nextItemDetail.entity,
+        name         : nextItemDetail.name,
+        order        : currentItemDetail.order
+      } })
+    }
+  }
+
+  const _handleHeaderFieldSortClick = (e, { index,  groupId, dataOrderType }) => {
+    const currentGroupData = customizedField.item.filter(_ => _.entity_group == groupId)
+    const currentItemDetail = currentGroupData[index]
+
+    if(dataOrderType == 'up')
+      index = index - 1
+    else
+      index = index + 1
+
+    const nextItemDetail = currentGroupData[index]
+    const indexExists = Boolean(nextItemDetail)
+
+    if(indexExists)
+    {
+      props.fieldsPut({ id: currentItemDetail.id, ...{  ...currentItemDetail,order: nextItemDetail.order } })
+
+      props.fieldsPut({ id: nextItemDetail.id, ...{ ...nextItemDetail, order: currentItemDetail.order } })
+    }
+  }
+
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
+      <Segment className='segment-content customized-fields' padded='very'>
         <Grid columns={2}>
           <Grid.Column>
             <Header as='h2' className='cls-MainHeader'>Customized Fields</Header>
@@ -135,7 +180,19 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
               <>
                 <Grid className='mv8' columns={2} key={index}>
                   <Grid.Column>
-                    <Header as='h2'>{groupItem.name}</Header>
+                    <div className='div-sorting-icon div-header-sorting'>
+                      <Icon
+                        className='icon-sort-up' dataOrderType='up' index={index}
+                        name='sort up'
+                        onClick={_handleHeaderGroupSortClick}/>
+                      <Icon
+                        className='icon-sort-down' dataOrderType='down' index={index}
+                        name='sort down'
+                        onClick={_handleHeaderGroupSortClick}/>
+                    </div>
+                    <div className='div-after-sorting-icon'>
+                      <Header as='h2'>{groupItem.name}</Header>
+                    </div>
                   </Grid.Column >
                   <Grid.Column textAlign='right'>
                     <Button
@@ -152,13 +209,25 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                 </Grid>
                 {
                   customizedField.item.length > 0
-                      && customizedField.item.filter(_ => _.entity_group == groupItem.id).map((fieldItem)=>(
+                      && customizedField.item.filter(_ => _.entity_group == groupItem.id).map((fieldItem, fieldIndex)=>(
                         <>
                           <div className='c-note-item wrapper'>
                             <div className='flex justify-between align-center'>
                               <div className='thumbnail-wrapper w15'>
                                 <div>
-                                  <div>{fieldItem.display_name}&nbsp;&nbsp;<Icon name='lock'/></div>
+                                  <div className='div-sorting-icon'>
+                                    <Icon
+                                      className='icon-sort-up' dataOrderType='up' groupId={groupItem.id}
+                                      index={fieldIndex} name='sort up'
+                                      onClick={_handleHeaderFieldSortClick}/><br/>
+                                    <Icon
+                                      className='icon-sort-down' dataOrderType='down' groupId={groupItem.id}
+                                      index={fieldIndex}
+                                      name='sort down'
+                                      onClick={_handleHeaderFieldSortClick}/>
+                                  </div>
+                                  <div className='div-after-sorting-icon'>
+                                    {fieldItem.display_name}&nbsp;&nbsp;<Icon name='lock'/></div>
                                 </div>
                               </div>
                               <div>
@@ -234,6 +303,8 @@ export default compose(
       getEavEntities     : customizedDuck.creators.get,
       getCustomizedFields: customizedFieldDuck.creators.get,
       getCustomizedGroups: customizedFieldGroupDuck.creators.get,
+      put                : customizedFieldGroupDetailDuck.creators.put,
+      fieldsPut          : customizedFieldDetailDuck.creators.put,
       setItem            : customizedFieldDetailDuck.creators.setItem,
       setGroupItem       : customizedFieldGroupDetailDuck.creators.setItem
     }

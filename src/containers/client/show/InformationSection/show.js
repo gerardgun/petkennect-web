@@ -58,7 +58,8 @@ function ClienInformationShow({ clientDetail, ...props }) {
               <Form.Input label='Last Name' readOnly value={_defaultTo(client.last_name, '-')}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Spouse' readOnly value={_defaultTo(client.spouse, '-')}/>
+              <Form.Input label='Spouse/Co-owner First Name' readOnly value={_defaultTo(client.spouse, '-')}/>
+              <Form.Input label='Last Name' readOnly value={_defaultTo(client.spouse, '-')}/>
             </Form.Group>
             <Form.Group widths={2}>
               <Form.Input label='Active' readOnly value={client.is_active ? 'Yes' : 'No'}/>

@@ -237,8 +237,16 @@ const ClientForm = props => {
             autoFocus
             component={FormField}
             control={Input}
-            label='Spouse '
+            label='Spouse/Co-owner First Name'
             name='spouse'
+            required
+            type='text'/>
+          <Field
+            autoFocus
+            component={FormField}
+            control={Input}
+            label='Last Name '
+            name='spouse_lastname'
             required
             type='text'/>
         </Form.Group>
