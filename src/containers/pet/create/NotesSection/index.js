@@ -56,22 +56,22 @@ function NotesSection(props) {
       <Divider className='m0'/>
       <div className='mh40 mv32'>
         <button
-          className={`filter-button ${filter.type === 'B' && 'selected'}`} color='blue '
+          className={`filter-button ${filter.type === 'B' && 'selected'}`} color='teal'
           onClick={_handleFilterBtnClick('B')}>
           Behavioral
         </button>
         <button
-          basic className={`filter-button ml16 ${filter.type === 'M' && 'selected'}`} color='blue'
+          basic className={`filter-button ml16 ${filter.type === 'M' && 'selected'}`} color='teal'
           onClick={_handleFilterBtnClick('M')}>
           Medical
         </button>
         <button
-          basic className={`filter-button ml16 ${filter.type === 'G' && 'selected'}`} color='blue'
+          basic className={`filter-button ml16 ${filter.type === 'G' && 'selected'}`} color='teal'
           onClick={_handleFilterBtnClick('G')}>
           General
         </button>
         <button
-          basic className={`filter-button ml16 ${filter.type === 'O' && 'selected'}`} color='blue'
+          basic className={`filter-button ml16 ${filter.type === 'O' && 'selected'}`} color='teal'
           onClick={_handleFilterBtnClick('O')}>
           Owner
         </button>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
@@ -193,6 +193,9 @@ const ClientForm = props => {
   const history = useHistory()
   const [ zipOptions, { _handleZipChange, _handleZipSearchChange } ] = useZipInputSearch(zip, zipDetail, props.getZipes, props.setZip)
 
+  const [ ActiveInfoItem, setActiveInfoItem ] = useState('Client')
+  const _handleInfoItemClick = (e, { name }) => setActiveInfoItem(name)
+
   const _handleSubmit = values => {
     values = parseFormValues(values)
 
@@ -210,295 +213,320 @@ const ClientForm = props => {
 
   return (
     <>
+      <div className='mb32'>
+        <Button
+          basic={ActiveInfoItem !== 'Client'} color='teal'
+          content='Client Information' name='Client'
+          onClick={_handleInfoItemClick}/>
+        <Button
+          basic={ActiveInfoItem !== 'Emergency'} color='teal'
+          content='Emergency Contact' name='Emergency'
+          onClick={_handleInfoItemClick}/>
+        <Button
+          basic={ActiveInfoItem !== 'Vet'} color='teal'
+          content='Vet Information' name='Vet'
+          onClick={_handleInfoItemClick}/>
+      </div>
+
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={formId} onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-        <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Input}
-            label='First Name'
-            name='first_name'
-            placeholder='Enter name'
-            readOnly
-            required/>
-          <Field
-            component={FormField}
-            control={Input}
-            label='Last Name'
-            name='last_name'
-            placeholder='Enter lastname'
-            readOnly
-            required/>
-        </Form.Group>
+        {ActiveInfoItem === 'Client'  && (
+          <>
+            <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Input}
+                label='First Name'
+                name='first_name'
+                placeholder='Enter name'
+                readOnly
+                required/>
+              <Field
+                component={FormField}
+                control={Input}
+                label='Last Name'
+                name='last_name'
+                placeholder='Enter lastname'
+                readOnly
+                required/>
+            </Form.Group>
 
-        <Form.Group widths={2}>
-          <Field
-            autoFocus
-            component={FormField}
-            control={Input}
-            label='Spouse/Co-owner First Name'
-            name='spouse'
-            required
-            type='text'/>
-          <Field
-            autoFocus
-            component={FormField}
-            control={Input}
-            label='Last Name '
-            name='spouse_lastname'
-            required
-            type='text'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            autoFocus
-            component={FormField}
-            control={Input}
-            label='Contact Date'
-            name='contact_date'
-            required
-            type='date'/>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Referred'
-            name='referred'
-            options={ReferredOptions}
-            placeholder='Select an option'
-            selectOnBlur={false}/>
-        </Form.Group>
+            <Form.Group widths={2}>
+              <Field
+                autoFocus
+                component={FormField}
+                control={Input}
+                label='Spouse/Co-owner First Name'
+                name='spouse'
+                required
+                type='text'/>
+              <Field
+                autoFocus
+                component={FormField}
+                control={Input}
+                label='Last Name '
+                name='spouse_lastname'
+                required
+                type='text'/>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                autoFocus
+                component={FormField}
+                control={Input}
+                label='Contact Date'
+                name='contact_date'
+                required
+                type='date'/>
+              <Field
+                component={FormField}
+                control={Select}
+                label='Referred'
+                name='referred'
+                options={ReferredOptions}
+                placeholder='Select an option'
+                selectOnBlur={false}/>
+            </Form.Group>
 
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Active'
-            name='is_active'
-            options={booleanOptions}
-            placeholder='Select option'
-            selectOnBlur={false}/>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Location'
-            name='location'
-            options={location.items.map(_location =>
-              ({ key: _location.id, value: _location.id, text: `${_location.name}` }))
-            }
-            placeholder='Contact Location'
-            selectOnBlur={false}/>
-        </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Select}
+                label='Active'
+                name='is_active'
+                options={booleanOptions}
+                placeholder='Select option'
+                selectOnBlur={false}/>
+              <Field
+                component={FormField}
+                control={Select}
+                label='Location'
+                name='location'
+                options={location.items.map(_location =>
+                  ({ key: _location.id, value: _location.id, text: `${_location.name}` }))
+                }
+                placeholder='Contact Location'
+                selectOnBlur={false}/>
+            </Form.Group>
 
-        <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
+            <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
 
-        <FieldArray
-          component={ContactDetailList}
-          name='contact_detail'
-          title='Contact Details'/>
+            <FieldArray
+              component={ContactDetailList}
+              name='contact_detail'
+              title='Contact Details'/>
 
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Cell Phone'
-            mask='(999) 999-9999'
-            name='phones[0]'
-            placeholder='Enter phone number'
-            type='tel'/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Home Phone'
-            mask='(999) 999-9999'
-            name='phones[1]'
-            placeholder='Enter phone number'
-            type='tel'/>
-        </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={InputMask}
+                label='Cell Phone'
+                mask='(999) 999-9999'
+                name='phones[0]'
+                placeholder='Enter phone number'
+                type='tel'/>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={InputMask}
+                label='Home Phone'
+                mask='(999) 999-9999'
+                name='phones[1]'
+                placeholder='Enter phone number'
+                type='tel'/>
+            </Form.Group>
 
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Work Phone'
-            mask='(999) 999-9999'
-            name='phones[2]'
-            placeholder='Enter phone number'
-            type='tel'/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Other Phone'
-            mask='(999) 999-9999'
-            name='phones[3]'
-            placeholder='Enter phone number'
-            type='tel'/>
-        </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={InputMask}
+                label='Work Phone'
+                mask='(999) 999-9999'
+                name='phones[2]'
+                placeholder='Enter phone number'
+                type='tel'/>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={InputMask}
+                label='Other Phone'
+                mask='(999) 999-9999'
+                name='phones[3]'
+                placeholder='Enter phone number'
+                type='tel'/>
+            </Form.Group>
 
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Input}
-            label='Email'
-            name='email'
-            placeholder='Enter email'
-            readOnly
-            required/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Alt Email'
-            name='alt_email'
-            placeholder='Enter email'
-            type='email'/>
-        </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Input}
+                label='Email'
+                name='email'
+                placeholder='Enter email'
+                readOnly
+                required/>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Input}
+                label='Alt Email'
+                name='alt_email'
+                placeholder='Enter email'
+                type='email'/>
+            </Form.Group>
 
-        <Header as='h6' className='section-header' color='blue'>Client Address</Header>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='First Address'
-            name='addresses[0]'
-            placeholder='Enter address'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Second Address'
-            name='addresses[1]'
-            placeholder='Enter address'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Select}
-            disabled={zip.status === 'GETTING'}
-            label='Zip'
-            loading={zip.status === 'GETTING'}
-            name='zip_code'
-            onChange={_handleZipChange}
-            onSearchChange={_handleZipSearchChange}
-            options={zipOptions}
-            placeholder='Search zip'
-            required
-            search
-            selectOnBlur={false}/>
-          <Form.Field>
-            <Form.Input
-              autoComplete='off'
-              label='Country'
-              readOnly
-              value={zipDetail.item.country_code}/>
-          </Form.Field>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Form.Field>
-            <Form.Input
-              autoComplete='off'
-              label='State'
-              readOnly
-              value={zipDetail.item.state}/>
-          </Form.Field>
-          <Form.Field>
-            <Form.Input
-              autoComplete='off'
-              label='City'
-              readOnly
-              value={zipDetail.item.city}/>
-          </Form.Field>
-        </Form.Group>
+            <Header as='h6' className='section-header' color='blue'>Client Address</Header>
+            <Form.Group widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Input}
+                label='First Address'
+                name='addresses[0]'
+                placeholder='Enter address'/>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Input}
+                label='Second Address'
+                name='addresses[1]'
+                placeholder='Enter address'/>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Select}
+                disabled={zip.status === 'GETTING'}
+                label='Zip'
+                loading={zip.status === 'GETTING'}
+                name='zip_code'
+                onChange={_handleZipChange}
+                onSearchChange={_handleZipSearchChange}
+                options={zipOptions}
+                placeholder='Search zip'
+                required
+                search
+                selectOnBlur={false}/>
+              <Form.Field>
+                <Form.Input
+                  autoComplete='off'
+                  label='Country'
+                  readOnly
+                  value={zipDetail.item.country_code}/>
+              </Form.Field>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <Form.Input
+                  autoComplete='off'
+                  label='State'
+                  readOnly
+                  value={zipDetail.item.state}/>
+              </Form.Field>
+              <Form.Field>
+                <Form.Input
+                  autoComplete='off'
+                  label='City'
+                  readOnly
+                  value={zipDetail.item.city}/>
+              </Form.Field>
+            </Form.Group>
 
-        <Header as='h6' className='section-header' color='blue'>EMERGENCY CONTACT</Header>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Name'
-            name='emergency_contact_name'
-            placeholder='Enter names'
-            required/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Relation'
-            name='emergency_contact_relationship'
-            placeholder='Enter relationship'
-            required/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Phone'
-            mask='(999) 999-9999'
-            name='emergency_contact_phones[0]'
-            placeholder='Enter phone number'
-            required
-            type='tel'/>
-          <Form.Field/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={TextArea}
-            label='Other Notes'
-            name='emergency_contact_other_notes[0]'
-            placeholder='Enter other notes'/>
-        </Form.Group>
+            <FieldArray
+              component={AuthorizedPeopleList}
+              name='authorized_people_pick_up'
+              title='People Authorized to Pick Up'/>
 
-        <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Vet Name'
-            name='emergency_vet_name'
-            placeholder='Enter vet name'/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Veterinary Facility Name'
-            name='emergency_vet_facility_name'
-            placeholder='Enter name'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Vet Phone'
-            mask='(999) 999-9999'
-            name='emergency_vet_phones[0]'
-            placeholder='Enter phone number'
-            type='tel'/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Vet Location'
-            name='emergency_vet_location'
-            placeholder='Enter vet location'/>
-        </Form.Group>
-
-        <FieldArray
-          component={AuthorizedPeopleList}
-          name='authorized_people_pick_up'
-          title='People Authorized to Pick Up'/>
-
+          </>
+        )}
+        {ActiveInfoItem === 'Emergency'  && (
+          <>
+            <Header as='h6' className='section-header' color='blue'>EMERGENCY CONTACT</Header>
+            <Form.Group widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Input}
+                label='Name'
+                name='emergency_contact_name'
+                placeholder='Enter names'
+                required/>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Input}
+                label='Relation'
+                name='emergency_contact_relationship'
+                placeholder='Enter relationship'
+                required/>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={InputMask}
+                label='Phone'
+                mask='(999) 999-9999'
+                name='emergency_contact_phones[0]'
+                placeholder='Enter phone number'
+                required
+                type='tel'/>
+              <Form.Field/>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={TextArea}
+                label='Other Notes'
+                name='emergency_contact_other_notes[0]'
+                placeholder='Enter other notes'/>
+            </Form.Group>
+          </>
+        )}
+        {ActiveInfoItem === 'Vet'  && (
+          <>
+            <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
+            <Form.Group widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Input}
+                label='Vet Name'
+                name='emergency_vet_name'
+                placeholder='Enter vet name'/>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Input}
+                label='Veterinary Facility Name'
+                name='emergency_vet_facility_name'
+                placeholder='Enter name'/>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={InputMask}
+                label='Vet Phone'
+                mask='(999) 999-9999'
+                name='emergency_vet_phones[0]'
+                placeholder='Enter phone number'
+                type='tel'/>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Input}
+                label='Vet Location'
+                name='emergency_vet_location'
+                placeholder='Enter vet location'/>
+            </Form.Group>
+          </>
+        )}
         {
           error && (
             <Form.Group widths='equal'>

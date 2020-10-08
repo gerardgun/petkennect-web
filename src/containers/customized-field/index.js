@@ -113,15 +113,15 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
   }
 
   const _handleHeaderFieldSortClick = (e, { index,  groupId, dataOrderType }) => {
-    const currentGroupData = customizedField.item.filter(_ => _.entity_group == groupId)
-    const currentItemDetail = currentGroupData[index]
+    const currentFielsData = customizedField.item.filter(_ => _.entity_group == groupId)
+    const currentItemDetail = currentFielsData[index]
 
     if(dataOrderType == 'up')
       index = index - 1
     else
       index = index + 1
 
-    const nextItemDetail = currentGroupData[index]
+    const nextItemDetail = currentFielsData[index]
     const indexExists = Boolean(nextItemDetail)
 
     if(indexExists)
@@ -130,6 +130,29 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
 
       props.fieldsPut({ id: nextItemDetail.id, ...{ ...nextItemDetail, order: currentItemDetail.order } })
     }
+  }
+
+  const _handlePermissionChange = (e, { itemID, checked, name }) => {
+    const currentFielsData = customizedField.item.filter(_ => _.id == itemID)[0]
+    let changedFieldsData = { is_required            : currentFielsData.is_required,
+      is_editable_by_client  : currentFielsData.is_editable_by_client,
+      is_visible_by_client   : currentFielsData.is_visible_by_client,
+      is_editable_by_employee: currentFielsData.is_editable_by_employee }
+    switch (name) {
+      case 'is_required':
+        changedFieldsData.is_required = checked
+        break
+      case 'is_editable_by_client':
+        changedFieldsData.is_editable_by_client = checked
+        break
+      case 'is_visible_by_client':
+        changedFieldsData.is_visible_by_client = checked
+        break
+      case 'is_editable_by_employee':
+        changedFieldsData.is_editable_by_employee = checked
+        break
+    }
+    props.fieldsPut({ id: currentFielsData.id, ...{ ...currentFielsData, ...changedFieldsData } })
   }
 
   return (
@@ -211,7 +234,7 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                   customizedField.item.length > 0
                       && customizedField.item.filter(_ => _.entity_group == groupItem.id).map((fieldItem, fieldIndex)=>(
                         <>
-                          <div className='c-note-item wrapper'>
+                          <div className='c-note-item wrapper' key={fieldIndex + '_' + groupItem.id}>
                             <div className='flex justify-between align-center'>
                               <div className='thumbnail-wrapper w15'>
                                 <div>
@@ -245,10 +268,21 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                                   value={fieldItem.display_type}/>
                               </div>
                               <div className='permission-checkbox'>
-                                <Checkbox checked={fieldItem.is_required} disabled={true} label='Required'/><br/>
-                                <Checkbox checked={fieldItem.is_editable_by_client} disabled={true} label='Editable by Client'/><br/>
-                                <Checkbox checked={fieldItem.is_editable_by_employee} disabled={true} label='Editable by Employee'/><br/>
-                                <Checkbox checked={fieldItem.is_visible_by_client} disabled={true} label='Visible by Client'/>
+                                <Checkbox
+                                  checked={fieldItem.is_required} itemID={fieldItem.id} label='Required'
+                                  name='is_required'
+                                  onChange={_handlePermissionChange}/><br/>
+                                <Checkbox
+                                  checked={fieldItem.is_editable_by_client} itemID={fieldItem.id} label='Editable by Client'
+                                  name='is_editable_by_client'
+                                  onChange={_handlePermissionChange}/><br/>
+                                <Checkbox
+                                  checked={fieldItem.is_editable_by_employee} itemID={fieldItem.id} label='Editable by Employee'
+                                  name='is_editable_by_employee' onChange={_handlePermissionChange}/><br/>
+                                <Checkbox
+                                  checked={fieldItem.is_visible_by_client} itemID={fieldItem.id}
+                                  label='Visible by Client' name='is_visible_by_client'
+                                  onChange={_handlePermissionChange}/>
                               </div>
                               <div>
                                 <Button
