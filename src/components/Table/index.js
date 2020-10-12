@@ -56,6 +56,12 @@ const TableList = ({ duck, list, ...props }) => {
           <span>{`${column.action.label}`}</span>
         </Link>
       )
+    else if(column.type === 'color')
+      content = (
+        <Label
+          horizontal
+          style={{ minWidth: '4rem', height: '2rem', background: content }}></Label>
+      )
     // END Improve
 
     return content
@@ -132,6 +138,7 @@ const TableList = ({ duck, list, ...props }) => {
   }
 
   const _handleRowOptionClick = e => {
+    e.stopPropagation()
     const itemId = +e.currentTarget.dataset.itemId
     const optionName = e.currentTarget.dataset.optionName
     const item = list.items.find(({ id }) => id === itemId)
@@ -191,6 +198,21 @@ const TableList = ({ duck, list, ...props }) => {
           )
         }
 
+        {/* Row data */}
+        {
+          list.config.columns
+            .filter(({ conditional_render }) => {
+              return !conditional_render || conditional_render(item)
+            })
+            .map(({ width = null, align = null, ...column }, index) => {
+              delete column.conditional_render
+
+              return (
+                <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
+              )
+            })
+        }
+
         {/* Row options */}
         {
           list.config.row.options.length > 0 && (
@@ -222,13 +244,6 @@ const TableList = ({ duck, list, ...props }) => {
             </Table.Cell>
           )
         }
-        {/* Row data */}
-        {
-          list.config.columns.map(({ width = null, align = null, ...column }, index) => (
-            <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
-          ))
-        }
-
         {/* Row expandable */}
         {
           list.config.expandable && (
@@ -371,26 +386,30 @@ const TableList = ({ duck, list, ...props }) => {
                 </Table.HeaderCell>
               )
             }
-
             {/* Row data header */}
             {
-              list.config.columns.map(({ display_name, name, sort, sort_name }, index) => {
-                const finalSortName = sort_name || name
-                let sorted = sort ? 'sorted' : ''
-
-                if(list.filters.ordering === finalSortName)
-                  sorted = sorted + ' descending'
-                else if(list.filters.ordering === '-' + finalSortName)
-                  sorted = sorted + ' ascending'
-
-                return (
-                  <Table.HeaderCell
-                    className={sorted} data-column-name={name} key={index}
-                    onClick={_handleHeaderToggleSortClick}>
-                    {display_name}
-                  </Table.HeaderCell>
-                )
+              list.config.columns.filter(({ conditional_render }) => {
+                return !conditional_render || conditional_render(list.items.length > 0 ? list.items[0] : [])
               })
+                .map(({ display_name, name, sort, sort_name, ...column }, index) => {
+                  delete column.conditional_render
+                  const finalSortName = sort_name || name
+                  let sorted = sort ? 'sorted' : ''
+
+                  if(list.filters.ordering === finalSortName)
+                    sorted = sorted + ' descending'
+                  else if(list.filters.ordering === '-' + finalSortName)
+                    sorted = sorted + ' ascending'
+
+                  return (
+                    <Table.HeaderCell
+                      className={sorted} data-column-name={name} key={index}
+                      onClick={_handleHeaderToggleSortClick}>
+                      {display_name}
+                    </Table.HeaderCell>
+                  )
+                }
+                )
             }
 
             {/* Row expandable */}

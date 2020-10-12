@@ -1,5 +1,4 @@
 import { all } from 'redux-saga/effects'
-
 import agreement from './agreement'
 import agreementDetail from './agreement/detail'
 import auth from './auth'
@@ -62,6 +61,10 @@ import priceMaster from './price-master'
 import priceMasterDetail from './price-master/detail'
 import product from './product'
 import productDetail from './product/detail'
+import productAttribute from './product/product-attribute'
+import productAttributeDetail from './product/product-attribute/detail'
+import productAttributeValue from './product/product-attribute-value'
+import productAttributeValueDetail from './product/product-attribute-value/detail'
 import productImage from './product/image'
 import productImageDetail from './product/image/detail'
 import productPackage from './product/package'
@@ -154,6 +157,10 @@ export default function* rootSaga() {
     ...priceMasterDetail,
     ...product,
     ...productDetail,
+    ...productAttribute,
+    ...productAttributeDetail,
+    ...productAttributeValue,
+    ...productAttributeValueDetail,
     ...productImage,
     ...productImageDetail,
     ...productPackage,

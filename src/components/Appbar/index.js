@@ -1,7 +1,7 @@
 import React, { useMemo, useState,useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Link,useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import { Button,Search,Container,Dropdown,Grid, Icon } from 'semantic-ui-react'
 import _truncate from 'lodash/truncate'
