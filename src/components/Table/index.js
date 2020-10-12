@@ -271,8 +271,10 @@ const TableList = ({ duck, list, ...props }) => {
 
   // List options only available when the list has extended the selector reducer
   const basicOptions = configOptions.filter(item => !('is_multiple' in item))
-  const optionsForSingle = list.selector && list.selector.selected_items.length === 1 ? configOptions.filter(item => item.is_multiple === false) : []
-  const optionsForMultiple = list.selector && list.selector.selected_items.length >= 1 ? configOptions.filter(item => item.is_multiple === true) : []
+  const disableOptionsForAll = list.selector && list.selector.selected_items.length > 0 ? false : true
+  const disableOptionsForSingle = list.selector && list.selector.selected_items.length === 1 ? false : true
+  const optionsForSingle =  configOptions.filter(item => item.is_multiple === false)
+  const optionsForMultiple =  configOptions.filter(item => item.is_multiple === true)
   const selectionOptions = optionsForMultiple.concat(optionsForSingle)
 
   return (
@@ -318,7 +320,7 @@ const TableList = ({ duck, list, ...props }) => {
                       return !conditional_render || conditional_render(list.selector.selected_items[0])
                     })
                   // END Improve
-                    .map(({ icon, name, display_name, ...rest }, index) => {
+                    .map(({ icon, name, display_name, is_multiple, ...rest }, index) => {
                       delete rest.conditional_render
 
                       return (
@@ -329,7 +331,8 @@ const TableList = ({ duck, list, ...props }) => {
                             <Button
                               basic
                               data-option-name={name}
-                              icon={icon} onClick={_handleOptionBtnClick}
+                              disabled={(disableOptionsForSingle && !is_multiple) || disableOptionsForAll} icon={icon}
+                              onClick={_handleOptionBtnClick}
                               {...rest}/>
                           }/>
                       )
