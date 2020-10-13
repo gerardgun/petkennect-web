@@ -59,7 +59,6 @@ function* _put({ payload }) {
 
     const result = yield call(Patch, `eav-entities/${payload.entity}/attributes/${payload.id}/`, {
       name                   : payload.name,
-      group_name             : payload.group_name,
       entity_group           : payload.entity_group,
       display_name           : payload.display_name,
       display_type           : payload.display_type,
@@ -72,14 +71,19 @@ function* _put({ payload }) {
 
     const selectedValue = payload.values
 
-    for (let item of result.values)
-      yield call(Delete, `eav-attributes/${result.id}/values/${item.id}`)
+    for (let item of result.values) {
+      let filterData = selectedValue.filter(_ => _.id == item.id)
+      if(filterData.length <= 0)
+        yield call(Delete, `eav-attributes/${result.id}/values/${item.id}`)
+    }
 
-    for (let item of selectedValue)
-      if(item.id)
-        yield call(Patch, `eav-attributes/${result.id}/values/${item.id}/`, item)
+    for (let item of selectedValue) {
+      const isUpdate = Boolean(item.id)
+      if(isUpdate)
+        yield call(Patch, `eav-attributes/${result.id}/values/${item.id}/`, { name: item.name, order: item.order })
       else
         yield call(Post, `eav-attributes/${result.id}/values/`, item)
+    }
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

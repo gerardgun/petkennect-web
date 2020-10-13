@@ -36,7 +36,7 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
         </Grid.Column>
         <Grid.Column textAlign='right'>
           <Button
-            color='teal' icon='edit outline'
+            basic color='teal' icon='edit outline'
             onClick={_handleEditBtnClick}/>
         </Grid.Column>
       </Grid>
@@ -192,6 +192,15 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
               <Form.Input label='Water' readOnly value={pet.hesitate_water ? 'Yes' : 'No'}/>
               <Form.Input label='Peanut Butter' readOnly value={pet.hesitate_peanut_butter ? 'Yes' : 'No'}/>
               <Form.Input label='Wet Food' readOnly value={pet.hesitate_wet_food ? 'Yes' : 'No'}/>
+            </Form.Group>
+            <Header as='h6' className='section-header' color='blue'>MEDICATION</Header>
+            <Form.Group widths='equal'>
+              <Form.Input label='Type of Medication' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.Input label='Reason' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Form.Input label='Amount' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.Input label='Schedule' readOnly value={_defaultTo(pet.not_defined, '-')}/>
             </Form.Group>
           </>
         )}

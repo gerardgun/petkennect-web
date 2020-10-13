@@ -87,10 +87,78 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
     _handleOpenDeleteFieldModal()
   }
 
+  const _handleHeaderGroupSortClick = (e, { index, dataOrderType }) => {
+    const currentItemDetail = customizedFieldGroup.item[index]
+
+    if(dataOrderType == 'up')
+      index = index - 1
+    else
+      index = index + 1
+
+    const nextItemDetail = customizedFieldGroup.item[index]
+    const indexExists = Boolean(nextItemDetail)
+
+    if(indexExists)
+    {
+      props.put({ id: currentItemDetail.id, ...{ eav_entity_id: currentItemDetail.entity,
+        name         : currentItemDetail.name,
+        order        : nextItemDetail.order
+      } })
+
+      props.put({ id: nextItemDetail.id, ...{ eav_entity_id: nextItemDetail.entity,
+        name         : nextItemDetail.name,
+        order        : currentItemDetail.order
+      } })
+    }
+  }
+
+  const _handleHeaderFieldSortClick = (e, { index,  groupId, dataOrderType }) => {
+    const currentFielsData = customizedField.item.filter(_ => _.entity_group == groupId)
+    const currentItemDetail = currentFielsData[index]
+
+    if(dataOrderType == 'up')
+      index = index - 1
+    else
+      index = index + 1
+
+    const nextItemDetail = currentFielsData[index]
+    const indexExists = Boolean(nextItemDetail)
+
+    if(indexExists)
+    {
+      props.fieldsPut({ id: currentItemDetail.id, ...{  ...currentItemDetail,order: nextItemDetail.order } })
+
+      props.fieldsPut({ id: nextItemDetail.id, ...{ ...nextItemDetail, order: currentItemDetail.order } })
+    }
+  }
+
+  const _handlePermissionChange = (e, { itemID, checked, name }) => {
+    const currentFielsData = customizedField.item.filter(_ => _.id == itemID)[0]
+    let changedFieldsData = { is_required            : currentFielsData.is_required,
+      is_editable_by_client  : currentFielsData.is_editable_by_client,
+      is_visible_by_client   : currentFielsData.is_visible_by_client,
+      is_editable_by_employee: currentFielsData.is_editable_by_employee }
+    switch (name) {
+      case 'is_required':
+        changedFieldsData.is_required = checked
+        break
+      case 'is_editable_by_client':
+        changedFieldsData.is_editable_by_client = checked
+        break
+      case 'is_visible_by_client':
+        changedFieldsData.is_visible_by_client = checked
+        break
+      case 'is_editable_by_employee':
+        changedFieldsData.is_editable_by_employee = checked
+        break
+    }
+    props.fieldsPut({ id: currentFielsData.id, ...{ ...currentFielsData, ...changedFieldsData } })
+  }
+
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
-        <Grid className='segment-content-header' columns={2}>
+      <Segment className='segment-content customized-fields' padded='very'>
+        <Grid columns={2}>
           <Grid.Column>
             <Header as='h2' className='cls-MainHeader'>Customized Fields</Header>
           </Grid.Column>
@@ -98,14 +166,14 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
 
           </Grid.Column>
         </Grid>
-        <div className='mv32'>
+        <div className='mv32 div-btn-info'>
           {
             // eslint-disable-next-line no-unused-vars
             EavEntities.item.length > 0 && EavEntities.item.map((item,index)=>(
               <>
                 <Button
-                  basic={ActiveInfoItem.name !== item.model_name} color='blue'
-                  content={item.model_name} entitiID={item.id} name={item.model_name}
+                  basic={ActiveInfoItem.name !== item.model_name} color='teal'
+                  content={item.model_name.toUpperCase()} entitiID={item.id} name={item.model_name}
                   onClick={_handleInfoItemClick}/>
               </>
             ))
@@ -135,7 +203,19 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
               <>
                 <Grid className='mv8' columns={2} key={index}>
                   <Grid.Column>
-                    <Header as='h2'>{groupItem.name}</Header>
+                    <div className='div-sorting-icon div-header-sorting'>
+                      <Icon
+                        className='icon-sort-up' dataOrderType='up' index={index}
+                        name='sort up'
+                        onClick={_handleHeaderGroupSortClick}/>
+                      <Icon
+                        className='icon-sort-down' dataOrderType='down' index={index}
+                        name='sort down'
+                        onClick={_handleHeaderGroupSortClick}/>
+                    </div>
+                    <div className='div-after-sorting-icon'>
+                      <Header as='h2'>{groupItem.name}</Header>
+                    </div>
                   </Grid.Column >
                   <Grid.Column textAlign='right'>
                     <Button
@@ -152,17 +232,30 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                 </Grid>
                 {
                   customizedField.item.length > 0
-                      && customizedField.item.filter(_ => _.entity_group == groupItem.id).map((fieldItem)=>(
+                      && customizedField.item.filter(_ => _.entity_group == groupItem.id).map((fieldItem, fieldIndex)=>(
                         <>
-                          <div className='c-note-item wrapper'>
+                          <div className='c-note-item wrapper' key={fieldIndex + '_' + groupItem.id}>
                             <div className='flex justify-between align-center'>
                               <div className='thumbnail-wrapper w15'>
                                 <div>
-                                  <div>{fieldItem.display_name}&nbsp;&nbsp;<Icon name='lock'/></div>
+                                  <div className='div-sorting-icon'>
+                                    <Icon
+                                      className='icon-sort-up' dataOrderType='up' groupId={groupItem.id}
+                                      index={fieldIndex} name='sort up'
+                                      onClick={_handleHeaderFieldSortClick}/><br/>
+                                    <Icon
+                                      className='icon-sort-down' dataOrderType='down' groupId={groupItem.id}
+                                      index={fieldIndex}
+                                      name='sort down'
+                                      onClick={_handleHeaderFieldSortClick}/>
+                                  </div>
+                                  <div className='div-after-sorting-icon'>
+                                    {fieldItem.display_name}&nbsp;&nbsp;<Icon name='lock'/></div>
                                 </div>
                               </div>
                               <div>
                                 <Dropdown
+                                  disabled={true}
                                   options={[
                                     { key: 1, value: 'C', text: 'Checkbox' },
                                     { key: 2, value: 'D', text: 'Dropdown' },
@@ -171,15 +264,25 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                                     { key: 5, value: 'T', text: 'Text Area' }
                                   ]}
                                   placeholder='All'
-                                  readOnly
                                   selection
                                   value={fieldItem.display_type}/>
                               </div>
                               <div className='permission-checkbox'>
-                                <Checkbox checked={fieldItem.is_required} label='Required'/><br/>
-                                <Checkbox checked={fieldItem.is_editable_by_client} label='Editable by Client'/><br/>
-                                <Checkbox checked={fieldItem.is_editable_by_employee} label='Editable by Employee'/><br/>
-                                <Checkbox checked={fieldItem.is_visible_by_client} label='Visible by Client'/>
+                                <Checkbox
+                                  checked={fieldItem.is_required} itemID={fieldItem.id} label='Required'
+                                  name='is_required'
+                                  onChange={_handlePermissionChange}/><br/>
+                                <Checkbox
+                                  checked={fieldItem.is_editable_by_client} itemID={fieldItem.id} label='Editable by Client'
+                                  name='is_editable_by_client'
+                                  onChange={_handlePermissionChange}/><br/>
+                                <Checkbox
+                                  checked={fieldItem.is_editable_by_employee} itemID={fieldItem.id} label='Editable by Employee'
+                                  name='is_editable_by_employee' onChange={_handlePermissionChange}/><br/>
+                                <Checkbox
+                                  checked={fieldItem.is_visible_by_client} itemID={fieldItem.id}
+                                  label='Visible by Client' name='is_visible_by_client'
+                                  onChange={_handlePermissionChange}/>
                               </div>
                               <div>
                                 <Button
@@ -234,6 +337,8 @@ export default compose(
       getEavEntities     : customizedDuck.creators.get,
       getCustomizedFields: customizedFieldDuck.creators.get,
       getCustomizedGroups: customizedFieldGroupDuck.creators.get,
+      put                : customizedFieldGroupDetailDuck.creators.put,
+      fieldsPut          : customizedFieldDetailDuck.creators.put,
       setItem            : customizedFieldDetailDuck.creators.setItem,
       setGroupItem       : customizedFieldGroupDetailDuck.creators.setItem
     }

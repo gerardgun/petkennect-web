@@ -55,6 +55,12 @@ const TableList = ({ duck, list, ...props }) => {
           <span>{`${column.action.label}`}</span>
         </Link>
       )
+    else if(column.type === 'color')
+      content = (
+        <Label
+          horizontal
+          style={{ minWidth: '4rem', height: '2rem', background: content }}></Label>
+      )
     // END Improve
 
     return content
@@ -104,6 +110,7 @@ const TableList = ({ duck, list, ...props }) => {
   }
 
   const _handleRowOptionClick = e => {
+    e.stopPropagation()
     const itemId = +e.currentTarget.dataset.itemId
     const optionName = e.currentTarget.dataset.optionName
     const item = list.items.find(({ id }) => id === itemId)
@@ -156,9 +163,17 @@ const TableList = ({ duck, list, ...props }) => {
 
         {/* Row data */}
         {
-          list.config.columns.map(({ width = null, align = null, ...column }, index) => (
-            <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
-          ))
+          list.config.columns
+            .filter(({ conditional_render }) => {
+              return !conditional_render || conditional_render(item)
+            })
+            .map(({ width = null, align = null, ...column }, index) => {
+              delete column.conditional_render
+
+              return (
+                <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
+              )
+            })
         }
 
         {/* Row options */}
@@ -202,8 +217,10 @@ const TableList = ({ duck, list, ...props }) => {
 
   // List options only available when the list has extended the selector reducer
   const basicOptions = configOptions.filter(item => !('is_multiple' in item))
-  const optionsForSingle = list.selector && list.selector.selected_items.length === 1 ? configOptions.filter(item => item.is_multiple === false) : []
-  const optionsForMultiple = list.selector && list.selector.selected_items.length >= 1 ? configOptions.filter(item => item.is_multiple === true) : []
+  const disableOptionsForAll = list.selector && list.selector.selected_items.length > 0 ? false : true
+  const disableOptionsForSingle = list.selector && list.selector.selected_items.length === 1 ? false : true
+  const optionsForSingle =  configOptions.filter(item => item.is_multiple === false)
+  const optionsForMultiple =  configOptions.filter(item => item.is_multiple === true)
   const selectionOptions = optionsForMultiple.concat(optionsForSingle)
 
   return (
@@ -249,7 +266,7 @@ const TableList = ({ duck, list, ...props }) => {
                       return !conditional_render || conditional_render(list.selector.selected_items[0])
                     })
                   // END Improve
-                    .map(({ icon, name, display_name, ...rest }, index) => {
+                    .map(({ icon, name, display_name, is_multiple, ...rest }, index) => {
                       delete rest.conditional_render
 
                       return (
@@ -260,7 +277,8 @@ const TableList = ({ duck, list, ...props }) => {
                             <Button
                               basic
                               data-option-name={name}
-                              icon={icon} onClick={_handleOptionBtnClick}
+                              disabled={(disableOptionsForSingle && !is_multiple) || disableOptionsForAll} icon={icon}
+                              onClick={_handleOptionBtnClick}
                               {...rest}/>
                           }/>
                       )
@@ -317,26 +335,30 @@ const TableList = ({ duck, list, ...props }) => {
                 </Table.HeaderCell>
               )
             }
-
             {/* Row data header */}
             {
-              list.config.columns.map(({ display_name, name, sort, sort_name }, index) => {
-                const finalSortName = sort_name || name
-                let sorted = sort ? 'sorted' : ''
-
-                if(list.filters.ordering === finalSortName)
-                  sorted = sorted + ' descending'
-                else if(list.filters.ordering === '-' + finalSortName)
-                  sorted = sorted + ' ascending'
-
-                return (
-                  <Table.HeaderCell
-                    className={sorted} data-column-name={name} key={index}
-                    onClick={_handleHeaderToggleSortClick}>
-                    {display_name}
-                  </Table.HeaderCell>
-                )
+              list.config.columns.filter(({ conditional_render }) => {
+                return !conditional_render || conditional_render(list.items.length > 0 ? list.items[0] : [])
               })
+                .map(({ display_name, name, sort, sort_name, ...column }, index) => {
+                  delete column.conditional_render
+                  const finalSortName = sort_name || name
+                  let sorted = sort ? 'sorted' : ''
+
+                  if(list.filters.ordering === finalSortName)
+                    sorted = sorted + ' descending'
+                  else if(list.filters.ordering === '-' + finalSortName)
+                    sorted = sorted + ' ascending'
+
+                  return (
+                    <Table.HeaderCell
+                      className={sorted} data-column-name={name} key={index}
+                      onClick={_handleHeaderToggleSortClick}>
+                      {display_name}
+                    </Table.HeaderCell>
+                  )
+                }
+                )
             }
 
             {/* Row options */}
