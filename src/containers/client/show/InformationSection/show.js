@@ -31,20 +31,21 @@ function ClienInformationShow({ clientDetail, ...props }) {
         </Grid.Column>
         <Grid.Column textAlign='right'>
           <Button
-            basic icon='edit outline' onClick={_handleEditBtnClick}/>
+            basic color='teal' icon='edit outline'
+            onClick={_handleEditBtnClick}/>
         </Grid.Column>
       </Grid>
       <div className='mh40 mv32'>
         <Button
-          basic={ActiveInfoItem !== 'Client'} color='blue'
+          basic={ActiveInfoItem !== 'Client'} color='teal'
           content='Client Information' name='Client'
           onClick={_handleInfoItemClick}/>
         <Button
-          basic={ActiveInfoItem !== 'Emergency'} color='blue'
+          basic={ActiveInfoItem !== 'Emergency'} color='teal'
           content='Emergency Contact' name='Emergency'
           onClick={_handleInfoItemClick}/>
         <Button
-          basic={ActiveInfoItem !== 'Vet'} color='blue'
+          basic={ActiveInfoItem !== 'Vet'} color='teal'
           content='Vet Information' name='Vet'
           onClick={_handleInfoItemClick}/>
       </div>
@@ -58,7 +59,8 @@ function ClienInformationShow({ clientDetail, ...props }) {
               <Form.Input label='Last Name' readOnly value={_defaultTo(client.last_name, '-')}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Spouse' readOnly value={_defaultTo(client.spouse, '-')}/>
+              <Form.Input label='Spouse/Co-owner First Name' readOnly value={_defaultTo(client.spouse, '-')}/>
+              <Form.Input label='Last Name' readOnly value={_defaultTo(client.spouse, '-')}/>
             </Form.Group>
             <Form.Group widths={2}>
               <Form.Input label='Active' readOnly value={client.is_active ? 'Yes' : 'No'}/>
