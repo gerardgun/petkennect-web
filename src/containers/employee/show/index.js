@@ -1,25 +1,26 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link, useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { Button, Grid, Header, Segment, Image, Breadcrumb } from 'semantic-ui-react'
-import _defaultTo from 'lodash/defaultTo'
+import { Grid, Header, Segment, Image, Button, Dropdown } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
-import ModalDelete from '@components/Modal/Delete'
-import InputReadOnly from '@components/Common/InputReadOnly'
 import useModal from '@components/Modal/useModal'
 import { defaultImageUrl } from '@lib/constants'
+import InformationSection from './InformationSection'
 
 import employeeDuck from '@reducers/employee'
 import employeeDetailDuck from '@reducers/employee/detail'
 
 const EmployeeShow = ({ employeeDetail ,...props }) => {
-  const { item: employee } = employeeDetail
-
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const [ { _handleOpen } ] = useModal()
   const { id } = useParams()
   const history = useHistory()
+  const { item: employee } = employeeDetail
+
+  useEffect(() => {
+    if(employeeDetail.status === 'PATCHED') props.get()
+  }, employeeDetail.status)
 
   useEffect(() => {
     props.getEmployee(id)
@@ -32,86 +33,52 @@ const EmployeeShow = ({ employeeDetail ,...props }) => {
     if(employeeDetail.status === 'DELETED')
       history.replace('/employee')
   }, [ employeeDetail.status ])
+  // eslint-disable-next-line no-unused-vars
   const _handleDeleteClick = () => {
     _handleOpen()
   }
 
-  const fullname = `${employeeDetail.item.first_name || ''} ${employeeDetail.item.last_name || ''}`
+  const fullname = `${employee.first_name || ''} ${employee.last_name || ''}`
+
+  const _handleOptionDropdownChange = () => {
+    alert('Work in Progress...')
+  }
 
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
+      <Segment className='segment-content petkennect-profile'>
         <Grid>
-          <Grid.Column textAlign='left' width={8}>
-            <Breadcrumb>
-              <Breadcrumb.Section link>
-                <Link to='/employee'>Employees</Link>
-              </Breadcrumb.Section>
-              <Breadcrumb.Divider/>
-              <Breadcrumb.Section active link>
-                {fullname}
-              </Breadcrumb.Section>
-            </Breadcrumb>
-          </Grid.Column >
-          <Grid.Column textAlign='right' width={8}>
-            <Button
-              as={Link}
-              basic
-              icon='edit'
-              to={`/employee/edit/${employeeDetail.item.id}`}/>
-            <Button
-              basic
-              color='red'
-              icon='trash alternate outline' onClick={_handleDeleteClick}/>
+          <Grid.Column className='petkennect-profile-sidebar p40' width={5}>
+            <div className='flex justify-center align-center mt40'>
+              <div className='c-image-profile'>
+                <Image circular src={employee.thumbnail_path || defaultImageUrl}/>
+              </div>
+            </div>
+            <div className='flex justify-between align-center mb24'>
+              <Header as='h2'>{fullname}</Header>
+              <Dropdown
+                direction='left'
+                icon={null}
+                onChange={_handleOptionDropdownChange}
+                options={[
+                  { key: 1, icon: 'download', value: 'download-profile', text: 'Download Profile' },
+                  { key: 2, icon: 'paper plane outline', value: 'send-email', text: 'Send Email' }
+                ]}
+                selectOnBlur={false}
+                trigger={(
+                  <Button basic icon='ellipsis vertical'/>
+                )}
+                value={null}/>
+
+            </div>
           </Grid.Column>
-
-        </Grid>
-        <div  className='flex align-center mt36'>
-          <Image avatar className='img-40' src={employeeDetail.item.thumbnail_path || defaultImageUrl}/>
-          <div className='c-thumbnail'>
-            <div className='title'>{fullname}</div>
-            <div className='description'>Employee</div>
-          </div>
-        </div>
-
-        <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
-        <Grid columns={3}>
-          <InputReadOnly
-            label='Email'
-            value={_defaultTo(employee.email, '-')}/>
-          <InputReadOnly
-            label='Name'
-            value={_defaultTo(employee.first_name, '-')}/>
-          <InputReadOnly
-            label='Last Name'
-            value={_defaultTo(employee.last_name, '-')}/>
-
-          <InputReadOnly
-            label='Profile Picture'
-            value={<Image rounded size='mini' src={employeeDetail.item.thumbnail_path || defaultImageUrl}/>}/>
-          <InputReadOnly
-            label='Title'
-            value={_defaultTo(employee.title_name, '-')}/>
-          <InputReadOnly
-            label='Location'
-            value={employee.location ? `${employee.location_code} - ${employee.location_name}` : ''}/>
-
-          <InputReadOnly
-            label='Role'
-            value={_defaultTo(employee.role_name, '-')}/>
-          <InputReadOnly
-            label='Status'
-            value={employee.status ? 'Active' : 'Inactive'}/>
-
+          <Grid.Column className='petkennect-profile-body' width={11}>
+            <InformationSection/>
+          </Grid.Column>
         </Grid>
       </Segment>
-
-      <ModalDelete
-        duckDetail={employeeDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
-
     </Layout>
+
   )
 }
 

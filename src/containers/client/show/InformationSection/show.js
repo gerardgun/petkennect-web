@@ -7,6 +7,7 @@ import  _get from 'lodash/get'
 import _defaultTo from 'lodash/defaultTo'
 
 import { Referred } from '@lib/constants/client'
+import { formatPhoneNumber } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
 
@@ -35,7 +36,7 @@ function ClienInformationShow({ clientDetail, ...props }) {
             onClick={_handleEditBtnClick}/>
         </Grid.Column>
       </Grid>
-      <div className='mh40 mv32'>
+      <div className='mh40 mv32 div-client-info-button'>
         <Button
           basic={ActiveInfoItem !== 'Client'} color='teal'
           content='Client Information' name='Client'
@@ -73,12 +74,12 @@ function ClienInformationShow({ clientDetail, ...props }) {
 
             <Header as='h6' className='section-header' color='blue'>Contact Details</Header>
             <Form.Group widths={2}>
-              <Form.Input label='Cell Phone' readOnly value={_get(client, 'phones[0]', '-')}/>
-              <Form.Input label='Home Phone' readOnly value={_get(client, 'phones[1]', '-')}/>
+              <Form.Input label='Cell Phone' readOnly value={formatPhoneNumber(_get(client, 'phones[0]', '-'))}/>
+              <Form.Input label='Home Phone' readOnly value={formatPhoneNumber(_get(client, 'phones[1]', '-'))}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Work Phone' readOnly value={_get(client, 'phones[2]', '-')}/>
-              <Form.Input label='Other Phone' readOnly value={_get(client, 'phones[3]', '-')}/>
+              <Form.Input label='Work Phone' readOnly value={formatPhoneNumber(_get(client, 'phones[2]', '-'))}/>
+              <Form.Input label='Other Phone' readOnly value={formatPhoneNumber(_get(client, 'phones[3]', '-'))}/>
             </Form.Group>
             <Form.Group widths={2}>
               <Form.Input label='Email' readOnly value={_defaultTo(client.email, '-')}/>
@@ -125,7 +126,7 @@ function ClienInformationShow({ clientDetail, ...props }) {
               <Form.Input label='Relation' readOnly value={_defaultTo(client.emergency_contact_relationship, '-')}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Phone' readOnly value={_get(client, 'emergency_contact_phones[0]', '-')}/>
+              <Form.Input label='Phone' readOnly value={formatPhoneNumber(_get(client, 'emergency_contact_phones[0]', '-'))}/>
             </Form.Group>
             <Form.Group widths='equal'>
               <Form.TextArea label='Other Notes' readOnly value={_defaultTo(client.not_defined, '-')}/>
@@ -140,7 +141,7 @@ function ClienInformationShow({ clientDetail, ...props }) {
               <Form.Input label='Veterinary Facility Name' readOnly value={_defaultTo(client.emergency_vet_facility_name, '-')}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Vet Phone' readOnly value={_get(client, 'emergency_vet_phones[0]', '-')}/>
+              <Form.Input label='Vet Phone' readOnly value={formatPhoneNumber(_get(client, 'emergency_vet_phones[0]', '-'))}/>
               <Form.Input label='Vet Location' readOnly value={_defaultTo(client.emergency_vet_location, '-')}/>
             </Form.Group>
           </>

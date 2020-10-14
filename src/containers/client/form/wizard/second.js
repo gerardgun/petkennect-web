@@ -79,7 +79,7 @@ const ClientFormWizardSecond = props => {
             component={FormField}
             control={InputMask}
             label='Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999 9999'
             name='emergency_contact_phones[0]'
             placeholder='Enter phone number'
             required
@@ -107,7 +107,7 @@ const ClientFormWizardSecond = props => {
             component={FormField}
             control={InputMask}
             label='Vet phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999 9999'
             name='emergency_vet_phones[0]'
             placeholder='Enter phone number'
             type='tel'/>

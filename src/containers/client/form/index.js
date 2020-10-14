@@ -213,7 +213,7 @@ const ClientForm = props => {
 
   return (
     <>
-      <div className='mb32'>
+      <div className='mb32 div-client-info-button'>
         <Button
           basic={ActiveInfoItem !== 'Client'} color='teal'
           content='Client Information' name='Client'

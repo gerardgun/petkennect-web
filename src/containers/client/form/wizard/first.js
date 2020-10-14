@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
+import moment  from 'moment'
 import { Button, Dropdown, Form, Header, Input, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
@@ -187,7 +188,7 @@ const ClientFormWizardFirst = props => {
             component={FormField}
             control={InputMask}
             label='Cell Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999 9999'
             name='phones[0]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -196,7 +197,7 @@ const ClientFormWizardFirst = props => {
             component={FormField}
             control={InputMask}
             label='Home Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999 9999'
             name='phones[1]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -205,7 +206,7 @@ const ClientFormWizardFirst = props => {
             component={FormField}
             control={InputMask}
             label='Work Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999 9999'
             name='phones[2]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -217,7 +218,7 @@ const ClientFormWizardFirst = props => {
             component={FormField}
             control={InputMask}
             label='Other Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999 9999'
             name='phones[3]'
             placeholder='Enter phone number'
             type='tel'/>
@@ -352,7 +353,7 @@ export default compose(
         clientDetail,
         zip,
         zipDetail,
-        initialValues: clientDetail.item,
+        initialValues: { ...clientDetail.item, contact_date: moment(new Date(),'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') },
         user         : userDuck.selectors.list(state),
         location     : locationDuck.selectors.list(state),
         role         : rolDuck.selectors.list(state),

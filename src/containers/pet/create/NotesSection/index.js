@@ -39,7 +39,7 @@ function NotesSection(props) {
     _handleOpenDeleteModal()
   }
 
-  const _handleFilterBtnClick = type => () => {
+  const _handleFilterBtnClick = (e, { type }) => {
     setFilter({ type })
     props.getNotes()
   }
@@ -54,27 +54,23 @@ function NotesSection(props) {
         </Header>
       </div>
       <Divider className='m0'/>
-      <div className='mh40 mv32'>
-        <button
-          className={`filter-button ${filter.type === 'B' && 'selected'}`} color='teal'
-          onClick={_handleFilterBtnClick('B')}>
-          Behavioral
-        </button>
-        <button
-          basic className={`filter-button ml16 ${filter.type === 'M' && 'selected'}`} color='teal'
-          onClick={_handleFilterBtnClick('M')}>
-          Medical
-        </button>
-        <button
-          basic className={`filter-button ml16 ${filter.type === 'G' && 'selected'}`} color='teal'
-          onClick={_handleFilterBtnClick('G')}>
-          General
-        </button>
-        <button
-          basic className={`filter-button ml16 ${filter.type === 'O' && 'selected'}`} color='teal'
-          onClick={_handleFilterBtnClick('O')}>
-          Owner
-        </button>
+      <div className='mh40 mv32 div-notes-button'>
+        <Button
+          basic={filter.type !== 'B'} color='teal'
+          content='Behavioral' onClick={_handleFilterBtnClick}
+          type='B'/>
+        <Button
+          basic={filter.type !== 'M'} color='teal'
+          content='Medical' onClick={_handleFilterBtnClick}
+          type='M'/>
+        <Button
+          basic={filter.type !== 'G'} color='teal'
+          content='General' onClick={_handleFilterBtnClick}
+          type='G'/>
+        <Button
+          basic={filter.type !== 'O'} color='teal'
+          content='Owner' onClick={_handleFilterBtnClick}
+          type='O'/>
       </div>
       <div className='mh40 mv32 flex justify-end'>
         <Button

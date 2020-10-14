@@ -204,9 +204,9 @@ textarea {
     color: #616468 !important;
   }
 }
-img.ui.img-40 {
-  width: 40px !important;
-  height: 40px !important;
+
+.ui.basic.button.disabled{
+  box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) inset !important;
 }
 
 .modals {

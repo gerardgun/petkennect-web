@@ -227,9 +227,9 @@ const CompanyForm = props => {
             component={FormField}
             control={InputMask}
             label='Phone'
-            mask='+1 999-999-9999'
+            mask='(999) 999 9999'
             name='phones[0]'
-            placeholder='+1 999-999-9999'/>
+            placeholder='(999) 999 9999'/>
           <Field
             autoComplete='off'
             component={FormField}

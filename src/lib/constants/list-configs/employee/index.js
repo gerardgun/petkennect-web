@@ -44,7 +44,7 @@ export default {
       sort_name   : 'user__first_name',
       formatter   : (cell, row) => {
         return (
-          <Link to={`/client/show/${row.id}`}>
+          <Link>
             <Image
               className='profile' rounded size='mini'
               src={row.thumbnail_path || defaultImageUrl}/>

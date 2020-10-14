@@ -19,11 +19,11 @@ function ClientInformationEdit({ clientDetail, ...props }) {
 
   return (
     <Container fluid>
-      <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+      <Grid className='petkennect-profile-body-header'>
+        <Grid.Column verticalAlign='middle' width={6}>
           <Header as='h2'>Client Info</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column textAlign='right' width={10}>
           <Button
             basic className='w120' color='teal'
             content={saved ? 'Go back' : 'Cancel'} disabled={saving} onClick={_handleCancelBtnClick}/>

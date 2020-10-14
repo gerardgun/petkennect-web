@@ -8,6 +8,9 @@
 .div-pet-btn-info{
   .ui.teal.button{
     width: 11rem;
+    @media (min-width: 900px) and (max-width:1200px) {
+      width:auto !important;
+     }
   }
 }
 

@@ -313,7 +313,8 @@ const TableList = ({ duck, list, ...props }) => {
                 )
               }
               {
-                selectionOptions.length > 0 && (
+
+                selectionOptions.length > 0 && !disableOptionsForAll && (
                   selectionOptions
                   // BEGIN Improve
                     .filter(({ conditional_render }) => {

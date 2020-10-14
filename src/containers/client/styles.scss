@@ -4,6 +4,15 @@
     text-align: right;
     flex: 1;
   }
+  .div-client-info-button{
+    .ui.teal.button{
+    width: 12rem;
+    @media (min-width: 900px) and (max-width:1200px) {
+      width:auto !important;
+     }
+    }
+    
+  }
 }
 
 
