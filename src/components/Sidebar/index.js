@@ -51,7 +51,8 @@ const categories = [
       { href: '/product', label: 'Products' },
       { href: '/category', label: 'Categories' },
       { href: '/service', label: 'Services' },
-      { href: '/product-attribute', label: 'Product Attributes' }
+      { href: '/product-attribute', label: 'Product Attributes' },
+      { href: '/service-attribute', label: 'Service Attributes' }
     ]
   },
   {
