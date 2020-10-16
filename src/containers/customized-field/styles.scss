@@ -1,4 +1,5 @@
 .customized-fields{
+  padding: 2rem !important;
 .message__title {
     font-style: normal;
     font-weight: 600;
@@ -42,4 +43,12 @@ i.sort.icon{
   color:#00b5ad !important;
   cursor: pointer;
 }
+
+.btn-edit-trash-group{
+  display: inline-flex;
 }
+.div-fields-row{
+  overflow-x:auto;
+}
+}
+

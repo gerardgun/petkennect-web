@@ -75,7 +75,9 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
 
     <Container className='appbar-items'>
       <Grid>
-        <Grid.Column width='12'>
+        <Grid.Column
+          className='appbar-searchbar' computer={12} mobile={16}
+          tablet={12}>
           <div className='search-dropdown'>
             <Dropdown
               onChange={_handleSearchConditionChange}
@@ -92,7 +94,9 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
               onResultSelect={_handleResultSelect} onSearchChange={_handleSearchInputChange} results={searchResult}/>
           </div>
         </Grid.Column>
-        <Grid.Column width='4'>
+        <Grid.Column
+          className='appbar-user-dropdown' computer={4} mobile={16}
+          tablet={4}>
           <div className='auth-session-dropdown'>
             {
               !auth.item.is_superadmin && (

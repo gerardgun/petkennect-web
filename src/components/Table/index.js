@@ -376,8 +376,8 @@ const TableList = ({ duck, list, ...props }) => {
       }
 
       <Table
-        basic='very' className='table-primary' selectable
-        sortable>
+        basic='very'  className='table-primary' selectable
+        sortable unstackable>
         <Table.Header>
           <Table.Row>
             {/* Row selection */}

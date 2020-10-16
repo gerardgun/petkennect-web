@@ -7,10 +7,14 @@ import Appbar from '@components/Appbar'
 const Layout = ({ children }) => (
   <Container fluid>
     <Grid className='appbar-grid'>
-      <Grid.Column style={{ paddingBottom: 0, paddingRight: 0 }} width='three'>
-        <Image src='/images/logo.png' style={{ padding: '1.3rem', height: '9rem' }}/>
+      <Grid.Column
+        computer={3} mobile={16} style={{ paddingBottom: 0, paddingRight: 0 }}
+        tablet={3} >
+        <Image className='logo-img' src='/images/logo.png' style={{ padding: '1.3rem' }}/>
       </Grid.Column>
-      <Grid.Column style={{ paddingBottom: 0, paddingRight: 0 }} width='thirteen'>
+      <Grid.Column
+        computer={13} mobile={16} style={{ paddingBottom: 0, paddingRight: 0 }}
+        tablet={13} >
         <Appbar/>
       </Grid.Column>
     </Grid>

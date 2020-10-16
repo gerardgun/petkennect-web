@@ -54,10 +54,12 @@ const ProductAttributeList = ({ productAttribute, productAttributeDetail, ...pro
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column width={4}>
+          <Grid.Column computer={8} mobile={16} tablet={8}>
             <Header as='h2'>Products Attributes</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right' width={12}>
+          <Grid.Column
+            computer={8} mobile={16} tablet={8}
+            textAlign='right'>
             <Button
               as={Link} color='teal'
               content='New Attribute'

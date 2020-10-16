@@ -54,10 +54,12 @@ const ServiceAttributeList = ({ serviceAttribute, serviceAttributeDetail, ...pro
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column width={4}>
+          <Grid.Column computer={8} mobile={16}  tablet={4} >
             <Header as='h2'>Service Attributes</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right' width={12}>
+          <Grid.Column
+            computer={8} mobile={16} tablet={12}
+            textAlign='right'>
             <Button
               as={Link} color='teal'
               content='New Attribute'
