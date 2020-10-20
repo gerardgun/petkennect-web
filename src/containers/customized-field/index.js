@@ -157,7 +157,7 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
 
   return (
     <Layout>
-      <Segment className='segment-content customized-fields' padded='very'>
+      <Segment className='segment-content customized-fields'>
         <Grid columns={2}>
           <Grid.Column>
             <Header as='h2' className='cls-MainHeader'>Customized Fields</Header>
@@ -201,8 +201,8 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
           {
             customizedFieldGroup.item.length > 0 && customizedFieldGroup.item.map((groupItem,index)=>(
               <>
-                <Grid className='mv8' columns={2} key={index}>
-                  <Grid.Column>
+                <Grid className='mv8'  columns={2} key={index}>
+                  <Grid.Column computer={8} mobile={16} tablet={8}>
                     <div className='div-sorting-icon div-header-sorting'>
                       <Icon
                         className='icon-sort-up' dataOrderType='up' index={index}
@@ -217,7 +217,9 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                       <Header as='h2'>{groupItem.name}</Header>
                     </div>
                   </Grid.Column >
-                  <Grid.Column textAlign='right'>
+                  <Grid.Column
+                    computer={8} mobile={16} tablet={8}
+                    textAlign='right'>
                     <Button
                       color='teal'
                       content='Add Field' icon='plus circle' itemID={groupItem.id}
@@ -235,8 +237,8 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                       && customizedField.item.filter(_ => _.entity_group == groupItem.id).map((fieldItem, fieldIndex)=>(
                         <>
                           <div className='c-note-item wrapper' key={fieldIndex + '_' + groupItem.id}>
-                            <div className='flex justify-between align-center'>
-                              <div className='thumbnail-wrapper w15'>
+                            <div className='flex justify-between align-center div-fields-row'>
+                              <div className='thumbnail-wrapper'>
                                 <div>
                                   <div className='div-sorting-icon'>
                                     <Icon
@@ -284,10 +286,9 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
                                   label='Visible by Client' name='is_visible_by_client'
                                   onChange={_handlePermissionChange}/>
                               </div>
-                              <div>
+                              <div className='btn-edit-trash-group'>
                                 <Button
                                   basic
-                                  className='ml16'
                                   icon itemID={fieldItem.id}
                                   onClick={_handleUpdateFieldBtnClick} size='small'>
                                   <Icon name='edit outline'/>

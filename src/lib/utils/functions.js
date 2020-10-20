@@ -244,3 +244,12 @@ export const sortByProperty = property=>{
   }
 }
 
+export const formatPhoneNumber = phoneNumberString=>{
+  phoneNumberString = phoneNumberString == null ? '' : phoneNumberString
+  var cleaned = ('' + phoneNumberString.split(' ')[1]).replace(/\D/g, '')
+  var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+  if(match)
+    return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+
+  return null
+}

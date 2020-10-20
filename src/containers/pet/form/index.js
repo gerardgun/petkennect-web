@@ -16,6 +16,7 @@ import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/fu
 import { useDebounce } from '@hooks/Shared'
 
 import clientDuck from '@reducers/client'
+import clientDetailDuck from '@reducers/client/detail'
 import petDetailDuck from '@reducers/pet/detail'
 import petBreedDuck from '@reducers/pet/breed'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
@@ -117,6 +118,7 @@ const booleanOptions = [
 function PetForm(props) {
   const {
     client,
+    clientDetail,
     petDetail,
     petBreed,
     petBreedDetail,
@@ -174,7 +176,17 @@ function PetForm(props) {
       return props.post(isFromClientProfileModule ? { ...values, client: clientId } : values)
         .then(payload => {
           props.resetItem()
-          history.push(`/pet/${payload.id}`)
+
+          if(isFromPetsModule)
+            history.push(`/pet/${payload.id}`)
+          else
+            history.push({
+              pathname: `/pet/${payload.id}`,
+              state   : {
+                client         : client.id,
+                client_fullname: `${clientDetail.item.first_name} ${clientDetail.item.last_name}`
+              }
+            })
         })
         .catch(parseResponseError)
   }
@@ -732,6 +744,7 @@ export default compose(
       return {
         client,
         petDetail,
+        clientDetail         : clientDetailDuck.selectors.detail(state),
         petBreed             : petBreedDuck.selectors.list(state),
         petBreedDetail       : petBreedDetailDuck.selectors.detail(state),
         petRetireReason      : petRetireReasonDuck.selectors.list(state),

@@ -7,6 +7,32 @@ textarea {
   font-family: "Poppins";
 }
 
+.appbar-grid{
+  @media (max-width: 767px){
+    height: auto !important;
+    img.logo-img{
+      padding-left: 7rem !important;
+      padding-right: 7rem !important;
+    }
+    .search-dropdown{
+      margin-top: 0rem !important;
+    }
+    .appbar-searchbar, .appbar-user-dropdown{
+      margin-top: -3rem;
+    }
+    .appbar-items{
+      padding: 0px !important;
+    }
+   }
+
+   @media only screen and (min-width: 768px) and (max-width: 991px) {
+     .logo-img{
+       margin-top: 1.5rem;
+     }
+   }
+  
+}
+
 .app-content {
   height: 80vh;
   overflow-y: auto;
@@ -204,9 +230,9 @@ textarea {
     color: #616468 !important;
   }
 }
-img.ui.img-40 {
-  width: 40px !important;
-  height: 40px !important;
+
+.ui.basic.button.disabled{
+  box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) inset !important;
 }
 
 .modals {

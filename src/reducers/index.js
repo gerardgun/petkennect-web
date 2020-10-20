@@ -84,6 +84,10 @@ import serviceAddon from '@reducers/service/addon'
 import serviceAddonDetail from '@reducers/service/addon/detail'
 import serviceAddonGroup from '@reducers/service/addon/group'
 import serviceAddonGroupDetail from '@reducers/service/addon/group/detail'
+import serviceAttribute from '@reducers/service/service-attribute'
+import serviceAttributeDetail from '@reducers/service/service-attribute/detail'
+import serviceAttributeValue from '@reducers/service/service-attribute-value'
+import serviceAttributeValueDetail from '@reducers/service/service-attribute-value/detail'
 import trainingCommand from '@reducers/training-command'
 import trainingCommandDetail from '@reducers/training-command/detail'
 import trainingMethod from '@reducers/training-method'
@@ -185,6 +189,10 @@ const createRootReducer = history => combineReducers({
   [serviceAddonDetail.store]         : serviceAddonDetail.reducer,
   [serviceAddonGroup.store]          : serviceAddonGroup.reducer,
   [serviceAddonGroupDetail.store]    : serviceAddonGroupDetail.reducer,
+  [serviceAttribute.store]           : serviceAttribute.reducer,
+  [serviceAttributeDetail.store]     : serviceAttributeDetail.reducer,
+  [serviceAttributeValue.store]      : serviceAttributeValue.reducer,
+  [serviceAttributeValueDetail.store]: serviceAttributeValueDetail.reducer,
   [trainingCommand.store]            : trainingCommand.reducer,
   [trainingCommandDetail.store]      : trainingCommandDetail.reducer,
   [trainingMethod.store]             : trainingMethod.reducer,

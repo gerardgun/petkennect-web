@@ -49,10 +49,12 @@ const ProductAttributeList = ({ productAttributeDetail, productAttributeValue, p
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column width={8}>
+          <Grid.Column computer={8} mobile={16} tablet={8}>
             <Header as='h2'>Products Attributes / {productAttributeDetail.item.type == 'C' ? 'Color' : 'Dimension'}</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right' width={8}>
+          <Grid.Column
+            computer={8} mobile={16} tablet={8}
+            textAlign='right'>
             <Button
               as={Link} color='teal'
               content='New Value'

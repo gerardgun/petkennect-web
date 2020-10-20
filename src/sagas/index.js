@@ -80,6 +80,10 @@ import serviceAddon from './service/addon'
 import serviceAddonDetail from './service/addon/detail'
 import serviceAddonGroup from './service/addon/group'
 import serviceAddonGroupDetail from './service/addon/group/detail'
+import serviceAttribute from './service/service-attribute'
+import serviceAttributeDetail from './service/service-attribute/detail'
+import serviceAttributeValue from './service/service-attribute-value'
+import serviceAttributeValueDetail from './service/service-attribute-value/detail'
 import trainingCommand from './training-command'
 import trainingCommandDetail from './training-command/detail'
 import trainingMethod from './training-method'
@@ -176,6 +180,10 @@ export default function* rootSaga() {
     ...serviceAddonDetail,
     ...serviceAddonGroup,
     ...serviceAddonGroupDetail,
+    ...serviceAttribute,
+    ...serviceAttributeDetail,
+    ...serviceAttributeValue,
+    ...serviceAttributeValueDetail,
     ...trainingCommand,
     ...trainingCommandDetail,
     ...trainingMethod,

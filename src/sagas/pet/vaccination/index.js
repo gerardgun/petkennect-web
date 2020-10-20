@@ -6,8 +6,6 @@ import petDetailDuck from '@reducers/pet/detail'
 import vaccinationDuck from '@reducers/pet/vaccination'
 import moment from 'moment'
 
-import { v4 as uuidv4 } from 'uuid'
-
 const { types } = vaccinationDuck
 
 function getStatus(item) {
@@ -50,7 +48,7 @@ function* get(/* { payload } */) {
         return _vaccination
 
       return {
-        id       : uuidv4(),
+        id       : Math.floor(Math.random() * 100),
         type     : _vaccinationType.id,
         type_name: _vaccinationType.name
       }

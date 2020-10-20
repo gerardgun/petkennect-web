@@ -9,37 +9,37 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 
-import ProductAttributeCreate from './create'
+import ServiceAttributeCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
 
-import productAttributeDuck from '@reducers/product/product-attribute'
-import productAttributeDetailDuck from '@reducers/product/product-attribute/detail'
+import serviceAttributeDuck from '@reducers/service/service-attribute'
+import serviceAttributeDetailDuck from '@reducers/service/service-attribute/detail'
 
-const ProductAttributeList = ({ productAttribute, productAttributeDetail, ...props }) => {
+const ServiceAttributeList = ({ serviceAttribute, serviceAttributeDetail, ...props }) => {
   const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
 
   const history = useHistory()
 
-  useChangeStatusEffect(props.getProductAttributes, productAttributeDetail.status)
+  useChangeStatusEffect(props.getServiceAttributes, serviceAttributeDetail.status)
 
   useEffect(() => {
-    if(productAttributeDetail.status === 'DELETED') props.getProductAttributes()
-  }, [ productAttributeDetail.status ])
+    if(serviceAttributeDetail.status === 'DELETED') props.getServiceAttributes()
+  }, [ serviceAttributeDetail.status ])
 
   useEffect(() => {
-    props.getProductAttributes()
+    props.getServiceAttributes()
   }, [])
 
   const _handleOptionClick = option => {
     if(option === 'delete') {
-      props.setItem(productAttribute.selector.selected_items[0], 'DELETE')
+      props.setItem(serviceAttribute.selector.selected_items[0], 'DELETE')
       _handleOpenDeleteModal()
     }
   }
 
   const _handleRowOptionClick = (option, item) => {
     props.setItem(item)
-    history.push(`/product-attribute-value/${item.id}`)
+    history.push(`/service-attribute-value/${item.id}`)
   }
 
   const _handleCreateClick = ()=> {
@@ -54,11 +54,11 @@ const ProductAttributeList = ({ productAttribute, productAttributeDetail, ...pro
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column computer={8} mobile={16} tablet={8}>
-            <Header as='h2'>Products Attributes</Header>
+          <Grid.Column computer={8} mobile={16}  tablet={4} >
+            <Header as='h2'>Service Attributes</Header>
           </Grid.Column>
           <Grid.Column
-            computer={8} mobile={16} tablet={8}
+            computer={8} mobile={16} tablet={12}
             textAlign='right'>
             <Button
               as={Link} color='teal'
@@ -67,15 +67,15 @@ const ProductAttributeList = ({ productAttribute, productAttributeDetail, ...pro
           </Grid.Column>
         </Grid>
         <Table
-          duck={productAttributeDuck}
+          duck={serviceAttributeDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
 
       </Segment>
-      <ProductAttributeCreate/>
+      <ServiceAttributeCreate/>
       <ModalDelete
-        duckDetail={productAttributeDetailDuck}
+        duckDetail={serviceAttributeDetailDuck}
         onClose={_handleCloseDeleteModal}
         open={openDeleteModal}/>
 
@@ -86,13 +86,13 @@ const ProductAttributeList = ({ productAttribute, productAttributeDetail, ...pro
 export default compose(
   connect(
     (state) => ({
-      productAttribute      : productAttributeDuck.selectors.list(state),
-      productAttributeDetail: productAttributeDetailDuck.selectors.detail(state)
+      serviceAttribute      : serviceAttributeDuck.selectors.list(state),
+      serviceAttributeDetail: serviceAttributeDetailDuck.selectors.detail(state)
 
     }),
     {
-      getProductAttributes: productAttributeDuck.creators.get,
-      setItem             : productAttributeDetailDuck.creators.setItem
+      getServiceAttributes: serviceAttributeDuck.creators.get,
+      setItem             : serviceAttributeDetailDuck.creators.setItem
     }
   )
-)(ProductAttributeList)
+)(ServiceAttributeList)

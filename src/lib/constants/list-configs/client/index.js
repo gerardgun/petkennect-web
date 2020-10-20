@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Image } from 'semantic-ui-react'
 
 import { defaultImageUrl } from '@lib/constants'
+import { formatPhoneNumber } from '@lib/utils/functions'
 
 import locationDuck from '@reducers/location'
 
@@ -24,7 +25,7 @@ export default {
       display_name: 'Delete Client',
       name        : 'delete',
       icon        : 'trash alternate outline',
-      is_multiple : false,
+      is_multiple : true,
       color       : 'red'
     }
   ],
@@ -93,12 +94,17 @@ export default {
       }
     },
     {
-      display_name: 'Phone Mobile',
+      display_name: 'Mobile Phone',
       name        : 'phones[0]',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : (cell) => {
+        return (
+          formatPhoneNumber(cell)
+        )
+      }
     },
     {
       display_name: 'Status',
