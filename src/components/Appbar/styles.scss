@@ -3,6 +3,7 @@
 padding: 2rem;
 }
   .search-dropdown{
+    width:100%;
     padding: 1rem 0rem;
     display: inline-flex;
   
@@ -26,8 +27,7 @@ padding: 2rem;
     }
     .ui.search
     {
-      
-      width: 50rem;
+      width: 100%;
     }
     .ui.input
     {
@@ -78,7 +78,12 @@ padding: 2rem;
   
       &.ui.dropdown {
         
-        padding-left: 3rem;
+         padding-left: 3rem;
+
+         @media (min-width: 900px) and (max-width:1200px) {
+          padding-left: 0.5rem !important;
+         }
+
         .ui.dropdown.selection { // Location Dropdown
           width: 12rem;
           min-width: initial;
@@ -134,3 +139,5 @@ padding: 2rem;
       }
     }
   }
+
+ 

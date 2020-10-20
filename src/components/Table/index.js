@@ -259,7 +259,8 @@ const TableList = ({ duck, list, ...props }) => {
                 )
               }
               {
-                selectionOptions.length > 0 && (
+
+                selectionOptions.length > 0 && !disableOptionsForAll && (
                   selectionOptions
                   // BEGIN Improve
                     .filter(({ conditional_render }) => {
@@ -321,8 +322,8 @@ const TableList = ({ duck, list, ...props }) => {
       }
 
       <Table
-        basic='very' className='table-primary' selectable
-        sortable>
+        basic='very'  className='table-primary' selectable
+        sortable unstackable>
         <Table.Header>
           <Table.Row>
             {/* Row selection */}
