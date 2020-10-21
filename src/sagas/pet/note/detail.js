@@ -4,18 +4,34 @@ import { call, put, takeEvery, select } from 'redux-saga/effects'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import petDetailDuck from '@reducers/pet/detail'
+import petNoteDuck from '@reducers/pet/note'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 
 const { types } = petNoteDetailDuck
 
-function* deleteItem(/* { ids } */) {
+function* deleteItem({ ids: [ id ] }) {
   try {
-    const petDetail = yield select(petDetailDuck.selectors.detail)
-    const petNoteDetail = yield select(petNoteDetailDuck.selectors.detail)
-
     yield put({ type: types.DELETE_PENDING })
 
-    yield call(Delete, `pets/${petDetail.item.id}/notes/${petNoteDetail.item.id}/`)
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+    const petNote = yield select(petNoteDuck.selectors.list)
+
+    yield call(Delete, `pets/${petDetail.item.id}/notes/${id}/`)
+
+    const index = petNote.items.findIndex(item => item.id === id)
+
+    if(index !== -1) {
+      let items = [ ...petNote.items ]
+
+      items.splice(index, 1)
+
+      yield put({
+        type   : petNoteDuck.types.SET,
+        payload: {
+          items
+        }
+      })
+    }
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -46,14 +62,25 @@ function* get({ id }) {
   }
 }
 
-function* post({ payload: { ...payload } }) {
+function* post({ payload: { pet_id, ...payload } }) {
   try {
-    const petDetail = yield select(petDetailDuck.selectors.detail)
-
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, `pets/${petDetail.item.id}/notes/`, {
-      ...payload
+    const result = yield call(Post, `pets/${pet_id}/notes/`, payload)
+
+    const petNote = yield select(petNoteDuck.selectors.list)
+
+    yield put({
+      type   : petNoteDuck.types.SET,
+      payload: {
+        items: [
+          {
+            employee_fullname: `${result.employee_first_name} ${result.employee_last_name}`,
+            ...result
+          },
+          ...petNote.items
+        ]
+      }
     })
 
     yield put({ type: types.POST_FULFILLED })
@@ -65,14 +92,25 @@ function* post({ payload: { ...payload } }) {
   }
 }
 
-function* _put({ payload : { ...payload } }) {
+function* _put({ payload: { pet_id, id, ...payload } }) {
   try {
-    const petDetail = yield select(petDetailDuck.selectors.detail)
-    const petNoteDetail = yield select(petNoteDetailDuck.selectors.detail)
-
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `pets/${petDetail.item.id}/notes/${petNoteDetail.item.id}/`, payload)
+    const result = yield call(Patch, `pets/${pet_id}/notes/${id}/`, payload)
+
+    const petNote = yield select(petNoteDuck.selectors.list)
+
+    yield put({
+      type   : petNoteDuck.types.SET,
+      payload: {
+        items: petNote.items.map(item => {
+          return item.id === result.id ? {
+            employee_fullname: `${result.employee_first_name} ${result.employee_last_name}`,
+            ...result
+          } : item
+        })
+      }
+    })
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

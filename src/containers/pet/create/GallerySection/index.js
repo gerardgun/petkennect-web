@@ -22,7 +22,7 @@ const GallerySection = props => {
   } = props
 
   const [ open, { _handleOpen, _handleClose } ] = useModal()
-  const { id: petId } = useParams()
+  const { pet: petId } = useParams()
   const cameraIsAvailable = useCameraAvailable()
   useChangeStatusEffect(() => props.getPetImages({ pet_id: petId }), petImageDetail.status, [ 'POSTED', 'PUT' ])
 

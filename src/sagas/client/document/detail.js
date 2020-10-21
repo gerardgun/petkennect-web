@@ -1,8 +1,9 @@
-import { call, put, takeEvery, select } from 'redux-saga/effects'
+import { all, call, put, takeEvery, select } from 'redux-saga/effects'
 
 import { Post, Patch } from '@lib/utils/http-client'
 
 import authDuck from '@reducers/auth'
+import clientDocumentDuck from '@reducers/client/document'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 import clientDetailDuck from '@reducers/client/detail'
 
@@ -27,34 +28,19 @@ function* deleteItem({ ids }) {
   }
 }
 
-function* get(/* { id } */) {
-  try {
-    yield put({ type: types.GET_PENDING })
-
-    // const client = yield call(Get, `client/${id}`)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-
-    yield put({
-      type   : types.GET_FULFILLED,
-      payload: {
-        item: {
-          id: 1
-        }
-      }
-    })
-  } catch (e) {
-    yield put({
-      type : types.GET_FAILURE,
-      error: e
-    })
-  }
-}
-
-function* post({ payload :{ client_id,  ...payload } }) {
+function* post({ payload: { client_id,  ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, `clients/${client_id}/documents/`, { ...payload })
+    payload.files.forEach(item => {
+      if(!String(item.description).trim()) delete item.description
+    })
+
+    yield all(
+      payload.files.map(item => (
+        call(Post, `clients/${client_id}/documents/`, item)
+      ))
+    )
 
     yield put({ type: types.POST_FULFILLED })
   } catch (e) {
@@ -69,7 +55,11 @@ function* _put({ payload: { client_id, id, ...payload } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
+    if(!String(payload.description).trim()) delete payload.description
+
     yield call(Patch, `clients/${client_id}/documents/${id}/`, payload)
+
+    yield put({ type: clientDocumentDuck.types.REMOVE_IDS })
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
@@ -106,7 +96,7 @@ function* sendEmail({ payload: { id, client_id, ...payload } }) {
 
 export default [
   takeEvery(types.DELETE, deleteItem),
-  takeEvery(types.GET, get),
+  // takeEvery(types.GET, get),
   takeEvery(types.POST, post),
   takeEvery(types.PUT, _put),
   takeEvery(types.SEND, sendEmail)

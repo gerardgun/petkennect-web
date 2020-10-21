@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Header, Divider, Button } from 'semantic-ui-react'
+import { Header, Grid, Container, Button } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
 import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
-import DocumentUploadForm from './UploadDocumentForm'
-import EditDocumentForm from './EditDocumentForm'
-import ShowDocumentForm from './ShowDocumentForm'
+import ClientDocumentFormModal from './form/modal'
+import ClientDocumentShowModal from './show/modal'
 
 import clientDocumentDuck from '@reducers/client/document'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
@@ -20,7 +19,7 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
   useEffect(() => {
     const { status } = clientDocumentDetail
 
-    if(status === 'DELETED' || status  === 'POSTED' || status === 'PUT')
+    if(status === 'DELETED' || status === 'POSTED' || status === 'PUT')
       props.getClientDocuments()
   }, [ clientDocumentDetail.status ])
 
@@ -35,7 +34,6 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
 
         return
       case 'delete':
-        props.setItem(clientDocument.selector.selected_items, 'DELETE')
         _handleOpen()
 
         return
@@ -49,36 +47,25 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
   }
 
   const _handleRowClick = (e, item) => {
-    props.setItem(item, 'Show')
+    props.setItem(item, 'READ')
   }
 
-  const _handleSaveBtnClick = ()=> {
+  const _handleAddBtnClick = ()=> {
     props.setItem(null, 'CREATE')
   }
 
-  const saving = [ 'PUTTING', 'POSTING' ].includes(clientDocumentDuck.status)
-
   return (
-    <div className='c-document-section'>
-      <div className='flex align-center justify-between ph40 pt40 pb16'>
-        <Header className='c-title mv0'>
-          Documents
-        </Header>
+    <Container fluid>
+      <Grid className='petkennect-profile-body-header' columns={2}>
+        <Grid.Column verticalAlign='middle'>
+          <Header as='h2'>Documents</Header>
+        </Grid.Column>
+        <Grid.Column textAlign='right'>
+          <Button color='teal' content='New Document' onClick={_handleAddBtnClick}/>
+        </Grid.Column>
+      </Grid>
 
-      </div>
-      <Divider className='m0'/>
-      <div className='flex justify-end mh40 mt32'>
-        <Button
-          className='ml16'
-          color='teal'
-          content='New Document'
-          loading={saving}
-          // eslint-disable-next-line react/jsx-handler-names
-          onClick={_handleSaveBtnClick}
-          size='small'/>
-      </div>
-
-      <div className='mh40 mt20'>
+      <div className='mh12 mv20'>
         <Table
           duck={clientDocumentDuck}
           onOptionClick={_handleOptionClick}
@@ -86,16 +73,14 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
       </div>
 
       <ClientDocumentFormSendModal/>
-      <DocumentUploadForm/>
-      <EditDocumentForm/>
-      <ShowDocumentForm/>
-
+      <ClientDocumentFormModal/>
+      <ClientDocumentShowModal/>
       <ModalDelete
         duck={clientDocumentDuck}
         duckDetail={clientDocumentDetailDuck}
         onClose={_handleClose}
         open={open}/>
-    </div>
+    </Container>
   )
 }
 

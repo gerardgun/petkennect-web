@@ -40,11 +40,11 @@
         &.inactive {
           td {
             pointer-events: initial;
-            color: $light-gray;
+            color: $gray-2;
           }
 
           .ui.label {
-            background-color: $light-gray !important;
+            background-color: $gray-2 !important;
           }
 
           .ui.image {

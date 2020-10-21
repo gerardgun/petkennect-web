@@ -1,0 +1,29 @@
+.ui.message {
+  &.icon > .icon:not(.close) {
+    font-size: 2rem;
+    opacity: 1;
+  }
+
+  &.warning {
+    color: $black;
+    border-left: solid 0.35rem $orange;
+
+    a {
+      color: $orange;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    i {
+      color: $orange;
+    }
+
+    .content .header {
+      color: $black;
+    }
+  }
+
+  background-color: #fff !important;
+  border: solid 1px $gray-3;
+  box-shadow: none !important;
+}

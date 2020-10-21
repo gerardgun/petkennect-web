@@ -53,9 +53,9 @@ const FormInformation = props => {
         addons: groups[_customGroup]
       }))
     if(serviceDetail.item.type === 'C')
-      props.updateAddonGroups([ ...customGroups ])
+      props.setAddonGroups({ items: [ ...customGroups ] })
     else if(serviceDetail.item.type === 'G')
-      props.updateAddonGroups([ ..._defaultGroups,...customGroups ])
+      props.setAddonGroups({ items: [ ..._defaultGroups,...customGroups ] })
   }, [ serviceDetail.item.addons ])
 
   const _handleAddBtnClick = () => {
@@ -107,10 +107,10 @@ export default compose(
       }
     },
     {
-      updateAddonGroups: serviceAddonGroupDuck.creators.update,
-      getService       : serviceDetailDuck.creators.get,
-      setItem          : serviceAddonGroupDetailDuck.creators.setItem,
-      resetItem        : serviceAddonDetailDuck.creators.resetItem
+      setAddonGroups: serviceAddonGroupDuck.creators.set,
+      getService    : serviceDetailDuck.creators.get,
+      setItem       : serviceAddonGroupDetailDuck.creators.setItem,
+      resetItem     : serviceAddonDetailDuck.creators.resetItem
     }
   )
 )(FormInformation)

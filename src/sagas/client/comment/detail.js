@@ -1,22 +1,36 @@
 import { call, put,  select, takeEvery } from 'redux-saga/effects'
 
-import { Post, Patch,Get } from '@lib/utils/http-client'
+import { Delete, Patch, Post } from '@lib/utils/http-client'
 
+import clientCommentDuck from '@reducers/client/comment'
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
 import clientDetailDuck from '@reducers/client/detail'
-// import locationDuck from '@reducers/location'
 
 const { types } = clientCommentDetailDuck
 
-function* deleteItem({ ids }) {
+function* deleteItem({ ids: [ id ] }) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
     const clientDetail = yield select(clientDetailDuck.selectors.detail)
+    const clientComment = yield select(clientCommentDuck.selectors.list)
 
-    yield call(Post, `clients/${clientDetail.item.id}/clean-comments/`, {
-      client_comment_ids: ids
-    })
+    yield call(Delete, `clients/${clientDetail.item.id}/comments/${id}/`)
+
+    const index = clientComment.items.findIndex(item => item.id === id)
+
+    if(index !== -1) {
+      let items = [ ...clientComment.items ]
+
+      items.splice(index, 1)
+
+      yield put({
+        type   : clientCommentDuck.types.SET,
+        payload: {
+          items
+        }
+      })
+    }
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -27,39 +41,19 @@ function* deleteItem({ ids }) {
   }
 }
 
-function* get(client_id, id) {
-  try {
-    yield put({ type: types.GET_PENDING })
-
-    const clientComment = yield call(Get,`clients/${client_id}/comments/${id}/`)
-
-    yield put({
-      type   : types.GET_FULFILLED,
-      payload: {
-        item: clientComment
-      }
-    })
-  } catch (e) {
-    yield put({
-      type : types.GET_FAILURE,
-      error: e
-    })
-  }
-}
-
 function* post({ payload: { client_id, ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    // const { selector : { selected_items = [] } = {} } = yield select(locationDuck.selectors.list)
+    const result = yield call(Post, `clients/${client_id}/comments/`, payload)
 
-    // const id = selected_items.map(({ id })=> id)
+    const clientComment = yield select(clientCommentDuck.selectors.list)
 
-    yield call(Post, `clients/${client_id}/comments/`, {
-      location : 1,
-      employee : payload.employee,
-      comment  : payload.comment,
-      follow_up: payload.follow_up
+    yield put({
+      type   : clientCommentDuck.types.SET,
+      payload: {
+        items: [ result, ...clientComment.items ]
+      }
     })
 
     yield put({ type: types.POST_FULFILLED })
@@ -75,7 +69,18 @@ function* _put({ payload: { client_id, id, ...payload } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `clients/${client_id}/comments/${id}/`, payload)
+    const result = yield call(Patch, `clients/${client_id}/comments/${id}/`, payload)
+
+    const clientComment = yield select(clientCommentDuck.selectors.list)
+
+    yield put({
+      type   : clientCommentDuck.types.SET,
+      payload: {
+        items: clientComment.items.map(item => {
+          return item.id === result.id ? result : item
+        })
+      }
+    })
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
@@ -88,7 +93,6 @@ function* _put({ payload: { client_id, id, ...payload } }) {
 
 export default [
   takeEvery(types.DELETE, deleteItem),
-  takeEvery(types.GET, get),
   takeEvery(types.POST, post),
   takeEvery(types.PUT, _put)
 ]

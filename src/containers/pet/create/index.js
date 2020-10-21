@@ -12,7 +12,7 @@ import InformationSection from './InformationSection'
 import BookingSection from './BookingSection'
 import VaccinationSection from './VaccinationSection'
 import IncidentSection from './IncidentSection'
-import NotesSection from './NotesSection'
+import NoteSection from './NoteSection'
 import GallerySection from './GallerySection'
 import useCameraAvailable from '@hooks/useCameraAvailable'
 import { defaultImageUrl } from '@lib/constants'
@@ -21,19 +21,21 @@ import { getAge } from '@lib/utils/functions'
 import petDetailDuck from '@reducers/pet/detail'
 import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
+import petNoteDuck from '@reducers/pet/note'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
 
-const PetShow = ({ petDetail, petImage, ...props }) => {
+const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
   const history = useHistory()
   const [ activeMenuItem, setActiveMenuItem ] = useState('info')
   const inputFileRef = useRef()
-  const { id: petId } = useParams()
+  const { pet: petId } = useParams()
   const cameraIsAvailable = useCameraAvailable()
 
   useEffect(() => {
     props.getPet(petId)
     props.getPetImages({ pet_id: petId })
     props.getPetRetireReasons()
+    props.getPetNotes({ pet_id: petId, ordering: '-created_at' })
 
     return () => {
       props.resetItem()
@@ -169,7 +171,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
                     <span style={{ color: '#888888' }}>Owner :</span>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <Link className='text-underline' to={`/client/show/${petDetail.item.client}`}>{clientFullName}</Link>
+                    <Link className='text-underline' to={`/client/${petDetail.item.client}`}>{clientFullName}</Link>
                   </div>
                 </div>
               </div>
@@ -239,7 +241,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
                 active={activeMenuItem === 'notes'} link name='notes'
                 onClick={_handleMenuItemClick}>
                 Notes
-                <Label color='teal'>3</Label>
+                <Label color='teal'>{petNote.items.length}</Label>
               </Menu.Item>
               <Menu.Item
                 active={activeMenuItem === 'gallery'} link name='gallery'
@@ -256,7 +258,7 @@ const PetShow = ({ petDetail, petImage, ...props }) => {
             {activeMenuItem === 'bookings' && <BookingSection/>}
             {activeMenuItem === 'vaccinations' && <VaccinationSection/>}
             {activeMenuItem === 'incidents' && <IncidentSection/>}
-            {activeMenuItem === 'notes' && <NotesSection/>}
+            {activeMenuItem === 'notes' && <NoteSection/>}
             {activeMenuItem === 'gallery' && <GallerySection/>}
           </Grid.Column>
         </Grid>
@@ -275,9 +277,11 @@ export default compose(
   connect(
     ({ ...state }) => ({
       petDetail: petDetailDuck.selectors.detail(state),
-      petImage : petImageDuck.selectors.list(state)
+      petImage : petImageDuck.selectors.list(state),
+      petNote  : petNoteDuck.selectors.list(state)
     }), {
       getPetImages       : petImageDuck.creators.get,
+      getPetNotes        : petNoteDuck.creators.get,
       getPetRetireReasons: petRetireReasonDuck.creators.get,
       getPet             : petDetailDuck.creators.get,
       resetItem          : petDetailDuck.creators.resetItem,

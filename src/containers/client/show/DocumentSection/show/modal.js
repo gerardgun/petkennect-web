@@ -1,24 +1,22 @@
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button,Form,Grid, Header, Modal } from 'semantic-ui-react'
+
 import InputReadOnly from '@components/Common/InputReadOnly'
 
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
-const ShowDocumentForm = props => {
+const ClientDocumentShowModal = props => {
   const {
     clientDocumentDetail
   } = props
-
-  const getIsOpened = mode => (mode === 'Show')
 
   const _handleClose = () => {
     props.resetItem()
   }
 
-  const isOpened = useMemo(() => getIsOpened(clientDocumentDetail.mode), [ clientDocumentDetail.mode ])
+  const isOpened = useMemo(() => clientDocumentDetail.mode === 'READ', [ clientDocumentDetail.mode ])
 
   return (
     <Modal
@@ -48,8 +46,7 @@ const ShowDocumentForm = props => {
               className='w120'
               color='teal'
               content='Cancel'
-              onClick={_handleClose}
-              size='small'/>
+              onClick={_handleClose}/>
             <Button
               className='w120'
               color='teal'
@@ -63,7 +60,6 @@ const ShowDocumentForm = props => {
 }
 
 export default compose(
-  withRouter,
   connect(
     state => {
       const clientDocumentDetail = clientDocumentDetailDuck.selectors.detail(state)
@@ -78,4 +74,4 @@ export default compose(
       resetItem: clientDocumentDetailDuck.creators.resetItem
     }
   )
-)(ShowDocumentForm)
+)(ClientDocumentShowModal)

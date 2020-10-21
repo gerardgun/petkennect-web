@@ -1,9 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+
 export default {
   base_uri          : null,
   search_placeholder: 'Search',
   options           : [
+    {
+      display_name: 'Download',
+      name        : 'download',
+      icon        : 'download'
+    },
+    {
+      display_name: 'Print',
+      name        : 'print',
+      icon        : 'print'
+    },
     {
       display_name: 'View Document',
       name        : 'view_pdf',
@@ -41,13 +51,7 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
-      formatter   : (cell) => {
-        return (
-          <Link>
-            <span>{`${cell}`}</span>
-          </Link>
-        )
-      }
+      formatter   : cell => <a style={{ cursor: 'pointer' }}>{cell}</a>
     },
     {
       display_name: 'TYPE',

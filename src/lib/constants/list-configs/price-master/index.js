@@ -1,8 +1,7 @@
 import React from 'react'
 export default {
-  base_uri  : null,
-  expandable: true,
-  options   : [
+  base_uri: null,
+  options : [
     {
       display_name: 'Download',
       name        : 'download',

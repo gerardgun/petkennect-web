@@ -15,10 +15,17 @@ function* get(/* { payload } */) {
 
     const { results, ...meta } = yield call(Get, `/clients/${client_id}/comments/`, filters)
 
+    const items = [ ...list.items, ...results ]
+    // BEGIN Improve
+    // Backend Solicitar que se haga filtro por follow_up para filtrar los comentarios pendientes para resolver
+    const pending_comments = items.filter(item => item.follow_up)
+    // END Improve
+
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items     : results,
+        pending_comments,
+        items,
         pagination: {
           ...list.pagination,
           meta

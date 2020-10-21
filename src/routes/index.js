@@ -166,7 +166,7 @@ const privateRoutes = [
     component: Pet
   },
   {
-    path     : '/pet/:id',
+    path     : '/pet/:pet',
     component: PetCreate
   },
   {

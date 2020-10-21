@@ -1,122 +1,145 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Header, Button, Grid, Divider, Segment, Dimmer, Loader } from 'semantic-ui-react'
+import { useParams } from 'react-router-dom'
+import { Container, Header, Button, Grid, Loader, Message } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
-import { useChangeStatusEffect } from '@hooks/Shared'
-import Form from './Form'
-import CommentsItem from './CommentsItem'
+import ClientCommentFormModal from './form/modal'
+import useInfiniteScroll from '@hooks/useInfiniteScroll'
+import { getAbbreviature } from '@lib/utils/functions'
 
-import Message from '@components/Message'
 import clientCommentDuck from '@reducers/client/comment'
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
 import authDuck from '@reducers/auth'
 
-import './styles.scss'
-
-function CommentsSection({ clientCommentDetail, clientComment, ...props }) {
+function CommentSection({ clientComment, ...props }) {
   const [ openDeleteModal, { _handleOpen, _handleClose } ] = useModal()
-  useChangeStatusEffect(props.getClientComments, clientCommentDetail.status)
+  useInfiniteScroll('.c-note-item', clientComment, props.getClientComments)
+  const { client: clientId } = useParams()
+  const [ commentId, setCommentId ] = useState(null)
 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleEditBtnClick = (item) => {
+  const _handleFollowUpBtnClick = (e, data) => {
+    const item = clientComment.items.find(({ id }) => id === +data['data-item-id'])
+
+    setCommentId(item.id)
+
+    props.put({ client_id: clientId, id: item.id, follow_up: !item.follow_up })
+      .then(() => setCommentId(null))
+  }
+
+  const _handleEditBtnClick = (e, data) => {
+    const item = clientComment.items.find(({ id }) => id === +data['data-item-id'])
+
     props.setItem(item, 'UPDATE')
   }
 
-  const _handleDeleteBtnClick = (item) => {
-    props.setItem(item)
+  const _handleDeleteBtnClick = (e, data) => {
+    const item = clientComment.items.find(({ id }) => id === +data['data-item-id'])
+
+    props.setItem(item, 'DELETE')
     _handleOpen()
   }
 
-  const saving = [ 'PUTTING', 'POSTING' ].includes(clientCommentDetail.status)
-
   return (
-    <div>
-      <div className='flex align-center justify-between ph40 pt40 pb16'>
-        <Header className='c-title mv0'>
-        Internal Comments
-        </Header>
-      </div>
-      <Divider className='m0'/>
-      <div className='mh40 mv32 comment_message'>
+    <Container fluid>
+      <Grid className='petkennect-profile-body-header' columns={2}>
+        <Grid.Column verticalAlign='middle'>
+          <Header as='h2'>Internal Comments</Header>
+        </Grid.Column>
+        <Grid.Column textAlign='right'>
+          <Button color='teal' content='New Comment' onClick={_handleAddBtnClick}/>
+        </Grid.Column>
+      </Grid>
+
+      <div className='petkennect-profile-body-content'>
         {
-          clientComment.items.results && clientComment.items.results.filter(item => item.follow_up).length > 0
-            ? (
-              <Message
-                content={
-                  <Grid padded style={{ marginLeft: -16 }}>
-                    <Grid.Column className='mb0 pb0' width='16'>
-                      <div className='message__title'>You have comments to resolve</div>
-                    </Grid.Column>
-                    <Grid.Column width='16'>
-                      <Grid>
-                        <Grid.Column>
-                          <div  className='message__subtitle'>Follow up the messages that request it</div>
-                        </Grid.Column>
-                      </Grid>
+          clientComment.pending_comments.length > 0 && (
+            <Message
+              content='Follow up the messages that request it'
+              header='You have comments to resolve'
+              icon='warning circle'
+              warning/>
+          )
+        }
+        {
+          clientComment.items.length > 0 ? (
+            clientComment.items.map(item => {
+              const createdAt = new Date(item.created_at).toLocaleString('en-US')
+              const saving = commentId === item.id
 
-                    </Grid.Column>
-                  </Grid>
+              return (
+                <div className='c-note-item' key={item.id}>
+                  {/* Header */}
+                  <div className='flex justify-between align-center mb20'>
+                    <div className='avatar-wrapper'>
+                      <div className='avatar'>
+                        {getAbbreviature(item.employee_full_name)}
+                      </div>
+                      <div>
+                        <p>{item.employee_full_name}</p>
+                        <span className='text-gray'>{createdAt}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <Button
+                        basic color='red' data-item-id={item.id}
+                        icon='trash alternate outline' onClick={_handleDeleteBtnClick}/>
+                      {
+                        item.employee === props.currentTenant.employee.id && (
+                          <Button
+                            basic data-item-id={item.id} icon='edit outline'
+                            onClick={_handleEditBtnClick}/>
+                        )
+                      }
+                    </div>
+                  </div>
 
-                } type='warning'/>
-            ) : ''
+                  {/* Content */}
+                  <p className='description'>
+                    {item.comment}
+                  </p>
+
+                  {/* Options */}
+                  <Button
+                    basic color={item.follow_up ? 'orange' : 'gray'} content='Follow up'
+                    data-item-id={item.id} disabled={saving}
+                    loading={saving} onClick={_handleFollowUpBtnClick}/>
+                </div>
+              )
+            })
+          ) : (
+            <p style={{ color: '#AAA', textAlign: 'center', width: '100%', marginTop: '1rem' }}>There {'aren\'t'} comments.</p>
+          )
+        }
+
+        {
+          clientComment.status === 'GETTING' && <Loader active inline='centered'/>
         }
       </div>
-      <div className='mh40 mv32 flex justify-end'>
-        <Button
-          basic
-          className='ml16'
-          color='teal'
-          content='New Comment'
-          disabled={saving}
-          loading={saving}
-          onClick={_handleAddBtnClick}
-          size='small'/>
-      </div>
 
-      <Form/>
-
-      <Segment className='mh40 border-none shadow-0'>
-        {clientComment.status === 'GETTING' && (
-          <Dimmer active inverted>
-            <Loader inverted>Loading</Loader>
-          </Dimmer>
-        )}
-        {clientComment.items.results && clientComment.items.results.map((item)=> (
-          <CommentsItem
-            enableUpdate={item.employee === props.currentTenant.employee} item={item} key={item.id}
-            onDelete={_handleDeleteBtnClick} onUpdate={_handleEditBtnClick}/>
-        ))}
-      </Segment>
-
+      <ClientCommentFormModal/>
       <ModalDelete
         duckDetail={clientCommentDetailDuck}
         onClose={_handleClose}
         open={openDeleteModal}/>
-
-    </div>
+    </Container>
   )
 }
-
-CommentsSection.propTypes = {  }
-
-CommentsSection.defaultProps = {  }
 
 export default compose(
   connect(
     ({ auth, ...state }) => ({
-      clientCommentDetail: clientCommentDetailDuck.selectors.detail(state),
-      clientComment      : clientCommentDuck.selectors.list(state),
-      currentTenant      : authDuck.selectors.getCurrentTenant(auth),
-
-      auth
+      clientComment: clientCommentDuck.selectors.list(state),
+      currentTenant: authDuck.selectors.getCurrentTenant(auth)
     }), {
       getClientComments: clientCommentDuck.creators.get,
-      setItem          : clientCommentDetailDuck.creators.setItem
+      setItem          : clientCommentDetailDuck.creators.setItem,
+      put              : clientCommentDetailDuck.creators.put
     })
-)(CommentsSection)
+)(CommentSection)

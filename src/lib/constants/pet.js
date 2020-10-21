@@ -1,3 +1,10 @@
+export const NoteType = {
+  B: 'Behavioral',
+  M: 'Medical',
+  G: 'General',
+  O: 'Owner'
+}
+
 export const TemperamentPeoplePreference = {
   M: 'Men',
   W: 'Women',
@@ -26,6 +33,14 @@ export const VaccinationStatus = {
     text : 'Current'
   }
 }
+
+export const NoteTypeOptions
+  = Object.entries(NoteType)
+    .map(([ value, text ], index) => ({
+      key: index,
+      value,
+      text
+    }))
 
 export const TemperamentPeoplePreferenceOptions
   = Object.entries(TemperamentPeoplePreference)

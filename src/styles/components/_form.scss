@@ -22,7 +22,7 @@
     &:not(.error) {
       .ui.input {
         input {
-          border-color: $light-gray;
+          border-color: $gray-2;
   
           &:focus {
             background-color: unquote($green + '07');
