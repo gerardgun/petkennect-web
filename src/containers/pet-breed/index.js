@@ -40,10 +40,12 @@ const PetBreedList = ({ petBreed, petBreedDetail, ...props }) => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={8} mobile={12} tablet={8}>
             <Header as='h2'>Pet Breeds</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            computer={8} mobile={12} tablet={8}
+            textAlign='right'>
             <Button
               color='teal' content='New Pet Breed'
               onClick={_handleAddBtnClick}/>

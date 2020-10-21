@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import  './styles.scss'
 import { connect } from 'react-redux'
-import { Header , Divider, Button } from 'semantic-ui-react'
+import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
@@ -29,14 +29,14 @@ function BookingSection(props) {
   }
 
   return (
-    <div className='c-booking'>
-      <div className='flex align-center justify-between ph40 pt40 pb16'>
-        <Header className='c-title mv0'>
-          Booking
-        </Header>
-      </div>
-      <Divider className='m0'/>
-      <div className='mh40 mv32 div-booking-button'>
+    <Container className='c-booking' fluid>
+      <Grid className='petkennect-profile-body-header'>
+        <Grid.Column
+          verticalAlign='middle'>
+          <Header as='h2'>Booking</Header>
+        </Grid.Column>
+      </Grid>
+      <div className='mh28 mv32 div-booking-button'>
         <Button
           basic={filters.service_type_what_ever_name !== 'T'} color='teal'
           content='Training' onClick={_handleFilterBtnClick}
@@ -58,13 +58,13 @@ function BookingSection(props) {
           content='Grooming' onClick={_handleFilterBtnClick}
           type='G'/>
       </div>
-      <div className='mh40'>
+      <div className='mh28'>
         <Table
           duck={petReservationDuck}
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
       </div>
-    </div>
+    </Container>
   )
 }
 

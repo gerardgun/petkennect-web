@@ -77,17 +77,19 @@ function IncidentSection(props) {
         <Grid.Column verticalAlign='middle'>
           <Header as='h2'>Incident</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column
+          computer={8} mobile={11} tablet={8}
+          textAlign='right'>
           <Button
             color='teal' content='New Incident'
             onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>
 
-      <div className='mh40 mv32' >
+      <div className='mh28 mv32' >
         <Summary warningIncidentTypes={_warningIncidentTypes}/>
       </div>
-      <div className='mh40'>
+      <div className='mh28'>
         <Table
           duck={petIncidentDuck} onOptionClick={_handleOptionClick}/>
       </div>

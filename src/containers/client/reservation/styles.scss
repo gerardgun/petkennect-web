@@ -51,14 +51,31 @@
       }
       
       .section-info-item-form{
+        .ui.celled.table tr td, .ui.celled.table tr th {
+          border-left: 0px solid !important;
+      }
+      .ui.table tr td {
+        border-top: 0px solid !important;
+    }
+    .ui.table{
+      width:100% !important;
+    }
       .div-kannel-selection{
         box-shadow: none;
-        padding: 1.8rem 25rem;
+        padding: 1.8rem 24rem;
+      }
+
+      .action-button-reservation{
+        hr{
+          margin-bottom: 1rem;
+          border: 0.1px solid rgba(34, 36, 38, 0.15);
+        }
       }
 
       .btn-reservation-calendar{
     height: 3rem;
-    margin: 0.12rem;
+    // margin: 0.12rem !important;
+    margin-right: 0px !important;
     padding: .58928571em 1.0em .58928571em !important;
       }
 .spn-reservation-calendar{
@@ -114,12 +131,51 @@
       }
 
       .btn-service-type{
-        .ui.button{
-          .circle.icon{
-            font-size: 22px;
+        display: flex;
+          .button-service{
+            border: 1px solid #E5EAEE;
+            box-sizing: border-box;
+            box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
+            border-radius: 3px;
+            width: 187px;
+            padding: 1rem;
+            cursor: pointer;
+            margin-right: 3rem;
+            &.selected {
+              background: #005987;
+              color: white;
+            }
+            span{
+              letter-spacing: 0.04em;
+              margin-left: 0.4em;
+            }
+            img{
+              width: 40px;
+              height: 40px;
+            }
           }
+         
+      }
+
+      @media (min-width: 767px) and (max-width:1250px) {
+        .btn-service-type{
+          text-align: center;
+        .button-service{
+          margin-right: 1rem;
+          width:auto !important;
         }
       }
+       }
+
+       @media (max-width: 767px) {
+        .btn-service-type{
+          display: block;
+        .button-service{
+          margin-top: 1rem;
+          width:100% !important;
+        }
+      }
+       }
 
 .list-total-addons > .item {
   padding: 0.8rem !important;
@@ -156,6 +212,7 @@
 
   .btn-trash-charge{
     float: right;
+    margin-top: 1.8rem;
   }
 
 
@@ -184,6 +241,41 @@ padding: 1.8rem 25rem;
       padding-top:0rem !important;
     }
 }
+
+@media (max-width:1024px) {
+  .btn-service-type .ui.button {
+    margin-right: 0rem;
+    width: 11rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+.section-info-item-step1.ui.segment{
+  padding: 1rem;
+}
+.section-info-item-form .div-kannel-selection {
+  padding: 1rem 0rem;
+}
+
+.div-section-info-item-single{
+  padding: 1rem;
+}
+
+.grooming-second-step-form .div-additional-charge{
+  padding: 0rem;
+  padding-top: 1rem;
+}
+
+.form-modal-actions{
+  .ui.button{
+    width: 100% !important;
+  }
+}
+.selection.dropdown{
+  min-width: 100% !important;
+}
+ }
+
+
   }
  
   
@@ -214,4 +306,78 @@ h6.ui.header.section-header{
 }
 
 }
+//for progess bar
+.div-progress-bar{
+  color: #BDC3C9;
+  width: 100%;
+    display: inline-flex;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    
+.div-bar-content{
+  width: 20%;
+  margin: 0rem 2rem;
+  span{
+    margin-left: 0.5rem;
+  }
+  }
 
+  .div-bar-line{
+    width: 20%;
+    border-top: 3px dotted #BDC3C9;
+    margin-top: 0.5rem;
+  }
+
+  .icon{
+    font-size: 1.5em;
+  }
+
+
+  .active{
+    border-color:#079477;
+    color:#079477;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .div-progress-bar{
+    display: contents;
+.div-bar-content{
+  margin: 0rem;
+  margin-top: 1rem;
+width: 100%;
+}
+
+.div-bar-line{
+display: none;
+}
+  }
+}
+
+
+@media (min-width: 1024px) and (max-width:1200px) {
+  .div-progress-bar{
+    padding: 0rem;
+    .div-bar-content{
+      width: 30%;
+    }
+    .div-bar-line {
+    width: 10%;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width:1023px) {
+  .div-progress-bar{
+    padding: 0rem;
+    .div-bar-content{
+      width: 33%;
+      margin:0rem;
+      margin-right: 1rem;
+    }
+    .div-bar-line {
+    display: none;
+    }
+  }
+}

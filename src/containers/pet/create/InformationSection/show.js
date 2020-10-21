@@ -31,16 +31,16 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
   return (
     <Container className='pet-information-section' fluid>
       <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+        <Grid.Column mobile={11} verticalAlign='middle'>
           <Header as='h2'>Pet Info</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column mobile={5} textAlign='right'>
           <Button
             basic color='teal' icon='edit outline'
             onClick={_handleEditBtnClick}/>
         </Grid.Column>
       </Grid>
-      <div className='mh40 mv32 div-pet-btn-info'>
+      <div className='mh28 mv32 div-pet-btn-info'>
         <Button
           basic={ActiveInfoItem !== 'Pet'} color='teal'
           content='Pet Information' name='Pet'

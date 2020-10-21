@@ -38,12 +38,14 @@ const PetIncidentBehaviorList = ({ petIncidentBehavior, petIncidentBehaviorDetai
 
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
+      <Segment className='segment-content'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={8} mobile={15} tablet={8}>
             <Header as='h2'>Incident Behavior</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            computer={8} mobile={11} tablet={8}
+            textAlign='right'>
             <Button
               color='teal' content='New Behavior'
               onClick={_handleAddBtnClick}/>

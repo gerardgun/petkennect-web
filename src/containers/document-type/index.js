@@ -38,12 +38,14 @@ const DocumentType = ({ clientDocumentType, clientDocumentTypeDetail, ...props }
 
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
+      <Segment className='segment-content'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={8} mobile={16} tablet={8}>
             <Header as='h2'>Document Types</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            computer={8} mobile={14} tablet={8}
+            textAlign='right'>
             <Button color='teal' content='New Document Type' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>

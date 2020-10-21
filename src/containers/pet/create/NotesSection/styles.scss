@@ -2,6 +2,16 @@
   .div-notes-button{
     .ui.teal.button{
       width: 8rem;
+
+      @media only screen and (max-width:767px) {
+        margin: 0.2rem;
+        width: 12rem;
+      }
+
+      @media only screen and (min-width:1024px) and (max-width:1366px) {
+        margin: 0.2rem;
+        width: 12rem;
+      }
     }
   }
 }

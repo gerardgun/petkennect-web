@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Header , Divider, Button } from 'semantic-ui-react'
+import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
@@ -61,18 +61,17 @@ function VacinationSection(props) {
   }
 
   return (
-    <div className='c-vaccination-section'>
-      <div className='flex align-center justify-between ph40 pt40 pb16'>
-        <Header className='c-title mv0'>
-          Vaccinations
-        </Header>
-
-      </div>
-      <Divider className='m0'/>
+    <Container className='c-vaccination-section' fluid>
+      <Grid className='petkennect-profile-body-header'>
+        <Grid.Column
+          verticalAlign='middle'>
+          <Header as='h2'>Vaccinations</Header>
+        </Grid.Column>
+      </Grid>
       <Alert
-        className='mh40 mt32' message={getAlertMessage()}
+        className='mh28 mt32' message={getAlertMessage()}
         open={!!petDetail.item.vaccination_alert.length}/>
-      <div className='flex justify-end mh40 mt32'>
+      <div className='flex justify-end mh28 mt32'>
         <Button
           basic
           color='teal'
@@ -91,7 +90,7 @@ function VacinationSection(props) {
           size='small'/>
       </div>
 
-      <div className='mh40 mt20'>
+      <div className='mh28 mt20'>
         <Table
           duck={petVaccinationDuck}
           onRowClick={_handleRowClick}
@@ -101,7 +100,7 @@ function VacinationSection(props) {
       <EmailReminderForm onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
 
       <VaccinationUploadForm/>
-    </div>
+    </Container>
   )
 }
 

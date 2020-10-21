@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './styles.scss'
 import { connect } from 'react-redux'
-import { Header, Button , Divider, Segment, Dimmer, Loader } from 'semantic-ui-react'
+import { Header, Button , Segment, Dimmer, Loader, Grid, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import ModalDelete from '@components/Modal/Delete'
@@ -47,14 +47,14 @@ function NotesSection(props) {
   const saving = [ 'PUTTING', 'POSTING' ].includes(petNoteDetail.status)
 
   return (
-    <div className='c-notes'>
-      <div className='flex align-center justify-between ph40 pt40 pb16'>
-        <Header className='c-title mv0'>
-          Notes
-        </Header>
-      </div>
-      <Divider className='m0'/>
-      <div className='mh40 mv32 div-notes-button'>
+    <Container className='c-notes' fluid>
+      <Grid className='petkennect-profile-body-header'>
+        <Grid.Column
+          verticalAlign='middle'>
+          <Header as='h2'>Notes</Header>
+        </Grid.Column>
+      </Grid>
+      <div className='mh28 mv32 div-notes-button'>
         <Button
           basic={filter.type !== 'B'} color='teal'
           content='Behavioral' onClick={_handleFilterBtnClick}
@@ -72,7 +72,7 @@ function NotesSection(props) {
           content='Owner' onClick={_handleFilterBtnClick}
           type='O'/>
       </div>
-      <div className='mh40 mv32 flex justify-end'>
+      <div className='mh28 mv32 flex justify-end'>
         <Button
           className='ml16'
           color='teal'
@@ -83,7 +83,7 @@ function NotesSection(props) {
           onClick={_handleAddBtnClick}
           size='small'/>
       </div>
-      <Segment className='mh40 border-none shadow-0'>
+      <Segment className='mh28 border-none shadow-0'>
         {petNote.status === 'GETTING' && (
           <Dimmer active inverted>
             <Loader inverted>Loading</Loader>
@@ -101,7 +101,7 @@ function NotesSection(props) {
         onClose={_handleCloseDeleteModal}
         open={openDeleteModal}/>
 
-    </div>
+    </Container>
   )
 }
 

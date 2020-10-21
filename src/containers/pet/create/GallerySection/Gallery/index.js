@@ -25,7 +25,9 @@ function Gallery({ duckDetail, detail, list, selectable, onItemClick, onItemOpti
         <Loader>Loading</Loader>
       </Dimmer>
 
-      <Card.Group className='gallery' itemsPerRow={3}>
+      <Card.Group
+        className='gallery' doubling={true} itemsPerRow={3}
+        stackable={true}>
         {
           list.items.length > 0 ? (
             list.items.map((item) => (

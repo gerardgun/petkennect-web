@@ -11,7 +11,7 @@
       font-weight: normal;
       padding-top: 0.8rem;
       padding-bottom: 0.8rem;
-      text-transform: uppercase;
+      text-transform: uppercase;     
 
       &:hover {
         background-color: transparent;
@@ -60,7 +60,7 @@
         padding-bottom: 1.5rem;
         color: #222b3bd9;
         vertical-align: middle;
-
+        
         a {
           color: #005987;
           text-decoration: underline;
@@ -95,6 +95,14 @@
     border: none;
     box-shadow: none;
     margin: 0;
+
+    @media only screen and (max-width: 767px) {
+      overflow-y: hidden;
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 1320px) {
+      overflow-y: hidden;
+    }
   }
 
   &-header.ui.grid {

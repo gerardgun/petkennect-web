@@ -159,7 +159,7 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
     <Layout>
       <Segment className='segment-content customized-fields'>
         <Grid columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={8} mobile={16} tablet={8}>
             <Header as='h2' className='cls-MainHeader'>Customized Fields</Header>
           </Grid.Column>
           <Grid.Column textAlign='right'>

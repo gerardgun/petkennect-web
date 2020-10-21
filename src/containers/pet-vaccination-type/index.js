@@ -38,12 +38,14 @@ const PetVaccinationTypeList = ({ petVaccinationType, petVaccinationTypeDetail, 
 
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
+      <Segment className='segment-content'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={8} mobile={15} tablet={8}>
             <Header as='h2'>Vaccination Type</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            computer={8} mobile={12} tablet={8}
+            textAlign='right'>
             <Button
               color='teal' content='New Vaccination'
               onClick={_handleAddBtnClick}/>

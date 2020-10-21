@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { compose } from 'redux'
-import { Button, Header, Grid, Segment, Breadcrumb } from 'semantic-ui-react'
+import { Header, Image, Grid, Segment, Breadcrumb } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import Message from '@components/Message'
@@ -25,13 +25,17 @@ function Reservation({ clientDetail, ...props }) {
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
 
-  const _handleReservationTypeClick = (e, { name }) => setActiveReservationItem(name)
+  // const _handleReservationTypeClick = name => setActiveReservationItem(name)
+
+  const _handleReservationTypeClick = type => () => {
+    setActiveReservationItem(type)
+  }
 
   return (
     <Layout>
       <Segment className='segment-content petkennect-reservation'>
         <Grid>
-          <Grid.Column className='p40' width={16}>
+          <Grid.Column width={16}>
             <Breadcrumb>
               <Breadcrumb.Section>
                 <Link to='/client'>Clients</Link>
@@ -66,8 +70,30 @@ function Reservation({ clientDetail, ...props }) {
               } type='warning'/>
 
             <Header as='h3'>What is the Service?</Header>
-
             <div className='mv32 btn-service-type'>
+              <div className={`button-service ${activeReservationItem === 'Boarding' && 'selected'}`} onClick={_handleReservationTypeClick('Boarding')}>
+                <Image avatar src='/images/boarding-icon.svg'/>
+                <span>Boarding</span>
+              </div>
+              <div className={`button-service ${activeReservationItem === 'Training' && 'selected'}`} onClick={_handleReservationTypeClick('Training')}>
+                <Image avatar src='/images/training-icon.svg'/>
+                <span>Training</span>
+              </div>
+              <div className={`button-service ${activeReservationItem === 'Fitness' && 'selected'}`} onClick={_handleReservationTypeClick('Fitness')}>
+                <Image avatar src='/images/fitness-icon.svg'/>
+                <span>Fitness</span>
+              </div>
+              <div className={`button-service ${activeReservationItem === 'Daycamp' && 'selected'}`} onClick={_handleReservationTypeClick('Daycamp')}>
+                <Image avatar src='/images/daycamp-icon.svg'/>
+                <span>Daycamp</span>
+              </div>
+              <div className={`button-service ${activeReservationItem === 'Grooming' && 'selected'}`} onClick={_handleReservationTypeClick('Grooming')}>
+                <Image avatar src='/images/grooming-icon.svg'/>
+                <span>Grooming</span>
+              </div>
+            </div>
+
+            {/* <div className='mv32 btn-service-type'>
               <Button
                 basic={activeReservationItem !== 'Boarding'} color='gray' content='Boarding'
                 icon='circle'
@@ -85,6 +111,7 @@ function Reservation({ clientDetail, ...props }) {
                 basic={activeReservationItem !== 'Grooming'} color='gray' content='Grooming'
                 icon='circle' name='Grooming' onClick={_handleReservationTypeClick}/>
             </div>
+             */}
             {activeReservationItem === 'Boarding' &&  <BoardingReservationFormWizard/>}
             {activeReservationItem === 'Daycamp' &&  <DaycampReservationFormWizard/>}
             {activeReservationItem === 'Fitness' &&  <FitnessReservationFormWizard/>}
