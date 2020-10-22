@@ -27,16 +27,20 @@ function ClienInformationShow({ clientDetail, ...props }) {
   return (
     <Container className='client-information-section' fluid>
       <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+        <Grid.Column
+          computer={8} mobile={11} tablet={8}
+          verticalAlign='middle'>
           <Header as='h2'>Client Info</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column
+          computer={8} mobile={5} tablet={8}
+          textAlign='right'>
           <Button
             basic color='teal' icon='edit outline'
             onClick={_handleEditBtnClick}/>
         </Grid.Column>
       </Grid>
-      <div className='mh40 mv32 div-client-info-button'>
+      <div className='mh28 mv32 div-client-info-button'>
         <Button
           basic={ActiveInfoItem !== 'Client'} color='teal'
           content='Client Information' name='Client'

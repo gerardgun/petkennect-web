@@ -47,8 +47,8 @@ const Location = ({ location, locationDetail, ...props }) => {
             <Header as='h2'>Locations</Header>
           </Grid.Column>
           <Grid.Column
-            computer={8} mobile={11} tablet={8}
-            textAlign='right'>
+            className='ui-grid-align'
+            computer={8} mobile={10} tablet={8}>
             <Button color='teal' content='New Location' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>

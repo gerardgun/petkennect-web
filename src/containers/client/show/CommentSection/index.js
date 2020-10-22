@@ -49,10 +49,14 @@ function CommentSection({ clientComment, ...props }) {
   return (
     <Container fluid>
       <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+        <Grid.Column
+          computer={8} mobile={16} tablet={8}
+          verticalAlign='middle'>
           <Header as='h2'>Internal Comments</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column
+          computer={8} mobile={11} tablet={8}
+          textAlign='right'>
           <Button color='teal' content='New Comment' onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>

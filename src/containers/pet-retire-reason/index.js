@@ -44,8 +44,8 @@ const PetRetireReasonList = ({ petRetireReason, petRetireReasonDetail, ...props 
             <Header as='h2'>Retire Reasons</Header>
           </Grid.Column>
           <Grid.Column
-            computer={8} mobile={13} tablet={8}
-            textAlign='right'>
+            className='ui-grid-align'
+            computer={8} mobile={13} tablet={8}>
             <Button
               color='teal' content='New Retire Reason'
               onClick={_handleAddBtnClick}/>

@@ -44,8 +44,8 @@ const PetBreedList = ({ petBreed, petBreedDetail, ...props }) => {
             <Header as='h2'>Pet Breeds</Header>
           </Grid.Column>
           <Grid.Column
-            computer={8} mobile={12} tablet={8}
-            textAlign='right'>
+            className='ui-grid-align'
+            computer={8} mobile={12} tablet={8}>
             <Button
               color='teal' content='New Pet Breed'
               onClick={_handleAddBtnClick}/>

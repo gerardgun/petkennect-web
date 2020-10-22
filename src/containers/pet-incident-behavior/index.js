@@ -44,8 +44,8 @@ const PetIncidentBehaviorList = ({ petIncidentBehavior, petIncidentBehaviorDetai
             <Header as='h2'>Incident Behavior</Header>
           </Grid.Column>
           <Grid.Column
-            computer={8} mobile={11} tablet={8}
-            textAlign='right'>
+            className='ui-grid-align'
+            computer={8} mobile={11} tablet={8}>
             <Button
               color='teal' content='New Behavior'
               onClick={_handleAddBtnClick}/>

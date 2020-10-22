@@ -57,10 +57,14 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
   return (
     <Container fluid>
       <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+        <Grid.Column
+          computer={8} mobile={14} tablet={8}
+          verticalAlign='middle'>
           <Header as='h2'>Documents</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column
+          computer={8} mobile={12} tablet={8}
+          textAlign='right'>
           <Button color='teal' content='New Document' onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>

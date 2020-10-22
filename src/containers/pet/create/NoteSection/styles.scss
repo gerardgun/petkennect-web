@@ -2,6 +2,11 @@
   border-bottom: 1px solid #e5eaee;
   padding: 1.8rem;
 
+  @media screen and (max-width: 767px) {
+    padding-bottom: 1rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
+  }
   .avatar-wrapper {
     display: flex;
 
