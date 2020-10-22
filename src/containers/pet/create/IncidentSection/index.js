@@ -78,7 +78,7 @@ function IncidentSection(props) {
           <Header as='h2'>Incident</Header>
         </Grid.Column>
         <Grid.Column
-          computer={8} mobile={11} tablet={8}
+          computer={8} mobile={12} tablet={8}
           textAlign='right'>
           <Button
             color='teal' content='New Incident'

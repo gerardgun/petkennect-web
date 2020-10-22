@@ -107,7 +107,7 @@ const AgreementCreate = props => {
     <Layout>
       <Grid className='form-primary'>
         <Grid.Column
-          computer={12} mobile={16} tablet={13}>
+          computer={12} mobile={16} tablet={16}>
           <Segment className='segment-content'>
             <Grid className='segment-content-header'>
               <Grid.Column>
@@ -120,7 +120,7 @@ const AgreementCreate = props => {
         </Grid.Column>
         <Grid.Column
           className='form-primary-actions vertical'
-          computer={4} mobile={9} tablet={3}>
+          computer={4} mobile={16} tablet={16}>
           <Segment className='segment-content'>
             <Button
               as={Link} content='Cancel' fluid

@@ -46,33 +46,37 @@ function NoteSection({ petNote, ...props }) {
 
   return (
     <Container fluid>
-      <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+      <Grid className='petkennect-profile-body-header'>
+        <Grid.Column
+          computer={8} mobile={16} tablet={8}
+          verticalAlign='middle'>
           <Header as='h2'>Notes</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column
+          computer={8} mobile={16} tablet={8}
+          textAlign='right'>
           <Button color='teal' content='New Note' onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>
 
-      <div className='petkennect-profile-body-content'>
+      <div className='petkennect-profile-body-content div-notes-button'>
         {
           petNote.items.length > 0 ? (
             <>
               <Button
-                basic={type !== 'B'} color='blue'
+                basic={type !== 'B'} color='teal'
                 content='Behavioral' data-type='B'
                 onClick={_handleTypeBtnClick}/>
               <Button
-                basic={type !== 'M'} color='blue'
+                basic={type !== 'M'} color='teal'
                 content='Medical' data-type='M'
                 onClick={_handleTypeBtnClick}/>
               <Button
-                basic={type !== 'G'} color='blue'
+                basic={type !== 'G'} color='teal'
                 content='General' data-type='G'
                 onClick={_handleTypeBtnClick}/>
               <Button
-                basic={type !== 'O'} color='blue'
+                basic={type !== 'O'} color='teal'
                 content='Owner' data-type='O'
                 onClick={_handleTypeBtnClick}/>
               <br/>

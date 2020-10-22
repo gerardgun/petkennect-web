@@ -27,3 +27,14 @@
     word-wrap: break-word;
   }
 }
+
+.div-notes-button{
+  .ui.teal.button{
+    width: 8rem;
+
+    @media only screen and (max-width:1100px) {
+      margin: 0.2rem;
+      width: 14rem;
+    }
+  }
+}

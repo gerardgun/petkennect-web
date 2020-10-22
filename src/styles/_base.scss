@@ -36,6 +36,7 @@ textarea {
 .app-content {
   height: 80vh;
   overflow-y: auto;
+  overflow-x: hidden;
   background-color: $white;
 }
 

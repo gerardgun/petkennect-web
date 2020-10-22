@@ -195,16 +195,16 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
             <Grid>
               <Grid.Row verticalAlign='middle'>
                 <Grid.Column computer={16} mobile={16} tablet={10}>
-                  <PetProfileProperty name='Breed&nbsp;&nbsp;&nbsp;&nbsp;' value={_get(petDetail.item, 'breed_name', '-')}/>
+                  <PetProfileProperty name='Breed' value={_get(petDetail.item, 'breed_name', '-')}/>
                 </Grid.Column>
                 <Grid.Column computer={16} mobile={16} tablet={16}>
-                  <PetProfileProperty name='Age&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' value={getAge(petDetail.item.born_at)}/>
+                  <PetProfileProperty name='Age' value={getAge(petDetail.item.born_at)}/>
                 </Grid.Column>
                 <Grid.Column computer={16} mobile={16} tablet={16}>
-                  <PetProfileProperty name='Sex&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' value={petDetail.item.sex === 'F' ? 'Female' : 'Male'}/>
+                  <PetProfileProperty name='Sex' value={petDetail.item.sex === 'F' ? 'Female' : 'Male'}/>
                 </Grid.Column>
                 <Grid.Column computer={16} mobile={16} tablet={16}>
-                  <PetProfileProperty name='Altered&nbsp;' value={petDetail.item.fixed ? 'Yes' : 'No'}/>
+                  <PetProfileProperty name='Altered' value={petDetail.item.fixed ? 'Yes' : 'No'}/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
