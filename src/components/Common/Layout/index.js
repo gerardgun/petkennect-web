@@ -19,10 +19,15 @@ const Layout = ({ children }) => (
       </Grid.Column>
     </Grid>
     <Grid>
-      <Grid.Column style={{ paddingBottom: 0, paddingRight: 0,paddingTop: 0 }} width='three'>
+      <Grid.Column
+        className='main-div-sidebar'
+        computer={3} mobile={16} style={{ paddingBottom: 0, paddingRight: 0,paddingTop: 0 }}
+        tablet={4}>
         <Sidebar/>
       </Grid.Column>
-      <Grid.Column style={{ paddingBottom: 0, paddingLeft: 0,paddingTop: 0 }} width='thirteen'>
+      <Grid.Column
+        computer={13} mobile={16} style={{ paddingBottom: 0, paddingLeft: 0,paddingTop: 0 }}
+        tablet={12}>
         <div className='app-content'>
           {/* Content */}
           {children}

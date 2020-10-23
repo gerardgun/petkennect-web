@@ -236,7 +236,7 @@ const TableList = ({ duck, list, ...props }) => {
       {
         hasHeader && (
           <Grid className='table-primary-header'>
-            <Grid.Column computer={6} mobile={16} tablet={8}>
+            <Grid.Column computer={6} mobile={16} tablet={16}>
               {
                 basicOptions.length > 0 && (
                   <Dropdown
@@ -264,7 +264,7 @@ const TableList = ({ duck, list, ...props }) => {
                 selectionOptions
                   // BEGIN Improve
                   .filter(({ conditional_render }) => {
-                    return !conditional_render || conditional_render(list.selector.selected_items[0])
+                    return !conditional_render || conditional_render(list.selector.selected_items.length > 0 ? list.selector.selected_items[0] : [])
                   })
                   // END Improve
                   .map(({ icon, name, display_name, is_multiple, ...rest }, index) => {
@@ -289,7 +289,7 @@ const TableList = ({ duck, list, ...props }) => {
             </Grid.Column >
             <Grid.Column
               className='grid-filter-item' computer={10} mobile={16}
-              tablet={8} textAlign='right'>
+              tablet={16} textAlign='right'>
               {
                 props.filterColumns.length > 0 && (
                   <Popup

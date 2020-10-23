@@ -108,8 +108,8 @@ const FormInformation = props => {
             placeholder='Search categories'
             required
             search
-            selection
-            selectOnBlur={false}/>
+            selectOnBlur={false}
+            selection/>
         </Form.Group>
         <Form.Group className='text-area-container' widths='equal'>
           <Field

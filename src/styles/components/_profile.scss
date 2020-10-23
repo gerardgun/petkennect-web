@@ -60,6 +60,10 @@
     height: 14rem;
     margin-bottom: 2.5rem;
 
+    @media only screen and (min-width: 768px) and (max-width: 1023px) {
+      height: 10rem;
+    }
+
     .ui.image {
       height: 100%;
       width: 100%;

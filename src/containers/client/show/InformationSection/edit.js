@@ -26,8 +26,8 @@ function ClientInformationEdit({ clientDetail, ...props }) {
           <Header as='h2'>Client Info</Header>
         </Grid.Column>
         <Grid.Column
-          computer={10} mobile={12} tablet={10}
-          textAlign='right'>
+          className='ui-grid-align'
+          computer={10} mobile={12} tablet={10}>
           <Button
             basic color='teal'
             content={saved ? 'Go back' : 'Cancel'} disabled={saving} onClick={_handleCancelBtnClick}/>

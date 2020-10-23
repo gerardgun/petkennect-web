@@ -44,10 +44,12 @@ const SignIn = props => {
   return (
     <Container className='sign-in'>
       <Grid columns={2}>
-        <Grid.Column width={10}>
+        <Grid.Column
+          className='ui-grid'
+          computer={10} mobile={16} tablet={8}>
           <Image className='image' src='/images/sign-in.svg'/>
         </Grid.Column>
-        <Grid.Column width={6}>
+        <Grid.Column computer={6} mobile={16} tablet={8}>
           <Header as='h2'>Welcome to PetKennect</Header>
           <p>
             We’re here to help you. Please sign in to your account.

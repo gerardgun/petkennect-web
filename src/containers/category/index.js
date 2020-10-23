@@ -58,10 +58,12 @@ const CategoryList = ({ ...props }) => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={4} mobile={10} tablet={4}>
             <Header as='h2'>Categories</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            className='ui-grid-align'
+            computer={12} mobile={16} tablet={12}>
             <Button content='Download' disabled/>
             <Button
               as={Link} color='teal'

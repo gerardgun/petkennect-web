@@ -55,8 +55,8 @@ function CommentSection({ clientComment, ...props }) {
           <Header as='h2'>Internal Comments</Header>
         </Grid.Column>
         <Grid.Column
-          computer={8} mobile={11} tablet={8}
-          textAlign='right'>
+          className='ui-grid-align'
+          computer={8} mobile={11} tablet={8}>
           <Button color='teal' content='New Comment' onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>

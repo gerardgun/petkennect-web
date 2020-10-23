@@ -26,8 +26,8 @@ function PetInformationEdit({ petDetail, ...props }) {
           <Header as='h2'>Pet Info</Header>
         </Grid.Column>
         <Grid.Column
-          computer={12} mobile={12} tablet={12}
-          textAlign='right'>
+          className='ui-grid-align'
+          computer={12} mobile={12} tablet={12}>
           <Button
             basic color='teal'
             content={saved ? 'Go back' : 'Cancel'} disabled={saving} onClick={_handleCancelBtnClick}/>

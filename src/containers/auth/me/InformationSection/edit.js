@@ -19,13 +19,17 @@ function AuthMeInformationEdit({ auth, ...props }) {
 
   return (
     <Container fluid>
-      <Grid className='petkennect-profile-body-header'>
-        <Grid.Column verticalAlign='middle'  width={6}>
+      <Grid className='petkennect-profile-body-header div-client-info-edit-button'>
+        <Grid.Column
+          computer={8} mobile={15} tablet={10}
+          verticalAlign='middle'>
           <Header as='h2'>Update My Profile</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right' width={10}>
+        <Grid.Column
+          className='ui-grid-align'
+          computer={8} mobile={11} tablet={6}>
           <Button
-            basic className='w120' color='teal'
+            basic color='teal'
             content={saved ? 'Go back' : 'Cancel'} disabled={saving} onClick={_handleCancelBtnClick}/>
           <Button
             color='teal' content='Save Changes'

@@ -30,6 +30,13 @@ textarea {
        margin-top: 1.5rem;
      }
    }
+
+   @media only screen and (min-width: 1200px) {
+    .logo-img{
+      height: 9rem !important;
+    }
+  }
+  
   
 }
 
@@ -267,6 +274,15 @@ textarea {
       line-height: 16px;
       color: #005987;
     }
+  }
+}
+
+.ui-grid-button {
+  @media only screen and (max-width: 767px) {
+    margin-left: 2rem;
+  }
+  @media only screen and (min-width: 768px) and (max-width: 1220px) {
+    margin-left: -1rem;
   }
 }
 

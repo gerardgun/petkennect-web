@@ -96,7 +96,7 @@ const EmployeeCreateForm = (props) => {
       className='form-modal'
       onClose={_handleClose}
       open={isOpened}
-      size='small'>
+      size='large'>
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
@@ -139,8 +139,8 @@ const EmployeeCreateForm = (props) => {
               placeholder='Search email'
               required
               search
-              selection
-              selectOnBlur={false}/>
+              selectOnBlur={false}
+              selection/>
             <Field
               component={FormField}
               control={Input}
