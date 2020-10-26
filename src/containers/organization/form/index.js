@@ -62,10 +62,11 @@ const OrganizationForm = props => {
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={formId} onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
         <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
-        <Form.Group widths='equal'>
+        <Form.Group className='ui-form-group-custom' widths='3'>
           <Field
             autoComplete='off'
             autoFocus
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='Legal name'
@@ -73,21 +74,24 @@ const OrganizationForm = props => {
             placeholder='Enter legal name'
             required/>
           <Field
+            className='ui-field-custom-width'
             component={FormField}
             control={InputFile}
             label='Logo'
             name='logo'/>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='DBA'
             name='dba'
             placeholder='Enter DBA'/>
         </Form.Group>
-        <Form.Group widths={3}>
+        <Form.Group className='ui-form-group-custom' widths={3}>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={InputMask}
             label='Tax ID'
@@ -97,9 +101,10 @@ const OrganizationForm = props => {
         </Form.Group>
 
         <Header as='h6' className='section-header' color='blue'>Contact Details</Header>
-        <Form.Group widths='equal'>
+        <Form.Group className='ui-form-group-custom' widths='3'>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={InputMask}
             label='Phone'
@@ -108,6 +113,7 @@ const OrganizationForm = props => {
             placeholder='(999) 999 9999'/>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='Email'
@@ -116,6 +122,7 @@ const OrganizationForm = props => {
             type='email'/>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='Website'
@@ -142,8 +149,9 @@ const OrganizationForm = props => {
             name='addresses[1]'
             placeholder='Enter address'/>
         </Form.Group>
-        <Form.Group widths='equal'>
+        <Form.Group className='ui-form-group-custom' widths='3'>
           <Field
+            className='ui-field-custom-width'
             component={FormField}
             control={Select}
             disabled={zip.status === 'GETTING'}
@@ -157,14 +165,14 @@ const OrganizationForm = props => {
             required
             search
             selectOnBlur={false}/>
-          <Form.Field>
+          <Form.Field className='ui-field-custom-width'>
             <Form.Input
               autoComplete='off'
               label='Country'
               readOnly
               value={zipDetail.item.country_code}/>
           </Form.Field>
-          <Form.Field>
+          <Form.Field className='ui-field-custom-width'>
             <Form.Input
               autoComplete='off'
               label='State'
@@ -172,8 +180,8 @@ const OrganizationForm = props => {
               value={zipDetail.item.state}/>
           </Form.Field>
         </Form.Group>
-        <Form.Group widths={3}>
-          <Form.Field>
+        <Form.Group className='ui-form-group-custom' widths={3}>
+          <Form.Field className='ui-field-custom-width'>
             <Form.Input
               autoComplete='off'
               label='City'

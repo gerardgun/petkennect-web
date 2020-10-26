@@ -1,5 +1,12 @@
 .organization-show {
-  padding: 3rem 4.5rem;
+  padding: 3rem 3rem;
   background-color: #fff;
   min-height: 100vh;
+}
+
+.ui-grid-aligns {
+  text-align: right;
+  @media only screen and (max-width: 767px) {
+    text-align: left;
+  }
 }

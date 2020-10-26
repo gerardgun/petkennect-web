@@ -51,10 +51,12 @@ const Transaction = props => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={8} mobile={11} tablet={8}>
             <Header as='h2'>Transactions</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            className='ui-grid-align'
+            computer={8} mobile={11} tablet={8}>
             <Button color='teal' content='New Transaction' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>

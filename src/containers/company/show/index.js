@@ -45,7 +45,7 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
     <Layout>
       <Container className='company-show' fluid>
         <Grid columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={8} mobile={16} tablet={8}>
             <Breadcrumb>
               {
                 comesfromOrganizationShowScreen ? (
@@ -62,7 +62,9 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
               <Breadcrumb.Section active>{_defaultTo(company.legal_name, '-')}</Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            className='ui-grid-aligns'
+            computer={8} mobile={11} tablet={8}>
             <Button
               as={Link} basic icon='edit outline'
               to={`/company/${companyId}/edit`}/>
@@ -75,47 +77,64 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
 
         <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
         <Grid columns={3}>
-          <InputReadOnly
-            label='Legal name'
-            value={_defaultTo(company.legal_name, '-')}/>
-          <InputReadOnly
-            label='Logo'
-            value={<Image rounded size='mini' src={company.thumbnail || defaultImageUrl}/>}/>
-          <InputReadOnly
-            label='DBA'
-            value={_defaultTo(company.dba, '-')}/>
-
-          <InputReadOnly
-            label='Subdomain prefix'
-            value={_defaultTo(company.subdomain_prefix, '-')}/>
-          <InputReadOnly
-            label='Tax ID'
-            value={_defaultTo(company.tax_id, '-')}/>
-          <InputReadOnly
-            label='Theme color'
-            value={
-              company.theme_color ? (
-                <div>
-                  <Label circular empty style={{ backgroundColor: company.theme_color }}/> {company.theme_color}
-                </div>
-              ) : '-'
-            }/>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Legal name'
+              value={_defaultTo(company.legal_name, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Logo'
+              value={<Image rounded size='mini' src={company.thumbnail || defaultImageUrl}/>}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='DBA'
+              value={_defaultTo(company.dba, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Subdomain prefix'
+              value={_defaultTo(company.subdomain_prefix, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Tax ID'
+              value={_defaultTo(company.tax_id, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Theme color'
+              value={
+                company.theme_color ? (
+                  <div>
+                    <Label circular empty style={{ backgroundColor: company.theme_color }}/> {company.theme_color}
+                  </div>
+                ) : '-'
+              }/>
+          </Grid.Column>
         </Grid>
         <br/>
 
         <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
         <Grid columns={3}>
-          <InputReadOnly
-            label='Phone'
-            value={_get(company, 'phones[0]', '-')}/>
-          <InputReadOnly
-            label='Email'
-            value={_defaultTo(company.email, '-')}/>
-          <InputReadOnly
-            label='WebSite'
-            value={
-              company.website ? <a href={company.website} rel='noopener noreferrer' target='_blank'>{company.website}</a> : '-'
-            }/>
+          <Grid.Column computer={5} mobile={16} tablet={16}>
+            <InputReadOnly
+              label='Phone'
+              value={_get(company, 'phones[0]', '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={16}>
+            <InputReadOnly
+              label='Email'
+              value={_defaultTo(company.email, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={16}>
+            <InputReadOnly
+              label='WebSite'
+              value={
+                company.website ? <a href={company.website} rel='noopener noreferrer' target='_blank'>{company.website}</a> : '-'
+              }/>
+          </Grid.Column>
         </Grid>
         <br/>
 
@@ -129,45 +148,67 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
             value={_get(company, 'addresses[1]', '-')}/>
         </Grid>
         <Grid columns={3}>
-          <InputReadOnly
-            label='Zip'
-            value={_defaultTo(company.zip_code, '-')}/>
-          <InputReadOnly
-            label='Country'
-            value={_defaultTo(zip.country_code, '-')}/>
-          <InputReadOnly
-            label='State'
-            value={zip.state ? `${zip.state} (${zip.state_code})` : '-'}/>
+          <Grid.Column computer={5} mobile={16} tablet={5}>
+            <InputReadOnly
+              label='Zip'
+              value={_defaultTo(company.zip_code, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={5}>
+            <InputReadOnly
+              label='Country'
+              value={_defaultTo(zip.country_code, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={5}>
+            <InputReadOnly
+              label='State'
+              value={zip.state ? `${zip.state} (${zip.state_code})` : '-'}/>
+          </Grid.Column>
 
-          <InputReadOnly
-            label='City'
-            value={_defaultTo(zip.city, '-')}/>
-          <InputReadOnly
-            label='Division'
-            value='-'/>
-          <InputReadOnly
-            label='Region'
-            value='-'/>
+          <Grid.Column computer={5} mobile={16} tablet={5}>
+            <InputReadOnly
+              label='City'
+              value={_defaultTo(zip.city, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={5}>
+            <InputReadOnly
+              label='Division'
+              value='-'/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={5}>
+            <InputReadOnly
+              label='Region'
+              value='-'/>
+          </Grid.Column>
 
-          <InputReadOnly
-            label='Multilocation'
-            value={company.multilocation ? 'Yes' : 'No'}/>
-          <InputReadOnly
-            label='Active'
-            value={company.status ? 'Yes' : 'No'}/>
+          <Grid.Column computer={5} mobile={16} tablet={5}>
+            <InputReadOnly
+              label='Multilocation'
+              value={company.multilocation ? 'Yes' : 'No'}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={5}>
+            <InputReadOnly
+              label='Active'
+              value={company.status ? 'Yes' : 'No'}/>
+          </Grid.Column>
         </Grid>
 
         <Header as='h6' className='section-header' color='blue'>Main Admin User</Header>
         <Grid columns={3}>
-          <InputReadOnly
-            label='User email'
-            value={_defaultTo(company.main_admin_email, '-')}/>
-          <InputReadOnly
-            label='Names'
-            value={_defaultTo(company.main_admin_first_name, '-')}/>
-          <InputReadOnly
-            label='Last names'
-            value={_defaultTo(company.main_admin_last_name, '-')}/>
+          <Grid.Column computer={5} mobile={16} tablet={16}>
+            <InputReadOnly
+              label='User email'
+              value={_defaultTo(company.main_admin_email, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Names'
+              value={_defaultTo(company.main_admin_first_name, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Last names'
+              value={_defaultTo(company.main_admin_last_name, '-')}/>
+          </Grid.Column>
         </Grid>
 
       </Container>

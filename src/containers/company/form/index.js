@@ -150,10 +150,11 @@ const CompanyForm = props => {
           defaultValue={true} name='user_exists' type='hidden'/>
 
         <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
-        <Form.Group widths='equal'>
+        <Form.Group className='ui-form-group-custom' widths='3'>
           <Field
             autoComplete='off'
             autoFocus
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='Legal name'
@@ -161,21 +162,24 @@ const CompanyForm = props => {
             placeholder='Enter legal name'
             required/>
           <Field
+            className='ui-field-custom-width'
             component={FormField}
             control={InputFile}
             label='Logo'
             name='logo'/>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='DBA'
             name='dba'
             placeholder='Enter DBA'/>
         </Form.Group>
-        <Form.Group widths='equal'>
+        <Form.Group className='ui-form-group-custom' widths='3'>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='Subdomain prefix'
@@ -188,6 +192,7 @@ const CompanyForm = props => {
           </Field>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={InputMask}
             label='Tax ID'
@@ -196,6 +201,7 @@ const CompanyForm = props => {
             placeholder='Enter tax ID'/>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={InputColor}
             label='Theme color'
@@ -203,9 +209,10 @@ const CompanyForm = props => {
         </Form.Group>
         {
           (!updating && !organizationId) && (
-            <Form.Group widths='equal'>
+            <Form.Group className='ui-form-group-custom' widths='equal'>
               <Field
                 autoComplete='off'
+                className='ui-form-group-custom'
                 component={FormField}
                 control={Select}
                 label='Organization'
@@ -221,9 +228,10 @@ const CompanyForm = props => {
         }
 
         <Header as='h6' className='section-header' color='blue'>Contact Details</Header>
-        <Form.Group widths='equal'>
+        <Form.Group className='ui-form-group-custom' widths='3'>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={InputMask}
             label='Phone'
@@ -232,6 +240,7 @@ const CompanyForm = props => {
             placeholder='(999) 999 9999'/>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='Email'
@@ -240,6 +249,7 @@ const CompanyForm = props => {
             type='email'/>
           <Field
             autoComplete='off'
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='Website'
@@ -266,8 +276,9 @@ const CompanyForm = props => {
             name='addresses[1]'
             placeholder='Enter address'/>
         </Form.Group>
-        <Form.Group widths='equal'>
+        <Form.Group className='ui-form-group-custom' widths='3'>
           <Field
+            className='ui-field-custom-width'
             component={FormField}
             control={Select}
             disabled={zip.status === 'GETTING'}
@@ -281,14 +292,14 @@ const CompanyForm = props => {
             required
             search
             selectOnBlur={false}/>
-          <Form.Field>
+          <Form.Field className='ui-field-custom-width'>
             <Form.Input
               autoComplete='off'
               label='Country'
               readOnly
               value={zipDetail.item.country_code}/>
           </Form.Field>
-          <Form.Field>
+          <Form.Field className='ui-field-custom-width'>
             <Form.Input
               autoComplete='off'
               label='State'
@@ -296,8 +307,8 @@ const CompanyForm = props => {
               value={zipDetail.item.state}/>
           </Form.Field>
         </Form.Group>
-        <Form.Group widths='equal'>
-          <Form.Field>
+        <Form.Group className='ui-form-group-custom' widths='3'>
+          <Form.Field className='ui-field-custom-width'>
             <Form.Input
               autoComplete='off'
               label='City'
@@ -305,6 +316,7 @@ const CompanyForm = props => {
               value={zipDetail.item.city}/>
           </Form.Field>
           <Field
+            className='ui-field-custom-width'
             component={FormField}
             control={Select}
             label='Division'
@@ -313,6 +325,7 @@ const CompanyForm = props => {
             placeholder='Select division'
             selectOnBlur={false}/>
           <Field
+            className='ui-field-custom-width'
             component={FormField}
             control={Select}
             label='Region'
@@ -340,10 +353,11 @@ const CompanyForm = props => {
         </Form.Group>
 
         <Header as='h6' className='section-header' color='blue'>Add admin user</Header>
-        <Form.Group widths='equal'>
+        <Form.Group className='ui-form-group-custom' widths={3}>
           <Field
             additionLabel='Invite '
             allowAdditions
+            className='ui-field-custom-width'
             closeOnChange
             component={FormField}
             control={Select}
@@ -368,6 +382,7 @@ const CompanyForm = props => {
             selectOnBlur={false}/>
 
           <Field
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='Name'
@@ -376,6 +391,7 @@ const CompanyForm = props => {
             readOnly={!!props.user_exists || (updating && props.pristine)}
             required/>
           <Field
+            className='ui-field-custom-width'
             component={FormField}
             control={Input}
             label='Lastname'

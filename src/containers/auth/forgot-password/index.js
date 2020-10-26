@@ -33,10 +33,10 @@ const ForgotPassword = props => {
   return (
     <Container className='forgot-password'>
       <Grid columns={2}>
-        <Grid.Column width={10}>
+        <Grid.Column computer={10} mobile={16} tablet={9}>
           <Image className='image' src='/images/Forgot-password.svg'/>
         </Grid.Column>
-        <Grid.Column width={6}>
+        <Grid.Column computer={6} mobile={16} tablet={7}>
           <Header as='h2'>Forgot your password?</Header>
           <p>
             Well help you reseat it and get back on track.

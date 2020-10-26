@@ -45,7 +45,7 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
     <Layout>
       <Container className='organization-show' fluid>
         <Grid columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={8} mobile={16} tablet={8}>
             <Breadcrumb>
               <Breadcrumb.Section>
                 <Link to='/organization'>Organizations</Link>
@@ -54,7 +54,9 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
               <Breadcrumb.Section active>{_defaultTo(organization.legal_name, '-')}</Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            className='ui-grid-aligns'
+            computer={8} mobile={11} tablet={8}>
             <Button
               as={Link} basic icon='edit outline'
               to={`/organization/${organizationId}/edit`}/>
@@ -67,35 +69,48 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
 
         <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
         <Grid columns={3}>
-          <InputReadOnly
-            label='Legal name'
-            value={_defaultTo(organization.legal_name, '-')}/>
-          <InputReadOnly
-            label='Logo'
-            value={<Image rounded size='mini' src={organization.thumbnail || defaultImageUrl}/>}/>
-          <InputReadOnly
-            label='DBA'
-            value={_defaultTo(organization.dba, '-')}/>
-
-          <InputReadOnly
-            label='Tax ID'
-            value={_defaultTo(organization.tax_id, '-')}/>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Legal name'
+              value={_defaultTo(organization.legal_name, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Logo'
+              value={<Image rounded size='mini' src={organization.thumbnail || defaultImageUrl}/>}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='DBA'
+              value={_defaultTo(organization.dba, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Tax ID'
+              value={_defaultTo(organization.tax_id, '-')}/>
+          </Grid.Column>
         </Grid>
         <br/>
 
         <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
         <Grid columns={3}>
-          <InputReadOnly
-            label='Phone'
-            value={_get(organization, 'phones[0]', '-')}/>
-          <InputReadOnly
-            label='Email'
-            value={_defaultTo(organization.email, '-')}/>
-          <InputReadOnly
-            label='WebSite'
-            value={
-              organization.website ? <a href={organization.website} rel='noopener noreferrer' target='_blank'>{organization.website}</a> : '-'
-            }/>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Phone'
+              value={_get(organization, 'phones[0]', '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Email'
+              value={_defaultTo(organization.email, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='WebSite'
+              value={
+                organization.website ? <a href={organization.website} rel='noopener noreferrer' target='_blank'>{organization.website}</a> : '-'
+              }/>
+          </Grid.Column>
         </Grid>
         <br/>
 
@@ -109,19 +124,27 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
             value={_get(organization, 'addresses[1]', '-')}/>
         </Grid>
         <Grid columns={3}>
-          <InputReadOnly
-            label='Zip'
-            value={_defaultTo(organization.zip_code, '-')}/>
-          <InputReadOnly
-            label='Country'
-            value={_defaultTo(zip.country_code, '-')}/>
-          <InputReadOnly
-            label='State'
-            value={zip.state ? `${zip.state} (${zip.state_code})` : '-'}/>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Zip'
+              value={_defaultTo(organization.zip_code, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='Country'
+              value={_defaultTo(zip.country_code, '-')}/>
+          </Grid.Column>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='State'
+              value={zip.state ? `${zip.state} (${zip.state_code})` : '-'}/>
+          </Grid.Column>
 
-          <InputReadOnly
-            label='City'
-            value={_defaultTo(zip.city, '-')}/>
+          <Grid.Column computer={5} mobile={16} tablet={8}>
+            <InputReadOnly
+              label='City'
+              value={_defaultTo(zip.city, '-')}/>
+          </Grid.Column>
         </Grid>
 
         {
