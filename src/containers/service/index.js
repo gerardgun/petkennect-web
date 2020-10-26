@@ -36,10 +36,12 @@ const ServiceList = ({ service, serviceDetail ,...props }) => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column width={4}>
+          <Grid.Column computer={4} mobile={10} tablet={4}>
             <Header as='h2'>Services</Header>
           </Grid.Column >
-          <Grid.Column textAlign='right' width={12}>
+          <Grid.Column
+            className='ui-grid-align'
+            computer={12} mobile={10} tablet={12}>
             <Button
               as={Link} color='teal'
               content='New Service'

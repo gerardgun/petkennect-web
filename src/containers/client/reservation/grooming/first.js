@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Dropdown, Form, Header, Input, Grid, Select, Segment, Icon, Step } from 'semantic-ui-react'
+import { Button, Dropdown, Form, Header, Input, Grid, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -36,26 +36,25 @@ const GroomingFormWizardFirst = props => {
 
   return (
     <>
-      <Step.Group widths={16}>
-        <Step active>
+      <div className='div-progress-bar '>
+        <div className='div-bar-content active'>
           <Icon name='check circle'/>
-          <Step.Content>
-            <Step.Title>Service Information</Step.Title>
-          </Step.Content>
-        </Step>
-        <Step disabled>
+          <span>Service Information</span>
+        </div>
+        <div className='div-bar-line'>
+        </div>
+        <div className='div-bar-content'>
           <Icon name='check circle'/>
-          <Step.Content>
-            <Step.Title>Pet Information</Step.Title>
-          </Step.Content>
-        </Step>
-        <Step disabled>
+          <span>Pet Information</span>
+        </div>
+        <div className='div-bar-line'>
+        </div>
+        <div className='div-bar-content'>
           <Icon name='check circle'/>
-          <Step.Content>
-            <Step.Title>Summary</Step.Title>
-          </Step.Content>
-        </Step>
-      </Step.Group>
+          <span>Summary</span>
+        </div>
+      </div>
+
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form id={groomingFormId} onReset={reset} onSubmit={handleSubmit}>
 

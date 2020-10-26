@@ -16,10 +16,14 @@ function AuthMeInformationShow({ auth, ...props }) {
   return (
     <Container fluid>
       <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+        <Grid.Column
+          computer={8} mobile={10} tablet={10}
+          verticalAlign='middle'>
           <Header as='h2'>My Profile</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column
+          computer={8} mobile={6} tablet={6}
+          textAlign='right'>
           <Button
             basic icon='edit outline' onClick={_handleEditBtnClick}/>
         </Grid.Column>

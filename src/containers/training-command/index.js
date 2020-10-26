@@ -40,10 +40,12 @@ const TrainingCommand = ({ trainingCommand, trainingCommandDetail, ...props }) =
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={8} mobile={16} tablet={8}>
             <Header as='h2' className='cls-MainHeader'>Training Command</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            className='ui-grid-align'
+            computer={8} mobile={14} tablet={8}>
             <Button
               color='teal'
               content='New Training Command'

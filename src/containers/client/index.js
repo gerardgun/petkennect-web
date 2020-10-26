@@ -38,10 +38,12 @@ const Client = ({ client, clientDetail, ...props }) => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column>
+          <Grid.Column computer={4} mobile={10} tablet={4}>
             <Header as='h2'>Clients</Header>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            className='ui-grid-align'
+            computer={12} mobile={9} tablet={12}>
             <Button color='teal' content='New Client' onClick={_handleNewBtnClick}/>
           </Grid.Column>
         </Grid>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { reduxForm, Field } from 'redux-form'
-import { Button, Checkbox, Form, Grid, Header, Segment, Select, Icon, Step } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Grid, Header, Segment, Select, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormField from '@components/Common/FormField'
@@ -32,33 +32,32 @@ const DaycampFormWizardThird = props => {
 
   return (
     <>
-      <Step.Group widths={16}>
-        <Step active>
+      <div className='div-progress-bar mv32'>
+        <div className='div-bar-content active'>
           <Icon name='check circle'/>
-          <Step.Content>
-            <Step.Title>Service Information</Step.Title>
-          </Step.Content>
-        </Step>
-        <Step active>
+          <span>Service Information</span>
+        </div>
+        <div className='div-bar-line active'>
+        </div>
+        <div className='div-bar-content active'>
           <Icon name='check circle'/>
-          <Step.Content>
-            <Step.Title>Pet Information</Step.Title>
-          </Step.Content>
-        </Step>
-        <Step active>
+          <span>Pet Information</span>
+        </div>
+        <div className='div-bar-line active'>
+        </div>
+        <div className='div-bar-content active'>
           <Icon name='check circle'/>
-          <Step.Content>
-            <Step.Title>Summary</Step.Title>
-          </Step.Content>
-        </Step>
-      </Step.Group>
+          <span>Summary</span>
+        </div>
+      </div>
+
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form onReset={reset} onSubmit={handleSubmit}>
 
         <Segment className='section-info-item'>
           <Header as='h3' className='section-info-header text-center'>Summary</Header>
           <Grid>
-            <Grid.Column width={8}>
+            <Grid.Column computer={8} mobile={16} tablet={8}>
               <Segment style={{ height: '100%' }}>
                 <div className='flex justify-between align-center'>
                   <div>
@@ -85,7 +84,7 @@ const DaycampFormWizardThird = props => {
                 </div>
               </Segment>
             </Grid.Column >
-            <Grid.Column width={8}>
+            <Grid.Column  computer={8} mobile={16} tablet={8}>
               <Segment>
                 <div className='flex justify-between align-center'>
                   <div className='w100'>
@@ -105,7 +104,7 @@ const DaycampFormWizardThird = props => {
           <Segment>
             <Header as='h3' className='mb0'>Check In</Header>
             <Grid>
-              <Grid.Column width={8}>
+              <Grid.Column computer={8} mobile={16} tablet={8}>
                 <Field
                   component={FormField}
                   control={Checkbox}
@@ -114,14 +113,14 @@ const DaycampFormWizardThird = props => {
                   name='check_in_now'
                   type='checkbox'/>
               </Grid.Column>
-              <Grid.Column width={8}>
+              <Grid.Column  computer={8} mobile={16} tablet={8}>
                 <InputReadOnly
                   label='Check in by'
                   value='Alexandra Minano'/>
               </Grid.Column>
             </Grid>
             <Grid>
-              <Grid.Column width={6}>
+              <Grid.Column  computer={6} mobile={16} tablet={16}>
                 <Field
                   component={FormField}
                   control={Select}
@@ -141,7 +140,7 @@ const DaycampFormWizardThird = props => {
           <Segment>
             <Header as='h3' className='mb0'>Check Out</Header>
             <Grid>
-              <Grid.Column width={8}>
+              <Grid.Column computer={8} mobile={16} tablet={8}>
                 <Field
                   component={FormField}
                   control={Checkbox}
@@ -150,7 +149,7 @@ const DaycampFormWizardThird = props => {
                   name='check_out_now'
                   type='checkbox'/>
               </Grid.Column>
-              <Grid.Column width={8}>
+              <Grid.Column computer={8} mobile={16} tablet={8}>
                 <InputReadOnly
                   label='Check out by'
                   value='Alexandra Minano'/>

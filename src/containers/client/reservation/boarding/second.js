@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector, FieldArray } from 'redux-form'
-import { Button, Form, Header, Segment, Checkbox, Select, Input, Icon, Step, Dropdown } from 'semantic-ui-react'
+import { Button, Form, Header, Segment, Checkbox, Select, Input, Icon, Dropdown } from 'semantic-ui-react'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
@@ -129,29 +129,27 @@ const BoardingFormWizardSecond = props => {
 
   return (
     <>
-      <Step.Group widths={16}>
-        <Step active>
+      <div className='div-progress-bar mv32'>
+        <div className='div-bar-content active'>
           <Icon name='check circle'/>
-          <Step.Content>
-            <Step.Title>Service Information</Step.Title>
-          </Step.Content>
-        </Step>
-        <Step active>
+          <span>Service Information</span>
+        </div>
+        <div className='div-bar-line active'>
+        </div>
+        <div className='div-bar-content active'>
           <Icon name='check circle'/>
-          <Step.Content>
-            <Step.Title>Pet Information</Step.Title>
-          </Step.Content>
-        </Step>
-        <Step disabled>
+          <span>Pet Information</span>
+        </div>
+        <div className='div-bar-line'>
+        </div>
+        <div className='div-bar-content'>
           <Icon name='check circle'/>
-          <Step.Content>
-            <Step.Title>Summary</Step.Title>
-          </Step.Content>
-        </Step>
-      </Step.Group>
+          <span>Summary</span>
+        </div>
+      </div>
+
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form className='section-info-item-form' onReset={reset} onSubmit={handleSubmit}>
-
         {props.selectedPets && props.selectedPets.map((petId)=> (
           <PetItem
             checkIn={props.checkIn} checkOut={props.checkOut} item={clientPet.items.filter(_pet => _pet.id === petId)}

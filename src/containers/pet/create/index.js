@@ -110,7 +110,9 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
     <Layout>
       <Segment className='segment-content petkennect-profile'>
         <Grid>
-          <Grid.Column className='petkennect-profile-sidebar p40' width={5}>
+          <Grid.Column
+            className='petkennect-profile-sidebar p32'
+            computer={5} mobile={16} tablet={16}>
             <Breadcrumb>
               {
                 comesfromClientShowScreen ? (
@@ -191,20 +193,18 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
             </div>
 
             <Grid>
-              <Grid.Row columns={2} verticalAlign='middle'>
-                <Grid.Column>
-                  <PetProfileProperty name='Breed&nbsp;' value={_get(petDetail.item, 'breed_name', '-')}/>
+              <Grid.Row verticalAlign='middle'>
+                <Grid.Column computer={16} mobile={16} tablet={10}>
+                  <PetProfileProperty name='Breed' value={_get(petDetail.item, 'breed_name', '-')}/>
                 </Grid.Column>
-                <Grid.Column>
-                  <PetProfileProperty name='Age&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' value={getAge(petDetail.item.born_at)}/>
+                <Grid.Column computer={16} mobile={16} tablet={16}>
+                  <PetProfileProperty name='Age' value={getAge(petDetail.item.born_at)}/>
                 </Grid.Column>
-              </Grid.Row>
-              <Grid.Row columns={2} style={{ paddingTop: 0 }} verticalAlign='middle'>
-                <Grid.Column>
-                  <PetProfileProperty name='Sex&nbsp;&nbsp;&nbsp;&nbsp;' value={petDetail.item.sex === 'F' ? 'Female' : 'Male'}/>
+                <Grid.Column computer={16} mobile={16} tablet={16}>
+                  <PetProfileProperty name='Sex' value={petDetail.item.sex === 'F' ? 'Female' : 'Male'}/>
                 </Grid.Column>
-                <Grid.Column>
-                  <PetProfileProperty name='Altered&nbsp;' value={petDetail.item.fixed ? 'Yes' : 'No'}/>
+                <Grid.Column computer={16} mobile={16} tablet={16}>
+                  <PetProfileProperty name='Altered' value={petDetail.item.fixed ? 'Yes' : 'No'}/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -251,7 +251,9 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
               </Menu.Item>
             </Menu>
           </Grid.Column>
-          <Grid.Column className='petkennect-profile-body' width={11}>
+          <Grid.Column
+            className='petkennect-profile-body'
+            computer={11} mobile={16} tablet={16}>
             {activeMenuItem === 'info' && <InformationSection/>}
             {activeMenuItem === 'bookings' && <BookingSection/>}
             {activeMenuItem === 'vaccinations' && <VaccinationSection/>}

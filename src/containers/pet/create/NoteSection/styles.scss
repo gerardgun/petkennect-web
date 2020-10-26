@@ -2,6 +2,11 @@
   border-bottom: 1px solid #e5eaee;
   padding: 1.8rem;
 
+  @media screen and (max-width: 767px) {
+    padding-bottom: 1rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
+  }
   .avatar-wrapper {
     display: flex;
 
@@ -25,5 +30,16 @@
 
   .description {
     word-wrap: break-word;
+  }
+}
+
+.div-notes-button{
+  .ui.teal.button{
+    width: 8rem;
+
+    @media only screen and (max-width:1100px) {
+      margin: 0.2rem;
+      width: 14rem;
+    }
   }
 }

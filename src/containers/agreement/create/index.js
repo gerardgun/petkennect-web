@@ -106,8 +106,9 @@ const AgreementCreate = props => {
   return (
     <Layout>
       <Grid className='form-primary'>
-        <Grid.Column width='thirteen'>
-          <Segment className='segment-content' padded='very'>
+        <Grid.Column
+          computer={12} mobile={16} tablet={16}>
+          <Segment className='segment-content'>
             <Grid className='segment-content-header'>
               <Grid.Column>
                 <Header as='h2'>{isUpdating ? 'Update' : 'Create'} Agreement</Header>
@@ -117,23 +118,27 @@ const AgreementCreate = props => {
 
           </Segment>
         </Grid.Column>
-        <Grid.Column className='form-primary-actions vertical' width='three'>
-          <Button
-            as={Link} content='Cancel' fluid
-            size='large' to='/setup/agreement/'/>
-          <Button
-            color='teal'
-            content={`${isUpdating ? 'Update' : 'Create'} Agreement`}
-            disabled={saving}
-            fluid
-            loading={saving}
-            onClick={_handleSaveBtnClick}
-            size='large'/>
-          {
-            isUpdating &&  (<Button
-              color='google plus' content='Delete Agreement' fluid
-              onClick={_handleOpen} size='large'/>)
-          }
+        <Grid.Column
+          className='form-primary-actions vertical'
+          computer={4} mobile={16} tablet={16}>
+          <Segment className='segment-content'>
+            <Button
+              as={Link} content='Cancel' fluid
+              to='/setup/agreement/'/>
+            <Button
+              color='teal'
+              content={`${isUpdating ? 'Update' : 'Create'} Agreement`}
+              disabled={saving}
+              fluid
+              loading={saving}
+              onClick={_handleSaveBtnClick}
+              size='large'/>
+            {
+              isUpdating &&  (<Button
+                color='google plus' content='Delete Agreement' fluid
+                onClick={_handleOpen} size='large'/>)
+            }
+          </Segment>
         </Grid.Column>
       </Grid>
 

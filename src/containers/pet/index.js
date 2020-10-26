@@ -40,10 +40,12 @@ const PetList = ({ pet, petDetail, ...props }) => {
     <Layout>
       <Segment className='segment-content pet' padded='very'>
         <Grid className='segment-content-header' columns={2}>
-          <Grid.Column width={4}>
+          <Grid.Column computer={4} mobile={10} tablet={4}>
             <Header as='h2'>Pets</Header>
           </Grid.Column >
-          <Grid.Column textAlign='right' width={12}>
+          <Grid.Column
+            className='ui-grid-align'
+            computer={12} mobile={8} tablet={12}>
             <Button color='teal' content='New Pet' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>

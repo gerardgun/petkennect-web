@@ -1,7 +1,16 @@
 .c-booking {
   .div-booking-button{
     .ui.teal.button{
-      width: 8rem;
+      width: 9rem;
+
+    @media only screen and (max-width:767px) {
+      margin: 0.2rem;
+      width: 12rem;
+    }
+
+    @media only screen and (max-width:1024px) and (max-width:1320px) {
+      margin: 0.2rem;
+    }
     }
   }
 }

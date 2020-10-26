@@ -6,15 +6,29 @@
   }
   .div-client-info-button{
     .ui.teal.button{
-    width: 12rem;
-    @media (min-width: 900px) and (max-width:1200px) {
-      width:auto !important;
+    width: 14rem;
+    
+     @media (min-width: 768px) and (max-width:1200px) {
+      width: 12rem;
+      margin-top: 0.2rem;
+     }
+
+     @media screen and (max-width:767px) {
+      margin-top: 0.2rem;
+      width: 12rem;
      }
     }
     
   }
+  .div-client-info-edit-button{
+    .ui.teal.button{
+      @media screen and (max-width:1200px) {
+        width: 9rem;
+        margin-top: 0.2rem;
+       }
+    }
+  }
 }
-
 
 .document-upload-choose-file
 {

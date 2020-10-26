@@ -78,8 +78,8 @@ const ProductSection = (props) => {
     <Layout>
 
       <Grid className='form-primary'>
-        <Grid.Column width='thirteen'>
-          <Segment className='segment-content' padded='very'>
+        <Grid.Column computer={13} mobile={16} tablet={12}>
+          <Segment className='segment-content'>
             <Grid className='segment-content-header'>
               <Grid.Column>
                 <Header as='h2'>Info Product</Header>
@@ -124,7 +124,9 @@ const ProductSection = (props) => {
               ]}/>
           </Segment>
         </Grid.Column>
-        <Grid.Column className='form-primary-actions vertical' width='three'>
+        <Grid.Column
+          className='form-primary-actions vertical ui-grid-button'
+          computer={3} mobile={14} tablet={4}>
 
           <Button
             as={Link} content='Cancel'

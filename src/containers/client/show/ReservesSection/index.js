@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import  './styles.scss'
 import { connect } from 'react-redux'
-import { Header , Divider } from 'semantic-ui-react'
+import { Header , Grid, Button } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
@@ -30,40 +30,30 @@ function ReservesSection(props) {
 
   return (
     <div className='c-booking'>
-      <div className='flex align-center justify-between ph40 pt40 pb16'>
-        <Header className='c-title mv0'>
-          Reserves
-        </Header>
+      <Grid className='petkennect-profile-body-header'>
+        <Grid.Column
+          verticalAlign='middle'>
+          <Header as='h2'>Reserves</Header>
+        </Grid.Column>
+      </Grid>
+      <div className='mh28 mv32 div-booking-button'>
+        <Button
+          basic={filters.service_type_what_ever_name !== 'T'} color='teal'
+          content='Training' onClick={_handleFilterBtnClick('T')}/>
+        <Button
+          basic={filters.service_type_what_ever_name !== 'F'} color='teal'
+          content='Fitness' onClick={_handleFilterBtnClick('F')}/>
+        <Button
+          basic={filters.service_type_what_ever_name !== 'D'} color='teal'
+          content='Day Camp' onClick={_handleFilterBtnClick('D')}/>
+        <Button
+          basic={filters.service_type_what_ever_name !== 'B'} color='teal'
+          content='Boarding' onClick={_handleFilterBtnClick('B')}/>
+        <Button
+          basic={filters.service_type_what_ever_name !== 'G'} color='teal'
+          content='Grooming' onClick={_handleFilterBtnClick('G')}/>
       </div>
-      <Divider className='m0'/>
-      <div className='mh40 mv32'>
-        <button
-          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'T' && 'selected'}`} color='blue '
-          onClick={_handleFilterBtnClick('T')}>
-          Training
-        </button>
-        <button
-          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'F' && 'selected'}`} color='blue '
-          onClick={_handleFilterBtnClick('F')}>
-          Fitness
-        </button>
-        <button
-          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'D' && 'selected'}`} color='blue '
-          onClick={_handleFilterBtnClick('D')}>
-          Day Camp
-        </button>
-        <button
-          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'B' && 'selected'}`} color='blue '
-          onClick={_handleFilterBtnClick('B')}>
-          Boarding
-        </button>
-        <button
-          className={`filter-button ml16 ${filters.service_type_what_ever_name === 'G' && 'selected'}`} color='blue '
-          onClick={_handleFilterBtnClick('G')}>
-          Grooming
-        </button>
-      </div>
-      <div className='mh40'>
+      <div className='mh28'>
         <Table
           duck={petReservationDuck}
           onRowClick={_handleRowClick}

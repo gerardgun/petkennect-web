@@ -27,29 +27,33 @@ function PetsSection({ clientDetail, clientPet, ...props }) {
   return (
     <Container fluid>
       <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+        <Grid.Column
+          computer={8} mobile={11} tablet={8}
+          verticalAlign='middle'>
           <Header as='h2'>Pets</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column
+          className='ui-grid-align'
+          computer={8} mobile={9} tablet={8}>
           <Button color='teal' content='New Pet' onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>
 
       <div className='mh24 mv32'>
-        <Card.Group className='client-pet-list' itemsPerRow={2}>
+        <Card.Group className='client-pet-list' doubling={true} itemsPerRow={2}>
           {
             clientPet.items.length > 0 ? (
               clientPet.items.map((pet, index) => (
                 <Card key={index}>
                   <Card.Content>
                     <Grid>
-                      <Grid.Column width={7}>
+                      <Grid.Column computer={7} mobile={10} tablet={7}>
                         <Image
                           circular
                           fluid
                           src={pet.image_filepath || defaultImageUrl}/>
                       </Grid.Column>
-                      <Grid.Column width={9}>
+                      <Grid.Column computer={9} mobile={14} tablet={7}>
                         <Card.Header
                           as={Link} className='mt12 mb8 text-underline' content={pet.name}
                           to={{

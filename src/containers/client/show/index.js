@@ -76,7 +76,9 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
     <Layout>
       <Segment className='segment-content petkennect-profile'>
         <Grid>
-          <Grid.Column className='petkennect-profile-sidebar p40' width={5}>
+          <Grid.Column
+            className='petkennect-profile-sidebar p32'
+            computer={5} mobile={16} tablet={16}>
             <Breadcrumb>
               <Breadcrumb.Section>
                 <Link to='/client'>Clients</Link>
@@ -184,7 +186,9 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
               </Menu.Item>
             </Menu>
           </Grid.Column>
-          <Grid.Column className='petkennect-profile-body' width={11}>
+          <Grid.Column
+            className='petkennect-profile-body'
+            computer={11} mobile={16} tablet={16}>
             {activeMenuItem === 'info' && <InformationSection/>}
             {activeMenuItem === 'pets' && <PetSection/>}
             {activeMenuItem === 'comments' && <CommentSection/>}

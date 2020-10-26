@@ -30,12 +30,14 @@ const AgreementList = ({ agreement, agreementDetail ,...props }) => {
 
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
+      <Segment className='segment-content'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
             <Header as='h2'>Agreements</Header>
           </Grid.Column >
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            className='ui-grid-align'
+            computer={8} mobile={12} tablet={8}>
             <Button
               as={Link} color='teal' content='New Agreement'
               to='/setup/agreement/create'/>

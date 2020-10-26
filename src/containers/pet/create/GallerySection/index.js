@@ -69,15 +69,20 @@ const GallerySection = props => {
   return (
     <Container fluid>
       <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+        <Grid.Column
+          computer={4} mobile={14} tablet={4}
+          verticalAlign='middle'>
           <Header as='h2'>Gallery</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column
+          className='div-pet-btn-info'
+          computer={12} mobile={11} tablet={12}
+          textAlign='right'>
           <div style={{ display: 'inline-block' }} {...getRootProps()}>
             <input {...getInputProps()}/>
             <Button
               basic
-              className='w120' color='teal' content='Upload'
+              color='teal' content='Upload'
               disabled={saving} loading={saving}/>
           </div>
           {

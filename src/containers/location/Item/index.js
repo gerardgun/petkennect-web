@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, Header, Segment } from 'semantic-ui-react'
+import { Button, Header, Segment, Grid } from 'semantic-ui-react'
 import _get from 'lodash/get'
 import _defaultTo from 'lodash/defaultTo'
 
@@ -18,8 +18,8 @@ function Item({ item, onUpdate, onDelete }) {
 
   return (
     <Segment className='location-item'>
-      <div className='flex justify-between align-center'>
-        <div>
+      <Grid className='flex justify-between align-center' columns={2}>
+        <Grid.Column  computer={14} mobile={11} tablet={14}>
           <Header as='h3'>
             {item.name}
             <Header.Subheader style={{ display: 'inline-block', marginLeft: '0.5rem' }}>{item.code}</Header.Subheader>
@@ -35,16 +35,16 @@ function Item({ item, onUpdate, onDelete }) {
           <InputReadOnly
             label='Description'
             value={_defaultTo(item.description, '-')}/>
-        </div>
-        <div>
+        </Grid.Column>
+        <Grid.Column  computer={2} mobile={5} tablet={2}>
           <Button
             basic icon='edit outline'
             onClick={_handleUpdateBtnClick}/>
           <Button
             basic color='red' icon='trash alternate outline'
             onClick={_handleDeleteBtnClick}/>
-        </div>
-      </div>
+        </Grid.Column>
+      </Grid>
     </Segment>
   )
 }

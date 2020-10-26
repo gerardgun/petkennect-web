@@ -19,13 +19,17 @@ function PetInformationEdit({ petDetail, ...props }) {
 
   return (
     <Container fluid>
-      <Grid className='petkennect-profile-body-header' columns={2}>
-        <Grid.Column verticalAlign='middle'>
+      <Grid className='petkennect-profile-body-header div-pet-btn-info' columns={2}>
+        <Grid.Column
+          computer={4} mobile={10} tablet={4}
+          verticalAlign='middle'>
           <Header as='h2'>Pet Info</Header>
         </Grid.Column>
-        <Grid.Column textAlign='right'>
+        <Grid.Column
+          className='ui-grid-align'
+          computer={12} mobile={12} tablet={12}>
           <Button
-            basic className='w120' color='teal'
+            basic color='teal'
             content={saved ? 'Go back' : 'Cancel'} disabled={saving} onClick={_handleCancelBtnClick}/>
           <Button
             color='teal' content='Save Changes'

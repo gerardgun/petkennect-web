@@ -236,7 +236,7 @@ const TableList = ({ duck, list, ...props }) => {
       {
         hasHeader && (
           <Grid className='table-primary-header'>
-            <Grid.Column width={6}>
+            <Grid.Column computer={6} mobile={16} tablet={16}>
               {
                 basicOptions.length > 0 && (
                   <Dropdown
@@ -259,35 +259,37 @@ const TableList = ({ duck, list, ...props }) => {
                 )
               }
               {
-
-                selectionOptions.length > 0 && !disableOptionsForAll && (
-                  selectionOptions
+                // BEGIN Improve for by default button show in all case
+                // selectionOptions.length > 0 && !disableOptionsForAll && (
+                selectionOptions
                   // BEGIN Improve
-                    .filter(({ conditional_render }) => {
-                      return !conditional_render || conditional_render(list.selector.selected_items[0])
-                    })
+                  .filter(({ conditional_render }) => {
+                    return !conditional_render || conditional_render(list.selector.selected_items.length > 0 ? list.selector.selected_items[0] : [])
+                  })
                   // END Improve
-                    .map(({ icon, name, display_name, is_multiple, ...rest }, index) => {
-                      delete rest.conditional_render
+                  .map(({ icon, name, display_name, is_multiple, ...rest }, index) => {
+                    delete rest.conditional_render
 
-                      return (
-                        <Popup
-                          content={display_name} inverted
-                          key={`nc-option-${index}`} position='bottom center'
-                          trigger={
-                            <Button
-                              basic
-                              data-option-name={name}
-                              disabled={(disableOptionsForSingle && !is_multiple) || disableOptionsForAll} icon={icon}
-                              onClick={_handleOptionBtnClick}
-                              {...rest}/>
-                          }/>
-                      )
-                    })
-                )
+                    return (
+                      <Popup
+                        content={display_name} inverted
+                        key={`nc-option-${index}`} position='bottom center'
+                        trigger={
+                          <Button
+                            basic
+                            data-option-name={name}
+                            disabled={(disableOptionsForSingle && !is_multiple) || disableOptionsForAll} icon={icon}
+                            onClick={_handleOptionBtnClick}
+                            {...rest}/>
+                        }/>
+                    )
+                  })
+                // )
               }
             </Grid.Column >
-            <Grid.Column textAlign='right' width={10}>
+            <Grid.Column
+              className='grid-filter-item' computer={10} mobile={16}
+              tablet={16} textAlign='right'>
               {
                 props.filterColumns.length > 0 && (
                   <Popup
@@ -295,7 +297,7 @@ const TableList = ({ duck, list, ...props }) => {
                     on='click' onClose={_handleClose} onOpen={_handleOpen}
                     open={open} position='bottom right'
                     trigger={<Button basic={!open} color={open ? 'blue' : null} content='Filters'/>}>
-                    <Popup.Content style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
+                    <Popup.Content className='popup-filter-form' style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
                       <FilterForm duck={duck}/>
                     </Popup.Content>
                   </Popup>

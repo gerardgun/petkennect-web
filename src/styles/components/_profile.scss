@@ -5,6 +5,10 @@
     .item {
       padding: 1.1rem 2rem;
 
+      @media only screen and (min-width: 768px) and (max-width: 1120px) {
+        padding: 1rem 0.5rem;
+      }
+
       &.active {
         background-color: #00b5ad0a !important;
       }
@@ -17,6 +21,11 @@
 
   &-sidebar {
     min-height: 100vh;
+
+    @media only screen and (max-width: 1120px) {
+      min-height: fit-content;
+    }
+    
   }
 
   &-body {
@@ -28,6 +37,10 @@
       padding-left: 1.8rem !important;
       padding-right: 1.8rem !important;
       padding-top: 1rem !important;
+
+      @media only screen and (max-width: 767px) {
+        padding-left: 0.8rem !important;
+      }
 
       .ui.header {
         font-weight: 400;
@@ -46,6 +59,10 @@
     width: 14rem;
     height: 14rem;
     margin-bottom: 2.5rem;
+
+    @media only screen and (min-width: 768px) and (max-width: 1023px) {
+      height: 10rem;
+    }
 
     .ui.image {
       height: 100%;
@@ -67,9 +84,6 @@
       cursor: pointer;
     }
 
-    &:hover .c-image-profile__overlay {
-      display: flex;
-    }
   }
 
   .c-image-profile__menu {
@@ -77,4 +91,10 @@
     right: -60px !important;
     left: auto !important;
   }
+ 
+  .ui.dropdown:not(.active) {
+    &:hover .c-image-profile__overlay {
+      display: flex;
+    }
+}
 }

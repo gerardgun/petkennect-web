@@ -26,42 +26,42 @@ function AddReportCard({ item }) {
       </Header>
 
       <Grid className='report-card-radio'>
-        <Grid.Column width={5}>
+        <Grid.Column  computer={5} mobile={16} tablet={8}>
           <Header as='h6' className='section-header' color='blue'>MY PLAYSTYLE</Header>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
         </Grid.Column >
-        <Grid.Column width={5}>
+        <Grid.Column computer={5} mobile={16} tablet={8}>
           <Header as='h6' className='section-header' color='blue'>MY PERSONALITY</Header>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
         </Grid.Column >
-        <Grid.Column width={5}>
+        <Grid.Column computer={5} mobile={16} tablet={8}>
           <Header as='h6' className='section-header' color='blue'>MY NAPS</Header>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
         </Grid.Column >
-        <Grid.Column width={5}>
+        <Grid.Column computer={5} mobile={16} tablet={8}>
           <Header as='h6' className='section-header' color='blue'>MY FAVORITE ACTIVITY</Header>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
         </Grid.Column >
-        <Grid.Column width={5}>
+        <Grid.Column computer={5} mobile={16} tablet={8}>
           <Header as='h6' className='section-header' color='blue'>MY FRIENDS</Header>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>
         </Grid.Column >
-        <Grid.Column width={5}>
+        <Grid.Column computer={5} mobile={16} tablet={8}>
           <Header as='h6' className='section-header' color='blue'>YOU SHOULD KNOW I</Header>
           <Radio label='lorem ipsum dolor sit amet'/>
           <Radio label='lorem ipsum dolor sit amet'/>

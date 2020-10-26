@@ -1,7 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+
 import { Link, withRouter } from 'react-router-dom'
+
+import {  Icon } from 'semantic-ui-react'
+import { useMediaQuery } from 'react-responsive'
 
 import Sidebar from '@components/Common/Sidebar'
 
@@ -171,6 +175,10 @@ const categories = [
 const AppSidebar = ({ auth, ...props }) => {
   const [ activeCategoryIndex, setActiveCategoryIndex ] = useState(null)
 
+  const [ sidebar, setSidebar ] = useState(false)
+
+  const _handleShowSidebar = () => setSidebar(!sidebar)
+
   const getCategories = () => auth.item.is_superadmin ? categoriesForSuperAdmin : categories
 
   const _handleCategoryClick = e => {
@@ -181,15 +189,31 @@ const AppSidebar = ({ auth, ...props }) => {
     else if(!category.href) setActiveCategoryIndex(index)
   }
 
+  const isDesktopOrLaptop = useMediaQuery(
+    { minDeviceWidth: 767 }
+  )
+
+  useEffect(() => {
+    if(isDesktopOrLaptop)
+      setSidebar(false)
+  })
+
   const categoriesToRender = useMemo(() => getCategories(), [ auth.item.id ])
 
   return (
-    <div className='app-sidebar'>
-      <Sidebar>
-        {
-          categoriesToRender.map(({ subcategories = [], ...rest }, index) => {
-            const rgx = new RegExp(`^${rest.href}.*`)
-            const active = activeCategoryIndex === index
+    <>
+      <div className='navbar'>
+        <Link className='menu-bars' onClick={_handleShowSidebar} to='#'>
+          <Icon name='bars'/>
+        </Link>
+      </div>
+
+      <div className={sidebar ? 'nav-menu active app-sidebar' : 'nav-menu app-sidebar'}>
+        <Sidebar>
+          {
+            categoriesToRender.map(({ subcategories = [], ...rest }, index) => {
+              const rgx = new RegExp(`^${rest.href}.*`)
+              const active = activeCategoryIndex === index
               || rgx.test(props.match.path)
               || subcategories.some(item => {
                 const rgx = new RegExp(`^${item.href}.*`)
@@ -197,28 +221,30 @@ const AppSidebar = ({ auth, ...props }) => {
                 return rgx.test(props.match.path)
               })
 
-            return (
-              <Sidebar.Category
-                active={active}
-                data-index={index}
-                key={index}
-                onClick={_handleCategoryClick}
-                {...rest}>
-                {
-                  subcategories.length > 0 ? (
-                    subcategories.map(({ href: to, label }, index) => {
-                      const active = props.match.path === to
+              return (
+                <Sidebar.Category
+                  active={active}
+                  data-index={index}
+                  key={index}
+                  onClick={_handleCategoryClick}
+                  {...rest}>
+                  {
+                    subcategories.length > 0 ? (
+                      subcategories.map(({ href: to, label }, index) => {
+                        const active = props.match.path === to
 
-                      return <Link className={active ? 'active' : ''} key={index} to={to}>{label}</Link>
-                    })
-                  ) : null
-                }
-              </Sidebar.Category>
-            )
-          })
-        }
-      </Sidebar>
-    </div>
+                        return <Link className={active ? 'active' : ''} key={index} to={to}>{label}</Link>
+                      })
+                    ) : null
+                  }
+                </Sidebar.Category>
+              )
+            })
+          }
+        </Sidebar>
+      </div>
+      {/* </nav> */}
+    </>
   )
 }
 

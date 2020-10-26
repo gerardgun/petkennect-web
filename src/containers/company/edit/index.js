@@ -27,8 +27,8 @@ function CompanyEdit({ companyDetail, ...props }) {
   return (
     <Layout>
       <Container className='company-show' fluid>
-        <Grid columns={2}>
-          <Grid.Column>
+        <Grid className='div-client-info-edit-button' columns={2}>
+          <Grid.Column computer={8} mobile={16} tablet={8}>
             <Breadcrumb>
               <Breadcrumb.Section>
                 <Link to='/company'>Companies</Link>
@@ -37,9 +37,11 @@ function CompanyEdit({ companyDetail, ...props }) {
               <Breadcrumb.Section active>{_defaultTo(company.legal_name, '-')}</Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>
-          <Grid.Column textAlign='right'>
+          <Grid.Column
+            className='ui-grid-aligns'
+            computer={8} mobile={11} tablet={8}>
             <Button
-              as={Link} basic className='w120'
+              as={Link} basic
               color='teal'
               content={saved ? 'Go back' : 'Cancel'} disabled={saving} to={`/company/${companyId}`}/>
             <Button

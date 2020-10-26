@@ -29,7 +29,9 @@ const PetShow = ({ auth, ...props }) => {
     <Layout>
       <Segment className='segment-content petkennect-profile'>
         <Grid>
-          <Grid.Column className='petkennect-profile-sidebar p40' width={5}>
+          <Grid.Column
+            className='petkennect-profile-sidebar p40'
+            computer={5} mobile={16} tablet={5}>
             <div className='flex justify-center align-center mt40'>
               <div className='c-image-profile'>
                 <Image circular src={user.image_path || defaultImageUrl}/>
@@ -68,7 +70,9 @@ const PetShow = ({ auth, ...props }) => {
               </Menu.Item>
             </Menu>
           </Grid.Column>
-          <Grid.Column className='petkennect-profile-body' width={11}>
+          <Grid.Column
+            className='petkennect-profile-body'
+            computer={11} mobile={16} tablet={11}>
             {activeMenuItem === 'info' && <InformationSection/>}
             {activeMenuItem === 'preferences' && <PreferenceSection/>}
           </Grid.Column>

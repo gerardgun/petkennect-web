@@ -78,21 +78,27 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
         <Grid.Column
           className='appbar-searchbar' computer={12} mobile={16}
           tablet={12}>
-          <div className='search-dropdown'>
-            <Dropdown
-              onChange={_handleSearchConditionChange}
-              options={[
-                { key: 1, value: 'all', text: 'All' },
-                { key: 2, value: 'clients', text: 'Clients' },
-                { key: 3, value: 'pets', text: 'Pets' }
-              ]}
-              placeholder='All'
-              selection
-              value={searchConditionType}/>
-            <Search
-              fluid='true' input={{ icon: 'search', iconPosition: 'left' }}
-              onResultSelect={_handleResultSelect} onSearchChange={_handleSearchInputChange} results={searchResult}/>
-          </div>
+          {
+            !auth.item.is_superadmin && (
+              <>
+                <div className='search-dropdown'>
+                  <Dropdown
+                    onChange={_handleSearchConditionChange}
+                    options={[
+                      { key: 1, value: 'all', text: 'All' },
+                      { key: 2, value: 'clients', text: 'Clients' },
+                      { key: 3, value: 'pets', text: 'Pets' }
+                    ]}
+                    placeholder='All'
+                    selection
+                    value={searchConditionType}/>
+                  <Search
+                    fluid='true' input={{ icon: 'search', iconPosition: 'left' }}
+                    onResultSelect={_handleResultSelect} onSearchChange={_handleSearchInputChange} results={searchResult}/>
+                </div>
+              </>
+            )
+          }
         </Grid.Column>
         <Grid.Column
           className='appbar-user-dropdown' computer={4} mobile={16}
