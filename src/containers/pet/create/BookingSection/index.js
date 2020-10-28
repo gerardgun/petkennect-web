@@ -1,26 +1,61 @@
 import React, { useEffect } from 'react'
 import  './styles.scss'
 import { connect } from 'react-redux'
+import { useHistory, useParams } from 'react-router-dom'
 import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
+import CancelReserve from './CancelReserve'
+import PetNotes from './Notes'
+import ViewReport from '@containers/client/reservation/daycamp/AddReportCardForm'
 
+import petDetailDuck from '@reducers/pet/detail'
+import clientDetailDuck from '@reducers/client/detail'
 import petReservationDuck from '@reducers/pet/reservation'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
-function BookingSection(props) {
+function BookingSection({ petDetail, ...props }) {
+  const history = useHistory()
+  const { pet: petId } = useParams()
   const { petReservation : { filters = {} }  = {} } = props
 
   useEffect(()=> {
-    props.setFilters({ service_type_what_ever_name: 'T'  })
+    props.getPet(petId)
+    props.setFilters({ service_type_what_ever_name: 'T', service__current_upcoming: [ 'current','upcoming' ]  })
     props.getPetReservations()
   }, [])
+
+  const clientId = `${petDetail.item.client}`
 
   const _handleRowClick = () => {
   // wip
   }
   const _handleRowOptionClick = () => {
     // wip
+  }
+
+  const _handleOptionDropdownChange = (optionName, item) => {
+    switch (optionName)
+    {
+      case 'view_report' : props.setViewReportItem(item,'CREATE')
+        break
+
+      case 'view_note' : props.setNoteItem(item,'READ')
+        break
+
+      case 'edit_reserve' : props.setReserveItem(item,'UPDATE')
+        history.replace(`/client/${clientId}/book`)
+        break
+
+      case 'cancel_checkIn' :
+        break
+      case 'cancel_reserve' : props.setCancelReserveItem(item,'READ')
+        break
+
+      default : return
+    }
   }
 
   const _handleFilterBtnClick = (e, { type }) => {
@@ -61,9 +96,13 @@ function BookingSection(props) {
       <div className='mh28'>
         <Table
           duck={petReservationDuck}
+          onOptionDropdownChange={_handleOptionDropdownChange}
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
       </div>
+      <ViewReport/>
+      <CancelReserve/>
+      <PetNotes/>
     </Container>
   )
 }
@@ -75,11 +114,16 @@ BookingSection.defaultProps = {  }
 export default compose(
   connect(
     (state) => ({
-      petReservation: petReservationDuck.selectors.list(state)
+      petReservation: petReservationDuck.selectors.list(state),
+      petDetail     : petDetailDuck.selectors.detail(state)
     }), {
-      getPetReservations: petReservationDuck.creators.get,
-      setFilters        : petReservationDuck.creators.setFilters
-
+      getPetReservations  : petReservationDuck.creators.get,
+      setFilters          : petReservationDuck.creators.setFilters,
+      setCancelReserveItem: petReservationDetailDuck.creators.setItem,
+      setReserveItem      : petReservationDetailDuck.creators.setItem,
+      setNoteItem         : petNoteDetailDuck.creators.setItem,
+      setViewReportItem   : clientDetailDuck.creators.setItem,
+      getPet              : petDetailDuck.creators.get
     })
 )(BookingSection)
 

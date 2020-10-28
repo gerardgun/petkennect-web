@@ -91,7 +91,7 @@ const TableList = ({ duck, list, ...props }) => {
   }
 
   const _handleOptionDropdownChange = (e, { value: optionName }) => {
-    props.onOptionClick(optionName)
+    props.onOptionDropdownChange(optionName)
   }
 
   const _handleOptionBtnClick = e => {
@@ -207,6 +207,34 @@ const TableList = ({ duck, list, ...props }) => {
             </Table.Cell>
           )
         }
+        {
+          list.config.row.dropdownOptions && list.config.row.dropdownOptions.length > 0 && (
+
+            <Table.Cell>
+              {
+                <Dropdown
+                  disabled={list.config.row.dropdownOptions.length === 0}
+                  icon={null}
+                  key={index}
+                  onChange={_handleOptionDropdownChange}
+                  options={
+                    list.config.row.dropdownOptions.map((item, index) => ({
+                      key  : `d-option-${index}`,
+                      value: item.name,
+                      text : item.display_name
+                    }))
+                  }
+                  selectOnBlur={false}
+                  trigger={(
+                    <Button basic icon='ellipsis vertical'/>
+                  )}
+                  value={null}/>
+                // )
+                // })
+              }
+            </Table.Cell>
+          )
+        }
       </Table.Row>
     )
   }
@@ -296,7 +324,7 @@ const TableList = ({ duck, list, ...props }) => {
                     basic
                     on='click' onClose={_handleClose} onOpen={_handleOpen}
                     open={open} position='bottom right'
-                    trigger={<Button basic={!open} color={open ? 'blue' : null} content='Filters'/>}>
+                    trigger={<Button basic={!open} color={open ? 'teal' : null} content='Filters'/>}>
                     <Popup.Content className='popup-filter-form' style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
                       <FilterForm duck={duck}/>
                     </Popup.Content>
@@ -398,6 +426,7 @@ const TableList = ({ duck, list, ...props }) => {
                 <Table.Row disabled>
                   <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
                 </Table.Row>
+
               )
             )
           }

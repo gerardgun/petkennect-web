@@ -6,12 +6,12 @@ export default {
       {
         value     : true,
         icon_label: 'flag outline',
-        text_label: 'Pending'
+        text_label: 'Current'
       },
       {
         value     : false,
         icon_label: 'flag outline',
-        text_label: 'History'
+        text_label: 'Upcoming'
       }
     ]
   },
@@ -27,6 +27,33 @@ export default {
       //   name        : 'view_detail',
       //   icon        : 'eye'
       // }
+      {
+        display_name: 'Check',
+        name        : 'Check',
+        icon        : 'arrow right'
+      }
+    ],
+    dropdownOptions: [
+      {
+        display_name: 'View Report',
+        name        : 'view_report'
+      },
+      {
+        display_name: 'Edit Note',
+        name        : 'edit_note'
+      },
+      {
+        display_name: 'Edit Reserve',
+        name        : 'edit_reserve'
+      },
+      {
+        display_name: 'Cancel CheckIn',
+        name        : 'cancel_checkIn'
+      },
+      {
+        display_name: 'Cancel Reserve',
+        name        : 'cancel_reserve'
+      }
     ]
   },
   columns: [
@@ -66,25 +93,27 @@ export default {
       sort_name   : 'employee__user__last_name'
     },
     {
-      display_name: 'Report',
-      name        : 'report-client-side',
-      type        : 'action',
-      width       : null,
-      align       : 'left',
-      action      : {
-        name : 'show_report',
-        label: 'View'
-      }
-    },
-    {
-      display_name: 'Detail',
-      name        : 'detail-client-side',
-      type        : 'action',
-      width       : null,
-      align       : 'left',
-      action      : {
-        name : 'show_detail',
-        label: 'View'
+      display_name      : 'Reservation Status',
+      name              : 'service__current_upcoming',
+      type              : 'string',
+      width             : null,
+      align             : 'left',
+      sort              : true,
+      conditional_render: item => item.service__upcoming,
+      filter            : {
+        type        : 'dropdown',
+        name        : 'service__current_upcoming',
+        multiple    : true,
+        source_store: [
+          {
+            value: 'current',
+            text : 'Current'
+          },
+          {
+            value: 'upcoming',
+            text : 'Upcoming'
+          }
+        ]
       }
     }
   ]

@@ -2,11 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm, Field } from 'redux-form'
-import { Button, Form, Grid, Header, Segment, Select, Checkbox, List, Icon } from 'semantic-ui-react'
+import { reduxForm } from 'redux-form'
+import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
-import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 
 import clientDetailDuck from '@reducers/client/detail'
@@ -47,7 +46,7 @@ const GroomingFormWizardThird = props => {
           <Grid>
             <Grid.Column computer={8} mobile={16} tablet={8}>
               <Segment style={{ height: '100%' }}>
-                <div className='flex justify-between align-center'>
+                <div className='justify-between align-center'>
                   <div>
                     <Header as='h3'>
                    General Information
@@ -57,23 +56,48 @@ const GroomingFormWizardThird = props => {
                       value='Lala,Poo'/>
                     <br/>
                     <Grid>
-                      <Grid.Column width={8}>
+                      <Grid.Column computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Reservation Date'
                           value='28/12/12 3:12AM'/>
                       </Grid.Column>
-                      <Grid.Column width={8}>
+                      <Grid.Column  computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Groomer'
                           value='Alexandra Valencia'/>
                       </Grid.Column>
                     </Grid>
+                    <Grid>
+                      <Grid.Column  computer={8} mobile={16} tablet={10}>
+                        <InputReadOnly
+                          label='Check In'
+                          value='28/12/12 3:12AM'/>
+                      </Grid.Column>
+                      <Grid.Column  computer={8} mobile={16} tablet={6}>
+                        <InputReadOnly
+                          label='By'
+                          value='Sandra Maravilla'/>
+                      </Grid.Column>
+                    </Grid>
+                    <Grid>
+                      <Grid.Column computer={8} mobile={16} tablet={10}>
+                        <InputReadOnly
+                          label='Check Out'
+                          value='28/12/12 3:12AM'/>
+                      </Grid.Column>
+                      <Grid.Column computer={8} mobile={16} tablet={6}>
+                        <InputReadOnly
+                          label='By'
+                          value='Sandra Maravilla'/>
+                      </Grid.Column>
+                    </Grid>
+
                   </div>
                 </div>
               </Segment>
             </Grid.Column >
             <Grid.Column computer={8} mobile={16} tablet={8}>
-              <Segment>
+              <Segment  style={{ height: '100%' }}>
                 <div className='flex justify-between align-center'>
                   <div className='w100'>
                     <Header as='h3'>
@@ -131,63 +155,6 @@ const GroomingFormWizardThird = props => {
             </List.Item>
           </List>
         </Segment>
-
-        <Segment>
-          <Header as='h3' className='mb0'>Check In</Header>
-          <Grid>
-            <Grid.Column computer={8} mobile={16} tablet={8}>
-              <Field
-                component={FormField}
-                control={Checkbox}
-                format={Boolean}
-                label='Check In Now'
-                name='check_in_now'
-                type='checkbox'/>
-            </Grid.Column>
-            <Grid.Column computer={8} mobile={16} tablet={8}>
-              <InputReadOnly
-                label='Check in by'
-                value='Alexandra Minano'/>
-            </Grid.Column>
-          </Grid>
-          <Grid>
-            <Grid.Column computer={6} mobile={16} tablet={16}>
-              <Field
-                component={FormField}
-                control={Select}
-                label='Confirmation'
-                name='Confirmation'
-                options={[
-                  { key: 1, value: 1, text: 'Test1' },
-                  { key: 2, value: 1, text: 'Test2' }
-                ]}
-                placeholder='Select Confirmation'
-                required
-                selectOnBlur={false}/>
-            </Grid.Column>
-          </Grid>
-        </Segment>
-
-        <Segment>
-          <Header as='h3' className='mb0'>Check Out</Header>
-          <Grid>
-            <Grid.Column computer={8} mobile={16} tablet={8}>
-              <Field
-                component={FormField}
-                control={Checkbox}
-                format={Boolean}
-                label='Check Out Now'
-                name='check_out_now'
-                type='checkbox'/>
-            </Grid.Column>
-            <Grid.Column computer={8} mobile={16} tablet={8}>
-              <InputReadOnly
-                label='Check out by'
-                value='Alexandra Minano'/>
-            </Grid.Column>
-          </Grid>
-        </Segment>
-
         {
           error && (
             <Form.Group widths='equal'>

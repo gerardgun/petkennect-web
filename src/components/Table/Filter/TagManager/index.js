@@ -15,7 +15,6 @@ const FilterTagManager = props => {
     const columnName = e.currentTarget.dataset.columnName
     const column = list.config.columns.find(item => item.name === columnName)
     const filterNames = [].concat(column.filter.name) // get a flat array of filter names
-
     props.dispatch(
       duck.creators.removeFilters(...filterNames)
     )
@@ -30,24 +29,42 @@ const FilterTagManager = props => {
       {
         props.selectedFilterColumns
           .map((item, index) => {
+            const isMultiple = [].concat(item.filter.multiple)[0]
             const filterValuesDisplay = [].concat(item.filter.name)
               .map(item => {
                 let value = props.filters[item]
-
-                if(item in props.filterColumnSources)
-                  value = props.filterColumnSources[item].find(_item => _item.value === value).text
+                if(!isMultiple)
+                  if(item in props.filterColumnSources)
+                    value = props.filterColumnSources[item].find(_item => _item.value === value).text
 
                 return value
               })
               .join(' - ')
 
             return (
-              <Label
-                basic className='tag-manager-label' color='blue'
-                key={index}>
-                <strong>{item.display_name}:</strong> {filterValuesDisplay}
-                <Icon data-column-name={item.name} name='delete' onClick={_handleClick}/>
-              </Label>
+              <> {
+                !isMultiple ? (
+                  <Label
+                    basic className='tag-manager-label' color='blue'
+                    key={index}>
+                    <strong>{item.display_name}:</strong> {filterValuesDisplay}
+                    <Icon data-column-name={item.name} name='delete' onClick={_handleClick}/>
+                  </Label>) : (
+                  <>
+                    {
+                      filterValuesDisplay.split(',').map(splitItem => {
+                        return (
+                          <Label
+                            basic className='tag-manager-label' color='blue'
+                            key={splitItem}>
+                            {splitItem}
+                            <Icon data-column-name={item.name} name='delete' onClick={_handleClick}/>
+                          </Label>)
+                      })
+                    }
+                  </>
+                )
+              }</>
             )
           })
       }
