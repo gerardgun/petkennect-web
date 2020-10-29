@@ -13,4 +13,11 @@
     }
     }
   }
+  .ui-table-overflow {
+    .segment.ui.segment.dimmable{
+    @media screen and (min-width:1024px) and (max-width:1366px) {
+      overflow-y: auto !important;
+    }
+  }
+}
 }

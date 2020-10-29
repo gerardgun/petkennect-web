@@ -154,7 +154,7 @@ const GroomingFormWizardSecond = props => {
                       label='Price'
                       name={`${index}.price`}
                       required
-                      type='text'/>
+                      type='number'/>
                   </Grid.Column >
                 </Grid>
               </Segment>

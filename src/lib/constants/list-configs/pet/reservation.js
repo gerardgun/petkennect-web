@@ -28,9 +28,16 @@ export default {
       //   icon        : 'eye'
       // }
       {
-        display_name: 'Check',
-        name        : 'Check',
-        icon        : 'arrow right'
+        display_name      : 'Check In',
+        name              : 'check_in',
+        icon              : 'arrow right',
+        conditional_render: item => item.is_pending
+      },
+      {
+        display_name      : 'Check Out',
+        name              : 'check_out',
+        icon              : 'check',
+        conditional_render: item => !item.is_pending
       }
     ],
     dropdownOptions: [
@@ -47,8 +54,14 @@ export default {
         name        : 'edit_reserve'
       },
       {
-        display_name: 'Cancel CheckIn',
-        name        : 'cancel_checkIn'
+        display_name      : 'Cancel CheckIn',
+        name              : 'cancel_checkIn',
+        conditional_render: item => item.is_pending
+      },
+      {
+        display_name      : 'Absent',
+        name              : 'absent',
+        conditional_render: item => !item.is_pending
       },
       {
         display_name: 'Cancel Reserve',

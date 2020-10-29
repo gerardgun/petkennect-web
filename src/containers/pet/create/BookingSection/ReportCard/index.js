@@ -1,23 +1,24 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm, formValueSelector } from 'redux-form'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { reduxForm } from 'redux-form'
+import { Button, Form, Header, Modal, Icon, Grid } from 'semantic-ui-react'
 
 import PetReportCard from '@components/Common/Pet/ReportCard'
 import FormError from '@components/Common/FormError'
 import { parseResponseError } from '@lib/utils/functions'
 
-import clientDetailDuck from '@reducers/client/detail'
-import clientPetDuck from '@reducers/client/pet'
+import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
 
-import { daycampFormId } from './first'
+import petDetailDuck from '@reducers/pet/detail'
+import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
-const AddReportCardForm = (props) => {
+import './styles.scss'
+
+const ViewReportCardForm = (props) => {
   const {
-    clientDetail,
-    clientPet,
+    petDetail,
     error,
     handleSubmit,
     reset,
@@ -25,10 +26,6 @@ const AddReportCardForm = (props) => {
   } = props
 
   const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
-
-  useEffect(() => {
-    props.getClientPets()
-  }, [])
 
   const _handleClose = () => {
     props.reset()
@@ -38,7 +35,7 @@ const AddReportCardForm = (props) => {
   const _handleSubmit = (values) => {
     if(isUpdating)
       return props
-        .put({ id: clientDetail.item.id, ...values })
+        .put({ id: petDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -48,10 +45,14 @@ const AddReportCardForm = (props) => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(clientDetail.mode), [
-    clientDetail.mode
+  const isOpened = useMemo(() => getIsOpened(petDetail.mode), [
+    petDetail.mode
   ])
-  const isUpdating = Boolean(clientDetail.item.id)
+  const isUpdating = Boolean(petDetail.item.id)
+
+  const _handleSendReportCardBtnClick = () =>{
+    props.setDocumentItem('', 'SEND')
+  }
 
   return (
     <Modal
@@ -61,15 +62,12 @@ const AddReportCardForm = (props) => {
       size='large'>
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
-        <Form id='add-report-card-form' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+        <Form id='view-report-card-form' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Header as='h2' className='segment-content-header'>
-            {isUpdating ? 'Update' : 'Add'} Report Card
+            Report
           </Header>
-          {props.selectedPets && props.selectedPets.map((petId)=> (
-            <PetReportCard
-              item={clientPet.items.filter(_pet => _pet.id === petId)[0]}
-              key={petId}/>
-          ))}
+          <PetReportCard
+            item={petDetail.item}/>
           {error && (
             <Form.Group widths='equal'>
               <Form.Field>
@@ -77,6 +75,19 @@ const AddReportCardForm = (props) => {
               </Form.Field>
             </Form.Group>
           )}
+
+          <Grid className='mt16'>
+            <Grid.Column  computer={6} mobile={16} tablet={7}>
+              <b>Send Email</b>
+              <p>* Please send email to pet owner.</p>
+            </Grid.Column>
+            <Grid.Column  computer={7} mobile={16} tablet={9}>
+              <Button onClick={_handleSendReportCardBtnClick} type='button'>
+                <Icon name='mail'/>
+                <p>Send Email</p>
+              </Button>
+            </Grid.Column>
+          </Grid>
 
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
@@ -95,6 +106,7 @@ const AddReportCardForm = (props) => {
             </Form.Field>
           </Form.Group>
         </Form>
+        <ClientDocumentFormSendModal/>
       </Modal.Content>
     </Modal>
   )
@@ -104,24 +116,18 @@ export default compose(
   withRouter,
   connect(
     (state) => {
-      const clientDetail = clientDetailDuck.selectors.detail(state)
-      let selectedPets = formValueSelector(daycampFormId)(state, 'pet')
-
       return {
-        clientDetail,
-        initialValues: clientDetail.item,
-        clientPet    : clientPetDuck.selectors.list(state),
-        selectedPets : selectedPets
+        petDetail: petDetailDuck.selectors.detail(state)
       }
     },
     {
-      getClientPets: clientPetDuck.creators.get,
-      resetItem    : clientDetailDuck.creators.resetItem
+      resetItem      : petDetailDuck.creators.resetItem,
+      setDocumentItem: clientDocumentDetailDuck.creators.setItem
     }
   ),
   reduxForm({
-    form              : 'add-report-card-form',
+    form              : 'view-report-card-form',
     destroyOnUnmount  : false,
     enableReinitialize: true
   })
-)(AddReportCardForm)
+)(ViewReportCardForm)

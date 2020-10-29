@@ -8,10 +8,10 @@ import { compose } from 'redux'
 import Table from '@components/Table'
 import CancelReserve from './CancelReserve'
 import PetNotes from './Notes'
-import ViewReport from '@containers/client/reservation/daycamp/AddReportCardForm'
+import ViewReport from './ReportCard'
+import Absent from './Absent'
 
 import petDetailDuck from '@reducers/pet/detail'
-import clientDetailDuck from '@reducers/client/detail'
 import petReservationDuck from '@reducers/pet/reservation'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
@@ -42,14 +42,14 @@ function BookingSection({ petDetail, ...props }) {
       case 'view_report' : props.setViewReportItem(item,'CREATE')
         break
 
-      case 'view_note' : props.setNoteItem(item,'READ')
+      case 'edit_note' : props.setNoteItem(item,'READ')
         break
 
       case 'edit_reserve' : props.setReserveItem(item,'UPDATE')
         history.replace(`/client/${clientId}/book`)
         break
 
-      case 'cancel_checkIn' :
+      case 'absent' : props.setCancelCheckInItem(item,'DELETE')
         break
       case 'cancel_reserve' : props.setCancelReserveItem(item,'READ')
         break
@@ -93,7 +93,7 @@ function BookingSection({ petDetail, ...props }) {
           content='Grooming' onClick={_handleFilterBtnClick}
           type='G'/>
       </div>
-      <div className='mh28'>
+      <div className='mh28 ui-table-overflow'>
         <Table
           duck={petReservationDuck}
           onOptionDropdownChange={_handleOptionDropdownChange}
@@ -103,6 +103,7 @@ function BookingSection({ petDetail, ...props }) {
       <ViewReport/>
       <CancelReserve/>
       <PetNotes/>
+      <Absent/>
     </Container>
   )
 }
@@ -120,9 +121,10 @@ export default compose(
       getPetReservations  : petReservationDuck.creators.get,
       setFilters          : petReservationDuck.creators.setFilters,
       setCancelReserveItem: petReservationDetailDuck.creators.setItem,
+      setCancelCheckInItem: petReservationDetailDuck.creators.setItem,
       setReserveItem      : petReservationDetailDuck.creators.setItem,
       setNoteItem         : petNoteDetailDuck.creators.setItem,
-      setViewReportItem   : clientDetailDuck.creators.setItem,
+      setViewReportItem   : petDetailDuck.creators.setItem,
       getPet              : petDetailDuck.creators.get
     })
 )(BookingSection)

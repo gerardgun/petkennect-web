@@ -1,5 +1,4 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
-
 import { Get } from '@lib/utils/http-client'
 
 import petDetailDuck from '@reducers/pet/detail'

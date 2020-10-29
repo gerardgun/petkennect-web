@@ -90,8 +90,9 @@ const TableList = ({ duck, list, ...props }) => {
     )
   }
 
-  const _handleOptionDropdownChange = (e, { value: optionName }) => {
-    props.onOptionDropdownChange(optionName)
+  const _handleOptionDropdownChange = (e, { value: optionName, itemID  }) => {
+    const item = list.items.find(({ id }) => id === itemID)
+    props.onOptionDropdownChange(optionName, item)
   }
 
   const _handleOptionBtnClick = e => {
@@ -215,10 +216,13 @@ const TableList = ({ duck, list, ...props }) => {
                 <Dropdown
                   disabled={list.config.row.dropdownOptions.length === 0}
                   icon={null}
+                  itemID={item.id}
                   key={index}
                   onChange={_handleOptionDropdownChange}
                   options={
-                    list.config.row.dropdownOptions.map((item, index) => ({
+                    list.config.row.dropdownOptions.filter(({ conditional_render }) => {
+                      return !conditional_render || conditional_render(item)
+                    }).map((item, index) => ({
                       key  : `d-option-${index}`,
                       value: item.name,
                       text : item.display_name
@@ -229,8 +233,6 @@ const TableList = ({ duck, list, ...props }) => {
                     <Button basic icon='ellipsis vertical'/>
                   )}
                   value={null}/>
-                // )
-                // })
               }
             </Table.Cell>
           )
