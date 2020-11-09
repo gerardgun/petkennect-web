@@ -9,7 +9,7 @@ import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
-import { formId } from './../'
+import { formId } from './first'
 
 import authDuck from '@reducers/auth'
 import productFamiliesDetailDuck from '@reducers/product/product-families/detail'

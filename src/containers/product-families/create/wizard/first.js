@@ -9,11 +9,12 @@ import * as Yup from 'yup'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
-import { formId } from './../'
 
 import productClassesDuck from '@reducers/product/product-classes'
 import productFamiliesDetailDuck from '@reducers/product/product-families/detail'
 import categoryDuck from '@reducers/category'
+
+export const formId = 'product-form'
 
 const ProductFormWizardFirst = props => {
   const {
@@ -77,7 +78,7 @@ const ProductFormWizardFirst = props => {
             component={FormField}
             control={Select}
             label='Class'
-            name='class'
+            name='family'
             options={productClasses.items.map((_productClasses) => ({
               key  : _productClasses.id,
               value: _productClasses.id,

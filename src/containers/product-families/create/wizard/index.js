@@ -4,7 +4,7 @@ import { destroy } from 'redux-form'
 
 import ProductFormWizardFirst from './first'
 import ProductFormWizardSecond from './second'
-import { formId } from './../'
+import { formId } from './first'
 
 const ProductFormWizard = props => {
   const [ step, setStep ] = useState(1)

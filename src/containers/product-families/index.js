@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
@@ -9,7 +9,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 
-import ProductFamiliesFormModal from './create/modal'
+import ProductFamiliesFormModal from './create'
 import ProductVariationsFormModal from './../product-variations/create'
 
 import productFamiliesDuck from '@reducers/product/product-families'
@@ -18,6 +18,7 @@ import productVariationsDetailDuck from '@reducers/product/product-variations/de
 
 const ProductList = ({ product, productDetail, productVariationsDetail, ...props }) => {
   const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
+  const history = useHistory()
 
   useEffect(() => {
     if(productDetail.status === 'DELETED' || productDetail.status === 'POSTED' || productDetail.status === 'PUT')
@@ -42,7 +43,7 @@ const ProductList = ({ product, productDetail, productVariationsDetail, ...props
 
   const _handleRowClick = (e, item) => {
     if(item.variations)
-      props.setItem(item, 'UPDATE')
+      history.replace(`/product-families/show/${item.id}`)
     else
       props.setProductVariations(item, 'UPDATE')
   }

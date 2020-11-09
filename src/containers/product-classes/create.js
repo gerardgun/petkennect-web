@@ -22,7 +22,7 @@ const ProductClassesCreateForm = (props) => {
 
   useEffect(() => {
     props.getProductAttributes()
-  }, [ productClassesDetail ])
+  }, [])
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 

@@ -9,8 +9,6 @@ import productFamiliesDetailDuck from '@reducers/product/product-families/detail
 
 import './styles.scss'
 
-export const formId = 'product-form'
-
 const ProductFormModal = ({ productFamiliesDetail, ...props }) => {
   const { mode } = productFamiliesDetail
 

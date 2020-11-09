@@ -75,6 +75,7 @@ import productImage from '@reducers/product/image'
 import productImageDetail from '@reducers/product/image/detail'
 import productFamilies from '@reducers/product/product-families'
 import productFamiliesDetail from '@reducers/product/product-families/detail'
+import productVariations from '@reducers/product/product-variations'
 import productVariationsDetail from '@reducers/product/product-variations/detail'
 import productVariationsImageDetail from '@reducers/product/product-variations/image/detail'
 import productPackage from '@reducers/product/package'
@@ -187,6 +188,7 @@ const createRootReducer = history => combineReducers({
   [productFamiliesDetail.store]       : productFamiliesDetail.reducer,
   [productPackage.store]              : productPackage.reducer,
   [productPackageDetail.store]        : productPackageDetail.reducer,
+  [productVariations.store]           : productVariations.reducer,
   [productVariationsDetail.store]     : productVariationsDetail.reducer,
   [productVariationsImageDetail.store]: productVariationsImageDetail.reducer,
   [reservation.store]                 : reservation.reducer,

@@ -73,6 +73,7 @@ import productFamilies from './product/product-families'
 import productFamiliesDetail from './product/product-families/detail'
 import productPackage from './product/package'
 import productPackageDetail from './product/package/detail'
+import productVariations from './product/product-variations'
 import productVariationsDetail from './product/product-variations/detail'
 import productVariationsImageDetail from './product/product-variations/image/detail'
 import reservation from './reservation'
@@ -179,6 +180,7 @@ export default function* rootSaga() {
     ...productFamiliesDetail,
     ...productPackage,
     ...productPackageDetail,
+    ...productVariations,
     ...productVariationsDetail,
     ...productVariationsImageDetail,
     ...reservation,
