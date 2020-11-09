@@ -1,0 +1,32 @@
+.label_h0{
+    label{
+        height: 0 !important;
+      }
+}
+
+.div_text_center{
+    align-items: center;
+    display: flex !important;
+}
+
+.div_browser_preview{
+    background:#e4e4e4 !important;
+    padding: 2rem !important;
+
+    .meta{
+        a{
+            color: teal !important;
+        }
+    }
+}
+
+.div_url{
+    div{
+        &.ui.labeled.input{
+            width:100%;
+            input{
+                width:fit-content
+            }
+        }
+    }
+}

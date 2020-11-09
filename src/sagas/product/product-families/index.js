@@ -2,22 +2,27 @@ import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
-import categoryDuck from '@reducers/category'
+import productDuck from '@reducers/product/product-families'
 
-const { selectors, types } = categoryDuck
+const { selectors, types } = productDuck
 
 function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
     const filters = yield select(selectors.filters)
+    const list = yield select(selectors.list)
 
-    const  results = yield call(Get, 'categories/', filters)
+    const { results, ...meta } = yield call(Get, '/products/', filters)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: results.map((item,index) => ({ index: index,...item }))
+        items     : results,
+        pagination: {
+          ...list.pagination,
+          meta
+        }
       }
     })
   } catch (e) {

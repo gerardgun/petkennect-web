@@ -72,6 +72,14 @@
         }
       }
     }
+
+    .detail_table_row_item{
+      display: flex;
+      align-items: center;
+      .div_image{
+        display: flex;
+      }
+    }
   }
 
   .ui.checkbox {

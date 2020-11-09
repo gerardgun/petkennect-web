@@ -1,0 +1,19 @@
+.product-variations-form{
+    .document-upload-choose-file{
+        border: 2px dashed #BDC3c9 !important;
+        background: white !important;
+        .cloud.upload{
+            font-size: 2rem;
+        }
+    }
+    .image-container{
+        div.ui.image{
+                position: relative;
+            }
+        .close.icon{
+            position:absolute;
+            top :0px;
+            right:-7px;
+        }
+    }
+}

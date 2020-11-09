@@ -32,6 +32,8 @@ import Product from '@containers/product'
 import ProductCreate from '@containers/product/create/RootProvider'
 import ProductAttribute from '@containers/product-attribute'
 import ProductAttributeValue from '@containers/product-attribute-value'
+import ProductClasses from '@containers/product-classes'
+import ProductFamilies from '@containers/product-families'
 import Category from '@containers/category'
 // import PetBreed from '@containers/product/create'
 import EmployeeTitle from '@containers/employee-title'
@@ -196,6 +198,14 @@ const privateRoutes = [
   {
     path     : '/product-attribute-value/:id',
     component: ProductAttributeValue
+  },
+  {
+    path     : '/product-classes',
+    component: ProductClasses
+  },
+  {
+    path     : '/product-families',
+    component: ProductFamilies
   },
   {
     path     : '/category',

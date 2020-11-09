@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
@@ -20,6 +20,8 @@ const TableList = ({ duck, list, ...props }) => {
 
   // For Filter Popup
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+
+  const [ defaultTableBody, setTableBody ] = useState({ expandedRows: [] })
 
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
@@ -103,11 +105,44 @@ const TableList = ({ duck, list, ...props }) => {
 
   const _handleRowClick = e => {
     const isCheckbox = e.target.tagName === 'LABEL' && /ui.*checkbox/.test(e.target.parentNode.classList.value)
-    const item = list.items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
+    let item = list.items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
+
+    if(list.config.expandedRows && item == null) {
+      item = []
+      list.items.forEach(_item => {
+        item.push(..._item.variations)
+      })
+      item = item.find(({ id }) => id == +e.currentTarget.dataset.itemId)
+    }
 
     if(!isCheckbox)
       if(props.onRowClick) props.onRowClick(e, item)
       else if(list.config.base_uri) props.history.push(`${list.config.base_uri}/${item.id}`)
+  }
+
+  const _handleExpandIconClick = e=>{
+    e.stopPropagation()
+    const rowIndex = +e.currentTarget.parentNode.rowIndex - 1
+    const currentExpandedRows = defaultTableBody.expandedRows
+    const isRowCurrentlyExpanded = currentExpandedRows.includes(rowIndex)
+
+    if(list.config.expandedRows)
+    {
+      const newExpandedRows = isRowCurrentlyExpanded
+        ? currentExpandedRows.filter(id => id !== rowIndex)
+        : currentExpandedRows.concat(rowIndex)
+
+      setTableBody({ expandedRows: newExpandedRows })
+    }
+  }
+
+  const renderItemCaret = rowId=> {
+    const currentExpandedRows = defaultTableBody.expandedRows
+    const isRowCurrentlyExpanded = currentExpandedRows.includes(rowId)
+    if(isRowCurrentlyExpanded)
+      return <Icon  name='caret down'/>
+    else
+      return <Icon  name='caret up'/>
   }
 
   const _handleRowOptionClick = e => {
@@ -117,6 +152,34 @@ const TableList = ({ duck, list, ...props }) => {
     const item = list.items.find(({ id }) => id === itemId)
 
     props.onRowOptionClick(optionName, item)
+  }
+
+  const renderAttributeAndValue = attributeArray =>{
+    return (
+      attributeArray.map((item) => {
+        return (
+          <p key={item.id}><span>{item.product_family_attribute} : {item.product_attribute_value}</span></p>
+        )
+      })
+    )
+  }
+
+  const renderItemDetails = (item, name, image)=> {
+    return (
+      <>
+        <Table.Cell></Table.Cell>
+        <Table.Cell><div className='detail_table_row_item'><div className='div_image'><Image rounded size='mini' src={image || defaultImageUrl}/>&nbsp;&nbsp;{name}&nbsp;&nbsp;&nbsp;</div><div>{renderAttributeAndValue(item.attributes)}</div></div></Table.Cell>
+        <Table.Cell>-</Table.Cell>
+        <Table.Cell>-</Table.Cell>
+        <Table.Cell>{item.price}</Table.Cell>
+        <Table.Cell>{item.stock}</Table.Cell>
+        <Table.Cell>-</Table.Cell>
+        <Table.Cell><Label
+          circular color={item.is_active ? 'green' : 'red'} horizontal
+          style={{ minWidth: '6rem' }}>{item.is_active ? 'Active' : 'Inactive'}</Label></Table.Cell>
+        <Table.Cell></Table.Cell>
+      </>
+    )
   }
 
   // BEGIN Improve
@@ -147,7 +210,7 @@ const TableList = ({ duck, list, ...props }) => {
     const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
     const isActive = Boolean('active' in item ? item.active : true)
 
-    return (
+    const itemRows = [
       <Table.Row
         active={checked} className={isActive ? '' : 'inactive'} data-item-id={item.id}
         key={index} onClick={_handleRowClick}>
@@ -237,12 +300,39 @@ const TableList = ({ duck, list, ...props }) => {
             </Table.Cell>
           )
         }
+
+        {/* Row expandedRows */}
+        {
+          list.config.expandedRows && (
+            <Table.Cell  onClick={_handleExpandIconClick}>
+              {renderItemCaret(index)}
+            </Table.Cell>
+          )
+        }
       </Table.Row>
-    )
+    ]
+    if(defaultTableBody.expandedRows.includes(index))
+      itemRows.push(
+        item.variations.length > 0
+          ? item.variations.map((_item)=>(
+            <>
+              <Table.Row data-item-id={_item.id} key={'row-expanded-' + index} onClick={_handleRowClick}>
+                {
+                  renderItemDetails(_item, item.name,item.image_filepath)
+                }
+              </Table.Row>
+            </>
+          )) : <Table.Row disabled>
+            <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
+          </Table.Row>
+
+      )
+
+    return itemRows
   }
 
   const loading = list.status === 'GETTING'
-  const areAllItemsChecked = list.selector && list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
+  const areAllItemsChecked = list.selector && list.items && list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
   const hasHeader = configOptions.length > 0 || _get(list.config, 'search_enabled', true) || props.filterColumns.length > 0
 
   // List options only available when the list has extended the selector reducer

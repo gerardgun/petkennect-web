@@ -1,28 +1,21 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 
-const { types, selectors } = serviceAttributeDuck
+const { types } = serviceAttributeDuck
 
 function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const { ...filters } = yield select(selectors.filters)
-    const list = yield select(selectors.list)
-
-    const { results, ...meta } = yield call(Get, '/service-attributes/', filters)
+    const serviceAttributes = yield call(Get, '/service-attributes/')
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items     : results,
-        pagination: {
-          ...list.pagination,
-          meta
-        }
+        items: serviceAttributes
       }
     })
   } catch (e) {
