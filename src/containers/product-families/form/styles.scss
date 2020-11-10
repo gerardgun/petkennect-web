@@ -1,0 +1,22 @@
+.variation_table{
+    .table-primary-segment{
+        margin-top: 2rem !important;
+    }
+}
+
+.display_flex{
+    display: flex !important;
+    align-items: center;
+}
+
+.grid_attribute_value{
+    margin-top: 0rem !important;
+    .div_attribute_value{
+        display: inline-flex;
+    div{
+        padding-top: 0rem !important;
+        padding-bottom: 0rem !important;
+        padding-left: 1rem;
+    }
+}
+}

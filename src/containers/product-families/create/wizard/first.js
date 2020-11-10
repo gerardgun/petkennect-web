@@ -3,24 +3,20 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, TextArea,Grid, Input, Segment, Select, Checkbox } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
-import FormError from '@components/Common/FormError'
-import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
 
 import productClassesDuck from '@reducers/product/product-classes'
 import productFamiliesDetailDuck from '@reducers/product/product-families/detail'
 import categoryDuck from '@reducers/category'
 
-export const formId = 'product-form'
+import ProductFormFirst, { formId } from './../../form/first'
 
 const ProductFormWizardFirst = props => {
   const {
-    productClasses,
-    category,
-    error, handleSubmit, reset // redux-form
+    handleSubmit, reset // redux-form
   } = props
 
   useEffect(() => {
@@ -45,110 +41,8 @@ const ProductFormWizardFirst = props => {
         <span className='text-gray'>
           Complete Product Info
         </span>
-        <Grid className='mt32'>
-          <Grid.Column  computer={12} mobile={16} tablet={10}>
-            <Form.Group widths='equal'>
-              <Field
-                component={FormField}
-                control={Input}
-                label='Product name'
-                name='name'
-                required
-                type='text'/>
-            </Form.Group> </Grid.Column>
-          <Grid.Column computer={4} mobile={16} tablet={6}>
-            <Form.Group widths='equal'>
-              <Field
-                component={FormField}
-                control={Checkbox}
-                label='Active'
-                name='is_active'
-                type='checkbox'/>
-              <Field
-                component={FormField}
-                control={Checkbox}
-                label='Outstanding'
-                name='is_outstanding'
-                type='checkbox'/>
-            </Form.Group>
-          </Grid.Column>
-        </Grid>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Class'
-            name='family'
-            options={productClasses.items.map((_productClasses) => ({
-              key  : _productClasses.id,
-              value: _productClasses.id,
-              text : `${_productClasses.name}`
-            }))}
-            placeholder='Select product class'
-            required
-            selectOnBlur={false}/>
-        </Form.Group>
 
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={TextArea}
-            label='Description'
-            name='description'
-            placeholder='Enter description'
-            required/>
-        </Form.Group>
-
-        <Grid className='mt32'>
-          <Grid.Column computer={8} mobile={16} tablet={8}>
-            <label>Categories</label>
-            <Segment>
-              {
-                category.items.length > 0  && category.items.filter(_ => _.id == _.parent || _.parent == null).map((item)=>(
-                  <>
-                    <Field
-                      className='label_h0'
-                      component={FormField}
-                      control={Checkbox}
-                      label={`${item.name}`}
-                      name={`categories[${item.index}]`}
-                      type='checkbox'/>
-                    <div className='ml16'>
-                      {
-                        category.items.filter(_ => _.id != _.parent && _.parent == item.id).map((item)=>(
-                          <>
-                            <Field
-                              className='label_h0'
-                              component={FormField}
-                              control={Checkbox}
-                              label={`${item.name}`}
-                              name={`categories[${item.index}]`}
-                              type='checkbox'/>
-                          </>
-                        ))
-                      }
-                    </div>
-                  </>
-                ))
-              }
-            </Segment>
-          </Grid.Column>
-          <Grid.Column
-            className='div_text_center' computer={8} mobile={16}
-            tablet={8}>
-          Select the categories where this product will appear. Remember that a product can belong to many categories at the same time.
-          </Grid.Column>
-        </Grid>
-        {
-          error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )
-        }
+        <ProductFormFirst/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
