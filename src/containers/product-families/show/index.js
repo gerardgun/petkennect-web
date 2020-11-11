@@ -17,6 +17,7 @@ import ProductFormSecond from './../form/second'
 
 import categoryDuck from '@reducers/category'
 import productFamiliesDetailDuck from '@reducers/product/product-families/detail'
+import productClassesDetailDuck from '@reducers/product/product-classes/detail'
 
 const ProductFamilyShow = (props) => {
   const {
@@ -41,6 +42,7 @@ const ProductFamilyShow = (props) => {
 
     return () => {
       props.resetItem()
+      props.resetProductClasses()
     }
   }, [])
 
@@ -167,11 +169,12 @@ export default compose(
       }
     },
     {
-      getCategories     : categoryDuck.creators.get,
-      getProductFamilies: productFamiliesDetailDuck.creators.get,
-      resetItem         : productFamiliesDetailDuck.creators.resetItem,
-      setItem           : productFamiliesDetailDuck.creators.setItem,
-      put               : productFamiliesDetailDuck.creators.put
+      getCategories      : categoryDuck.creators.get,
+      getProductFamilies : productFamiliesDetailDuck.creators.get,
+      resetItem          : productFamiliesDetailDuck.creators.resetItem,
+      resetProductClasses: productClassesDetailDuck.creators.resetItem,
+      setItem            : productFamiliesDetailDuck.creators.setItem,
+      put                : productFamiliesDetailDuck.creators.put
     }),
   reduxForm({
     form              : formId,

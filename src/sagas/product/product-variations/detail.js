@@ -4,6 +4,8 @@ import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import productVariationsDetailDuck from '@reducers/product/product-variations/detail'
 
+import { v4 as uuidv4 } from 'uuid'
+
 const { types } = productVariationsDetailDuck
 
 function* deleteItem({ ids: [ id ] }) {
@@ -44,7 +46,13 @@ function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, `products/${payload.product}/variations`, payload)
+    const result = yield call(Post, `products/${payload.product}/variations/`, {
+      sku_id    : uuidv4(),
+      stock     : '1',
+      is_active : true,
+      price     : '1',
+      attributes: payload.attributes
+    })
     yield put({ type: types.POST_FULFILLED, payload: { payload: result } })
   } catch (e) {
     yield put({

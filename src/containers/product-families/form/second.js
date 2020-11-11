@@ -26,6 +26,7 @@ const ProductFormSecond = props => {
     productAttributes,
     productClassesDetail,
     productVariations,
+    productVariationsAttributes,
     productFamiliesDetail,
     error, handleSubmit, reset // redux-form
   } = props
@@ -35,12 +36,9 @@ const ProductFormSecond = props => {
   useEffect(() => {
     props.getProductAttributes()
     props.getProductVariations(productFamiliesDetail.item.id)
-  }, [])
-
-  useEffect(()=> {
     if(productFamiliesDetail.item.family)
-      props.getProductClasses(productFamiliesDetail.item.family.id)
-  }, [ productFamiliesDetail.status ])
+      props.getProductClasses(productFamiliesDetail.item.family)
+  }, [])
 
   const _handleRowOptionClick = e => {
     e.stopPropagation()
@@ -53,6 +51,19 @@ const ProductFormSecond = props => {
     }
     else {
       props.setProductVariations(item, 'UPDATE')
+    }
+  }
+
+  const _handleAttributeValueChange = (e, { itemID, attributeId, checked }) => {
+    if(checked) {
+      let attributes = {}
+
+      productVariationsAttributes[0].forEach((item) => {
+        attributes[item.product_family_attribute] = item.product_attribute_value
+      })
+      attributes[attributeId] = itemID
+
+      return props.postProductVariation({ product: productFamiliesDetail.item.id, attributes })
     }
   }
 
@@ -83,7 +94,6 @@ const ProductFormSecond = props => {
                       component={FormField}
                       control={Checkbox}
                       disabled={true}
-
                       label={`${item.attribute.name}`}
                       name={item.id}
                       type='checkbox'/>
@@ -100,31 +110,44 @@ const ProductFormSecond = props => {
               productClassesDetail.item.family_attributes && productClassesDetail.item.family_attributes.map((item) => (
                 <>
                   <Grid  className='grid_attribute_value' >
-                    <Grid.Column className='display_flex' width={2}>
+                    <Grid.Column
+                      className='display_flex' computer={2} mobile={16}
+                      tablet={16}>
                       <label><b>{item.attribute.name}</b></label>
                     </Grid.Column>
-                    <Grid.Column style={{ padding: '0px' }} width={14}>
-                      {/* <Form.Group widths='equal'> */}
+                    <Grid.Column
+                      computer={14} mobile={16} style={{ padding: '0px' }}
+                      tablet={16}>
                       <div className='div_attribute_value'>
                         {
-                          productAttributes.items.length > 0
-                                && productAttributes.items.filter(_ => _.product_attribute == item.attribute.id).map((fieldItem)=>(
+                          productAttributes.items
+                                && productAttributes.items.filter(_ => _.product_attribute == item.product_attribute).map((fieldItem)=>(
+
                                   <>
-                                    <Field
-                                      component={FormField}
-                                      control={Checkbox}
+                                    <Checkbox
+                                      attributeId={item.id} checked={productVariationsAttributes.length > 0 && productVariationsAttributes[0]
+                                        .filter(_ => _.product_family_attribute === item.id
+                                           && _.product_attribute_value === fieldItem.id).length > 0
+                                        ? true : false} itemID={fieldItem.id}
                                       label={`${fieldItem.display_value}`}
-                                      name={fieldItem.id}
-                                      type='checkbox'/>
+                                      onChange={_handleAttributeValueChange}/><br/>
                                   </>
                                 ))
                         }
                       </div>
-                      {/* </Form.Group> */}
                     </Grid.Column>
                   </Grid>
                 </>
               ))
+            }
+            {
+              error && (
+                <Form.Group widths='equal'>
+                  <Form.Field>
+                    <FormError message={error}/>
+                  </Form.Field>
+                </Form.Group>
+              )
             }
           </Segment>
 
@@ -146,25 +169,23 @@ const ProductFormSecond = props => {
               </Table.Header>
               <Table.Body>
                 {
-                  productVariations.items.map((item,index)=>(
+                  productVariations.items.map((item)=>(
                     <>
-                      <Table.Row key={index}>
+                      <Table.Row>
                         <Table.Cell><div className='detail_table_row_item'><div className='div_image'><Image rounded size='mini' src={item.Image || defaultImageUrl}/>&nbsp;&nbsp;{item.name}&nbsp;&nbsp;&nbsp;</div><div>{renderAttributeAndValue(item.attributes)}</div></div></Table.Cell>
                         <Table.Cell><Input value={item.sku_id}/></Table.Cell>
                         <Table.Cell><Input type='number' value={item.price}/></Table.Cell>
                         <Table.Cell><Input type='number' value={item.stock}/></Table.Cell>
                         <Table.Cell><Checkbox checked={item.is_active}/></Table.Cell>
                         <Table.Cell><Popup
-                          content='Edit' inverted
-                          key={index} position='bottom center'
+                          content='Edit' inverted position='bottom center'
                           trigger={
                             <Button
                               basic
                               data-item-id={item.id} data-option-name='edit'
                               icon='edit' onClick={_handleRowOptionClick}/>
                           }/><Popup
-                          content='Delete' inverted
-                          key={item.id} position='bottom center'
+                          content='Delete' inverted position='bottom center'
                           trigger={
                             <Button
                               basic
@@ -206,13 +227,16 @@ export default compose(
   connect(
     ({ category, ...state }) => {
       const productFamiliesDetail = productFamiliesDetailDuck.selectors.detail(state)
+      const productVariations = productVariationDuck.selectors.list(state)
+      const productVariationsAttributes = productVariations.items.map((item)=> (item.attributes))
 
       return {
         productFamiliesDetail,
         category,
-        productAttributes   : productAttributeValueDetailDuck.selectors.detail(state),
-        productClassesDetail: productClassesDetailDuck.selectors.detail(state),
-        productVariations   : productVariationDuck.selectors.list(state)
+        productAttributes          : productAttributeValueDetailDuck.selectors.detail(state),
+        productClassesDetail       : productClassesDetailDuck.selectors.detail(state),
+        productVariations          : productVariations,
+        productVariationsAttributes: productVariationsAttributes
       }
     },
     {
@@ -222,6 +246,7 @@ export default compose(
       setProductVariations: productVariationsDetailDuck.creators.setItem,
       setItem             : productFamiliesDetailDuck.creators.setItem,
       post                : productFamiliesDetailDuck.creators.post,
+      postProductVariation: productVariationsDetailDuck.creators.post,
       put                 : productFamiliesDetailDuck.creators.put,
       resetItem           : productFamiliesDetailDuck.creators.resetItem
     }

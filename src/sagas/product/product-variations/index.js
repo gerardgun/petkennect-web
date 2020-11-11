@@ -15,11 +15,6 @@ function* get({ payload }) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        // items: productClassesAttributes.map((_item)=>{
-        //   return ({ attributesName: _item.family_attributes.map((_family_attributes) => {
-        //     return _family_attributes.attribute.name
-        //   }).join(','), ..._item })
-        // })
         items: productVariations
       }
     })
