@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
 import { formId } from './../../form/first'
-import ProductFormSecond from './../../form/second'
+import ProductFormThird from './../../form/third'
 
 import authDuck from '@reducers/auth'
 import productFamiliesDetailDuck from '@reducers/product/product-families/detail'
@@ -60,7 +60,7 @@ const ProductFormWizardSecond = props => {
           Configure SEO
         </span>
 
-        <ProductFormSecond/>
+        <ProductFormThird/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>

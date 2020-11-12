@@ -18,6 +18,7 @@ import productVariationDuck from '@reducers/product/product-variations'
 
 import { defaultImageUrl } from '@lib/constants'
 import { formId } from '../form/first'
+import DeleteConfirmationForm from './deleteConfirmation'
 
 import './styles.scss'
 
@@ -27,6 +28,7 @@ const ProductFormSecond = props => {
     productClassesDetail,
     productVariations,
     productVariationsAttributes,
+    productVariationsDetail,
     productFamiliesDetail,
     error, handleSubmit, reset // redux-form
   } = props
@@ -40,13 +42,18 @@ const ProductFormSecond = props => {
       props.getProductClasses(productFamiliesDetail.item.family)
   }, [])
 
+  useEffect(() => {
+    if(productVariationsDetail.status === 'DELETED' || productVariationsDetail.status === 'POSTED' || productVariationsDetail.status === 'PUT')
+      props.getProductVariations(productFamiliesDetail.item.id)
+  }, [ productVariationsDetail.status ])
+
   const _handleRowOptionClick = e => {
     e.stopPropagation()
     const itemId = +e.currentTarget.dataset.itemId
     const optionName = e.currentTarget.dataset.optionName
     const item = productVariations.items.find(({ id }) => id === itemId)
     if(optionName === 'delete') {
-      props.setItem(item, 'DELETE')
+      props.setProductVariations(item, 'DELETE')
       _handleOpenDeleteModal()
     }
     else {
@@ -54,17 +61,42 @@ const ProductFormSecond = props => {
     }
   }
 
-  const _handleAttributeValueChange = (e, { itemID, attributeId, checked }) => {
+  const _handleAttributeValueChange = (e, { item_id, attribute_id, product_variation, checked }) => {
+    e.stopPropagation()
     if(checked) {
       let attributes = {}
 
-      productVariationsAttributes[0].forEach((item) => {
+      productVariationsAttributes.forEach((item) => {
         attributes[item.product_family_attribute] = item.product_attribute_value
       })
-      attributes[attributeId] = itemID
+      attributes[attribute_id] = item_id
 
       return props.postProductVariation({ product: productFamiliesDetail.item.id, attributes })
     }
+    else {
+      const item = productVariations.items.find(({ id }) => id === product_variation)
+      props.setProductVariations(item, 'READ')
+    }
+  }
+
+  const _handleVariationValueChange = (e, { name, value, checked }) =>{
+    e.stopPropagation()
+
+    const itemId = e.target.parentNode.parentNode.parentNode.dataset.itemId
+    let item = productVariations.items.find(({ id }) => id == itemId)
+
+    let paylord = {
+      id       : item.id,
+      product  : item.product,
+      sku_id   : item.sku_id,
+      is_active: item.is_active,
+      stock    : item.stock,
+      price    : item.price
+    }
+
+    paylord[name] = checked == null ? value : checked
+
+    return props.putProductVariation({ ...paylord })
   }
 
   const renderAttributeAndValue = attributeArray =>{
@@ -85,12 +117,13 @@ const ProductFormSecond = props => {
         <>
           <Segment className='p40'>
             <Header as='h3' className='section-info-header'>Attributes</Header>
-            <Form.Group widths='equal'>
+            <div className='div_attribute'>
               {
                 productClassesDetail.item.family_attributes && productClassesDetail.item.family_attributes.map((item) => (
                   <>
                     <Field
                       checked={true}
+                      className='pl8'
                       component={FormField}
                       control={Checkbox}
                       disabled={true}
@@ -100,7 +133,7 @@ const ProductFormSecond = props => {
                   </>
                 ))
               }
-            </Form.Group>
+            </div>
           </Segment>
 
           <Segment className='p40'>
@@ -121,18 +154,28 @@ const ProductFormSecond = props => {
                       <div className='div_attribute_value'>
                         {
                           productAttributes.items
-                                && productAttributes.items.filter(_ => _.product_attribute == item.product_attribute).map((fieldItem)=>(
+                                && productAttributes.items.filter(_ => _.product_attribute == item.product_attribute).map((fieldItem)=>{
+                                  const currentProductVariation = productVariationsAttributes
+                                    .filter(_ => _.product_family_attribute === item.id
+                                     && _.product_attribute_value === fieldItem.id)
+                                  let isChecked = false
+                                  let product_variation = 0
 
-                                  <>
-                                    <Checkbox
-                                      attributeId={item.id} checked={productVariationsAttributes.length > 0 && productVariationsAttributes[0]
-                                        .filter(_ => _.product_family_attribute === item.id
-                                           && _.product_attribute_value === fieldItem.id).length > 0
-                                        ? true : false} itemID={fieldItem.id}
-                                      label={`${fieldItem.display_value}`}
-                                      onChange={_handleAttributeValueChange}/><br/>
-                                  </>
-                                ))
+                                  if(currentProductVariation.length > 0) {
+                                    isChecked = true
+                                    product_variation = currentProductVariation[0].product_variation
+                                  }
+
+                                  return (
+                                    <>
+                                      <Checkbox
+                                        attribute_id={item.id}
+                                        checked={isChecked} item_id={fieldItem.id} label={`${fieldItem.display_value}`}
+                                        onChange={_handleAttributeValueChange}
+                                        product_variation={product_variation}/><br/>
+                                    </>
+                                  )
+                                })
                         }
                       </div>
                     </Grid.Column>
@@ -171,12 +214,16 @@ const ProductFormSecond = props => {
                 {
                   productVariations.items.map((item)=>(
                     <>
-                      <Table.Row>
-                        <Table.Cell><div className='detail_table_row_item'><div className='div_image'><Image rounded size='mini' src={item.Image || defaultImageUrl}/>&nbsp;&nbsp;{item.name}&nbsp;&nbsp;&nbsp;</div><div>{renderAttributeAndValue(item.attributes)}</div></div></Table.Cell>
-                        <Table.Cell><Input value={item.sku_id}/></Table.Cell>
-                        <Table.Cell><Input type='number' value={item.price}/></Table.Cell>
-                        <Table.Cell><Input type='number' value={item.stock}/></Table.Cell>
-                        <Table.Cell><Checkbox checked={item.is_active}/></Table.Cell>
+                      <Table.Row data-item-id={item.id}>
+                        <Table.Cell><div className='detail_table_row_item'><div className='div_image'><Image rounded size='mini' src={item.images.length > 0 && item.images[0].filepath || defaultImageUrl}/>&nbsp;&nbsp;{item.name}&nbsp;&nbsp;&nbsp;</div><div>{renderAttributeAndValue(item.attributes)}</div></div></Table.Cell>
+                        <Table.Cell><Input name='sku_id' onChange={_handleVariationValueChange} value={item.sku_id}/></Table.Cell>
+                        <Table.Cell><Input
+                          name='price' onChange={_handleVariationValueChange} type='number'
+                          value={item.price}/></Table.Cell>
+                        <Table.Cell><Input
+                          name='stock' onChange={_handleVariationValueChange} type='number'
+                          value={item.stock}/></Table.Cell>
+                        <Table.Cell><Checkbox checked={item.is_active} name='is_active' onChange={_handleVariationValueChange}/></Table.Cell>
                         <Table.Cell><Popup
                           content='Edit' inverted position='bottom center'
                           trigger={
@@ -199,6 +246,7 @@ const ProductFormSecond = props => {
               </Table.Body>
             </Table>
 
+            <DeleteConfirmationForm/>
             <ModalDelete
               duckDetail={productVariationsDetailDuck}
               onClose={_handleCloseDeleteModal}
@@ -228,7 +276,13 @@ export default compose(
     ({ category, ...state }) => {
       const productFamiliesDetail = productFamiliesDetailDuck.selectors.detail(state)
       const productVariations = productVariationDuck.selectors.list(state)
-      const productVariationsAttributes = productVariations.items.map((item)=> (item.attributes))
+      const productVariationsAttributes = []
+
+      productVariations.items && productVariations.items.forEach(_attributeValue => {
+        _attributeValue.attributes.forEach(_values => {
+          productVariationsAttributes.push(_values)
+        })
+      })
 
       return {
         productFamiliesDetail,
@@ -236,6 +290,7 @@ export default compose(
         productAttributes          : productAttributeValueDetailDuck.selectors.detail(state),
         productClassesDetail       : productClassesDetailDuck.selectors.detail(state),
         productVariations          : productVariations,
+        productVariationsDetail    : productVariationsDetailDuck.selectors.detail(state),
         productVariationsAttributes: productVariationsAttributes
       }
     },
@@ -247,6 +302,7 @@ export default compose(
       setItem             : productFamiliesDetailDuck.creators.setItem,
       post                : productFamiliesDetailDuck.creators.post,
       postProductVariation: productVariationsDetailDuck.creators.post,
+      putProductVariation : productVariationsDetailDuck.creators.put,
       put                 : productFamiliesDetailDuck.creators.put,
       resetItem           : productFamiliesDetailDuck.creators.resetItem
     }
