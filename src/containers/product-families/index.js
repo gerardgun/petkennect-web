@@ -42,10 +42,10 @@ const ProductList = ({ product, productDetail, productVariationsDetail, ...props
   }
 
   const _handleRowClick = (e, item) => {
-    if(item.variations)
-      history.replace(`/product-families/show/${item.id}`)
-    else
+    if(e.currentTarget.dataset.itemExpand === 'true')
       props.setProductVariations(item, 'UPDATE')
+    else
+      history.replace(`/product-families/show/${item.id}`)
   }
 
   const _handleCreateClick = ()=> {

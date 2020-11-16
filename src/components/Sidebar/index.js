@@ -71,7 +71,7 @@ const categories = [
     ]
   },
   {
-    href : '/request',
+    href : '/online-request',
     icon : 'osi',
     label: 'Online Requests'
   },

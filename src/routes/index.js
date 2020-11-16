@@ -45,6 +45,7 @@ import Service from '@containers/service'
 import ServiceCreate from '@containers/service/create'
 import ServiceAttribute from '@containers/service-attribute'
 import ServiceAttributeValue from '@containers/service-attribute-value'
+import OnlineRequests from '@containers/online-request'
 // import FoundationDetail from '@containers/foundation/detail'
 import Company from '@containers/company'
 import CompanyEdit from '@containers/company/edit'
@@ -235,6 +236,10 @@ const privateRoutes = [
   {
     path     : '/service-attribute-value/:id',
     component: ServiceAttributeValue
+  },
+  {
+    path     : '/online-request',
+    component: OnlineRequests
   },
   {
     path     : '/employee',

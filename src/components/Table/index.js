@@ -105,14 +105,16 @@ const TableList = ({ duck, list, ...props }) => {
 
   const _handleRowClick = e => {
     const isCheckbox = e.target.tagName === 'LABEL' && /ui.*checkbox/.test(e.target.parentNode.classList.value)
-    let item = list.items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
+    let item = []
 
-    if(list.config.expandedRows && item == null) {
-      item = []
+    if(e.currentTarget.dataset.itemExpand === 'true') {
       list.items.forEach(_item => {
-        item.push(..._item.variations)
+        item.push(..._item.expandedData)
       })
-      item = item.find(({ id }) => id == +e.currentTarget.dataset.itemId)
+      item = item.find(({ id }) => id === +e.currentTarget.dataset.itemId)
+    }
+    else {
+      item = list.items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
     }
 
     if(!isCheckbox)
@@ -122,15 +124,15 @@ const TableList = ({ duck, list, ...props }) => {
 
   const _handleExpandIconClick = e=>{
     e.stopPropagation()
-    const rowIndex = +e.currentTarget.parentNode.rowIndex - 1
+    const rowId = +e.currentTarget.parentNode.dataset.itemId
     const currentExpandedRows = defaultTableBody.expandedRows
-    const isRowCurrentlyExpanded = currentExpandedRows.includes(rowIndex)
+    const isRowCurrentlyExpanded = currentExpandedRows.includes(rowId)
 
     if(list.config.expandedRows)
     {
       const newExpandedRows = isRowCurrentlyExpanded
-        ? currentExpandedRows.filter(id => id !== rowIndex)
-        : currentExpandedRows.concat(rowIndex)
+        ? currentExpandedRows.filter(id => id !== rowId)
+        : currentExpandedRows.concat(rowId)
 
       setTableBody({ expandedRows: newExpandedRows })
     }
@@ -154,30 +156,22 @@ const TableList = ({ duck, list, ...props }) => {
     props.onRowOptionClick(optionName, item)
   }
 
-  const renderAttributeAndValue = attributeArray =>{
-    return (
-      attributeArray.map((item) => {
-        return (
-          <p key={item.id}><span>{item.product_family_attribute} : {item.product_attribute_value}</span></p>
-        )
-      })
-    )
-  }
-
-  const renderItemDetails = (item, name, image)=> {
+  const renderItemDetails = (item)=> {
     return (
       <>
-        <Table.Cell></Table.Cell>
-        <Table.Cell><div className='detail_table_row_item'><div className='div_image'><Image rounded size='mini' src={image || defaultImageUrl}/>&nbsp;&nbsp;{name}&nbsp;&nbsp;&nbsp;</div><div>{renderAttributeAndValue(item.attributes)}</div></div></Table.Cell>
-        <Table.Cell>-</Table.Cell>
-        <Table.Cell>-</Table.Cell>
-        <Table.Cell>{item.price}</Table.Cell>
-        <Table.Cell>{item.stock}</Table.Cell>
-        <Table.Cell>-</Table.Cell>
-        <Table.Cell><Label
-          circular color={item.is_active ? 'green' : 'red'} horizontal
-          style={{ minWidth: '6rem' }}>{item.is_active ? 'Active' : 'Inactive'}</Label></Table.Cell>
-        <Table.Cell></Table.Cell>
+        {
+          list.config.expandedColumns
+            .filter(({ conditional_render }) => {
+              return !conditional_render || conditional_render(item)
+            })
+            .map(({ width = null, align = null, ...column }, index) => {
+              delete column.conditional_render
+
+              return (
+                <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
+              )
+            })
+        }
       </>
     )
   }
@@ -251,7 +245,7 @@ const TableList = ({ duck, list, ...props }) => {
                     return !conditional_render || conditional_render(item)
                   })
                   // END Improve
-                  .map(({ icon, name, display_name, ...rest }, index) => {
+                  .map(({ icon, name, color, content, display_name, ...rest }, index) => {
                     delete rest.conditional_render
 
                     return (
@@ -261,8 +255,9 @@ const TableList = ({ duck, list, ...props }) => {
                         trigger={
                           <Button
                             basic
-                            data-item-id={item.id} data-option-name={name}
-                            icon={icon} onClick={_handleRowOptionClick}
+                            color={color}
+                            content={content} data-item-id={item.id}
+                            data-option-name={name} icon={icon} onClick={_handleRowOptionClick}
                             {...rest}/>
                         }/>
                     )
@@ -305,25 +300,29 @@ const TableList = ({ duck, list, ...props }) => {
         {
           list.config.expandedRows && (
             <Table.Cell  onClick={_handleExpandIconClick}>
-              {renderItemCaret(index)}
+              {renderItemCaret(item.id)}
             </Table.Cell>
           )
         }
       </Table.Row>
     ]
-    if(defaultTableBody.expandedRows.includes(index))
+    if(defaultTableBody.expandedRows.includes(item.id))
       itemRows.push(
-        item.variations.length > 0
-          ? item.variations.map((_item)=>(
+        item.expandedData.length > 0
+          ? item.expandedData.map((_item, _index)=>(
             <>
-              <Table.Row data-item-id={_item.id} key={'row-expanded-' + index} onClick={_handleRowClick}>
+              <Table.Row
+                data-item-expand={true} data-item-id={_item.id} key={'row-expanded-' + _index + '-' + item.id}
+                onClick={_handleRowClick}>
+                <Table.Cell></Table.Cell>
                 {
-                  renderItemDetails(_item, item.name,item.image_filepath)
+                  renderItemDetails(_item)
                 }
+                <Table.Cell></Table.Cell>
               </Table.Row>
             </>
           )) : <Table.Row disabled>
-            <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
+            <Table.Cell colSpan={list.config.expandedColumns.length + Number(list.config.row.options.length > 0) + 2} textAlign='center'>No items.</Table.Cell>
           </Table.Row>
 
       )

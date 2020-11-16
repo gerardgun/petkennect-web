@@ -99,16 +99,6 @@ const ProductFormSecond = props => {
     return props.putProductVariation({ ...paylord })
   }
 
-  const renderAttributeAndValue = attributeArray =>{
-    return (
-      attributeArray.map((item) => {
-        return (
-          <p key={item.id}><span>{item.product_family_attribute} : {item.product_attribute_value}</span></p>
-        )
-      })
-    )
-  }
-
   return (
     <>
       {/* eslint-disable-next-line react/jsx-handler-names */}
@@ -215,7 +205,24 @@ const ProductFormSecond = props => {
                   productVariations.items.map((item)=>(
                     <>
                       <Table.Row data-item-id={item.id}>
-                        <Table.Cell><div className='detail_table_row_item'><div className='div_image'><Image rounded size='mini' src={item.images.length > 0 && item.images[0].filepath || defaultImageUrl}/>&nbsp;&nbsp;{item.name}&nbsp;&nbsp;&nbsp;</div><div>{renderAttributeAndValue(item.attributes)}</div></div></Table.Cell>
+                        <Table.Cell>
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <div style={{ display: 'flex' }}>
+                              <Image
+                                className='profile' rounded size='mini'
+                                src={item.images.length > 0 && item.images[0].filepath || defaultImageUrl}/>&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div>
+                              {
+                                item.attributes.map((item) => {
+                                  return (
+                                    <p key={item.id}><span>{item.product_family_attribute} : {item.product_attribute_value}</span></p>
+                                  )
+                                })
+                              }
+                            </div>
+                          </div>
+                        </Table.Cell>
                         <Table.Cell><Input name='sku_id' onChange={_handleVariationValueChange} value={item.sku_id}/></Table.Cell>
                         <Table.Cell><Input
                           name='price' onChange={_handleVariationValueChange} type='number'
