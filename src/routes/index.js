@@ -26,6 +26,8 @@ import PetIncidentAction from '@containers/pet-incident-action'
 import PetIncidentBehavior from '@containers/pet-incident-behavior'
 import PetRetireReason from '@containers/pet-retire-reason'
 import PetVaccinationType from '@containers/pet-vaccination-type'
+import PetKennelType from '@containers/pet-kennel-type'
+import PetYardType from '@containers/pet-yard-type'
 import PriceMaster from '@containers/price-master'
 import PriceMasterCreate from '@containers/price-master/create'
 import Product from '@containers/product'
@@ -172,6 +174,14 @@ const privateRoutes = [
   {
     path     : '/pet/:pet',
     component: PetCreate
+  },
+  {
+    path     : '/pet-kennel-type',
+    component: PetKennelType
+  },
+  {
+    path     : '/pet-yard-type',
+    component: PetYardType
   },
   {
     path     : '/setup/price-master',

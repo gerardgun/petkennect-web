@@ -61,6 +61,10 @@ import petNote from '@reducers/pet/note'
 import petNoteDetail from '@reducers/pet/note/detail'
 import petReservation from '@reducers/pet/reservation'
 import petReservationDetail from '@reducers/pet/reservation/detail'
+import petKennelType from '@reducers/pet/pet-kennel-type'
+import petKennelTypeDetail from '@reducers/pet/pet-kennel-type/detail'
+import petYardType from '@reducers/pet/pet-yard-type'
+import petYardTypeDetail from '@reducers/pet/pet-yard-type/detail'
 import product from '@reducers/product'
 import productDetail from '@reducers/product/detail'
 import productAttribute from '@reducers/product/product-attribute'
@@ -182,6 +186,10 @@ const createRootReducer = history => combineReducers({
   [petReservationDetail.store]                   : petReservationDetail.reducer,
   [petVaccination.store]                         : petVaccination.reducer,
   [petVaccinationDetail.store]                   : petVaccinationDetail.reducer,
+  [petKennelType.store]                          : petKennelType.reducer,
+  [petKennelTypeDetail.store]                    : petKennelTypeDetail.reducer,
+  [petYardType.store]                            : petYardType.reducer,
+  [petYardTypeDetail.store]                      : petYardTypeDetail.reducer,
   [priceMaster.store]                            : priceMaster.reducer,
   [priceMasterDetail.store]                      : priceMasterDetail.reducer,
   [product.store]                                : product.reducer,

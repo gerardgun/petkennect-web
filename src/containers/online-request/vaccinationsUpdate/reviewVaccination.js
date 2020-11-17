@@ -85,11 +85,11 @@ const ReviewForm = props => {
               type='date'/>
           </Form.Group>
           <Grid className='mt16'>
-            <Grid.Column  computer={10} mobile={16} tablet={7}>
+            <Grid.Column  computer={10} mobile={16} tablet={9}>
               <b>View Document</b>
               <p>* Please send email to pet owner.</p>
             </Grid.Column>
-            <Grid.Column  computer={6} mobile={16} tablet={9}>
+            <Grid.Column  computer={6} mobile={16} tablet={7}>
               <Button type='button'>
                 <Icon name='file pdf outline'/>
                 <p>View Document</p>

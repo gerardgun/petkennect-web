@@ -49,7 +49,7 @@ const ProductFormWizardSecond = props => {
   return (
     <>
       {/* eslint-disable-next-line react/jsx-handler-names */}
-      <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+      <Form className='form_wizard_second' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
         <span>
           <span className='text-black'>
             Step 2

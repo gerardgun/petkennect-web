@@ -171,8 +171,9 @@ export default compose(
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        name   : Yup.string().required('Product name is required'),
-        'class': Yup.string().required('Class is required')
+        name       : Yup.string().required('Product name is required'),
+        family     : Yup.string().required('Class is required'),
+        description: Yup.string().required('Description is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

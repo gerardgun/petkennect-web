@@ -156,6 +156,8 @@ const categories = [
       { href: '/setup/training-reason', label: 'Training Reason' },
       { href: '/setup/training-method', label: 'Training Method' },
       { href: '/setup/training-command', label: 'Training Command' },
+      { href: '/pet-kennel-type', label: 'Kennel Types' },
+      { href: '/pet-yard-type', label: 'Yard Types' },
       { href: '/pet/kind', label: 'Species' },
       { href: '/pet/breed', label: 'Breeds' },
       { href: '/pet/incident-type', label: 'Incident Types' },
