@@ -30,8 +30,11 @@ import PriceMaster from '@containers/price-master'
 import PriceMasterCreate from '@containers/price-master/create'
 import Product from '@containers/product'
 import ProductCreate from '@containers/product/create/RootProvider'
-import productAttribute from '@containers/product-attribute'
-import productAttributeValue from '@containers/product-attribute-value'
+import ProductAttribute from '@containers/product-attribute'
+import ProductAttributeValue from '@containers/product-attribute-value'
+import ProductClasses from '@containers/product-classes'
+import ProductFamilies from '@containers/product-families'
+import ProductFamiliesShow from '@containers/product-families/show'
 import Category from '@containers/category'
 // import PetBreed from '@containers/product/create'
 import EmployeeTitle from '@containers/employee-title'
@@ -42,6 +45,7 @@ import Service from '@containers/service'
 import ServiceCreate from '@containers/service/create'
 import ServiceAttribute from '@containers/service-attribute'
 import ServiceAttributeValue from '@containers/service-attribute-value'
+import OnlineRequests from '@containers/online-request'
 // import FoundationDetail from '@containers/foundation/detail'
 import Company from '@containers/company'
 import CompanyEdit from '@containers/company/edit'
@@ -191,11 +195,23 @@ const privateRoutes = [
   },
   {
     path     : '/product-attribute',
-    component: productAttribute
+    component: ProductAttribute
   },
   {
     path     : '/product-attribute-value/:id',
-    component: productAttributeValue
+    component: ProductAttributeValue
+  },
+  {
+    path     : '/product-classes',
+    component: ProductClasses
+  },
+  {
+    path     : '/product-families',
+    component: ProductFamilies
+  },
+  {
+    path     : '/product-families/show/:id',
+    component: ProductFamiliesShow
   },
   {
     path     : '/category',
@@ -220,6 +236,10 @@ const privateRoutes = [
   {
     path     : '/service-attribute-value/:id',
     component: ServiceAttributeValue
+  },
+  {
+    path     : '/online-request',
+    component: OnlineRequests
   },
   {
     path     : '/employee',

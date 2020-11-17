@@ -125,8 +125,8 @@ const ClientFormWizardFirst = props => {
             placeholder='Search email'
             required
             search
-            selectOnBlur={false}
-            selection/>
+            selection
+            selectOnBlur={false}/>
           <Field
             autoFocus
             component={FormField}

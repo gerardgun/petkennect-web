@@ -12,7 +12,7 @@ function ReservesSection(props) {
   const { petReservation : { filters = {} }  = {} } = props
 
   useEffect(()=> {
-    props.setFilters({ service_type_what_ever_name: 'T'  })
+    props.setFilters({ service_type_what_ever_name: 'T', service__upcoming: true, service__current: true  })
     props.getPetReservations()
   }, [])
 

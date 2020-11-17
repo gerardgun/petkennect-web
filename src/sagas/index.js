@@ -65,10 +65,17 @@ import productAttribute from './product/product-attribute'
 import productAttributeDetail from './product/product-attribute/detail'
 import productAttributeValue from './product/product-attribute-value'
 import productAttributeValueDetail from './product/product-attribute-value/detail'
+import productClasses from './product/product-classes'
+import productClassesDetail from './product/product-classes/detail'
 import productImage from './product/image'
 import productImageDetail from './product/image/detail'
+import productFamilies from './product/product-families'
+import productFamiliesDetail from './product/product-families/detail'
 import productPackage from './product/package'
 import productPackageDetail from './product/package/detail'
+import productVariations from './product/product-variations'
+import productVariationsDetail from './product/product-variations/detail'
+import productVariationsImageDetail from './product/product-variations/image/detail'
 import reservation from './reservation'
 import reservationDetail from './reservation/detail'
 import rol from './rol'
@@ -84,6 +91,8 @@ import serviceAttribute from './service/service-attribute'
 import serviceAttributeDetail from './service/service-attribute/detail'
 import serviceAttributeValue from './service/service-attribute-value'
 import serviceAttributeValueDetail from './service/service-attribute-value/detail'
+import onlineRequestClientSubmission from './online-request/client-submission'
+import onlineRequestVaccinationUpdate from './online-request/vaccination-update'
 import trainingCommand from './training-command'
 import trainingCommandDetail from './training-command/detail'
 import trainingMethod from './training-method'
@@ -165,10 +174,17 @@ export default function* rootSaga() {
     ...productAttributeDetail,
     ...productAttributeValue,
     ...productAttributeValueDetail,
+    ...productClasses,
+    ...productClassesDetail,
     ...productImage,
     ...productImageDetail,
+    ...productFamilies,
+    ...productFamiliesDetail,
     ...productPackage,
     ...productPackageDetail,
+    ...productVariations,
+    ...productVariationsDetail,
+    ...productVariationsImageDetail,
     ...reservation,
     ...reservationDetail,
     ...rol,
@@ -184,6 +200,8 @@ export default function* rootSaga() {
     ...serviceAttributeDetail,
     ...serviceAttributeValue,
     ...serviceAttributeValueDetail,
+    ...onlineRequestClientSubmission,
+    ...onlineRequestVaccinationUpdate,
     ...trainingCommand,
     ...trainingCommandDetail,
     ...trainingMethod,

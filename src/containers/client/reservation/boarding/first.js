@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Button, Dropdown, Form, Header, Input, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
@@ -120,32 +120,44 @@ const BoardingFormWizardFirst = props => {
               type='time'/>
           </Form.Group>
         </Segment>
-        <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header'>Select package and kennel type</Header>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Kennel Type'
-              name='kennel_type'
-              options={[
-                { key: 1, value: 1, text: 'Single' },
-                { key: 2, value: 2, text: 'Shared' }
-              ]}
-              placeholder='Select Kennel'
-              selectOnBlur={false}/>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Type of stay'
-              name='type_of_stay'
-              options={[
-                { key: 1, value: 1, text: 'Dog Boarding' },
-                { key: 2, value: 2, text: 'Additional Dog Boarding' }
-              ]}
-              placeholder='Select status'
-              selectOnBlur={false}/>
-          </Form.Group>
+        <Segment>
+          <div  className='div-section-info-item-single'>
+            <Header as='h3' className='section-info-header'>Select package and kennel type</Header>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Select}
+                label='Kennel Type'
+                name='kennel_type'
+                options={[
+                  { key: 1, value: 'single', text: 'Single' },
+                  { key: 2, value: 'shared', text: 'Shared' }
+                ]}
+                placeholder='Select Kennel'
+                selectOnBlur={false}/>
+            </Form.Group>
+            {
+              props.hasSharedKennelType && (
+                props.selectedPets && props.selectedPets.map((petId)=> (
+                  <Form.Group key={petId} widths='equal'>
+                    <Field
+                      component={FormField}
+                      control={Select}
+                      label={`Type of stay for ${clientPet.items.filter(_pet => _pet.id === petId)[0].name}`}
+                      name={`type_of_stay_${petId}`}
+                      options={[
+                        { key: 1, value: 1, text: 'Dog Boarding' },
+                        { key: 2, value: 2, text: 'Additional Dog Boarding' }
+                      ]}
+                      placeholder='Select status'
+                      required
+                      selectOnBlur={false}/>
+                  </Form.Group>
+                ))
+
+              )
+            }
+          </div>
         </Segment>
         {
           error && (
@@ -176,12 +188,16 @@ export default compose(
   connect(
     ({ ...state }) => {
       const clientDetail = clientDetailDuck.selectors.detail(state)
+      const KennelType = formValueSelector(boardingFormId)(state, 'kennel_type')
+      const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
 
       return {
         clientDetail,
-        initialValues: clientDetail.item,
-        location     : locationDuck.selectors.list(state),
-        clientPet    : clientPetDuck.selectors.list(state)
+        initialValues      : clientDetail.item,
+        location           : locationDuck.selectors.list(state),
+        clientPet          : clientPetDuck.selectors.list(state),
+        hasSharedKennelType: KennelType === 'shared' ? true : false,
+        selectedPets       : selectedPets
       }
     },
     {

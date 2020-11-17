@@ -67,6 +67,7 @@ const FilterForm = props => {
               component={FormField}
               control={Select}
               label={column.display_name}
+              multiple={column.filter.multiple == true ? true : false}
               name={column.filter.name}
               options={props.filterColumnSources[column.filter.name]}
               placeholder={`Select ${column.display_name}`}
@@ -82,7 +83,6 @@ const FilterForm = props => {
     <>
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form onReset={_handleReset} onSubmit={handleSubmit(_handleSubmit)}>
-
         {
           props.filterColumns
             .map(item => _renderItemFilter(item))

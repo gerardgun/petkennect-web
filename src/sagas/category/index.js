@@ -17,7 +17,7 @@ function* get(/* { payload } */) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: results
+        items: results.map((item,index) => ({ index: index,...item }))
       }
     })
   } catch (e) {

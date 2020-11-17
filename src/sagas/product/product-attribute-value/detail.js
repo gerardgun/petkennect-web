@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { Delete, Post, Patch } from '@lib/utils/http-client'
+import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import productAttributeValueDetailDuck from '@reducers/product/product-attribute-value/detail'
 
@@ -13,6 +13,42 @@ function* deleteItem({ ids: [ id ] }) {
   } catch (e) {
     yield put({
       type : types.DELETE_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* get() {
+  try {
+    yield put({ type: types.GET_PENDING })
+
+    const productAttributes = yield call(Get, '/product-attributes/')
+
+    let ProductAttributesValues = []
+
+    productAttributes
+      .forEach(_attributeValue => {
+        _attributeValue.values.forEach(_values => {
+          let attributeValue = {
+            display_value    : _values.display_value,
+            id               : _values.id,
+            product_attribute: _values.product_attribute,
+            value            : _values.value,
+            type             : _attributeValue.type
+          }
+          ProductAttributesValues.push(attributeValue)
+        })
+      })
+
+    yield put({
+      type   : types.GET_FULFILLED,
+      payload: {
+        items: ProductAttributesValues
+      }
+    })
+  } catch (e) {
+    yield put({
+      type : types.GET_FAILURE,
       error: e
     })
   }
@@ -59,6 +95,7 @@ function* _put({ payload }) {
 }
 
 export default [
+  takeEvery(types.GET, get),
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.POST, post),
   takeEvery(types.PUT, _put)

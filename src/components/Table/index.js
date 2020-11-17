@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
@@ -20,6 +20,8 @@ const TableList = ({ duck, list, ...props }) => {
 
   // For Filter Popup
   const [ open, { _handleOpen, _handleClose } ] = useModal()
+
+  const [ defaultTableBody, setTableBody ] = useState({ expandedRows: [] })
 
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
@@ -90,8 +92,9 @@ const TableList = ({ duck, list, ...props }) => {
     )
   }
 
-  const _handleOptionDropdownChange = (e, { value: optionName }) => {
-    props.onOptionClick(optionName)
+  const _handleOptionDropdownChange = (e, { value: optionName, itemID  }) => {
+    const item = list.items.find(({ id }) => id === itemID)
+    props.onOptionDropdownChange(optionName, item)
   }
 
   const _handleOptionBtnClick = e => {
@@ -102,11 +105,46 @@ const TableList = ({ duck, list, ...props }) => {
 
   const _handleRowClick = e => {
     const isCheckbox = e.target.tagName === 'LABEL' && /ui.*checkbox/.test(e.target.parentNode.classList.value)
-    const item = list.items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
+    let item = []
+
+    if(e.currentTarget.dataset.itemExpand === 'true') {
+      list.items.forEach(_item => {
+        item.push(..._item.expandedData)
+      })
+      item = item.find(({ id }) => id === +e.currentTarget.dataset.itemId)
+    }
+    else {
+      item = list.items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
+    }
 
     if(!isCheckbox)
       if(props.onRowClick) props.onRowClick(e, item)
       else if(list.config.base_uri) props.history.push(`${list.config.base_uri}/${item.id}`)
+  }
+
+  const _handleExpandIconClick = e=>{
+    e.stopPropagation()
+    const rowId = +e.currentTarget.parentNode.dataset.itemId
+    const currentExpandedRows = defaultTableBody.expandedRows
+    const isRowCurrentlyExpanded = currentExpandedRows.includes(rowId)
+
+    if(list.config.expandedRows)
+    {
+      const newExpandedRows = isRowCurrentlyExpanded
+        ? currentExpandedRows.filter(id => id !== rowId)
+        : currentExpandedRows.concat(rowId)
+
+      setTableBody({ expandedRows: newExpandedRows })
+    }
+  }
+
+  const renderItemCaret = rowId=> {
+    const currentExpandedRows = defaultTableBody.expandedRows
+    const isRowCurrentlyExpanded = currentExpandedRows.includes(rowId)
+    if(isRowCurrentlyExpanded)
+      return <Icon  name='caret down'/>
+    else
+      return <Icon  name='caret up'/>
   }
 
   const _handleRowOptionClick = e => {
@@ -116,6 +154,26 @@ const TableList = ({ duck, list, ...props }) => {
     const item = list.items.find(({ id }) => id === itemId)
 
     props.onRowOptionClick(optionName, item)
+  }
+
+  const renderItemDetails = (item)=> {
+    return (
+      <>
+        {
+          list.config.expandedColumns
+            .filter(({ conditional_render }) => {
+              return !conditional_render || conditional_render(item)
+            })
+            .map(({ width = null, align = null, ...column }, index) => {
+              delete column.conditional_render
+
+              return (
+                <Table.Cell key={index} textAlign={align} width={width}>{getColumnContent(item, column)}</Table.Cell>
+              )
+            })
+        }
+      </>
+    )
   }
 
   // BEGIN Improve
@@ -146,7 +204,7 @@ const TableList = ({ duck, list, ...props }) => {
     const checked = list.selector && list.selector.selected_items.some(({ id }) => id === item.id)
     const isActive = Boolean('active' in item ? item.active : true)
 
-    return (
+    const itemRows = [
       <Table.Row
         active={checked} className={isActive ? '' : 'inactive'} data-item-id={item.id}
         key={index} onClick={_handleRowClick}>
@@ -187,7 +245,7 @@ const TableList = ({ duck, list, ...props }) => {
                     return !conditional_render || conditional_render(item)
                   })
                   // END Improve
-                  .map(({ icon, name, display_name, ...rest }, index) => {
+                  .map(({ icon, name, color, content, display_name, ...rest }, index) => {
                     delete rest.conditional_render
 
                     return (
@@ -197,8 +255,9 @@ const TableList = ({ duck, list, ...props }) => {
                         trigger={
                           <Button
                             basic
-                            data-item-id={item.id} data-option-name={name}
-                            icon={icon} onClick={_handleRowOptionClick}
+                            color={color}
+                            content={content} data-item-id={item.id}
+                            data-option-name={name} icon={icon} onClick={_handleRowOptionClick}
                             {...rest}/>
                         }/>
                     )
@@ -207,12 +266,72 @@ const TableList = ({ duck, list, ...props }) => {
             </Table.Cell>
           )
         }
+        {
+          list.config.row.dropdownOptions && list.config.row.dropdownOptions.length > 0 && (
+
+            <Table.Cell>
+              {
+                <Dropdown
+                  disabled={list.config.row.dropdownOptions.length === 0}
+                  icon={null}
+                  itemID={item.id}
+                  key={index}
+                  onChange={_handleOptionDropdownChange}
+                  options={
+                    list.config.row.dropdownOptions.filter(({ conditional_render }) => {
+                      return !conditional_render || conditional_render(item)
+                    }).map((item, index) => ({
+                      key  : `d-option-${index}`,
+                      value: item.name,
+                      text : item.display_name
+                    }))
+                  }
+                  selectOnBlur={false}
+                  trigger={(
+                    <Button basic icon='ellipsis vertical'/>
+                  )}
+                  value={null}/>
+              }
+            </Table.Cell>
+          )
+        }
+
+        {/* Row expandedRows */}
+        {
+          list.config.expandedRows && (
+            <Table.Cell  onClick={_handleExpandIconClick}>
+              {renderItemCaret(item.id)}
+            </Table.Cell>
+          )
+        }
       </Table.Row>
-    )
+    ]
+    if(defaultTableBody.expandedRows.includes(item.id))
+      itemRows.push(
+        item.expandedData.length > 0
+          ? item.expandedData.map((_item, _index)=>(
+            <>
+              <Table.Row
+                data-item-expand={true} data-item-id={_item.id} key={'row-expanded-' + _index + '-' + item.id}
+                onClick={_handleRowClick}>
+                <Table.Cell></Table.Cell>
+                {
+                  renderItemDetails(_item)
+                }
+                <Table.Cell></Table.Cell>
+              </Table.Row>
+            </>
+          )) : <Table.Row disabled>
+            <Table.Cell colSpan={list.config.expandedColumns.length + Number(list.config.row.options.length > 0) + 2} textAlign='center'>No items.</Table.Cell>
+          </Table.Row>
+
+      )
+
+    return itemRows
   }
 
   const loading = list.status === 'GETTING'
-  const areAllItemsChecked = list.selector && list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
+  const areAllItemsChecked = list.selector && list.items && list.items.every(item => list.selector.selected_items.some(({ id }) => id === item.id))
   const hasHeader = configOptions.length > 0 || _get(list.config, 'search_enabled', true) || props.filterColumns.length > 0
 
   // List options only available when the list has extended the selector reducer
@@ -296,7 +415,7 @@ const TableList = ({ duck, list, ...props }) => {
                     basic
                     on='click' onClose={_handleClose} onOpen={_handleOpen}
                     open={open} position='bottom right'
-                    trigger={<Button basic={!open} color={open ? 'blue' : null} content='Filters'/>}>
+                    trigger={<Button basic={!open} color={open ? 'teal' : null} content='Filters'/>}>
                     <Popup.Content className='popup-filter-form' style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
                       <FilterForm duck={duck}/>
                     </Popup.Content>
@@ -398,6 +517,7 @@ const TableList = ({ duck, list, ...props }) => {
                 <Table.Row disabled>
                   <Table.Cell colSpan={list.config.columns.length + Number(list.config.row.options.length > 0)} textAlign='center'>No items.</Table.Cell>
                 </Table.Row>
+
               )
             )
           }

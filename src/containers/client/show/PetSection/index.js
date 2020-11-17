@@ -64,13 +64,6 @@ function PetsSection({ clientDetail, clientPet, ...props }) {
                             }
                           }}>
                         </Card.Header>
-                        {
-                          pet.fixed && (
-                            <Card.Meta className='mb8'>
-                              <Icon color='teal' name='check circle'/> Fixed
-                            </Card.Meta>
-                          )
-                        }
                         <Card.Description>
                           <Card.Meta className='mb4'>
                             <span className='text-gray'>Breed : </span>
@@ -85,6 +78,90 @@ function PetsSection({ clientDetail, clientPet, ...props }) {
                             <span className='text-black'>{getAge(pet.born_at)}</span>
                           </Card.Meta>
                         </Card.Description>
+                      </Grid.Column>
+                    </Grid>
+                    <Grid>
+                      { pet.fixed && (<Grid.Column  width='4'>
+                        {
+                          pet.fixed && (
+                            <Card.Meta className='mb8'>
+                              <Button
+                                basic
+                                circular
+                                color='blue'
+                                compact
+                                content='FIXED'/>
+                            </Card.Meta>
+                          )
+                        }
+                      </Grid.Column>) }
+                      <Grid.Column width='8'>
+                        {
+                          pet.summary.vaccination_status == 'missing' && (
+                            <Card.Meta className='mb8'>
+                              <Button
+                                basic
+                                circular
+                                color='red'
+                                compact
+                                content='MISSING'
+                                icon='syringe'/>
+                            </Card.Meta>
+                          )
+                        }
+                        {
+                          pet.summary.vaccination_status == 'expired' && (
+                            <Card.Meta className='mb8'>
+                              <Button
+                                basic
+                                circular
+                                color='red'
+                                compact
+                                content='EXPIRED'
+                                icon='syringe'/>
+                            </Card.Meta>
+                          )
+                        }
+                        {
+                          pet.summary.vaccination_status == 'vaccinated' && (
+                            <Card.Meta className='mb8'>
+                              <Button
+                                basic
+                                circular
+                                color='green'
+                                compact
+                                content='CURRENT'
+                                icon='syringe'/>
+                            </Card.Meta>
+                          )
+                        }
+                        {
+                          pet.summary.vaccination_status == 'verify' && (
+                            <Card.Meta className='mb8'>
+                              <Button
+                                basic
+                                circular
+                                color='blue'
+                                compact
+                                content='VERIFY'
+                                icon='syringe'/>
+                            </Card.Meta>
+                          )
+                        }
+                        {
+                          pet.summary.vaccination_status == 'due' && (
+                            <Card.Meta className='mb8'>
+                              <Button
+                                basic
+                                circular
+                                color='orange'
+                                compact
+                                content='COMING DUE'
+                                icon='syringe'/>
+                            </Card.Meta>
+                          )
+                        }
+
                       </Grid.Column>
                     </Grid>
                   </Card.Content>
