@@ -4,7 +4,7 @@ export default {
 
   options: [
     {
-      display_name: 'Delete Kennel Type',
+      display_name: 'Delete Kennel Area',
       name        : 'delete',
       icon        : 'trash alternate outline',
       is_multiple : false,
@@ -28,7 +28,14 @@ export default {
       type        : 'string',
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Location',
+      name        : 'location',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false
     }
-
   ]
 }

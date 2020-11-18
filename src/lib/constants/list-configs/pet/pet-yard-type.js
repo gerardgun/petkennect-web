@@ -4,7 +4,7 @@ export default {
 
   options: [
     {
-      display_name: 'Delete Breed',
+      display_name: 'Delete Yard Type',
       name        : 'delete',
       icon        : 'trash alternate outline',
       is_multiple : false,

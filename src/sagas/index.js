@@ -57,8 +57,12 @@ import petVaccination from './pet/vaccination'
 import petVaccinationDetail from './pet/vaccination/detail'
 import petVaccinationType from './pet/vaccination-type'
 import petVaccinationTypeDetail from './pet/vaccination-type/detail'
+import petKennel from './pet/pet-kennel'
+import petKennelDetail from './pet/pet-kennel/detail'
 import petKennelType from './pet/pet-kennel-type'
 import petKennelTypeDetail from './pet/pet-kennel-type/detail'
+import petKennelArea from './pet/pet-kennel-area'
+import petKennelAreaDetail from './pet/pet-kennel-area/detail'
 import petYardType from './pet/pet-yard-type'
 import petYardTypeDetail from './pet/pet-yard-type/detail'
 import priceMaster from './price-master'
@@ -170,8 +174,12 @@ export default function* rootSaga() {
     ...petVaccinationDetail,
     ...petVaccinationType,
     ...petVaccinationTypeDetail,
+    ...petKennel,
+    ...petKennelDetail,
     ...petKennelType,
     ...petKennelTypeDetail,
+    ...petKennelArea,
+    ...petKennelAreaDetail,
     ...petYardType,
     ...petYardTypeDetail,
     ...priceMaster,
