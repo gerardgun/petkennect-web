@@ -178,19 +178,19 @@ const privateRoutes = [
     component: PetCreate
   },
   {
-    path     : '/pet-kennel',
+    path     : '/setup/pet-kennel',
     component: PetKennel
   },
   {
-    path     : '/pet-kennel-type',
+    path     : '/setup/pet-kennel-type',
     component: PetKennelType
   },
   {
-    path     : '/pet-kennel-area',
+    path     : '/setup/pet-kennel-area',
     component: PetKennelArea
   },
   {
-    path     : '/pet-yard-type',
+    path     : '/setup/pet-yard-type',
     component: PetYardType
   },
   {

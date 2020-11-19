@@ -67,10 +67,10 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
-      formatter   : (cell, row) => {
+      formatter   : () => {
         return (
-          <Link to={`/notes/${row.id}`}>
-            <span>{cell}</span>
+          <Link>
+            <span>View</span>
           </Link>
         )
       }

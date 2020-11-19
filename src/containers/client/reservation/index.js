@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { compose } from 'redux'
-import { Header, Image, Grid, Segment, Breadcrumb } from 'semantic-ui-react'
+import { Header, Image, Grid, Button, Icon, Segment, Breadcrumb } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import Message from '@components/Message'
@@ -11,8 +11,11 @@ import DaycampReservationFormWizard from './daycamp'
 import FitnessReservationFormWizard from './daycamp'
 import GroomingReservationFormWizard from './grooming'
 
+import ViewNoteSection from '../../online-request/notesSection/'
+
 import clientDetailDuck from '@reducers/client/detail'
 import petDetailDuck from '@reducers/pet/detail'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
 
 import './styles.scss'
 
@@ -25,10 +28,12 @@ function Reservation({ clientDetail, ...props }) {
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
 
-  // const _handleReservationTypeClick = name => setActiveReservationItem(name)
-
   const _handleReservationTypeClick = type => () => {
     setActiveReservationItem(type)
+  }
+
+  const _handleAddNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'CREATE')
   }
 
   return (
@@ -50,6 +55,14 @@ function Reservation({ clientDetail, ...props }) {
               </Breadcrumb.Section>
             </Breadcrumb>
             <Header as='h2'>New Reservation</Header>
+
+            <Button
+              basic color='teal' icon='plus'
+              onClick={_handleAddNoteBtnClick}>
+              <Icon name='plus'/> Add Note
+            </Button>
+
+            <ViewNoteSection/>
 
             <Message
               content={
@@ -92,26 +105,6 @@ function Reservation({ clientDetail, ...props }) {
                 <span>Grooming</span>
               </div>
             </div>
-
-            {/* <div className='mv32 btn-service-type'>
-              <Button
-                basic={activeReservationItem !== 'Boarding'} color='gray' content='Boarding'
-                icon='circle'
-                name='Boarding' onClick={_handleReservationTypeClick}/>
-              <Button
-                basic={activeReservationItem !== 'Training'} color='gray' content='Training'
-                icon='circle' name='Training' onClick={_handleReservationTypeClick}/>
-              <Button
-                basic={activeReservationItem !== 'Fitness'} color='gray' content='Fitness'
-                icon='circle' name='Fitness' onClick={_handleReservationTypeClick}/>
-              <Button
-                basic={activeReservationItem !== 'Daycamp'} color='gray' content='Daycamp'
-                icon='circle' name='Daycamp' onClick={_handleReservationTypeClick}/>
-              <Button
-                basic={activeReservationItem !== 'Grooming'} color='gray' content='Grooming'
-                icon='circle' name='Grooming' onClick={_handleReservationTypeClick}/>
-            </div>
-             */}
             {activeReservationItem === 'Boarding' &&  <BoardingReservationFormWizard/>}
             {activeReservationItem === 'Daycamp' &&  <DaycampReservationFormWizard/>}
             {activeReservationItem === 'Fitness' &&  <FitnessReservationFormWizard/>}
@@ -128,8 +121,9 @@ export default compose(
     state => ({
       clientDetail: clientDetailDuck.selectors.detail(state)
     }), {
-      getClient: clientDetailDuck.creators.get,
-      setItem  : petDetailDuck.creators.setItem
+      getClient  : clientDetailDuck.creators.get,
+      setItem    : petDetailDuck.creators.setItem,
+      setNoteItem: petNoteDetailDuck.creators.setItem
     }
   )
 )(Reservation)

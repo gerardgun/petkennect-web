@@ -8,8 +8,13 @@ import { Button, Form, Header, Tab, Input, Checkbox, Grid, Select, Modal } from 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import InputMask from '@components/Common/InputMask'
-import { parseResponseError } from '@lib/utils/functions'
+import Table from '@components/Table'
+import useModal from '@components/Modal/useModal'
+import RejectForm from './rejectForm'
 
+import ViewNoteSection from '../../online-request/notesSection/'
+
+import clientDocumentDuck from '@reducers/online-request/client-submission/client-document'
 import clientSubmissionDetailDuck from '@reducers/online-request/client-submission/detail'
 
 import './styles.scss'
@@ -17,7 +22,8 @@ import './styles.scss'
 const NewClientSubmission = props => {
   const {
     clientSubmissionDetail,
-    error, handleSubmit, reset, submitting // redux-form
+    clientDocumentDetail,
+    error, reset, submitting // redux-form
   } = props
 
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
@@ -27,15 +33,20 @@ const NewClientSubmission = props => {
     props.resetItem()
   }
 
-  const _handleSubmit = values => {
-    if(isUpdating)
-      return props.put({ id: clientSubmissionDetail.item.id, ...values })
-        .then(_handleClose)
-        .catch(parseResponseError)
-    else
-      return props.post({ ...values })
-        .then(_handleClose)
-        .catch(parseResponseError)
+  const [ { _handleOpen } ] = useModal()
+  const _handleRowClick = (e, item) => {
+    props.setItem(item, 'UPDATE')
+  }
+
+  const _handleOptionClick = option => {
+    if(option === 'delete') {
+      props.setItem(clientDocumentDetail.selector.selected_items[0], 'DELETE')
+      _handleOpen()
+    }
+  }
+
+  const _handleButtonClick = (item) => {
+    props.setItem(item, 'READ')
   }
 
   const isOpened = useMemo(() => getIsOpened(clientSubmissionDetail.mode), [ clientSubmissionDetail.mode ])
@@ -138,41 +149,20 @@ const NewClientSubmission = props => {
           label='Which location are you intersted in?'
           name='intersted_location'/>
 
-        <Checkbox label='Boarding'/>&nbsp;
-        <Checkbox label='Day-Camp'/>&nbsp;
-        <Checkbox label='All'/>
+        <Checkbox checked={true} label='Boarding'/>
       </Form.Group>
       <Form.Field>
           How did you hear about us?
       </Form.Field>
-      <Form.Field>
+      <Form.Group widths='equal'>
         <Checkbox
+          checked={true}
           label='Friends/ Family'
           name='checkboxRadioGroup'
           radio
-          value='friends_family'/>
-      </Form.Field>
-      <Form.Field>
-        <Checkbox
-          label='Veterinarion'
-          name='checkboxRadioGroup'
-          radio
-          value='veterinarion'/>
-      </Form.Field>
-      <Form.Field>
-        <Checkbox
-          label='Drive By'
-          name='checkboxRadioGroup'
-          radio
-          value='drive_by'/>
-      </Form.Field>
-      <Form.Field>
-        <Checkbox
-          label='Other'
-          name='checkboxRadioGroup'
-          radio
-          value='other'/>
-      </Form.Field>
+          value='friends_family'/> &nbsp;&nbsp;&nbsp;
+        <Input disabled/>
+      </Form.Group>
       <Form.Group widths='equal'>
         <Field
           autoComplete='off'
@@ -208,116 +198,94 @@ const NewClientSubmission = props => {
       </Form.Group>
     </Tab.Pane>) },
     { menuItem: 'Pets', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
-    { menuItem: 'Documents', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> }
+    { menuItem: 'Documents', render  : () => (<Tab.Pane>
+      <Table
+        duck={clientDocumentDuck}
+        onOptionClick={_handleOptionClick}
+        onRowClick={_handleRowClick}/>
+    </Tab.Pane>) }
   ]
 
-  const isUpdating = Boolean(clientSubmissionDetail.item.id)
-
   return (
-    <Modal
-      className='form-modal'
-      onClose={_handleClose}
-      open={isOpened}
-      size='large'>
-      <Modal.Content>
-        {/* eslint-disable-next-line react/jsx-handler-names */}
-        <Form id='new-client-submission-form'  onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+    <>
+      <Modal
+        className='form-modal modal-width'
+        onClose={_handleClose}
+        open={isOpened}>
+        <Modal.Content>
+          {/* eslint-disable-next-line react/jsx-handler-names */}
+          <Form id='new-client-submission-form'  onReset={reset}>
 
-          <Grid columns={16}>
-            <Grid.Row>
-              <Grid.Column  computer={11} mobile={16} tablet={16}>
-                <Tab panes={panes}/>
-              </Grid.Column>
-              <Grid.Column computer={5} mobile={16} tablet={16}>
-                <Header as='h2' className='segment-content-header'>New Customer</Header>
-                <p>Please do not forgot to confirm the following information</p>
-                <label>Confirm Pets breed</label>
-                <Field
-                  component={FormField}
-                  control={Select}
-                  lebel=''
-                  name='breed'
-                  options={[
-                    { key: 1, value: 1, text: 'breed1' }
-                  ]}
-                  placeholder='Select breed'
-                  selectOnBlur={false}/>
-                <Field
-                  component={FormField}
-                  control={Checkbox}
-                  format={Boolean}
-                  label='Update Vaccinations'
-                  name='vaccination'
-                  type='checkbox'/>
+            <Grid columns={16}>
+              <Grid.Row>
+                <Grid.Column  computer={12} mobile={16} tablet={16}>
+                  <Tab panes={panes}/>
+                </Grid.Column>
+                <Grid.Column computer={4} mobile={16} tablet={16}>
+                  <Header as='h2' className='segment-content-header'>New Customer</Header>
+                  <p>Please do not forgot to confirm the following information</p>
+                  <label>Confirm Pets breed</label>
+                  <Field
+                    component={FormField}
+                    control={Select}
+                    lebel=''
+                    name='breed'
+                    options={[
+                      { key: 1, value: 1, text: 'breed1' }
+                    ]}
+                    placeholder='Select breed'
+                    selectOnBlur={false}/>
+                  <Field
+                    component={FormField}
+                    control={Checkbox}
+                    format={Boolean}
+                    label='Update Vaccinations'
+                    name='vaccination'
+                    type='checkbox'/>
 
-                <Button
-                  basic className='w100' color='teal'
-                  content='Add Note'
-                  icon='plus'/>
+                  <Button
+                    basic className='w100' color='teal'
+                    content='Add Note'
+                    icon='plus'/>
 
-                <div className='c-note-item'>
-                  {/* Header */}
-                  <div className='flex justify-between align-center mb20'>
-                    <div className='avatar-wrapper'>
-                      <div className='avatar'>
-                        A
-                      </div>
-                      <div>
-                        <p>Aliica Valerica</p>
-                        <span className='text-gray'>12/12/2020 22:34</span>
-                      </div>
-                    </div>
-                    <div>
+                  <ViewNoteSection/>
+
+                  <Form.Group className='form-modal-actions' widths='equal'>
+                    <Form.Field>
                       <Button
-                        basic color='red'
-                        icon='trash alternate outline'/>
-                    </div>
-                  </div>
+                        basic
+                        color='teal'
+                        content='Reject'
+                        disabled={submitting}
+                        onClick={_handleButtonClick}
+                        type='button'/>
+                      <Button
+                        color='teal'
+                        content='Approve'
+                        disabled={submitting}
+                        loading={submitting}/>
+                    </Form.Field>
+                  </Form.Group>
+                </Grid.Column>
+              </Grid.Row>
 
-                  {/* Content */}
-                  <p className='description'>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Pretium fringilla magna mi donec mauris quisque egestas interdum sapien.
-                  In vitae scelerisque vitae nam vulputate urna. Urna egestas et,
-                  eget turpis et id morbi posuere proin. Et tempor pellentesque lectus
-                  consectetur
-                  </p>
-                </div>
+            </Grid>
 
-                <Form.Group className='form-modal-actions' widths='equal'>
+            {
+              error && (
+                <Form.Group widths='equal'>
                   <Form.Field>
-                    <Button
-                      basic
-                      color='teal'
-                      content='Reject'
-                      disabled={submitting}
-                      onClick={_handleClose}
-                      type='button'/>
-                    <Button
-                      color='teal'
-                      content='Approve'
-                      disabled={submitting}
-                      loading={submitting}/>
+                    <FormError message={error}/>
                   </Form.Field>
                 </Form.Group>
-              </Grid.Column>
-            </Grid.Row>
+              )
+            }
 
-          </Grid>
-
-          {
-            error && (
-              <Form.Group widths='equal'>
-                <Form.Field>
-                  <FormError message={error}/>
-                </Form.Field>
-              </Form.Group>
-            )
-          }
-
-        </Form>
-      </Modal.Content>
-    </Modal>
+          </Form>
+        </Modal.Content>
+      </Modal>
+      <RejectForm/>
+    </>
   )
 }
 
@@ -335,7 +303,8 @@ export default compose(
     {
       post     : clientSubmissionDetailDuck.creators.post,
       put      : clientSubmissionDetailDuck.creators.put,
-      resetItem: clientSubmissionDetailDuck.creators.resetItem
+      resetItem: clientSubmissionDetailDuck.creators.resetItem,
+      setItem  : clientSubmissionDetailDuck.creators.setItem
     }
   ),
   reduxForm({

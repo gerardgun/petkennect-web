@@ -1,8 +1,10 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
 export default {
   base_uri      : null,
   search_enabled: false,
   group_by      : {
-    column_name: 'Ready',
+    column_name: 'ready',
     groups     : [
       {
         value     : false,
@@ -44,7 +46,7 @@ export default {
     },
     {
       display_name: 'RES TYPE',
-      name        : 'res-type',
+      name        : 'res_type',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -52,7 +54,7 @@ export default {
     },
     {
       display_name: 'RES DATE',
-      name        : 'res-date',
+      name        : 'res_date',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -60,7 +62,7 @@ export default {
     },
     {
       display_name: 'CHECK OUT',
-      name        : 'check-out',
+      name        : 'check_out',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -81,6 +83,21 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true
+    },
+    {
+      display_name: 'Notes',
+      name        : 'notes',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true,
+      formatter   : () => {
+        return (
+          <Link>
+            <span>View</span>
+          </Link>
+        )
+      }
     }
 
   ]

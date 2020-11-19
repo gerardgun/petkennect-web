@@ -6,17 +6,19 @@ import { Header , Grid, Container } from 'semantic-ui-react'
 import Table from '@components/Table'
 
 import NewClientSubmission from './create'
+import ViewNoteSection from '../notesSection/view'
 
 import clientSubmissionDuck from '@reducers/online-request/client-submission'
 import clientSubmissionDetailDuck from '@reducers/online-request/client-submission/detail'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
 
 function ClientSubmission({ ...props }) {
   useEffect(()=> {
     props.getClientSubmission()
   }, [])
 
-  const _handleRowClick = () => {
-  // wip
+  const _handleRowClick = (item) => {
+    props.setNoteItem(item, 'READ')
   }
   const _handleRowOptionClick = (item) => {
     props.setItem(item, 'CREATE')
@@ -37,6 +39,7 @@ function ClientSubmission({ ...props }) {
           onRowOptionClick={_handleRowOptionClick}/>
       </div>
       <NewClientSubmission/>
+      <ViewNoteSection/>
     </Container>
   )
 }
@@ -47,7 +50,8 @@ export default compose(
       clientSubmission: clientSubmissionDuck.selectors.list(state)
     }), {
       getClientSubmission: clientSubmissionDuck.creators.get,
-      setItem            : clientSubmissionDetailDuck.creators.setItem
+      setItem            : clientSubmissionDetailDuck.creators.setItem,
+      setNoteItem        : petNoteDetailDuck.creators.setItem
     })
 )(ClientSubmission)
 

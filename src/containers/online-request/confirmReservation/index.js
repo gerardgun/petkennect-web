@@ -1,16 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { compose } from 'redux'
+
 import { Header , Grid, Container } from 'semantic-ui-react'
 
 import Table from '@components/Table'
 
-import confirmReservationsDuck from '@reducers/online-request/confirm-reservation'
+import ViewNoteSection from '../notesSection/view'
 
-function ConfirmReservations() {
-  const _handleRowClick = () => {
-    // wip
+import confirmReservationsDuck from '@reducers/online-request/confirm-reservation'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
+
+function ConfirmReservations({ ...props }) {
+  useEffect(()=> {
+    props.getConfirmReservations()
+  }, [])
+
+  const history = useHistory()
+
+  const _handleRowClick = (item) => {
+    props.setNoteItem(item, 'READ')
   }
   const _handleRowOptionClick = () => {
-    // wip
+    history.replace('/client/64/book')
   }
 
   return (
@@ -27,9 +40,18 @@ function ConfirmReservations() {
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
       </div>
+      <ViewNoteSection/>
     </Container>
   )
 }
 
-export default (ConfirmReservations)
+export default compose(
+  connect(
+    (state) => ({
+      confirmReservation: confirmReservationsDuck.selectors.list(state)
+    }), {
+      getConfirmReservations: confirmReservationsDuck.creators.get,
+      setNoteItem           : petNoteDetailDuck.creators.setItem
+    })
+)(ConfirmReservations)
 
