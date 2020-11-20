@@ -19,11 +19,16 @@ function ConfirmReservations({ ...props }) {
 
   const history = useHistory()
 
-  const _handleRowClick = (item) => {
-    props.setNoteItem(item, 'READ')
-  }
-  const _handleRowOptionClick = () => {
-    history.replace('/client/64/book')
+  const _handleRowOptionClick = (optionName, item) => {
+    if(optionName === 'view')
+      props.setNoteItem(item, 'READ')
+    else if(optionName === 'review')
+      history.push({
+        pathname: '/client/64/book',
+        state   : {
+          redirect_page_name: 'confirm_reservation'
+        }
+      })
   }
 
   return (
@@ -37,7 +42,6 @@ function ConfirmReservations({ ...props }) {
       <div className='mh28 mv28 ui-table-overflow'>
         <Table
           duck={confirmReservationsDuck}
-          onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
       </div>
       <ViewNoteSection/>

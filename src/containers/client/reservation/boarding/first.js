@@ -13,6 +13,7 @@ import { syncValidate } from '@lib/utils/functions'
 import clientDetailDuck from '@reducers/client/detail'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
+import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
 
 export const boardingFormId = 'boarding-reservation-form'
 
@@ -20,12 +21,14 @@ const BoardingFormWizardFirst = props => {
   const {
     clientPet,
     location,
+    petKennelType,
     error, handleSubmit, reset
   } = props
 
   useEffect(() => {
     props.getLocations()
     props.getClientPets()
+    props.getPetKennelType()
   }, [])
 
   return (
@@ -129,10 +132,9 @@ const BoardingFormWizardFirst = props => {
                 control={Select}
                 label='Kennel Type'
                 name='kennel_type'
-                options={[
-                  { key: 1, value: 'single', text: 'Single' },
-                  { key: 2, value: 'shared', text: 'Shared' }
-                ]}
+                options={petKennelType.items.map(_kennelType =>
+                  ({ key: _kennelType.id, value: _kennelType.id, text: `${_kennelType.name}` }))
+                }
                 placeholder='Select Kennel'
                 selectOnBlur={false}/>
             </Form.Group>
@@ -196,14 +198,16 @@ export default compose(
         initialValues      : clientDetail.item,
         location           : locationDuck.selectors.list(state),
         clientPet          : clientPetDuck.selectors.list(state),
+        petKennelType      : petKennelTypeDuck.selectors.list(state),
         hasSharedKennelType: KennelType === 'shared' ? true : false,
         selectedPets       : selectedPets
       }
     },
     {
-      getLocations : locationDuck.creators.get,
-      getClientPets: clientPetDuck.creators.get,
-      resetItem    : clientDetailDuck.creators.resetItem
+      getLocations    : locationDuck.creators.get,
+      getClientPets   : clientPetDuck.creators.get,
+      getPetKennelType: petKennelTypeDuck.creators.get,
+      resetItem       : clientDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
@@ -212,9 +216,11 @@ export default compose(
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        location: Yup.mixed().required('Location is required'),
-        pet     : Yup.mixed().required('Pet is required'),
-        check_in: Yup
+        location      : Yup.mixed().required('Location is required'),
+        pet           : Yup.mixed().required('Pet is required'),
+        departing_time: Yup.mixed().required('Departing Time is required'),
+        arriving_time : Yup.mixed().required('Arriving Time is required'),
+        check_in      : Yup
           .date()
           .required(),
         check_out: Yup

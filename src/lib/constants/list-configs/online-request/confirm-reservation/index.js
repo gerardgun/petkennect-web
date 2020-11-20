@@ -1,5 +1,3 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
 export default {
   base_uri      : null,
   search_enabled: false,
@@ -21,6 +19,7 @@ export default {
   row: {
     options: [
       {
+        name        : 'review',
         display_name: 'Review',
         content     : 'Review',
         color       : 'teal'
@@ -87,16 +86,13 @@ export default {
     {
       display_name: 'Notes',
       name        : 'notes',
-      type        : 'string',
+      type        : 'action',
       width       : null,
       align       : 'left',
       sort        : true,
-      formatter   : () => {
-        return (
-          <Link>
-            <span>View</span>
-          </Link>
-        )
+      action      : {
+        name : 'view',
+        label: 'View'
       }
     }
 

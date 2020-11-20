@@ -7,8 +7,10 @@ import { Button, Form, Grid, Header, Segment, Checkbox, List, Icon } from 'seman
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
+import { parseFormValues } from '@lib/utils/functions'
 
 import clientDetailDuck from '@reducers/client/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import { boardingFormId } from './first'
 
@@ -16,6 +18,31 @@ const BoardingFormWizardThird = props => {
   const {
     error, handleSubmit, reset // redux-form
   } = props
+
+  const _handleSubmit = values => {
+    values = parseFormValues(values)
+
+    // eslint-disable-next-line no-unused-vars
+    const paylord = {
+      client  : values.id,
+      employee: '',
+      location: '',
+      services: [ {
+        service_variation     : '',
+        employee              : '',
+        price                 : '',
+        reserved_at           : '',
+        location              : '',
+        pet                   : '',
+        comment               : '',
+        belongings            : '',
+        medication_name       : '',
+        medication_purpose    : '',
+        medication_instruction: '',
+        feeding               : ''
+      } ]
+    }
+  }
 
   return (
     <>
@@ -38,7 +65,7 @@ const BoardingFormWizardThird = props => {
         </div>
       </div>
       {/* eslint-disable-next-line react/jsx-handler-names */}
-      <Form onReset={reset} onSubmit={handleSubmit}>
+      <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
 
         <Segment className='section-info-item'>
           <Header as='h3' className='section-info-header'>Summary</Header>
@@ -208,7 +235,8 @@ export default compose(
       }
     },
     {
-      resetItem: clientDetailDuck.creators.resetItem
+      resetItem: clientDetailDuck.creators.resetItem,
+      post     : petReservationDetailDuck.creators.post
     }
   ),
   reduxForm({

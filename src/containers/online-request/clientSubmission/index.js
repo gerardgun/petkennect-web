@@ -17,11 +17,11 @@ function ClientSubmission({ ...props }) {
     props.getClientSubmission()
   }, [])
 
-  const _handleRowClick = (item) => {
-    props.setNoteItem(item, 'READ')
-  }
-  const _handleRowOptionClick = (item) => {
-    props.setItem(item, 'CREATE')
+  const _handleRowOptionClick = (optionName, item) => {
+    if(optionName === 'view')
+      props.setNoteItem(item, 'READ')
+    else if(optionName === 'review')
+      props.setItem(item, 'CREATE')
   }
 
   return (
@@ -35,7 +35,6 @@ function ClientSubmission({ ...props }) {
       <div className='mh28 mv28 ui-table-overflow'>
         <Table
           duck={clientSubmissionDuck}
-          onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
       </div>
       <NewClientSubmission/>

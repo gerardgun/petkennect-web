@@ -1,21 +1,25 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Tab, Input, Checkbox, Grid, Select, Modal } from 'semantic-ui-react'
+import { Segment, Button, Form, Header, Tab, Input, Checkbox, Menu, Grid, Select, Modal, Image } from 'semantic-ui-react'
 
+import { defaultImageUrl } from '@lib/constants'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import InputMask from '@components/Common/InputMask'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
-import RejectForm from './rejectForm'
 
+import RejectForm from './rejectForm'
+import PetInfo from './pets/petInfo'
+import AdditionalInfo from './pets/additionalInfo'
 import ViewNoteSection from '../../online-request/notesSection/'
 
 import clientDocumentDuck from '@reducers/online-request/client-submission/client-document'
 import clientSubmissionDetailDuck from '@reducers/online-request/client-submission/detail'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
 
 import './styles.scss'
 
@@ -26,12 +30,16 @@ const NewClientSubmission = props => {
     error, reset, submitting // redux-form
   } = props
 
+  const [ activeMenuItem, setActiveMenuItem ] = useState('petInfo')
+
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
   const _handleClose = () =>{
     props.reset()
     props.resetItem()
   }
+
+  const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
 
   const [ { _handleOpen } ] = useModal()
   const _handleRowClick = (e, item) => {
@@ -43,6 +51,10 @@ const NewClientSubmission = props => {
       props.setItem(clientDocumentDetail.selector.selected_items[0], 'DELETE')
       _handleOpen()
     }
+  }
+
+  const _handleAddNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'CREATE')
   }
 
   const _handleButtonClick = (item) => {
@@ -197,7 +209,72 @@ const NewClientSubmission = props => {
           placeholder='Enter the Relation'/>
       </Form.Group>
     </Tab.Pane>) },
-    { menuItem: 'Pets', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
+    { menuItem: 'Pets', render  : () => (<Tab.Pane>
+      <Segment>
+        <Grid>
+          <Grid.Column
+            computer={16} mobile={16} tablet={16}>
+            <Form.Group inline widths={2}>
+              <label>Choose Dog</label>
+              <Form.Field
+                autoFocus
+                component={FormField}
+                control={Select}
+                options={[
+                  { key: 1, value: 1, text: 'dog1' }
+                ]}
+                placeholder='Select dog'
+                required
+                selectOnBlur={false}
+                width={6}/>
+            </Form.Group>
+          </Grid.Column>
+        </Grid>
+        <Grid>
+          <Grid.Column
+            className=''
+            computer={4} mobile={16} tablet={12}>
+            <div className='flex justify-center align-center mt32'>
+              <div className='c-image-profile'>
+                <Image circular src={defaultImageUrl}/>
+              </div>
+            </div>
+            <Menu
+              className='petkennect-profile-menu' color='teal' fluid
+              vertical>
+              <Menu.Item
+                active={activeMenuItem === 'petInfo'} link name='petInfo'
+                onClick={_handleMenuItemClick}>
+                Pet Info
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'additionalInfo'} link name='additionalInfo'
+                onClick={_handleMenuItemClick}>
+                Additional Info
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'dayCamp'} link name='dayCamp'
+                onClick={_handleMenuItemClick}>
+                Day Camp
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'boarding'} link name='boarding'
+                onClick={_handleMenuItemClick}>
+                Boarding
+              </Menu.Item>
+            </Menu>
+          </Grid.Column>
+          <Grid.Column
+            className='petkennect-profile-body'
+            computer={12} mobile={16} tablet={16}>
+            {activeMenuItem === 'petInfo' && <PetInfo/>}
+            {activeMenuItem === 'additionalInfo' && <AdditionalInfo/>}
+            {activeMenuItem === 'dayCamp' && ''}
+            {activeMenuItem === 'boarding' && ''}
+          </Grid.Column>
+        </Grid>
+      </Segment>
+    </Tab.Pane>) },
     { menuItem: 'Documents', render  : () => (<Tab.Pane>
       <Table
         duck={clientDocumentDuck}
@@ -245,8 +322,8 @@ const NewClientSubmission = props => {
 
                   <Button
                     basic className='w100' color='teal'
-                    content='Add Note'
-                    icon='plus'/>
+                    content='Add Note' icon='plus'
+                    onClick={_handleAddNoteBtnClick}/>
 
                   <ViewNoteSection/>
 
@@ -301,10 +378,11 @@ export default compose(
       }
     },
     {
-      post     : clientSubmissionDetailDuck.creators.post,
-      put      : clientSubmissionDetailDuck.creators.put,
-      resetItem: clientSubmissionDetailDuck.creators.resetItem,
-      setItem  : clientSubmissionDetailDuck.creators.setItem
+      post       : clientSubmissionDetailDuck.creators.post,
+      put        : clientSubmissionDetailDuck.creators.put,
+      resetItem  : clientSubmissionDetailDuck.creators.resetItem,
+      setItem    : clientSubmissionDetailDuck.creators.setItem,
+      setNoteItem: petNoteDetailDuck.creators.setItem
     }
   ),
   reduxForm({

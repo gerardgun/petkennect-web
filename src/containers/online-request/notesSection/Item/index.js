@@ -1,7 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Button } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
 
 import './styles.scss'
 
@@ -48,19 +46,12 @@ function Item({ item, onDelete, onReply, isShowDelete, isShowReply }) {
       </p>
       {
         !isShowReply && (
-          <Link onClick={_handleNoteReply} to='#'>
-          Reply
-          </Link>
+          <span onClick={_handleNoteReply} style={{ color: 'teal', cursor: 'pointer' }}>Reply</span>
         )
       }
     </div>
 
   )
-}
-
-Item.propTypes = {
-  onDelete: PropTypes.func.isRequired,
-  onReply : PropTypes.func.isRequired
 }
 
 Item.defaultProps = { }

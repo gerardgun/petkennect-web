@@ -19,6 +19,7 @@ export default {
   row: {
     options: [
       {
+        name        : 'review',
         display_name: 'Review',
         content     : 'Review',
         color       : 'teal'

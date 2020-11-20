@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Header, Image, Grid, Button, Icon, Segment, Breadcrumb } from 'semantic-ui-react'
 
@@ -21,6 +21,8 @@ import './styles.scss'
 
 function Reservation({ clientDetail, ...props }) {
   const { client: clientId } = useParams()
+  const history = useHistory()
+
   const [ activeReservationItem, setActiveReservationItem ] = useState('Boarding')
   useEffect(() => {
     props.getClient(clientId)
@@ -35,6 +37,8 @@ function Reservation({ clientDetail, ...props }) {
   const _handleAddNoteBtnClick = (item) =>{
     props.setNoteItem(item, 'CREATE')
   }
+
+  const comesfromScreenName = useMemo(() => Boolean(history.location.state), [])
 
   return (
     <Layout>
@@ -54,15 +58,26 @@ function Reservation({ clientDetail, ...props }) {
                 New Reservation
               </Breadcrumb.Section>
             </Breadcrumb>
-            <Header as='h2'>New Reservation</Header>
+            {
+              comesfromScreenName  ? (
+                history.location.state && history.location.state.redirect_page_name === 'confirm_reservation' && (
+                  <>
+                    <Header as='h2'>Review Reservation</Header>
 
-            <Button
-              basic color='teal' icon='plus'
-              onClick={_handleAddNoteBtnClick}>
-              <Icon name='plus'/> Add Note
-            </Button>
-
-            <ViewNoteSection/>
+                    <Button
+                      basic color='teal' icon='plus'
+                      onClick={_handleAddNoteBtnClick}>
+                      <Icon name='plus'/> Add Note
+                    </Button>
+                    <ViewNoteSection/>
+                  </>
+                )
+              ) : (
+                <>
+                  <Header as='h2'>New Reservation</Header>
+                </>
+              )
+            }
 
             <Message
               content={

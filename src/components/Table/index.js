@@ -53,7 +53,9 @@ const TableList = ({ duck, list, ...props }) => {
     // BEGIN Improve
     else if(column.type === 'action')
       content =  (
-        <Link to={'#'}>
+        <Link
+          data-item-id={item.id} data-option-name={column.action.name} onClick={_handleRowOptionClick}
+          to={'#'}>
           <span>{`${column.action.label}`}</span>
         </Link>
       )

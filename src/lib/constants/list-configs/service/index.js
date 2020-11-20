@@ -62,7 +62,7 @@ export default {
       formatter   : cell => {
         let plans_str = 'No plans'
 
-        if(cell.length > 0) {
+        if(cell && cell.length > 0) {
           const activePlans = cell.filter(item => item.is_active)
 
           plans_str = `${activePlans.length}/${cell.length} active plans`
@@ -80,7 +80,7 @@ export default {
       formatter   : cell => {
         let addons_str = 'No addons'
 
-        if(cell.length > 0) {
+        if(cell && cell.length > 0) {
           const activeAddons = cell.filter(item => item.is_active)
 
           addons_str = `${activeAddons.length}/${cell.length} active addons`

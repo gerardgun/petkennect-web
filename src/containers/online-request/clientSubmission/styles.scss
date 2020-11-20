@@ -5,5 +5,8 @@
         }
 }
 .modal-width{
-    width: 1430px !important;
+    @media screen and (min-width:1320px){
+        width: 1430px !important; 
+    }
+    
 }
