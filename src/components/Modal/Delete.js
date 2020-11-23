@@ -29,10 +29,10 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
 
   return (
     <Modal
+      className='ui-delete-modal'
       closeOnDimmerClick={!deleting}
       onClose={props.onClose}
-      open={open}
-      size='mini'>
+      open={open}>
       <Modal.Content style={{ textAlign: 'center', paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
         <Icon
           circular color='red' name='trash alternate outline'

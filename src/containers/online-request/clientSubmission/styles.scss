@@ -10,3 +10,23 @@
     }
     
 }
+
+.profile-width {
+    @media screen and (min-width:1024px) and(max-width:1320px) {
+        height:10rem !important;
+    }
+}
+
+.dropdown-width {
+    .ui.selection.dropdown {
+    @media screen and (min-width:1024px) and(max-width:1320px) {
+        min-width: 7em !important;
+    }
+}
+}
+
+.notes-margin {
+    @media screen  and (max-width:1024px) {
+        margin-top: 20px !important;
+    }
+}

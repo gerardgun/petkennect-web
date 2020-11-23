@@ -52,7 +52,7 @@ function ReservationCalenderList({ checkIn,checkOut }) {
   })
 }
 
-function PetItem({ checkIn , checkOut, item }) {
+function PetItem({ checkIn , checkOut, item, petKennelOptions }) {
   return (
     <Segment >
       <div className='div-kannel-selection'>
@@ -62,9 +62,7 @@ function PetItem({ checkIn , checkOut, item }) {
           control={Select}
           lebel='kennel'
           name={`${item[0].id}.kennel`}
-          options={[
-            { key: 1, value: 1, text: 'Luxury' }
-          ]}
+          options={petKennelOptions}
           placeholder='Select Kennel'
           selectOnBlur={false}/>
       </div>

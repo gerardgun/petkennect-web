@@ -26,7 +26,7 @@ function AdditionalInformationShow() {
 
   return (
     <Container fluid>
-      <div className='mh28 div-pet-btn-info'>
+      <div className='div-pet-btn-info'>
         <Button
           basic={ActiveInfoItem !== 'Temperament'} color='teal'
           content='Temperament' name='Temperament'
@@ -41,7 +41,7 @@ function AdditionalInformationShow() {
           onClick={_handleInfoItemClick}/>
       </div>
 
-      <Form className='petkennect-profile-body-content'>
+      <Form className='mv32 dropdown-width'>
         {ActiveInfoItem === 'Temperament'  && (
           <>
             <Form.Group widths={2}>

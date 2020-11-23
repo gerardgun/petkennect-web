@@ -210,7 +210,7 @@ const NewClientSubmission = props => {
       </Form.Group>
     </Tab.Pane>) },
     { menuItem: 'Pets', render  : () => (<Tab.Pane>
-      <Segment>
+      <Segment className='petkennect-profile'>
         <Grid>
           <Grid.Column
             computer={16} mobile={16} tablet={16}>
@@ -232,10 +232,9 @@ const NewClientSubmission = props => {
         </Grid>
         <Grid>
           <Grid.Column
-            className=''
-            computer={4} mobile={16} tablet={12}>
-            <div className='flex justify-center align-center mt32'>
-              <div className='c-image-profile'>
+            computer={5} mobile={16} tablet={16}>
+            <div className='flex justify-center align-center'>
+              <div className='c-image-profile profile-width'>
                 <Image circular src={defaultImageUrl}/>
               </div>
             </div>
@@ -266,7 +265,7 @@ const NewClientSubmission = props => {
           </Grid.Column>
           <Grid.Column
             className='petkennect-profile-body'
-            computer={12} mobile={16} tablet={16}>
+            computer={11} mobile={16} tablet={16}>
             {activeMenuItem === 'petInfo' && <PetInfo/>}
             {activeMenuItem === 'additionalInfo' && <AdditionalInfo/>}
             {activeMenuItem === 'dayCamp' && ''}
@@ -298,7 +297,9 @@ const NewClientSubmission = props => {
                 <Grid.Column  computer={12} mobile={16} tablet={16}>
                   <Tab panes={panes}/>
                 </Grid.Column>
-                <Grid.Column computer={4} mobile={16} tablet={16}>
+                <Grid.Column
+                  className='notes-margin' computer={4} mobile={16}
+                  tablet={16}>
                   <Header as='h2' className='segment-content-header'>New Customer</Header>
                   <p>Please do not forgot to confirm the following information</p>
                   <label>Confirm Pets breed</label>
@@ -312,6 +313,9 @@ const NewClientSubmission = props => {
                     ]}
                     placeholder='Select breed'
                     selectOnBlur={false}/>
+                  <Button
+                    basic className='w100' color='teal'
+                    content='Breed' icon='plus'/>
                   <Field
                     component={FormField}
                     control={Checkbox}
@@ -327,7 +331,7 @@ const NewClientSubmission = props => {
 
                   <ViewNoteSection/>
 
-                  <Form.Group className='form-modal-actions' widths='equal'>
+                  <Form.Group className='form-modal-actions div-pet-btn-info' widths='equal'>
                     <Form.Field>
                       <Button
                         basic

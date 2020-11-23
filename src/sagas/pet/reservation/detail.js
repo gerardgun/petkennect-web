@@ -48,11 +48,9 @@ function* get({ id }) {
 
 function* post({ payload: { ...payload } }) {
   try {
-    const petDetail = yield select(petDetailDuck.selectors.detail)
-
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, `pets/${petDetail.item.id}/reservations/`, {
+    yield call(Post, 'orders/', {
       ...payload
     })
 

@@ -13,9 +13,9 @@ function Item({ item, onDelete, onReply, isShowDelete, isShowReply }) {
   }
 
   return (
-    <div className='c-note-item'>
+    <div className='c-note-item mv28'>
       {/* Header */}
-      <div className='flex justify-between align-center mb20'>
+      <div className='flex justify-between align-center mv20 mb20'>
         <div className='avatar-wrapper'>
           <div className='avatar'>
            A

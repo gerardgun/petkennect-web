@@ -58,10 +58,10 @@ const NewNoteForm = props => {
               <>
                 <NoteItem isShowDelete={true} isShowReply={true}/>
                 <div className='c-note-item'>
-                  <div className='flex justify-between align-center mb20'>
+                  <div className='flex justify-between align-center mv20 mb20'>
                     <div className='avatar-wrapper'>
                       <div className='avatar'>
-           A
+                         A
                       </div>
                       <div>
                         <p>Aliica Valerica</p>

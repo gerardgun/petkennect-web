@@ -1,5 +1,5 @@
 .c-note-item {
-  padding: 1.8rem 0rem;
+  padding: 0rem 0rem !important;
   margin-top: 1rem;
   border-top: 1px solid #e5eaee;
   border-bottom: 0px !important;
@@ -23,10 +23,15 @@
       background-color: #005987;
       color: #fff;
       border-radius: 3rem;
-      margin-right: 1.2rem;
+      margin-right: 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
+
+      @media screen and (min-width:1024px) and (max-width:1366px) {
+        width: 4rem !important;
+      }
+
     }
   }
 

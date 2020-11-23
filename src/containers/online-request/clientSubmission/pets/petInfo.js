@@ -68,7 +68,7 @@ function PetInfo() {
           placeholder='Enter received dog from'/>
       </Form.Group>
       <Header as='h6' className='section-header' color='blue'>Vaccinations</Header>
-      <Form.Group widths={3}>
+      <Form.Group widths={2}>
         <Field
           autoComplete='off'
           component={FormField}
@@ -83,6 +83,8 @@ function PetInfo() {
           label='Bordetella'
           name='bordetella'
           type='date'/>
+      </Form.Group>
+      <Form.Group widths={2}>
         <Field
           autoComplete='off'
           component={FormField}
@@ -90,8 +92,6 @@ function PetInfo() {
           label='Notification Send On'
           name='notification'
           type='date'/>
-      </Form.Group>
-      <Form.Group widths={3}>
         <Field
           autoComplete='off'
           component={FormField}
@@ -99,6 +99,8 @@ function PetInfo() {
           label='DHLPP'
           name='dhlpp'
           type='date'/>
+      </Form.Group>
+      <Form.Group widths={2}>
         <Field
           autoComplete='off'
           component={FormField}

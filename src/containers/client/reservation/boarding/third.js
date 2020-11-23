@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, Checkbox, List, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
-import { parseFormValues } from '@lib/utils/functions'
+import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
+import moment from 'moment'
+
+import authDuck from '@reducers/auth'
+import serviceDuck from '@reducers/service'
 import clientDetailDuck from '@reducers/client/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
@@ -16,32 +20,58 @@ import { boardingFormId } from './first'
 
 const BoardingFormWizardThird = props => {
   const {
+    // eslint-disable-next-line no-unused-vars
+    service,
+    currentTenant,
     error, handleSubmit, reset // redux-form
   } = props
+
+  const { client: clientId } = useParams()
+  const history = useHistory()
+
+  useEffect(() => {
+    props.getServices()
+  }, [])
+
+  const _handleClose = () => {
+    reset()
+    props.resetItem()
+    history.push(`/client/${clientId}`)
+  }
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
 
-    // eslint-disable-next-line no-unused-vars
+    let services = []
+
+    values.pet && values.pet.forEach(_pet => {
+      services.push({
+        service_variation     : '1',
+        employee              : currentTenant.id,
+        price                 : 10,
+        reserved_at           : moment.utc(values.check_in , 'YYYY-MM-DD HH-mm:ss Z'),
+        location              : values.location,
+        pet                   : _pet,
+        comment               : 'required field',
+        belongings            : values.belongings,
+        medication_name       : values.medication_name,
+        medication_purpose    : values.medication_purpose,
+        medication_instruction: values.medication_instruction,
+        feeding               : values.feeding
+      })
+    })
+
     const paylord = {
       client  : values.id,
-      employee: '',
-      location: '',
-      services: [ {
-        service_variation     : '',
-        employee              : '',
-        price                 : '',
-        reserved_at           : '',
-        location              : '',
-        pet                   : '',
-        comment               : '',
-        belongings            : '',
-        medication_name       : '',
-        medication_purpose    : '',
-        medication_instruction: '',
-        feeding               : ''
-      } ]
+      employee: currentTenant.id,
+      location: values.location,
+      services: services
     }
+
+    return props
+      .post({ ...paylord })
+      .then(_handleClose)
+      .catch(parseResponseError)
   }
 
   return (
@@ -226,17 +256,20 @@ const BoardingFormWizardThird = props => {
 export default compose(
   withRouter,
   connect(
-    ({ ...state }) => {
+    ({ auth, service, ...state }) => {
       const clientDetail = clientDetailDuck.selectors.detail(state)
 
       return {
+        service,
         clientDetail,
+        currentTenant: authDuck.selectors.getCurrentTenant(auth),
         initialValues: clientDetail.item
       }
     },
     {
-      resetItem: clientDetailDuck.creators.resetItem,
-      post     : petReservationDetailDuck.creators.post
+      getServices: serviceDuck.creators.get,
+      resetItem  : clientDetailDuck.creators.resetItem,
+      post       : petReservationDetailDuck.creators.post
     }
   ),
   reduxForm({

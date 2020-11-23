@@ -10,6 +10,7 @@ import FormError from '@components/Common/FormError'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientPetDuck from '@reducers/client/pet'
+import petKennelDuck from '@reducers/pet/pet-kennel'
 import PetItem from './PetItem'
 
 import { boardingFormId } from './first'
@@ -37,6 +38,7 @@ function AddOnsItem({ item }) {
 const BoardingFormWizardSecond = props => {
   const {
     clientPet,
+    petKennel,
     error, handleSubmit, reset // redux-form
   } = props
 
@@ -124,8 +126,12 @@ const BoardingFormWizardSecond = props => {
   }
 
   useEffect(() => {
+    props.getPetKennels()
     props.getClientPets()
   }, [])
+
+  const petKennelOptions = petKennel.items.map(_petKennel =>
+    ({ key: _petKennel.id, value: _petKennel.id, text: `${_petKennel.size}` }))
 
   return (
     <>
@@ -153,7 +159,8 @@ const BoardingFormWizardSecond = props => {
         {props.selectedPets && props.selectedPets.map((petId)=> (
           <PetItem
             checkIn={props.checkIn} checkOut={props.checkOut} item={clientPet.items.filter(_pet => _pet.id === petId)}
-            key={petId}/>
+            key={petId}
+            petKennelOptions={petKennelOptions}/>
         ))}
 
         <Segment>
@@ -171,7 +178,7 @@ const BoardingFormWizardSecond = props => {
                 control={Checkbox}
                 format={Boolean}
                 label='Belongings'
-                name='belongings'
+                name='chk_belongings'
                 type='checkbox'/>
             </Form.Group>
             {
@@ -182,6 +189,7 @@ const BoardingFormWizardSecond = props => {
                     component={FormField}
                     control={Form.TextArea}
                     label='Belongings Information'
+                    name='belongings'
                     placeholder='Enter belongings information'/>
                 </Form.Group>
               )}
@@ -191,7 +199,7 @@ const BoardingFormWizardSecond = props => {
                 control={Checkbox}
                 format={Boolean}
                 label='Medication'
-                name='medication'
+                name='chk_medication'
                 type='checkbox'/>
             </Form.Group>
             {
@@ -203,12 +211,14 @@ const BoardingFormWizardSecond = props => {
                       component={FormField}
                       control={Input}
                       label='Medicine name'
+                      name='medication_name'
                       placeholder='Enter medicine'/>
                     <Field
                       autoFocus
                       component={FormField}
                       control={Input}
                       label='Purpose'
+                      name='medication_purpose'
                       placeholder='Enter purpose'/>
                   </Form.Group>
                   <Form.Group widths='equal'>
@@ -217,6 +227,7 @@ const BoardingFormWizardSecond = props => {
                       component={FormField}
                       control={Form.TextArea}
                       label='Instructions'
+                      name='medication_instruction'
                       placeholder='Enter Instructions'/>
                   </Form.Group>
                 </>
@@ -227,7 +238,7 @@ const BoardingFormWizardSecond = props => {
                 control={Checkbox}
                 format={Boolean}
                 label='Feeding'
-                name='feeding'
+                name='chk_feeding'
                 type='checkbox'/>
             </Form.Group>
             {
@@ -238,6 +249,7 @@ const BoardingFormWizardSecond = props => {
                     component={FormField}
                     control={Form.TextArea}
                     label='Feeding Information'
+                    name='feeding'
                     placeholder='Enter feeding information'/>
                 </Form.Group>
               )}
@@ -259,6 +271,7 @@ const BoardingFormWizardSecond = props => {
                       component={FormField}
                       control={Input}
                       label='Total charge added to bill'
+                      name='veterenary_bill_total_charge'
                       placeholder='Enter charge'/>
                   </Form.Group>
                   <Form.Group widths='equal'>
@@ -267,6 +280,7 @@ const BoardingFormWizardSecond = props => {
                       component={FormField}
                       control={Form.TextArea}
                       label='Details'
+                      name='veterenary_bill_detail'
                       placeholder='Enter details'/>
                   </Form.Group>
                 </>
@@ -311,15 +325,16 @@ export default compose(
   connect(
     ({ ...state }) => {
       const clientDetail = clientDetailDuck.selectors.detail(state)
-      const belongings = formValueSelector(boardingFormId)(state, 'belongings')
-      const medication = formValueSelector(boardingFormId)(state, 'medication')
-      const feeding = formValueSelector(boardingFormId)(state, 'feeding')
+      const belongings = formValueSelector(boardingFormId)(state, 'chk_belongings')
+      const medication = formValueSelector(boardingFormId)(state, 'chk_medication')
+      const feeding = formValueSelector(boardingFormId)(state, 'chk_feeding')
       const veterenaryBill = formValueSelector(boardingFormId)(state, 'veterenary_bill')
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
 
       return {
         clientDetail,
         initialValues           : clientDetail.item,
+        petKennel               : petKennelDuck.selectors.list(state),
         clientPet               : clientPetDuck.selectors.list(state),
         checkIn                 : formValueSelector(boardingFormId)(state, 'check_in'),
         checkOut                : formValueSelector(boardingFormId)(state, 'check_out'),
@@ -331,6 +346,7 @@ export default compose(
       }
     },
     {
+      getPetKennels: petKennelDuck.creators.get,
       getClientPets: clientPetDuck.creators.get,
       resetItem    : clientDetailDuck.creators.resetItem
     }
