@@ -1,4 +1,3 @@
-
 import { call, put, takeEvery, select } from 'redux-saga/effects'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
@@ -106,7 +105,9 @@ function* post({ payload: { ...payload } }) {
       }
 
       if(payload.serviceType === 'G')
-        yield call(Patch, `reservations/${_order_services.id}/`, reservationDetail)
+        yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,
+          employee: payload.groomer
+        })
       else if(payload.serviceType === 'D')
         yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  daycamp: {
           card       : '6',
@@ -131,7 +132,7 @@ function* post({ payload: { ...payload } }) {
 function* _put({ payload : { ...payload } }) {
   try {
     const order = yield call(Patch, `orders/${payload.petReservationDetail.order}/`, {
-      status  : 2,
+      status  : 1,
       location: payload.location
     })
 

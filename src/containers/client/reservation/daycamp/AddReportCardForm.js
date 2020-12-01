@@ -10,6 +10,8 @@ import FormError from '@components/Common/FormError'
 import { parseResponseError } from '@lib/utils/functions'
 
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import petReservationDaycampQuestionDetailDuck from '@reducers/pet/reservation/dacamp-question/detail'
+
 import clientPetDuck from '@reducers/client/pet'
 
 import { daycampFormId } from './first'
@@ -17,6 +19,9 @@ import { daycampFormId } from './first'
 const AddReportCardForm = (props) => {
   const {
     petReservationDetail,
+    openQuestion,
+    closedQuestion,
+    multipleQuestion,
     clientPet,
     error,
     handleSubmit,
@@ -28,6 +33,7 @@ const AddReportCardForm = (props) => {
 
   useEffect(() => {
     props.getClientPets()
+    props.getDaycampQuestion()
   }, [])
 
   const _handleClose = () => {
@@ -67,9 +73,11 @@ const AddReportCardForm = (props) => {
           </Header>
           {props.selectedPets && props.selectedPets.map((petId)=> (
             <PetReportCard
-              item={clientPet.items.filter(_pet => _pet.id === petId)[0]}
-              key={petId}/>
+              closedQuestion={closedQuestion} key={petId}
+              multipleQuestion={multipleQuestion}
+              openQuestion={openQuestion}  pet={clientPet.items.filter(_pet => _pet.id === petId)[0]}/>
           ))}
+
           {error && (
             <Form.Group widths='equal'>
               <Form.Field>
@@ -105,18 +113,27 @@ export default compose(
   connect(
     (state) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
-      let selectedPets = formValueSelector(daycampFormId)(state, 'pet')
+      const selectedPets = formValueSelector(daycampFormId)(state, 'pet')
+      const dayCampQuestions = petReservationDaycampQuestionDetailDuck.selectors.detail(state)
+      const openQuestion = [].concat(dayCampQuestions.items)[0] && [].concat(dayCampQuestions.items)[0].questions.filter(_ => _.type === 'O')
+      const closedQuestion = [].concat(dayCampQuestions.items)[0] && [].concat(dayCampQuestions.items)[0].questions.filter(_ => _.type === 'C')
+      const multipleQuestion = [].concat(dayCampQuestions.items)[0] && [].concat(dayCampQuestions.items)[0].questions.filter(_ => _.type === 'M')
 
       return {
+        openQuestion,
+        closedQuestion,
+        multipleQuestion,
         petReservationDetail,
-        initialValues: petReservationDetail.item,
-        clientPet    : clientPetDuck.selectors.list(state),
-        selectedPets : selectedPets
+        initialValues   : petReservationDetail.item,
+        clientPet       : clientPetDuck.selectors.list(state),
+        daycampQuestions: petReservationDaycampQuestionDetailDuck.selectors.detail(state),
+        selectedPets    : selectedPets
       }
     },
     {
-      getClientPets: clientPetDuck.creators.get,
-      resetItem    : petReservationDetailDuck.creators.resetItem
+      getDaycampQuestion: petReservationDaycampQuestionDetailDuck.creators.get,
+      getClientPets     : clientPetDuck.creators.get,
+      resetItem         : petReservationDetailDuck.creators.resetItem
     }
   ),
   reduxForm({

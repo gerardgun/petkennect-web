@@ -14,11 +14,13 @@ import moment  from 'moment'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
+import employeeDuck from '@reducers/employee'
 
 export const groomingFormId = 'grooming-reservation-form'
 
 const GroomingFormWizardFirst = props => {
   const {
+    employee,
     clientPet,
     location,
     error, handleSubmit, reset
@@ -31,6 +33,7 @@ const GroomingFormWizardFirst = props => {
   }
 
   useEffect(() => {
+    props.getEmployees()
     props.getLocations()
     props.getClientPets()
   }, [])
@@ -120,9 +123,9 @@ const GroomingFormWizardFirst = props => {
               control={Select}
               label='Groomer'
               name='groomer'
-              options={[
-                { key: 1, value: 1, text: 'Test' }
-              ]}
+              options={employee.items.filter(_employee => _employee.title_name === 'Groommer').map(_employee=>
+                ({ key: _employee.id, value: _employee.id, text: `${_employee.first_name + ' ' + _employee.last_name}` }))
+              }
               placeholder='Select Groomer'
               selectOnBlur={false}/>
           </Form.Group>
@@ -208,12 +211,14 @@ export default compose(
       return {
         initialValues: { ...petReservationDetail.item, ...defaultInitialValues },
         location     : locationDuck.selectors.list(state),
+        employee     : employeeDuck.selectors.list(state),
         clientPet    : clientPetDuck.selectors.list(state)
       }
     },
     {
       getLocations : locationDuck.creators.get,
-      getClientPets: clientPetDuck.creators.get
+      getClientPets: clientPetDuck.creators.get,
+      getEmployees : employeeDuck.creators.get
     }
   ),
   reduxForm({

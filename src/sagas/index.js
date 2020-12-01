@@ -54,6 +54,7 @@ import petRetireReason from './pet/retire-reason'
 import petRetireReasonDetail from './pet/retire-reason/detail'
 import petReservation from './pet/reservation'
 import petReservationDetail from './pet/reservation/detail'
+import petReservationDaycampQuestionDetail from './pet/reservation/daycamp-question/detail'
 import petVaccination from './pet/vaccination'
 import petVaccinationDetail from './pet/vaccination/detail'
 import petVaccinationType from './pet/vaccination-type'
@@ -173,6 +174,7 @@ export default function* rootSaga() {
     ...petRetireReasonDetail,
     ...petReservation,
     ...petReservationDetail,
+    ...petReservationDaycampQuestionDetail,
     ...petVaccination,
     ...petVaccinationDetail,
     ...petVaccinationType,

@@ -64,6 +64,7 @@ import petNote from '@reducers/pet/note'
 import petNoteDetail from '@reducers/pet/note/detail'
 import petReservation from '@reducers/pet/reservation'
 import petReservationDetail from '@reducers/pet/reservation/detail'
+import petReservationDaycampQuestionDetail from '@reducers/pet/reservation/dacamp-question/detail'
 import petKennel from '@reducers/pet/pet-kennel'
 import petKennelDetail from '@reducers/pet/pet-kennel/detail'
 import petKennelType from '@reducers/pet/pet-kennel-type'
@@ -196,6 +197,7 @@ const createRootReducer = history => combineReducers({
   [petNoteDetail.store]                         : petNoteDetail.reducer,
   [petReservation.store]                        : petReservation.reducer,
   [petReservationDetail.store]                  : petReservationDetail.reducer,
+  [petReservationDaycampQuestionDetail.store]   : petReservationDaycampQuestionDetail.reducer,
   [petVaccination.store]                        : petVaccination.reducer,
   [petVaccinationDetail.store]                  : petVaccinationDetail.reducer,
   [petKennel.store]                             : petKennel.reducer,
