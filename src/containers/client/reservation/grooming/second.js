@@ -8,7 +8,7 @@ import { Button, Form, Header, Grid, Segment, Select, Input, Icon, Dropdown } fr
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 
-import clientDetailDuck from '@reducers/client/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import clientPetDuck from '@reducers/client/pet'
 
 import { groomingFormId } from './first'
@@ -253,19 +253,18 @@ export default compose(
   withRouter,
   connect(
     ({ ...state }) => {
-      const clientDetail = clientDetailDuck.selectors.detail(state)
+      const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const selectedPet = formValueSelector(groomingFormId)(state, 'pet')
 
       return {
-        clientDetail,
-        initialValues: clientDetail.item,
+        petReservationDetail,
+        initialValues: petReservationDetail.item,
         clientPet    : clientPetDuck.selectors.list(state),
         selectedPet  : selectedPet
       }
     },
     {
-      getClientPets: clientPetDuck.creators.get,
-      resetItem    : clientDetailDuck.creators.resetItem
+      getClientPets: clientPetDuck.creators.get
     }
   ),
   reduxForm({

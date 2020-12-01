@@ -12,9 +12,12 @@ import AgreementCreate from '@containers/agreement/create'
 import AuthMe from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
 import Client from '@containers/client'
+import ColorCode from '@containers/color-code'
 import ClientShow from '@containers/client/show'
 import ClientBook from '@containers/client/reservation'
 import CustomizedField from '@containers/customized-field'
+import Calendar from '@containers/calendar'
+import Notification from '@containers/notification'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
 import Pet from '@containers/pet'
@@ -108,6 +111,14 @@ const privateRoutes = [
   {
     path     : '/auth/sso',
     component: AuthSSO
+  },
+  {
+    path     : '/setup/color-codes',
+    component: ColorCode
+  },
+  {
+    path     : '/setup/notifications',
+    component: Notification
   },
   {
     path     : '/client',
@@ -296,6 +307,10 @@ const privateRoutes = [
   {
     path     : '/setup/document-type',
     component: DocumentType
+  },
+  {
+    path     : '/setup/calendar',
+    component: Calendar
   },
   {
     path     : '/organization',

@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, FieldArray, reduxForm } from 'redux-form'
-import { Button, Header, Input, TextArea, Segment, Select, Form } from 'semantic-ui-react'
+import { Field, FieldArray, formValueSelector, reduxForm } from 'redux-form'
+import { Button, Header, Input, TextArea, Segment, Select, Form, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -14,6 +14,9 @@ import YupFields from '@lib/constants/yup-fields'
 import { ReferredOptions } from '@lib/constants/client'
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
 
+import CommentForm from './../show/CommentSection/form/modal'
+
+import clientCommentDetailDuck from '@reducers/client/comment/detail'
 import clientDetailDuck from '@reducers/client/detail'
 import zipDuck from '@reducers/zip'
 import zipDetailDuck from '@reducers/zip/detail'
@@ -146,18 +149,18 @@ export const ContactDetailList = ({ fields, meta: { error, submitFailed } }) => 
   )
 }
 
-const booleanOptions = [
-  {
-    key  : 1,
-    value: true,
-    text : 'Yes'
-  },
-  {
-    key  : 2,
-    value: false,
-    text : 'No'
-  }
-]
+// const booleanOptions = [
+//   {
+//     key  : 1,
+//     value: true,
+//     text : 'Yes'
+//   },
+//   {
+//     key  : 2,
+//     value: false,
+//     text : 'No'
+//   }
+// ]
 const typeOfPhoneNumberOptions = [
   {
     key  : 1,
@@ -209,6 +212,13 @@ const ClientForm = props => {
           history.push(`/client/${payload.id}`)
         })
         .catch(parseResponseError)
+  }
+
+  const _handleButtonReviewClient = () => {
+  }
+
+  const _handleChangeStatus = (item) => {
+    props.setChangeStatusItem(item,'CREATE')
   }
 
   return (
@@ -289,13 +299,19 @@ const ClientForm = props => {
                 selectOnBlur={false}/>
             </Form.Group>
 
-            <Form.Group widths='equal'>
+            <Form.Group widths='2'>
               <Field
                 component={FormField}
                 control={Select}
-                label='Active'
-                name='is_active'
-                options={booleanOptions}
+                label='Status'
+                name='status'
+                onChange={_handleChangeStatus}
+                options={[
+                  { key: 1, value: 'Active', text: 'Active', image: (<Icon name='user circle' style={{ color: 'gray', fontSize: '20px' }}></Icon>) },
+                  { key: 2, value: 'Caution', text: 'Caution', image: (<Icon name='user circle' style={{ color: 'yellow', fontSize: '20px' }}></Icon>) },
+                  { key: 3, value: 'Decline Client', text: 'Decline Client', image: (<Icon name='user circle' style={{ color: 'red', fontSize: '20px' }}></Icon>) },
+                  { key: 4, value: 'VIP Client', text: 'VIP Client', image: (<Icon name='user circle' style={{ color: 'green', fontSize: '20px' }}></Icon>) }
+                ]}
                 placeholder='Select option'
                 selectOnBlur={false}/>
               <Field
@@ -308,6 +324,22 @@ const ClientForm = props => {
                 }
                 placeholder='Contact Location'
                 selectOnBlur={false}/>
+            </Form.Group>
+
+            <Form.Group widths='2'>
+              {
+                props.hasStatusDeclined === 'Declined Client' && (
+                  <Form.Field>
+                    <Button
+                      className='w120'
+                      color='teal'
+                      content='Enable'
+                      onClick={_handleButtonReviewClient}
+                      type='button'/>
+                  </Form.Field>
+
+                )
+              }
             </Form.Group>
 
             <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
@@ -539,6 +571,7 @@ const ClientForm = props => {
 
         <Field component='input' name='id' type='hidden'/>
       </Form>
+      <CommentForm/>
     </>
   )
 }
@@ -548,21 +581,24 @@ export default compose(
     ({ location, zip, ...state }) => {
       const zipDetail = zipDetailDuck.selectors.detail(state)
       const clientDetail = clientDetailDuck.selectors.detail(state)
+      const status  = formValueSelector(formId)(state, 'status')
 
       return {
         clientDetail,
         location,
         zip,
         zipDetail,
-        initialValues: { ...clientDetail.item }
+        initialValues    : { ...clientDetail.item },
+        hasStatusDeclined: status
       }
     },
     {
-      getZipes : zipDuck.creators.get,
-      setZip   : zipDetailDuck.creators.setItem,
-      post     : clientDetailDuck.creators.post,
-      put      : clientDetailDuck.creators.put,
-      resetItem: clientDetailDuck.creators.resetItem
+      getZipes           : zipDuck.creators.get,
+      setZip             : zipDetailDuck.creators.setItem,
+      post               : clientDetailDuck.creators.post,
+      put                : clientDetailDuck.creators.put,
+      resetItem          : clientDetailDuck.creators.resetItem,
+      setChangeStatusItem: clientCommentDetailDuck.creators.setItem
     }
   ),
   reduxForm({

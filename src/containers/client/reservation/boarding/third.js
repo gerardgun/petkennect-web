@@ -9,20 +9,17 @@ import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
-import moment from 'moment'
-
 import authDuck from '@reducers/auth'
 import serviceDuck from '@reducers/service'
-import clientDetailDuck from '@reducers/client/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import { boardingFormId } from './first'
 
 const BoardingFormWizardThird = props => {
   const {
-    // eslint-disable-next-line no-unused-vars
-    service,
+    services,
     currentTenant,
+    petReservationDetail,
     error, handleSubmit, reset // redux-form
   } = props
 
@@ -41,38 +38,23 @@ const BoardingFormWizardThird = props => {
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
-
-    let services = []
-
-    values.pet && values.pet.forEach(_pet => {
-      services.push({
-        service_variation     : '1',
-        employee              : currentTenant.id,
-        price                 : 10,
-        reserved_at           : moment.utc(values.check_in , 'YYYY-MM-DD HH-mm:ss Z'),
-        location              : values.location,
-        pet                   : _pet,
-        comment               : 'required field',
-        belongings            : values.belongings,
-        medication_name       : values.medication_name,
-        medication_purpose    : values.medication_purpose,
-        medication_instruction: values.medication_instruction,
-        feeding               : values.feeding
-      })
-    })
-
-    const paylord = {
-      client  : values.id,
-      employee: currentTenant.id,
-      location: values.location,
-      services: services
-    }
-
-    return props
-      .post({ ...paylord })
-      .then(_handleClose)
-      .catch(parseResponseError)
+    const currentServiceType = services.items.find(({ type }) => type === props.serviceType)
+    let serviceVariation = currentServiceType && currentServiceType.variations.length > 0 && currentServiceType.variations[0]
+    if(isUpdating)
+      return props
+        .put({ ...values, serviceVariation,
+          petReservationDetail: petReservationDetail.item,
+          currentTenant, serviceType         : props.serviceType, clientId })
+        .then(_handleClose)
+        .catch(parseResponseError)
+    else
+      return props
+        .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
+        .then(_handleClose)
+        .catch(parseResponseError)
   }
+
+  const isUpdating = Boolean(petReservationDetail.item.id)
 
   return (
     <>
@@ -257,19 +239,20 @@ export default compose(
   withRouter,
   connect(
     ({ auth, service, ...state }) => {
-      const clientDetail = clientDetailDuck.selectors.detail(state)
+      const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
 
       return {
-        service,
-        clientDetail,
-        currentTenant: authDuck.selectors.getCurrentTenant(auth),
-        initialValues: clientDetail.item
+        services     : service,
+        petReservationDetail,
+        initialValues: { ...petReservationDetail.item },
+        currentTenant: authDuck.selectors.getCurrentTenant(auth)
       }
     },
     {
       getServices: serviceDuck.creators.get,
-      resetItem  : clientDetailDuck.creators.resetItem,
-      post       : petReservationDetailDuck.creators.post
+      resetItem  : petReservationDetailDuck.creators.resetItem,
+      post       : petReservationDetailDuck.creators.post,
+      put        : petReservationDetailDuck.creators.put
     }
   ),
   reduxForm({

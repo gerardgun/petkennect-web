@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-
+import faker from 'faker'
 import { Get, Post, Patch } from '@lib/utils/http-client'
 
 import clientDetailDuck from '@reducers/client/detail'
@@ -35,7 +35,8 @@ function* get({ id }) {
       payload: {
         item: {
           ...client,
-          thumbnail_path: client.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${client.thumbnail_path}` : null
+          thumbnail_path: client.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${client.thumbnail_path}` : null,
+          status        : faker.random.arrayElement([ 'Decline Client', 'VIP Client', 'Caution', 'Active' ])
         }
       }
     })

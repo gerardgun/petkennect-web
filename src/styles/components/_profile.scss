@@ -52,6 +52,25 @@
     }
   }
 
+  .c-icon-profile{
+    display: flex;
+    line-height: initial;
+    margin-bottom: 2.5rem;
+
+    .icon{
+      font-size: 14rem;
+      color: gray;
+    }
+
+    .icon_green{
+      color: green;
+    }
+
+    .icon_red{
+      color: red;
+    }
+  }
+
   .c-image-profile {
     position: relative;
     overflow: hidden;

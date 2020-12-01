@@ -8,7 +8,7 @@ import { Button, Form, Header, Segment, Checkbox, Select, Input, Icon, Dropdown 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 
-import clientDetailDuck from '@reducers/client/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import clientPetDuck from '@reducers/client/pet'
 import petKennelDuck from '@reducers/pet/pet-kennel'
 import PetItem from './PetItem'
@@ -324,7 +324,7 @@ export default compose(
   withRouter,
   connect(
     ({ ...state }) => {
-      const clientDetail = clientDetailDuck.selectors.detail(state)
+      const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const belongings = formValueSelector(boardingFormId)(state, 'chk_belongings')
       const medication = formValueSelector(boardingFormId)(state, 'chk_medication')
       const feeding = formValueSelector(boardingFormId)(state, 'chk_feeding')
@@ -332,8 +332,7 @@ export default compose(
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
 
       return {
-        clientDetail,
-        initialValues           : clientDetail.item,
+        initialValues           : { ...petReservationDetail.item },
         petKennel               : petKennelDuck.selectors.list(state),
         clientPet               : clientPetDuck.selectors.list(state),
         checkIn                 : formValueSelector(boardingFormId)(state, 'check_in'),
@@ -347,8 +346,7 @@ export default compose(
     },
     {
       getPetKennels: petKennelDuck.creators.get,
-      getClientPets: clientPetDuck.creators.get,
-      resetItem    : clientDetailDuck.creators.resetItem
+      getClientPets: clientPetDuck.creators.get
     }
   ),
   reduxForm({

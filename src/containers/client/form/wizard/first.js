@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import moment  from 'moment'
-import { Button, Dropdown, Form, Header, Input, Select } from 'semantic-ui-react'
+import { Button, Dropdown, Form, Header, Input, Select, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -172,10 +172,10 @@ const ClientFormWizardFirst = props => {
             label='Status'
             name='status'
             options={[
-              { key: 1, value: 1, text: 'DECLINED' },
-              { key: 2, value: 2, text: 'GREEN' },
-              { key: 3, value: 3, text: 'RED - See notes' },
-              { key: 4, value: 4, text: 'VIP CLIENT' }
+              { key: 1, value: 'Active', text: 'Active', image: (<Icon name='user circle' style={{ color: 'gray', fontSize: '20px' }}></Icon>) },
+              { key: 2, value: 'Caution', text: 'Caution', image: (<Icon name='user circle' style={{ color: 'yellow', fontSize: '20px' }}></Icon>) },
+              { key: 3, value: 'Decline Client', text: 'Decline Client', image: (<Icon name='user circle' style={{ color: 'red', fontSize: '20px' }}></Icon>) },
+              { key: 4, value: 'VIP Client', text: 'VIP Client', image: (<Icon name='user circle' style={{ color: 'green', fontSize: '20px' }}></Icon>) }
             ]}
             placeholder='Select status'
             selectOnBlur={false}/>

@@ -6,6 +6,7 @@ import agreement from '@reducers/agreement'
 import agreementDetail from '@reducers/agreement/detail'
 import application from '@reducers/application'
 import auth from '@reducers/auth'
+import calendarDetail from '@reducers/calendar/detail'
 import category from '@reducers/category'
 import categoryDetail from '@reducers/category/detail'
 import client from '@reducers/client'
@@ -32,6 +33,8 @@ import employeeTitle from '@reducers/employee/title'
 import employeeTitleDetail from '@reducers/employee/title/detail'
 import location from '@reducers/location'
 import locationDetail from '@reducers/location/detail'
+import notification from '@reducers/notification'
+import notificationDetail from '@reducers/notification/detail'
 import organization from '@reducers/organization'
 import organizationDetail from '@reducers/organization/detail'
 import organizationCompany from '@reducers/organization/company'
@@ -135,6 +138,7 @@ const createRootReducer = history => combineReducers({
   [agreementDetail.store]                       : agreementDetail.reducer,
   [auth.store]                                  : auth.reducer,
   [application.store]                           : application.reducer,
+  [calendarDetail.store]                        : calendarDetail.reducer,
   [category.store]                              : category.reducer,
   [categoryDetail.store]                        : categoryDetail.reducer,
   [client.store]                                : client.reducer,
@@ -161,6 +165,8 @@ const createRootReducer = history => combineReducers({
   [employeeTitleDetail.store]                   : employeeTitleDetail.reducer,
   [location.store]                              : location.reducer,
   [locationDetail.store]                        : locationDetail.reducer,
+  [notification.store]                          : notification.reducer,
+  [notificationDetail.store]                    : notificationDetail.reducer,
   [organization.store]                          : organization.reducer,
   [organizationDetail.store]                    : organizationDetail.reducer,
   [organizationCompany.store]                   : organizationCompany.reducer,

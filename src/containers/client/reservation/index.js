@@ -16,14 +16,16 @@ import ViewNoteSection from '../../online-request/notesSection/'
 import clientDetailDuck from '@reducers/client/detail'
 import petDetailDuck from '@reducers/pet/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import './styles.scss'
 
-function Reservation({ clientDetail, ...props }) {
+function Reservation({ petReservationDetail, clientDetail, ...props }) {
   const { client: clientId } = useParams()
   const history = useHistory()
 
-  const [ activeReservationItem, setActiveReservationItem ] = useState('Boarding')
+  const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service_type || 'B')
+
   useEffect(() => {
     props.getClient(clientId)
   }, [])
@@ -99,31 +101,31 @@ function Reservation({ clientDetail, ...props }) {
 
             <Header as='h3'>What is the Service?</Header>
             <div className='mv32 btn-service-type'>
-              <div className={`button-service ${activeReservationItem === 'Boarding' && 'selected'}`} onClick={_handleReservationTypeClick('Boarding')}>
+              <div className={`button-service ${activeReservationItem === 'B' && 'selected'}`} onClick={_handleReservationTypeClick('B')}>
                 <Image avatar src='/images/boarding-icon.svg'/>
                 <span>Boarding</span>
               </div>
-              <div className={`button-service ${activeReservationItem === 'Training' && 'selected'}`} onClick={_handleReservationTypeClick('Training')}>
+              <div className={`button-service ${activeReservationItem === 'T' && 'selected'}`} onClick={_handleReservationTypeClick('T')}>
                 <Image avatar src='/images/training-icon.svg'/>
                 <span>Training</span>
               </div>
-              <div className={`button-service ${activeReservationItem === 'Fitness' && 'selected'}`} onClick={_handleReservationTypeClick('Fitness')}>
+              <div className={`button-service ${activeReservationItem === 'F' && 'selected'}`} onClick={_handleReservationTypeClick('F')}>
                 <Image avatar src='/images/fitness-icon.svg'/>
                 <span>Fitness</span>
               </div>
-              <div className={`button-service ${activeReservationItem === 'Daycamp' && 'selected'}`} onClick={_handleReservationTypeClick('Daycamp')}>
+              <div className={`button-service ${activeReservationItem === 'D' && 'selected'}`} onClick={_handleReservationTypeClick('D')}>
                 <Image avatar src='/images/daycamp-icon.svg'/>
                 <span>Daycamp</span>
               </div>
-              <div className={`button-service ${activeReservationItem === 'Grooming' && 'selected'}`} onClick={_handleReservationTypeClick('Grooming')}>
+              <div className={`button-service ${activeReservationItem === 'G' && 'selected'}`} onClick={_handleReservationTypeClick('G')}>
                 <Image avatar src='/images/grooming-icon.svg'/>
                 <span>Grooming</span>
               </div>
             </div>
-            {activeReservationItem === 'Boarding' &&  <BoardingReservationFormWizard/>}
-            {activeReservationItem === 'Daycamp' &&  <DaycampReservationFormWizard/>}
-            {activeReservationItem === 'Fitness' &&  <FitnessReservationFormWizard/>}
-            {activeReservationItem === 'Grooming' &&  <GroomingReservationFormWizard/>}
+            {activeReservationItem === 'B' &&  <BoardingReservationFormWizard serviceType={activeReservationItem}/>}
+            {activeReservationItem === 'D' &&  <DaycampReservationFormWizard serviceType={activeReservationItem}/>}
+            {activeReservationItem === 'F' &&  <FitnessReservationFormWizard serviceType={activeReservationItem}/>}
+            {activeReservationItem === 'G' &&  <GroomingReservationFormWizard serviceType={activeReservationItem}/>}
           </Grid.Column>
         </Grid>
       </Segment>
@@ -133,9 +135,15 @@ function Reservation({ clientDetail, ...props }) {
 
 export default compose(
   connect(
-    state => ({
-      clientDetail: clientDetailDuck.selectors.detail(state)
-    }), {
+    (state) => {
+      const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+
+      return {
+        petReservationDetail,
+        clientDetail: clientDetailDuck.selectors.detail(state)
+      }
+    },
+    {
       getClient  : clientDetailDuck.creators.get,
       setItem    : petDetailDuck.creators.setItem,
       setNoteItem: petNoteDetailDuck.creators.setItem

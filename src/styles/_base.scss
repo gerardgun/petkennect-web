@@ -41,7 +41,7 @@ textarea {
 }
 
 .app-content {
-  height: 80vh;
+  // height: 80vh;
   overflow-y: auto;
   overflow-x: hidden;
   background-color: $white;
@@ -300,4 +300,8 @@ textarea {
 
 .ui-delete-modal {
   width: 300px !important;
+}
+
+.button-width {
+  width:59px !important
 }

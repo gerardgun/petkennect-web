@@ -29,6 +29,7 @@ import employeeTitle from './employee/title'
 import employeeTitleDetail from './employee/title/detail'
 import location from './location'
 import locationDetail from './location/detail'
+import notification from './notification'
 import organization from './organization'
 import organizationDetail from './organization/detail'
 import pet from './pet'
@@ -147,6 +148,7 @@ export default function* rootSaga() {
     ...employeeTitleDetail,
     ...location,
     ...locationDetail,
+    ...notification,
     ...organization,
     ...organizationDetail,
     ...pet,

@@ -5,10 +5,17 @@ import { Header , Grid, Button } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
+import CancelReserve from '@containers/pet/create/BookingSection/CancelReserve'
+import PetNotes from '@containers/pet/create/BookingSection/Notes'
+import ViewReport from '@containers/pet/create/BookingSection/ReportCard'
+import Absent from '@containers/pet/create/BookingSection/Absent'
 
+import petDetailDuck from '@reducers/pet/detail'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
 import petReservationDuck from '@reducers/pet/reservation'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
-function ReservesSection(props) {
+function ReservesSection({ ...props }) {
   const { petReservation : { filters = {} }  = {} } = props
 
   useEffect(()=> {
@@ -21,6 +28,28 @@ function ReservesSection(props) {
   }
   const _handleRowOptionClick = () => {
     // wip
+  }
+
+  const _handleOptionDropdownChange = (optionName, item) => {
+    switch (optionName)
+    {
+      case 'view_report' : props.setViewReportItem(item,'CREATE')
+        break
+
+      case 'edit_note' : props.setNoteItem(item,'READ')
+        break
+
+      case 'edit_reserve' : props.setReserveItem(item,'UPDATE')
+        // history.replace(`/client/${clientId}/book`)
+        break
+
+      case 'absent' : props.setCancelCheckInItem(item,'DELETE')
+        break
+      case 'cancel_reserve' : props.setCancelReserveItem(item,'READ')
+        break
+
+      default : return
+    }
   }
 
   const _handleFilterBtnClick = type => () => {
@@ -56,9 +85,14 @@ function ReservesSection(props) {
       <div className='mh28'>
         <Table
           duck={petReservationDuck}
+          onOptionDropdownChange={_handleOptionDropdownChange}
           onRowClick={_handleRowClick}
           onRowOptionClick={_handleRowOptionClick}/>
       </div>
+      <ViewReport/>
+      <CancelReserve/>
+      <PetNotes/>
+      <Absent/>
     </div>
   )
 }
@@ -72,8 +106,13 @@ export default compose(
     (state) => ({
       petReservation: petReservationDuck.selectors.list(state)
     }), {
-      getPetReservations: petReservationDuck.creators.get,
-      setFilters        : petReservationDuck.creators.setFilters
+      getPetReservations  : petReservationDuck.creators.get,
+      setFilters          : petReservationDuck.creators.setFilters,
+      setCancelReserveItem: petReservationDetailDuck.creators.setItem,
+      setCancelCheckInItem: petReservationDetailDuck.creators.setItem,
+      setReserveItem      : petReservationDetailDuck.creators.setItem,
+      setNoteItem         : petNoteDetailDuck.creators.setItem,
+      setViewReportItem   : petDetailDuck.creators.setItem
 
     })
 )(ReservesSection)

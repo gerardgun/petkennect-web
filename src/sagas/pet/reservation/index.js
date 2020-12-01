@@ -25,7 +25,7 @@ function* get(/* { payload } */) {
         items: results.map(({ employee_first_name = '-', employee_last_name = '',...rest })=> ({
           employee_fullname: `${employee_first_name} ${employee_last_name}`,
           is_pending       : moment.utc(rest.reserved_at, 'YYYY-MM-DD HH-mm:ss Z')
-            .isSameOrAfter(moment(),'day') || rest.is_canceled,
+            .isSameOrAfter(moment(),'day'),
           ...rest
         }))
         // pagination: {

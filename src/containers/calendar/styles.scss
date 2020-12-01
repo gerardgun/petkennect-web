@@ -1,0 +1,38 @@
+.fc-day-sun { background: #f5f3f3; }
+.fc-day-sat { background: #f5f3f3; }
+.fc-toolbar-chunk{
+    button{
+        background-color: teal !important;
+    }
+}
+
+.fc-event-main{
+    font-size: 1.1rem;
+    span{
+        float: right !important;
+    }
+}
+
+.calendar_Holiday{
+    background: none;
+    border: none;
+    .fc-event-main{
+        color: #660000;
+    }
+}
+
+.color_peak{
+   background-color:#95dc8a !important;
+}
+
+.service_full{
+    background: repeating-linear-gradient( 45deg, teal, teal 10px, teal 10px, rgba(0, 0, 0, 0.3) 14px ) !important;
+}
+
+.fc-daygrid-day-bg{
+opacity: inherit;
+}
+
+.color_training{
+    background: #A52A2A !important;
+}

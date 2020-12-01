@@ -10,7 +10,8 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
 
-import clientDetailDuck from '@reducers/client/detail'
+import moment  from 'moment'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
 
@@ -97,7 +98,7 @@ const GroomingFormWizardFirst = props => {
               component={FormField}
               control={Input}
               label='Reservation Day'
-              name='reservation_day'
+              name='check_in'
               onChange={_handleReservationDayChange}
               required
               type='date'/>
@@ -198,19 +199,21 @@ export default compose(
   withRouter,
   connect(
     ({ ...state }) => {
-      const clientDetail = clientDetailDuck.selectors.detail(state)
+      const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const defaultInitialValues = petReservationDetail.item.id ? {
+        check_in: petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
+        pet     : [ petReservationDetail.item.pet ]
+      } : {}
 
       return {
-        clientDetail,
-        initialValues: clientDetail.item,
+        initialValues: { ...petReservationDetail.item, ...defaultInitialValues },
         location     : locationDuck.selectors.list(state),
         clientPet    : clientPetDuck.selectors.list(state)
       }
     },
     {
       getLocations : locationDuck.creators.get,
-      getClientPets: clientPetDuck.creators.get,
-      resetItem    : clientDetailDuck.creators.resetItem
+      getClientPets: clientPetDuck.creators.get
     }
   ),
   reduxForm({

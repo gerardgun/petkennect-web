@@ -10,10 +10,12 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
 
-import clientDetailDuck from '@reducers/client/detail'
+import moment  from 'moment'
+
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
 import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 export const boardingFormId = 'boarding-reservation-form'
 
@@ -84,8 +86,8 @@ const BoardingFormWizardFirst = props => {
               }))}
               placeholder='Search pet'
               required
-              selection
-              selectOnBlur={false}/>
+              selectOnBlur={false}
+              selection/>
           </Form.Group>
         </Segment>
         <Segment className='section-info-item-step1'>
@@ -189,13 +191,16 @@ export default compose(
   withRouter,
   connect(
     ({ ...state }) => {
-      const clientDetail = clientDetailDuck.selectors.detail(state)
       const KennelType = formValueSelector(boardingFormId)(state, 'kennel_type')
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
+      const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const defaultInitialValues = petReservationDetail.item.id ? {
+        check_in  : petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
+        check_out : petReservationDetail.item.boarding ? moment(petReservationDetail.item.boarding.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '', pet       : [ petReservationDetail.item.pet ],
+        KennelType: petReservationDetail.item.boarding ? petReservationDetail.item.boarding.kennel_type : '' } : {}
 
       return {
-        clientDetail,
-        initialValues      : clientDetail.item,
+        initialValues      : { ...petReservationDetail.item, ...defaultInitialValues },
         location           : locationDuck.selectors.list(state),
         clientPet          : clientPetDuck.selectors.list(state),
         petKennelType      : petKennelTypeDuck.selectors.list(state),
@@ -206,8 +211,7 @@ export default compose(
     {
       getLocations    : locationDuck.creators.get,
       getClientPets   : clientPetDuck.creators.get,
-      getPetKennelType: petKennelTypeDuck.creators.get,
-      resetItem       : clientDetailDuck.creators.resetItem
+      getPetKennelType: petKennelTypeDuck.creators.get
     }
   ),
   reduxForm({

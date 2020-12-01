@@ -9,14 +9,14 @@ import PetReportCard from '@components/Common/Pet/ReportCard'
 import FormError from '@components/Common/FormError'
 import { parseResponseError } from '@lib/utils/functions'
 
-import clientDetailDuck from '@reducers/client/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import clientPetDuck from '@reducers/client/pet'
 
 import { daycampFormId } from './first'
 
 const AddReportCardForm = (props) => {
   const {
-    clientDetail,
+    petReservationDetail,
     clientPet,
     error,
     handleSubmit,
@@ -24,7 +24,7 @@ const AddReportCardForm = (props) => {
     submitting // redux-form
   } = props
 
-  const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
+  const getIsOpened = (mode) => mode === 'READ'
 
   useEffect(() => {
     props.getClientPets()
@@ -38,7 +38,7 @@ const AddReportCardForm = (props) => {
   const _handleSubmit = (values) => {
     if(isUpdating)
       return props
-        .put({ id: clientDetail.item.id, ...values })
+        .put({ id: petReservationDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -48,10 +48,10 @@ const AddReportCardForm = (props) => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(clientDetail.mode), [
-    clientDetail.mode
+  const isOpened = useMemo(() => getIsOpened(petReservationDetail.mode), [
+    petReservationDetail.mode
   ])
-  const isUpdating = Boolean(clientDetail.item.id)
+  const isUpdating = Boolean(petReservationDetail.item.id)
 
   return (
     <Modal
@@ -104,19 +104,19 @@ export default compose(
   withRouter,
   connect(
     (state) => {
-      const clientDetail = clientDetailDuck.selectors.detail(state)
+      const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       let selectedPets = formValueSelector(daycampFormId)(state, 'pet')
 
       return {
-        clientDetail,
-        initialValues: clientDetail.item,
+        petReservationDetail,
+        initialValues: petReservationDetail.item,
         clientPet    : clientPetDuck.selectors.list(state),
         selectedPets : selectedPets
       }
     },
     {
       getClientPets: clientPetDuck.creators.get,
-      resetItem    : clientDetailDuck.creators.resetItem
+      resetItem    : petReservationDetailDuck.creators.resetItem
     }
   ),
   reduxForm({

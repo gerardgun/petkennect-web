@@ -12,7 +12,7 @@ import DocumentSection from './DocumentSection'
 import InformationSection from './InformationSection'
 import PetSection from './PetSection'
 import ReservesSection from './ReservesSection'
-import { defaultImageUrl } from '@lib/constants'
+// import { defaultImageUrl } from '@lib/constants'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientCommentDuck from '@reducers/client/comment'
@@ -72,6 +72,9 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
 
+  // const imageBorder = clientDetail.item.status == 'Declined Client' ? 'image-border-declined' :
+  //  clientDetail.item.status == 'VIP Client' ? 'image-border-vip' : clientDetail.item.status == 'Caution' ? 'image-border-caution' : null
+
   return (
     <Layout>
       <Segment className='segment-content petkennect-profile'>
@@ -89,17 +92,33 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
               </Breadcrumb.Section>
             </Breadcrumb>
 
-            <div className='flex justify-center align-center mt40'>
+            {/* <div className='flex justify-center align-center mt40'>
               <div className='c-image-profile'>
-                <Image circular src={clientDetail.item.thumbnail_path || defaultImageUrl}/>
+                <Image
+                  circular className={imageBorder}
+                  src={clientDetail.item.thumbnail_path || defaultImageUrl}/>
               </div>
+            </div> */}
+            <div className='flex justify-center align-center mt40'>
+
+              {
+                clientDetail.item.thumbnail_path
+                  ? <>
+                    <div className='c-image-profile'>
+                      <Image circular src={clientDetail.item.thumbnail_path}/>
+                    </div>
+                  </>
+                  :                   <div className='c-icon-profile'><Icon name='user circle'></Icon></div>
+
+              }
+
             </div>
 
             <div className='flex justify-between align-center mb24'>
               <div>
                 <Header as='h2' className='mb4'>{fullname}</Header>
                 <div className='flex align-center'>
-                  <span style={{ color: '#888888' }}>{clientDetail.item.is_active ? 'Active' : 'Inactive'}</span>
+                  <span style={{ color: '#888888' }}>{clientDetail.item.status}</span>
                 </div>
               </div>
               <Dropdown

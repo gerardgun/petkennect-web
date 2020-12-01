@@ -1,21 +1,58 @@
-import React from 'react'
+import React, { useEffect }  from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
+import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
-import clientDetailDuck from '@reducers/client/detail'
+import authDuck from '@reducers/auth'
+import serviceDuck from '@reducers/service'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import { groomingFormId } from './first'
 
 const GroomingFormWizardThird = props => {
   const {
-    error, handleSubmit, reset // redux-form
+    petReservationDetail,
+    currentTenant,
+    services, error, handleSubmit, reset // redux-form
   } = props
+
+  const { client: clientId } = useParams()
+  const history = useHistory()
+
+  useEffect(() => {
+    props.getServices()
+  }, [])
+
+  const _handleClose = () => {
+    reset()
+    props.resetItem()
+    history.push(`/client/${clientId}`)
+  }
+
+  const _handleSubmit = values => {
+    values = parseFormValues(values)
+    const currentServiceType = services.items.find(({ type }) => type === props.serviceType)
+    let serviceVariation = currentServiceType && currentServiceType.variations.length > 0 && currentServiceType.variations[0]
+    if(isUpdating)
+      return props
+        .put({ ...values, serviceVariation,
+          petReservationDetail: petReservationDetail.item,
+          currentTenant, serviceType         : props.serviceType, clientId })
+        .then(_handleClose)
+        .catch(parseResponseError)
+    else
+      return props
+        .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
+        .then(_handleClose)
+        .catch(parseResponseError)
+  }
+  const isUpdating = Boolean(petReservationDetail.item.id)
 
   return (
     <>
@@ -39,7 +76,7 @@ const GroomingFormWizardThird = props => {
       </div>
 
       {/* eslint-disable-next-line react/jsx-handler-names */}
-      <Form onReset={reset} onSubmit={handleSubmit}>
+      <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
 
         <Segment className='section-info-item'>
           <Header as='h3' className='section-info-header text-center'>Summary</Header>
@@ -191,16 +228,21 @@ const GroomingFormWizardThird = props => {
 export default compose(
   withRouter,
   connect(
-    ({ ...state }) => {
-      const clientDetail = clientDetailDuck.selectors.detail(state)
+    ({ auth, service, ...state }) => {
+      const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
 
       return {
-        clientDetail,
-        initialValues: clientDetail.item
+        petReservationDetail,
+        services     : service,
+        currentTenant: authDuck.selectors.getCurrentTenant(auth),
+        initialValues: petReservationDetail.item
       }
     },
     {
-      resetItem: clientDetailDuck.creators.resetItem
+      getServices: serviceDuck.creators.get,
+      resetItem  : petReservationDetailDuck.creators.resetItem,
+      post       : petReservationDetailDuck.creators.post,
+      put        : petReservationDetailDuck.creators.put
     }
   ),
   reduxForm({

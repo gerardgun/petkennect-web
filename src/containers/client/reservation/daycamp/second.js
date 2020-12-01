@@ -8,9 +8,11 @@ import { Button, Form, Header, Segment, Select, Icon, Dropdown } from 'semantic-
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 
-import clientDetailDuck from '@reducers/client/detail'
-import clientPetDuck from '@reducers/client/pet'
 import PetItem from './PetItem'
+
+import yardTypesDuck from '@reducers/pet/pet-yard-type'
+import clientPetDuck from '@reducers/client/pet'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import { daycampFormId } from './first'
 
@@ -36,6 +38,7 @@ function AddOnsItem({ item }) {
 
 const DaycampFormWizardSecond = props => {
   const {
+    yardTypes,
     clientPet,
     error, handleSubmit, reset // redux-form
   } = props
@@ -124,8 +127,12 @@ const DaycampFormWizardSecond = props => {
   }
 
   useEffect(() => {
+    props.getYardTypes()
     props.getClientPets()
   }, [])
+
+  const yardTypesOptions = yardTypes.items.map(_yardTypes =>
+    ({ key: _yardTypes.id, value: _yardTypes.id, text: `${_yardTypes.name}` }))
 
   return (
     <>
@@ -154,7 +161,7 @@ const DaycampFormWizardSecond = props => {
         {props.selectedPets && props.selectedPets.map((petId)=> (
           <PetItem
             item={clientPet.items.filter(_pet => _pet.id === petId)}
-            key={petId}/>
+            key={petId} yardTypesOptions={yardTypesOptions}/>
         ))}
 
         <Segment>
@@ -201,19 +208,20 @@ export default compose(
   withRouter,
   connect(
     ({ ...state }) => {
-      const clientDetail = clientDetailDuck.selectors.detail(state)
+      const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const selectedPets = formValueSelector(daycampFormId)(state, 'pet')
 
       return {
-        clientDetail,
-        initialValues: clientDetail.item,
+        initialValues: petReservationDetail.item,
         clientPet    : clientPetDuck.selectors.list(state),
-        selectedPets : selectedPets
+        selectedPets : selectedPets,
+        yardTypes    : yardTypesDuck.selectors.list(state)
       }
     },
     {
       getClientPets: clientPetDuck.creators.get,
-      resetItem    : clientDetailDuck.creators.resetItem
+      getYardTypes : yardTypesDuck.creators.get,
+      resetItem    : petReservationDetailDuck.creators.resetItem
     }
   ),
   reduxForm({

@@ -68,7 +68,7 @@ function ClienInformationShow({ clientDetail, ...props }) {
               <Form.Input label='Last Name' readOnly value={_defaultTo(client.spouse, '-')}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Active' readOnly value={client.is_active ? 'Yes' : 'No'}/>
+              <Form.Input label='Status' readOnly value={client.status}/>
               <Form.Input label='Location' readOnly value={client.location ? `${client.location_name} - ${client.location_code}` : '-'}/>
             </Form.Group>
             <Form.Group widths={2}>

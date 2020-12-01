@@ -153,6 +153,8 @@ const categories = [
       { href: '/setup/price-master', label: 'Price Master' },
       { href: '/setup/document-type', label: 'Document Types' },
       { href: '/setup/agreement', label: 'Agreements' },
+      { href: '/setup/notifications', label: 'Notifications' },
+      { href: '/setup/color-codes', label: 'Color Codes' },
       { href: '/setup/training-reason', label: 'Training Reason' },
       { href: '/setup/training-method', label: 'Training Method' },
       { href: '/setup/training-command', label: 'Training Command' },
@@ -167,7 +169,8 @@ const categories = [
       { href: '/pet/incident-behavior', label: 'Incident Behaviors' },
       { href: '/pet/retire-reason', label: 'Retire Reasons' },
       { href: '/pet/vaccination-type', label: 'Vaccination Types' },
-      { href: '/setup/customized-field', label: 'Customized Field' }
+      { href: '/setup/customized-field', label: 'Customized Field' },
+      { href: '/setup/calendar', label: 'Calendar' }
       // { href: '/not-defined', label: 'Enable Decline Portal Client' },
       // { href: '/not-defined', label: 'Calendar' },
       // { href: '/not-defined', label: 'Notifications' },
