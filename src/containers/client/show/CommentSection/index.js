@@ -10,6 +10,8 @@ import ClientCommentFormModal from './form/modal'
 import useInfiniteScroll from '@hooks/useInfiniteScroll'
 import { getAbbreviature } from '@lib/utils/functions'
 
+import NoteCreate from './replyForm'
+
 import clientCommentDuck from '@reducers/client/comment'
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
 import authDuck from '@reducers/auth'
@@ -35,15 +37,18 @@ function CommentSection({ clientComment, ...props }) {
 
   const _handleEditBtnClick = (e, data) => {
     const item = clientComment.items.find(({ id }) => id === +data['data-item-id'])
-
     props.setItem(item, 'UPDATE')
   }
 
   const _handleDeleteBtnClick = (e, data) => {
     const item = clientComment.items.find(({ id }) => id === +data['data-item-id'])
-
     props.setItem(item, 'DELETE')
     _handleOpen()
+  }
+
+  const _handleReplyNoteBtnClick = (e, data) =>{
+    const item = clientComment.items.find(({ id }) => id === +data['data-item-id'])
+    props.setReplyItem(item, 'READ')
   }
 
   return (
@@ -80,7 +85,7 @@ function CommentSection({ clientComment, ...props }) {
               return (
                 <div className='c-note-item' key={item.id}>
                   {/* Header */}
-                  <div className='flex justify-between align-center mb20'>
+                  <div className='flex justify-between align-center mb20 mv12'>
                     <div className='avatar-wrapper'>
                       <div className='avatar'>
                         {getAbbreviature(item.employee_full_name)}
@@ -114,6 +119,10 @@ function CommentSection({ clientComment, ...props }) {
                     basic color={item.follow_up ? 'orange' : 'gray'} content='Follow up'
                     data-item-id={item.id} disabled={saving}
                     loading={saving} onClick={_handleFollowUpBtnClick}/>
+                  <Button
+                    basic color='teal' content='Reply'
+                    data-item-id={item.id}
+                    onClick={_handleReplyNoteBtnClick}/>
                 </div>
               )
             })
@@ -126,7 +135,7 @@ function CommentSection({ clientComment, ...props }) {
           clientComment.status === 'GETTING' && <Loader active inline='centered'/>
         }
       </div>
-
+      <NoteCreate/>
       <ClientCommentFormModal/>
       <ModalDelete
         duckDetail={clientCommentDetailDuck}
@@ -144,6 +153,7 @@ export default compose(
     }), {
       getClientComments: clientCommentDuck.creators.get,
       setItem          : clientCommentDetailDuck.creators.setItem,
-      put              : clientCommentDetailDuck.creators.put
+      put              : clientCommentDetailDuck.creators.put,
+      setReplyItem     : clientCommentDetailDuck.creators.setItem
     })
 )(CommentSection)

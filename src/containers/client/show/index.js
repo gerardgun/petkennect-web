@@ -72,6 +72,11 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
 
+  const status = clientDetail.item.status == 'Decline Client' ? <Icon name='user circle' style={{ color: 'red', fontSize: '35px' }} ></Icon>
+    : clientDetail.item.status == 'VIP Client' ?  <Icon name='user circle' style={{ color: 'green', fontSize: '35px' }}></Icon>
+      : clientDetail.item.status == 'Caution' ? <Icon name='user circle' style={{ color: 'yellow', fontSize: '35px' }}></Icon>
+        : clientDetail.item.status == 'Active' ? <Icon name='user circle' style={{ color: 'gray', fontSize: '35px' }}></Icon> : null
+
   // const imageBorder = clientDetail.item.status == 'Declined Client' ? 'image-border-declined' :
   //  clientDetail.item.status == 'VIP Client' ? 'image-border-vip' : clientDetail.item.status == 'Caution' ? 'image-border-caution' : null
 
@@ -118,7 +123,8 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
               <div>
                 <Header as='h2' className='mb4'>{fullname}</Header>
                 <div className='flex align-center'>
-                  <span style={{ color: '#888888' }}>{clientDetail.item.status}</span>
+
+                  <span>{status}</span>
                 </div>
               </div>
               <Dropdown

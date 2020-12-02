@@ -7,7 +7,8 @@
 }
 
 .fc-event-main{
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-left: 3px;
     span{
         float: right !important;
     }
@@ -26,7 +27,7 @@
 }
 
 .service_full{
-    background: repeating-linear-gradient( 45deg, teal, teal 10px, teal 10px, rgba(0, 0, 0, 0.3) 14px ) !important;
+    background: repeating-linear-gradient( 45deg, #a9cece, teal 10px, teal 10px, rgba(0, 0, 0, 0.3) 14px ) !important;
 }
 
 .fc-daygrid-day-bg{

@@ -33,6 +33,44 @@ export default {
   },
   columns: [
     {
+      display_name: 'Status',
+      name        : 'status',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true,
+      sort_name   : 'status',
+      formatter   : cell => {
+        let type_str = ''
+
+        if(cell === 'Decline Client')
+          type_str = 'Decline Client'
+        else if(cell === 'VIP Client')
+          type_str = 'VIP Client'
+        else if(cell === 'Caution')
+          type_str = 'Caution'
+        else if(cell === 'Active')
+          type_str = 'Active'
+
+        if(cell == 'Decline Client')
+          cell = (<Icon name='user circle' style={{ color: 'red', fontSize: '35px' }} ></Icon>)
+        else if(cell == 'VIP Client')
+          cell = (<Icon name='user circle' style={{ color: 'green', fontSize: '35px' }}></Icon>)
+        else if(cell == 'Caution')
+          cell = (<Icon name='user circle' style={{ color: 'yellow', fontSize: '35px' }}></Icon>)
+        else if(cell == 'Active')
+          cell = (<Icon name='user circle' style={{ color: 'gray', fontSize: '35px' }}></Icon>)
+
+        return (
+          <span>
+            <Popup
+              content={type_str} inverted position='bottom center'
+              trigger={cell}/>
+          </span>
+        )
+      }
+    },
+    {
       display_name: 'Client Name',
       name        : 'first_name',
       type        : null, // string, image, boolean, date, datetime, money, label
@@ -110,44 +148,6 @@ export default {
       formatter   : (cell) => {
         return (
           formatPhoneNumber(cell)
-        )
-      }
-    },
-    {
-      display_name: 'Status',
-      name        : 'status',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true,
-      sort_name   : 'status',
-      formatter   : cell => {
-        let type_str = ''
-
-        if(cell === 'Decline Client')
-          type_str = 'Decline Client'
-        else if(cell === 'VIP Client')
-          type_str = 'VIP Client'
-        else if(cell === 'Caution')
-          type_str = 'Caution'
-        else if(cell === 'Active')
-          type_str = 'Active'
-
-        if(cell == 'Decline Client')
-          cell = (<Icon name='user circle' style={{ color: 'red', fontSize: '35px' }} ></Icon>)
-        else if(cell == 'VIP Client')
-          cell = (<Icon name='user circle' style={{ color: 'green', fontSize: '35px' }}></Icon>)
-        else if(cell == 'Caution')
-          cell = (<Icon name='user circle' style={{ color: 'yellow', fontSize: '35px' }}></Icon>)
-        else if(cell == 'Active')
-          cell = (<Icon name='user circle' style={{ color: 'gray', fontSize: '35px' }}></Icon>)
-
-        return (
-          <span>
-            <Popup
-              content={type_str} inverted position='bottom center'
-              trigger={cell}/>
-          </span>
         )
       }
     },
