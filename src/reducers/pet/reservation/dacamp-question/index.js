@@ -3,11 +3,7 @@ import detail from '@reducers/common/detail'
 
 export default base({
   namespace   : '@@pet-kennect',
-  store       : 'pet/reservation/daycamp-question/detail',
-  initialState: {
-    items: {
-      questions: []
-    }
-  }
+  store       : 'pet/reservation/daycamp-question',
+  initialState: {}
 })
   .extend(detail)

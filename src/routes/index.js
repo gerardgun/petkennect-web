@@ -11,8 +11,9 @@ import Agreement from '@containers/agreement'
 import AgreementCreate from '@containers/agreement/create'
 import AuthMe from '@containers/auth/me'
 import Dashboard from '@containers/dashboard'
-import Client from '@containers/client'
+import DayCampForm from '@containers/day-camp-form'
 import ColorCode from '@containers/color-code'
+import Client from '@containers/client'
 import ClientShow from '@containers/client/show'
 import ClientBook from '@containers/client/reservation'
 import CustomizedField from '@containers/customized-field'
@@ -111,6 +112,10 @@ const privateRoutes = [
   {
     path     : '/auth/sso',
     component: AuthSSO
+  },
+  {
+    path     : '/setup/day-camp-form',
+    component: DayCampForm
   },
   {
     path     : '/setup/color-codes',

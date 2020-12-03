@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, FieldArray, formValueSelector, reduxForm } from 'redux-form'
+import { Field, FieldArray, reduxForm } from 'redux-form'
 import { Button, Form, Header, Input, Select, Checkbox, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 

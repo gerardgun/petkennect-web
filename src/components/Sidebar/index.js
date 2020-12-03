@@ -152,6 +152,7 @@ const categories = [
       { href: '/setup/location', label: 'Locations' },
       { href: '/setup/price-master', label: 'Price Master' },
       { href: '/setup/document-type', label: 'Document Types' },
+      { href: '/setup/day-camp-form', label: 'Day Camp Form' },
       { href: '/setup/agreement', label: 'Agreements' },
       { href: '/setup/notifications', label: 'Notifications' },
       { href: '/setup/color-codes', label: 'Color Codes' },

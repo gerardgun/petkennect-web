@@ -5,7 +5,6 @@ import { compose } from 'redux'
 import { reduxForm } from 'redux-form'
 import { Button, Form, Header, Modal, Icon, Grid } from 'semantic-ui-react'
 
-import PetReportCard from '@components/Common/Pet/ReportCard'
 import FormError from '@components/Common/FormError'
 import { parseResponseError } from '@lib/utils/functions'
 
@@ -66,8 +65,6 @@ const ViewReportCardForm = (props) => {
           <Header as='h2' className='segment-content-header'>
             Report
           </Header>
-          <PetReportCard
-            item={petDetail.item}/>
           {error && (
             <Form.Group widths='equal'>
               <Form.Field>

@@ -1,7 +1,7 @@
 
 import { call, put, takeEvery } from 'redux-saga/effects'
 
-import { Get } from '@lib/utils/http-client'
+import { Get, Post, Patch } from '@lib/utils/http-client'
 import petReservationDaycampQuestionDetailDuck from '@reducers/pet/reservation/dacamp-question/detail'
 
 const { types } = petReservationDaycampQuestionDetailDuck
@@ -15,7 +15,7 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: petDaycampQuestions
+        items: petDaycampQuestions.find(_ => _.is_active == true)
       }
     })
   } catch (e) {
@@ -26,6 +26,41 @@ function* get() {
   }
 }
 
+function* post({ payload }) {
+  try {
+    yield put({ type: types.POST_PENDING })
+
+    const result = yield call(Post, `daycamps/${payload.id}/add-details/`, payload.details)
+
+    yield put({
+      type   : types.POST_FULFILLED,
+      payload: result
+    })
+  } catch (e) {
+    yield put({
+      type : types.POST_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* _put({ payload : { ...payload } }) {
+  try {
+    yield put({ type: types.PUT_PENDING })
+
+    yield call(Post, `daycamps/${payload.id}/update-details/`, payload.details)
+
+    yield put({ type: types.PUT_FULFILLED })
+  } catch (e) {
+    yield put({
+      type : types.PUT_FAILURE,
+      error: e
+    })
+  }
+}
+
 export default [
-  takeEvery(types.GET, get)
+  takeEvery(types.GET, get),
+  takeEvery(types.POST, post),
+  takeEvery(types.PUT, _put)
 ]

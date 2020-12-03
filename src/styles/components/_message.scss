@@ -27,3 +27,7 @@
   border: solid 1px $gray-3;
   box-shadow: none !important;
 }
+
+i.icon.success:before {
+  content: "\f058" !important;
+}

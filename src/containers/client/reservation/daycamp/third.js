@@ -17,6 +17,7 @@ import serviceDuck from '@reducers/service'
 import clientDetailDuck from '@reducers/client/detail'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import petReservationDaycampQuestionDetailDuck from '@reducers/pet/reservation/dacamp-question/detail'
 
 import { daycampFormId } from './first'
 
@@ -30,7 +31,11 @@ const DaycampFormWizardThird = props => {
   } = props
 
   const _handleAddReportCardBtnClick = () => {
-    props.setItem(null, 'READ')
+    props.setItemDaycampQuesItem(null, 'CREATE')
+  }
+
+  const _handleEditReportCardBtnClick = () => {
+    props.setItemDaycampQuesItem(null, 'UPDATE')
   }
 
   const _handleSendReportCardBtnClick = () =>{
@@ -151,34 +156,44 @@ const DaycampFormWizardThird = props => {
               </Segment>
             </Grid.Column >
           </Grid>
-          <Segment>
-            <Header as='h3' className='section-info-header'>First Day Report Card</Header>
-            <Grid>
-              <Grid.Column width={16}>
-                <Button
-                  basic
-                  color='teal'
-                  content='Add Report Card'
-                  onClick={_handleAddReportCardBtnClick}
-                  type='button'/>
-              </Grid.Column>
-              <Grid.Column width={16}>
-                <label>Report Card</label>
-                <Button basic className='ml16' icon>
-                  <Icon name='edit outline'/>
-                </Button>
-                <Button
-                  basic icon name='SendReport'
-                  onClick={_handleSendReportCardBtnClick}  type='button'>
-                  <Icon name='envelope outline'/>
-                </Button>
+          {
+            petReservationDetail.item.id && (
+              <>
+                <Segment>
+                  <Header as='h3' className='section-info-header'>First Day Report Card</Header>
+                  <Grid>
+                    <Grid.Column width={16}>
+                      <Button
+                        basic
+                        color='teal'
+                        content='Add Report Card'
+                        onClick={_handleAddReportCardBtnClick}
+                        type='button'/>
+                    </Grid.Column>
+                    <Grid.Column width={16}>
+                      <label>Report Card</label>
+                      <Button
+                        basic
+                        className='ml16' icon onClick={_handleEditReportCardBtnClick}
+                        type='button'>
+                        <Icon name='edit outline'/>
+                      </Button>
+                      <Button
+                        basic icon name='SendReport'
+                        onClick={_handleSendReportCardBtnClick}  type='button'>
+                        <Icon name='envelope outline'/>
+                      </Button>
 
-                <Button basic icon>
-                  <Icon color='red' name='trash alternate'/>
-                </Button>
-              </Grid.Column>
-            </Grid>
-          </Segment>
+                      <Button basic icon>
+                        <Icon color='red' name='trash alternate'/>
+                      </Button>
+                    </Grid.Column>
+                  </Grid>
+                </Segment>
+
+              </>
+            )
+          }
 
         </Segment>
         {
@@ -233,12 +248,13 @@ export default compose(
       }
     },
     {
-      getServices    : serviceDuck.creators.get,
-      resetItem      : petReservationDetailDuck.creators.resetItem,
-      setItem        : petReservationDetailDuck.creators.setItem,
-      setDocumentItem: clientDocumentDetailDuck.creators.setItem,
-      post           : petReservationDetailDuck.creators.post,
-      put            : petReservationDetailDuck.creators.put
+      getServices           : serviceDuck.creators.get,
+      resetItem             : petReservationDetailDuck.creators.resetItem,
+      setItem               : petReservationDetailDuck.creators.setItem,
+      setDocumentItem       : clientDocumentDetailDuck.creators.setItem,
+      setItemDaycampQuesItem: petReservationDaycampQuestionDetailDuck.creators.setItem,
+      post                  : petReservationDetailDuck.creators.post,
+      put                   : petReservationDetailDuck.creators.put
     }
   ),
   reduxForm({
