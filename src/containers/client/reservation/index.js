@@ -16,17 +16,21 @@ import ViewNoteSection from '../../online-request/notesSection/'
 import clientDetailDuck from '@reducers/client/detail'
 import petDetailDuck from '@reducers/pet/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
+import employeeDetailDuck from '@reducers/employee/detail'
+import authDuck from '@reducers/auth'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import './styles.scss'
 
-function Reservation({ petReservationDetail, clientDetail, ...props }) {
+function Reservation({ petReservationDetail, currentTenant, clientDetail, ...props }) {
   const { client: clientId } = useParams()
   const history = useHistory()
 
   const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service_type || 'B')
 
   useEffect(() => {
+    if(currentTenant && currentTenant.employee)
+      props.getEmployee(currentTenant.employee.id)
     props.getClient(clientId)
   }, [])
 
@@ -135,15 +139,17 @@ function Reservation({ petReservationDetail, clientDetail, ...props }) {
 
 export default compose(
   connect(
-    (state) => {
+    ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
 
       return {
         petReservationDetail,
-        clientDetail: clientDetailDuck.selectors.detail(state)
+        currentTenant: authDuck.selectors.getCurrentTenant(auth),
+        clientDetail : clientDetailDuck.selectors.detail(state)
       }
     },
     {
+      getEmployee: employeeDetailDuck.creators.get,
       getClient  : clientDetailDuck.creators.get,
       setItem    : petDetailDuck.creators.setItem,
       setNoteItem: petNoteDetailDuck.creators.setItem

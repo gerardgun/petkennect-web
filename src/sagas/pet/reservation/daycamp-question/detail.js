@@ -1,7 +1,7 @@
 
 import { call, put, takeEvery } from 'redux-saga/effects'
 
-import { Get, Post, Patch } from '@lib/utils/http-client'
+import { Get, Post } from '@lib/utils/http-client'
 import petReservationDaycampQuestionDetailDuck from '@reducers/pet/reservation/dacamp-question/detail'
 
 const { types } = petReservationDaycampQuestionDetailDuck

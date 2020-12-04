@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm } from 'redux-form'
+import { reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
@@ -14,15 +14,21 @@ import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection
 
 import authDuck from '@reducers/auth'
 import serviceDuck from '@reducers/service'
+import clientPetDuck from '@reducers/client/pet'
 import clientDetailDuck from '@reducers/client/detail'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import employeeDetailDuck from '@reducers/employee/detail'
 import petReservationDaycampQuestionDetailDuck from '@reducers/pet/reservation/dacamp-question/detail'
 
 import { daycampFormId } from './first'
 
 const DaycampFormWizardThird = props => {
   const {
+    employeeName,
+    check_in,
+    check_out,
+    selectedPetName,
     services,
     petReservationDetail,
     error,
@@ -109,30 +115,30 @@ const DaycampFormWizardThird = props => {
                     </Header>
                     <InputReadOnly
                       label='Pets'
-                      value='Lala,Poo'/>
+                      value={`${selectedPetName}`}/>
                     <br/>
                     <Grid>
                       <Grid.Column  computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Check In'
-                          value='28/12/12 3:12AM'/>
+                          value={`${check_in}`}/>
                       </Grid.Column>
                       <Grid.Column  computer={8} mobile={16} tablet={6}>
                         <InputReadOnly
                           label='By'
-                          value='Sandra Maravilla'/>
+                          value={`${employeeName}`}/>
                       </Grid.Column>
                     </Grid>
                     <Grid>
                       <Grid.Column computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Check Out'
-                          value='28/12/12 3:12AM'/>
+                          value={`${check_out}`}/>
                       </Grid.Column>
                       <Grid.Column computer={8} mobile={16} tablet={6}>
                         <InputReadOnly
                           label='By'
-                          value='Sandra Maravilla'/>
+                          value={`${employeeName}`}/>
                       </Grid.Column>
                     </Grid>
 
@@ -237,8 +243,27 @@ export default compose(
     ({ auth, service, ...state }) => {
       const clientDetail = clientDetailDuck.selectors.detail(state)
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const selectedPets = formValueSelector(daycampFormId)(state, 'pet')
+      const check_in = formValueSelector(daycampFormId)(state, 'check_in')
+      const check_out = formValueSelector(daycampFormId)(state, 'check_out')
+      const arriving_time = formValueSelector(daycampFormId)(state, 'arriving_time')
+      const departing_time = formValueSelector(daycampFormId)(state, 'departing_time')
+      const clientPet = clientPetDuck.selectors.list(state)
+      const selectedPetName = selectedPets && selectedPets.map((item)=> {
+        let petDetail = clientPet.items.find(_ => _.id == item)
+
+        return (
+          petDetail.name
+        )
+      }).join(', ')
+      const employeeDetail = employeeDetailDuck.selectors.detail(state)
+      const employeeName = employeeDetail.item && employeeDetail.item.first_name + ' ' + employeeDetail.item.last_name
 
       return {
+        employeeName,
+        check_in            : check_in + ' ' + arriving_time,
+        check_out           : check_out + ' ' + departing_time ,
+        selectedPetName,
         petReservationDetail,
         services            : service,
         clientDetail,

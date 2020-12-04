@@ -158,7 +158,7 @@ const BoardingFormWizardSecond = props => {
       <Form className='section-info-item-form' onReset={reset} onSubmit={handleSubmit}>
         {props.selectedPets && props.selectedPets.map((petId)=> (
           <PetItem
-            checkIn={props.checkIn} checkOut={props.checkOut} item={clientPet.items.filter(_pet => _pet.id === petId)}
+            checkIn={props.checkIn} checkOut={props.checkOut} item={[].concat(clientPet.items.find(_pet => _pet.id === petId))}
             key={petId}
             petKennelOptions={petKennelOptions}/>
         ))}

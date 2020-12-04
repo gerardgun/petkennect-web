@@ -56,12 +56,12 @@ function PetItem({ checkIn , checkOut, item, petKennelOptions }) {
   return (
     <Segment >
       <div className='div-kannel-selection'>
-        <Header as='h3' className='section-info-header'>What kennel and activity will be for {item[0].name}</Header>
+        <Header as='h3' className='section-info-header'>What kennel and activity will be for {item.name}</Header>
         <Field
           component={FormField}
           control={Select}
           lebel='kennel'
-          name={`${item[0].id}.kennel`}
+          name={`${item.id}.kennel`}
           options={petKennelOptions}
           placeholder='Select Kennel'
           selectOnBlur={false}/>
@@ -85,7 +85,7 @@ function PetItem({ checkIn , checkOut, item, petKennelOptions }) {
           component={FormField}
           control={Select}
           label='Activity package'
-          name={`${item[0].id}.activityPackage`}
+          name={`${item.id}.activityPackage`}
           options={[
             { key: 1, value: 1, text: 'Test' }
           ]}

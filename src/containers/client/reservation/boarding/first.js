@@ -86,8 +86,8 @@ const BoardingFormWizardFirst = props => {
               }))}
               placeholder='Search pet'
               required
-              selectOnBlur={false}
-              selection/>
+              selection
+              selectOnBlur={false}/>
           </Form.Group>
         </Segment>
         <Segment className='section-info-item-step1'>

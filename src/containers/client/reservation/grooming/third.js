@@ -2,7 +2,7 @@ import React, { useEffect }  from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm } from 'redux-form'
+import { reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
@@ -11,12 +11,17 @@ import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 import serviceDuck from '@reducers/service'
+import clientPetDuck from '@reducers/client/pet'
+import employeeDetailDuck from '@reducers/employee/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import { groomingFormId } from './first'
 
 const GroomingFormWizardThird = props => {
   const {
+    employeeName,
+    check_in,
+    selectedPetName,
     petReservationDetail,
     currentTenant,
     services, error, handleSubmit, reset // redux-form
@@ -90,42 +95,18 @@ const GroomingFormWizardThird = props => {
                     </Header>
                     <InputReadOnly
                       label='Pets'
-                      value='Lala,Poo'/>
+                      value={`${selectedPetName}`}/>
                     <br/>
                     <Grid>
                       <Grid.Column computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Reservation Date'
-                          value='28/12/12 3:12AM'/>
+                          value={`${check_in}`}/>
                       </Grid.Column>
                       <Grid.Column  computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Groomer'
-                          value='Alexandra Valencia'/>
-                      </Grid.Column>
-                    </Grid>
-                    <Grid>
-                      <Grid.Column  computer={8} mobile={16} tablet={10}>
-                        <InputReadOnly
-                          label='Check In'
-                          value='28/12/12 3:12AM'/>
-                      </Grid.Column>
-                      <Grid.Column  computer={8} mobile={16} tablet={6}>
-                        <InputReadOnly
-                          label='By'
-                          value='Sandra Maravilla'/>
-                      </Grid.Column>
-                    </Grid>
-                    <Grid>
-                      <Grid.Column computer={8} mobile={16} tablet={10}>
-                        <InputReadOnly
-                          label='Check Out'
-                          value='28/12/12 3:12AM'/>
-                      </Grid.Column>
-                      <Grid.Column computer={8} mobile={16} tablet={6}>
-                        <InputReadOnly
-                          label='By'
-                          value='Sandra Maravilla'/>
+                          value={`${employeeName}`}/>
                       </Grid.Column>
                     </Grid>
 
@@ -230,8 +211,18 @@ export default compose(
   connect(
     ({ auth, service, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const check_in = formValueSelector(groomingFormId)(state, 'check_in')
+      const appointment_time = formValueSelector(groomingFormId)(state, 'appointment_time')
+      const clientPet = clientPetDuck.selectors.list(state)
+      const selectedPet = formValueSelector(groomingFormId)(state, 'pet')
+      const selectedPetName = clientPet.items.find(_ => _.id == selectedPet) && clientPet.items.find(_ => _.id == selectedPet).name
+      const employeeDetail = employeeDetailDuck.selectors.detail(state)
+      const employeeName = employeeDetail.item && employeeDetail.item.first_name + ' ' + employeeDetail.item.last_name
 
       return {
+        check_in     : check_in + ' ' + appointment_time,
+        selectedPetName,
+        employeeName,
         petReservationDetail,
         services     : service,
         currentTenant: authDuck.selectors.getCurrentTenant(auth),

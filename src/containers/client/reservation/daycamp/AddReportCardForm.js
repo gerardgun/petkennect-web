@@ -26,8 +26,7 @@ const AddReportCardForm = (props) => {
     multipleQuestion,
     daycampCardDetail,
     dayCampQuestionsDetail,
-    // eslint-disable-next-line no-unused-vars
-    clientPet,
+    selectedPetDetail,
     error,
     handleSubmit,
     reset,
@@ -42,8 +41,13 @@ const AddReportCardForm = (props) => {
     props.getDaycampCardDetail({ id: petReservationDetail.item.id })
   }, [])
 
+  useEffect(() => {
+    if(dayCampQuestionsDetail.status === 'POSTED' || dayCampQuestionsDetail.status === 'PUT' || dayCampQuestionsDetail.status === 'SET_ITEM')
+      props.getDaycampQuestion()
+    props.getDaycampCardDetail({ id: petReservationDetail.item.id })
+  }, [ dayCampQuestionsDetail.status ])
+
   const _handleClose = () => {
-    props.reset()
     props.resetItem()
   }
 
@@ -78,9 +82,10 @@ const AddReportCardForm = (props) => {
 
       if(isUpdating) {
         let cardDetailId = daycampCardDetail.items.find(_ => _.question == questionId)
-        if(cardDetailId)
+        if(cardDetailId && detailsArr.question)
           details.push({ id: cardDetailId.id,...detailsArr })
         else
+        if(detailsArr.question)
           details.push(detailsArr)
       }
       else {
@@ -118,78 +123,84 @@ const AddReportCardForm = (props) => {
           <Header as='h2' className='segment-content-header'>
             {isUpdating ? 'Update' : 'Add'} Report Card
           </Header>
-          <Segment>
-            <Header as='h2' className='report-card-header'>
-              <Image circular src='filepath'/>
-              <Header.Content>
-                <Header as='h6' className='section-header' color='blue'>pet name</Header>
-                <Header.Subheader>Report</Header.Subheader>
-              </Header.Content>
-            </Header>
+          {
+            selectedPetDetail && (
 
-            <Grid className='report-card-radio'>
-              {
-                closedQuestion && closedQuestion.map((questionItem, index)=>(
-                  <Grid.Column
-                    computer={5} key={index}
-                    mobile={16} tablet={8}>
-                    <Header as='h6' className='section-header' color='blue'>{questionItem.description}</Header>
-                    {
-                      questionItem.answers.map((answeritem)=>(
-                        <>
-                          <div>
-                            <label>
+              <Segment>
+                <Header as='h2' className='report-card-header'>
+                  <Image circular src={`${selectedPetDetail.image_filepath}`}/>
+                  <Header.Content>
+                    <Header as='h6' className='section-header' color='blue'>{selectedPetDetail.name}</Header>
+                    <Header.Subheader>Report</Header.Subheader>
+                  </Header.Content>
+                </Header>
+
+                <Grid className='report-card-radio'>
+                  {
+                    closedQuestion && closedQuestion.map((questionItem, index)=>(
+                      <Grid.Column
+                        computer={5} key={index}
+                        mobile={16} tablet={8}>
+                        <Header as='h6' className='section-header' color='blue'>{questionItem.description}</Header>
+                        {
+                          questionItem.answers.map((answeritem)=>(
+                            <>
+                              <div>
+                                <label>
+                                  <Field
+                                    component='input' name={`${questionItem.id}_${questionItem.id}_closedQuestion`} type='radio'
+                                    value={`${answeritem.id}`}/>&nbsp;&nbsp;{`${answeritem.description}`}</label>
+                              </div>
+                              <br/>
+                            </>
+                          ))
+                        }
+                      </Grid.Column>
+                    ))
+                  }
+
+                  {
+                    openQuestion && openQuestion.map((questionItem, index)=>(
+                      <Grid.Column key={index} width={16}>
+                        <Header as='h6' className='section-header' color='blue'>{questionItem.description}</Header>
+                        <Field
+                          className='w100'
+                          component={FormField}
+                          control={Form.TextArea}
+                          label=''
+                          name={`${questionItem.id}_${questionItem.id}_openQuestion`}/>
+                      </Grid.Column>
+                    ))
+                  }
+
+                  {
+                    multipleQuestion && multipleQuestion.map((questionItem, index)=>(
+                      <Grid.Column
+                        computer={5} key={index}
+                        mobile={16} tablet={8}>
+                        <Header as='h6' className='section-header' color='blue'>{questionItem.description}</Header>
+                        {
+                          questionItem.answers.map((answeritem)=>(
+                            <>
                               <Field
-                                component='input' name={`${questionItem.id}_${questionItem.id}_closedQuestion`} type='radio'
-                                value={`${answeritem.id}`}/>&nbsp;&nbsp;{`${answeritem.description}`}</label>
-                          </div>
-                          <br/>
-                        </>
-                      ))
-                    }
-                  </Grid.Column>
-                ))
-              }
+                                component={FormField}
+                                control={Checkbox}
+                                format={Boolean}
+                                label={`${answeritem.description}`}
+                                name={`${questionItem.id}_${answeritem.id}_multipleQuestion`}
+                                type='checkbox'/>
+                            </>
+                          ))
+                        }
+                      </Grid.Column>
+                    ))
+                  }
+                </Grid>
+              </Segment>
 
-              {
-                openQuestion && openQuestion.map((questionItem, index)=>(
-                  <Grid.Column key={index} width={16}>
-                    <Header as='h6' className='section-header' color='blue'>{questionItem.description}</Header>
-                    <Field
-                      className='w100'
-                      component={FormField}
-                      control={Form.TextArea}
-                      label=''
-                      name={`${questionItem.id}_${questionItem.id}_openQuestion`}/>
-                  </Grid.Column>
-                ))
-              }
+            )
 
-              {
-                multipleQuestion && multipleQuestion.map((questionItem, index)=>(
-                  <Grid.Column
-                    computer={5} key={index}
-                    mobile={16} tablet={8}>
-                    <Header as='h6' className='section-header' color='blue'>{questionItem.description}</Header>
-                    {
-                      questionItem.answers.map((answeritem)=>(
-                        <>
-                          <Field
-                            component={FormField}
-                            control={Checkbox}
-                            format={Boolean}
-                            label={`${answeritem.description}`}
-                            name={`${questionItem.id}_${answeritem.id}_multipleQuestion`}
-                            type='checkbox'/>
-                        </>
-                      ))
-                    }
-                  </Grid.Column>
-                ))
-              }
-            </Grid>
-          </Segment>
-
+          }
           {error && (
             <Form.Group widths='equal'>
               <Form.Field>
@@ -228,11 +239,12 @@ export default compose(
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const selectedPets = formValueSelector(daycampFormId)(state, 'pet')
       const dayCampQuestionsDetail = petReservationDaycampQuestionDetailDuck.selectors.detail(state)
-
+      const clientPet = clientPetDuck.selectors.list(state)
       const openQuestion = dayCampQuestionsDetail.items.questions.filter(_ => _.type === 'O')
       const closedQuestion = dayCampQuestionsDetail.items.questions.filter(_ => _.type === 'C')
       const multipleQuestion =  dayCampQuestionsDetail.items.questions.filter(_ => _.type === 'M')
       const daycampCardDetail = petReservationDaycampQuestionDuck.selectors.detail(state)
+      const selectedPetDetail = selectedPets.length > 0 && clientPet.items.find(_ => _.id == selectedPets[0])
 
       let initialValues = {}
       daycampCardDetail.items
@@ -254,9 +266,8 @@ export default compose(
         petReservationDetail,
         daycampCardDetail,
         initialValues,
-        clientPet             : clientPetDuck.selectors.list(state),
         dayCampQuestionsDetail: dayCampQuestionsDetail,
-        selectedPets          : selectedPets
+        selectedPetDetail
       }
     },
     {
