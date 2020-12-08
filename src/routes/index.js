@@ -18,6 +18,8 @@ import ClientShow from '@containers/client/show'
 import ClientBook from '@containers/client/reservation'
 import CustomizedField from '@containers/customized-field'
 import Calendar from '@containers/calendar'
+import EmailMessage from '@containers/email-message'
+import EmailTemplate from '@containers/email-template'
 import Notification from '@containers/notification'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
@@ -148,6 +150,14 @@ const privateRoutes = [
   {
     path     : '/company/:id/edit',
     component: CompanyEdit
+  },
+  {
+    path     : '/setup/email-template',
+    component: EmailTemplate
+  },
+  {
+    path     : '/email-message',
+    component: EmailMessage
   },
   {
     path     : '/setup/customized-field',

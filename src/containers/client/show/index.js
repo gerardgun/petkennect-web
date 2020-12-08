@@ -12,6 +12,7 @@ import DocumentSection from './DocumentSection'
 import InformationSection from './InformationSection'
 import PetSection from './PetSection'
 import ReservesSection from './ReservesSection'
+import MessageHistorySection from './MessageHistory'
 // import { defaultImageUrl } from '@lib/constants'
 
 import clientDetailDuck from '@reducers/client/detail'
@@ -209,6 +210,11 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
                 onClick={_handleMenuItemClick}>
                 Reserves
               </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'email_messages'} link name='email_messages'
+                onClick={_handleMenuItemClick}>
+                Email Messages
+              </Menu.Item>
             </Menu>
           </Grid.Column>
           <Grid.Column
@@ -220,6 +226,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
             {activeMenuItem === 'documents' && <DocumentSection/>}
             {activeMenuItem === 'agreements' && <AgreementSection/>}
             {activeMenuItem === 'reserves' && <ReservesSection/>}
+            {activeMenuItem === 'email_messages' && <MessageHistorySection/>}
           </Grid.Column>
         </Grid>
       </Segment>

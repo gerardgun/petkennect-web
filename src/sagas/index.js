@@ -16,6 +16,7 @@ import clientDocumentDetail from './client/document/detail'
 import clientDocumentType from './client/document/type'
 import clientDocumentTypeDetail from './client/document/type/detail'
 import clientPet from './client/pet'
+import clientEmailMessage from './client/email-message'
 import company from './company'
 import companyDetail from './company/detail'
 import customized from './customized-field'
@@ -23,10 +24,18 @@ import customizedField from './customized-field/field'
 import customizedFieldDetail from './customized-field/field/detail'
 import customizedFieldGroup from './customized-field/group'
 import customizedFieldGroupDetail from './customized-field/group/detail'
+import daycampCard from './pet/reservation/daycamp-card'
+import daycampCardDetail from './pet/reservation/daycamp-card/detail'
+import daycampCardQuestion from './pet/reservation/daycamp-card/daycamp-card-question'
+import daycampCardQuestionDetail from './pet/reservation/daycamp-card/daycamp-card-question/detail'
+import daycampCardAnswerDetail from './pet/reservation/daycamp-card/daycamp-card-answer/detail'
 import employee from './employee'
 import employeeDetail from './employee/detail'
 import employeeTitle from './employee/title'
 import employeeTitleDetail from './employee/title/detail'
+import emailMessage from './email-message'
+import emailTemplate from './email-template'
+import emailLog from './email-log'
 import location from './location'
 import locationDetail from './location/detail'
 import notification from './notification'
@@ -136,6 +145,7 @@ export default function* rootSaga() {
     ...clientDocumentDetail,
     ...clientDocumentType,
     ...clientDocumentTypeDetail,
+    ...clientEmailMessage,
     ...clientPet,
     ...company,
     ...companyDetail,
@@ -144,6 +154,14 @@ export default function* rootSaga() {
     ...customizedFieldDetail,
     ...customizedFieldGroup,
     ...customizedFieldGroupDetail,
+    ...daycampCard,
+    ...daycampCardDetail,
+    ...daycampCardQuestion,
+    ...daycampCardQuestionDetail,
+    ...daycampCardAnswerDetail,
+    ...emailMessage,
+    ...emailTemplate,
+    ...emailLog,
     ...employee,
     ...employeeDetail,
     ...employeeTitle,

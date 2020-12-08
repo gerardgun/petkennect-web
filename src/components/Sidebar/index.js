@@ -76,6 +76,11 @@ const categories = [
     label: 'Online Requests'
   },
   {
+    href : '/email-message',
+    icon : 'mail',
+    label: 'Email Messages'
+  },
+  {
     href : '/sale',
     icon : 'dollar sign',
     label: 'Retail Sales'
@@ -171,7 +176,8 @@ const categories = [
       { href: '/pet/retire-reason', label: 'Retire Reasons' },
       { href: '/pet/vaccination-type', label: 'Vaccination Types' },
       { href: '/setup/customized-field', label: 'Customized Field' },
-      { href: '/setup/calendar', label: 'Calendar' }
+      { href: '/setup/calendar', label: 'Calendar' },
+      { href: '/setup/email-template', label: 'Email Template' }
       // { href: '/not-defined', label: 'Enable Decline Portal Client' },
       // { href: '/not-defined', label: 'Calendar' },
       // { href: '/not-defined', label: 'Notifications' },

@@ -20,6 +20,7 @@ import clientDocumentDetail from '@reducers/client/document/detail'
 import clientDocumentType from '@reducers/client/document/type'
 import clientDocumentTypeDetail from '@reducers/client/document/type/detail'
 import clientPet from '@reducers/client/pet'
+import clientEmailMessage from '@reducers/client/email-message'
 import company from '@reducers/company'
 import companyDetail from '@reducers/company/detail'
 import customized from '@reducers/customized-field'
@@ -27,6 +28,17 @@ import customizedField from '@reducers/customized-field/field'
 import customizedFieldDetail from '@reducers/customized-field/field/detail'
 import customizedFieldGroup from '@reducers/customized-field/group'
 import customizedFieldGroupDetail from '@reducers/customized-field/group/detail'
+import daycampCard from '@reducers/pet/reservation/daycamp-card'
+import daycampCardDetail from '@reducers/pet/reservation/daycamp-card/detail'
+import daycampCardQuestion from '@reducers/pet/reservation/daycamp-card/daycamp-card-question'
+import daycampCardQuestionDetail from '@reducers/pet/reservation/daycamp-card/daycamp-card-question/detail'
+import daycampCardAnswerDetail from '@reducers/pet/reservation/daycamp-card/daycamp-card-answer/detail'
+import emailMessage from '@reducers/email-message'
+import emailMessageDetail from '@reducers/email-message/detail'
+import emailLog from '@reducers/email-log'
+import emailLogDetail from '@reducers/email-log/detail'
+import emailTemplate from '@reducers/email-template'
+import emailTemplateDetail from '@reducers/email-template/detail'
 import employee from '@reducers/employee'
 import employeeDetail from '@reducers/employee/detail'
 import employeeTitle from '@reducers/employee/title'
@@ -154,6 +166,7 @@ const createRootReducer = history => combineReducers({
   [clientComment.store]                         : clientComment.reducer,
   [clientCommentDetail.store]                   : clientCommentDetail.reducer,
   [clientPet.store]                             : clientPet.reducer,
+  [clientEmailMessage.store]                    : clientEmailMessage.reducer,
   [company.store]                               : company.reducer,
   [companyDetail.store]                         : companyDetail.reducer,
   [customized.store]                            : customized.reducer,
@@ -161,6 +174,17 @@ const createRootReducer = history => combineReducers({
   [customizedFieldDetail.store]                 : customizedFieldDetail.reducer,
   [customizedFieldGroup.store]                  : customizedFieldGroup.reducer,
   [customizedFieldGroupDetail.store]            : customizedFieldGroupDetail.reducer,
+  [daycampCard.store]                           : daycampCard.reducer,
+  [daycampCardDetail.store]                     : daycampCardDetail.reducer,
+  [daycampCardQuestion.store]                   : daycampCardQuestion.reducer,
+  [daycampCardQuestionDetail.store]             : daycampCardQuestionDetail.reducer,
+  [daycampCardAnswerDetail.store]               : daycampCardAnswerDetail.reducer,
+  [emailMessage.store]                          : emailMessage.reducer,
+  [emailMessageDetail.store]                    : emailMessageDetail.reducer,
+  [emailTemplate.store]                         : emailTemplate.reducer,
+  [emailTemplateDetail.store]                   : emailTemplateDetail.reducer,
+  [emailLog.store]                              : emailLog.reducer,
+  [emailLogDetail.store]                        : emailLogDetail.reducer,
   [employee.store]                              : employee.reducer,
   [employeeDetail.store]                        : employeeDetail.reducer,
   [employeeTitle.store]                         : employeeTitle.reducer,
