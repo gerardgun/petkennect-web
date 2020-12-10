@@ -11,6 +11,7 @@ function* get({ id }) {
     yield put({ type: types.GET_PENDING })
 
     const daycampCardQuestions = yield call(Get, `/daycamp-cards/${id}/questions/`)
+
     yield put({
       type   : types.GET_FULFILLED,
       payload: {

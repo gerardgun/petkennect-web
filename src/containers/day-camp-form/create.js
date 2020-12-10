@@ -59,15 +59,14 @@ const VersionForm = props => {
               name='name'
               placeholder='Enter name'/>
           </Form.Group>
-          <Form.Group>
+          <Form.Group widths='equal'>
             <Field
               component={FormField}
               control={Checkbox}
-              format={Boolean}
               label='Active'
-              name='is_active'/>
+              name='is_active'
+              type='checkbox'/>
           </Form.Group>
-
           {
             error && (
               <Form.Group widths='equal'>

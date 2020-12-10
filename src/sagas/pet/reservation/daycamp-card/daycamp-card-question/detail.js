@@ -41,35 +41,42 @@ function* get({ daycamp_card_id, daycamp_card_question_id }) {
 }
 
 function* post({ payload }) {
+  let answerResult
   try {
     yield put({ type: types.POST_PENDING })
+    for (let _question of payload.questions)
+    {
+      let questionResult
+      if(_question.id)
+        questionResult = yield call(Patch, `daycamp-cards/${payload.daycamp_card}/questions/${_question.id}/`, {
+          description: _question.description,
+          type       : _question.type
+        })
+      else
+        questionResult = yield call(Post, `daycamp-cards/${payload.daycamp_card}/questions/`, {
+          description: _question.description,
+          type       : _question.type
+        })
 
-    let questionResult
-    if(payload.id)
-      questionResult = yield call(Patch, `daycamp-cards/${payload.card}/questions/${payload.id}/`, {
-        description: payload.description,
-        type       : payload.type
-      })
-    else
-      questionResult = yield call(Post, `daycamp-cards/${payload.card}/questions/`, {
-        description: payload.description,
-        type       : payload.type
-      })
+      _question.id = questionResult.id
 
-    payload.id = questionResult.id
+      for (let item of questionResult.answers) {
+        let filterData = _question.answers.find(_ => _.id == item.id)
+        if(filterData == null)
+          yield call(Delete, `daycamp-card-questions/${questionResult.id}/answers/${item.id}`)
+      }
 
-    let answerResult
-    if(payload.answers)
-      for (let _answers of payload.answers)
-        if(_answers.id)
-          answerResult = yield call(Patch, `daycamp-card-questions/${payload.id}/answers/${_answers.id}/`, {
-            description: _answers.description
-          })
-        else
-          answerResult = yield call(Post, `daycamp-card-questions/${payload.id}/answers/`, {
-            description: _answers.description
-          })
-
+      if(_question.answers)
+        for (let _answers of _question.answers)
+          if(_answers.id)
+            answerResult = yield call(Patch, `daycamp-card-questions/${_question.id}/answers/${_answers.id}/`, {
+              description: _answers.description
+            })
+          else
+            answerResult = yield call(Post, `daycamp-card-questions/${_question.id}/answers/`, {
+              description: _answers.description
+            })
+    }
     yield put({
       type   : types.POST_FULFILLED,
       payload: answerResult
