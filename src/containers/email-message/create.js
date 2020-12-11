@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Input, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
@@ -11,38 +11,10 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import TextAreaEditor from '@components/Common/TextAreaEditor'
 import emailMessageDetailDuck from '@reducers/email-message/detail'
 
 import './styles.scss'
-
-const editorConfiguration = {
-  toolbar: {
-    items: [
-      'heading',
-      '|',
-      'bold',
-      'italic',
-      'Link',
-      'bulletedList',
-      'numberedList',
-      '|',
-      'Indent',
-      'Outdent',
-      '|',
-      'Blockquote',
-      'insertTable',
-      '|',
-      'undo',
-      'redo'
-    ],location: 'bottom'
-  },
-  toolbarLocation: 'bottom',
-  table          : {
-    contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
-  }
-}
 
 const EmailMessageForm = (props) => {
   const {
@@ -69,11 +41,6 @@ const EmailMessageForm = (props) => {
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
   const _handleSubjectChange = value => props.change('body_title', value)
-
-  const _handleChange = (event, editor) => {
-    const data = editor.getData()
-    props.change('body_text', data)
-  }
 
   const _handleDrop = useCallback(acceptedFiles => {
     // eslint-disable-next-line no-unused-vars
@@ -118,9 +85,14 @@ const EmailMessageForm = (props) => {
               placeholder='Enter subject'/>
           </Form.Group>
           <Form.Group className='ph8' widths='equal'>
-            <CKEditor
-              config={editorConfiguration} data={props.watchedBodyText} editor={ClassicEditor}
-              onChange={_handleChange}/>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={TextAreaEditor}
+                label='Description'
+                name='body_text'
+                required/>
+            </Form.Group>
           </Form.Group>
 
           <div {...getRootProps()}  className='document-upload-choose-file'>
@@ -165,8 +137,7 @@ export default compose(
     ({ ...state }) => {
       return {
 
-        emailMessageDetail: emailMessageDetailDuck.selectors.detail(state),
-        watchedBodyText   : formValueSelector('email-message-form')(state,'body_text')
+        emailMessageDetail: emailMessageDetailDuck.selectors.detail(state)
       }
     },
     {

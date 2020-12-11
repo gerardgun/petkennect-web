@@ -2,6 +2,7 @@ import { call, put, select, takeEvery } from 'redux-saga/effects'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import daycampCardQuestionDetailDuck from '@reducers/pet/reservation/daycamp-card/daycamp-card-question/detail'
+import daycampCardQuestionDuck from '@reducers/pet/reservation/daycamp-card/daycamp-card-question'
 
 const { types } = daycampCardQuestionDetailDuck
 
@@ -41,9 +42,18 @@ function* get({ daycamp_card_id, daycamp_card_question_id }) {
 }
 
 function* post({ payload }) {
+  const daycampCardQuestion = yield select(daycampCardQuestionDuck.selectors.detail)
+
   let answerResult
   try {
     yield put({ type: types.POST_PENDING })
+
+    for (let item of daycampCardQuestion.item) {
+      let filterData = payload.questions.find(_ => _.id == item.id)
+      if(filterData == null)
+        yield call(Delete, `daycamp-cards/${item.card}/questions/${item.id}/`)
+    }
+
     for (let _question of payload.questions)
     {
       let questionResult
@@ -58,8 +68,6 @@ function* post({ payload }) {
           type       : _question.type
         })
 
-      _question.id = questionResult.id
-
       for (let item of questionResult.answers) {
         let filterData = _question.answers.find(_ => _.id == item.id)
         if(filterData == null)
@@ -69,11 +77,11 @@ function* post({ payload }) {
       if(_question.answers)
         for (let _answers of _question.answers)
           if(_answers.id)
-            answerResult = yield call(Patch, `daycamp-card-questions/${_question.id}/answers/${_answers.id}/`, {
+            answerResult = yield call(Patch, `daycamp-card-questions/${questionResult.id}/answers/${_answers.id}/`, {
               description: _answers.description
             })
           else
-            answerResult = yield call(Post, `daycamp-card-questions/${_question.id}/answers/`, {
+            answerResult = yield call(Post, `daycamp-card-questions/${questionResult.id}/answers/`, {
               description: _answers.description
             })
     }

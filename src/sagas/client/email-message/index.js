@@ -19,7 +19,7 @@ function* get() {
           id     : index,
           to     : faker.internet.email(),
           from   : faker.internet.email(),
-          sent   : '',
+          sent   : faker.random.arrayElement([ '3-6-2018', '9-3-2019','24-10-2020' ]),
           subject: 'Thank you for your interest in No Leash Needed'
         }))
       }

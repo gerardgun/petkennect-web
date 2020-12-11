@@ -26,9 +26,9 @@ const ReservationFormWizard = props => {
 
   return (
     <>
-      {step === 1 && <BoardingFormWizardFirst onSubmit={_handleNextStep}/>}
-      {step === 2 && <BoardingFormWizardSecond onPreviousStep={_handlePreviousStep} onSubmit={_handleNextStep}/>}
-      {step === 3 && <BoardingFormWizardThird onPreviousStep={_handlePreviousStep} onSubmit={_handleNextStep} serviceType={props.serviceType}/>}
+      {step === 1 && <BoardingFormWizardFirst onNextStep={_handleNextStep}/>}
+      {step === 2 && <BoardingFormWizardSecond onNextStep={_handleNextStep} onPreviousStep={_handlePreviousStep}/>}
+      {step === 3 && <BoardingFormWizardThird onNextStep={_handleNextStep} onPreviousStep={_handlePreviousStep} serviceType={props.serviceType}/>}
     </>
   )
 }

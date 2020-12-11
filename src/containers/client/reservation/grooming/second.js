@@ -241,7 +241,8 @@ const GroomingFormWizardSecond = props => {
               className='w120'
               color='teal'
               content='Next'
-              type='submit'/>
+              onClick={props.onNextStep}
+              type='button'/>
           </Form.Field>
         </Form.Group>
       </Form>

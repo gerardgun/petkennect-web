@@ -192,6 +192,17 @@ const DayCampForm = props => {
   }, [])
 
   useEffect(() => {
+    if(daycampCard.status === 'GOT') {
+      const active_card = daycampCard.item.find(_ => _.is_active == true)
+      if(active_card) {
+        props.getDaycampCardQuestions(active_card.id)
+        setActiveVersion(active_card.id)
+        setIsActive(true)
+      }
+    }
+  }, [ daycampCard.status ])
+
+  useEffect(() => {
     if(daycampCardDetail.status === 'POSTED' || daycampCardDetail.status === 'PUT'  || daycampCardDetail.status === 'DELETED')
       props.getDaycampCards()
   }, [ daycampCardDetail.status ])
@@ -263,13 +274,17 @@ const DayCampForm = props => {
                 {
                   activeVersion && (
                     <>
-                      <Form.Button
-                        basic
-                        color='red'
-                        icon='trash alternate outline'
-                        label='&nbsp;'
-                        onClick={_handleDeleteVersionBtnClick}
-                        type='button'/>
+                      {
+                        !is_active && daycampCard.item.length > 1 && (
+                          <Form.Button
+                            basic
+                            color='red'
+                            icon='trash alternate outline'
+                            label='&nbsp;'
+                            onClick={_handleDeleteVersionBtnClick}
+                            type='button'/>
+                        )
+                      }
                       <Form.Button
                         basic
                         color='teal'
@@ -328,14 +343,14 @@ const DayCampForm = props => {
                   name='questions'
                   props={props}
                   title='Question'/>
-                <Button
-                  className='mv28 mh16'
-                  color='teal'  content='Create New Version'
-                  onClick={_handleAddBtnClick}
-                  type='button'/>
               </>
             )
           }
+          <Button
+            className='mv28 mh16'
+            color='teal'  content='Create New Version'
+            onClick={_handleAddBtnClick}
+            type='button'/>
           {
             error && (
               <Form.Group widths='equal'>

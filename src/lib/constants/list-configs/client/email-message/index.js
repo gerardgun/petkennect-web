@@ -13,7 +13,21 @@ export default {
     }
   ],
   row: {
-    options: []
+    options        : [],
+    dropdownOptions: [
+      {
+        display_name: 'Email Logs view',
+        name        : 'email_logs_view'
+      },
+      {
+        display_name: 'Resend',
+        name        : 'resend'
+      },
+      {
+        display_name: 'forward',
+        name        : 'forward'
+      }
+    ]
   },
   columns: [
     {
@@ -36,7 +50,7 @@ export default {
       display_name: 'Subject',
       name        : 'subject',
       type        : 'string',
-      width       : null,
+      width       : 50,
       align       : 'left',
       sort        : false
     },
@@ -44,9 +58,10 @@ export default {
       display_name: 'Sent',
       name        : 'sent',
       type        : 'string',
-      width       : 'null',
+      width       : null,
       align       : 'left',
       sort        : false
     }
+
   ]
 }
