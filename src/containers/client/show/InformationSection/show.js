@@ -36,6 +36,8 @@ function ClienInformationShow({ clientDetail, ...props }) {
           computer={8} mobile={5} tablet={8}
           textAlign='right'>
           <Button
+            basic color='teal' icon='mail'/>
+          <Button
             basic color='teal' icon='edit outline'
             onClick={_handleEditBtnClick}/>
         </Grid.Column>

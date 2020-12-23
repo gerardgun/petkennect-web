@@ -1,0 +1,20 @@
+.recurring_date_div{
+    padding:2rem !important ;
+
+    .ui.button.blue:not(.basic) {
+        color: white !important;
+        background-color: #005987 !important;
+    }
+
+    .ui.basic.buttons .button:hover{
+      color: white !important;
+      background-color: #005987 !important;
+    }
+
+  
+@media (max-width:1023px) {
+  .ui.buttons{
+    display: list-item !important;
+  }
+}
+}

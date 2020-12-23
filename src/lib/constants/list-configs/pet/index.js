@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Image, Label } from 'semantic-ui-react'
+import { Image, Label, Icon, Popup } from 'semantic-ui-react'
+import { BiTennisBall } from 'react-icons/bi'
+import { GiJumpingDog, GiDamagedHouse, GiDogBowl, GiSittingDog } from 'react-icons/gi'
 
 import { defaultImageUrl } from '@lib/constants'
 import { VaccinationStatus } from '@lib/constants/pet'
@@ -37,7 +39,17 @@ export default {
     }
   ],
   row: {
-    options: []
+    options        : [],
+    dropdownOptions: [
+      {
+        display_name: 'Express Check In',
+        name        : 'express_check_in'
+      },
+      {
+        display_name: 'Training',
+        name        : 'training'
+      }
+    ]
   },
   columns: [
     {
@@ -48,13 +60,76 @@ export default {
       align       : 'left',
       sort        : true,
       formatter   : (cell, row) => {
+        let sex = ''
+
+        if(row.sex === 'M')
+          sex = 'M'
+        else if(row.sex === 'F')
+          sex = 'F'
+
+        let temp_jumped_fences = ''
+        if(row.temp_jumped_fences === true)
+          temp_jumped_fences = 'T'
+
+        let info_housebroken = ''
+        if(row.info_housebroken === true)
+          info_housebroken = 'T'
+
+        let food_aggressive = ''
+        if(row.food_aggressive === true)
+          food_aggressive = 'T'
+
+        let toy_aggressive = ''
+        if(row.toy_aggressive === true)
+          toy_aggressive = 'T'
+
+        let info_formal_training = ''
+        if(row.info_formal_training === true)
+          info_formal_training = 'T'
+
         return (
-          <Link to={`/pet/${row.id}`}>
-            <Image
-              className='profile' rounded size='mini'
-              src={row.image_filepath || defaultImageUrl}/>
-            <span>{cell}</span>
-          </Link>
+          <span>
+            <p><Link to={`/pet/${row.id}`}>
+              <Image
+                className='profile' rounded size='mini'
+                src={row.image_filepath || defaultImageUrl}/>
+              <span>{cell}</span>
+            </Link>
+            </p>
+            {
+              sex == 'M' ? (<Popup
+                content='Male' inverted position='top center'
+                size='tiny' trigger={<Icon name='mars' style={{ color: 'blue', fontSize: '15px' }}></Icon>}/>)
+                : (<Popup
+                  content='Female' inverted position='top center'
+                  size='tiny' trigger={<Icon name='venus' style={{ color: 'pink', fontSize: '15px' }}></Icon>}/>)
+            }
+            {
+              temp_jumped_fences == 'T' && (<Popup
+                content='Jump Fences' inverted position='top center'
+                size='tiny' trigger={<Icon style={{ color: 'teal', fontSize: '15px' }}><GiJumpingDog/></Icon>}/>)
+            }
+            {
+              info_housebroken == 'T' && (<Popup
+                content='House Broken' inverted position='top center'
+                size='tiny' trigger={<Icon style={{ color: 'red', fontSize: '15px' }}><GiDamagedHouse/></Icon>}/>)
+            }
+            {
+              food_aggressive == 'T' && (<Popup
+                content='Food Aggressive' inverted position='top center'
+                size='tiny' trigger={<Icon style={{ color: 'teal', fontSize: '15px' }}><GiDogBowl/></Icon>}/>)
+            }
+            {
+              toy_aggressive == 'T' && (<Popup
+                content='Toy Aggressive' inverted position='top center'
+                size='tiny' trigger={<Icon style={{ color: 'teal', fontSize: '15px' }}><BiTennisBall/></Icon>}/>)
+            }
+            {
+              info_formal_training == 'T' && (<Popup
+                content='Received Training' inverted position='top center'
+                size='tiny' trigger={<Icon style={{ color: 'green', fontSize: '15px' }}><GiSittingDog/></Icon>}/>)
+            }
+          </span>
         )
       }
     },

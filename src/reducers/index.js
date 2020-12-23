@@ -23,6 +23,8 @@ import clientPet from '@reducers/client/pet'
 import clientEmailMessage from '@reducers/client/email-message'
 import company from '@reducers/company'
 import companyDetail from '@reducers/company/detail'
+import customReport from '@reducers/custom-report'
+import customReportDetail from '@reducers/custom-report/detail'
 import customized from '@reducers/customized-field'
 import customizedField from '@reducers/customized-field/field'
 import customizedFieldDetail from '@reducers/customized-field/field/detail'
@@ -136,6 +138,7 @@ import trainingCommand from '@reducers/training-command'
 import trainingCommandDetail from '@reducers/training-command/detail'
 import trainingMethod from '@reducers/training-method'
 import trainingMethodDetail from '@reducers/training-method/detail'
+import trainingPackage from '@reducers/training-package'
 import trainingReason from '@reducers/training-reason'
 import trainingReasonDetail from '@reducers/training-reason/detail'
 import transaction from '@reducers/transaction'
@@ -169,6 +172,8 @@ const createRootReducer = history => combineReducers({
   [clientEmailMessage.store]                    : clientEmailMessage.reducer,
   [company.store]                               : company.reducer,
   [companyDetail.store]                         : companyDetail.reducer,
+  [customReport.store]                          : customReport.reducer,
+  [customReportDetail.store]                    : customReportDetail.reducer                ,
   [customized.store]                            : customized.reducer,
   [customizedField.store]                       : customizedField.reducer,
   [customizedFieldDetail.store]                 : customizedFieldDetail.reducer,
@@ -285,6 +290,7 @@ const createRootReducer = history => combineReducers({
   [trainingCommandDetail.store]                 : trainingCommandDetail.reducer,
   [trainingMethod.store]                        : trainingMethod.reducer,
   [trainingMethodDetail.store]                  : trainingMethodDetail.reducer,
+  [trainingPackage.store]                       : trainingPackage.reducer,
   [trainingReason.store]                        : trainingReason.reducer,
   [trainingReasonDetail.store]                  : trainingReasonDetail.reducer,
   [transactionDetail.store]                     : transactionDetail.reducer,

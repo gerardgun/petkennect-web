@@ -18,10 +18,7 @@ function* get(/* { payload }*/) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [
-          ...list.items,
-          ...results
-        ],
+        items     : results,
         pagination: {
           ...list.pagination,
           meta

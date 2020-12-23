@@ -12,6 +12,10 @@ const ClientEmailMessage = ({ ...props }) => {
     props.getEmailMessages()
   }, [])
 
+  // eslint-disable-next-line no-unused-vars
+  const _handleOptionClick = option => {
+  }
+
   return (
     <>
       <Segment style={{ boxShadow: 'none', border: 'none' }}>
@@ -27,7 +31,7 @@ const ClientEmailMessage = ({ ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
-          duck={clientEmailMessageDuck}/>
+          duck={clientEmailMessageDuck} onOptionDropdownChange={_handleOptionClick}/>
       </Segment>
 
     </>

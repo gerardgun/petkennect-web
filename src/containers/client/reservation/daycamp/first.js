@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -24,11 +24,6 @@ const DaycampFormWizardFirst = props => {
     location,
     error, handleSubmit, reset
   } = props
-
-  useEffect(() => {
-    props.getLocations()
-    props.getClientPets()
-  }, [])
 
   return (
     <>
@@ -76,7 +71,7 @@ const DaycampFormWizardFirst = props => {
               label='Pet'
               multiple
               name='pet'
-              options={[ ...clientPet.items ].map((_clientPet) => ({
+              options={clientPet.items.map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,
                 text : `${_clientPet.name}`
@@ -158,14 +153,10 @@ export default compose(
       } : {}
 
       return {
+        clientPet    : clientPetDuck.selectors.list(state),
         initialValues: { ...petReservationDetail.item, ...defaultInitialValues },
-        location     : locationDuck.selectors.list(state),
-        clientPet    : clientPetDuck.selectors.list(state)
+        location     : locationDuck.selectors.list(state)
       }
-    },
-    {
-      getLocations : locationDuck.creators.get,
-      getClientPets: clientPetDuck.creators.get
     }
   ),
   reduxForm({

@@ -97,7 +97,8 @@ const EmailMessage = ({ ...props }) => {
             &&            <>
               <Message info>
                 <Message.Header>Since Monday 6/25/2018 12:57 PM</Message.Header>
-                <p><b>Total Emails:</b> 35  |  <b>#Delivered:</b> 35 (100%)   |  <b>#Opened:</b> 18 (51%)   |  <b>#Clicked:</b> 4 (11%)  |  <b>#Bounced:</b> 0 (0%)</p>
+                <p><b>Total Emails:</b> 35  |  <b>#Delivered:</b> 35 (100%)   |
+                  <b>#Opened:</b> 18 (51%)   |  <b>#Clicked:</b> 4 (11%)  |  <b>#Bounced:</b> 0 (0%)</p>
               </Message>
               <Table
                 duck={emailLogDuck}/>

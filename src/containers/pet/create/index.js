@@ -14,6 +14,8 @@ import VaccinationSection from './VaccinationSection'
 import IncidentSection from './IncidentSection'
 import NoteSection from './NoteSection'
 import GallerySection from './GallerySection'
+// import TrainingSection from './Training'
+
 import useCameraAvailable from '@hooks/useCameraAvailable'
 import { defaultImageUrl } from '@lib/constants'
 import { getAge } from '@lib/utils/functions'
@@ -249,6 +251,12 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
                 Gallery
                 <Label color='teal'>{petImage.pagination.meta.total_items || petImage.items.length}</Label>
               </Menu.Item>
+              {/* <Menu.Item
+                active={activeMenuItem === 'training'} link name='training'
+                onClick={_handleMenuItemClick}>
+                Training
+                <Label color='teal'>0</Label>
+              </Menu.Item> */}
             </Menu>
           </Grid.Column>
           <Grid.Column
@@ -260,6 +268,7 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
             {activeMenuItem === 'incidents' && <IncidentSection/>}
             {activeMenuItem === 'notes' && <NoteSection/>}
             {activeMenuItem === 'gallery' && <GallerySection/>}
+            {/* {activeMenuItem === 'training' && <TrainingSection/>} */}
           </Grid.Column>
         </Grid>
       </Segment>

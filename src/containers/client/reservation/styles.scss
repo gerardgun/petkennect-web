@@ -27,7 +27,7 @@
       }
      
       .ui.button.gray:not(.basic) {
-        background-color: #005987 !important;
+        background-color: teal !important;
         color: white !important;
     }
 
@@ -273,6 +273,10 @@ padding: 1.8rem 25rem;
 .selection.dropdown{
   min-width: 100% !important;
 }
+ }
+ 
+ .flex_imp{
+   display:flex !important;
  }
 
 

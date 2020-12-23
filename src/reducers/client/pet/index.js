@@ -8,6 +8,7 @@ export default base({
   namespace   : '@@pet-kennect',
   store       : 'client/pet',
   initialState: {
+    items     : [],
     config,
     pagination: {
       params: {

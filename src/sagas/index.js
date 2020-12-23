@@ -19,6 +19,7 @@ import clientPet from './client/pet'
 import clientEmailMessage from './client/email-message'
 import company from './company'
 import companyDetail from './company/detail'
+import customReport from './custom-report'
 import customized from './customized-field'
 import customizedField from './customized-field/field'
 import customizedFieldDetail from './customized-field/field/detail'
@@ -149,6 +150,7 @@ export default function* rootSaga() {
     ...clientPet,
     ...company,
     ...companyDetail,
+    ...customReport,
     ...customized,
     ...customizedField,
     ...customizedFieldDetail,

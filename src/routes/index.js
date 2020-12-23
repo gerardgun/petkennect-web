@@ -19,6 +19,7 @@ import ClientBook from '@containers/client/reservation'
 import CustomizedField from '@containers/customized-field'
 import Calendar from '@containers/calendar'
 import EmailMessage from '@containers/email-message'
+import SystemSetting from '@containers/system-setting'
 import EmailTemplate from '@containers/email-template'
 import Notification from '@containers/notification'
 import Location from '@containers/location'
@@ -47,6 +48,7 @@ import ProductFamilies from '@containers/product-families'
 import ProductFamiliesShow from '@containers/product-families/show'
 import Category from '@containers/category'
 // import PetBreed from '@containers/product/create'
+import CustomReport from '@containers/custom-report'
 import EmployeeTitle from '@containers/employee-title'
 import Employee from '@containers/employee'
 import EmployeeShow from '@containers/employee/show'
@@ -154,6 +156,11 @@ const privateRoutes = [
   {
     path     : '/setup/email-template',
     component: EmailTemplate
+  },
+  {
+    path     : '/setup/system-setting',
+    component: SystemSetting
+
   },
   {
     path     : '/email-message',
@@ -287,6 +294,11 @@ const privateRoutes = [
     path     : '/online-request',
     component: OnlineRequests
   },
+  {
+    path     : '/custom-report',
+    component: CustomReport
+  },
+
   {
     path     : '/employee',
     component: Employee

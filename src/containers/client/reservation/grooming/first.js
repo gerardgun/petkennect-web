@@ -34,8 +34,6 @@ const GroomingFormWizardFirst = props => {
 
   useEffect(() => {
     props.getEmployees()
-    props.getLocations()
-    props.getClientPets()
   }, [])
 
   return (
@@ -83,7 +81,7 @@ const GroomingFormWizardFirst = props => {
               fluid
               label='Pet'
               name='pet'
-              options={[ ...clientPet.items ].map((_clientPet) => ({
+              options={clientPet.items.map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,
                 text : `${_clientPet.name}`
@@ -210,16 +208,14 @@ export default compose(
       } : {}
 
       return {
+        clientPet    : clientPetDuck.selectors.list(state),
         initialValues: { ...petReservationDetail.item, ...defaultInitialValues },
         location     : locationDuck.selectors.list(state),
-        employee     : employeeDuck.selectors.list(state),
-        clientPet    : clientPetDuck.selectors.list(state)
+        employee     : employeeDuck.selectors.list(state)
       }
     },
     {
-      getLocations : locationDuck.creators.get,
-      getClientPets: clientPetDuck.creators.get,
-      getEmployees : employeeDuck.creators.get
+      getEmployees: employeeDuck.creators.get
     }
   ),
   reduxForm({

@@ -489,6 +489,9 @@ const TableList = ({ duck, list, ...props }) => {
             {
               list.config.row.options.length > 0 && (<Table.HeaderCell>Actions</Table.HeaderCell>)
             }
+            {
+              list.config.row.dropdownOptions && list.config.row.dropdownOptions.length > 0 && (<Table.HeaderCell>Action</Table.HeaderCell>)
+            }
           </Table.Row>
         </Table.Header>
         <Table.Body>

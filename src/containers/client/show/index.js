@@ -13,13 +13,14 @@ import InformationSection from './InformationSection'
 import PetSection from './PetSection'
 import ReservesSection from './ReservesSection'
 import MessageHistorySection from './MessageHistory'
-// import { defaultImageUrl } from '@lib/constants'
+import ExpressCheckInForm from '../../pet/form/express-check-in'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientCommentDuck from '@reducers/client/comment'
 import clientDocumentDuck from '@reducers/client/document'
 import clientPetDuck from '@reducers/client/pet'
 import clientAgreementDuck from '@reducers/client/agreement'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import './../styles.scss'
 
@@ -67,8 +68,9 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
 
   const _handleMessageClick = () => setActiveMenuItem('agreements')
 
-  const _handleOptionDropdownChange = () => {
-    alert('Work in Progress...')
+  const _handleOptionDropdownChange = (e, { value }) => {
+    if(value === 'express_check_in')
+      props.setReservationItem(clientDetail.item, 'CREATE')
   }
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
@@ -77,9 +79,6 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
     : clientDetail.item.status == 'VIP Client' ?  <Icon name='user circle' style={{ color: 'green', fontSize: '35px' }}></Icon>
       : clientDetail.item.status == 'Caution' ? <Icon name='user circle' style={{ color: 'yellow', fontSize: '35px' }}></Icon>
         : clientDetail.item.status == 'Active' ? <Icon name='user circle' style={{ color: 'gray', fontSize: '35px' }}></Icon> : null
-
-  // const imageBorder = clientDetail.item.status == 'Declined Client' ? 'image-border-declined' :
-  //  clientDetail.item.status == 'VIP Client' ? 'image-border-vip' : clientDetail.item.status == 'Caution' ? 'image-border-caution' : null
 
   return (
     <Layout>
@@ -98,13 +97,6 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
               </Breadcrumb.Section>
             </Breadcrumb>
 
-            {/* <div className='flex justify-center align-center mt40'>
-              <div className='c-image-profile'>
-                <Image
-                  circular className={imageBorder}
-                  src={clientDetail.item.thumbnail_path || defaultImageUrl}/>
-              </div>
-            </div> */}
             <div className='flex justify-center align-center mt40'>
 
               {
@@ -133,8 +125,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
                 icon={null}
                 onChange={_handleOptionDropdownChange}
                 options={[
-                  { key: 1, icon: 'download', value: 'download-profile', text: 'Download Profile' },
-                  { key: 2, icon: 'paper plane outline', value: 'send-email', text: 'Send Email' }
+                  { key: 1, icon: 'download', value: 'download-profile', text: 'Download Profile' }
                 ]}
                 selectOnBlur={false}
                 trigger={(
@@ -145,6 +136,10 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
 
             <Button
               color='teal' content='Book!' disabled={_get(clientDetail, 'item.summary.has_pending_agreements', false)}
+              fluid onClick={_handleBookBtnClick} size='large'/>
+            <Button
+              className='mt8' color='teal' content='Express Check In'
+              disabled={_get(clientDetail, 'item.summary.has_pending_agreements', false)}
               fluid onClick={_handleBookBtnClick} size='large'/>
 
             {
@@ -230,6 +225,8 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
           </Grid.Column>
         </Grid>
       </Segment>
+
+      <ExpressCheckInForm/>
     </Layout>
   )
 }
@@ -248,6 +245,7 @@ export default compose(
       getClientComments  : clientCommentDuck.creators.get,
       getClientDocuments : clientDocumentDuck.creators.get,
       getClientPets      : clientPetDuck.creators.get,
+      setReservationItem : petReservationDetailDuck.creators.setItem,
       resetItem          : clientDetailDuck.creators.resetItem,
       resetClientComments: clientCommentDuck.creators.reset,
       resetClientPets    : clientPetDuck.creators.reset

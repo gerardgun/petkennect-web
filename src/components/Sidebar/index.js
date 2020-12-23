@@ -149,18 +149,31 @@ const categories = [
   //     { href: '/not-defined', label: 'Retail Sales Report' }
   //   ]
   // },
+
+  {
+    href         : null,
+    icon         : 'book',
+    label        : 'Report Center',
+    subcategories: [
+      { href: '/custom-report', label: '  Run Custom Reports' },
+      { href: '/custom-report', label: 'Dashboards' }
+
+    ]
+  },
   {
     href         : null,
     icon         : 'cogs',
     label        : 'Setup',
     subcategories: [
+      { href: '/setup/system-setting', label: 'Application System Settings' },
+      { href: '/setup/color-codes', label: 'System Icons/Codes' },
       { href: '/setup/location', label: 'Locations' },
       { href: '/setup/price-master', label: 'Price Master' },
       { href: '/setup/document-type', label: 'Document Types' },
       { href: '/setup/day-camp-form', label: 'Day Camp Form' },
       { href: '/setup/agreement', label: 'Agreements' },
       { href: '/setup/notifications', label: 'Notifications' },
-      { href: '/setup/color-codes', label: 'Color Codes' },
+      // { href: '/setup/color-codes', label: 'Color Codes' },
       { href: '/setup/training-reason', label: 'Training Reason' },
       { href: '/setup/training-method', label: 'Training Method' },
       { href: '/setup/training-command', label: 'Training Command' },
@@ -178,6 +191,8 @@ const categories = [
       { href: '/setup/customized-field', label: 'Customized Field' },
       { href: '/setup/calendar', label: 'Calendar' },
       { href: '/setup/email-template', label: 'Email Template' }
+      // { href: '/setup/system-setting', label: 'System Setting' }
+
       // { href: '/not-defined', label: 'Enable Decline Portal Client' },
       // { href: '/not-defined', label: 'Calendar' },
       // { href: '/not-defined', label: 'Notifications' },

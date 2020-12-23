@@ -28,8 +28,6 @@ const BoardingFormWizardFirst = props => {
   } = props
 
   useEffect(() => {
-    props.getLocations()
-    props.getClientPets()
     props.getPetKennelType()
   }, [])
 
@@ -79,7 +77,7 @@ const BoardingFormWizardFirst = props => {
               label='Pet'
               multiple
               name='pet'
-              options={[ ...clientPet.items ].map((_clientPet) => ({
+              options={clientPet.items.map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,
                 text : `${_clientPet.name}`
@@ -201,17 +199,15 @@ export default compose(
         KennelType: petReservationDetail.item.boarding ? petReservationDetail.item.boarding.kennel_type : '' } : {}
 
       return {
+        clientPet          : clientPetDuck.selectors.list(state),
         initialValues      : { ...petReservationDetail.item, ...defaultInitialValues },
         location           : locationDuck.selectors.list(state),
-        clientPet          : clientPetDuck.selectors.list(state),
         petKennelType      : petKennelTypeDuck.selectors.list(state),
         hasSharedKennelType: KennelType === 'shared' ? true : false,
         selectedPets       : selectedPets
       }
     },
     {
-      getLocations    : locationDuck.creators.get,
-      getClientPets   : clientPetDuck.creators.get,
       getPetKennelType: petKennelTypeDuck.creators.get
     }
   ),

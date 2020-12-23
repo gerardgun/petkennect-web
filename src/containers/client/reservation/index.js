@@ -10,14 +10,16 @@ import BoardingReservationFormWizard from './boarding'
 import DaycampReservationFormWizard from './daycamp'
 import FitnessReservationFormWizard from './daycamp'
 import GroomingReservationFormWizard from './grooming'
+import TrainingReservationFormWizard from './training'
 
 import ViewNoteSection from '../../online-request/notesSection/'
 
 import clientDetailDuck from '@reducers/client/detail'
-import petDetailDuck from '@reducers/pet/detail'
+import clientPetDuck from '@reducers/client/pet'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import employeeDetailDuck from '@reducers/employee/detail'
 import authDuck from '@reducers/auth'
+import locationDuck from '@reducers/location'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import './styles.scss'
@@ -32,6 +34,8 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
     if(currentTenant && currentTenant.employee)
       props.getEmployee(currentTenant.employee.id)
     props.getClient(clientId)
+    props.getLocations()
+    props.getClientPets({ client__id: clientId })
   }, [])
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
@@ -130,6 +134,7 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
             {activeReservationItem === 'D' &&  <DaycampReservationFormWizard serviceType={activeReservationItem}/>}
             {activeReservationItem === 'F' &&  <FitnessReservationFormWizard serviceType={activeReservationItem}/>}
             {activeReservationItem === 'G' &&  <GroomingReservationFormWizard serviceType={activeReservationItem}/>}
+            {activeReservationItem === 'T' &&  <TrainingReservationFormWizard serviceType={activeReservationItem}/>}
           </Grid.Column>
         </Grid>
       </Segment>
@@ -145,14 +150,17 @@ export default compose(
       return {
         petReservationDetail,
         currentTenant: authDuck.selectors.getCurrentTenant(auth),
-        clientDetail : clientDetailDuck.selectors.detail(state)
+        clientDetail : clientDetailDuck.selectors.detail(state),
+        clientPet    : clientPetDuck.selectors.list(state),
+        location     : locationDuck.selectors.list(state)
       }
     },
     {
-      getEmployee: employeeDetailDuck.creators.get,
-      getClient  : clientDetailDuck.creators.get,
-      setItem    : petDetailDuck.creators.setItem,
-      setNoteItem: petNoteDetailDuck.creators.setItem
+      getEmployee  : employeeDetailDuck.creators.get,
+      getClient    : clientDetailDuck.creators.get,
+      getClientPets: clientPetDuck.creators.get,
+      getLocations : locationDuck.creators.get,
+      setNoteItem  : petNoteDetailDuck.creators.setItem
     }
   )
 )(Reservation)
