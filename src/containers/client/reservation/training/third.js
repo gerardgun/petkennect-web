@@ -3,12 +3,12 @@ import React, { useEffect }  from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Form, Checkbox, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
+import { reduxForm, formValueSelector } from 'redux-form'
+import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
+import moment from 'moment'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 
-import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
@@ -21,12 +21,45 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import { trainingFormId } from './first'
 
+function SelectedReservationDateList({ startDate,endDate, selectedWeek, untilNoOfOccurrences, checkInTime }) {
+  let arrDate = [ ]
+  let dfEndDate = new Date(endDate)
+
+  if(untilNoOfOccurrences) {
+    dfEndDate = new Date(startDate)
+    dfEndDate = new Date(dfEndDate.setDate((dfEndDate.getDate() + (7 * untilNoOfOccurrences))))
+  }
+
+  let weekCount = 0
+  for (let d = new Date(startDate); d <=  dfEndDate; d.setDate(d.getDate() + 1)) {
+    if(d.getDay() % 7 == 0)
+      weekCount = weekCount + 1
+
+    if(selectedWeek.includes('' + d.getDay() + ''))
+      arrDate.push(moment(d).format('MM/DD/YYYY'))
+  }
+
+  return arrDate.map((dateItem,i) =>{
+    return  (
+      <>
+        <List.Item>
+          <List.Content>
+            { dateItem }  {checkInTime}
+          </List.Content>
+        </List.Item>
+      </>
+    )
+  })
+}
+
 const TrainingFormWizardThird = props => {
   const {
     employeeName,
-    check_in,
+    startDate,
+    endDate,
+    untilNoOfOccurrences,
     selectedPetName,
-    petReservationDetail,
+    checkInTime,
     currentTenant,
     services, error, handleSubmit, reset // redux-form
   } = props
@@ -63,7 +96,6 @@ const TrainingFormWizardThird = props => {
     //   .then(_handleClose)
     //   .catch(parseResponseError)
   }
-  const isUpdating = Boolean(petReservationDetail.item.id)
 
   return (
     <>
@@ -72,13 +104,11 @@ const TrainingFormWizardThird = props => {
           <Icon name='check circle'/>
           <span>Service Information</span>
         </div>
-        <div className='div-bar-line active'>
+        <div className='div-bar-line'>
         </div>
-        <div className='div-bar-content active'>
-          <Icon name='check circle'/>
-          <span>Pet Information</span>
+        <div className='div-bar-line'>
         </div>
-        <div className='div-bar-line active'>
+        <div className='div-bar-line'>
         </div>
         <div className='div-bar-content active'>
           <Icon name='check circle'/>
@@ -90,7 +120,7 @@ const TrainingFormWizardThird = props => {
       <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
 
         <Segment className='section-info-item'>
-          <Header as='h3' className='section-info-header text-center'>Summary</Header>
+          <Header as='h3' className='section-info-header text-center'>Training Package1 Summary</Header>
           <Grid>
             <Grid.Column computer={8} mobile={16} tablet={8}>
               <Segment style={{ height: '100%' }}>
@@ -107,11 +137,11 @@ const TrainingFormWizardThird = props => {
                       <Grid.Column computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Reservation Date'
-                          value={`${check_in}`}/>
+                          value={`${startDate}`}/>
                       </Grid.Column>
                       <Grid.Column  computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
-                          label='Groomer'
+                          label='Trainer'
                           value={`${employeeName}`}/>
                       </Grid.Column>
                     </Grid>
@@ -138,45 +168,12 @@ const TrainingFormWizardThird = props => {
           </Grid>
         </Segment>
         <Segment>
-          <Grid>
-            <Grid.Column computer={16} mobile={16} tablet={16}>
-              <Header as='h3'>
-                   Email Section
-              </Header>
-              <Form.Group>
-                <Field
-                  component={FormField}
-                  control={Checkbox}
-                  label='Training Agreement Only'
-                  name='training_agreement_only'
-                  type='checkbox'/>
-                <Field
-                  component={FormField}
-                  control={Checkbox}
-                  label='Training Agreement + Client Forms'
-                  name='training_agreement_client_forms'
-                  type='checkbox'/>
-                <Form.Field/>
-                <Form.Field/>
-              </Form.Group>
-              <Form.Group>
-                <Field
-                  component={FormField}
-                  control={Checkbox}
-                  label='Follow-up and Feedback'
-                  name='follow_up_and_feedback'
-                  type='checkbox'/>
-                <Field
-                  component={FormField}
-                  control={Checkbox}
-                  label='Follow up emailed on'
-                  name='follow_up_emailed_on'
-                  type='checkbox'/>
-                <Form.Field/>
-                <Form.Field/>
-              </Form.Group>
-            </Grid.Column >
-          </Grid>
+          <Header as='h3'>Selected Reservation Date</Header>
+          <List className='list-total-addons' divided verticalAlign='middle'>
+            <SelectedReservationDateList
+              checkInTime={checkInTime} endDate={endDate}
+              selectedWeek={props.selectedWeek} startDate={startDate} untilNoOfOccurrences={untilNoOfOccurrences}/>
+          </List>
         </Segment>
         <Segment>
           <Header as='h3'>Charges</Header>
@@ -258,8 +255,10 @@ export default compose(
   connect(
     ({ auth, service, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
-      const check_in = formValueSelector(trainingFormId)(state, 'check_in')
-      const appointment_time = formValueSelector(trainingFormId)(state, 'appointment_time')
+      const startDate = formValueSelector(trainingFormId)(state, 'start_date')
+      const endDate = formValueSelector(trainingFormId)(state, 'end_date')
+      const checkInTime = formValueSelector(trainingFormId)(state, 'check_in_time')
+      const untilNoOfOccurrences = formValueSelector(trainingFormId)(state,'until_no_of_occurrences')
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPet = formValueSelector(trainingFormId)(state, 'pet')
       const selectedPetName = clientPet.items.find(_ => _.id == selectedPet) && clientPet.items.find(_ => _.id == selectedPet).name
@@ -267,7 +266,10 @@ export default compose(
       const employeeName = employeeDetail.item && employeeDetail.item.first_name + ' ' + employeeDetail.item.last_name
 
       return {
-        check_in     : check_in + ' ' + appointment_time,
+        checkInTime,
+        startDate    : startDate,
+        endDate      : endDate,
+        untilNoOfOccurrences,
         selectedPetName,
         employeeName,
         petReservationDetail,

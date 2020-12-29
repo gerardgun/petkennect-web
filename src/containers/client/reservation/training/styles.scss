@@ -1,5 +1,13 @@
+@media (min-width: 768px) and (max-width:1023px) {
+  .div-progress-bar{
+    .div-bar-content{
+      width: 50% !important;
+    }
+  }
+}
+
+
 .recurring_date_div{
-    padding:2rem !important ;
 
     .ui.button.blue:not(.basic) {
         color: white !important;
@@ -11,10 +19,79 @@
       background-color: #005987 !important;
     }
 
+    .form_group_label0{
+      label{
+        height: 0px !important;
+      }
+    }
+    .week_btn_group{
+      .ui.button{
+      border: 1px solid rgba(34, 36, 38, 0.15);
+      border-left: 1px solid rgba(34, 36, 38, 0.15) !important;
+      background-color:white !important;
+      cursor: pointer;
+    }
+
+    .ui.button.active{
+      background: #005987 !important;
+    color: white !important;
+    }
+
+    }
   
+    .selectedWeekDay{
+      background-color: #005987 !important;
+    }
+
 @media (max-width:1023px) {
   .ui.buttons{
     display: list-item !important;
   }
 }
+
+.grid_custom_input{
+  @media (min-width:1023px) {
+    display: flex !important;
+    align-items: center !important;
+    margin-top: 1.5rem !important;
+    .w_input_set{
+      width: 9rem !important;
+      margin-left: 1rem !important;
+    }
+    }
+    .custom_label{
+      margin: 0 0 .28571429rem 0;
+    }
+
+  }
+
+  .custom_or{
+    display: flex;
+  align-items: center;
+  }
+// .grid_custom_label{
+//   align-items: center;
+//   display: flex !important;
+//   @media (min-width:1023px) {
+//     span{
+//       margin-top: 1rem !important;
+// }
+// }
+// }
+
+// .grid_custom_input{
+  
+// @media (min-width:1023px) {
+//   .ui.input{
+//     input{
+//   margin-left: -4rem !important;
+// }
+//   }
+// }
+// }
+
+ 
+
+
+
 }

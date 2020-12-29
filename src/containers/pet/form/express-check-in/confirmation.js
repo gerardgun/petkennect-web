@@ -17,7 +17,7 @@ const ExpressCheckInConfirmation = props => {
     error
   } = props
 
-  const getIsOpened = mode => (mode === 'UPDATE')
+  const getIsOpened = mode => (mode === 'UPDATE' && petDetail.item.express_check_in_type)
 
   const _handleClose = () =>{
     props.reset()

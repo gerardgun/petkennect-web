@@ -42,6 +42,7 @@ import locationDetail from './location/detail'
 import notification from './notification'
 import organization from './organization'
 import organizationDetail from './organization/detail'
+import packagePricing from './package-pricing'
 import pet from './pet'
 import petDetail from './pet/detail'
 import petBreed from './pet/breed'
@@ -66,6 +67,8 @@ import petReservation from './pet/reservation'
 import petReservationDetail from './pet/reservation/detail'
 import petReservationDaycampQuestion from './pet/reservation/daycamp-question'
 import petReservationDaycampQuestionDetail from './pet/reservation/daycamp-question/detail'
+import petReservationTrainingPackage from './pet/reservation/training/package'
+import petReservationTrainingReservation from './pet/reservation/training/reservation'
 import petVaccination from './pet/vaccination'
 import petVaccinationDetail from './pet/vaccination/detail'
 import petVaccinationType from './pet/vaccination-type'
@@ -173,6 +176,7 @@ export default function* rootSaga() {
     ...notification,
     ...organization,
     ...organizationDetail,
+    ...packagePricing,
     ...pet,
     ...petDetail,
     ...petBreed,
@@ -197,6 +201,8 @@ export default function* rootSaga() {
     ...petReservationDetail,
     ...petReservationDaycampQuestion,
     ...petReservationDaycampQuestionDetail,
+    ...petReservationTrainingPackage,
+    ...petReservationTrainingReservation,
     ...petVaccination,
     ...petVaccinationDetail,
     ...petVaccinationType,

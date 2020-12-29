@@ -14,7 +14,7 @@ import VaccinationSection from './VaccinationSection'
 import IncidentSection from './IncidentSection'
 import NoteSection from './NoteSection'
 import GallerySection from './GallerySection'
-// import TrainingSection from './Training'
+import TrainingPerformance from './BookingSection/Training/Performance'
 
 import useCameraAvailable from '@hooks/useCameraAvailable'
 import { defaultImageUrl } from '@lib/constants'
@@ -25,8 +25,9 @@ import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
 import petNoteDuck from '@reducers/pet/note'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
+import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
 
-const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
+const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props }) => {
   const history = useHistory()
   const [ activeMenuItem, setActiveMenuItem ] = useState('info')
   const inputFileRef = useRef()
@@ -224,7 +225,7 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
               <Menu.Item
                 active={activeMenuItem === 'bookings'} link name='bookings'
                 onClick={_handleMenuItemClick}>
-                Bookings
+                Services
                 <Label color='teal'>4</Label>
               </Menu.Item>
               <Menu.Item
@@ -251,24 +252,17 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
                 Gallery
                 <Label color='teal'>{petImage.pagination.meta.total_items || petImage.items.length}</Label>
               </Menu.Item>
-              {/* <Menu.Item
-                active={activeMenuItem === 'training'} link name='training'
-                onClick={_handleMenuItemClick}>
-                Training
-                <Label color='teal'>0</Label>
-              </Menu.Item> */}
             </Menu>
           </Grid.Column>
           <Grid.Column
             className='petkennect-profile-body'
             computer={11} mobile={16} tablet={16}>
             {activeMenuItem === 'info' && <InformationSection/>}
-            {activeMenuItem === 'bookings' && <BookingSection/>}
+            {activeMenuItem === 'bookings' && (trainingPackageDetail.mode === 'READ' ? <TrainingPerformance/> : <BookingSection/>)}
             {activeMenuItem === 'vaccinations' && <VaccinationSection/>}
             {activeMenuItem === 'incidents' && <IncidentSection/>}
             {activeMenuItem === 'notes' && <NoteSection/>}
             {activeMenuItem === 'gallery' && <GallerySection/>}
-            {/* {activeMenuItem === 'training' && <TrainingSection/>} */}
           </Grid.Column>
         </Grid>
       </Segment>
@@ -285,9 +279,10 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
 export default compose(
   connect(
     ({ ...state }) => ({
-      petDetail: petDetailDuck.selectors.detail(state),
-      petImage : petImageDuck.selectors.list(state),
-      petNote  : petNoteDuck.selectors.list(state)
+      petDetail            : petDetailDuck.selectors.detail(state),
+      trainingPackageDetail: petReservationTrainingPackageDetail.selectors.detail(state),
+      petImage             : petImageDuck.selectors.list(state),
+      petNote              : petNoteDuck.selectors.list(state)
     }), {
       getPetImages       : petImageDuck.creators.get,
       getPetNotes        : petNoteDuck.creators.get,

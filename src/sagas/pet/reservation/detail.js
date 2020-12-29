@@ -50,7 +50,6 @@ function* get({ id }) {
 function* post({ payload: { ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
-
     let orderServices = []
 
     if(payload.pet && payload.serviceVariation)
@@ -62,7 +61,8 @@ function* post({ payload: { ...payload } }) {
           price            : parseInt(payload.serviceVariation.price),
           reserved_at      : moment.utc(payload.check_in , 'YYYY-MM-DD HH-mm:ss Z'),
           location         : payload.location,
-          pet              : payload.pet
+          pet              : payload.pet,
+          comment          : payload.comment
         })
       else
         payload.pet && payload.pet.forEach(_pet => {
@@ -84,7 +84,7 @@ function* post({ payload: { ...payload } }) {
     const order = yield call(Post, 'orders/', {
       client  : payload.clientId,
       employee: payload.currentTenant.id,
-      location: payload.location,
+      location: payload.currentTenant.employee.location,
       services: orderServices
     })
 
@@ -105,19 +105,32 @@ function* post({ payload: { ...payload } }) {
       }
 
       if(payload.serviceType === 'G')
+      {
+        if(payload.grooming_service_lis)
+          for (let item of payload.grooming_service_list)
+            yield call(Post, `reservations/${_order_services.id}/addons/`, {
+              service_variation: item.id,
+              price            : item.price
+            })
+
         yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,
           employee: payload.groomer
         })
+      }
       else if(payload.serviceType === 'D')
+      {
         yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  daycamp: {
           card       : '6',
           yard_type  : '11',
           checkout_at: moment.utc(payload.check_out , 'YYYY-MM-DD HH-mm:ss Z')
         } })
+      }
       else
+      {
         yield call(Patch, `reservations/${_order_services.id}/`,{ ...reservationDetail, boarding: {
           checkout_at: moment.utc(payload.check_out , 'YYYY-MM-DD HH-mm:ss Z'), kennel: payload.kennel_type
         } })
+      }
     }
 
     yield put({ type: types.POST_FULFILLED })

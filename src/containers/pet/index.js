@@ -32,6 +32,10 @@ const PetList = ({ pet, petDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
+  const _handleExpressCheckInBtnClick = () =>{
+    props.setReservationItem(pet.selector.selected_items[0], 'CREATE')
+  }
+
   const _handleOptionClick = option => {
     if(option === 'delete') {
       props.setItem(pet.selector.selected_items[0], 'DELETE')
@@ -52,6 +56,7 @@ const PetList = ({ pet, petDetail, ...props }) => {
           <Grid.Column
             className='ui-grid-align'
             computer={12} mobile={8} tablet={12}>
+            <Button color='teal' content='Express Check In' onClick={_handleExpressCheckInBtnClick}/>
             <Button color='teal' content='New Pet' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>

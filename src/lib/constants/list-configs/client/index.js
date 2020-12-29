@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Image, Icon, Popup } from 'semantic-ui-react'
+import { Icon, Popup } from 'semantic-ui-react'
 
 import { formatPhoneNumber } from '@lib/utils/functions'
 
@@ -82,13 +82,13 @@ export default {
         return (
           <>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {
+              {/* {
                 row.thumbnail_path
                   ? <Image
                     className='profile' rounded size='mini'
                     src={row.thumbnail_path}/>
                   : <Icon name='user circle' style={{ color: 'gray', fontSize: '35px' }}></Icon>
-              }
+              } */}
               <Link to={`/client/${row.id}`}>
                 <span>{`${cell} ${row.last_name}`}</span>
               </Link>

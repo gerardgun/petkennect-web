@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Container, Form, Header, Grid } from 'semantic-ui-react'
+import { Button, Popup, Container, Form, Header, Grid } from 'semantic-ui-react'
 import moment from 'moment'
 import  _get from 'lodash/get'
 import _defaultTo from 'lodash/defaultTo'
@@ -35,8 +35,14 @@ function ClienInformationShow({ clientDetail, ...props }) {
         <Grid.Column
           computer={8} mobile={5} tablet={8}
           textAlign='right'>
-          <Button
-            basic color='teal' icon='mail'/>
+          <Popup
+            content='Send Email' inverted position='top center'
+            size='tiny' trigger={<Button
+              basic color='teal' icon='mail'/>}/>
+          <Popup
+            content='Send SMS' inverted position='top center'
+            size='tiny' trigger={<Button
+              basic color='teal' icon='fax'/>}/>
           <Button
             basic color='teal' icon='edit outline'
             onClick={_handleEditBtnClick}/>
@@ -54,6 +60,10 @@ function ClienInformationShow({ clientDetail, ...props }) {
         <Button
           basic={ActiveInfoItem !== 'Vet'} color='teal'
           content='Vet Information' name='Vet'
+          onClick={_handleInfoItemClick}/>
+        <Button
+          basic={ActiveInfoItem !== 'intraction_history'} color='teal'
+          content='Interaction History' name='intraction_history'
           onClick={_handleInfoItemClick}/>
       </div>
 
@@ -121,6 +131,11 @@ function ClienInformationShow({ clientDetail, ...props }) {
                 <p className='text-gray'>The are not authorized people to pick up.</p>
               )
             }
+
+            <Header as='h6' className='section-header' color='blue'>Package Discount</Header>
+            <Form.Group widths={2}>
+              <Form.Input label='Discount' readOnly value={_defaultTo(client.package_discount, '-')}/>
+            </Form.Group>
           </>
         )}
 

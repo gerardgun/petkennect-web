@@ -173,6 +173,7 @@ const categories = [
       { href: '/setup/day-camp-form', label: 'Day Camp Form' },
       { href: '/setup/agreement', label: 'Agreements' },
       { href: '/setup/notifications', label: 'Notifications' },
+      { href: '/setup/package-pricing', label: 'Package Pricing' },
       // { href: '/setup/color-codes', label: 'Color Codes' },
       { href: '/setup/training-reason', label: 'Training Reason' },
       { href: '/setup/training-method', label: 'Training Method' },

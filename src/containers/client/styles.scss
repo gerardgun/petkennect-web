@@ -6,7 +6,9 @@
   }
   .div-client-info-button{
     .ui.teal.button{
-    width: 14rem;
+    width: 12rem;
+    padding: 1rem;
+    font-size: 0.9rem !important;
     
      @media (min-width: 768px) and (max-width:1200px) {
       width: 12rem;

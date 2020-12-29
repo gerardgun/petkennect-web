@@ -1,0 +1,39 @@
+import React  from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import trainingPackageDuck from '@reducers/training-package'
+import { Container, Button, Grid } from 'semantic-ui-react'
+import Table from '@components/Table'
+import './style.scss'
+
+const ReportShow = ()=>{
+  return (
+    <Container className='c-booking' fluid>
+      <Grid className='segment-content-header' columns={2}>
+        <Grid.Column computer={4} mobile={10} tablet={4}>
+
+        </Grid.Column >
+        <Grid.Column
+          className='ui-grid-align'
+          computer={12} mobile={10} tablet={12}>
+          <Button
+            color='teal'
+            content='New Report'
+            onClick=''/>
+        </Grid.Column>
+      </Grid>
+      <Table
+        duck={trainingPackageDuck}
+        onOptionClick=''
+        onRowClick=''/>
+    </Container>
+
+  )
+}
+
+export default  compose(
+  connect(() => {
+
+  })
+
+)(ReportShow)

@@ -2,36 +2,41 @@ import React, { useEffect }  from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm, formValueSelector } from 'redux-form'
+import { reduxForm, formValueSelector,Field } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
-
+import FormField from '@components/Common/FormField'
 import authDuck from '@reducers/auth'
 import serviceDuck from '@reducers/service'
+import serviceAttributeDuck from '@reducers/service/service-attribute'
 import clientPetDuck from '@reducers/client/pet'
-import employeeDetailDuck from '@reducers/employee/detail'
+import employeeDuck from '@reducers/employee'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
+import AlertModal from './alert-modal'
 import { groomingFormId } from './first'
 
 const GroomingFormWizardThird = props => {
   const {
-    employeeName,
+    groomerDetail,
     check_in,
+    clientPet,
     selectedPetName,
     petReservationDetail,
     currentTenant,
-    services, error, handleSubmit, reset // redux-form
+    services,
+    serviceAttribute, error, handleSubmit, reset // redux-form
   } = props
 
   const { client: clientId } = useParams()
   const history = useHistory()
 
   useEffect(() => {
-    props.getServices()
+    props.getServices({ type: 'G' })
+    props.getServiceAttributes()
   }, [])
 
   const _handleClose = () => {
@@ -40,10 +45,36 @@ const GroomingFormWizardThird = props => {
     history.push(`/client/${clientId}`)
   }
 
+  const groomerName = groomerDetail && groomerDetail.first_name + ' ' + groomerDetail.last_name
+
   const _handleSubmit = values => {
     values = parseFormValues(values)
-    const currentServiceType = services.items.find(({ type }) => type === props.serviceType)
-    let serviceVariation = currentServiceType && currentServiceType.variations.length > 0 && currentServiceType.variations[0]
+    const location = values.location
+    const petSize = clientPet.items.find(pet => pet.id === values.pet).size
+
+    const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
+      .values.find(_location => _location.value == location).id
+    const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
+      .values.find(_petSize => _petSize.value == petSize).id
+
+    const variation = services.items[0].variations
+
+    let variationId
+    for (let item of variation) {
+      let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+      let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+
+      if(locationExist != null && petSizeExist != null)
+      {
+        variationId = locationExist.service_variation_id
+        break
+      }
+    }
+
+    if(variationId == null)
+      props.setItem(null, 'READ')
+
+    let serviceVariation = variation.find(_ => _.id == variationId)
     if(isUpdating)
       return props
         .put({ ...values, serviceVariation,
@@ -94,7 +125,7 @@ const GroomingFormWizardThird = props => {
                    General Information
                     </Header>
                     <InputReadOnly
-                      label='Pets'
+                      label='Pet'
                       value={`${selectedPetName}`}/>
                     <br/>
                     <Grid>
@@ -106,7 +137,7 @@ const GroomingFormWizardThird = props => {
                       <Grid.Column  computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Groomer'
-                          value={`${employeeName}`}/>
+                          value={`${groomerName}`}/>
                       </Grid.Column>
                     </Grid>
 
@@ -122,8 +153,12 @@ const GroomingFormWizardThird = props => {
                    Reservation note
                     </Header>
                     <div className='mt16'>
-                      <label>Instructions</label>
-                      <textarea className='w100' name='instructions' rows='5'></textarea>
+                      <Field
+                        component={FormField}
+                        control={Form.TextArea}
+                        label='Instructions'
+                        name='comment'
+                        placeholder='Enter instructions'/>
                     </div>
                   </div>
                 </div>
@@ -202,6 +237,7 @@ const GroomingFormWizardThird = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+      <AlertModal/>
     </>
   )
 }
@@ -215,25 +251,31 @@ export default compose(
       const appointment_time = formValueSelector(groomingFormId)(state, 'appointment_time')
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPet = formValueSelector(groomingFormId)(state, 'pet')
+      const groomer = formValueSelector(groomingFormId)(state, 'groomer')
       const selectedPetName = clientPet.items.find(_ => _.id == selectedPet) && clientPet.items.find(_ => _.id == selectedPet).name
-      const employeeDetail = employeeDetailDuck.selectors.detail(state)
-      const employeeName = employeeDetail.item && employeeDetail.item.first_name + ' ' + employeeDetail.item.last_name
+      const employeeDetail = employeeDuck.selectors.list(state)
+      const groomerDetail = employeeDetail.items && employeeDetail.items.find(_ => _.id == groomer)
+      const serviceAttribute = serviceAttributeDuck.selectors.list(state)
 
       return {
         check_in     : check_in + ' ' + appointment_time,
+        clientPet,
         selectedPetName,
-        employeeName,
+        groomerDetail,
         petReservationDetail,
         services     : service,
+        serviceAttribute,
         currentTenant: authDuck.selectors.getCurrentTenant(auth),
         initialValues: petReservationDetail.item
       }
     },
     {
-      getServices: serviceDuck.creators.get,
-      resetItem  : petReservationDetailDuck.creators.resetItem,
-      post       : petReservationDetailDuck.creators.post,
-      put        : petReservationDetailDuck.creators.put
+      getServices         : serviceDuck.creators.get,
+      getServiceAttributes: serviceAttributeDuck.creators.get,
+      resetItem           : petReservationDetailDuck.creators.resetItem,
+      post                : petReservationDetailDuck.creators.post,
+      put                 : petReservationDetailDuck.creators.put,
+      setItem             : petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({

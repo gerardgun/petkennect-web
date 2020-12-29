@@ -1,16 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm, FieldArray } from 'redux-form'
-import { Button, Dropdown, Form, Header, Input, Grid, Select, Segment, Icon } from 'semantic-ui-react'
+import { Field, reduxForm } from 'redux-form'
+import { Button, Dropdown, Form, Header, Input, Checkbox, Grid, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
 
-import moment  from 'moment'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
@@ -19,179 +18,6 @@ import './styles.scss'
 
 export const trainingFormId = 'training-reservation-form'
 
-const ClassesVisitsList = ({ fields, meta: { error, submitFailed } }) => {
-  const _handleAddClassBtnClick = () => fields.push({ type: 'class' })
-
-  const _handleAddVisitBtnClick = () => fields.push({ type: 'visit' })
-
-  const _handleAddProgramBtnClick = () => fields.push({ type: 'program' })
-
-  const _handleDeleteQuestionBtnClick = (e, { index }) =>{
-    fields.remove(index)
-  }
-
-  return (
-    <>
-      <div className='mh16 mb16 flex align-center justify-center'>
-        <Button
-          color='teal'
-          content='Add Program'
-          icon='plus'
-          onClick={_handleAddProgramBtnClick}
-          type='button'/>
-
-        <Button
-          color='teal'
-          content='Add Class'
-          icon='plus'
-          onClick={_handleAddClassBtnClick}
-          type='button'/>
-
-        <Button
-          color='teal'
-          content='Add Visit'
-          icon='plus'
-          onClick={_handleAddVisitBtnClick}
-          type='button'/>
-      </div>
-      {
-        fields.length > 0 && (
-          <Header as='h3' className='section-info-header text-center'>When will this event be?</Header>
-        )
-      }
-      {
-        fields.map((item, index) => {
-          return (
-            <Grid columns={2} key={index}  >
-              {
-                fields.get(index).type == 'class' && (
-                  <>
-                    <Grid.Column  computer={14} mobile={10}>
-                      <Form.Group widths='equal'>
-                        <Field
-                          component={FormField}
-                          control={Input}
-                          label='Evel  Date'
-                          name={`${index}_evel_date`}
-                          required
-                          type='date'/>
-                        <Field
-                          component={FormField}
-                          control={Input}
-                          label='Starting Date'
-                          name={`${index}_starting_date`}
-                          required
-                          type='date'/>
-                      </Form.Group>
-                    </Grid.Column>
-                    <Grid.Column
-                      className='flex align-center flex_imp' computer={2} mobile={6}
-                      tablet={1}>
-                      <Button
-                        basic
-                        color='red'
-                        data-index={index} icon='trash alternate outline'
-                        index={`${index}`}
-                        onClick={_handleDeleteQuestionBtnClick}
-                        type='button'/>
-                    </Grid.Column>
-                  </>
-                )
-              }
-
-              {
-                fields.get(index).type == 'visit' && (
-                  <>
-                    <Grid.Column  computer={14} mobile={10}>
-                      <Form.Group widths='equal'>
-                        <Field
-                          component={FormField}
-                          control={Input}
-                          label='Visit  Date'
-                          name={`${index}_visit_date`}
-                          required
-                          type='date'/>
-                        <Field
-                          component={FormField}
-                          control={Input}
-                          label='Check In Time'
-                          name={`${index}_check_in_time`}
-                          required
-                          type='time'/>
-                      </Form.Group>
-                    </Grid.Column>
-                    <Grid.Column
-                      className='flex align-center flex_imp' computer={2} mobile={6}
-                      tablet={1}>
-                      <Button
-                        basic
-                        color='red'
-                        data-index={index} icon='trash alternate outline'
-                        index={`${index}`}
-                        onClick={_handleDeleteQuestionBtnClick}
-                        type='button'/>
-                    </Grid.Column>
-                  </>
-                )
-              }
-
-              {
-                fields.get(index).type == 'program' && (
-                  <>
-                    <Grid.Column  computer={14} mobile={10}>
-                      <Field
-                        component={FormField}
-                        control={Select}
-                        label='Training'
-                        name='reason_for_training'
-                        options={[ {
-                          key  : 1,
-                          value: 'Day Train',
-                          text : 'Day Train'
-                        }, {
-                          key  : 2,
-                          value: 'Group Class',
-                          text : 'Group Class'
-                        } ,
-                        {
-                          key  : 2,
-                          value: 'Private Lession',
-                          text : 'Private Lession'
-                        }  ]}/>
-                    </Grid.Column>
-                    <Grid.Column
-                      className='flex align-center flex_imp' computer={2} mobile={6}
-                      tablet={1}>
-                      <Button
-                        basic
-                        className='mt8'
-                        color='red'
-                        data-index={index} icon='trash alternate outline'
-                        index={`${index}`}
-                        onClick={_handleDeleteQuestionBtnClick}
-                        type='button'/>
-                    </Grid.Column>
-                  </>
-                )
-              }
-            </Grid>
-          )
-        })
-      }
-
-      {
-        submitFailed && error && (
-          <Form.Group widths='equal'>
-            <Form.Field>
-              <FormError message={error}/>
-            </Form.Field>
-          </Form.Group>
-        )
-      }
-    </>
-  )
-}
-
 const TrainingFormWizardFirst = props => {
   const {
     clientPet,
@@ -199,18 +25,39 @@ const TrainingFormWizardFirst = props => {
     error, handleSubmit, reset
   } = props
 
+  const [ allWeekDays, setAllWeekDays ] = useState(false)
+  const [ allWeekEnd, setAllWeekEnd ] = useState(false)
+  const [ allSelectedWeek, setAllSelectedWeek ] = useState([ '1', '2' ])
+
+  const _handleAllWeekDayChange = (value) =>{
+    setAllWeekDays(value)
+  }
+
+  const _handleOnlyWeekEndChange = (value) =>{
+    setAllWeekEnd(value)
+  }
+
+  const _handleWeekDayClick = (e ,{ name }) =>{
+    let allItem = allSelectedWeek
+    const index = allItem.indexOf(name)
+    if(index > -1)
+      allItem.splice(index, 1)
+    else
+      allItem.push(name)
+
+    setAllSelectedWeek([].concat(allItem))
+  }
+
   return (
     <>
-      <div className='div-progress-bar '>
+      <div className='div-progress-bar div-training-main'>
         <div className='div-bar-content active'>
           <Icon name='check circle'/>
           <span>Service Information</span>
         </div>
         <div className='div-bar-line'>
         </div>
-        <div className='div-bar-content'>
-          <Icon name='check circle'/>
-          <span>Pet Information</span>
+        <div className='div-bar-line'>
         </div>
         <div className='div-bar-line'>
         </div>
@@ -256,18 +103,91 @@ const TrainingFormWizardFirst = props => {
           </Form.Group>
         </Segment>
         <Segment className='section-info-item-step1'>
-          <FieldArray
-            component={ClassesVisitsList}
-            name='classes_visits'
-            title='Classes Visits'/>
+          <Header as='h3' className='section-info-header'>Select  Package Details</Header>
+          <Grid>
+            <Grid.Column computer={16}>
+              <Form.Group widths='2'>
+                <Field
+                  component={FormField}
+                  control={Select}
+                  label='Select Package'
+                  name='package'
+                  options={[
+                    { key: 1, value: 'Package1', text: 'Package1' }
+                  ]}
+                  placeholder='Select Package'
+                  selectOnBlur={false}/>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  label='Price'
+                  name='price'
+                  selectOnBlur={false}
+                  type='number'/>
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  label='Description'
+                  name='package_description'
+                  placeholder='package description'
+                  readOnly/>
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Field
+                  component={FormField}
+                  control={Select}
+                  label='Reason for training'
+
+                  name='reason'
+                  options={[
+                    { key: 1, value: 1, text: 'Reason 1' },
+                    { key: 2, value: 2, text: 'Reason 2' },
+                    { key: 3, value: 3, text: 'Reason 3' },
+                    { key: 4, value: 4, text: 'Reason 4' }
+                  ]}
+                  placeholder='Select Reason'
+                  selectOnBlur={false}/>
+                <Field
+                  component={FormField}
+                  control={Select}
+                  label='Select Trainer'
+
+                  name='trainer'
+                  options={[
+                    { key: 1, value: 1, text: 'Trainer 1' },
+                    { key: 2, value: 2, text: 'Trainer 2' },
+                    { key: 3, value: 3, text: 'Trainer 3' },
+                    { key: 4, value: 4, text: 'Trainer 4' }
+                  ]}
+                  placeholder='Select Trainer'
+                  selectOnBlur={false}/>
+                <Field
+                  component={FormField}
+                  control={Select}
+                  label='Method'
+                  name='method'
+                  options={[
+                    { key: 1, value: 1, text: 'method 1' },
+                    { key: 2, value: 2, text: 'method 2' }
+
+                  ]}
+                  placeholder='Select Method'
+                  selectOnBlur={false}/>
+              </Form.Group>
+            </Grid.Column>
+
+          </Grid>
+
         </Segment>
 
-        <Segment className='recurring_date_div'>
+        <Segment className='recurring_date_div section-info-item-step1'>
           <Header as='h3'>
         Select Dates
           </Header>
 
-          <Form.Group widths='equal'>
+          <Form.Group widths={3}>
             <Field
               component={FormField}
               control={Input}
@@ -277,65 +197,92 @@ const TrainingFormWizardFirst = props => {
             <Field
               component={FormField}
               control={Input}
-              label='End Date'
-              name='end_date'
-              type='date'/>
+              label='Check In Time'
+              name='check_in_time'
+              required
+              type='time'/>
           </Form.Group>
           <Header as='h3'>
-          Select Recurring Dates
+          Select Recurring Days
           </Header>
-          <Button.Group basic>
-            <Button  color='blue'>Sunday</Button>
-            <Button  color='blue'>Monday</Button>
-            <Button color='blue'>Tuesday</Button>
-            <Button  color='blue'>Wednesday</Button>
-            <Button>Thursday</Button>
-            <Button>Friday</Button>
-            <Button>Saturday</Button>
+          <Form.Group className='form_group_label0'>
+            <Field
+              component={FormField}
+              control={Checkbox}
+              label='Week Days'
+              name='all_week_days'
+              onChange={_handleAllWeekDayChange}/>
+            <Field
+              component={FormField}
+              control={Checkbox}
+              label='Weekend'
+              name='only_week_end'
+              onChange={_handleOnlyWeekEndChange}/>
+          </Form.Group>
+          <Button.Group className='week_btn_group'>
+            <Button
+              active={allWeekDays || allSelectedWeek.includes('1')} name='1' onClick={_handleWeekDayClick}
+              type='button'>Monday</Button>
+            <Button
+              active={allWeekDays || allSelectedWeek.includes('2')} name='2' onClick={_handleWeekDayClick}
+              type='button'>Tuesday</Button>
+            <Button
+              active={allWeekDays || allSelectedWeek.includes('3')} name='3' onClick={_handleWeekDayClick}
+              type='button'>Wednesday</Button>
+            <Button
+              active={allWeekDays || allSelectedWeek.includes('4')} name='4' onClick={_handleWeekDayClick}
+              type='button'>Thursday</Button>
+            <Button
+              active={allWeekDays || allSelectedWeek.includes('5')} name='5' onClick={_handleWeekDayClick}
+              type='button'>Friday</Button>
+            <Button
+              active={allWeekEnd || allSelectedWeek.includes('6')} name='6' onClick={_handleWeekDayClick}
+              type='button'>Saturday</Button>
+            <Button
+              active={allWeekEnd || allSelectedWeek.includes('7')} name='7' onClick={_handleWeekDayClick}
+              type='button'>Sunday</Button>
           </Button.Group>
           <Grid className='mt8'>
-            <Grid.Column computer={8} mobile={16} tablet={16}>
+            <Grid.Column computer={16} mobile={16} tablet={16}>
               <Header as='h3'>
               Frequency
               </Header>
-              <Button.Group basic>
-                <Button  color='blue'>Every Week</Button>
-                <Button>Every Other Weeek</Button>
+              <Button.Group className='week_btn_group'>
+                <Button
+                  active={allSelectedWeek.includes('every_week')} name='every_week' onClick={_handleWeekDayClick}
+                  type='button'>Every Week</Button>
+                <Button
+                  active={allSelectedWeek.includes('every_other_week')} name='every_other_week' onClick={_handleWeekDayClick}
+                  type='button'>Every Other Week</Button>
               </Button.Group>
+
             </Grid.Column>
-            <Grid.Column computer={8} mobile={16} tablet={16}>
-              <Header as='h3'>
-              Custom # of Weeks
-              </Header>
+            {/* <Grid.Column
+              className='grid_custom_input' computer={8}
+              mobile={16} tablet={16}>
+              <span>Custom - Repeat After # of Weeks</span>
               <Field
+                className='w_input_set'
                 component={FormField}
                 control={Input}
-                label=''
-                name='no_of_weeks'
-                placeholder=''/>
-            </Grid.Column>
-            <Grid.Column computer={8} mobile={16} tablet={16}>
-              <Header as='h3'>
-              Ending
-              </Header>
-              <Field
-                component={FormField}
-                control={Input}
-                label=''
-                name='ending'
-                placeholder=''
-                type='date'/>
-            </Grid.Column>
-            <Grid.Column computer={8} mobile={16} tablet={16}>
-              <Header as='h3'>
-              Until # of Occurrences
-              </Header>
-              <Field
-                component={FormField}
-                control={Input}
-                label=''
-                name='number_of_date_to_add'
-                placeholder=''/>
+                name='custom_after_no_of_weeks'
+                type='number'/>
+            </Grid.Column> */}
+            <Grid.Column width={16}>
+              <label className='custom_label'>Ending: Date/ Number of occurrences </label>
+              <Form.Group computer={4} mobile={16} tablet={16}>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  name='end_date'
+                  type='date'/>
+                <span className='custom_or'>OR</span>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  name='until_no_of_occurrences'
+                  type='number'/>
+              </Form.Group>
             </Grid.Column>
           </Grid>
         </Segment>
@@ -355,7 +302,7 @@ const TrainingFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
-              onClick={props.onNextStep}
+              onClick={props.onNextStep(allSelectedWeek)}
               type='button'/>
           </Form.Field>
         </Form.Group>
@@ -369,13 +316,9 @@ export default compose(
   connect(
     ({ ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
-      const defaultInitialValues = petReservationDetail.item.id ? {
-        check_in: petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
-        pet     : [ petReservationDetail.item.pet ]
-      } : {}
 
       return {
-        initialValues: { ...petReservationDetail.item, ...defaultInitialValues },
+        initialValues: { ...petReservationDetail.item },
         location     : locationDuck.selectors.list(state),
         clientPet    : clientPetDuck.selectors.list(state)
       }
@@ -387,11 +330,8 @@ export default compose(
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        location       : Yup.mixed().required('Location is required'),
-        pet            : Yup.mixed().required('Pet is required'),
-        reservation_day: Yup
-          .date()
-          .required('Reservation day is required')
+        location: Yup.mixed().required('Location is required'),
+        pet     : Yup.mixed().required('Pet is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

@@ -474,6 +474,16 @@ const ClientForm = props => {
               name='authorized_people_pick_up'
               title='People Authorized to Pick Up'/>
 
+            <Header as='h6' className='section-header' color='blue'>Package Discount</Header>
+            <Form.Group widths={2}>
+              <Field
+                autoComplete='off'
+                component={FormField}
+                control={Input}
+                label='Discount'
+                name='package_discount'
+                placeholder='Enter Discount'/>
+            </Form.Group>
           </>
         )}
         {ActiveInfoItem === 'Emergency'  && (

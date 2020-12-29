@@ -1,0 +1,102 @@
+import React, { useMemo } from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { compose } from 'redux'
+import {  reduxForm } from 'redux-form'
+import { Button, Form, Icon, Header, Modal } from 'semantic-ui-react'
+
+import FormError from '@components/Common/FormError'
+
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+
+export const formId = 'alert-form'
+
+const AlertModal = props => {
+  const {
+    petDetail,
+    error
+  } = props
+
+  const getIsOpened = mode => (mode === 'READ')
+
+  const _handleClose = () =>{
+    props.reset()
+    props.resetItem()
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  const _handleConfirmClick = values => {
+    _handleClose()
+  }
+
+  const isOpened = useMemo(() => getIsOpened(petDetail.mode), [ petDetail.mode ])
+
+  return (
+    <Modal
+      className='ui-delete-modal'
+      onClose={_handleClose}
+      open={isOpened}
+      size='small'>
+      <Modal.Content style={{ textAlign: 'center', paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
+        <Icon
+          circular color='blue' name='info circle icon'
+          size='big' style={{ backgroundColor: 'blue', boxShadow: 'none', fontSize: '2.5rem' }}/>
+        {/* eslint-disable-next-line react/jsx-handler-names */}
+        <Header as='h2' style={{ fontWeight: 500 }}>
+            Warning
+        </Header>
+        {
+          <>
+            <p style={{ color: 'gray' }}>
+              <b>No Variation Exists! </b> This location and pet does not have a Price Variation.
+            </p>
+          </>
+        }
+
+        {
+          error && (
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <FormError message={error}/>
+              </Form.Field>
+            </Form.Group>
+          )
+        }
+      </Modal.Content>
+      <Modal.Actions>
+        <Button
+          basic className='w120' content='Cancel'
+          onClick={_handleClose}/>
+
+        <Button
+          className='w120'
+          color='teal' content='OK'
+          onClick={_handleConfirmClick}/>
+
+      </Modal.Actions>
+    </Modal>
+  )
+}
+
+export default compose(
+  withRouter,
+  connect(
+    state => {
+      const petDetail = petReservationDetailDuck.selectors.detail(state)
+
+      return {
+        petDetail
+      }
+    },
+    {
+      post     : petReservationDetailDuck.creators.post,
+      put      : petReservationDetailDuck.creators.put,
+      resetItem: petReservationDetailDuck.creators.resetItem
+    }
+  ),
+  reduxForm({
+    form              : formId,
+    destroyOnUnmount  : false,
+    enableReinitialize: true
+  })
+)(AlertModal)

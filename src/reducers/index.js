@@ -52,6 +52,8 @@ import notificationDetail from '@reducers/notification/detail'
 import organization from '@reducers/organization'
 import organizationDetail from '@reducers/organization/detail'
 import organizationCompany from '@reducers/organization/company'
+import packagePricing from '@reducers/package-pricing'
+import packagePricingDetail from '@reducers/package-pricing/detail'
 import pet from '@reducers/pet'
 import petDetail from '@reducers/pet/detail'
 import petBreed from '@reducers/pet/breed'
@@ -80,6 +82,9 @@ import petReservation from '@reducers/pet/reservation'
 import petReservationDetail from '@reducers/pet/reservation/detail'
 import petReservationDaycampQuestion from '@reducers/pet/reservation/dacamp-question'
 import petReservationDaycampQuestionDetail from '@reducers/pet/reservation/dacamp-question/detail'
+import petReservationTrainingPackage from '@reducers/pet/reservation/training/package'
+import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
+import petReservationTrainingReservation from '@reducers/pet/reservation/training/reservation'
 import petKennel from '@reducers/pet/pet-kennel'
 import petKennelDetail from '@reducers/pet/pet-kennel/detail'
 import petKennelType from '@reducers/pet/pet-kennel-type'
@@ -201,6 +206,8 @@ const createRootReducer = history => combineReducers({
   [organization.store]                          : organization.reducer,
   [organizationDetail.store]                    : organizationDetail.reducer,
   [organizationCompany.store]                   : organizationCompany.reducer,
+  [packagePricing.store]                        : packagePricing.reducer,
+  [packagePricingDetail.store]                  : packagePricingDetail.reducer,
   [pet.store]                                   : pet.reducer,
   [petDetail.store]                             : petDetail.reducer,
   [petBreed.store]                              : petBreed.reducer,
@@ -229,6 +236,9 @@ const createRootReducer = history => combineReducers({
   [petReservationDetail.store]                  : petReservationDetail.reducer,
   [petReservationDaycampQuestion.store]         : petReservationDaycampQuestion.reducer,
   [petReservationDaycampQuestionDetail.store]   : petReservationDaycampQuestionDetail.reducer,
+  [petReservationTrainingPackage.store]         : petReservationTrainingPackage.reducer,
+  [petReservationTrainingPackageDetail.store]   : petReservationTrainingPackageDetail.reducer,
+  [petReservationTrainingReservation.store]     : petReservationTrainingReservation.reducer,
   [petVaccination.store]                        : petVaccination.reducer,
   [petVaccinationDetail.store]                  : petVaccinationDetail.reducer,
   [petKennel.store]                             : petKennel.reducer,

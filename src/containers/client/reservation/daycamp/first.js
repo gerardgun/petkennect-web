@@ -133,8 +133,7 @@ const DaycampFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
-              onClick={props.onNextStep}
-              type='button'/>
+              type='submit'/>
           </Form.Field>
         </Form.Group>
       </Form>
@@ -165,13 +164,15 @@ export default compose(
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        location: Yup.mixed().required('Location is required'),
-        pet     : Yup.mixed().required('Pet is required'),
-        check_in: Yup
-          .date()
+        location      : Yup.mixed().required('Location is required'),
+        pet           : Yup.mixed().required('Pet is required'),
+        departing_time: Yup.mixed().required('Departing Time is required'),
+        arriving_time : Yup.mixed().required('Arriving Time is required'),
+        check_in      : Yup
+          .date('Check In date is required')
           .required(),
         check_out: Yup
-          .date().required()
+          .date().required('Check Out date is required')
           .when(
             'check_in',
             (check_in, schema) => (check_in && schema.min(check_in))

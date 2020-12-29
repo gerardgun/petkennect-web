@@ -121,10 +121,11 @@ const GroomingFormWizardFirst = props => {
               control={Select}
               label='Groomer'
               name='groomer'
-              options={employee.items.filter(_employee => _employee.title_name === 'Groommer').map(_employee=>
+              options={employee.items.filter(_employee => _employee.title_name === 'Groomer').map(_employee=>
                 ({ key: _employee.id, value: _employee.id, text: `${_employee.first_name + ' ' + _employee.last_name}` }))
               }
               placeholder='Select Groomer'
+              required
               selectOnBlur={false}/>
           </Form.Group>
         </div>
@@ -188,8 +189,7 @@ const GroomingFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
-              onClick={props.onNextStep}
-              type='button'/>
+              type='submit'/>
           </Form.Field>
         </Form.Group>
       </Form>
@@ -224,11 +224,11 @@ export default compose(
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        location       : Yup.mixed().required('Location is required'),
-        pet            : Yup.mixed().required('Pet is required'),
-        reservation_day: Yup
-          .date()
-          .required('Reservation day is required')
+        location        : Yup.mixed().required('Location is required'),
+        pet             : Yup.mixed().required('Pet is required'),
+        check_in        : Yup.string().required('Reservation day is required'),
+        groomer         : Yup.mixed().required('Groomer is required'),
+        appointment_time: Yup.mixed().required('Appointment time is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

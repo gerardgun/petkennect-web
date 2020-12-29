@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import  './styles.scss'
 import { connect } from 'react-redux'
 import { Header , Grid, Button } from 'semantic-ui-react'
@@ -9,6 +9,7 @@ import CancelReserve from '@containers/pet/create/BookingSection/CancelReserve'
 import PetNotes from '@containers/pet/create/BookingSection/Notes'
 import ViewReport from '@containers/pet/create/BookingSection/ReportCard'
 import Absent from '@containers/pet/create/BookingSection/Absent'
+import Training from '@containers/pet/create/BookingSection/Training'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
@@ -17,6 +18,8 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 function ReservesSection({ ...props }) {
   const { petReservation : { filters = {} }  = {} } = props
+
+  const [ activeServiceItem, setActiveServiceItem ] = useState('T')
 
   useEffect(()=> {
     props.setFilters({ service_type_what_ever_name: 'T', service__upcoming: true, service__current: true  })
@@ -53,8 +56,10 @@ function ReservesSection({ ...props }) {
   }
 
   const _handleFilterBtnClick = type => () => {
+    setActiveServiceItem(type)
     props.setFilters({ service_type_what_ever_name: type })
-    props.getPetReservations()
+    if(type != 'T')
+      props.getPetReservations()
   }
 
   return (
@@ -62,7 +67,7 @@ function ReservesSection({ ...props }) {
       <Grid className='petkennect-profile-body-header'>
         <Grid.Column
           verticalAlign='middle'>
-          <Header as='h2'>Reserves</Header>
+          <Header as='h2'>Services</Header>
         </Grid.Column>
       </Grid>
       <div className='mh28 mv32 div-booking-button'>
@@ -82,17 +87,24 @@ function ReservesSection({ ...props }) {
           basic={filters.service_type_what_ever_name !== 'G'} color='teal'
           content='Grooming' onClick={_handleFilterBtnClick('G')}/>
       </div>
-      <div className='mh28'>
-        <Table
-          duck={petReservationDuck}
-          onOptionDropdownChange={_handleOptionDropdownChange}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
-      </div>
-      <ViewReport/>
-      <CancelReserve/>
-      <PetNotes/>
-      <Absent/>
+      {activeServiceItem === 'T' && <Training/>}
+      {
+        activeServiceItem != 'T' && (
+          <>
+            <div className='mh28'>
+              <Table
+                duck={petReservationDuck}
+                onOptionDropdownChange={_handleOptionDropdownChange}
+                onRowClick={_handleRowClick}
+                onRowOptionClick={_handleRowOptionClick}/>
+            </div>
+            <ViewReport/>
+            <CancelReserve/>
+            <PetNotes/>
+            <Absent/>
+          </>
+        )
+      }
     </div>
   )
 }

@@ -68,9 +68,13 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
 
   const _handleMessageClick = () => setActiveMenuItem('agreements')
 
+  // eslint-disable-next-line no-unused-vars
   const _handleOptionDropdownChange = (e, { value }) => {
-    if(value === 'express_check_in')
-      props.setReservationItem(clientDetail.item, 'CREATE')
+
+  }
+
+  const _handleExpressCheckInBtnClick = () =>{
+    props.setReservationItem(clientDetail.item, 'CREATE')
   }
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
@@ -140,7 +144,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
             <Button
               className='mt8' color='teal' content='Express Check In'
               disabled={_get(clientDetail, 'item.summary.has_pending_agreements', false)}
-              fluid onClick={_handleBookBtnClick} size='large'/>
+              fluid onClick={_handleExpressCheckInBtnClick} size='large'/>
 
             {
               _get(clientDetail, 'item.summary.has_pending_agreements', false) && (
@@ -203,7 +207,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
               <Menu.Item
                 active={activeMenuItem === 'reserves'} link name='reserves'
                 onClick={_handleMenuItemClick}>
-                Reserves
+                Services
               </Menu.Item>
               <Menu.Item
                 active={activeMenuItem === 'email_messages'} link name='email_messages'

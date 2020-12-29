@@ -312,8 +312,7 @@ const BoardingFormWizardSecond = props => {
               className='w120'
               color='teal'
               content='Next'
-              onClick={props.onNextStep}
-              type='button'/>
+              type='submit'/>
           </Form.Field>
         </Form.Group>
       </Form>

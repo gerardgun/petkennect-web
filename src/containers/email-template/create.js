@@ -179,7 +179,7 @@ export default compose(
   connect(
     ({ ...state }) => {
       return {
-        emailTemplateDetail: emailTemplateDetailDuck.selectors.detail(state),
+        emailTemplateDetail: emailTemplateDetailDuck.selectors.detail(state)
       }
     },
     {

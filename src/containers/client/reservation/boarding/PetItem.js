@@ -13,20 +13,20 @@ function dateToYMD(date) {
 }
 
 function ReservationCalenderList({ checkIn,checkOut }) {
-  let ArrDate = [ '' ]
-  let Area = []
+  let arrDate = [ '' ]
+  let area = []
   for (let d = new Date(checkIn); d <= new Date(checkOut); d.setDate(d.getDate() + 1))
-    ArrDate.push(dateToYMD(d))
+    arrDate.push(dateToYMD(d))
 
-  if(ArrDate.length > 0)
-    Area.push('', 'AREA1','AREA2')
+  if(arrDate.length > 0)
+    area.push('', 'AREA1','AREA2')
 
-  return Area.map((areaItem,i) =>{
+  return area.map((areaItem,i) =>{
     return  (
       <>
         <Table.Row>
           {
-            ArrDate.map((dateItem,j) =>{
+            arrDate.map((dateItem,j) =>{
               return (
                 <>
                   {i == 0 && j == 0
@@ -36,7 +36,7 @@ function ReservationCalenderList({ checkIn,checkOut }) {
                   && <Table.Cell><Button className='btn-reservation-calendar basic' style={{ width: '100%' }} type='button'>{dateItem}</Button></Table.Cell>
                   }
                   {i > 0 && j == 0
-    && <><Table.Cell><span className='spn-area'><span>{Area[i]}</span><Checkbox label='Select All'/></span></Table.Cell></>
+    && <><Table.Cell><span className='spn-area'><span>{area[i]}</span><Checkbox label='Select All'/></span></Table.Cell></>
                   }
                   {i > 0 && j > 0
                   && <Table.Cell><Button

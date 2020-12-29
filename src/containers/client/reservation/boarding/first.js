@@ -136,6 +136,7 @@ const BoardingFormWizardFirst = props => {
                   ({ key: _kennelType.id, value: _kennelType.id, text: `${_kennelType.name}` }))
                 }
                 placeholder='Select Kennel'
+                required
                 selectOnBlur={false}/>
             </Form.Group>
             {
@@ -177,8 +178,7 @@ const BoardingFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
-              onClick={props.onNextStep}
-              type='button'/>
+              type='submit'/>
           </Form.Field>
         </Form.Group>
       </Form>
@@ -221,11 +221,12 @@ export default compose(
         pet           : Yup.mixed().required('Pet is required'),
         departing_time: Yup.mixed().required('Departing Time is required'),
         arriving_time : Yup.mixed().required('Arriving Time is required'),
+        kennel_type   : Yup.mixed().required('Kennel Type is required'),
         check_in      : Yup
           .date()
-          .required(),
+          .required('Check In date is required'),
         check_out: Yup
-          .date().required()
+          .date().required('Check Out date is required')
           .when(
             'check_in',
             (check_in, schema) => (check_in && schema.min(check_in))

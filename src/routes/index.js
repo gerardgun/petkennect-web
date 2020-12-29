@@ -39,6 +39,7 @@ import PetKennelArea from '@containers/pet-kennel-area'
 import PetYardType from '@containers/pet-yard-type'
 import PriceMaster from '@containers/price-master'
 import PriceMasterCreate from '@containers/price-master/create'
+import PackagePricing from '@containers/package-pricing'
 import Product from '@containers/product'
 import ProductCreate from '@containers/product/create/RootProvider'
 import ProductAttribute from '@containers/product-attribute'
@@ -233,6 +234,10 @@ const privateRoutes = [
   {
     path     : '/setup/price-master/create',
     component: PriceMasterCreate
+  },
+  {
+    path     : '/setup/package-pricing',
+    component: PackagePricing
   },
   {
     path     : '/product',
