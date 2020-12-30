@@ -23,7 +23,7 @@ function* get() {
           type        : faker.random.arrayElement([ 'Service','Retail' ]),
           price       : faker.random.arrayElement([ 995,699,179,124.65,459 ]),
           status      : faker.random.boolean(),
-          contract    : faker.random.arrayElement([ 'yes','No' ]),
+          contract    : faker.random.arrayElement([ 'Yes','No' ]),
           of_days     : faker.random.arrayElement([ 10,20,30,45 ]),
           discription : faker.random.arrayElement([ 'good program for dogs' ]),
           sort        : faker.random.arrayElement([ 1,2,3,4 ])

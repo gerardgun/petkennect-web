@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
-import { Button, Form, Header, Dropdown, Input, Select, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Dropdown, Select, Modal } from 'semantic-ui-react'
 import _truncate from 'lodash/truncate'
 
 import FormError from '@components/Common/FormError'
@@ -73,7 +73,7 @@ const ExpressCheckInForm = props => {
                       component={FormField}
                       control={Dropdown}
                       fluid
-                      label='Pet'
+                      label='Select Pets'
                       multiple
                       name='pet'
                       options={[ ...clientPet.items ].map((_clientPet) => ({
@@ -94,18 +94,7 @@ const ExpressCheckInForm = props => {
               <Field
                 component={FormField}
                 control={Select}
-                label='Location'
-                name='location'
-                options={locationItems}
-                placeholder='Select option'
-                required
-                selectOnBlur={false}/>
-            </Form.Group>
-            <Form.Group widths='equal'>
-              <Field
-                component={FormField}
-                control={Select}
-                label='Express Check In'
+                label='Service Type'
                 name='express_check_in'
                 options={[
                   { key: 1, value: 'camp_fitness', text: 'Camp/ Fitness' },
@@ -114,6 +103,17 @@ const ExpressCheckInForm = props => {
                   { key: 4, value: 'boarding_chk_out', text: 'Boarding Chk-Out' },
                   { key: 5, value: 'daycamp_reservation', text: 'DayCamp Reservations' }
                 ]}
+                placeholder='Select option'
+                required
+                selectOnBlur={false}/>
+            </Form.Group>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Select}
+                label='Location'
+                name='location'
+                options={locationItems}
                 placeholder='Select option'
                 required
                 selectOnBlur={false}/>
@@ -168,7 +168,7 @@ const ExpressCheckInForm = props => {
                 </>
               )
             }
-            {
+            {/* {
               hasExpressCheckIn === 'daycamp_reservation' && (
                 <>
                   <Form.Group widths='equal'>
@@ -182,7 +182,7 @@ const ExpressCheckInForm = props => {
                   </Form.Group>
                 </>
               )
-            }
+            } */}
 
             {
               error && (
@@ -203,7 +203,7 @@ const ExpressCheckInForm = props => {
                   type='button'/>
                 <Button
                   color='teal'
-                  content='Reserve!'
+                  content='Check In!'
                   disabled={submitting}
                   loading={submitting}/>
               </Form.Field>

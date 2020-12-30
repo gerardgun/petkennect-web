@@ -1,11 +1,14 @@
+import React from 'react'
+import { FaFileSignature } from 'react-icons/fa'
+
 export default {
   base_uri: null,
   row     : {
     options        : [ ],
     dropdownOptions: [
       {
-        icon        : 'arrow right',
-        display_name: 'Reservation',
+        icon        : 'calendar alternate outline icon',
+        display_name: 'Add Reservation to Package',
         name        : 'reservation'
       },
       {
@@ -19,17 +22,12 @@ export default {
         name        : 'view_report_card'
       },
       {
-        icon        : 'mail',
-        display_name: 'Email Package',
-        name        : 'email'
-      },
-      {
-        icon        : 'hand point left',
+        iconTag     : <><FaFileSignature/></>,
         display_name: 'Digitally Sign Contract In Person',
-        name        : 'email'
+        name        : 'digitally_sign'
       },
       {
-        icon        : 'arrow alternate circle up',
+        icon        : 'mail',
         display_name: 'Send Training Contract to Client',
         name        : 'email'
       },

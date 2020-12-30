@@ -20,7 +20,11 @@ export default {
       type        : 'date', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      filter      : {
+        type: 'range_date',
+        name: [ 'created_at__gt', 'created_at__lt' ]
+      }
     },
     {
       display_name: 'Package Name',
@@ -28,7 +32,21 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      filter      : {
+        type        : 'dropdown',
+        name        : 'packageName',
+        source_store: [
+          {
+            value: 'package1',
+            text : 'Package1'
+          },
+          {
+            value: 'package2',
+            text : 'Package2'
+          }
+        ]
+      }
     },
     {
       display_name: 'Type',
@@ -36,7 +54,21 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      filter      : {
+        type        : 'dropdown',
+        name        : 'type',
+        source_store: [
+          {
+            value: 'type1',
+            text : 'type1'
+          },
+          {
+            value: 'type2',
+            text : 'type2'
+          }
+        ]
+      }
     },
     {
       display_name: 'Trainer',

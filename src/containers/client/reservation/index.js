@@ -28,7 +28,7 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
   const { client: clientId } = useParams()
   const history = useHistory()
 
-  const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service_type || 'B')
+  const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service_type || 'T')
 
   useEffect(() => {
     if(currentTenant && currentTenant.employee)

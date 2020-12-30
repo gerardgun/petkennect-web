@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect }  from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
-import moment from 'moment'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 
@@ -21,39 +19,9 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import { trainingFormId } from './first'
 
-function SelectedReservationDateList({ startDate,endDate, selectedWeek, untilNoOfOccurrences, checkInTime }) {
-  let arrDate = [ ]
-  let dfEndDate = new Date(endDate)
-
-  if(untilNoOfOccurrences) {
-    dfEndDate = new Date(startDate)
-    dfEndDate = new Date(dfEndDate.setDate((dfEndDate.getDate() + (7 * untilNoOfOccurrences))))
-  }
-
-  let weekCount = 0
-  for (let d = new Date(startDate); d <=  dfEndDate; d.setDate(d.getDate() + 1)) {
-    if(d.getDay() % 7 == 0)
-      weekCount = weekCount + 1
-
-    if(selectedWeek.includes('' + d.getDay() + ''))
-      arrDate.push(moment(d).format('MM/DD/YYYY'))
-  }
-
-  return arrDate.map((dateItem,i) =>{
-    return  (
-      <>
-        <List.Item>
-          <List.Content>
-            { dateItem }  {checkInTime}
-          </List.Content>
-        </List.Item>
-      </>
-    )
-  })
-}
-
 const TrainingFormWizardThird = props => {
   const {
+    petReservationDetail,
     employeeName,
     startDate,
     endDate,
@@ -83,19 +51,21 @@ const TrainingFormWizardThird = props => {
     const currentServiceType = services.items.find(({ type }) => type === props.serviceType)
     // eslint-disable-next-line no-unused-vars
     let serviceVariation = currentServiceType && currentServiceType.variations.length > 0 && currentServiceType.variations[0]
-    // if(isUpdating)
-    // return props
-    //   .put({ ...values, serviceVariation,
-    //     petReservationDetail: petReservationDetail.item,
-    //     currentTenant, serviceType         : props.serviceType, clientId })
-    //   .then(_handleClose)
-    //   .catch(parseResponseError)
-    // else
-    // return props
-    //   .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
-    //   .then(_handleClose)
-    //   .catch(parseResponseError)
+    if(isUpdating)
+      return props
+        .put({ ...values, serviceVariation,
+          petReservationDetail: petReservationDetail.item,
+          currentTenant, serviceType         : props.serviceType, clientId })
+        .then(_handleClose)
+        .catch(parseResponseError)
+    else
+      return props
+        .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
+        .then(_handleClose)
+        .catch(parseResponseError)
   }
+
+  const isUpdating = Boolean(petReservationDetail.item.id)
 
   return (
     <>
@@ -137,7 +107,7 @@ const TrainingFormWizardThird = props => {
                       <Grid.Column computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Reservation Date'
-                          value={`${startDate}`}/>
+                          value={`${startDate + ' ' + checkInTime}`}/>
                       </Grid.Column>
                       <Grid.Column  computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
@@ -168,12 +138,8 @@ const TrainingFormWizardThird = props => {
           </Grid>
         </Segment>
         <Segment>
-          <Header as='h3'>Selected Reservation Date</Header>
-          <List className='list-total-addons' divided verticalAlign='middle'>
-            <SelectedReservationDateList
-              checkInTime={checkInTime} endDate={endDate}
-              selectedWeek={props.selectedWeek} startDate={startDate} untilNoOfOccurrences={untilNoOfOccurrences}/>
-          </List>
+          <Header as='h3'>Reservation Date</Header>
+          <p>{props.allSelectedWeek.join(', ')} starting {startDate} Ending after {untilNoOfOccurrences ? <>{untilNoOfOccurrences} occurrences</> : endDate}</p>
         </Segment>
         <Segment>
           <Header as='h3'>Charges</Header>
@@ -258,6 +224,8 @@ export default compose(
       const startDate = formValueSelector(trainingFormId)(state, 'start_date')
       const endDate = formValueSelector(trainingFormId)(state, 'end_date')
       const checkInTime = formValueSelector(trainingFormId)(state, 'check_in_time')
+      const allWeekDays = formValueSelector(trainingFormId)(state, 'all_week_days')
+      const onlyWeekEnd = formValueSelector(trainingFormId)(state, 'only_week_end')
       const untilNoOfOccurrences = formValueSelector(trainingFormId)(state,'until_no_of_occurrences')
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPet = formValueSelector(trainingFormId)(state, 'pet')
@@ -267,15 +235,18 @@ export default compose(
 
       return {
         checkInTime,
-        startDate    : startDate,
-        endDate      : endDate,
+        allWeekDays,
+        onlyWeekEnd,
+        startDate      : startDate,
+        endDate        : endDate,
         untilNoOfOccurrences,
         selectedPetName,
         employeeName,
         petReservationDetail,
-        services     : service,
-        currentTenant: authDuck.selectors.getCurrentTenant(auth),
-        initialValues: petReservationDetail.item
+        services       : service,
+        allSelectedWeek: [].concat(petReservationDetail.item.allSelectedWeek),
+        currentTenant  : authDuck.selectors.getCurrentTenant(auth),
+        initialValues  : petReservationDetail.item
       }
     },
     {

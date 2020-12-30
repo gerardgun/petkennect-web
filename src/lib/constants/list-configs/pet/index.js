@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Image, Label, Icon, Popup } from 'semantic-ui-react'
+import { Image, Icon, Popup } from 'semantic-ui-react'
 import { BiTennisBall } from 'react-icons/bi'
 import { GiJumpingDog, GiDamagedHouse, GiDogBowl, GiSittingDog } from 'react-icons/gi'
 
@@ -46,8 +46,12 @@ export default {
         name        : 'express_check_in'
       },
       {
-        display_name: 'Training',
-        name        : 'training'
+        display_name: 'Services',
+        name        : 'services'
+      },
+      {
+        display_name: 'Vaccination',
+        name        : 'vaccination'
       }
     ]
   },
@@ -87,6 +91,8 @@ export default {
         if(row.info_formal_training === true)
           info_formal_training = 'T'
 
+        const vaccinationStatus = VaccinationStatus[row.summary.vaccination_request ? 'requested' : row.summary.vaccination_status]
+
         return (
           <span>
             <p><Link to={`/pet/${row.id}`}>
@@ -96,6 +102,9 @@ export default {
               <span>{cell}</span>
             </Link>
             </p>
+            <Popup
+              content='Vaccination' inverted position='top center'
+              size='tiny' trigger={<Icon name='medkit' style={{ color: vaccinationStatus.color, fontSize: '15px' }}></Icon>}/>
             {
               sex == 'M' ? (<Popup
                 content='Male' inverted position='top center'
@@ -142,7 +151,18 @@ export default {
       sort        : true,
       sort_name   : 'client__user__first_name',
       formatter   : (cell, row) => {
-        return <Link to={`/client/${row.client}`}>{cell}</Link>
+        return (
+          <>
+            <Link to={`/client/${row.client}`}>{cell}</Link>
+            {
+              row.has_card && (
+                <p><Popup
+                  content='Credit Card' inverted position='top center'
+                  size='tiny' trigger={<Icon className='mt16' name='credit card outline' style={{ color: 'teal', fontSize: '15px' }}></Icon>}/></p>
+              )
+            }
+          </>
+        )
       }
     },
     {
@@ -159,19 +179,19 @@ export default {
         source_store: petBreedDuck.store
       }
     },
-    {
-      display_name: 'Vaccination',
-      name        : 'summary.vaccination_status',
-      type        : null,
-      width       : null,
-      align       : 'left',
-      sort        : false,
-      formatter   : (cell, row) => {
-        const vaccinationStatus = VaccinationStatus[row.summary.vaccination_request ? 'requested' : cell]
+    // {
+    //   display_name: 'Vaccination',
+    //   name        : 'summary.vaccination_status',
+    //   type        : null,
+    //   width       : null,
+    //   align       : 'left',
+    //   sort        : false,
+    //   formatter   : (cell, row) => {
+    //     const vaccinationStatus = VaccinationStatus[row.summary.vaccination_request ? 'requested' : cell]
 
-        return <Label circular color={vaccinationStatus.color} horizontal>{vaccinationStatus.text}</Label>
-      }
-    },
+    //     return <Label circular color={vaccinationStatus.color} horizontal>{vaccinationStatus.text}</Label>
+    //   }
+    // },
     {
       display_name: 'Location',
       name        : 'client_location_code',

@@ -51,16 +51,9 @@
 
 .grid_custom_input{
   @media (min-width:1023px) {
-    display: flex !important;
-    align-items: center !important;
-    margin-top: 1.5rem !important;
     .w_input_set{
       width: 9rem !important;
-      margin-left: 1rem !important;
     }
-    }
-    .custom_label{
-      margin: 0 0 .28571429rem 0;
     }
 
   }

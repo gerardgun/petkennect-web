@@ -82,17 +82,17 @@ export default {
         return (
           <>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {/* {
-                row.thumbnail_path
-                  ? <Image
-                    className='profile' rounded size='mini'
-                    src={row.thumbnail_path}/>
-                  : <Icon name='user circle' style={{ color: 'gray', fontSize: '35px' }}></Icon>
-              } */}
               <Link to={`/client/${row.id}`}>
                 <span>{`${cell} ${row.last_name}`}</span>
               </Link>
             </div>
+            {
+              row.has_card && (
+                <p><Popup
+                  content='Credit Card' inverted position='top center'
+                  size='tiny' trigger={<Icon className='mt16' name='credit card outline' style={{ color: 'teal', fontSize: '15px' }}></Icon>}/></p>
+              )
+            }
           </>
         )
       }

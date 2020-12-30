@@ -26,7 +26,8 @@ export function* get(/* { payload } */) {
           active         : !rest.retired,
           client_fullname: `${client_first_name} ${client_last_name}`,
           food_aggressive: faker.random.boolean(),
-          toy_aggressive : faker.random.boolean()
+          toy_aggressive : faker.random.boolean(),
+          has_card       : faker.random.boolean()
         })),
         pagination: {
           ...list.pagination,

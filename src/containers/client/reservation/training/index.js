@@ -9,15 +9,13 @@ import { trainingFormId } from './first'
 
 const ReservationFormWizard = props => {
   const [ step, setStep ] = useState(1)
-  const [ selectedWeek, setSelectedWeek ] = useState([])
   useEffect(() => {
     return () => {
       props.dispatch(destroy(trainingFormId))
     }
   }, [])
 
-  const _handleNextStep  = allSelectedWeek => () => {
-    setSelectedWeek(allSelectedWeek)
+  const _handleNextStep  = () => {
     setStep(step + 1)
   }
 
@@ -27,9 +25,9 @@ const ReservationFormWizard = props => {
 
   return (
     <>
-      {step === 1 && <TrainingFormWizardFirst onNextStep={_handleNextStep}/>}
+      {step === 1 && <TrainingFormWizardFirst onSubmit={_handleNextStep}/>}
       {step === 2 && <TrainingFormWizardThird
-        onNextStep={_handleNextStep} onPreviousStep={_handlePreviousStep} selectedWeek={selectedWeek}
+        onPreviousStep={_handlePreviousStep}
         serviceType={props.serviceType}/>}
     </>
   )

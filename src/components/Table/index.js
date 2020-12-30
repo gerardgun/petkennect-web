@@ -285,7 +285,7 @@ const TableList = ({ duck, list, ...props }) => {
                     }).map((item, index) => ({
                       key  : `d-option-${index}`,
                       value: item.name,
-                      text : <>{item.icon ? <Icon name={item.icon}></Icon> : ''} { item.display_name}</>
+                      text : <>{item.icon ? <Icon name={item.icon}></Icon> : ''}  {item.iconTag && <Icon>{item.iconTag}</Icon>} { item.display_name}</>
                     }))
                   }
                   selectOnBlur={false}

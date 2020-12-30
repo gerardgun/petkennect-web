@@ -22,7 +22,8 @@ function* get(/* { payload } */) {
         items: results.map(item => ({
           ...item,
           thumbnail_path: item.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${item.thumbnail_path}` : null,
-          status        : faker.random.arrayElement([ 'Decline Client', 'VIP Client', 'Caution', 'Active' ])
+          status        : faker.random.arrayElement([ 'Decline Client', 'VIP Client', 'Caution', 'Active' ]),
+          has_card      : faker.random.boolean()
         })),
         pagination: {
           ...list.pagination,

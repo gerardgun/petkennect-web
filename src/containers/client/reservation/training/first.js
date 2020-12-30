@@ -21,13 +21,15 @@ export const trainingFormId = 'training-reservation-form'
 const TrainingFormWizardFirst = props => {
   const {
     clientPet,
+    petReservationDetail,
     location,
     error, handleSubmit, reset
   } = props
 
   const [ allWeekDays, setAllWeekDays ] = useState(false)
   const [ allWeekEnd, setAllWeekEnd ] = useState(false)
-  const [ allSelectedWeek, setAllSelectedWeek ] = useState([ '1', '2' ])
+  const [ frequency, setFrequency ] = useState('every_week')
+  const [ allSelectedWeek, setAllSelectedWeek ] = useState([ 'Monday', 'Tuesday' ])
 
   const _handleAllWeekDayChange = (value) =>{
     setAllWeekDays(value)
@@ -35,6 +37,9 @@ const TrainingFormWizardFirst = props => {
 
   const _handleOnlyWeekEndChange = (value) =>{
     setAllWeekEnd(value)
+  }
+  const _handleFrequencyClick = (e ,{ name }) =>{
+    setFrequency(name)
   }
 
   const _handleWeekDayClick = (e ,{ name }) =>{
@@ -46,6 +51,8 @@ const TrainingFormWizardFirst = props => {
       allItem.push(name)
 
     setAllSelectedWeek([].concat(allItem))
+
+    props.setItem({ ...petReservationDetail.item, allSelectedWeek })
   }
 
   return (
@@ -116,12 +123,14 @@ const TrainingFormWizardFirst = props => {
                     { key: 1, value: 'Package1', text: 'Package1' }
                   ]}
                   placeholder='Select Package'
+                  required
                   selectOnBlur={false}/>
                 <Field
                   component={FormField}
                   control={Input}
                   label='Price'
                   name='price'
+                  required
                   selectOnBlur={false}
                   type='number'/>
               </Form.Group>
@@ -187,12 +196,13 @@ const TrainingFormWizardFirst = props => {
         Select Dates
           </Header>
 
-          <Form.Group widths={3}>
+          <Form.Group computer={3} mobile={16} tablet={2}>
             <Field
               component={FormField}
               control={Input}
               label='Start Date'
               name='start_date'
+              requied
               type='date'/>
             <Field
               component={FormField}
@@ -221,56 +231,49 @@ const TrainingFormWizardFirst = props => {
           </Form.Group>
           <Button.Group className='week_btn_group'>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('1')} name='1' onClick={_handleWeekDayClick}
+              active={allWeekDays || allSelectedWeek.includes('Monday')} name='Monday' onClick={_handleWeekDayClick}
               type='button'>Monday</Button>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('2')} name='2' onClick={_handleWeekDayClick}
+              active={allWeekDays || allSelectedWeek.includes('Tuesday')} name='Tuesday' onClick={_handleWeekDayClick}
               type='button'>Tuesday</Button>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('3')} name='3' onClick={_handleWeekDayClick}
+              active={allWeekDays || allSelectedWeek.includes('Wednesday')} name='Wednesday' onClick={_handleWeekDayClick}
               type='button'>Wednesday</Button>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('4')} name='4' onClick={_handleWeekDayClick}
+              active={allWeekDays || allSelectedWeek.includes('Thursday')} name='Thursday' onClick={_handleWeekDayClick}
               type='button'>Thursday</Button>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('5')} name='5' onClick={_handleWeekDayClick}
+              active={allWeekDays || allSelectedWeek.includes('Friday')} name='Friday' onClick={_handleWeekDayClick}
               type='button'>Friday</Button>
             <Button
-              active={allWeekEnd || allSelectedWeek.includes('6')} name='6' onClick={_handleWeekDayClick}
+              active={allWeekEnd || allSelectedWeek.includes('Saturday')} name='Saturday' onClick={_handleWeekDayClick}
               type='button'>Saturday</Button>
             <Button
-              active={allWeekEnd || allSelectedWeek.includes('7')} name='7' onClick={_handleWeekDayClick}
+              active={allWeekEnd || allSelectedWeek.includes('Sunday')} name='Sunday' onClick={_handleWeekDayClick}
               type='button'>Sunday</Button>
           </Button.Group>
           <Grid className='mt8'>
-            <Grid.Column computer={16} mobile={16} tablet={16}>
+            <Grid.Column computer={8} mobile={16} tablet={16}>
               <Header as='h3'>
               Frequency
               </Header>
               <Button.Group className='week_btn_group'>
                 <Button
-                  active={allSelectedWeek.includes('every_week')} name='every_week' onClick={_handleWeekDayClick}
+                  active={frequency === 'every_week'} name='every_week' onClick={_handleFrequencyClick}
                   type='button'>Every Week</Button>
                 <Button
-                  active={allSelectedWeek.includes('every_other_week')} name='every_other_week' onClick={_handleWeekDayClick}
+                  active={frequency === 'every_other_week'} name='every_other_week' onClick={_handleFrequencyClick}
                   type='button'>Every Other Week</Button>
               </Button.Group>
 
             </Grid.Column>
-            {/* <Grid.Column
-              className='grid_custom_input' computer={8}
-              mobile={16} tablet={16}>
-              <span>Custom - Repeat After # of Weeks</span>
-              <Field
-                className='w_input_set'
-                component={FormField}
-                control={Input}
-                name='custom_after_no_of_weeks'
-                type='number'/>
-            </Grid.Column> */}
-            <Grid.Column width={16}>
-              <label className='custom_label'>Ending: Date/ Number of occurrences </label>
-              <Form.Group computer={4} mobile={16} tablet={16}>
+            <Grid.Column
+              className='grid_custom_input'
+              computer={8} mobile={16} tablet={16}>
+              <Header as='h3' className='custom_label'>
+                Ending: Date/ Number of occurrences
+              </Header>
+              <Form.Group computer={16} mobile={16} tablet={16}>
                 <Field
                   component={FormField}
                   control={Input}
@@ -278,6 +281,7 @@ const TrainingFormWizardFirst = props => {
                   type='date'/>
                 <span className='custom_or'>OR</span>
                 <Field
+                  className='w_input_set'
                   component={FormField}
                   control={Input}
                   name='until_no_of_occurrences'
@@ -302,8 +306,7 @@ const TrainingFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
-              onClick={props.onNextStep(allSelectedWeek)}
-              type='button'/>
+              type='submit'/>
           </Form.Field>
         </Form.Group>
       </Form>
@@ -318,10 +321,14 @@ export default compose(
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
 
       return {
+        petReservationDetail,
         initialValues: { ...petReservationDetail.item },
         location     : locationDuck.selectors.list(state),
         clientPet    : clientPetDuck.selectors.list(state)
       }
+    },
+    {
+      setItem: petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({
@@ -330,8 +337,12 @@ export default compose(
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        location: Yup.mixed().required('Location is required'),
-        pet     : Yup.mixed().required('Pet is required')
+        location     : Yup.mixed().required('Location is required'),
+        pet          : Yup.mixed().required('Pet is required'),
+        'package'    : Yup.mixed().required('Package is required'),
+        check_in_time: Yup.mixed().required('Check In is required'),
+        start_date   : Yup.mixed().required('Start Date is required'),
+        price        : Yup.mixed().required('Price is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

@@ -33,6 +33,8 @@ function BookingSection({ petDetail, ...props }) {
     props.getPetReservations()
     props.getTrainingPackages()
     props.getTrainingReservations()
+
+    props.setPackageFilters({ created_at__gt: '2020-12-10', created_at__lt: '2020-12-10' })
   }, [])
 
   const clientId = `${petDetail.item.client}`
@@ -137,6 +139,7 @@ export default compose(
     }), {
       getPetReservations     : petReservationDuck.creators.get,
       setFilters             : petReservationDuck.creators.setFilters,
+      setPackageFilters      : petTrainingReservationDuck.creators.setFilters,
       setCancelReserveItem   : petReservationDetailDuck.creators.setItem,
       setCancelCheckInItem   : petReservationDetailDuck.creators.setItem,
       setReserveItem         : petReservationDetailDuck.creators.setItem,
