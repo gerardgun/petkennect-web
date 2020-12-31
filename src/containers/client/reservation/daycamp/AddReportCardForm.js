@@ -36,9 +36,11 @@ const AddReportCardForm = (props) => {
   const getIsOpened = (mode) =>(mode === 'CREATE' || mode === 'UPDATE')
 
   useEffect(() => {
-    props.getClientPets()
-    props.getDaycampQuestion()
-    props.getDaycampCardDetail({ id: petReservationDetail.item.id })
+    if(isOpened) {
+      props.getClientPets()
+      props.getDaycampQuestion()
+      props.getDaycampCardDetail({ id: petReservationDetail.item.id })
+    }
   }, [])
 
   useEffect(() => {

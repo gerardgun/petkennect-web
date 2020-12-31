@@ -12,8 +12,9 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 import clientPetDuck from '@reducers/client/pet'
+import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
-import AlertModal from './alert-modal'
+import AlertModal from './../alert-modal'
 import { groomingFormId } from './first'
 
 // const additionalCharge = [
@@ -86,8 +87,6 @@ const GroomingFormWizardSecond = props => {
 
   useEffect(() => {
     props.getClientPets()
-    props.getServices()
-    props.getServiceAttributes()
   }, [])
 
   function GroomingServiceList({ fields, meta: { error, submitFailed } }) {
@@ -149,8 +148,8 @@ const GroomingFormWizardSecond = props => {
               ({ key: _subService.id, value: _subService.id, text: `${_subService.name}` }))}
             placeholder='Search detail'
             search
-            selection
-            selectOnBlur={false}/>
+            selectOnBlur={false}
+            selection/>
         </div>
         {
           fields.map((item, index) => (
@@ -299,10 +298,8 @@ export default compose(
       }
     },
     {
-      getClientPets       : clientPetDuck.creators.get,
-      getServices         : serviceDuck.creators.get,
-      getServiceAttributes: serviceAttributeDuck.creators.get,
-      setItem             : petReservationDetailDuck.creators.setItem
+      getClientPets: clientPetDuck.creators.get,
+      setItem      : trainingMethodDetailDuck.creators.setItem
     }
   ),
   reduxForm({

@@ -77,34 +77,10 @@ export default {
     {
       display_name: 'Sort',
       name        : 'sort',
-      type        : 'number',
+      type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true,
-      filter      : {
-        type        : 'dropdown',
-        name        : 'sort',
-        source_store: [
-          {
-            value: 1,
-            text : 1
-          },
-          {
-            value: 2,
-            text : 2
-          },
-          {
-            value: 3,
-            text : 3
-          },
-          {
-            value: 4,
-            text : 4
-          }
-
-        ]
-      }
-
+      sort        : true
     },
     {
       display_name: 'Type',
@@ -139,7 +115,7 @@ export default {
     },
     {
       display_name: 'Description',
-      name        : 'discription',
+      name        : 'description',
       width       : null,
       type        : 'string',
       align       : 'left',

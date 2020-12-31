@@ -207,7 +207,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
               <Menu.Item
                 active={activeMenuItem === 'reserves'} link name='reserves'
                 onClick={_handleMenuItemClick}>
-                Services
+                Service History
               </Menu.Item>
               <Menu.Item
                 active={activeMenuItem === 'email_messages'} link name='email_messages'

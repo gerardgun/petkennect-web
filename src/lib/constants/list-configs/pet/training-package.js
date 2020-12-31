@@ -8,7 +8,7 @@ export default {
     dropdownOptions: [
       {
         icon        : 'calendar alternate outline icon',
-        display_name: 'Add Reservation to Package',
+        display_name: 'Add Reservation',
         name        : 'reservation'
       },
       {
@@ -23,29 +23,43 @@ export default {
       },
       {
         iconTag     : <><FaFileSignature/></>,
-        display_name: 'Digitally Sign Contract In Person',
+        display_name: 'Digitally Sign Agreement in Person',
         name        : 'digitally_sign'
       },
       {
         icon        : 'mail',
-        display_name: 'Send Training Contract to Client',
+        display_name: 'Contract to Agreement',
         name        : 'email'
       },
       {
         icon        : 'print',
-        display_name: 'Print Paper Contract',
+        display_name: 'Print Agreement',
         name        : 'email'
       }
     ]
   },
   columns: [
     {
-      display_name: 'Package Name',
+      display_name: 'Package',
       name        : 'package_name',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      filter      : {
+        type        : 'dropdown',
+        name        : 'packageName',
+        source_store: [
+          {
+            value: 'package1',
+            text : 'Package1'
+          },
+          {
+            value: 'package2',
+            text : 'Package2'
+          }
+        ]
+      }
     },
     {
       display_name: 'Trainer',
@@ -56,20 +70,38 @@ export default {
       sort        : false
     },
     {
-      display_name: 'Starting Date',
+      display_name: 'Start Date',
       name        : 'starting_date',
       type        : 'date', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      filter      : {
+        type: 'range_date',
+        name: [ 'created_at__gt', 'created_at__lt' ]
+      }
     },
     {
-      display_name: 'Reason',
+      display_name: 'Type',
       name        : 'reason',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      filter      : {
+        type        : 'dropdown',
+        name        : 'type',
+        source_store: [
+          {
+            value: 'type1',
+            text : 'type1'
+          },
+          {
+            value: 'type2',
+            text : 'type2'
+          }
+        ]
+      }
     },
     {
       display_name: 'Status',

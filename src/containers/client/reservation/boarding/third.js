@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm, formValueSelector } from 'redux-form'
+import { reduxForm, formValueSelector, Field } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, Checkbox, List, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
+import FormField from '@components/Common/FormField'
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
-import serviceDuck from '@reducers/service'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import employeeDetailDuck from '@reducers/employee/detail'
 import clientPetDuck from '@reducers/client/pet'
@@ -24,17 +24,12 @@ const BoardingFormWizardThird = props => {
     check_out,
     petReservationDetail,
     selectedPetName,
-    services,
     currentTenant,
     error, handleSubmit, reset // redux-form
   } = props
 
   const { client: clientId } = useParams()
   const history = useHistory()
-
-  useEffect(() => {
-    props.getServices()
-  }, [])
 
   const _handleClose = () => {
     reset()
@@ -44,8 +39,7 @@ const BoardingFormWizardThird = props => {
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
-    const currentServiceType = services.items.find(({ type }) => type === props.serviceType)
-    let serviceVariation = currentServiceType && currentServiceType.variations.length > 0 && currentServiceType.variations[0]
+    let serviceVariation = petReservationDetail.item.serviceVariations
     if(isUpdating)
       return props
         .put({ ...values, serviceVariation,
@@ -152,8 +146,12 @@ const BoardingFormWizardThird = props => {
                     </Grid>
                     <Checkbox label='Special Pick Up'/>
                     <div className='mt16'>
-                      <label>Special Pick Up Information</label>
-                      <textarea className='w100' name='specialpickup' rows='5'></textarea>
+                      <Field
+                        component={FormField}
+                        control={Form.TextArea}
+                        label='Special Pick Up Information'
+                        name='comment'
+                        placeholder='Enter Comment'/>
                     </div>
                   </div>
                 </div>
@@ -244,7 +242,7 @@ const BoardingFormWizardThird = props => {
 export default compose(
   withRouter,
   connect(
-    ({ auth, service, ...state }) => {
+    ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
       const check_in = formValueSelector(boardingFormId)(state, 'check_in')
@@ -266,7 +264,6 @@ export default compose(
         employeeName,
         check_in     : check_in + ' ' + arriving_time,
         check_out    : check_out + ' ' + departing_time ,
-        services     : service,
         petReservationDetail,
         selectedPets,
         selectedPetName,
@@ -275,10 +272,9 @@ export default compose(
       }
     },
     {
-      getServices: serviceDuck.creators.get,
-      resetItem  : petReservationDetailDuck.creators.resetItem,
-      post       : petReservationDetailDuck.creators.post,
-      put        : petReservationDetailDuck.creators.put
+      resetItem: petReservationDetailDuck.creators.resetItem,
+      post     : petReservationDetailDuck.creators.post,
+      put      : petReservationDetailDuck.creators.put
     }
   ),
   reduxForm({

@@ -33,8 +33,6 @@ function BookingSection({ petDetail, ...props }) {
     props.getPetReservations()
     props.getTrainingPackages()
     props.getTrainingReservations()
-
-    props.setPackageFilters({ created_at__gt: '2020-12-10', created_at__lt: '2020-12-10' })
   }, [])
 
   const clientId = `${petDetail.item.client}`

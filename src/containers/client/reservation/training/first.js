@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -13,6 +13,9 @@ import { syncValidate } from '@lib/utils/functions'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
+import trainingMethodDuck from '@reducers/training-method'
+import trainingReasonDuck from '@reducers/training-reason'
+import employeeDuck from '@reducers/employee'
 
 import './styles.scss'
 
@@ -20,11 +23,20 @@ export const trainingFormId = 'training-reservation-form'
 
 const TrainingFormWizardFirst = props => {
   const {
+    employee,
+    trainingMethod,
+    trainingReason,
     clientPet,
     petReservationDetail,
     location,
     error, handleSubmit, reset
   } = props
+
+  useEffect(() => {
+    props.getEmployees()
+    props.getTrainingMethod()
+    props.getTrainingReason()
+  }, [])
 
   const [ allWeekDays, setAllWeekDays ] = useState(false)
   const [ allWeekEnd, setAllWeekEnd ] = useState(false)
@@ -150,12 +162,9 @@ const TrainingFormWizardFirst = props => {
                   label='Reason for training'
 
                   name='reason'
-                  options={[
-                    { key: 1, value: 1, text: 'Reason 1' },
-                    { key: 2, value: 2, text: 'Reason 2' },
-                    { key: 3, value: 3, text: 'Reason 3' },
-                    { key: 4, value: 4, text: 'Reason 4' }
-                  ]}
+                  options={trainingReason.items.map(_trainingReason =>
+                    ({ key: _trainingReason.id, value: _trainingReason.id, text: `${_trainingReason.name}` }))
+                  }
                   placeholder='Select Reason'
                   selectOnBlur={false}/>
                 <Field
@@ -164,12 +173,9 @@ const TrainingFormWizardFirst = props => {
                   label='Select Trainer'
 
                   name='trainer'
-                  options={[
-                    { key: 1, value: 1, text: 'Trainer 1' },
-                    { key: 2, value: 2, text: 'Trainer 2' },
-                    { key: 3, value: 3, text: 'Trainer 3' },
-                    { key: 4, value: 4, text: 'Trainer 4' }
-                  ]}
+                  options={employee.items.filter(_employee => _employee.title_name === 'Groomer').map(_employee=>
+                    ({ key: _employee.id, value: _employee.id, text: `${_employee.first_name + ' ' + _employee.last_name}` }))
+                  }
                   placeholder='Select Trainer'
                   selectOnBlur={false}/>
                 <Field
@@ -177,11 +183,9 @@ const TrainingFormWizardFirst = props => {
                   control={Select}
                   label='Method'
                   name='method'
-                  options={[
-                    { key: 1, value: 1, text: 'method 1' },
-                    { key: 2, value: 2, text: 'method 2' }
-
-                  ]}
+                  options={trainingMethod.items.map(_trainingMethod =>
+                    ({ key: _trainingMethod.id, value: _trainingMethod.id, text: `${_trainingMethod.name}` }))
+                  }
                   placeholder='Select Method'
                   selectOnBlur={false}/>
               </Form.Group>
@@ -212,10 +216,10 @@ const TrainingFormWizardFirst = props => {
               required
               type='time'/>
           </Form.Group>
-          <Header as='h3'>
+          <Header as='h3' className='mb0'>
           Select Recurring Days
           </Header>
-          <Form.Group className='form_group_label0'>
+          <Form.Group computer={3} mobile={16} tablet={2}>
             <Field
               component={FormField}
               control={Checkbox}
@@ -322,13 +326,19 @@ export default compose(
 
       return {
         petReservationDetail,
-        initialValues: { ...petReservationDetail.item },
-        location     : locationDuck.selectors.list(state),
-        clientPet    : clientPetDuck.selectors.list(state)
+        initialValues : { ...petReservationDetail.item },
+        location      : locationDuck.selectors.list(state),
+        trainingMethod: trainingMethodDuck.selectors.list(state),
+        trainingReason: trainingReasonDuck.selectors.list(state),
+        clientPet     : clientPetDuck.selectors.list(state),
+        employee      : employeeDuck.selectors.list(state)
       }
     },
     {
-      setItem: petReservationDetailDuck.creators.setItem
+      getEmployees     : employeeDuck.creators.get,
+      getTrainingMethod: trainingMethodDuck.creators.get,
+      getTrainingReason: trainingReasonDuck.creators.get,
+      setItem          : petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({

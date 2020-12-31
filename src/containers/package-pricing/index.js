@@ -38,7 +38,7 @@ const PackagePricingList = ({  packagePricing, packagePricingDetail, ...props })
       <Segment className='segment-content' padded='very'>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column computer={8} mobile={12} tablet={8}>
-            <Header as='h2'>Package Pricing</Header>
+            <Header as='h2'>Pricing Table</Header>
           </Grid.Column>
           <Grid.Column
             className='ui-grid-align'

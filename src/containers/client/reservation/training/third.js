@@ -1,4 +1,5 @@
-import React, { useEffect }  from 'react'
+/* eslint-disable no-unused-vars */
+import React  from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
@@ -12,12 +13,42 @@ import FormError from '@components/Common/FormError'
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
-import serviceDuck from '@reducers/service'
 import clientPetDuck from '@reducers/client/pet'
 import employeeDetailDuck from '@reducers/employee/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import { trainingFormId } from './first'
+
+// function SelectedReservationDateList({ startDate,endDate, selectedWeek, untilNoOfOccurrences, checkInTime }) {
+//   let arrDate = [ ]
+//   let dfEndDate = new Date(endDate)
+
+//   if(untilNoOfOccurrences) {
+//     dfEndDate = new Date(startDate)
+//     dfEndDate = new Date(dfEndDate.setDate((dfEndDate.getDate() + (7 * untilNoOfOccurrences))))
+//   }
+
+//   let weekCount = 0
+//   for (let d = new Date(startDate); d <=  dfEndDate; d.setDate(d.getDate() + 1)) {
+//     if(d.getDay() % 7 == 0)
+//       weekCount = weekCount + 1
+
+//     if(selectedWeek.includes('' + d.getDay() + ''))
+//       arrDate.push(moment(d).format('MM/DD/YYYY'))
+//   }
+
+//   return arrDate.map((dateItem,i) =>{
+//     return  (
+//       <>
+//         <List.Item>
+//           <List.Content>
+//             { dateItem }  {checkInTime}
+//           </List.Content>
+//         </List.Item>
+//       </>
+//     )
+//   })
+// }
 
 const TrainingFormWizardThird = props => {
   const {
@@ -35,10 +66,6 @@ const TrainingFormWizardThird = props => {
   const { client: clientId } = useParams()
   const history = useHistory()
 
-  useEffect(() => {
-    props.getServices()
-  }, [])
-
   const _handleClose = () => {
     reset()
     props.resetItem()
@@ -51,18 +78,19 @@ const TrainingFormWizardThird = props => {
     const currentServiceType = services.items.find(({ type }) => type === props.serviceType)
     // eslint-disable-next-line no-unused-vars
     let serviceVariation = currentServiceType && currentServiceType.variations.length > 0 && currentServiceType.variations[0]
-    if(isUpdating)
-      return props
-        .put({ ...values, serviceVariation,
-          petReservationDetail: petReservationDetail.item,
-          currentTenant, serviceType         : props.serviceType, clientId })
-        .then(_handleClose)
-        .catch(parseResponseError)
-    else
-      return props
-        .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
-        .then(_handleClose)
-        .catch(parseResponseError)
+
+    // if(isUpdating)
+    //   return props
+    //     .put({ ...values, serviceVariation,
+    //       petReservationDetail: petReservationDetail.item,
+    //       currentTenant, serviceType         : props.serviceType, clientId })
+    //     .then(_handleClose)
+    //     .catch(parseResponseError)
+    // else
+    //   return props
+    //     .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
+    //     .then(_handleClose)
+    //     .catch(parseResponseError)
   }
 
   const isUpdating = Boolean(petReservationDetail.item.id)
@@ -246,14 +274,13 @@ export default compose(
         services       : service,
         allSelectedWeek: [].concat(petReservationDetail.item.allSelectedWeek),
         currentTenant  : authDuck.selectors.getCurrentTenant(auth),
-        initialValues  : petReservationDetail.item
+        initialValues  : { ...petReservationDetail.item,  location: auth.location }
       }
     },
     {
-      getServices: serviceDuck.creators.get,
-      resetItem  : petReservationDetailDuck.creators.resetItem,
-      post       : petReservationDetailDuck.creators.post,
-      put        : petReservationDetailDuck.creators.put
+      resetItem: petReservationDetailDuck.creators.resetItem,
+      post     : petReservationDetailDuck.creators.post,
+      put      : petReservationDetailDuck.creators.put
     }
   ),
   reduxForm({

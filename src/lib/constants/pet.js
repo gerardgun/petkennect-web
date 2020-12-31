@@ -13,11 +13,11 @@ export const TemperamentPeoplePreference = {
 
 export const VaccinationStatus = {
   requested: {
-    color: 'blue',
+    color: 'orange',
     text : 'Verify!'
   },
   missing: {
-    color: 'black',
+    color: 'red',
     text : 'Missing'
   },
   expired: {

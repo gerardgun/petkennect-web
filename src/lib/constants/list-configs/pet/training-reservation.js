@@ -27,7 +27,7 @@ export default {
       }
     },
     {
-      display_name: 'Package Name',
+      display_name: 'Package',
       name        : 'package_name',
       type        : 'string',
       width       : null,
@@ -49,7 +49,7 @@ export default {
       }
     },
     {
-      display_name: 'Type',
+      display_name: 'Visit Type',
       name        : 'type',
       type        : 'string',
       width       : null,
@@ -87,7 +87,7 @@ export default {
       sort        : false
     },
     {
-      display_name: 'Run',
+      display_name: 'Kennel',
       name        : 'run',
       type        : 'string',
       width       : null,

@@ -51,7 +51,6 @@ function* post({ payload: { ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
     let orderServices = []
-
     if(payload.pet && payload.serviceVariation)
 
       if(payload.serviceType === 'G')
@@ -65,19 +64,20 @@ function* post({ payload: { ...payload } }) {
           comment          : payload.comment
         })
       else
-        payload.pet && payload.pet.forEach(_pet => {
+        payload.serviceVariation && payload.serviceVariation.forEach(_pet => {
           orderServices.push({
-            service_variation     : payload.serviceVariation.id,
+            service_variation     : _pet.id,
             employee              : payload.currentTenant.id,
-            price                 : parseInt(payload.serviceVariation.price),
+            price                 : parseInt(_pet.price),
             reserved_at           : moment.utc(payload.check_in , 'YYYY-MM-DD HH-mm:ss Z'),
             location              : payload.location,
-            pet                   : _pet,
+            pet                   : _pet.petId,
             belongings            : payload.belongings,
             medication_name       : payload.medication_name,
             medication_purpose    : payload.medication_purpose,
             medication_instruction: payload.medication_instruction,
-            feeding               : payload.feeding
+            feeding               : payload.feeding,
+            comment               : payload.comment
           })
         })
 
@@ -92,7 +92,7 @@ function* post({ payload: { ...payload } }) {
     {
       const reservationDetail = {
         reserved_at           : moment.utc(payload.check_in , 'YYYY-MM-DD HH-mm:ss Z'),
-        price                 : parseInt(payload.serviceVariation.price),
+        price                 : parseInt(_order_services.price),
         employee              : payload.currentTenant.id,
         pet                   : _order_services.pet,
         location              : payload.location,
@@ -117,11 +117,11 @@ function* post({ payload: { ...payload } }) {
           employee: payload.groomer
         })
       }
-      else if(payload.serviceType === 'D')
+      else if(payload.serviceType === 'F' || payload.serviceType === 'D')
       {
         yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  daycamp: {
           card       : '6',
-          yard_type  : '11',
+          yard_type  : payload.yard,
           checkout_at: moment.utc(payload.check_out , 'YYYY-MM-DD HH-mm:ss Z')
         } })
       }

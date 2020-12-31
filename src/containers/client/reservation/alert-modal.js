@@ -7,7 +7,7 @@ import { Button, Form, Icon, Header, Modal } from 'semantic-ui-react'
 
 import FormError from '@components/Common/FormError'
 
-import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
 export const formId = 'alert-form'
 
@@ -82,16 +82,14 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const petDetail = petReservationDetailDuck.selectors.detail(state)
+      const petDetail = trainingMethodDetailDuck.selectors.detail(state)
 
       return {
         petDetail
       }
     },
     {
-      post     : petReservationDetailDuck.creators.post,
-      put      : petReservationDetailDuck.creators.put,
-      resetItem: petReservationDetailDuck.creators.resetItem
+      resetItem: trainingMethodDetailDuck.creators.resetItem
     }
   ),
   reduxForm({

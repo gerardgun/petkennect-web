@@ -200,7 +200,7 @@ const GroomingFormWizardFirst = props => {
 export default compose(
   withRouter,
   connect(
-    ({ ...state }) => {
+    ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const defaultInitialValues = petReservationDetail.item.id ? {
         check_in: petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
@@ -209,7 +209,7 @@ export default compose(
 
       return {
         clientPet    : clientPetDuck.selectors.list(state),
-        initialValues: { ...petReservationDetail.item, ...defaultInitialValues },
+        initialValues: { ...petReservationDetail.item, ...defaultInitialValues,  location: auth.location },
         location     : locationDuck.selectors.list(state),
         employee     : employeeDuck.selectors.list(state)
       }

@@ -9,7 +9,7 @@ import { Button, Checkbox, Form, Header, Input, Modal, Select } from 'semantic-u
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import packagePricingDetailDuck from '@reducers/package-pricing/detail'
-import { parseResponseError,  parseFormValues } from '@lib/utils/functions'
+import { printAlphabets, parseResponseError, parseFormValues } from '@lib/utils/functions'
 import './style.scss'
 
 const packagePricingform =  props => {
@@ -36,6 +36,8 @@ const packagePricingform =  props => {
         .catch(parseResponseError)
   }
 
+  const alphabetsList = printAlphabets()
+
   const isUpdating = Boolean(packagePricingDetail.item.id)
   const saving = [ 'POSTING', 'PUTTING' ].includes(packagePricingDetail.status)
   const opened = [ 'CREATE', 'UPDATE' ].includes(packagePricingDetail.mode)
@@ -50,7 +52,7 @@ const packagePricingform =  props => {
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form id='package-pricing-form' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2'>{isUpdating ? 'Update' : 'New'} Package Pricing</Header>
+          <Header as='h2'>{isUpdating ? 'Update' : 'New'} Item Pricing </Header>
 
           <Form.Group widths='equal'>
             <Field
@@ -80,6 +82,12 @@ const packagePricingform =  props => {
                 { key: 4, value: 4, text: 'sub_category  4' }
               ]}
               placeholder='Select Sub Category'
+              selectOnBlur={false}/>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Package'
+              name='package'
               selectOnBlur={false}/>
             <Field
               component={FormField}
@@ -148,9 +156,9 @@ const packagePricingform =  props => {
               className='desc-field'
               component={FormField}
               control={Input}
-              label='Discription'
+              label='Description'
 
-              name='discription'
+              name='description'
               selectOnBlur={false}/>
             <Field
               className='sort-field'
@@ -159,14 +167,7 @@ const packagePricingform =  props => {
               label='Sort'
 
               name='sort'
-              options={[
-                { key: 1, value: 1, text: '1' },
-                { key: 2, value: 2, text: '2' },
-                { key: 1, value: 3, text: '3' },
-                { key: 2, value: 4, text: '4' },
-                { key: 1, value: 5, text: '5' },
-                { key: 2, value: 6, text: '6' }
-              ]}
+              options={alphabetsList}
               placeholder='Sort'
               selectOnBlur={false}/>
 

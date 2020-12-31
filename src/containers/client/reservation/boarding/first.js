@@ -14,15 +14,23 @@ import moment  from 'moment'
 
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
+import serviceDuck from '@reducers/service'
+import serviceAttributeDuck from '@reducers/service/service-attribute'
 import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
+import AlertModal from './../alert-modal'
 export const boardingFormId = 'boarding-reservation-form'
 
 const BoardingFormWizardFirst = props => {
   const {
     clientPet,
+    petReservationDetail,
     location,
+    selectedLocation,
+    services,
+    serviceAttribute,
     petKennelType,
     error, handleSubmit, reset
   } = props
@@ -30,6 +38,39 @@ const BoardingFormWizardFirst = props => {
   useEffect(() => {
     props.getPetKennelType()
   }, [])
+
+  const _handlePetSelect = (value)=>{
+    let serviceVariations = []
+
+    for (let item of value)
+    {
+      const petSize = clientPet.items.find(pet => pet.id === item).size
+      const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
+        .values.find(_location => _location.value == selectedLocation).id
+      const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
+        .values.find(_petSize => _petSize.value == petSize).id
+
+      const variation = services[0].variations
+
+      let variationId
+      for (let item of variation) {
+        let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+        let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+
+        if(locationExist != null && petSizeExist != null)
+        {
+          variationId = locationExist.service_variation_id
+          break
+        }
+      }
+      if(variationId != null)
+        serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
+
+      else
+        props.setItemVariation(null, 'READ')
+    }
+    props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
+  }
 
   return (
     <>
@@ -77,6 +118,7 @@ const BoardingFormWizardFirst = props => {
               label='Pet'
               multiple
               name='pet'
+              onChange={_handlePetSelect}
               options={clientPet.items.map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,
@@ -182,6 +224,7 @@ const BoardingFormWizardFirst = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+      <AlertModal/>
     </>
   )
 }
@@ -189,26 +232,37 @@ const BoardingFormWizardFirst = props => {
 export default compose(
   withRouter,
   connect(
-    ({ ...state }) => {
+    ({ auth, ...state }) => {
       const KennelType = formValueSelector(boardingFormId)(state, 'kennel_type')
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
+      const selectedLocation = formValueSelector(boardingFormId)(state, 'location')
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const serviceAttribute = serviceAttributeDuck.selectors.list(state)
+      const service = serviceDuck.selectors.list(state)
+      const boardingServices = service.items && service.items.filter(_ => _.type === 'B')
       const defaultInitialValues = petReservationDetail.item.id ? {
         check_in  : petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
         check_out : petReservationDetail.item.boarding ? moment(petReservationDetail.item.boarding.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '', pet       : [ petReservationDetail.item.pet ],
         KennelType: petReservationDetail.item.boarding ? petReservationDetail.item.boarding.kennel_type : '' } : {}
 
       return {
-        clientPet          : clientPetDuck.selectors.list(state),
-        initialValues      : { ...petReservationDetail.item, ...defaultInitialValues },
-        location           : locationDuck.selectors.list(state),
-        petKennelType      : petKennelTypeDuck.selectors.list(state),
-        hasSharedKennelType: KennelType === 'shared' ? true : false,
-        selectedPets       : selectedPets
+        auth,
+        clientPet           : clientPetDuck.selectors.list(state),
+        services            : boardingServices,
+        serviceAttribute    : serviceAttribute,
+        petReservationDetail: petReservationDetail,
+        initialValues       : { ...petReservationDetail.item, ...defaultInitialValues, location: auth.location },
+        location            : locationDuck.selectors.list(state),
+        petKennelType       : petKennelTypeDuck.selectors.list(state),
+        hasSharedKennelType : KennelType === 'shared' ? true : false,
+        selectedPets        : selectedPets,
+        selectedLocation    : selectedLocation
       }
     },
     {
-      getPetKennelType: petKennelTypeDuck.creators.get
+      getPetKennelType: petKennelTypeDuck.creators.get,
+      setItem         : petReservationDetailDuck.creators.setItem,
+      setItemVariation: trainingMethodDetailDuck.creators.setItem
     }
   ),
   reduxForm({

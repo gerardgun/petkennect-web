@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
@@ -15,8 +15,9 @@ import serviceAttributeDuck from '@reducers/service/service-attribute'
 import clientPetDuck from '@reducers/client/pet'
 import employeeDuck from '@reducers/employee'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
-import AlertModal from './alert-modal'
+import AlertModal from './../alert-modal'
 import { groomingFormId } from './first'
 
 const GroomingFormWizardThird = props => {
@@ -33,11 +34,6 @@ const GroomingFormWizardThird = props => {
 
   const { client: clientId } = useParams()
   const history = useHistory()
-
-  useEffect(() => {
-    props.getServices({ type: 'G' })
-    props.getServiceAttributes()
-  }, [])
 
   const _handleClose = () => {
     reset()
@@ -245,7 +241,7 @@ const GroomingFormWizardThird = props => {
 export default compose(
   withRouter,
   connect(
-    ({ auth, service, ...state }) => {
+    ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const check_in = formValueSelector(groomingFormId)(state, 'check_in')
       const appointment_time = formValueSelector(groomingFormId)(state, 'appointment_time')
@@ -256,6 +252,8 @@ export default compose(
       const employeeDetail = employeeDuck.selectors.list(state)
       const groomerDetail = employeeDetail.items && employeeDetail.items.find(_ => _.id == groomer)
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
+      const service = serviceDuck.selectors.list(state)
+      const groomingServices = service.items && service.items.filter(_ => _.type === 'G')
 
       return {
         check_in     : check_in + ' ' + appointment_time,
@@ -263,19 +261,17 @@ export default compose(
         selectedPetName,
         groomerDetail,
         petReservationDetail,
-        services     : service,
+        services     : groomingServices,
         serviceAttribute,
         currentTenant: authDuck.selectors.getCurrentTenant(auth),
         initialValues: petReservationDetail.item
       }
     },
     {
-      getServices         : serviceDuck.creators.get,
-      getServiceAttributes: serviceAttributeDuck.creators.get,
-      resetItem           : petReservationDetailDuck.creators.resetItem,
-      post                : petReservationDetailDuck.creators.post,
-      put                 : petReservationDetailDuck.creators.put,
-      setItem             : petReservationDetailDuck.creators.setItem
+      resetItem: petReservationDetailDuck.creators.resetItem,
+      post     : petReservationDetailDuck.creators.post,
+      put      : petReservationDetailDuck.creators.put,
+      setItem  : trainingMethodDetailDuck.creators.setItem
     }
   ),
   reduxForm({

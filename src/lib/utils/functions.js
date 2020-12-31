@@ -253,3 +253,20 @@ export const formatPhoneNumber = phoneNumberString=>{
 
   return null
 }
+
+export const printAlphabets = () => {
+  // set the default value of i & j to print A to Z
+  var i = 65
+  var j = 91
+  let k
+  let strArr = []
+  // loop through the values from i to j
+  for (k = i; k < j; k++) {
+    // convert the char code to string (Alphabets)
+    var str = String.fromCharCode(k)
+    // print the result in console
+    strArr.push({ key: k, value: `${str}`, text: `${str}` })
+  }
+
+  return strArr
+}

@@ -103,7 +103,7 @@ export default {
             </Link>
             </p>
             <Popup
-              content='Vaccination' inverted position='top center'
+              content={vaccinationStatus.text} inverted position='top center'
               size='tiny' trigger={<Icon name='medkit' style={{ color: vaccinationStatus.color, fontSize: '15px' }}></Icon>}/>
             {
               sex == 'M' ? (<Popup

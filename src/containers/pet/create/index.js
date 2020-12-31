@@ -225,7 +225,7 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
               <Menu.Item
                 active={activeMenuItem === 'bookings'} link name='bookings'
                 onClick={_handleMenuItemClick}>
-                Services
+                Service History
                 <Label color='teal'>4</Label>
               </Menu.Item>
               <Menu.Item

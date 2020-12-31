@@ -25,8 +25,8 @@ function* get() {
           status      : faker.random.boolean(),
           contract    : faker.random.arrayElement([ 'Yes','No' ]),
           of_days     : faker.random.arrayElement([ 10,20,30,45 ]),
-          discription : faker.random.arrayElement([ 'good program for dogs' ]),
-          sort        : faker.random.arrayElement([ 1,2,3,4 ])
+          description : faker.random.arrayElement([ 'good program for dogs' ]),
+          sort        : faker.random.arrayElement([ 'A','B','C','D' ])
 
         }))
       }

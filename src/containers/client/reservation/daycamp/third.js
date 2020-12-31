@@ -1,19 +1,18 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm, formValueSelector } from 'redux-form'
+import { reduxForm, formValueSelector, Field } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, Icon } from 'semantic-ui-react'
-
+import { parseFormValues, parseResponseError } from '@lib/utils/functions'
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
-import { parseResponseError, parseFormValues } from '@lib/utils/functions'
+import FormField from '@components/Common/FormField'
 
 import AddReportCardForm from  './AddReportCardForm'
 import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
 
 import authDuck from '@reducers/auth'
-import serviceDuck from '@reducers/service'
 import clientPetDuck from '@reducers/client/pet'
 import clientDetailDuck from '@reducers/client/detail'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
@@ -29,7 +28,6 @@ const DaycampFormWizardThird = props => {
     check_in,
     check_out,
     selectedPetName,
-    services,
     petReservationDetail,
     error,
     handleSubmit,
@@ -51,10 +49,6 @@ const DaycampFormWizardThird = props => {
   const { client: clientId } = useParams()
   const history = useHistory()
 
-  useEffect(() => {
-    props.getServices()
-  }, [])
-
   const _handleClose = () => {
     props.resetItem()
     history.push(`/client/${clientId}`)
@@ -62,8 +56,8 @@ const DaycampFormWizardThird = props => {
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
-    const currentServiceType = services.items.find(({ type }) => type === props.serviceType)
-    let serviceVariation = currentServiceType && currentServiceType.variations.length > 0 && currentServiceType.variations[0]
+    let serviceVariation = petReservationDetail.item.serviceVariations
+
     if(isUpdating)
       return props
         .put({ ...values, serviceVariation,
@@ -154,8 +148,13 @@ const DaycampFormWizardThird = props => {
                    Reservation Note
                     </Header>
                     <div className='mt16'>
-                      <label>Note</label>
-                      <textarea className='w100' name='specialpickup' rows='5'></textarea>
+                      <Field
+                        component={FormField}
+                        control={Form.TextArea}
+                        label='Note'
+                        name='comment'
+                        placeholder='Enter Note'
+                        rows='9'/>
                     </div>
                   </div>
                 </div>
@@ -273,7 +272,6 @@ export default compose(
       }
     },
     {
-      getServices           : serviceDuck.creators.get,
       resetItem             : petReservationDetailDuck.creators.resetItem,
       setItem               : petReservationDetailDuck.creators.setItem,
       setDocumentItem       : clientDocumentDetailDuck.creators.setItem,

@@ -18,6 +18,8 @@ import clientDetailDuck from '@reducers/client/detail'
 import clientPetDuck from '@reducers/client/pet'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import employeeDetailDuck from '@reducers/employee/detail'
+import serviceDuck from '@reducers/service'
+import serviceAttributeDuck from '@reducers/service/service-attribute'
 import authDuck from '@reducers/auth'
 import locationDuck from '@reducers/location'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
@@ -28,7 +30,7 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
   const { client: clientId } = useParams()
   const history = useHistory()
 
-  const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service_type || 'T')
+  const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service_type || 'B')
 
   useEffect(() => {
     if(currentTenant && currentTenant.employee)
@@ -36,6 +38,8 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
     props.getClient(clientId)
     props.getLocations()
     props.getClientPets({ client__id: clientId })
+    props.getServices()
+    props.getServiceAttributes()
   }, [])
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
@@ -146,9 +150,13 @@ export default compose(
   connect(
     ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const services = serviceDuck.selectors.list(state)
+      const serviceAttribute = serviceAttributeDuck.selectors.list(state)
 
       return {
         petReservationDetail,
+        services,
+        serviceAttribute,
         currentTenant: authDuck.selectors.getCurrentTenant(auth),
         clientDetail : clientDetailDuck.selectors.detail(state),
         clientPet    : clientPetDuck.selectors.list(state),
@@ -156,11 +164,13 @@ export default compose(
       }
     },
     {
-      getEmployee  : employeeDetailDuck.creators.get,
-      getClient    : clientDetailDuck.creators.get,
-      getClientPets: clientPetDuck.creators.get,
-      getLocations : locationDuck.creators.get,
-      setNoteItem  : petNoteDetailDuck.creators.setItem
+      getEmployee         : employeeDetailDuck.creators.get,
+      getClient           : clientDetailDuck.creators.get,
+      getClientPets       : clientPetDuck.creators.get,
+      getServices         : serviceDuck.creators.get,
+      getServiceAttributes: serviceAttributeDuck.creators.get,
+      getLocations        : locationDuck.creators.get,
+      setNoteItem         : petNoteDetailDuck.creators.setItem
     }
   )
 )(Reservation)
