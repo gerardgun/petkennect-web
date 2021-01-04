@@ -139,20 +139,23 @@ const TrainingPackageForm = props => {
                       control={Input}
                       label='Price'
                       name='price'
+                      readOnly
                       selectOnBlur={false}/>
-                  </Form.Group>
-                  <Form.Group widths='2'>
-                    <Field
-                      component={FormField}
-                      control={Input}
-                      label='Description'
-                      name='description'
-                      selectOnBlur={false}/>
+
                     <Field
                       component={FormField}
                       control={Input}
                       label='Discount'
                       name='discount'
+                      readOnly
+                      selectOnBlur={false}/>
+                  </Form.Group>
+                  <Form.Group widths='equal'>
+                    <Field
+                      component={FormField}
+                      control={Input}
+                      label='Description'
+                      name='description'
                       selectOnBlur={false}/>
 
                   </Form.Group>
@@ -170,20 +173,14 @@ const TrainingPackageForm = props => {
                       label='Training Starting Date'
                       name='start_date'
                       type='date'/>
-
-                  </Form.Group>
-                  <Form.Group widths='equal'>
                     <Field
-
                       component={FormField}
                       control={Select}
                       label='Method'
-
                       name='method'
                       options={[
                         { key: 1, value: 1, text: 'method 1' },
                         { key: 2, value: 2, text: 'method 2' }
-
                       ]}
                       placeholder='Select Method'
                       selectOnBlur={false}/>

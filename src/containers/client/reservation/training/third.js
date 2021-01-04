@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React  from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
@@ -59,8 +58,7 @@ const TrainingFormWizardThird = props => {
     untilNoOfOccurrences,
     selectedPetName,
     checkInTime,
-    currentTenant,
-    services, error, handleSubmit, reset // redux-form
+    currentTenant, error, handleSubmit, reset // redux-form
   } = props
 
   const { client: clientId } = useParams()
@@ -72,25 +70,21 @@ const TrainingFormWizardThird = props => {
     history.push(`/client/${clientId}`)
   }
 
-  // eslint-disable-next-line no-unused-vars
   const _handleSubmit = values => {
     values = parseFormValues(values)
-    const currentServiceType = services.items.find(({ type }) => type === props.serviceType)
-    // eslint-disable-next-line no-unused-vars
-    let serviceVariation = currentServiceType && currentServiceType.variations.length > 0 && currentServiceType.variations[0]
-
-    // if(isUpdating)
-    //   return props
-    //     .put({ ...values, serviceVariation,
-    //       petReservationDetail: petReservationDetail.item,
-    //       currentTenant, serviceType         : props.serviceType, clientId })
-    //     .then(_handleClose)
-    //     .catch(parseResponseError)
-    // else
-    //   return props
-    //     .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
-    //     .then(_handleClose)
-    //     .catch(parseResponseError)
+    let serviceVariation = petReservationDetail.item.serviceVariations
+    if(isUpdating)
+      return props
+        .put({ ...values, serviceVariation,
+          petReservationDetail: petReservationDetail.item,
+          currentTenant, serviceType         : props.serviceType, clientId })
+        .then(_handleClose)
+        .catch(parseResponseError)
+    else
+      return props
+        .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
+        .then(_handleClose)
+        .catch(parseResponseError)
   }
 
   const isUpdating = Boolean(petReservationDetail.item.id)
@@ -157,7 +151,7 @@ const TrainingFormWizardThird = props => {
                     </Header>
                     <div className='mt16'>
                       <label>Contract Comments</label>
-                      <textarea className='w100' name='contract_comment' rows='5'></textarea>
+                      <textarea className='w100' name='comment' rows='5'></textarea>
                     </div>
                   </div>
                 </div>
@@ -249,15 +243,21 @@ export default compose(
   connect(
     ({ auth, service, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
-      const startDate = formValueSelector(trainingFormId)(state, 'start_date')
-      const endDate = formValueSelector(trainingFormId)(state, 'end_date')
+      const startDate = formValueSelector(trainingFormId)(state, 'check_in')
+      const endDate = formValueSelector(trainingFormId)(state, 'check_out')
       const checkInTime = formValueSelector(trainingFormId)(state, 'check_in_time')
       const allWeekDays = formValueSelector(trainingFormId)(state, 'all_week_days')
       const onlyWeekEnd = formValueSelector(trainingFormId)(state, 'only_week_end')
       const untilNoOfOccurrences = formValueSelector(trainingFormId)(state,'until_no_of_occurrences')
       const clientPet = clientPetDuck.selectors.list(state)
-      const selectedPet = formValueSelector(trainingFormId)(state, 'pet')
-      const selectedPetName = clientPet.items.find(_ => _.id == selectedPet) && clientPet.items.find(_ => _.id == selectedPet).name
+      const selectedPets = formValueSelector(trainingFormId)(state, 'pet')
+      const selectedPetName = selectedPets && selectedPets.map((item)=> {
+        let petDetail = clientPet.items.find(_ => _.id == item)
+
+        return (
+          petDetail.name
+        )
+      }).join(', ')
       const employeeDetail = employeeDetailDuck.selectors.detail(state)
       const employeeName = employeeDetail.item && employeeDetail.item.first_name + ' ' + employeeDetail.item.last_name
 

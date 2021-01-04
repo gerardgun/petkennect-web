@@ -193,7 +193,7 @@ const packagePricingform =  props => {
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save Package '}
+                content={isUpdating ? 'Save changes' : 'Save Pricing '}
                 disabled={saving}
                 form='package-pricing-form'
                 loading={saving}

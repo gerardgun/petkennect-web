@@ -131,11 +131,6 @@ function ClienInformationShow({ clientDetail, ...props }) {
                 <p className='text-gray'>The are not authorized people to pick up.</p>
               )
             }
-
-            <Header as='h6' className='section-header' color='blue'>Package Discount</Header>
-            <Form.Group widths={2}>
-              <Form.Input label='Discount' readOnly value={_defaultTo(client.package_discount, '-')}/>
-            </Form.Group>
           </>
         )}
 

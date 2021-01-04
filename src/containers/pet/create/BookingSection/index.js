@@ -73,12 +73,23 @@ function BookingSection({ petDetail, ...props }) {
       props.getPetReservations()
   }
 
+  const _handleBookButtonClick = () =>{
+    props.setReserveItem({ service_type: activeServiceItem }, 'UPDATE')
+    history.replace(`/client/${clientId}/book`)
+  }
+
   return (
     <Container className='c-booking' fluid>
       <Grid className='petkennect-profile-body-header'>
         <Grid.Column
-          verticalAlign='middle'>
+          className='pl0'
+          mobile={11} verticalAlign='middle'>
           <Header as='h2'>Services</Header>
+        </Grid.Column>
+        <Grid.Column mobile={5} textAlign='right'>
+          <Button
+            color='teal' content='Book!'
+            onClick={_handleBookButtonClick}/>
         </Grid.Column>
       </Grid>
       <div className='mh16 mv32 div-booking-button'>
@@ -107,7 +118,7 @@ function BookingSection({ petDetail, ...props }) {
       {
         activeServiceItem != 'T' && (
           <>
-            <div className='mh28 ui-table-overflow'>
+            <div className='mh16 ui-table-overflow'>
               <Table
                 duck={petReservationDuck}
                 onOptionDropdownChange={_handleOptionDropdownChange}

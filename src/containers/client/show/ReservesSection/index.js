@@ -66,11 +66,12 @@ function ReservesSection({ ...props }) {
     <div className='c-booking'>
       <Grid className='petkennect-profile-body-header'>
         <Grid.Column
+          className='pl0'
           verticalAlign='middle'>
-          <Header as='h2'>Services</Header>
+          <Header as='h2' >Service Hostory</Header>
         </Grid.Column>
       </Grid>
-      <div className='mh28 mv32 div-booking-button'>
+      <div className='mh16 mv32 div-booking-button'>
         <Button
           basic={filters.service_type_what_ever_name !== 'T'} color='teal'
           content='Training' onClick={_handleFilterBtnClick('T')}/>
@@ -91,7 +92,7 @@ function ReservesSection({ ...props }) {
       {
         activeServiceItem != 'T' && (
           <>
-            <div className='mh28'>
+            <div className='mh8'>
               <Table
                 duck={petReservationDuck}
                 onOptionDropdownChange={_handleOptionDropdownChange}

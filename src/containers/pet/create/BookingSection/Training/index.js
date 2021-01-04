@@ -44,7 +44,7 @@ function TrainingServiceSection({ petDetail, ...props }) {
     <Container className='c-booking' fluid>
       <Grid className='segment-content-header' columns={2}>
         <Grid.Column computer={4} mobile={10} tablet={4}>
-          <Header as='h2'>Packages</Header>
+          <Header as='h2' className='child_header'>Packages</Header>
         </Grid.Column >
         <Grid.Column
           className='ui-grid-align'
@@ -60,7 +60,7 @@ function TrainingServiceSection({ petDetail, ...props }) {
 
       <Grid className='segment-content-header' columns={2}>
         <Grid.Column computer={4} mobile={10} tablet={4}>
-          <Header as='h2'>Reservations</Header>
+          <Header as='h2' className='child_header'>Reservations</Header>
         </Grid.Column >
         <Grid.Column
           className='ui-grid-align'

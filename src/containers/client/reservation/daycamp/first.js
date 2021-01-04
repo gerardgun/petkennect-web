@@ -33,7 +33,7 @@ const DaycampFormWizardFirst = props => {
     error, handleSubmit, reset
   } = props
 
-  const _handleDropDrownChange = (value) =>{
+  const _handlePetDropDownChange = (value) =>{
     let serviceVariations = []
     for (let item of value)
     {
@@ -116,7 +116,7 @@ const DaycampFormWizardFirst = props => {
               label='Pet'
               multiple
               name='pet'
-              onChange={_handleDropDrownChange}
+              onChange={_handlePetDropDownChange}
               options={clientPet.items.map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,

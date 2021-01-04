@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Button, Dropdown, Form, Header, Input, Checkbox, Grid, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
@@ -16,6 +16,11 @@ import clientPetDuck from '@reducers/client/pet'
 import trainingMethodDuck from '@reducers/training-method'
 import trainingReasonDuck from '@reducers/training-reason'
 import employeeDuck from '@reducers/employee'
+import serviceDuck from '@reducers/service'
+import serviceAttributeDuck from '@reducers/service/service-attribute'
+import trainingMethodDetailDuck from '@reducers/training-method/detail'
+
+import AlertModal from './../alert-modal'
 
 import './styles.scss'
 
@@ -23,6 +28,9 @@ export const trainingFormId = 'training-reservation-form'
 
 const TrainingFormWizardFirst = props => {
   const {
+    selectedLocation,
+    serviceAttribute,
+    services,
     employee,
     trainingMethod,
     trainingReason,
@@ -43,12 +51,87 @@ const TrainingFormWizardFirst = props => {
   const [ frequency, setFrequency ] = useState('every_week')
   const [ allSelectedWeek, setAllSelectedWeek ] = useState([ 'Monday', 'Tuesday' ])
 
+  const _handlePetDropDownChange = (value) =>{
+    let serviceVariations = []
+
+    for (let item of value)
+    {
+      const petSize = clientPet.items.find(pet => pet.id === item).size
+
+      const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
+        .values.find(_location => _location.value == selectedLocation).id
+
+      const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
+        .values.find(_petSize => _petSize.value == petSize).id
+
+      const variation = services[0].variations
+
+      let variationId
+
+      for (let item of variation) {
+        let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+        let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+
+        if(locationExist != null && petSizeExist != null)
+        {
+          variationId = locationExist.service_variation_id
+          break
+        }
+      }
+
+      if(variationId != null)
+        serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
+
+      else
+        props.setItemVariation(null, 'READ')
+    }
+
+    props.setItem({ ...petReservationDetail.item,serviceVariations: serviceVariations },'CREATE')
+  }
+
   const _handleAllWeekDayChange = (value) =>{
+    let selectedDays = allSelectedWeek
+    let days = []
+    if(value === true)
+    {
+      var toRemove = [ 'Monday', 'Tuesday','Wednesday','Thursday','Friday' ]
+      var weekDays = selectedDays.filter(value => !toRemove.includes(value))
+      weekDays.push('Monday', 'Tuesday','Wednesday','Thursday','Friday')
+      setAllSelectedWeek([].concat(weekDays))
+      days = [].concat(weekDays)
+    }
+    else
+    {
+      var remove = [ 'Monday', 'Tuesday','Wednesday','Thursday','Friday' ]
+      var remainingDays = selectedDays.filter(value => !remove.includes(value))
+      setAllSelectedWeek([].concat(remainingDays))
+      days = [].concat(remainingDays)
+    }
     setAllWeekDays(value)
+    props.setItem({ ...petReservationDetail.item, allSelectedWeek: days })
   }
 
   const _handleOnlyWeekEndChange = (value) =>{
+    let selectedDays = allSelectedWeek
+    let days = []
+    if(value === true)
+    {
+      var toRemove = [ 'Saturday','Sunday' ]
+      var weekDays = selectedDays.filter(value => !toRemove.includes(value))
+      weekDays.push('Saturday','Sunday')
+      setAllSelectedWeek([].concat(weekDays))
+      days = [].concat(weekDays)
+    }
+    else
+    {
+      var remove = [ 'Saturday','Sunday' ]
+      var remainingDays = selectedDays.filter(value => !remove.includes(value))
+      setAllSelectedWeek([].concat(remainingDays))
+      days = [].concat(remainingDays)
+    }
+
     setAllWeekEnd(value)
+    props.setItem({ ...petReservationDetail.item, allSelectedWeek: days })
   }
   const _handleFrequencyClick = (e ,{ name }) =>{
     setFrequency(name)
@@ -109,7 +192,9 @@ const TrainingFormWizardFirst = props => {
               control={Dropdown}
               fluid
               label='Pet'
+              multiple
               name='pet'
+              onChange={_handlePetDropDownChange}
               options={[ ...clientPet.items ].map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,
@@ -160,12 +245,12 @@ const TrainingFormWizardFirst = props => {
                   component={FormField}
                   control={Select}
                   label='Reason for training'
-
                   name='reason'
                   options={trainingReason.items.map(_trainingReason =>
                     ({ key: _trainingReason.id, value: _trainingReason.id, text: `${_trainingReason.name}` }))
                   }
                   placeholder='Select Reason'
+                  required
                   selectOnBlur={false}/>
                 <Field
                   component={FormField}
@@ -177,6 +262,7 @@ const TrainingFormWizardFirst = props => {
                     ({ key: _employee.id, value: _employee.id, text: `${_employee.first_name + ' ' + _employee.last_name}` }))
                   }
                   placeholder='Select Trainer'
+                  required
                   selectOnBlur={false}/>
                 <Field
                   component={FormField}
@@ -187,6 +273,7 @@ const TrainingFormWizardFirst = props => {
                     ({ key: _trainingMethod.id, value: _trainingMethod.id, text: `${_trainingMethod.name}` }))
                   }
                   placeholder='Select Method'
+                  required
                   selectOnBlur={false}/>
               </Form.Group>
             </Grid.Column>
@@ -205,7 +292,7 @@ const TrainingFormWizardFirst = props => {
               component={FormField}
               control={Input}
               label='Start Date'
-              name='start_date'
+              name='check_in'
               requied
               type='date'/>
             <Field
@@ -219,7 +306,7 @@ const TrainingFormWizardFirst = props => {
           <Header as='h3' className='mb0'>
           Select Recurring Days
           </Header>
-          <Form.Group computer={3} mobile={16} tablet={2}>
+          <Form.Group className='form_group_label0'>
             <Field
               component={FormField}
               control={Checkbox}
@@ -281,7 +368,7 @@ const TrainingFormWizardFirst = props => {
                 <Field
                   component={FormField}
                   control={Input}
-                  name='end_date'
+                  name='check_out'
                   type='date'/>
                 <span className='custom_or'>OR</span>
                 <Field
@@ -314,6 +401,7 @@ const TrainingFormWizardFirst = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+      <AlertModal/>
     </>
   )
 }
@@ -323,8 +411,15 @@ export default compose(
   connect(
     ({ ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const serviceAttribute = serviceAttributeDuck.selectors.list(state)
+      const selectedLocation = formValueSelector(trainingFormId)(state, 'location')
+      const service = serviceDuck.selectors.list(state)
+      const trainingServices = service.items && service.items.filter(_ => _.type === 'T')
 
       return {
+        selectedLocation,
+        serviceAttribute,
+        services      : trainingServices,
         petReservationDetail,
         initialValues : { ...petReservationDetail.item },
         location      : locationDuck.selectors.list(state),
@@ -338,7 +433,8 @@ export default compose(
       getEmployees     : employeeDuck.creators.get,
       getTrainingMethod: trainingMethodDuck.creators.get,
       getTrainingReason: trainingReasonDuck.creators.get,
-      setItem          : petReservationDetailDuck.creators.setItem
+      setItem          : petReservationDetailDuck.creators.setItem,
+      setItemVariation : trainingMethodDetailDuck.creators.setItem
     }
   ),
   reduxForm({
@@ -351,8 +447,11 @@ export default compose(
         pet          : Yup.mixed().required('Pet is required'),
         'package'    : Yup.mixed().required('Package is required'),
         check_in_time: Yup.mixed().required('Check In is required'),
-        start_date   : Yup.mixed().required('Start Date is required'),
-        price        : Yup.mixed().required('Price is required')
+        check_in     : Yup.mixed().required('Start Date is required'),
+        price        : Yup.mixed().required('Price is required'),
+        method       : Yup.mixed().required('Method is required'),
+        trainer      : Yup.mixed().required('Trainer is required'),
+        reason       : Yup.mixed().required('Reason is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

@@ -122,7 +122,14 @@ function* post({ payload: { ...payload } }) {
         yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  daycamp: {
           card       : '6',
           yard_type  : payload.yard,
-          checkout_at: moment.utc(payload.check_out , 'YYYY-MM-DD HH-mm:ss Z')
+          checkout_at: moment.utc(payload.start_date , 'YYYY-MM-DD HH-mm:ss Z')
+        } })
+      }
+      else if(payload.serviceType === 'T') {
+        yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  training: {
+          method       : payload.method,
+          comment      : payload.comment,
+          contracted_at: moment.utc(payload.check_in , 'YYYY-MM-DD HH-mm:ss Z')
         } })
       }
       else
