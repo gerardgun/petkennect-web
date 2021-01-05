@@ -153,14 +153,14 @@ const BoardingFormWizardFirst = props => {
               component={FormField}
               control={Input}
               label='Departing Time'
-              name='departing_time'
+              name='check_in_time'
               required
               type='time'/>
             <Field
               component={FormField}
               control={Input}
               label='Arriving Time'
-              name='arriving_time'
+              name='check_out_time'
               required
               type='time'/>
           </Form.Group>
@@ -273,8 +273,8 @@ export default compose(
       const schema = {
         location      : Yup.mixed().required('Location is required'),
         pet           : Yup.mixed().required('Pet is required'),
-        departing_time: Yup.mixed().required('Departing Time is required'),
-        arriving_time : Yup.mixed().required('Arriving Time is required'),
+        check_in_time : Yup.mixed().required('Departing Time is required'),
+        check_out_time: Yup.mixed().required('Arriving Time is required'),
         kennel_type   : Yup.mixed().required('Kennel Type is required'),
         check_in      : Yup
           .date()

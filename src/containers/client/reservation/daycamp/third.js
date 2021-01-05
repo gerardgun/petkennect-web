@@ -245,8 +245,8 @@ export default compose(
       const selectedPets = formValueSelector(daycampFormId)(state, 'pet')
       const check_in = formValueSelector(daycampFormId)(state, 'check_in')
       const check_out = formValueSelector(daycampFormId)(state, 'check_out')
-      const arriving_time = formValueSelector(daycampFormId)(state, 'arriving_time')
-      const departing_time = formValueSelector(daycampFormId)(state, 'departing_time')
+      const check_out_time = formValueSelector(daycampFormId)(state, 'check_out_time')
+      const check_in_time = formValueSelector(daycampFormId)(state, 'check_in_time')
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPetName = selectedPets && selectedPets.map((item)=> {
         let petDetail = clientPet.items.find(_ => _.id == item)
@@ -260,8 +260,8 @@ export default compose(
 
       return {
         employeeName,
-        check_in            : check_in + ' ' + arriving_time,
-        check_out           : check_out + ' ' + departing_time ,
+        check_in            : check_in + ' ' + check_out_time,
+        check_out           : check_out + ' ' + check_in_time ,
         selectedPetName,
         petReservationDetail,
         services            : service,

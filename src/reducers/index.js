@@ -35,6 +35,9 @@ import daycampCardDetail from '@reducers/pet/reservation/daycamp-card/detail'
 import daycampCardQuestion from '@reducers/pet/reservation/daycamp-card/daycamp-card-question'
 import daycampCardQuestionDetail from '@reducers/pet/reservation/daycamp-card/daycamp-card-question/detail'
 import daycampCardAnswerDetail from '@reducers/pet/reservation/daycamp-card/daycamp-card-answer/detail'
+import daycampReservation from '@reducers/pet/reservation/daycamp-reservation'
+import dayCampPackage  from '@reducers/pet/day-camp-package'
+import dayCampPackageDetail from '@reducers/pet/day-camp-package/detail'
 import emailMessage from '@reducers/email-message'
 import emailMessageDetail from '@reducers/email-message/detail'
 import emailLog from '@reducers/email-log'
@@ -112,6 +115,8 @@ import productVariationsDetail from '@reducers/product/product-variations/detail
 import productVariationsImageDetail from '@reducers/product/product-variations/image/detail'
 import productPackage from '@reducers/product/package'
 import productPackageDetail from '@reducers/product/package/detail'
+import ratingKey from '@reducers/rating-key'
+import ratingKeyDetail from '@reducers/rating-key/detail'
 import reservation from '@reducers/reservation'
 import reservationDetail from '@reducers/reservation/detail'
 import rol from '@reducers/rol'
@@ -184,8 +189,11 @@ const createRootReducer = history => combineReducers({
   [customizedFieldDetail.store]                 : customizedFieldDetail.reducer,
   [customizedFieldGroup.store]                  : customizedFieldGroup.reducer,
   [customizedFieldGroupDetail.store]            : customizedFieldGroupDetail.reducer,
+  [dayCampPackage.store]                        : dayCampPackage.reducer,
+  [dayCampPackageDetail.store]                  : dayCampPackageDetail.reducer,
   [daycampCard.store]                           : daycampCard.reducer,
   [daycampCardDetail.store]                     : daycampCardDetail.reducer,
+  [daycampReservation.store]                    : daycampReservation.reducer,
   [daycampCardQuestion.store]                   : daycampCardQuestion.reducer,
   [daycampCardQuestionDetail.store]             : daycampCardQuestionDetail.reducer,
   [daycampCardAnswerDetail.store]               : daycampCardAnswerDetail.reducer,
@@ -268,6 +276,8 @@ const createRootReducer = history => combineReducers({
   [productVariations.store]                     : productVariations.reducer,
   [productVariationsDetail.store]               : productVariationsDetail.reducer,
   [productVariationsImageDetail.store]          : productVariationsImageDetail.reducer,
+  [ratingKey.store]                             : ratingKey.reducer,
+  [ratingKeyDetail.store]                       : ratingKeyDetail.reducer,
   [reservation.store]                           : reservation.reducer,
   [reservationDetail.store]                     : reservationDetail.reducer,
   [rol.store]                                   : rol.reducer,

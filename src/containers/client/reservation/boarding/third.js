@@ -247,8 +247,8 @@ export default compose(
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
       const check_in = formValueSelector(boardingFormId)(state, 'check_in')
       const check_out = formValueSelector(boardingFormId)(state, 'check_out')
-      const arriving_time = formValueSelector(boardingFormId)(state, 'arriving_time')
-      const departing_time = formValueSelector(boardingFormId)(state, 'departing_time')
+      const check_out_time = formValueSelector(boardingFormId)(state, 'check_out_time')
+      const check_in_time = formValueSelector(boardingFormId)(state, 'check_in_time')
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPetName = selectedPets && selectedPets.map((item)=> {
         let petDetail = clientPet.items.find(_ => _.id == item)
@@ -262,8 +262,8 @@ export default compose(
 
       return {
         employeeName,
-        check_in     : check_in + ' ' + arriving_time,
-        check_out    : check_out + ' ' + departing_time ,
+        check_in     : check_in + ' ' + check_in_time,
+        check_out    : check_out + ' ' + check_out_time ,
         petReservationDetail,
         selectedPets,
         selectedPetName,

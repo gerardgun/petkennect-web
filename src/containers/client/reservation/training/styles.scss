@@ -25,6 +25,7 @@
       border-left: 1px solid rgba(34, 36, 38, 0.15) !important;
       background-color:white !important;
       cursor: pointer;
+      height: 3.1rem !important;
     }
 
     .ui.button.active{
@@ -47,7 +48,10 @@
 .grid_custom_input{
   @media (min-width:1023px) {
     .w_input_set{
-      width: 9rem !important;
+      width: 5rem !important;
+      input{
+        height: 3.1rem;
+      }
     }
     }
 
@@ -57,29 +61,26 @@
     display: flex;
   align-items: center;
   }
-// .grid_custom_label{
-//   align-items: center;
-//   display: flex !important;
-//   @media (min-width:1023px) {
-//     span{
-//       margin-top: 1rem !important;
-// }
-// }
-// }
 
-// .grid_custom_input{
-  
-// @media (min-width:1023px) {
-//   .ui.input{
-//     input{
-//   margin-left: -4rem !important;
-// }
-//   }
-// }
-// }
+  .mt0_8{
+   margin-top: 0.7rem !important;
+  }
 
- 
+  .grid_custom_checkout{
+    .ui.input{
+      width: 9rem !important;
+      margin-top: 0.7rem !important;
+    }
+  }
 
+}
 
-
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (orientation: portrait)
+and (-webkit-min-device-pixel-ratio: 2) {
+  .six.wide.computer.sixteen.wide.mobile.sixteen.wide.tablet.column.grid_width_100{
+  width:100% !important;
+}
 }

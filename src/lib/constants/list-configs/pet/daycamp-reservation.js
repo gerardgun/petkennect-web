@@ -9,9 +9,14 @@ export default {
         name        : 'report_cards'
       },
       {
+        icon        : 'plus circle',
+        display_name: 'Add Grooming',
+        name        : 'add'
+      },
+      {
         icon        : 'list icon',
-        display_name: 'Training Logs',
-        name        : 'training_logs'
+        display_name: 'Add-Ons',
+        name        : 'add_ons'
       }
     ]
   },
@@ -29,26 +34,12 @@ export default {
       }
     },
     {
-      display_name: 'Package',
-      name        : 'package_name',
+      display_name: 'Location',
+      name        : 'location',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false,
-      filter      : {
-        type        : 'dropdown',
-        name        : 'packageName',
-        source_store: [
-          {
-            value: 'package1',
-            text : 'Package1'
-          },
-          {
-            value: 'package2',
-            text : 'Package2'
-          }
-        ]
-      }
+      sort        : false
     },
     {
       display_name: 'Visit Type',
@@ -73,24 +64,24 @@ export default {
       }
     },
     {
-      display_name: 'Trainer',
-      name        : 'trainer',
+      display_name: 'Time Out',
+      name        : 'timeout',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'Location',
-      name        : 'location',
+      display_name: 'Lunch',
+      name        : 'lunch',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'Kennel',
-      name        : 'run',
+      display_name: 'Yard',
+      name        : 'yard',
       type        : 'string',
       width       : null,
       align       : 'left',

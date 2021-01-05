@@ -178,6 +178,7 @@ const categories = [
       { href: '/setup/training-reason', label: 'Training Reason' },
       { href: '/setup/training-method', label: 'Training Method' },
       { href: '/setup/training-command', label: 'Training Command' },
+      { href: '/setup/rating-key', label: 'Rating Keys' },
       { href: '/setup/pet-kennel', label: 'Kennels' },
       { href: '/setup/pet-kennel-type', label: 'Kennel Types' },
       { href: '/setup/pet-kennel-area', label: 'Kennel Areas' },

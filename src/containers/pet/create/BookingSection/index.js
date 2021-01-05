@@ -10,6 +10,7 @@ import PetNotes from './Notes'
 import ViewReport from './ReportCard'
 import Absent from './Absent'
 import Training from './Training'
+import DayCamp from './DayCamp'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petReservationDuck from '@reducers/pet/reservation'
@@ -69,7 +70,7 @@ function BookingSection({ petDetail, ...props }) {
   const _handleFilterBtnClick = (e, { type }) => {
     setActiveServiceItem(type)
     props.setFilters({ service_type_what_ever_name: type })
-    if(type != 'T')
+    if(type != 'T' && type != 'D')
       props.getPetReservations()
   }
 
@@ -115,10 +116,11 @@ function BookingSection({ petDetail, ...props }) {
           type='G'/>
       </div>
       {activeServiceItem === 'T' && <Training/>}
+      {activeServiceItem === 'D' && <DayCamp/>}
       {
-        activeServiceItem != 'T' && (
+        activeServiceItem != 'T' &&  activeServiceItem != 'D' && (
           <>
-            <div className='mh16 ui-table-overflow'>
+            <div className='mh28 ui-table-overflow'>
               <Table
                 duck={petReservationDuck}
                 onOptionDropdownChange={_handleOptionDropdownChange}

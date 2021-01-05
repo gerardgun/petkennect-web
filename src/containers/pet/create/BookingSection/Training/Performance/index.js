@@ -20,7 +20,7 @@ const TrainingPerformanceForm = ({ ...props }) => {
 
   return (
     <div className='performance-index'>
-      <Grid className='segment-content-header' columns={2}>
+      <Grid className='segment-content-header ph0' columns={2}>
         <Grid.Column width={16}>
           <Button
             basic={state !== 'report'}

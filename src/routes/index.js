@@ -47,6 +47,7 @@ import ProductAttributeValue from '@containers/product-attribute-value'
 import ProductClasses from '@containers/product-classes'
 import ProductFamilies from '@containers/product-families'
 import ProductFamiliesShow from '@containers/product-families/show'
+import RatingKey from '@containers/rating-key'
 import Category from '@containers/category'
 // import PetBreed from '@containers/product/create'
 import CustomReport from '@containers/custom-report'
@@ -355,6 +356,10 @@ const privateRoutes = [
   {
     path     : '/organization/:organization/edit',
     component: OrganizationEdit
+  },
+  {
+    path     : '/setup/rating-key',
+    component: RatingKey
   },
   {
     path     : '/setup/training-command',

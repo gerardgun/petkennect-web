@@ -244,7 +244,7 @@ export default compose(
     ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const check_in = formValueSelector(groomingFormId)(state, 'check_in')
-      const appointment_time = formValueSelector(groomingFormId)(state, 'appointment_time')
+      const check_in_time = formValueSelector(groomingFormId)(state, 'check_in_time')
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPet = formValueSelector(groomingFormId)(state, 'pet')
       const groomer = formValueSelector(groomingFormId)(state, 'groomer')
@@ -256,7 +256,7 @@ export default compose(
       const groomingServices = service.items && service.items.filter(_ => _.type === 'G')
 
       return {
-        check_in     : check_in + ' ' + appointment_time,
+        check_in     : check_in + ' ' + check_in_time,
         clientPet,
         selectedPetName,
         groomerDetail,

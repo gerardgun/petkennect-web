@@ -25,6 +25,7 @@ import customizedField from './customized-field/field'
 import customizedFieldDetail from './customized-field/field/detail'
 import customizedFieldGroup from './customized-field/group'
 import customizedFieldGroupDetail from './customized-field/group/detail'
+import dayCampPackage from './pet/reservation/day-camp-package'
 import daycampCard from './pet/reservation/daycamp-card'
 import daycampCardDetail from './pet/reservation/daycamp-card/detail'
 import daycampCardQuestion from './pet/reservation/daycamp-card/daycamp-card-question'
@@ -69,6 +70,7 @@ import petReservationDaycampQuestion from './pet/reservation/daycamp-question'
 import petReservationDaycampQuestionDetail from './pet/reservation/daycamp-question/detail'
 import petReservationTrainingPackage from './pet/reservation/training/package'
 import petReservationTrainingReservation from './pet/reservation/training/reservation'
+import petDaycampReservation from './pet/reservation/daycamp-reservation'
 import petVaccination from './pet/vaccination'
 import petVaccinationDetail from './pet/vaccination/detail'
 import petVaccinationType from './pet/vaccination-type'
@@ -118,6 +120,7 @@ import serviceAttributeValueDetail from './service/service-attribute-value/detai
 import onlineRequestClientSubmission from './online-request/client-submission'
 import onlineRequestConfirmReservation from './online-request/confirm-reservation'
 import onlineRequestVaccinationUpdate from './online-request/vaccination-update'
+import ratingKey from './rating-key'
 import trainingCommand from './training-command'
 import trainingCommandDetail from './training-command/detail'
 import trainingMethod from './training-method'
@@ -160,6 +163,8 @@ export default function* rootSaga() {
     ...customizedFieldGroup,
     ...customizedFieldGroupDetail,
     ...daycampCard,
+    ... dayCampPackage,
+    ...petDaycampReservation,
     ...daycampCardDetail,
     ...daycampCardQuestion,
     ...daycampCardQuestionDetail,
@@ -252,6 +257,7 @@ export default function* rootSaga() {
     ...onlineRequestClientSubmission,
     ...onlineRequestConfirmReservation,
     ...onlineRequestVaccinationUpdate,
+    ...ratingKey,
     ...trainingCommand,
     ...trainingCommandDetail,
     ...trainingMethod,

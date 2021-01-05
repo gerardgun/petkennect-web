@@ -41,15 +41,16 @@ export default {
   row: {
     options        : [],
     dropdownOptions: [
-      {
+      { icon        : 'sign in',
         display_name: 'Express Check In',
         name        : 'express_check_in'
       },
-      {
+      { icon        : 'qrcode',
         display_name: 'Services',
         name        : 'services'
       },
       {
+        icon        : 'medkit',
         display_name: 'Vaccination',
         name        : 'vaccination'
       }

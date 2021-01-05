@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import {  useHistory } from 'react-router-dom'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
@@ -22,6 +23,7 @@ import './styles.scss'
 const PetList = ({ pet, petDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPets,petDetail.status)
+  const history = useHistory()
 
   useEffect(() => {
     props.getPets({ retired: false })
@@ -36,13 +38,20 @@ const PetList = ({ pet, petDetail, ...props }) => {
     props.setReservationItem(pet.selector.selected_items[0], 'CREATE')
   }
 
-  const _handleOptionClick = option => {
+  const _handleOptionClick = (option,item) => {
     if(option === 'delete') {
       props.setItem(pet.selector.selected_items[0], 'DELETE')
       _handleOpen()
     }
     else if(option === 'express_check_in') {
       props.setReservationItem(pet.selector.selected_items[0], 'CREATE')
+    }
+    else if(option === 'vaccination') {
+      history.replace(`/pet/${item.id}`)
+    }
+
+    else if(option === 'services') {
+      history.replace(`/pet/${item.id}`)
     }
   }
 

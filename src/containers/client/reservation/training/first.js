@@ -46,8 +46,6 @@ const TrainingFormWizardFirst = props => {
     props.getTrainingReason()
   }, [])
 
-  const [ allWeekDays, setAllWeekDays ] = useState(false)
-  const [ allWeekEnd, setAllWeekEnd ] = useState(false)
   const [ frequency, setFrequency ] = useState('every_week')
   const [ allSelectedWeek, setAllSelectedWeek ] = useState([ 'Monday', 'Tuesday' ])
 
@@ -107,7 +105,6 @@ const TrainingFormWizardFirst = props => {
       setAllSelectedWeek([].concat(remainingDays))
       days = [].concat(remainingDays)
     }
-    setAllWeekDays(value)
     props.setItem({ ...petReservationDetail.item, allSelectedWeek: days })
   }
 
@@ -130,7 +127,6 @@ const TrainingFormWizardFirst = props => {
       days = [].concat(remainingDays)
     }
 
-    setAllWeekEnd(value)
     props.setItem({ ...petReservationDetail.item, allSelectedWeek: days })
   }
   const _handleFrequencyClick = (e ,{ name }) =>{
@@ -322,29 +318,31 @@ const TrainingFormWizardFirst = props => {
           </Form.Group>
           <Button.Group className='week_btn_group'>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('Monday')} name='Monday' onClick={_handleWeekDayClick}
+              active={allSelectedWeek.includes('Monday')} name='Monday' onClick={_handleWeekDayClick}
               type='button'>Monday</Button>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('Tuesday')} name='Tuesday' onClick={_handleWeekDayClick}
+              active={allSelectedWeek.includes('Tuesday')} name='Tuesday' onClick={_handleWeekDayClick}
               type='button'>Tuesday</Button>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('Wednesday')} name='Wednesday' onClick={_handleWeekDayClick}
+              active={allSelectedWeek.includes('Wednesday')} name='Wednesday' onClick={_handleWeekDayClick}
               type='button'>Wednesday</Button>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('Thursday')} name='Thursday' onClick={_handleWeekDayClick}
+              active={allSelectedWeek.includes('Thursday')} name='Thursday' onClick={_handleWeekDayClick}
               type='button'>Thursday</Button>
             <Button
-              active={allWeekDays || allSelectedWeek.includes('Friday')} name='Friday' onClick={_handleWeekDayClick}
+              active={allSelectedWeek.includes('Friday')} name='Friday' onClick={_handleWeekDayClick}
               type='button'>Friday</Button>
             <Button
-              active={allWeekEnd || allSelectedWeek.includes('Saturday')} name='Saturday' onClick={_handleWeekDayClick}
+              active={allSelectedWeek.includes('Saturday')} name='Saturday' onClick={_handleWeekDayClick}
               type='button'>Saturday</Button>
             <Button
-              active={allWeekEnd || allSelectedWeek.includes('Sunday')} name='Sunday' onClick={_handleWeekDayClick}
+              active={allSelectedWeek.includes('Sunday')} name='Sunday' onClick={_handleWeekDayClick}
               type='button'>Sunday</Button>
           </Button.Group>
           <Grid className='mt8'>
-            <Grid.Column computer={8} mobile={16} tablet={16}>
+            <Grid.Column
+              className='grid_width_100' computer={6} mobile={16}
+              tablet={16}>
               <Header as='h3'>
               Frequency
               </Header>
@@ -359,12 +357,12 @@ const TrainingFormWizardFirst = props => {
 
             </Grid.Column>
             <Grid.Column
-              className='grid_custom_input'
-              computer={8} mobile={16} tablet={16}>
-              <Header as='h3' className='custom_label'>
-                Ending: Date/ Number of occurrences
-              </Header>
-              <Form.Group computer={16} mobile={16} tablet={16}>
+              className='grid_custom_input grid_width_100'
+              computer={6} mobile={16} tablet={16}>
+              <label>Ending: Date/ Number of occurrences</label>
+              <Form.Group
+                className='mt0_8' computer={16} mobile={16}
+                tablet={16}>
                 <Field
                   component={FormField}
                   control={Input}
@@ -378,6 +376,17 @@ const TrainingFormWizardFirst = props => {
                   name='until_no_of_occurrences'
                   type='number'/>
               </Form.Group>
+            </Grid.Column>
+            <Grid.Column
+              className='grid_custom_checkout'
+              computer={4} mobile={8} tablet={8}>
+              <Field
+                component={FormField}
+                control={Input}
+                label='Check Out Time'
+                name='check_out_time'
+                required
+                type='time'/>
             </Grid.Column>
           </Grid>
         </Segment>

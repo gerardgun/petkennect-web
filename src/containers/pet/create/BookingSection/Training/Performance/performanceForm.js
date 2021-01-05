@@ -1,13 +1,30 @@
-import React from 'react'
+/* eslint-disable react/jsx-key */
+import React, { useEffect } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { TextArea, Grid , Segment, Header ,Input ,Form, Select } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-
+import trainingCommandDuck from '@reducers/training-command'
+import trainingCommandDetailDuck from '@reducers/training-command/detail'
 import FormField from '@components/Common/FormField'
 
 import './style.scss'
-const TrainingPerformance =  () => {
+
+const TrainingPerformance =  ({ trainingCommand, ...props }) => {
+  useEffect(() => {
+    props.getTrainingCommand()
+  }, [])
+
+  let leftGridData = []
+  let rightGridData = []
+
+  trainingCommand.items.length > 0 && trainingCommand.items.map((item,index)=>{
+    if(index % 2 === 0)
+      leftGridData.push(item.name)
+    else
+      rightGridData.push(item.name)
+  })
+
   return (
     <div className='training-performance-form'>
       <Form onReset='' onSubmit=''>
@@ -76,21 +93,78 @@ const TrainingPerformance =  () => {
         </Form.Group>
 
         <Segment>
-          <Header as='h3'>Training Commands</Header>
+          <Header as='h3' className='ph0'>Training Commands</Header>
           <Grid>
+
             <Grid.Column className='radio-label-grid' >
               <Form.Group><label><b>Rating</b></label></Form.Group>
+              {
+                leftGridData.length > 0 && leftGridData.map(item=>{
+                  return <Form.Group >  <label>{item}</label></Form.Group>
+                })
 
-              <Form.Group>  <label>Sit</label></Form.Group>
-              <Form.Group> <label>Activity</label></Form.Group>
-              <Form.Group> <label>Down/Stay</label>  </Form.Group>
-              <Form.Group>  <label>Sit in Motion</label></Form.Group>
-              <Form.Group>  <label>Off</label></Form.Group>
-              <Form.Group> <label>Loose Lead</label></Form.Group>
-              <Form.Group> <label>place/Stay</label></Form.Group>
-              <Form.Group>  <label>Come</label></Form.Group>
+              }
+
             </Grid.Column>
             <Grid.Column className='radio-field-grid'>
+
+              <Form.Group>
+                <label className='radio-label'><b>1</b></label>
+                <label  className='radio-label'><b>2</b></label>
+                <label  className='radio-label'><b>3</b></label>
+                <label  className='radio-label'><b>4</b></label>
+                <label  className='radio-label'><b>5</b></label>
+                <label  ><b>6</b></label>
+              </Form.Group>
+              {
+                leftGridData.length > 0 && leftGridData.map(item=>{
+                  return (<Form.Group>
+                    <Field
+                      className='radio-field'
+                      component='input' name={item} type='radio'
+                      value='1'/>
+
+                    <Field
+                      className='radio-field'
+                      component='input' name={item}  type='radio'
+                      value='2'/>
+
+                    <Field
+                      className='radio-field'
+                      component='input' name={item}  type='radio'
+                      value='3'/>
+
+                    <Field
+                      className='radio-field'
+                      component='input' name={item}  type='radio'
+                      value='4'/>
+
+                    <Field
+                      className='radio-field'
+                      component='input' name={item}  type='radio'
+                      value='5'/>
+                    <Field
+
+                      component='input' name={item}  type='radio'
+                      value='6'/>
+                  </Form.Group>)
+                })
+
+              }
+
+            </Grid.Column>
+            <Grid.Column className='radio-label-grid'  >
+              <Form.Group><label><b>Rating</b></label></Form.Group>
+              {
+                rightGridData.length > 0 && rightGridData.map(item=>{
+                  return <Form.Group >  <label>{item}</label></Form.Group>
+                })
+
+              }
+
+            </Grid.Column>
+            <Grid.Column className='radio-field-grid' >
+
               <Form.Group>
                 <label className='radio-label'><b>1</b></label>
                 <label  className='radio-label'><b>2</b></label>
@@ -100,521 +174,42 @@ const TrainingPerformance =  () => {
                 <label  ><b>6</b></label>
               </Form.Group>
 
-              <Form.Group>
+              {
+                rightGridData.length > 0 && rightGridData.map(item=>{
+                  return (<Form.Group>
+                    <Field
+                      className='radio-field'
+                      component='input' name={item} type='radio'
+                      value='1'/>
+
+                    <Field
+                      className='radio-field'
+                      component='input' name={item}  type='radio'
+                      value='2'/>
+
+                    <Field
+                      className='radio-field'
+                      component='input' name={item}  type='radio'
+                      value='3'/>
+
+                    <Field
+                      className='radio-field'
+                      component='input' name={item}  type='radio'
+                      value='4'/>
+
+                    <Field
+                      className='radio-field'
+                      component='input' name={item}  type='radio'
+                      value='5'/>
+                    <Field
+
+                      component='input' name={item}  type='radio'
+                      value='6'/>
+                  </Form.Group>)
+                })
+
+              }
 
-                <Field
-                  className='radio-field'
-                  component='input' name='sit' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='sit' type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='sit' type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='sit' type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='sit' type='radio'
-                  value='5'/>
-                <Field
-
-                  component='input' name='sit' type='radio'
-                  value='6'/>
-              </Form.Group>
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='activity' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input'name='activity' type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='activity' type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='activity'type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='activity'type='radio'
-                  value='5'/>
-                <Field
-                  component='input' name='activity' type='radio'
-                  value='6'/>
-              </Form.Group>
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='down_stay' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input'name='down_stay'  type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='down_stay' type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='down_stay'  type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='down_stay'  type='radio'
-                  value='5'/>
-                <Field
-                  component='input' name='down_stay' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='Sit in Motion' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input'name='Sit in Motion' type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='Sit in Motion' type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='Sit in Motion'type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='Sit in Motion'type='radio'
-                  value='5'/>
-                <Field
-                  component='input' name='Sit in Motion' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='Off' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input'name='Off'type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='Off' type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='Off'type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='Off' type='radio'
-                  value='5'/>
-                <Field
-                  component='input' name='Off' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='Loose_Lead' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input'name='Loose_Lead'type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='Loose_Lead' type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='Loose_Lead'type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='Loose_Lead' type='radio'
-                  value='5'/>
-                <Field
-                  component='input' name='Loose_Lead' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='place_stay' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='place_stay' type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='place_stay' type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='place_stay' type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='place_stay' type='radio'
-                  value='5'/>
-                <Field
-                  className='radio-field'
-                  component='input' name='place_stay' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='come' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='come'  type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='come'  type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='come'  type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='come'  type='radio'
-                  value='5'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='come' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-            </Grid.Column>
-            <Grid.Column className='radio-label-grid'  >
-              <Form.Group><label ><b>Rating</b></label></Form.Group>
-              <Form.Group>  <label>Down</label></Form.Group>
-              <Form.Group> <label>Sit/Stay</label></Form.Group>
-              <Form.Group> <label>Touch</label>  </Form.Group>
-              <Form.Group>  <label>Down in Motion</label></Form.Group>
-              <Form.Group>  <label>Place</label></Form.Group>
-              <Form.Group> <label>Quiet</label></Form.Group>
-              <Form.Group> <label>Heel</label></Form.Group>
-
-            </Grid.Column>
-            <Grid.Column className='radio-field-grid' >
-
-              <Form.Group>
-                <label className='radio-label'><b>1</b></label>
-                <label className='radio-label'><b>2</b></label>
-                <label  className='radio-label'><b>3</b></label>
-                <label  className='radio-label'><b>4</b></label>
-                <label  className='radio-label'><b>5</b></label>
-                <label ><b>6</b></label>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-
-                  className='radio-field'
-                  component='input' name='down' type='radio'
-                  value='1'/>
-
-                <Field
-
-                  className='radio-field'
-                  component='input' name='down'  type='radio'
-                  value='2'/>
-
-                <Field
-
-                  className='radio-field'
-                  component='input' name='down'  type='radio'
-                  value='3'/>
-
-                <Field
-
-                  className='radio-field'
-                  component='input'  name='down'  type='radio'
-                  value='4'/>
-
-                <Field
-
-                  className='radio-field'
-                  component='input' name='down'  type='radio'
-                  value='5'/>
-                <Field
-
-                  component='input' name='down' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='sit_stay' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='sit_stay'   type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='sit_stay'  type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='sit_stay'   type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='sit_stay'   type='radio'
-                  value='5'/>
-
-                <Field
-
-                  component='input' name='sit_stay' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='touch' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='touch'   type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='touch'   type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='touch'    type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='touch'   type='radio'
-                  value='5'/>
-                <Field
-
-                  component='input' name='touch' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='down_in_motion' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='down_in_motion'  type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='down_in_motion'  type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='down_in_motion'   type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='down_in_motion'   type='radio'
-                  value='5'/>
-                <Field
-
-                  component='input' name='down_in_motion' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='palce' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='palce'  type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='palce'  type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='palce'   type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='palce'  type='radio'
-                  value='5'/>
-
-                <Field
-
-                  component='input' name='place' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='quiet' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='quiet'  type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='quiet'  type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='quiet'   type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='quiet'  type='radio'
-                  value='5'/>
-                <Field
-
-                  component='input' name='quiet' type='radio'
-                  value='6'/>
-              </Form.Group>
-
-              <Form.Group>
-
-                <Field
-                  className='radio-field'
-
-                  component='input' name='heel' type='radio'
-                  value='1'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='heel'  type='radio'
-                  value='2'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='heel'  type='radio'
-                  value='3'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='heel'   type='radio'
-                  value='4'/>
-
-                <Field
-                  className='radio-field'
-                  component='input' name='heel'  type='radio'
-                  value='5'/>
-                <Field
-
-                  component='input' name='heel' type='radio'
-                  value='6'/>
-              </Form.Group>
             </Grid.Column>
           </Grid>
 
@@ -630,9 +225,17 @@ const TrainingPerformance =  () => {
   )}
 
 export default compose(
-  connect(() => {
+  connect(
+    (state) => ({
+      trainingCommand      : trainingCommandDuck.selectors.list(state),
+      trainingCommandDetail: trainingCommandDetailDuck.selectors.detail(state)
 
-  }),
+    }),
+    {
+      getTrainingCommand: trainingCommandDuck.creators.get,
+      setItem           : trainingCommandDetailDuck.creators.setItem
+    }
+  ),
   reduxForm({
     form: 'training-performance'
 

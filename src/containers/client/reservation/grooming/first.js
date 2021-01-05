@@ -107,7 +107,7 @@ const GroomingFormWizardFirst = props => {
               component={FormField}
               control={Input}
               label='Appointment Time'
-              name='appointment_time'
+              name='check_in_time'
               required
               type='time'/>
           </Form.Group>
@@ -224,11 +224,11 @@ export default compose(
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        location        : Yup.mixed().required('Location is required'),
-        pet             : Yup.mixed().required('Pet is required'),
-        check_in        : Yup.string().required('Reservation day is required'),
-        groomer         : Yup.mixed().required('Groomer is required'),
-        appointment_time: Yup.mixed().required('Appointment time is required')
+        location     : Yup.mixed().required('Location is required'),
+        pet          : Yup.mixed().required('Pet is required'),
+        check_in     : Yup.string().required('Reservation day is required'),
+        groomer      : Yup.mixed().required('Groomer is required'),
+        check_in_time: Yup.mixed().required('Appointment time is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

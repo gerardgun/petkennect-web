@@ -139,8 +139,8 @@ const TrainingPackageForm = props => {
                       control={Input}
                       label='Price'
                       name='price'
-                      readOnly
-                      selectOnBlur={false}/>
+                      selectOnBlur={false}
+                      type='number'/>
 
                     <Field
                       component={FormField}
@@ -148,7 +148,8 @@ const TrainingPackageForm = props => {
                       label='Discount'
                       name='discount'
                       readOnly
-                      selectOnBlur={false}/>
+                      selectOnBlur={false}
+                      type='number'/>
                   </Form.Group>
                   <Form.Group widths='equal'>
                     <Field

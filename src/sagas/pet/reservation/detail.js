@@ -58,7 +58,7 @@ function* post({ payload: { ...payload } }) {
           service_variation: payload.serviceVariation.id,
           employee         : payload.currentTenant.id,
           price            : parseInt(payload.serviceVariation.price),
-          reserved_at      : moment.utc(payload.check_in , 'YYYY-MM-DD HH-mm:ss Z'),
+          reserved_at      : moment.utc(payload.check_in + ' ' + payload.check_in_time , 'YYYY-MM-DD HH-mm:ss Z'),
           location         : payload.location,
           pet              : payload.pet,
           comment          : payload.comment
@@ -69,7 +69,7 @@ function* post({ payload: { ...payload } }) {
             service_variation     : _pet.id,
             employee              : payload.currentTenant.id,
             price                 : parseInt(_pet.price),
-            reserved_at           : moment.utc(payload.check_in , 'YYYY-MM-DD HH-mm:ss Z'),
+            reserved_at           : moment.utc(payload.check_in + ' ' + payload.check_in_time , 'YYYY-MM-DD HH-mm:ss Z'),
             location              : payload.location,
             pet                   : _pet.petId,
             belongings            : payload.belongings,
@@ -91,7 +91,7 @@ function* post({ payload: { ...payload } }) {
     for (let _order_services of order.order_services)
     {
       const reservationDetail = {
-        reserved_at           : moment.utc(payload.check_in , 'YYYY-MM-DD HH-mm:ss Z'),
+        reserved_at           : moment.utc(payload.check_in + ' ' + payload.check_in_time , 'YYYY-MM-DD HH-mm:ss Z'),
         price                 : parseInt(_order_services.price),
         employee              : payload.currentTenant.id,
         pet                   : _order_services.pet,
@@ -122,14 +122,14 @@ function* post({ payload: { ...payload } }) {
         yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  daycamp: {
           card       : '6',
           yard_type  : payload.yard,
-          checkout_at: moment.utc(payload.start_date , 'YYYY-MM-DD HH-mm:ss Z')
+          checkout_at: moment.utc(payload.check_in + ' ' + payload.check_in_time , 'YYYY-MM-DD HH-mm:ss Z')
         } })
       }
       else if(payload.serviceType === 'T') {
         yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  training: {
           method       : payload.method,
           comment      : payload.comment,
-          contracted_at: moment.utc(payload.check_in , 'YYYY-MM-DD HH-mm:ss Z')
+          contracted_at: moment.utc(payload.check_in + ' ' + payload.check_in_time , 'YYYY-MM-DD HH-mm:ss Z')
         } })
       }
       else

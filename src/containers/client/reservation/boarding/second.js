@@ -185,7 +185,6 @@ const BoardingFormWizardSecond = props => {
               props.hasBelongingsChecked && (
                 <Form.Group widths='equal'>
                   <Field
-                    autoFocus
                     component={FormField}
                     control={Form.TextArea}
                     label='Belongings Information'

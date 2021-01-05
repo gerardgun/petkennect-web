@@ -2,11 +2,11 @@ import base from '@reducers/base'
 import list from '@reducers/common/list'
 import pagination from '@reducers/common/pagination'
 
-import config from '@lib/constants/list-configs/pet/reservation'
+import config from '@lib/constants/list-configs/pet/daycamp-reservation'
 
 export default base({
   namespace   : '@@pet-kennect',
-  store       : 'pet/reservation',
+  store       : 'pet/reservation/daycamp-reservation',
   initialState: {
     items     : [],
     config,
