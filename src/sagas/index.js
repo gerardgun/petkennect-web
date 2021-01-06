@@ -25,7 +25,6 @@ import customizedField from './customized-field/field'
 import customizedFieldDetail from './customized-field/field/detail'
 import customizedFieldGroup from './customized-field/group'
 import customizedFieldGroupDetail from './customized-field/group/detail'
-import dayCampPackage from './pet/reservation/day-camp-package'
 import daycampCard from './pet/reservation/daycamp-card'
 import daycampCardDetail from './pet/reservation/daycamp-card/detail'
 import daycampCardQuestion from './pet/reservation/daycamp-card/daycamp-card-question'
@@ -163,7 +162,6 @@ export default function* rootSaga() {
     ...customizedFieldGroup,
     ...customizedFieldGroupDetail,
     ...daycampCard,
-    ... dayCampPackage,
     ...petDaycampReservation,
     ...daycampCardDetail,
     ...daycampCardQuestion,

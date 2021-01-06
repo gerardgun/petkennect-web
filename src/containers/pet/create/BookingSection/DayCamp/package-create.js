@@ -9,11 +9,11 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError } from '@lib/utils/functions'
 
-import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
+import dayCampReservationDetailDuck from '@reducers/pet/reservation/daycamp-reservation/detail'
 
-const TrainingPackageForm = props => {
+const DaycampPackageForm = props => {
   const {
-    trainingPackageDetail,
+    dayCampPackageDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
@@ -26,7 +26,7 @@ const TrainingPackageForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ id: trainingPackageDetail.item.id, ...values })
+      return props.put({ id: dayCampPackageDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -35,8 +35,8 @@ const TrainingPackageForm = props => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(trainingPackageDetail.mode), [ trainingPackageDetail.mode ])
-  const isUpdating = Boolean(trainingPackageDetail.item.id)
+  const isOpened = useMemo(() => getIsOpened(dayCampPackageDetail.mode), [ dayCampPackageDetail.mode ])
+  const isUpdating = Boolean(dayCampPackageDetail.item.id)
 
   return (
     <div className='package-create-form'>
@@ -160,23 +160,23 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const trainingPackageDetail = petReservationTrainingPackageDetail.selectors.detail(state)
+      const dayCampPackageDetail = dayCampReservationDetailDuck.selectors.detail(state)
 
       return {
-        trainingPackageDetail,
-        initialValues: trainingPackageDetail.item
+        dayCampPackageDetail,
+        initialValues: dayCampPackageDetail.item
       }
     },
     {
-      post     : petReservationTrainingPackageDetail.creators.post,
-      put      : petReservationTrainingPackageDetail.creators.put,
-      resetItem: petReservationTrainingPackageDetail.creators.resetItem
+      post     : dayCampReservationDetailDuck.creators.post,
+      put      : dayCampReservationDetailDuck.creators.put,
+      resetItem: dayCampReservationDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
-    form              : 'training-new-package-form',
+    form              : 'daycamp-new-package-form',
     destroyOnUnmount  : false,
     enableReinitialize: true
   })
-)(TrainingPackageForm)
+)(DaycampPackageForm)
 

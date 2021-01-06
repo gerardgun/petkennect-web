@@ -12,7 +12,7 @@ import FormField from '@components/Common/FormField'
 import ConfirmationForm from './confirmation'
 
 import clientPetDuck from '@reducers/client/pet'
-import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
 
 export const formId = 'express-check-in-form'
 
@@ -64,31 +64,25 @@ const ExpressCheckInForm = props => {
             <Header as='h2' className='segment-content-header'>Express Check In</Header>
             <Field component='input' name='id' type='hidden'/>
 
-            {
-              !petDetail.item.client && (
-                <>
-                  <Form.Group widths='equal'>
-                    <Field
-                      closeOnChange
-                      component={FormField}
-                      control={Dropdown}
-                      fluid
-                      label='Select Pets'
-                      multiple
-                      name='pet'
-                      options={[ ...clientPet.items ].map((_clientPet) => ({
-                        key  : _clientPet.id,
-                        value: _clientPet.id,
-                        text : `${_clientPet.name}`
-                      }))}
-                      placeholder='Search pet'
-                      required
-                      selection
-                      selectOnBlur={false}/>
-                  </Form.Group>
-                </>
-              )
-            }
+            <Form.Group widths='equal'>
+              <Field
+                closeOnChange
+                component={FormField}
+                control={Dropdown}
+                fluid
+                label='Select Pets'
+                multiple
+                name='pet'
+                options={[ ...clientPet.items ].map((_clientPet) => ({
+                  key  : _clientPet.id,
+                  value: _clientPet.id,
+                  text : `${_clientPet.name}`
+                }))}
+                placeholder='Search pet'
+                required
+                selection
+                selectOnBlur={false}/>
+            </Form.Group>
 
             <Form.Group widths='equal'>
               <Field
@@ -168,21 +162,6 @@ const ExpressCheckInForm = props => {
                 </>
               )
             }
-            {/* {
-              hasExpressCheckIn === 'daycamp_reservation' && (
-                <>
-                  <Form.Group widths='equal'>
-                    <Field
-                      component={FormField}
-                      control={Input}
-                      label='Reservation Date'
-                      name='reservation_date'
-                      required
-                      type='date'/>
-                  </Form.Group>
-                </>
-              )
-            } */}
 
             {
               error && (
@@ -228,7 +207,7 @@ export default compose(
         petDetail,
         hasExpressCheckIn,
         clientPet    : clientPetDuck.selectors.list(state),
-        initialValues: { ...petDetail.item, location: auth.location, express_check_in: 'daycamp_reservation' }
+        initialValues: { ...petDetail.item, pet: [ petDetail.item.id ], location: auth.location, express_check_in: 'daycamp_reservation' }
       }
     },
     {

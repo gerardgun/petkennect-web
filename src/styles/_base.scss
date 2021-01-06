@@ -7,6 +7,14 @@ textarea {
   font-family: "Poppins";
 }
 
+.dropdown_icon_hamburger_menu{
+  .visible.menu.transition{
+    .icon{
+  color:gray;
+}
+}
+}
+
 .appbar-grid{
   @media (max-width: 767px){
     height: auto !important;

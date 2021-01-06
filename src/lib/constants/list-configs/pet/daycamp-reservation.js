@@ -1,22 +1,53 @@
 export default {
   base_uri: null,
   row     : {
-    options        : [ ],
+    options: [
+      {
+        display_name      : 'Check In',
+        name              : 'check_in',
+        icon              : 'arrow right',
+        conditional_render: item => item.isCheckIn
+      },
+      {
+        display_name      : 'Check Out',
+        name              : 'check_out',
+        icon              : 'check',
+        conditional_render: item => item.isCheckOut
+      }
+    ],
     dropdownOptions: [
+      {
+        icon        : 'sticky note',
+        display_name: 'View Notes',
+        name        : 'view_notes'
+      },
       {
         icon        : 'file pdf',
         display_name: 'Report Cards',
-        name        : 'report_cards'
+        name        : 'add_report_card'
       },
       {
         icon        : 'plus circle',
         display_name: 'Add Grooming',
-        name        : 'add'
+        name        : 'add_grooming'
       },
       {
-        icon        : 'list icon',
-        display_name: 'Add-Ons',
-        name        : 'add_ons'
+        icon        : 'clipboard list icon',
+        display_name: 'Add-On Services',
+        name        : 'add_on'
+      },
+      {
+        icon        : 'blind',
+        display_name: 'Add Incident',
+        name        : 'add_incident'
+      },{
+        icon        : 'fast forward icon',
+        display_name: 'Convert to Boarding',
+        name        : 'convert_to_boarding'
+      },{
+        icon        : 'close',
+        display_name: 'Cancel Reservation',
+        name        : 'cancel_reservation'
       }
     ]
   },
@@ -42,7 +73,7 @@ export default {
       sort        : false
     },
     {
-      display_name: 'Visit Type',
+      display_name: 'Type',
       name        : 'type',
       type        : 'string',
       width       : null,
@@ -64,8 +95,16 @@ export default {
       }
     },
     {
-      display_name: 'Time Out',
-      name        : 'timeout',
+      display_name: 'In',
+      name        : 'timeIn',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false
+    },
+    {
+      display_name: 'Out',
+      name        : 'timeOut',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -82,6 +121,14 @@ export default {
     {
       display_name: 'Yard',
       name        : 'yard',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false
+    },
+    {
+      display_name: 'Run',
+      name        : 'run',
       type        : 'string',
       width       : null,
       align       : 'left',

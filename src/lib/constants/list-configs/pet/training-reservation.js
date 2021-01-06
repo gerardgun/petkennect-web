@@ -19,7 +19,7 @@ export default {
     {
       display_name: 'Date',
       name        : 'date',
-      type        : 'date', // image, boolean, date, datetime, money, label
+      type        : 'datetime', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
       sort        : false,

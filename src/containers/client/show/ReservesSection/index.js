@@ -10,6 +10,7 @@ import PetNotes from '@containers/pet/create/BookingSection/Notes'
 import ViewReport from '@containers/pet/create/BookingSection/ReportCard'
 import Absent from '@containers/pet/create/BookingSection/Absent'
 import Training from '@containers/pet/create/BookingSection/Training'
+import Daycamp from '@containers/pet/create/BookingSection/DayCamp'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
@@ -58,7 +59,7 @@ function ReservesSection({ ...props }) {
   const _handleFilterBtnClick = type => () => {
     setActiveServiceItem(type)
     props.setFilters({ service_type_what_ever_name: type })
-    if(type != 'T')
+    if(type != 'T' && type != 'D')
       props.getPetReservations()
   }
 
@@ -89,8 +90,9 @@ function ReservesSection({ ...props }) {
           content='Grooming' onClick={_handleFilterBtnClick('G')}/>
       </div>
       {activeServiceItem === 'T' && <Training/>}
+      {activeServiceItem === 'D' && <Daycamp/>}
       {
-        activeServiceItem != 'T' && (
+        activeServiceItem != 'T' && activeServiceItem != 'D' && (
           <>
             <div className='mh8'>
               <Table

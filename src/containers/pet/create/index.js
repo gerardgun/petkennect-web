@@ -29,6 +29,7 @@ import petReservationTrainingPackageDetail from '@reducers/pet/reservation/train
 
 const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props }) => {
   const history = useHistory()
+
   const [ activeMenuItem, setActiveMenuItem ] = useState('info')
   const inputFileRef = useRef()
   const { pet: petId } = useParams()
@@ -39,6 +40,11 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
     props.getPetImages({ pet_id: petId })
     props.getPetRetireReasons()
     props.getPetNotes({ pet_id: petId, ordering: '-created_at' })
+    if(history.location.state !== undefined)
+      if(history.location.state.option === 'vaccination')
+        setActiveMenuItem('vaccinations')
+      else if(history.location.state.option === 'services')
+        setActiveMenuItem('bookings')
 
     return () => {
       props.resetItem()

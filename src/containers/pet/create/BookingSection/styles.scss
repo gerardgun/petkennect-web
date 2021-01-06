@@ -25,3 +25,20 @@
   font-weight: 400 !important;
 }
 }
+
+.c-booking-daycamp{
+  @media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (orientation: portrait)
+and (-webkit-min-device-pixel-ratio: 2) {
+  .wide.computer.sixteen.wide.mobile.sixteen.wide.tablet.column.ipad_full_width{
+  width:100% !important;
+}
+}
+@media only screen and (min-width:1024px){
+  .text-center-daycamp{
+    text-align: center;
+  }
+}
+}

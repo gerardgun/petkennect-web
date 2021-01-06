@@ -15,7 +15,7 @@ import { useChangeStatusEffect } from '@hooks/Shared'
 
 import petDuck from '@reducers/pet'
 import petDetailDuck from '@reducers/pet/detail'
-import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
 import petBreedDuck from '@reducers/pet/breed'
 
 import './styles.scss'
@@ -44,14 +44,13 @@ const PetList = ({ pet, petDetail, ...props }) => {
       _handleOpen()
     }
     else if(option === 'express_check_in') {
-      props.setReservationItem(pet.selector.selected_items[0], 'CREATE')
+      props.setReservationItem(item, 'CREATE')
     }
-    else if(option === 'vaccination') {
-      history.replace(`/pet/${item.id}`)
-    }
-
-    else if(option === 'services') {
-      history.replace(`/pet/${item.id}`)
+    else if(option === 'vaccination' || option === 'services') {
+      history.push({
+        pathname: `/pet/${item.id}`,
+        state   : { option: option }
+      })
     }
   }
 

@@ -27,14 +27,17 @@ function* get() {
       type   : types.GET_FULFILLED,
       payload: {
         items: _times(10, index => ({
-          id      : index,
-          date    : faker.date.future(),
-          location: '01-RH',
-          type    : faker.random.words(),
-          timeout : '7:36 AM',
-          run     : 'A15',
-          lunch   : 'Yes',
-          yard    : faker.random.words()
+          id        : index,
+          date      : faker.date.future(),
+          location  : '01-RH',
+          type      : 'Full Day',
+          timeOut   : '05:00 PM',
+          timeIn    : '10:00 AM',
+          run       : 'A15',
+          lunch     : 'Yes',
+          yard      : 'Large Dog',
+          isCheckOut: index % 2 == 0 ? false : true,
+          isCheckIn : index % 2 == 0 ? true : false
         })),
         pagination: {
           ...list.pagination,
