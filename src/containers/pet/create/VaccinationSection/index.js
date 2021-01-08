@@ -70,7 +70,7 @@ function VacinationSection(props) {
       </Grid>
       <Alert
         className='mh28 mt32' message={getAlertMessage()}
-        open={!!petDetail.item.vaccination_alert.length}/>
+        open={petDetail.item.vaccination_alert && !!petDetail.item.vaccination_alert.length}/>
       <div className='flex justify-end mh28 mt32'>
         <Button
           basic
@@ -121,4 +121,3 @@ export default compose(
       setItem           : petVaccinationDetailDuck.creators.setItem
     })
 )(VacinationSection)
-

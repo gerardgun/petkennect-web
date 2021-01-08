@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
-import { Button, Dropdown, Form, Header, Input, Checkbox, Grid, Select, Segment, Icon } from 'semantic-ui-react'
+import { Button, Dropdown, Form, Header, Input, Grid, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
+import Message from '@components/Message'
 
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import locationDuck from '@reducers/location'
@@ -21,6 +22,7 @@ import serviceAttributeDuck from '@reducers/service/service-attribute'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
 import AlertModal from './../alert-modal'
+import RecurringDaysForm from './../recurring-days'
 
 import './styles.scss'
 
@@ -45,9 +47,6 @@ const TrainingFormWizardFirst = props => {
     props.getTrainingMethod()
     props.getTrainingReason()
   }, [])
-
-  const [ frequency, setFrequency ] = useState('every_week')
-  const [ allSelectedWeek, setAllSelectedWeek ] = useState([ 'Monday', 'Tuesday' ])
 
   const _handlePetDropDownChange = (value) =>{
     let serviceVariations = []
@@ -87,67 +86,8 @@ const TrainingFormWizardFirst = props => {
     props.setItem({ ...petReservationDetail.item,serviceVariations: serviceVariations },'CREATE')
   }
 
-  const _handleAllWeekDayChange = (value) =>{
-    let selectedDays = allSelectedWeek
-    let days = []
-    if(value === true)
-    {
-      var toRemove = [ 'Monday', 'Tuesday','Wednesday','Thursday','Friday' ]
-      var weekDays = selectedDays.filter(value => !toRemove.includes(value))
-      weekDays.push('Monday', 'Tuesday','Wednesday','Thursday','Friday')
-      setAllSelectedWeek([].concat(weekDays))
-      days = [].concat(weekDays)
-    }
-    else
-    {
-      var remove = [ 'Monday', 'Tuesday','Wednesday','Thursday','Friday' ]
-      var remainingDays = selectedDays.filter(value => !remove.includes(value))
-      setAllSelectedWeek([].concat(remainingDays))
-      days = [].concat(remainingDays)
-    }
-    props.setItem({ ...petReservationDetail.item, allSelectedWeek: days })
-  }
-
-  const _handleOnlyWeekEndChange = (value) =>{
-    let selectedDays = allSelectedWeek
-    let days = []
-    if(value === true)
-    {
-      var toRemove = [ 'Saturday','Sunday' ]
-      var weekDays = selectedDays.filter(value => !toRemove.includes(value))
-      weekDays.push('Saturday','Sunday')
-      setAllSelectedWeek([].concat(weekDays))
-      days = [].concat(weekDays)
-    }
-    else
-    {
-      var remove = [ 'Saturday','Sunday' ]
-      var remainingDays = selectedDays.filter(value => !remove.includes(value))
-      setAllSelectedWeek([].concat(remainingDays))
-      days = [].concat(remainingDays)
-    }
-
-    props.setItem({ ...petReservationDetail.item, allSelectedWeek: days })
-  }
-  const _handleFrequencyClick = (e ,{ name }) =>{
-    setFrequency(name)
-  }
-
-  const _handleWeekDayClick = (e ,{ name }) =>{
-    let allItem = allSelectedWeek
-    const index = allItem.indexOf(name)
-    if(index > -1)
-      allItem.splice(index, 1)
-    else
-      allItem.push(name)
-
-    setAllSelectedWeek([].concat(allItem))
-
-    props.setItem({ ...petReservationDetail.item, allSelectedWeek })
-  }
-
   return (
-    <>
+    services[0] ? (<>
       <div className='div-progress-bar div-training-main'>
         <div className='div-bar-content active'>
           <Icon name='check circle'/>
@@ -278,118 +218,8 @@ const TrainingFormWizardFirst = props => {
 
         </Segment>
 
-        <Segment className='recurring_date_div section-info-item-step1'>
-          <Header as='h3'>
-        Select Dates
-          </Header>
+        <RecurringDaysForm serviceType='T'/>
 
-          <Form.Group computer={3} mobile={16} tablet={2}>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Start Date'
-              name='check_in'
-              requied
-              type='date'/>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Check In Time'
-              name='check_in_time'
-              required
-              type='time'/>
-          </Form.Group>
-          <Header as='h3' className='mb0'>
-          Select Recurring Days
-          </Header>
-          <Form.Group className='form_group_label0'>
-            <Field
-              component={FormField}
-              control={Checkbox}
-              label='Week Days'
-              name='all_week_days'
-              onChange={_handleAllWeekDayChange}/>
-            <Field
-              component={FormField}
-              control={Checkbox}
-              label='Weekend'
-              name='only_week_end'
-              onChange={_handleOnlyWeekEndChange}/>
-          </Form.Group>
-          <Button.Group className='week_btn_group'>
-            <Button
-              active={allSelectedWeek.includes('Monday')} name='Monday' onClick={_handleWeekDayClick}
-              type='button'>Monday</Button>
-            <Button
-              active={allSelectedWeek.includes('Tuesday')} name='Tuesday' onClick={_handleWeekDayClick}
-              type='button'>Tuesday</Button>
-            <Button
-              active={allSelectedWeek.includes('Wednesday')} name='Wednesday' onClick={_handleWeekDayClick}
-              type='button'>Wednesday</Button>
-            <Button
-              active={allSelectedWeek.includes('Thursday')} name='Thursday' onClick={_handleWeekDayClick}
-              type='button'>Thursday</Button>
-            <Button
-              active={allSelectedWeek.includes('Friday')} name='Friday' onClick={_handleWeekDayClick}
-              type='button'>Friday</Button>
-            <Button
-              active={allSelectedWeek.includes('Saturday')} name='Saturday' onClick={_handleWeekDayClick}
-              type='button'>Saturday</Button>
-            <Button
-              active={allSelectedWeek.includes('Sunday')} name='Sunday' onClick={_handleWeekDayClick}
-              type='button'>Sunday</Button>
-          </Button.Group>
-          <Grid className='mt8'>
-            <Grid.Column
-              className='grid_width_100' computer={6} mobile={16}
-              tablet={16}>
-              <Header as='h3'>
-              Frequency
-              </Header>
-              <Button.Group className='week_btn_group'>
-                <Button
-                  active={frequency === 'every_week'} name='every_week' onClick={_handleFrequencyClick}
-                  type='button'>Every Week</Button>
-                <Button
-                  active={frequency === 'every_other_week'} name='every_other_week' onClick={_handleFrequencyClick}
-                  type='button'>Every Other Week</Button>
-              </Button.Group>
-
-            </Grid.Column>
-            <Grid.Column
-              className='grid_custom_input grid_width_100'
-              computer={6} mobile={16} tablet={16}>
-              <label>Ending: Date/ Number of occurrences</label>
-              <Form.Group
-                className='mt0_8' computer={16} mobile={16}
-                tablet={16}>
-                <Field
-                  component={FormField}
-                  control={Input}
-                  name='check_out'
-                  type='date'/>
-                <span className='custom_or'>OR</span>
-                <Field
-                  className='w_input_set'
-                  component={FormField}
-                  control={Input}
-                  name='until_no_of_occurrences'
-                  type='number'/>
-              </Form.Group>
-            </Grid.Column>
-            <Grid.Column
-              className='grid_custom_checkout'
-              computer={4} mobile={8} tablet={8}>
-              <Field
-                component={FormField}
-                control={Input}
-                label='Check Out Time'
-                name='check_out_time'
-                required
-                type='time'/>
-            </Grid.Column>
-          </Grid>
-        </Segment>
         {
           error && (
             <Form.Group widths='equal'>
@@ -411,7 +241,21 @@ const TrainingFormWizardFirst = props => {
         </Form.Group>
       </Form>
       <AlertModal/>
+
     </>
+    ) : (<><Message
+      content={
+        <Grid padded style={{ marginLeft: -16 }}>
+          <Grid.Column className='mb0 pb0' width='16'>
+            <div className='message__title'>The service is not available for selected company</div>
+          </Grid.Column>
+          <Grid.Column width='16'>
+
+          </Grid.Column>
+        </Grid>
+
+      } type='warning'/></>)
+
   )
 }
 
@@ -455,7 +299,7 @@ export default compose(
         location     : Yup.mixed().required('Location is required'),
         pet          : Yup.mixed().required('Pet is required'),
         'package'    : Yup.mixed().required('Package is required'),
-        check_in_time: Yup.mixed().required('Check In is required'),
+        check_in_time: Yup.mixed().required('Check In time is required'),
         check_in     : Yup.mixed().required('Start Date is required'),
         price        : Yup.mixed().required('Price is required'),
         method       : Yup.mixed().required('Method is required'),

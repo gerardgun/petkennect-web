@@ -5,13 +5,14 @@ import { compose } from 'redux'
 import { reduxForm, formValueSelector,Field } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
 
+import moment from 'moment'
+
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 import FormField from '@components/Common/FormField'
 import authDuck from '@reducers/auth'
-import serviceDuck from '@reducers/service'
-import serviceAttributeDuck from '@reducers/service/service-attribute'
+
 import clientPetDuck from '@reducers/client/pet'
 import employeeDuck from '@reducers/employee'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
@@ -23,13 +24,17 @@ import { groomingFormId } from './first'
 const GroomingFormWizardThird = props => {
   const {
     groomerDetail,
-    check_in,
-    clientPet,
+    startDate,
+    endDate,
+    untilNoOfOccurrences,
+    checkInTime,
     selectedPetName,
     petReservationDetail,
     currentTenant,
-    services,
-    serviceAttribute, error, handleSubmit, reset // redux-form
+    allSelectedWeek,
+    frequency,
+    submitting,
+    error, handleSubmit, reset // redux-form
   } = props
 
   const { client: clientId } = useParams()
@@ -42,48 +47,26 @@ const GroomingFormWizardThird = props => {
   }
 
   const groomerName = groomerDetail && groomerDetail.first_name + ' ' + groomerDetail.last_name
+  let totalCost = 0
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
-    const location = values.location
-    const petSize = clientPet.items.find(pet => pet.id === values.pet).size
+    let serviceVariations = petReservationDetail.item.serviceVariations
 
-    const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
-      .values.find(_location => _location.value == location).id
-    const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
-      .values.find(_petSize => _petSize.value == petSize).id
-
-    const variation = services.items[0].variations
-
-    let variationId
-    for (let item of variation) {
-      let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
-      let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
-
-      if(locationExist != null && petSizeExist != null)
-      {
-        variationId = locationExist.service_variation_id
-        break
-      }
-    }
-
-    if(variationId == null)
-      props.setItem(null, 'READ')
-
-    let serviceVariation = variation.find(_ => _.id == variationId)
     if(isUpdating)
       return props
-        .put({ ...values, serviceVariation,
+        .put({ ...values, serviceVariations, allSelectedWeek, frequency,
           petReservationDetail: petReservationDetail.item,
           currentTenant, serviceType         : props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
     else
       return props
-        .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
+        .post({ ...values, serviceVariations, allSelectedWeek, frequency, currentTenant, serviceType: props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
   }
+
   const isUpdating = Boolean(petReservationDetail.item.id)
 
   return (
@@ -128,7 +111,7 @@ const GroomingFormWizardThird = props => {
                       <Grid.Column computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Reservation Date'
-                          value={`${check_in}`}/>
+                          value={`${ moment(startDate + ' ' + checkInTime).format('MM/DD/YYYY')}`}/>
                       </Grid.Column>
                       <Grid.Column  computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
@@ -163,43 +146,58 @@ const GroomingFormWizardThird = props => {
           </Grid>
         </Segment>
         <Segment>
-          <Header as='h3'>Charges</Header>
+          <Header as='h3'>Reservation Date</Header>
+          <p><b>Starting From:</b> {moment(startDate).format('MM/DD/YYYY')} </p>
+          {untilNoOfOccurrences
+            ? <p><b>Number of Occurence:</b> {untilNoOfOccurrences}</p>
+            : <p><b>Ending Date:</b> { moment(endDate).format('MM/DD/YYYY')} </p>
+          }
+          <p><b>Frequency:</b> {frequency == 'every_other_week' ? 'Every Other Week' : 'Every Week'}</p>
+          <p><b>Days:</b> { props.allSelectedWeek.join(', ') }</p>
+        </Segment>
+        <Segment>
+          <Header as='h3' className='charges-heading'>Charges</Header>
           <List className='list-total-addons' divided verticalAlign='middle'>
+
             <List.Item>
               <List.Content floated='right'>
-                $34
+                {
+                  petReservationDetail.item && petReservationDetail.item.serviceVariations && (
+                    totalCost += Number(petReservationDetail.item.serviceVariations.price)
+                  )
+                }
               </List.Content>
               <List.Content>
-              Lorem Ipsum
+                    Grooming
               </List.Content>
             </List.Item>
+
+            {
+
+              petReservationDetail.item.subServiceVariations && petReservationDetail.item.subServiceVariations.map((item,index)=>{
+                totalCost += Number(item.price)
+
+                return (
+
+                  <List.Item key={index}>
+                    <List.Content floated='right'>
+
+                      {item.price}
+                    </List.Content>
+                    <List.Content>
+                      {item.name}
+                    </List.Content>
+
+                  </List.Item>
+                )
+              })}
+
             <List.Item>
               <List.Content floated='right'>
-                $34
+                <List.Header as='a'>{totalCost}</List.Header>
               </List.Content>
               <List.Content>
-              Lorem Ipsum
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                $34
-              </List.Content>
-              <List.Content>
-              Lorem Ipsum
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                $34
-              </List.Content>
-              <List.Content>
-              Lorem Ipsum
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                <List.Header as='a'>Total $155</List.Header>
+                Total Cost
               </List.Content>
             </List.Item>
           </List>
@@ -229,6 +227,8 @@ const GroomingFormWizardThird = props => {
               className='w120'
               color='teal'
               content='Reserve!'
+              disabled={submitting}
+              loading={submitting}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -248,23 +248,24 @@ export default compose(
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPet = formValueSelector(groomingFormId)(state, 'pet')
       const groomer = formValueSelector(groomingFormId)(state, 'groomer')
+      const check_out = formValueSelector(groomingFormId)(state, 'check_out')
       const selectedPetName = clientPet.items.find(_ => _.id == selectedPet) && clientPet.items.find(_ => _.id == selectedPet).name
       const employeeDetail = employeeDuck.selectors.list(state)
       const groomerDetail = employeeDetail.items && employeeDetail.items.find(_ => _.id == groomer)
-      const serviceAttribute = serviceAttributeDuck.selectors.list(state)
-      const service = serviceDuck.selectors.list(state)
-      const groomingServices = service.items && service.items.filter(_ => _.type === 'G')
 
       return {
-        check_in     : check_in + ' ' + check_in_time,
+        startDate           : check_in,
+        endDate             : check_out,
+        checkInTime         : check_in_time,
+        untilNoOfOccurrences: formValueSelector(groomingFormId)(state,'until_no_of_occurrences'),
         clientPet,
         selectedPetName,
         groomerDetail,
         petReservationDetail,
-        services     : groomingServices,
-        serviceAttribute,
-        currentTenant: authDuck.selectors.getCurrentTenant(auth),
-        initialValues: petReservationDetail.item
+        currentTenant       : authDuck.selectors.getCurrentTenant(auth),
+        allSelectedWeek     : [].concat(petReservationDetail.item.allSelectedWeek),
+        frequency           : petReservationDetail.item.frequency,
+        initialValues       : petReservationDetail.item
       }
     },
     {

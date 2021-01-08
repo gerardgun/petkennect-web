@@ -127,7 +127,6 @@ const BoardingFormWizardSecond = props => {
 
   useEffect(() => {
     props.getPetKennels()
-    props.getClientPets()
   }, [])
 
   const petKennelOptions = petKennel.items.map(_petKennel =>
@@ -329,13 +328,20 @@ export default compose(
       const feeding = formValueSelector(boardingFormId)(state, 'chk_feeding')
       const veterenaryBill = formValueSelector(boardingFormId)(state, 'veterenary_bill')
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
+      let checkOut = formValueSelector(boardingFormId)(state, 'check_out')
+      let checkIn = formValueSelector(boardingFormId)(state, 'check_in')
+      const unitOfOccurrences = formValueSelector(boardingFormId)(state, 'until_no_of_occurrences')
+      if(unitOfOccurrences && checkIn) {
+        let checkInDate = new Date(checkIn)
+        checkOut  = new Date(checkInDate.setDate((checkInDate.getDate() + ((7 * unitOfOccurrences) - 1))))
+      }
 
       return {
         initialValues           : { ...petReservationDetail.item },
         petKennel               : petKennelDuck.selectors.list(state),
         clientPet               : clientPetDuck.selectors.list(state),
-        checkIn                 : formValueSelector(boardingFormId)(state, 'check_in'),
-        checkOut                : formValueSelector(boardingFormId)(state, 'check_out'),
+        checkIn   ,
+        checkOut,
         selectedPets            : selectedPets,
         hasBelongingsChecked    : Boolean(belongings),
         hasMedicationChecked    : Boolean(medication),
@@ -344,8 +350,7 @@ export default compose(
       }
     },
     {
-      getPetKennels: petKennelDuck.creators.get,
-      getClientPets: clientPetDuck.creators.get
+      getPetKennels: petKennelDuck.creators.get
     }
   ),
   reduxForm({

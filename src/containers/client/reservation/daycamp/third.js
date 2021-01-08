@@ -9,6 +9,8 @@ import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 
+import moment from 'moment'
+
 import AddReportCardForm from  './AddReportCardForm'
 import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
 
@@ -21,16 +23,22 @@ import employeeDetailDuck from '@reducers/employee/detail'
 import petReservationDaycampQuestionDetailDuck from '@reducers/pet/reservation/dacamp-question/detail'
 
 import { daycampFormId } from './first'
+import { trainingFormId } from '../training/first'
 
 const DaycampFormWizardThird = props => {
   const {
     employeeName,
-    check_in,
-    check_out,
+    startDate,
+    endDate,
+    untilNoOfOccurrences,
+    checkInTime,
     selectedPetName,
     petReservationDetail,
     error,
+    allSelectedWeek,
+    frequency,
     handleSubmit,
+    submitting,
     currentTenant, reset // redux-form
   } = props
 
@@ -56,21 +64,22 @@ const DaycampFormWizardThird = props => {
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
-    let serviceVariation = petReservationDetail.item.serviceVariations
+    let serviceVariations = petReservationDetail.item.serviceVariations
 
     if(isUpdating)
       return props
-        .put({ ...values, serviceVariation,
+        .put({ ...values, serviceVariations, allSelectedWeek, frequency,
           petReservationDetail: petReservationDetail.item,
           currentTenant, serviceType         : props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
     else
       return props
-        .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
+        .post({ ...values, serviceVariations, allSelectedWeek, frequency, currentTenant, serviceType: props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
   }
+
   const isUpdating = Boolean(petReservationDetail.item.id)
 
   return (
@@ -115,21 +124,9 @@ const DaycampFormWizardThird = props => {
                       <Grid.Column  computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Check In'
-                          value={`${check_in}`}/>
+                          value={`${ moment(startDate + ' ' + checkInTime).format('MM/DD/YYYY')}`}/>
                       </Grid.Column>
                       <Grid.Column  computer={8} mobile={16} tablet={6}>
-                        <InputReadOnly
-                          label='By'
-                          value={`${employeeName}`}/>
-                      </Grid.Column>
-                    </Grid>
-                    <Grid>
-                      <Grid.Column computer={8} mobile={16} tablet={10}>
-                        <InputReadOnly
-                          label='Check Out'
-                          value={`${check_out}`}/>
-                      </Grid.Column>
-                      <Grid.Column computer={8} mobile={16} tablet={6}>
                         <InputReadOnly
                           label='By'
                           value={`${employeeName}`}/>
@@ -154,13 +151,23 @@ const DaycampFormWizardThird = props => {
                         label='Note'
                         name='comment'
                         placeholder='Enter Note'
-                        rows='9'/>
+                        rows='4'/>
                     </div>
                   </div>
                 </div>
               </Segment>
             </Grid.Column >
           </Grid>
+          <Segment>
+            <Header as='h3'>Reservation Date</Header>
+            <p><b>Starting From:</b> {moment(startDate).format('MM/DD/YYYY')} </p>
+            {untilNoOfOccurrences
+              ? <p><b>Number of Occurence:</b> {untilNoOfOccurrences}</p>
+              : <p><b>Ending Date:</b> { moment(endDate).format('MM/DD/YYYY')} </p>
+            }
+            <p><b>Frequency:</b> {frequency == 'every_other_week' ? 'Every Other Week' : 'Every Week'}</p>
+            <p><b>Days:</b> { props.allSelectedWeek.join(', ') }</p>
+          </Segment>
           {
             petReservationDetail.item.id && (
               <>
@@ -226,6 +233,8 @@ const DaycampFormWizardThird = props => {
               className='w120'
               color='teal'
               content='Reserve!'
+              disabled={submitting}
+              loading={submitting}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -245,7 +254,6 @@ export default compose(
       const selectedPets = formValueSelector(daycampFormId)(state, 'pet')
       const check_in = formValueSelector(daycampFormId)(state, 'check_in')
       const check_out = formValueSelector(daycampFormId)(state, 'check_out')
-      const check_out_time = formValueSelector(daycampFormId)(state, 'check_out_time')
       const check_in_time = formValueSelector(daycampFormId)(state, 'check_in_time')
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPetName = selectedPets && selectedPets.map((item)=> {
@@ -260,13 +268,17 @@ export default compose(
 
       return {
         employeeName,
-        check_in            : check_in + ' ' + check_out_time,
-        check_out           : check_out + ' ' + check_in_time ,
+        startDate           : check_in,
+        endDate             : check_out,
+        checkInTime         : check_in_time,
+        untilNoOfOccurrences: formValueSelector(trainingFormId)(state,'until_no_of_occurrences'),
         selectedPetName,
         petReservationDetail,
         services            : service,
         clientDetail,
         currentTenant       : authDuck.selectors.getCurrentTenant(auth),
+        allSelectedWeek     : [].concat(petReservationDetail.item.allSelectedWeek),
+        frequency           : petReservationDetail.item.frequency,
         clientDocumentDetail: clientDocumentDetailDuck.selectors.detail(state),
         initialValues       : petReservationDetail.item
       }

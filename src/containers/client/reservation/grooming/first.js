@@ -1,43 +1,82 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
-import { Button, Dropdown, Form, Header, Input, Grid, Select, Segment, Icon } from 'semantic-ui-react'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { Button, Dropdown, Form, Header, Grid, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
-
+import Message from '@components/Message'
 import moment  from 'moment'
+import serviceDuck from '@reducers/service'
+
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import serviceAttributeDuck from '@reducers/service/service-attribute'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
 import employeeDuck from '@reducers/employee'
+import trainingMethodDetailDuck from '@reducers/training-method/detail'
+
+import RecurringDaysForm from './../recurring-days'
+import AlertModal from './../alert-modal'
 
 export const groomingFormId = 'grooming-reservation-form'
 
 const GroomingFormWizardFirst = props => {
   const {
+    services,
+    petReservationDetail,
+    selectedLocation,
+    serviceAttribute,
     employee,
     clientPet,
     location,
     error, handleSubmit, reset
   } = props
 
-  const [ reservatoinDayValue, setReservationDay ] = useState()
-
-  const  _handleReservationDayChange = (e)=>{
-    setReservationDay(e)
-  }
-
   useEffect(() => {
     props.getEmployees()
   }, [])
 
-  return (
-    <>
+  const _handlePetSelect = (value)=>{
+    let serviceVariations
+
+    const petSize = clientPet.items.find(pet => pet.id === value).size
+
+    const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
+      .values.find(_location => _location.value == selectedLocation).id
+    const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
+      .values.find(_petSize => _petSize.value == petSize).id
+
+    const variation = services[0].variations
+
+    let variationId
+    for (let item of variation) {
+      let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+      let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+
+      if(locationExist != null && petSizeExist != null)
+      {
+        variationId = locationExist.service_variation_id
+        break
+      }
+    }
+
+    if(variationId != null)
+      serviceVariations = { ...variation.find(_ => _.id == variationId), petId: value }
+
+    else
+      props.setItemVariation(null, 'READ')
+
+    props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
+  }
+
+  return  (
+
+    services[0] ? (<>
       <div className='div-progress-bar '>
         <div className='div-bar-content active'>
           <Icon name='check circle'/>
@@ -81,6 +120,7 @@ const GroomingFormWizardFirst = props => {
               fluid
               label='Pet'
               name='pet'
+              onChange={_handlePetSelect}
               options={clientPet.items.map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,
@@ -90,26 +130,6 @@ const GroomingFormWizardFirst = props => {
               required
               selection
               selectOnBlur={false}/>
-          </Form.Group>
-        </Segment>
-        <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header text-center'>When will this event be?</Header>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Reservation Day'
-              name='check_in'
-              onChange={_handleReservationDayChange}
-              required
-              type='date'/>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Appointment Time'
-              name='check_in_time'
-              required
-              type='time'/>
           </Form.Group>
         </Segment>
 
@@ -129,12 +149,12 @@ const GroomingFormWizardFirst = props => {
               selectOnBlur={false}/>
           </Form.Group>
         </div>
-
+        <RecurringDaysForm serviceType='G'/>
         <Segment>
           <Grid>
             <Grid.Row>
               <Grid.Column textAlign='center' width={16}>
-                {reservatoinDayValue}
+                12/10/2020
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -192,8 +212,21 @@ const GroomingFormWizardFirst = props => {
               type='submit'/>
           </Form.Field>
         </Form.Group>
+        <AlertModal/>
       </Form>
-    </>
+    </>) : (<><Message
+      content={
+        <Grid padded style={{ marginLeft: -16 }}>
+          <Grid.Column className='mb0 pb0' width='16'>
+            <div className='message__title'>The service is not available for selected company</div>
+          </Grid.Column>
+          <Grid.Column width='16'>
+
+          </Grid.Column>
+        </Grid>
+
+      } type='warning'/></>)
+
   )
 }
 
@@ -202,20 +235,30 @@ export default compose(
   connect(
     ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const selectedLocation = formValueSelector(groomingFormId)(state, 'location')
+      const serviceAttribute = serviceAttributeDuck.selectors.list(state)
+      const service = serviceDuck.selectors.list(state)
+      const grommingServices = service.items && service.items.filter(_ => _.type === 'G')
       const defaultInitialValues = petReservationDetail.item.id ? {
         check_in: petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
         pet     : [ petReservationDetail.item.pet ]
       } : {}
 
       return {
-        clientPet    : clientPetDuck.selectors.list(state),
-        initialValues: { ...petReservationDetail.item, ...defaultInitialValues,  location: auth.location },
-        location     : locationDuck.selectors.list(state),
-        employee     : employeeDuck.selectors.list(state)
+        serviceAttribute    : serviceAttribute,
+        petReservationDetail: petReservationDetail,
+        services            : grommingServices,
+        clientPet           : clientPetDuck.selectors.list(state),
+        initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,  location: auth.location },
+        location            : locationDuck.selectors.list(state),
+        employee            : employeeDuck.selectors.list(state),
+        selectedLocation    : selectedLocation
       }
     },
     {
-      getEmployees: employeeDuck.creators.get
+      getEmployees    : employeeDuck.creators.get,
+      setItemVariation: trainingMethodDetailDuck.creators.setItem,
+      setItem         : petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({
@@ -226,9 +269,9 @@ export default compose(
       const schema = {
         location     : Yup.mixed().required('Location is required'),
         pet          : Yup.mixed().required('Pet is required'),
-        check_in     : Yup.string().required('Reservation day is required'),
-        groomer      : Yup.mixed().required('Groomer is required'),
-        check_in_time: Yup.mixed().required('Appointment time is required')
+        check_in_time: Yup.mixed().required('Check In time is required'),
+        check_in     : Yup.mixed().required('Start Date is required'),
+        groomer      : Yup.mixed().required('Groomer is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

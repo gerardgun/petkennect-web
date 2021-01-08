@@ -6,8 +6,9 @@ import { reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
-
 import FormError from '@components/Common/FormError'
+
+import moment from 'moment'
 
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
@@ -58,6 +59,9 @@ const TrainingFormWizardThird = props => {
     untilNoOfOccurrences,
     selectedPetName,
     checkInTime,
+    allSelectedWeek,
+    frequency,
+    submitting,
     currentTenant, error, handleSubmit, reset // redux-form
   } = props
 
@@ -72,17 +76,17 @@ const TrainingFormWizardThird = props => {
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
-    let serviceVariation = petReservationDetail.item.serviceVariations
+    let serviceVariations = petReservationDetail.item.serviceVariations
     if(isUpdating)
       return props
-        .put({ ...values, serviceVariation,
+        .put({ ...values, serviceVariations, allSelectedWeek, frequency,
           petReservationDetail: petReservationDetail.item,
           currentTenant, serviceType         : props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
     else
       return props
-        .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
+        .post({ ...values, serviceVariations, allSelectedWeek, frequency, currentTenant, serviceType: props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -129,7 +133,7 @@ const TrainingFormWizardThird = props => {
                       <Grid.Column computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
                           label='Reservation Date'
-                          value={`${startDate + ' ' + checkInTime}`}/>
+                          value={`${ moment(startDate + ' ' + checkInTime).format('MM/DD/YYYY')}`}/>
                       </Grid.Column>
                       <Grid.Column  computer={8} mobile={16} tablet={10}>
                         <InputReadOnly
@@ -161,7 +165,13 @@ const TrainingFormWizardThird = props => {
         </Segment>
         <Segment>
           <Header as='h3'>Reservation Date</Header>
-          <p>{props.allSelectedWeek.join(', ')} starting {startDate} Ending after {untilNoOfOccurrences ? <>{untilNoOfOccurrences} occurrences</> : endDate}</p>
+          <p><b>Starting From:</b> {moment(startDate).format('MM/DD/YYYY')} </p>
+          {untilNoOfOccurrences
+            ? <p><b>Number of Occurence:</b> {untilNoOfOccurrences}</p>
+            : <p><b>Ending Date:</b> { moment(endDate).format('MM/DD/YYYY')} </p>
+          }
+          <p><b>Frequency:</b> {frequency == 'every_other_week' ? 'Every Other Week' : 'Every Week'}</p>
+          <p><b>Days:</b> { props.allSelectedWeek.join(', ') }</p>
         </Segment>
         <Segment>
           <Header as='h3'>Charges</Header>
@@ -230,6 +240,8 @@ const TrainingFormWizardThird = props => {
               className='w120'
               color='teal'
               content='Reserve!'
+              disabled={submitting}
+              loading={submitting}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -273,6 +285,7 @@ export default compose(
         petReservationDetail,
         services       : service,
         allSelectedWeek: [].concat(petReservationDetail.item.allSelectedWeek),
+        frequency      : petReservationDetail.item.frequency,
         currentTenant  : authDuck.selectors.getCurrentTenant(auth),
         initialValues  : { ...petReservationDetail.item,  location: auth.location }
       }

@@ -21,7 +21,7 @@ import clientCommentDuck from '@reducers/client/comment'
 import clientDocumentDuck from '@reducers/client/document'
 import clientPetDuck from '@reducers/client/pet'
 import clientAgreementDuck from '@reducers/client/agreement'
-import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import petReservationCheckInDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
 
 import './../styles.scss'
 
@@ -75,7 +75,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
   }
 
   const _handleExpressCheckInBtnClick = () =>{
-    props.setReservationItem(clientDetail.item, 'CREATE')
+    props.setReservationCheckInItem(clientDetail.item, 'CREATE')
   }
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
@@ -251,14 +251,14 @@ export default compose(
       clientDocument : clientDocumentDuck.selectors.list(state),
       clientPet      : clientPetDuck.selectors.list(state)
     }), {
-      getClient          : clientDetailDuck.creators.get,
-      getClientAgreements: clientAgreementDuck.creators.get,
-      getClientComments  : clientCommentDuck.creators.get,
-      getClientDocuments : clientDocumentDuck.creators.get,
-      getClientPets      : clientPetDuck.creators.get,
-      setReservationItem : petReservationDetailDuck.creators.setItem,
-      resetItem          : clientDetailDuck.creators.resetItem,
-      resetClientComments: clientCommentDuck.creators.reset,
-      resetClientPets    : clientPetDuck.creators.reset
+      getClient                : clientDetailDuck.creators.get,
+      getClientAgreements      : clientAgreementDuck.creators.get,
+      getClientComments        : clientCommentDuck.creators.get,
+      getClientDocuments       : clientDocumentDuck.creators.get,
+      getClientPets            : clientPetDuck.creators.get,
+      setReservationCheckInItem: petReservationCheckInDetailDuck.creators.setItem,
+      resetItem                : clientDetailDuck.creators.resetItem,
+      resetClientComments      : clientCommentDuck.creators.reset,
+      resetClientPets          : clientPetDuck.creators.reset
     })
 )(ClientShow)

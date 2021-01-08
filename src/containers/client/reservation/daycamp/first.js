@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector,reduxForm } from 'redux-form'
-import { Button, Dropdown, Form, Header, Input, Select, Segment, Icon } from 'semantic-ui-react'
+import { Button, Dropdown, Grid, Form, Header, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
+import Message from '@components/Message'
 
 import moment  from 'moment'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
@@ -19,6 +20,7 @@ import serviceDuck from '@reducers/service'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
 import AlertModal from './../alert-modal'
+import RecurringDaysForm from './../recurring-days'
 
 export const daycampFormId = 'daycamp-reservation-form'
 
@@ -71,7 +73,7 @@ const DaycampFormWizardFirst = props => {
   }
 
   return (
-    <>
+    services[0] ? (<>
       <div className='div-progress-bar '>
         <div className='div-bar-content active'>
           <Icon name='check circle'/>
@@ -128,41 +130,9 @@ const DaycampFormWizardFirst = props => {
               selectOnBlur={false}/>
           </Form.Group>
         </Segment>
-        <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header text-center'>When will this event be?</Header>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Check In'
-              name='check_in'
-              required
-              type='date'/>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Check Out'
-              name='check_out'
-              required
-              type='date'/>
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Departing Time'
-              name='check_in_time'
-              required
-              type='time'/>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Arriving Time'
-              name='check_out_time'
-              required
-              type='time'/>
-          </Form.Group>
-        </Segment>
+
+        <RecurringDaysForm serviceType='D'/>
+
         {
           error && (
             <Form.Group widths='equal'>
@@ -184,7 +154,19 @@ const DaycampFormWizardFirst = props => {
         </Form.Group>
       </Form>
       <AlertModal/>
-    </>
+    </>) : (<><Message
+      content={
+        <Grid padded style={{ marginLeft: -16 }}>
+          <Grid.Column className='mb0 pb0' width='16'>
+            <div className='message__title'>The service is not available for selected company</div>
+          </Grid.Column>
+          <Grid.Column width='16'>
+
+          </Grid.Column>
+        </Grid>
+
+      } type='warning'/></>)
+
   )
 }
 
@@ -193,11 +175,11 @@ export default compose(
   connect(
     ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
-
       const selectedLocation = formValueSelector(daycampFormId)(state, 'location')
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
       const service = serviceDuck.selectors.list(state)
       const daycampServices = service.items && service.items.filter(_ => _.type === 'D')
+
       const defaultInitialValues = petReservationDetail.item.id ? {
         check_in : petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
         check_out: petReservationDetail.item.daycamp ? moment(petReservationDetail.item.daycamp.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '', pet      : [ petReservationDetail.item.pet ]
@@ -227,17 +209,17 @@ export default compose(
       const schema = {
         location      : Yup.mixed().required('Location is required'),
         pet           : Yup.mixed().required('Pet is required'),
-        check_in_time : Yup.mixed().required('Departing Time is required'),
-        check_out_time: Yup.mixed().required('Arriving Time is required'),
+        check_in_time : Yup.mixed().required('Check In time is required'),
+        check_out_time: Yup.mixed().required('Check Out time is required'),
         check_in      : Yup
           .date('Check In date is required')
-          .required(),
-        check_out: Yup
-          .date().required('Check Out date is required')
-          .when(
-            'check_in',
-            (check_in, schema) => (check_in && schema.min(check_in))
-          )
+          .required()
+        // check_out: Yup
+        //   .date().required('Check Out date is required')
+        //   .when(
+        //     'check_in',
+        //     (check_in, schema) => (check_in && schema.min(check_in))
+        //   )
       }
 
       return syncValidate(Yup.object().shape(schema), values)

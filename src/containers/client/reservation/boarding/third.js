@@ -10,6 +10,8 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
+import moment from 'moment'
+
 import authDuck from '@reducers/auth'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import employeeDetailDuck from '@reducers/employee/detail'
@@ -20,11 +22,16 @@ import { boardingFormId } from './first'
 const BoardingFormWizardThird = props => {
   const {
     employeeName,
-    check_in,
-    check_out,
+    startDate,
+    endDate,
+    untilNoOfOccurrences,
+    checkInTime,
     petReservationDetail,
     selectedPetName,
     currentTenant,
+    allSelectedWeek,
+    frequency,
+    submitting,
     error, handleSubmit, reset // redux-form
   } = props
 
@@ -39,17 +46,17 @@ const BoardingFormWizardThird = props => {
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
-    let serviceVariation = petReservationDetail.item.serviceVariations
+    let serviceVariations = petReservationDetail.item.serviceVariations
     if(isUpdating)
       return props
-        .put({ ...values, serviceVariation,
+        .put({ ...values, serviceVariations, allSelectedWeek, frequency,
           petReservationDetail: petReservationDetail.item,
           currentTenant, serviceType         : props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
     else
       return props
-        .post({ ...values, serviceVariation, currentTenant, serviceType: props.serviceType, clientId })
+        .post({ ...values, serviceVariations, allSelectedWeek, frequency, currentTenant, serviceType: props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -96,21 +103,9 @@ const BoardingFormWizardThird = props => {
                     <Grid.Column  computer={8} mobile={16} tablet={10}>
                       <InputReadOnly
                         label='Check In'
-                        value={`${check_in}`}/>
+                        value={`${ moment(startDate + ' ' + checkInTime).format('MM/DD/YYYY')}`}/>
                     </Grid.Column>
                     <Grid.Column  computer={8} mobile={16} tablet={6}>
-                      <InputReadOnly
-                        label='By'
-                        value={`${employeeName}`}/>
-                    </Grid.Column>
-                  </Grid>
-                  <Grid>
-                    <Grid.Column computer={8} mobile={16} tablet={10}>
-                      <InputReadOnly
-                        label='Check Out'
-                        value={`${check_out}`}/>
-                    </Grid.Column>
-                    <Grid.Column computer={8} mobile={16} tablet={6}>
                       <InputReadOnly
                         label='By'
                         value={`${employeeName}`}/>
@@ -158,6 +153,16 @@ const BoardingFormWizardThird = props => {
               </Segment>
             </Grid.Column >
           </Grid>
+        </Segment>
+        <Segment>
+          <Header as='h3'>Reservation Date</Header>
+          <p><b>Starting From:</b> {moment(startDate).format('MM/DD/YYYY')} </p>
+          {untilNoOfOccurrences
+            ? <p><b>Number of Occurence:</b> {untilNoOfOccurrences}</p>
+            : <p><b>Ending Date:</b> { moment(endDate).format('MM/DD/YYYY')} </p>
+          }
+          <p><b>Frequency:</b> {frequency == 'every_other_week' ? 'Every Other Week' : 'Every Week'}</p>
+          <p><b>Days:</b> { props.allSelectedWeek.join(', ') }</p>
         </Segment>
         <Segment>
           <Header as='h3'>Add Ons</Header>
@@ -231,6 +236,8 @@ const BoardingFormWizardThird = props => {
               className='w120'
               color='teal'
               content='Reserve!'
+              disabled={submitting}
+              loading={submitting}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -247,7 +254,6 @@ export default compose(
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
       const check_in = formValueSelector(boardingFormId)(state, 'check_in')
       const check_out = formValueSelector(boardingFormId)(state, 'check_out')
-      const check_out_time = formValueSelector(boardingFormId)(state, 'check_out_time')
       const check_in_time = formValueSelector(boardingFormId)(state, 'check_in_time')
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPetName = selectedPets && selectedPets.map((item)=> {
@@ -262,13 +268,17 @@ export default compose(
 
       return {
         employeeName,
-        check_in     : check_in + ' ' + check_in_time,
-        check_out    : check_out + ' ' + check_out_time ,
         petReservationDetail,
         selectedPets,
         selectedPetName,
-        initialValues: { ...petReservationDetail.item },
-        currentTenant: authDuck.selectors.getCurrentTenant(auth)
+        startDate           : check_in,
+        endDate             : check_out,
+        checkInTime         : check_in_time,
+        untilNoOfOccurrences: formValueSelector(boardingFormId)(state,'until_no_of_occurrences'),
+        allSelectedWeek     : [].concat(petReservationDetail.item.allSelectedWeek),
+        frequency           : petReservationDetail.item.frequency,
+        initialValues       : { ...petReservationDetail.item },
+        currentTenant       : authDuck.selectors.getCurrentTenant(auth)
       }
     },
     {

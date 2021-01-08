@@ -79,6 +79,7 @@ import { groomingFormId } from './first'
 const GroomingFormWizardSecond = props => {
   const {
     clientPet,
+    petReservationDetail,
     services,
     serviceAttribute,
     totalPrice = 0,
@@ -99,6 +100,7 @@ const GroomingFormWizardSecond = props => {
     const subServices = services.items && services.items.filter(_ => _.parent_service === (groomingServiceId && groomingServiceId.id))
 
     const _handleServiceOnChange = (value)=>{
+      let subServiceVariations = []
       fields.removeAll()
 
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L').values.find(_location => _location.value == location).id
@@ -123,12 +125,15 @@ const GroomingFormWizardSecond = props => {
         if(variationId != null) {
           const subVariation = variation.find(_ => _.id === variationId)
           fields.push({ price: subVariation.price, name: subService.name, id: subVariation.id })
+          subServiceVariations.push({ price: subVariation.price, name: subService.name, id: subVariation.id })
         }
 
         else {
           props.setItem(null, 'READ')
         }
       }
+
+      props.setItemPrice({ ...petReservationDetail.item, subServiceVariations: subServiceVariations },'CREATE')
     }
 
     return (
@@ -287,19 +292,20 @@ export default compose(
       const totalPrice =  subVariationPrice && subVariationPrice.reduce((price1, price2) => Number(price1) + Number(price2), 0)
 
       return {
-        petReservationDetail,
+        petReservationDetail: petReservationDetail,
         services,
         serviceAttribute,
         totalPrice,
-        initialValues   : petReservationDetail.item,
-        clientPet       : clientPetDuck.selectors.list(state),
-        selectedPet     : selectedPet,
-        selectedLocation: selectedLocation
+        initialValues       : petReservationDetail.item,
+        clientPet           : clientPetDuck.selectors.list(state),
+        selectedPet         : selectedPet,
+        selectedLocation    : selectedLocation
       }
     },
     {
       getClientPets: clientPetDuck.creators.get,
-      setItem      : trainingMethodDetailDuck.creators.setItem
+      setItem      : trainingMethodDetailDuck.creators.setItem,
+      setItemPrice : petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({

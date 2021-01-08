@@ -55,7 +55,7 @@ function BookingSection({ petDetail, ...props }) {
         break
 
       case 'edit_reserve' : props.setReserveItem(item,'UPDATE')
-        history.replace(`/client/${clientId}/book`)
+        // history.replace(`/client/${clientId}/book`)
         break
 
       case 'absent' : props.setCancelCheckInItem(item,'DELETE')

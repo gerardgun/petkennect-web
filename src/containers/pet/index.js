@@ -15,7 +15,7 @@ import { useChangeStatusEffect } from '@hooks/Shared'
 
 import petDuck from '@reducers/pet'
 import petDetailDuck from '@reducers/pet/detail'
-import petReservationDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
+import petReservationCheckInDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
 import petBreedDuck from '@reducers/pet/breed'
 
 import './styles.scss'
@@ -35,7 +35,7 @@ const PetList = ({ pet, petDetail, ...props }) => {
   }
 
   const _handleExpressCheckInBtnClick = () =>{
-    props.setReservationItem(pet.selector.selected_items[0], 'CREATE')
+    props.setReservationCheckInItem(pet.selector.selected_items[0], 'CREATE')
   }
 
   const _handleOptionClick = (option,item) => {
@@ -44,7 +44,7 @@ const PetList = ({ pet, petDetail, ...props }) => {
       _handleOpen()
     }
     else if(option === 'express_check_in') {
-      props.setReservationItem(item, 'CREATE')
+      props.setReservationCheckInItem(item, 'CREATE')
     }
     else if(option === 'vaccination' || option === 'services') {
       history.push({
@@ -90,9 +90,9 @@ export default compose(
       pet,
       petDetail: petDetailDuck.selectors.detail(state)
     }), {
-      getPets           : petDuck.creators.get,
-      getPetBreeds      : petBreedDuck.creators.get,
-      setItem           : petDetailDuck.creators.setItem,
-      setReservationItem: petReservationDetailDuck.creators.setItem
+      getPets                  : petDuck.creators.get,
+      getPetBreeds             : petBreedDuck.creators.get,
+      setItem                  : petDetailDuck.creators.setItem,
+      setReservationCheckInItem: petReservationCheckInDetailDuck.creators.setItem
     })
 )(PetList)

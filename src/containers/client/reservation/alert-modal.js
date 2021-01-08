@@ -9,7 +9,7 @@ import FormError from '@components/Common/FormError'
 
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
-export const formId = 'alert-form'
+export const formId = 'service-alert-form'
 
 const AlertModal = props => {
   const {
@@ -64,14 +64,11 @@ const AlertModal = props => {
         }
       </Modal.Content>
       <Modal.Actions>
-        <Button
-          basic className='w120' content='Cancel'
-          onClick={_handleClose}/>
 
         <Button
           className='w120'
-          color='teal' content='OK'
-          onClick={_handleConfirmClick}/>
+          color='teal'
+          content='OK' onClick={_handleConfirmClick}/>
 
       </Modal.Actions>
     </Modal>
