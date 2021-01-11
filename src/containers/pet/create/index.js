@@ -40,11 +40,12 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
     props.getPetImages({ pet_id: petId })
     props.getPetRetireReasons()
     props.getPetNotes({ pet_id: petId, ordering: '-created_at' })
-    if(history.location.state !== undefined)
-      if(history.location.state.option === 'vaccination')
-        setActiveMenuItem('vaccinations')
-      else if(history.location.state.option === 'services')
-        setActiveMenuItem('bookings')
+    if(history.location.state) {
+      history.location.state.option === 'vaccination' && (
+        setActiveMenuItem('vaccinations'))
+      history.location.state.option === 'services' && (
+        setActiveMenuItem('bookings'))
+    }
 
     return () => {
       props.resetItem()

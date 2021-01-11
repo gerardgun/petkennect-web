@@ -43,7 +43,10 @@ const GroomingFormWizardThird = props => {
   const _handleClose = () => {
     reset()
     props.resetItem()
-    history.push(`/client/${clientId}`)
+    history.push({
+      pathname: `/client/${clientId}`,
+      state   : { option: 'reserves' }
+    })
   }
 
   const groomerName = groomerDetail && groomerDetail.first_name + ' ' + groomerDetail.last_name
@@ -55,14 +58,14 @@ const GroomingFormWizardThird = props => {
 
     if(isUpdating)
       return props
-        .put({ ...values, serviceVariations, allSelectedWeek, frequency,
+        .put({ ...values, serviceVariations,
           petReservationDetail: petReservationDetail.item,
-          currentTenant, serviceType         : props.serviceType, clientId })
+          currentTenant, serviceType         : props.serviceType, clientId, reservationDate     : props.reservationDate })
         .then(_handleClose)
         .catch(parseResponseError)
     else
       return props
-        .post({ ...values, serviceVariations, allSelectedWeek, frequency, currentTenant, serviceType: props.serviceType, clientId })
+        .post({ ...values, serviceVariations, currentTenant, serviceType: props.serviceType, clientId, reservationDate: props.reservationDate })
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -153,7 +156,8 @@ const GroomingFormWizardThird = props => {
             : <p><b>Ending Date:</b> { moment(endDate).format('MM/DD/YYYY')} </p>
           }
           <p><b>Frequency:</b> {frequency == 'every_other_week' ? 'Every Other Week' : 'Every Week'}</p>
-          <p><b>Days:</b> { props.allSelectedWeek.join(', ') }</p>
+          <p><b>Days:</b> { allSelectedWeek.join(', ') }</p>
+          <p><b>Selected Dates:</b> { props.selectedDate.join(', ') }</p>
         </Segment>
         <Segment>
           <Header as='h3' className='charges-heading'>Charges</Header>
@@ -262,8 +266,10 @@ export default compose(
         selectedPetName,
         groomerDetail,
         petReservationDetail,
+        reservationDate     : [].concat(petReservationDetail.item.selectedDate),
         currentTenant       : authDuck.selectors.getCurrentTenant(auth),
         allSelectedWeek     : [].concat(petReservationDetail.item.allSelectedWeek),
+        selectedDate        : [].concat(petReservationDetail.item.selectedDate).map((item) => moment(item).format('MM/DD/YYYY')),
         frequency           : petReservationDetail.item.frequency,
         initialValues       : petReservationDetail.item
       }

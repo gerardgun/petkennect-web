@@ -1,6 +1,6 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects'
 
-import { Delete, Get,Post, Patch } from '@lib/utils/http-client'
+import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
@@ -49,89 +49,13 @@ function* get({ id }) {
 
 function* post({ payload: { ...payload } }) {
   try {
-    // if service type is training and grooming
-    let gOneDayReservation = false
-    if(payload.serviceType === 'T' || payload.serviceType === 'G')
-      gOneDayReservation = true
-
-    // if only endDate fill
-    let dfEndDate = new Date(payload.check_out)
-
-    // for frequency
-    let weekValue = 0
-    if(payload.frequency === 'every_other_week')
-      weekValue = 2
-    else
-      weekValue = 1
-
-    // if until no of occurrences
-    if(payload.until_no_of_occurrences) {
-      dfEndDate = new Date(payload.check_in)
-      dfEndDate = new Date(dfEndDate.setDate((dfEndDate.getDate() + ((7 * payload.until_no_of_occurrences * weekValue) - 1))))
-    }
-    else {
-      dfEndDate = new Date(dfEndDate.setDate((dfEndDate.getDate() *  weekValue)))
-    }
-
-    let weekday = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ]
-    let reservationDateArr = []
-    let gEndDate
-    let gStartDate
-    let dayAvailableFlag = false
-    let weekCount = 1
-    let cycleCount = 0
-    let startDate = new Date(payload.check_in)
-    let startDateDay = startDate.getDay()
-
-    for (let d = new Date(payload.check_in); d <=  dfEndDate; d.setDate(d.getDate() + 1)) {
-      let currentDay = d.getDay()
-
-      if(cycleCount == 0) {
-        // if(currentDay + 1 == 2)
-        if(currentDay == startDateDay)
-          cycleCount++
-      }
-      else
-      if(currentDay + 1 == 2)
-      {weekCount++}
-
-      // for if isEveryOtherWeek is Clicked
-      let isEveryOtherWeek = true
-      if(weekValue == 2 && weekCount % 2 == 0)
-        isEveryOtherWeek = false
-
-      // if one day reservation than checkin and checkout is same day
-      if(gOneDayReservation) {
-        if(payload.allSelectedWeek.includes('' + weekday[currentDay] + '') && isEveryOtherWeek)
-          reservationDateArr.push({ startDate: moment(d).format('YYYY-MM-DD'), endDate: moment(d).format('YYYY-MM-DD') })
-      }
-      else
-      // for set condition based reservation start date and end date
-      if(payload.allSelectedWeek.includes('' + weekday[currentDay] + '') && isEveryOtherWeek) {
-        if(!dayAvailableFlag)
-          gStartDate = moment(d).format('YYYY-MM-DD')
-
-        dayAvailableFlag = true
-      }
-      else {
-        if(dayAvailableFlag)
-          reservationDateArr.push({ startDate: gStartDate, endDate: gEndDate })
-
-        dayAvailableFlag = false
-      }
-
-      gEndDate = moment(d).format('YYYY-MM-DD')
-    }
-
-    // if last day was not in array
-    if(dayAvailableFlag)
-      reservationDateArr.push({ startDate: gStartDate, endDate: gEndDate })
+    let reservationDateArr = payload.reservationDate
 
     // if not any day selcted
-    if(reservationDateArr.length == 0)
-      reservationDateArr.push({ startDate: payload.check_in , endDate: moment(dfEndDate).format('YYYY-MM-DD')  })
+    if(payload.serviceType == 'B')
+      reservationDateArr = [].concat(payload.check_in)
 
-    for (let item of reservationDateArr)
+    for (let reservationDate of reservationDateArr)
     {
       yield put({ type: types.POST_PENDING })
       let orderServices = []
@@ -142,7 +66,7 @@ function* post({ payload: { ...payload } }) {
             service_variation: payload.serviceVariations.id,
             employee         : payload.currentTenant.id,
             price            : parseInt(payload.serviceVariations.price),
-            reserved_at      : moment.utc(item.startDate + ' ' + payload.check_in_time , 'YYYY-MM-DD HH-mm:ss Z'),
+            reserved_at      : moment.utc(reservationDate, 'YYYY-MM-DD HH-mm:ss Z'),
             location         : payload.location,
             pet              : payload.pet,
             comment          : payload.comment
@@ -153,7 +77,7 @@ function* post({ payload: { ...payload } }) {
               service_variation     : _pet.id,
               employee              : payload.currentTenant.id,
               price                 : parseInt(_pet.price),
-              reserved_at           : moment.utc(item.startDate + ' ' + payload.check_in_time , 'YYYY-MM-DD HH-mm:ss Z'),
+              reserved_at           : moment.utc(reservationDate , 'YYYY-MM-DD HH-mm:ss Z'),
               location              : payload.location,
               pet                   : _pet.petId,
               belongings            : payload.belongings,
@@ -175,7 +99,7 @@ function* post({ payload: { ...payload } }) {
       for (let _order_services of order.order_services)
       {
         const reservationDetail = {
-          reserved_at           : moment.utc(item.startDate + ' ' + payload.check_in_time , 'YYYY-MM-DD HH-mm:ss Z'),
+          reserved_at           : moment.utc(reservationDate, 'YYYY-MM-DD HH-mm:ss Z'),
           price                 : parseInt(_order_services.price),
           employee              : payload.currentTenant.id,
           pet                   : _order_services.pet,
@@ -206,26 +130,26 @@ function* post({ payload: { ...payload } }) {
           yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  daycamp: {
             card       : '6',
             yard_type  : payload.yard,
-            checkout_at: moment.utc(item.endDate, 'YYYY-MM-DD HH-mm:ss Z')
+            checkout_at: moment.utc(reservationDate, 'YYYY-MM-DD HH-mm:ss Z')
           } })
         }
         else if(payload.serviceType === 'T') {
           yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  training: {
             method       : payload.method,
             comment      : payload.comment,
-            contracted_at: moment.utc(item.startDate + ' ' + payload.check_in_time , 'YYYY-MM-DD HH-mm:ss Z')
+            contracted_at: moment.utc(reservationDate, 'YYYY-MM-DD HH-mm:ss Z')
           } })
         }
-        else
+        else if(payload.serviceType === 'B')
         {
           yield call(Patch, `reservations/${_order_services.id}/`,{ ...reservationDetail, boarding: {
-            checkout_at: moment.utc(item.endDate , 'YYYY-MM-DD HH-mm:ss Z'), kennel: payload.kennel_type
+            checkout_at: moment.utc(payload.check_out , 'YYYY-MM-DD HH-mm:ss Z'), kennel: payload.kennel_type
           } })
         }
       }
-
-      yield put({ type: types.POST_FULFILLED })
     }
+
+    yield put({ type: types.POST_FULFILLED })
   } catch (e) {
     yield put({
       type : types.POST_FAILURE,

@@ -123,7 +123,7 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
               </div>
               <div className={`button-service ${activeReservationItem === 'F' && 'selected'}`} onClick={_handleReservationTypeClick('F')}>
                 <Image avatar src='/images/fitness-icon.svg'/>
-                <span>Fitness</span>
+                <span>Day Services</span>
               </div>
               <div className={`button-service ${activeReservationItem === 'D' && 'selected'}`} onClick={_handleReservationTypeClick('D')}>
                 <Image avatar src='/images/daycamp-icon.svg'/>

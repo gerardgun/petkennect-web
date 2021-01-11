@@ -42,7 +42,7 @@ const ExpressCheckInConfirmation = props => {
       size='small'>
       <Modal.Content style={{ textAlign: 'center', paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
         <Icon
-          circular color={alert_color} name='info circle icon'
+          circular color={alert_color} name='info circle'
           size='big' style={{ backgroundColor: alert_shadow, boxShadow: 'none', fontSize: '2.5rem' }}/>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Header as='h2' style={{ fontWeight: 500 }}>

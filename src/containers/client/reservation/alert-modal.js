@@ -39,7 +39,7 @@ const AlertModal = props => {
       size='small'>
       <Modal.Content style={{ textAlign: 'center', paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
         <Icon
-          circular color='blue' name='info circle icon'
+          circular color='blue' name='info circle'
           size='big' style={{ backgroundColor: 'blue', boxShadow: 'none', fontSize: '2.5rem' }}/>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Header as='h2' style={{ fontWeight: 500 }}>

@@ -3,13 +3,15 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field } from 'redux-form'
-import { Button, Form, Header, Input, Checkbox, Grid, Segment } from 'semantic-ui-react'
+import { Button, Form, Header, Icon, Accordion, Input, Checkbox, Grid, Segment } from 'semantic-ui-react'
+import DayPicker, { DateUtils } from 'react-day-picker'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
+import 'react-day-picker/lib/style.css'
 import './styles.scss'
 
 const RecurringDaysForm = ({ serviceType, ...props }) => {
@@ -19,68 +21,108 @@ const RecurringDaysForm = ({ serviceType, ...props }) => {
   } = props
 
   const [ frequency, setFrequency ] = useState('every_week')
+  const [ startDate, setStartDate ] = useState(new Date())
+  const [ endDate, setEndDate ] = useState(new Date())
+  const [ untilNoOfOccurrences, setUntilNoOfOccurrences ] = useState(1)
   const [ allSelectedWeek, setAllSelectedWeek ] = useState([])
+  const [ selectedDates, setSelectedDates ] = useState([])
+  const [ activeIndex, setActiveIndex ] = useState(1)
 
   useEffect(() => {
-    if(petReservationDetail.item.allSelectedWeek !== undefined) {
-      var defaultValue = petReservationDetail.item.allSelectedWeek
-      setAllSelectedWeek([].concat(defaultValue))
+    // if only endDate fill
+    let dfEndDate = new Date(endDate)
+
+    // for frequency
+    let weekValue = 0
+    if(frequency === 'every_other_week')
+      weekValue = 2
+    else
+      weekValue = 1
+
+    // if until no of occurrences
+    if(untilNoOfOccurrences > 0) {
+      dfEndDate = new Date(startDate)
+      dfEndDate = new Date(dfEndDate.setDate((dfEndDate.getDate() + ((7 * untilNoOfOccurrences * weekValue) - 1))))
     }
-    if(petReservationDetail.item.frequency !== undefined) {
-      var defaultWeekValue = petReservationDetail.item.frequency
-      setFrequency(defaultWeekValue)
+    else {
+      dfEndDate = new Date(dfEndDate.setDate((dfEndDate.getDate() *  weekValue)))
+    }
+
+    let weekday = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ]
+    let reservationDateArr = []
+    let weekCount = 1
+    let cycleCount = 0
+    let startDateDay = (new Date(startDate)).getDay()
+
+    for (let d = new Date(startDate); d <=  dfEndDate; d.setDate(d.getDate() + 1)) {
+      let currentDay = d.getDay()
+
+      if(cycleCount == 0) {
+        if(currentDay == startDateDay)
+          cycleCount++
+      }
+      else
+      if(currentDay + 1 == 2)
+      {weekCount++}
+
+      // for if isEveryOtherWeek is Clicked
+      let isEveryOtherWeek = true
+      if(weekValue == 2 && weekCount % 2 == 0)
+        isEveryOtherWeek = false
+
+      if(allSelectedWeek.includes('' + weekday[currentDay] + '') && isEveryOtherWeek)
+        reservationDateArr.push(new Date(d))
+    }
+    setSelectedDates([].concat(reservationDateArr))
+
+    props.setItem({ ...petReservationDetail.item, selectedDate: reservationDateArr, frequency, allSelectedWeek, untilNoOfOccurrences })
+  },[ frequency, allSelectedWeek, startDate, endDate, untilNoOfOccurrences  ])
+
+  useEffect(() => {
+    if(petReservationDetail.item.selectedDate) {
+      setSelectedDates([].concat(petReservationDetail.item.selectedDate))
+      setFrequency(petReservationDetail.item.frequency)
+      setAllSelectedWeek([].concat(petReservationDetail.item.allSelectedWeek))
     }
   }, [])
 
+  const _handleStartDateChange = (value) =>{
+    setStartDate(new Date(value))
+  }
+
+  const _handleEndDateChange = (value) =>{
+    setEndDate(new Date(value))
+    setUntilNoOfOccurrences(0)
+  }
+
+  const _handleUntilNoChange = (value) =>{
+    setUntilNoOfOccurrences(value)
+  }
+
   const _handleAllWeekDayChange = (value) =>{
-    let selectedDays = allSelectedWeek
-    let days = []
-    if(value === true)
-    {
-      var toRemove = [ 'Monday', 'Tuesday','Wednesday','Thursday','Friday' ]
-      var weekDays = selectedDays.filter(value => !toRemove.includes(value))
-      weekDays.push('Monday', 'Tuesday','Wednesday','Thursday','Friday')
-      setAllSelectedWeek([].concat(weekDays))
-      days = [].concat(weekDays)
-    }
-    else
-    {
-      var remove = [ 'Monday', 'Tuesday','Wednesday','Thursday','Friday' ]
-      var remainingDays = selectedDays.filter(value => !remove.includes(value))
-      setAllSelectedWeek([].concat(remainingDays))
-      days = [].concat(remainingDays)
-    }
-    props.setItem({ ...petReservationDetail.item, allSelectedWeek: days })
+    let selectedDays =  [].concat(allSelectedWeek)
+    let weekDays = [ 'Monday', 'Tuesday','Wednesday','Thursday','Friday' ]
+    let remainingDays = selectedDays.filter(value => !weekDays.includes(value))
+    if(value)
+      remainingDays.push('Monday', 'Tuesday','Wednesday','Thursday','Friday')
+    setAllSelectedWeek([].concat(remainingDays))
   }
 
   const _handleOnlyWeekEndChange = (value) =>{
-    let selectedDays = allSelectedWeek
-    let days = []
-    if(value === true)
-    {
-      var toRemove = [ 'Saturday','Sunday' ]
-      var weekDays = selectedDays.filter(value => !toRemove.includes(value))
-      weekDays.push('Saturday','Sunday')
-      setAllSelectedWeek([].concat(weekDays))
-      days = [].concat(weekDays)
-    }
-    else
-    {
-      var remove = [ 'Saturday','Sunday' ]
-      var remainingDays = selectedDays.filter(value => !remove.includes(value))
-      setAllSelectedWeek([].concat(remainingDays))
-      days = [].concat(remainingDays)
-    }
-
-    props.setItem({ ...petReservationDetail.item, allSelectedWeek: days })
+    let selectedDays = [].concat(allSelectedWeek)
+    let weekEndDays = [ 'Saturday','Sunday' ]
+    let remainingDays = selectedDays.filter(value => !weekEndDays.includes(value))
+    if(value)
+      remainingDays.push('Saturday','Sunday')
+    setAllSelectedWeek([].concat(remainingDays))
   }
+
   const _handleFrequencyClick = (e ,{ name }) =>{
     setFrequency(name)
-    props.setItem({ ...petReservationDetail.item, frequency: name })
   }
 
   const _handleWeekDayClick = (e ,{ name }) =>{
-    let allItem = allSelectedWeek
+    let allItem = [].concat(allSelectedWeek)
     const index = allItem.indexOf(name)
     if(index > -1)
       allItem.splice(index, 1)
@@ -88,8 +130,26 @@ const RecurringDaysForm = ({ serviceType, ...props }) => {
       allItem.push(name)
 
     setAllSelectedWeek([].concat(allItem))
+  }
 
-    props.setItem({ ...petReservationDetail.item, allSelectedWeek })
+  const _handleDayClick = (day, { selected }) => {
+    let selectedDays = [].concat(selectedDates)
+
+    if(selected) {
+      const selectedIndex = selectedDays.findIndex(selectedDay =>
+        DateUtils.isSameDay(selectedDay, day)
+      )
+      selectedDays.splice(selectedIndex, 1)
+    } else {
+      selectedDays.push(day)
+    }
+    setSelectedDates(selectedDays)
+  }
+
+  const  _handleSelectRecurringDaysClick = (e, titleProps) => {
+    const { index } = titleProps
+    const newIndex = activeIndex === index ? -1 : index
+    setActiveIndex(newIndex)
   }
 
   return (
@@ -109,6 +169,7 @@ const RecurringDaysForm = ({ serviceType, ...props }) => {
               control={Input}
               label='Start Date'
               name='check_in'
+              onChange={_handleStartDateChange}
               requied
               type='date'/>
             <Field
@@ -118,11 +179,24 @@ const RecurringDaysForm = ({ serviceType, ...props }) => {
               name='check_in_time'
               required
               type='time'/>
+            {
+              (serviceType != 'G' && serviceType != 'T') && (
+                <Field
+                  component={FormField}
+                  control={Input}
+                  label='Check Out Time'
+                  name='check_out_time'
+                  required
+                  type='time'/>
+              )
+            }
           </Form.Group>
+
           <Header as='h3' className='mb0'>
           Select Recurring Days
           </Header>
-          <Form.Group className='form_group_label0'>
+
+          <Form.Group style={{ marginTop: '-1rem' }}>
             <Field
               component={FormField}
               control={Checkbox}
@@ -187,6 +261,7 @@ const RecurringDaysForm = ({ serviceType, ...props }) => {
                   component={FormField}
                   control={Input}
                   name='check_out'
+                  onChange={_handleEndDateChange}
                   type='date'/>
                 <span className='custom_or'>OR</span>
                 <Field
@@ -194,25 +269,35 @@ const RecurringDaysForm = ({ serviceType, ...props }) => {
                   component={FormField}
                   control={Input}
                   name='until_no_of_occurrences'
+                  onChange={_handleUntilNoChange}
                   type='number'/>
               </Form.Group>
             </Grid.Column>
-            <Grid.Column
-              className='grid_custom_checkout'
-              computer={4} mobile={8} tablet={8}>
-              {
-                (serviceType != 'G' && serviceType != 'T') && (
-                  <Field
-                    component={FormField}
-                    control={Input}
-                    label='Check Out Time'
-                    name='check_out_time'
-                    required
-                    type='time'/>
-                )
-              }
-            </Grid.Column>
           </Grid>
+
+          <Accordion styled>
+            <Accordion.Title
+              active={activeIndex === 0}
+              index={0}
+              onClick={_handleSelectRecurringDaysClick}>
+              <Header as='h3' className='mb0'>
+              Manually Add Additional Dates
+                <Icon name='dropdown'/>
+              </Header>
+            </Accordion.Title>
+            <Accordion.Content active={activeIndex === 0}>
+              <div>
+                <DayPicker
+                  disabledDays={
+                    [
+                      { before: startDate }
+                    ]
+                  }
+                  onDayClick={_handleDayClick}
+                  selectedDays={selectedDates}/>
+              </div>
+            </Accordion.Content>
+          </Accordion>
         </Segment>
         {
           error && (

@@ -12,6 +12,7 @@ import FormField from '@components/Common/FormField'
 import moment from 'moment'
 
 import AddReportCardForm from  './AddReportCardForm'
+
 import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
 
 import authDuck from '@reducers/auth'
@@ -23,7 +24,6 @@ import employeeDetailDuck from '@reducers/employee/detail'
 import petReservationDaycampQuestionDetailDuck from '@reducers/pet/reservation/dacamp-question/detail'
 
 import { daycampFormId } from './first'
-import { trainingFormId } from '../training/first'
 
 const DaycampFormWizardThird = props => {
   const {
@@ -35,7 +35,6 @@ const DaycampFormWizardThird = props => {
     selectedPetName,
     petReservationDetail,
     error,
-    allSelectedWeek,
     frequency,
     handleSubmit,
     submitting,
@@ -59,7 +58,10 @@ const DaycampFormWizardThird = props => {
 
   const _handleClose = () => {
     props.resetItem()
-    history.push(`/client/${clientId}`)
+    history.push({
+      pathname: `/client/${clientId}`,
+      state   : { option: 'reserves' }
+    })
   }
 
   const _handleSubmit = values => {
@@ -68,14 +70,14 @@ const DaycampFormWizardThird = props => {
 
     if(isUpdating)
       return props
-        .put({ ...values, serviceVariations, allSelectedWeek, frequency,
+        .put({ ...values, serviceVariations,  reservationDate     : props.reservationDate,
           petReservationDetail: petReservationDetail.item,
           currentTenant, serviceType         : props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
     else
       return props
-        .post({ ...values, serviceVariations, allSelectedWeek, frequency, currentTenant, serviceType: props.serviceType, clientId })
+        .post({ ...values, serviceVariations, reservationDate: props.reservationDate, currentTenant, serviceType: props.serviceType, clientId })
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -167,6 +169,7 @@ const DaycampFormWizardThird = props => {
             }
             <p><b>Frequency:</b> {frequency == 'every_other_week' ? 'Every Other Week' : 'Every Week'}</p>
             <p><b>Days:</b> { props.allSelectedWeek.join(', ') }</p>
+            <p><b>Selected Dates:</b> { props.selectedDate.join(', ') }</p>
           </Segment>
           {
             petReservationDetail.item.id && (
@@ -225,6 +228,7 @@ const DaycampFormWizardThird = props => {
               className='w120'
               color='teal'
               content='Back'
+              disabled={submitting}
               onClick={props.onPreviousStep}
               type='button'/>
           </Form.Field>
@@ -271,7 +275,9 @@ export default compose(
         startDate           : check_in,
         endDate             : check_out,
         checkInTime         : check_in_time,
-        untilNoOfOccurrences: formValueSelector(trainingFormId)(state,'until_no_of_occurrences'),
+        untilNoOfOccurrences: formValueSelector(daycampFormId)(state,'until_no_of_occurrences'),
+        reservationDate     : [].concat(petReservationDetail.item.selectedDate),
+        selectedDate        : [].concat(petReservationDetail.item.selectedDate).map((item) => moment(item).format('MM/DD/YYYY')),
         selectedPetName,
         petReservationDetail,
         services            : service,

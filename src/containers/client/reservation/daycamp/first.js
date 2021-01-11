@@ -210,10 +210,7 @@ export default compose(
         location      : Yup.mixed().required('Location is required'),
         pet           : Yup.mixed().required('Pet is required'),
         check_in_time : Yup.mixed().required('Check In time is required'),
-        check_out_time: Yup.mixed().required('Check Out time is required'),
-        check_in      : Yup
-          .date('Check In date is required')
-          .required()
+        check_out_time: Yup.mixed().required('Check Out time is required')
         // check_out: Yup
         //   .date().required('Check Out date is required')
         //   .when(

@@ -66,13 +66,9 @@
    margin-top: 0.7rem !important;
   }
 
-  .grid_custom_checkout{
-    .ui.input{
-      width: 9rem !important;
-      margin-top: 0.7rem !important;
-    }
+  .ui.styled.accordion{
+    width:100% !important;
   }
-
 }
 
 @media only screen
@@ -83,4 +79,10 @@ and (-webkit-min-device-pixel-ratio: 2) {
   .six.wide.computer.sixteen.wide.mobile.sixteen.wide.tablet.column.grid_width_100{
   width:100% !important;
 }
+}
+
+.DayPicker{
+  .DayPicker-Month{
+    margin-left: 0rem !important;
+  }
 }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
-import { Button, Dropdown, Grid, Form, Header, Select, Segment, Icon } from 'semantic-ui-react'
+import { Button, Dropdown, Input, Grid, Form, Header, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -14,7 +14,6 @@ import Message from '@components/Message'
 import moment  from 'moment'
 
 import AlertModal from './../alert-modal'
-import RecurringDaysForm from './../recurring-days'
 
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
@@ -133,6 +132,41 @@ const BoardingFormWizardFirst = props => {
               selectOnBlur={false}/>
           </Form.Group>
         </Segment>
+        <Segment className='section-info-item-step1'>
+          <Header as='h3' className='section-info-header'>When will this event be?</Header>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Check In'
+              name='check_in'
+              required
+              type='date'/>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Check Out'
+              name='check_out'
+              required
+              type='date'/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Departing Time'
+              name='check_in_time'
+              required
+              type='time'/>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Arriving Time'
+              name='check_out_time'
+              required
+              type='time'/>
+          </Form.Group>
+        </Segment>
         <Segment>
           <div  className='div-section-info-item-single'>
             <Header as='h3' className='section-info-header'>Select package and kennel type</Header>
@@ -173,7 +207,6 @@ const BoardingFormWizardFirst = props => {
           </div>
         </Segment>
 
-        <RecurringDaysForm serviceType='B'/>
         {
           error && (
             <Form.Group widths='equal'>
@@ -255,18 +288,18 @@ export default compose(
       const schema = {
         location      : Yup.mixed().required('Location is required'),
         pet           : Yup.mixed().required('Pet is required'),
-        check_in_time : Yup.mixed().required('Check In time is required'),
-        check_out_time: Yup.mixed().required('Check Out time is required'),
+        check_in_time : Yup.mixed().required('Departing Time is required'),
+        check_out_time: Yup.mixed().required('Arriving Time is required'),
         kennel_type   : Yup.mixed().required('Kennel Type is required'),
         check_in      : Yup
           .date()
-          .required('Check In date is required')
-        // check_out: Yup
-        //   .date().required('Check Out date is required')
-        //   .when(
-        //     'check_in',
-        //     (check_in, schema) => (check_in && schema.min(check_in))
-        //   )
+          .required('Check In date is required'),
+        check_out: Yup
+          .date().required('Check Out date is required')
+          .when(
+            'check_in',
+            (check_in, schema) => (check_in && schema.min(check_in))
+          )
       }
 
       return syncValidate(Yup.object().shape(schema), values)

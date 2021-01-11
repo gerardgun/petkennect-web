@@ -45,6 +45,10 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
       client_id: clientId
     })
 
+    if(history.location.state)
+      history.location.state.option === 'reserves' && (
+        setActiveMenuItem('reserves'))
+
     return () => {
       props.resetItem()
       props.resetClientPets()
