@@ -31,6 +31,7 @@ const BoardingFormWizardFirst = props => {
     petReservationDetail,
     location,
     selectedLocation,
+    selectedPets,
     services,
     serviceAttribute,
     petKennelType,
@@ -41,38 +42,41 @@ const BoardingFormWizardFirst = props => {
     props.getPetKennelType()
   }, [])
 
-  const _handlePetSelect = (value)=>{
+  useEffect(() => {
     let serviceVariations = []
-
-    for (let item of value)
-    {
-      const petSize = clientPet.items.find(pet => pet.id === item).size
+    if(selectedPets && selectedLocation) {
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
         .values.find(_location => _location.value == selectedLocation).id
-      const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
-        .values.find(_petSize => _petSize.value == petSize).id
+      const petLength = selectedPets && selectedPets.length
+      if(petLength > 0) {
+        for (let item of selectedPets) {
+          const petSize = clientPet.items.find(pet => pet.id === item).size
+          const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
+            .values.find(_petSize => _petSize.value == petSize).id
 
-      const variation = services[0].variations
+          const variation = services[0].variations
 
-      let variationId
-      for (let item of variation) {
-        let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
-        let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+          let variationId
+          for (let item of variation) {
+            let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+            let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
 
-        if(locationExist != null && petSizeExist != null)
-        {
-          variationId = locationExist.service_variation_id
-          break
+            if(locationExist != null && petSizeExist != null)
+            {
+              variationId = locationExist.service_variation_id
+              break
+            }
+          }
+          if(variationId != null)
+            serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
+
+          else
+            props.setItemVariation(null, 'READ')
         }
+        props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
       }
-      if(variationId != null)
-        serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
-
-      else
-        props.setItemVariation(null, 'READ')
     }
-    props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
-  }
+  }, [ selectedPets, selectedLocation ])
 
   return (
     services[0] ? (<>
@@ -120,7 +124,6 @@ const BoardingFormWizardFirst = props => {
               label='Pet'
               multiple
               name='pet'
-              onChange={_handlePetSelect}
               options={clientPet.items.map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,

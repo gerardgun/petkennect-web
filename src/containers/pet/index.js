@@ -20,7 +20,7 @@ import petBreedDuck from '@reducers/pet/breed'
 
 import './styles.scss'
 
-const PetList = ({ pet, petDetail, ...props }) => {
+const PetList = ({ petDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPets,petDetail.status)
   const history = useHistory()
@@ -34,17 +34,13 @@ const PetList = ({ pet, petDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleExpressCheckInBtnClick = () =>{
-    props.setReservationCheckInItem(pet.selector.selected_items[0], 'CREATE')
-  }
-
   const _handleOptionClick = (option,item) => {
     if(option === 'delete') {
-      props.setItem(pet.selector.selected_items[0], 'DELETE')
+      props.setItem(item, 'DELETE')
       _handleOpen()
     }
     else if(option === 'express_check_in') {
-      props.setReservationCheckInItem(item, 'CREATE')
+      props.setReservationCheckInItem({ client: item.client, pet: item.id }, 'CREATE')
     }
     else if(option === 'vaccination' || option === 'services') {
       history.push({
@@ -52,6 +48,10 @@ const PetList = ({ pet, petDetail, ...props }) => {
         state   : { option: option }
       })
     }
+  }
+
+  const _handleExpressCheckInBtnClick = () =>{
+    props.setReservationCheckInItem(null, 'CREATE')
   }
 
   return (

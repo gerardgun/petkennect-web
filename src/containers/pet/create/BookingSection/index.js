@@ -13,7 +13,8 @@ import Training from './Training'
 import DayCamp from './DayCamp'
 
 import petDetailDuck from '@reducers/pet/detail'
-import petReservationDuck from '@reducers/pet/reservation'
+import petReservationBoardingDuck from '@reducers/pet/reservation/boarding'
+import petReservationGroomingDuck from '@reducers/pet/reservation/grooming'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import petTrainingPackageDuck from '@reducers/pet/reservation/training/package'
@@ -26,12 +27,11 @@ function BookingSection({ petDetail, ...props }) {
 
   const [ activeServiceItem, setActiveServiceItem ] = useState('T')
   const { pet: petId } = useParams()
-  const { petReservation : { filters = {} }  = {} } = props
 
   useEffect(()=> {
     props.getPet(petId)
-    props.setFilters({ service_type_what_ever_name: 'T', service__current_upcoming: [ 'current','upcoming' ]  })
-    props.getPetReservations()
+    props.getPetReservationGrooming({ service_type_what_ever_name: 'G' })
+    props.getPetReservationBoarding()
     props.getTrainingPackages()
     props.getTrainingReservations()
   }, [])
@@ -54,13 +54,13 @@ function BookingSection({ petDetail, ...props }) {
       case 'edit_note' : props.setNoteItem(item,'READ')
         break
 
-      case 'edit_reserve' : props.setReserveItem(item,'UPDATE')
-        // history.replace(`/client/${clientId}/book`)
+      case 'edit_reserve' : props.setItem(item,'UPDATE')
+        history.replace(`/client/${clientId}/book`)
         break
 
-      case 'absent' : props.setCancelCheckInItem(item,'DELETE')
+      case 'absent' : props.setItem(item,'DELETE')
         break
-      case 'cancel_reserve' : props.setCancelReserveItem(item,'READ')
+      case 'cancel_reserve' : props.setItem(item,'DISABLE')
         break
 
       default : return
@@ -69,9 +69,6 @@ function BookingSection({ petDetail, ...props }) {
 
   const _handleFilterBtnClick = (e, { type }) => {
     setActiveServiceItem(type)
-    props.setFilters({ service_type_what_ever_name: type })
-    if(type != 'T' && type != 'D')
-      props.getPetReservations()
   }
 
   return (
@@ -85,34 +82,35 @@ function BookingSection({ petDetail, ...props }) {
       </Grid>
       <div className='mh16 mv32 div-booking-button'>
         <Button
-          basic={filters.service_type_what_ever_name !== 'T'} color='teal'
+          basic={activeServiceItem !== 'T'} color='teal'
           content='Training' onClick={_handleFilterBtnClick}
           type='T'/>
         <Button
-          basic={filters.service_type_what_ever_name !== 'F'} color='teal'
-          content='Fitness' onClick={_handleFilterBtnClick}
+          basic={activeServiceItem !== 'F'} color='teal'
+          content='Day Services' onClick={_handleFilterBtnClick}
           type='F'/>
         <Button
-          basic={filters.service_type_what_ever_name !== 'D'} color='teal'
+          basic={activeServiceItem !== 'D'} color='teal'
           content='Day Camp' onClick={_handleFilterBtnClick}
           type='D'/>
         <Button
-          basic={filters.service_type_what_ever_name !== 'B'} color='teal'
+          basic={activeServiceItem !== 'B'} color='teal'
           content='Boarding' onClick={_handleFilterBtnClick}
           type='B'/>
         <Button
-          basic={filters.service_type_what_ever_name !== 'G'} color='teal'
+          basic={activeServiceItem !== 'G'} color='teal'
           content='Grooming' onClick={_handleFilterBtnClick}
           type='G'/>
       </div>
       {activeServiceItem === 'T' && <Training/>}
       {activeServiceItem === 'D' && <DayCamp/>}
+      {activeServiceItem === 'F' && <DayCamp/>}
       {
-        activeServiceItem != 'T' &&  activeServiceItem != 'D' && (
+        (activeServiceItem === 'G' ||  activeServiceItem === 'B') && (
           <>
             <div className='mh28 ui-table-overflow'>
               <Table
-                duck={petReservationDuck}
+                duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
                 onOptionDropdownChange={_handleOptionDropdownChange}
                 onRowClick={_handleRowClick}
                 onRowOptionClick={_handleRowOptionClick}/>
@@ -135,20 +133,17 @@ BookingSection.defaultProps = {  }
 export default compose(
   connect(
     (state) => ({
-      petReservation: petReservationDuck.selectors.list(state),
-      petDetail     : petDetailDuck.selectors.detail(state)
+      petDetail: petDetailDuck.selectors.detail(state)
     }), {
-      getPetReservations     : petReservationDuck.creators.get,
-      setFilters             : petReservationDuck.creators.setFilters,
-      setPackageFilters      : petTrainingReservationDuck.creators.setFilters,
-      setCancelReserveItem   : petReservationDetailDuck.creators.setItem,
-      setCancelCheckInItem   : petReservationDetailDuck.creators.setItem,
-      setReserveItem         : petReservationDetailDuck.creators.setItem,
-      setNoteItem            : petNoteDetailDuck.creators.setItem,
-      setViewReportItem      : petDetailDuck.creators.setItem,
-      getPet                 : petDetailDuck.creators.get,
-      getTrainingPackages    : petTrainingPackageDuck.creators.get,
-      getTrainingReservations: petTrainingReservationDuck.creators.get
+      getPetReservationGrooming: petReservationGroomingDuck.creators.get,
+      getPetReservationBoarding: petReservationBoardingDuck.creators.get,
+      setPackageFilters        : petTrainingReservationDuck.creators.setFilters,
+      setItem                  : petReservationDetailDuck.creators.setItem,
+      setNoteItem              : petNoteDetailDuck.creators.setItem,
+      setViewReportItem        : petDetailDuck.creators.setItem,
+      getPet                   : petDetailDuck.creators.get,
+      getTrainingPackages      : petTrainingPackageDuck.creators.get,
+      getTrainingReservations  : petTrainingReservationDuck.creators.get
     })
 )(BookingSection)
 

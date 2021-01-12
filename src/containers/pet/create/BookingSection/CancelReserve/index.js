@@ -17,7 +17,7 @@ const CancelReserveForm = props => {
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
-  const getIsOpened = mode => (mode === 'READ')
+  const getIsOpened = mode => (mode === 'DISABLE')
 
   const _handleClose = () =>{
     props.reset()

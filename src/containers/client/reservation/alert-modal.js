@@ -43,12 +43,12 @@ const AlertModal = props => {
           size='big' style={{ backgroundColor: 'blue', boxShadow: 'none', fontSize: '2.5rem' }}/>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Header as='h2' style={{ fontWeight: 500 }}>
-            Warning
+        No Variation Exists!
         </Header>
         {
           <>
             <p style={{ color: 'gray' }}>
-              <b>No Variation Exists! </b> This location and pet does not have a Price Variation.
+              This location and pet does not have a Price Variation.
             </p>
           </>
         }
@@ -63,7 +63,7 @@ const AlertModal = props => {
           )
         }
       </Modal.Content>
-      <Modal.Actions>
+      <Modal.Actions className='form-modal-action-button'>
 
         <Button
           className='w120'

@@ -29,6 +29,7 @@ const GroomingFormWizardThird = props => {
     untilNoOfOccurrences,
     checkInTime,
     selectedPetName,
+    addons,
     petReservationDetail,
     currentTenant,
     allSelectedWeek,
@@ -162,10 +163,9 @@ const GroomingFormWizardThird = props => {
         <Segment>
           <Header as='h3' className='charges-heading'>Charges</Header>
           <List className='list-total-addons' divided verticalAlign='middle'>
-
             <List.Item>
               <List.Content floated='right'>
-                {
+                ${
                   petReservationDetail.item && petReservationDetail.item.serviceVariations && (
                     totalCost += Number(petReservationDetail.item.serviceVariations.price)
                   )
@@ -175,33 +175,47 @@ const GroomingFormWizardThird = props => {
                     Grooming
               </List.Content>
             </List.Item>
-
             {
-
-              petReservationDetail.item.subServiceVariations && petReservationDetail.item.subServiceVariations.map((item,index)=>{
-                totalCost += Number(item.price)
-
-                return (
-
-                  <List.Item key={index}>
-                    <List.Content floated='right'>
-
-                      {item.price}
-                    </List.Content>
+              addons && addons.length > 0 && (
+                <>
+                  <List.Item>
                     <List.Content>
-                      {item.name}
+                      <Header as='h4'>Add Ons</Header>
                     </List.Content>
-
                   </List.Item>
-                )
-              })}
 
+                  {
+                    addons && addons.map((item,index)=>{
+                      totalCost += Number(item.price)
+
+                      return (
+                        <List.Item key={index}>
+                          <List.Content floated='right'>
+                      ${Number(item.price)}
+                          </List.Content>
+                          <List.Content>
+                            {item.name}
+                          </List.Content>
+                        </List.Item>
+                      )
+                    })}
+                </>
+              )
+            }
             <List.Item>
               <List.Content floated='right'>
-                <List.Header as='a'>{totalCost}</List.Header>
+                $0
               </List.Content>
               <List.Content>
-                Total Cost
+                <b>Client Discount</b>
+              </List.Content>
+            </List.Item>
+            <List.Item>
+              <List.Content floated='right'>
+                <List.Header as='a'>${totalCost}</List.Header>
+              </List.Content>
+              <List.Content>
+                <b>Total Cost</b>
               </List.Content>
             </List.Item>
           </List>
@@ -256,8 +270,10 @@ export default compose(
       const selectedPetName = clientPet.items.find(_ => _.id == selectedPet) && clientPet.items.find(_ => _.id == selectedPet).name
       const employeeDetail = employeeDuck.selectors.list(state)
       const groomerDetail = employeeDetail.items && employeeDetail.items.find(_ => _.id == groomer)
+      const addons = formValueSelector(groomingFormId)(state, 'grooming_service_list')
 
       return {
+        addons,
         startDate           : check_in,
         endDate             : check_out,
         checkInTime         : check_in_time,

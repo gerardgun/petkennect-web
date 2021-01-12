@@ -30,6 +30,7 @@ const GroomingFormWizardFirst = props => {
     services,
     petReservationDetail,
     selectedLocation,
+    selectedPet,
     serviceAttribute,
     employee,
     clientPet,
@@ -41,38 +42,39 @@ const GroomingFormWizardFirst = props => {
     props.getEmployees()
   }, [])
 
-  const _handlePetSelect = (value)=>{
+  useEffect(() => {
     let serviceVariations
+    if(selectedPet && selectedLocation) {
+      const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
+        .values.find(_location => _location.value == selectedLocation).id
 
-    const petSize = clientPet.items.find(pet => pet.id === value).size
+      const petSize = clientPet.items.find(pet => pet.id === selectedPet).size
+      const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
+        .values.find(_petSize => _petSize.value == petSize).id
 
-    const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
-      .values.find(_location => _location.value == selectedLocation).id
-    const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
-      .values.find(_petSize => _petSize.value == petSize).id
+      const variation = services[0].variations
 
-    const variation = services[0].variations
+      let variationId
+      for (let item of variation) {
+        let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+        let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
 
-    let variationId
-    for (let item of variation) {
-      let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
-      let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
-
-      if(locationExist != null && petSizeExist != null)
-      {
-        variationId = locationExist.service_variation_id
-        break
+        if(locationExist != null && petSizeExist != null)
+        {
+          variationId = locationExist.service_variation_id
+          break
+        }
       }
+
+      if(variationId != null)
+        serviceVariations = { ...variation.find(_ => _.id == variationId), petId: selectedPet }
+
+      else
+        props.setItemVariation(null, 'READ')
+
+      props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
     }
-
-    if(variationId != null)
-      serviceVariations = { ...variation.find(_ => _.id == variationId), petId: value }
-
-    else
-      props.setItemVariation(null, 'READ')
-
-    props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
-  }
+  }, [ selectedLocation, selectedPet ])
 
   return  (
 
@@ -120,7 +122,6 @@ const GroomingFormWizardFirst = props => {
               fluid
               label='Pet'
               name='pet'
-              onChange={_handlePetSelect}
               options={clientPet.items.map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,
@@ -133,22 +134,25 @@ const GroomingFormWizardFirst = props => {
           </Form.Group>
         </Segment>
 
-        <div className='div-section-info-item-single'>
-          <Header as='h3' className='section-info-header'>Select groomer</Header>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Groomer'
-              name='groomer'
-              options={employee.items.filter(_employee => _employee.title_name === 'Groomer').map(_employee=>
-                ({ key: _employee.id, value: _employee.id, text: `${_employee.first_name + ' ' + _employee.last_name}` }))
-              }
-              placeholder='Select Groomer'
-              required
-              selectOnBlur={false}/>
-          </Form.Group>
-        </div>
+        <Segment>
+          <div className='div-section-info-item-single'>
+            <Header as='h3' className='section-info-header'>Select groomer</Header>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Select}
+                label='Groomer'
+                name='groomer'
+                options={employee.items.filter(_employee => _employee.title_name === 'Groomer').map(_employee=>
+                  ({ key: _employee.id, value: _employee.id, text: `${_employee.first_name + ' ' + _employee.last_name}` }))
+                }
+                placeholder='Select Groomer'
+                required
+                selectOnBlur={false}/>
+            </Form.Group>
+          </div>
+        </Segment>
+
         <RecurringDaysForm serviceType='G'/>
         <Segment>
           <Grid>
@@ -236,12 +240,13 @@ export default compose(
     ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const selectedLocation = formValueSelector(groomingFormId)(state, 'location')
+      const selectedPet = formValueSelector(groomingFormId)(state, 'pet')
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
       const service = serviceDuck.selectors.list(state)
       const grommingServices = service.items && service.items.filter(_ => _.type === 'G')
       const defaultInitialValues = petReservationDetail.item.id ? {
-        check_in: petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
-        pet     : [ petReservationDetail.item.pet ]
+        check_in     : moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD'),
+        groomer      : petReservationDetail.item.employee, check_in_time: moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('HH:mm:ss')
       } : {}
 
       return {
@@ -252,7 +257,8 @@ export default compose(
         initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,  location: auth.location },
         location            : locationDuck.selectors.list(state),
         employee            : employeeDuck.selectors.list(state),
-        selectedLocation    : selectedLocation
+        selectedLocation    : selectedLocation,
+        selectedPet         : selectedPet
       }
     },
     {

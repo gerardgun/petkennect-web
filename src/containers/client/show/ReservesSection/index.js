@@ -12,6 +12,8 @@ import Absent from '@containers/pet/create/BookingSection/Absent'
 import Training from '@containers/pet/create/BookingSection/Training'
 import Daycamp from '@containers/pet/create/BookingSection/DayCamp'
 
+import petReservationBoardingDuck from '@reducers/pet/reservation/boarding'
+import petReservationGroomingDuck from '@reducers/pet/reservation/grooming'
 import petDetailDuck from '@reducers/pet/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import petReservationDuck from '@reducers/pet/reservation'
@@ -49,7 +51,7 @@ function ReservesSection({ ...props }) {
 
       case 'absent' : props.setCancelCheckInItem(item,'DELETE')
         break
-      case 'cancel_reserve' : props.setCancelReserveItem(item,'READ')
+      case 'cancel_reserve' : props.setCancelReserveItem(item,'DISABLE')
         break
 
       default : return
@@ -78,7 +80,7 @@ function ReservesSection({ ...props }) {
           content='Training' onClick={_handleFilterBtnClick('T')}/>
         <Button
           basic={filters.service_type_what_ever_name !== 'F'} color='teal'
-          content='Fitness' onClick={_handleFilterBtnClick('F')}/>
+          content='Day Services' onClick={_handleFilterBtnClick('F')}/>
         <Button
           basic={filters.service_type_what_ever_name !== 'D'} color='teal'
           content='Day Camp' onClick={_handleFilterBtnClick('D')}/>
@@ -91,12 +93,13 @@ function ReservesSection({ ...props }) {
       </div>
       {activeServiceItem === 'T' && <Training/>}
       {activeServiceItem === 'D' && <Daycamp/>}
+      {activeServiceItem === 'F' && <Daycamp/>}
       {
-        activeServiceItem != 'T' && activeServiceItem != 'D' && (
+        (activeServiceItem === 'G' ||  activeServiceItem === 'B') && (
           <>
-            <div className='mh8'>
+            <div className='mh28 ui-table-overflow'>
               <Table
-                duck={petReservationDuck}
+                duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
                 onOptionDropdownChange={_handleOptionDropdownChange}
                 onRowClick={_handleRowClick}
                 onRowOptionClick={_handleRowOptionClick}/>

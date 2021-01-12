@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -32,45 +32,45 @@ const DaycampFormWizardFirst = props => {
     serviceAttribute,
     services,
     selectedLocation,
+    selectedPets,
     error, handleSubmit, reset
   } = props
 
-  const _handlePetDropDownChange = (value) =>{
+  useEffect(() => {
     let serviceVariations = []
-    for (let item of value)
-    {
-      const petSize = clientPet.items.find(pet => pet.id === item).size
-
+    if(selectedPets && selectedLocation) {
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
         .values.find(_location => _location.value == selectedLocation).id
+      const petLength = selectedPets && selectedPets.length
+      if(petLength > 0) {
+        for (let item of selectedPets) {
+          const petSize = clientPet.items.find(pet => pet.id === item).size
+          const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
+            .values.find(_petSize => _petSize.value == petSize).id
 
-      const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
-        .values.find(_petSize => _petSize.value == petSize).id
+          const variation = services[0].variations
 
-      const variation = services[0].variations
+          let variationId
+          for (let item of variation) {
+            let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+            let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
 
-      let variationId
+            if(locationExist != null && petSizeExist != null)
+            {
+              variationId = locationExist.service_variation_id
+              break
+            }
+          }
+          if(variationId != null)
+            serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
 
-      for (let item of variation) {
-        let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
-        let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
-
-        if(locationExist != null && petSizeExist != null)
-        {
-          variationId = locationExist.service_variation_id
-          break
+          else
+            props.setItemVariation(null, 'READ')
         }
+        props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
       }
-
-      if(variationId != null)
-        serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
-
-      else
-        props.setItemVariation(null, 'READ')
     }
-
-    props.setItem({ ...petReservationDetail.item,serviceVariations: serviceVariations },'CREATE')
-  }
+  }, [ selectedLocation, selectedPets ])
 
   return (
     services[0] ? (<>
@@ -118,7 +118,6 @@ const DaycampFormWizardFirst = props => {
               label='Pet'
               multiple
               name='pet'
-              onChange={_handlePetDropDownChange}
               options={clientPet.items.map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,
@@ -176,6 +175,7 @@ export default compose(
     ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const selectedLocation = formValueSelector(daycampFormId)(state, 'location')
+      const selectedPets = formValueSelector(daycampFormId)(state, 'pet')
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
       const service = serviceDuck.selectors.list(state)
       const daycampServices = service.items && service.items.filter(_ => _.type === 'D')
@@ -187,13 +187,14 @@ export default compose(
 
       return {
         auth,
-        clientPet    : clientPetDuck.selectors.list(state),
-        services     : daycampServices,
-        initialValues: { ...petReservationDetail.item, ...defaultInitialValues, location: auth.location },
-        location     : locationDuck.selectors.list(state),
+        clientPet       : clientPetDuck.selectors.list(state),
+        services        : daycampServices,
+        initialValues   : { ...petReservationDetail.item, ...defaultInitialValues, location: auth.location },
+        location        : locationDuck.selectors.list(state),
         petReservationDetail,
         serviceAttribute,
-        selectedLocation
+        selectedPets    : selectedPets,
+        selectedLocation: selectedLocation
       }
     },
     {

@@ -79,9 +79,9 @@ import { groomingFormId } from './first'
 const GroomingFormWizardSecond = props => {
   const {
     clientPet,
-    petReservationDetail,
     services,
     serviceAttribute,
+    hasPriceChange,
     totalPrice = 0,
     error, handleSubmit, reset // redux-form
   } = props
@@ -132,8 +132,6 @@ const GroomingFormWizardSecond = props => {
           props.setItem(null, 'READ')
         }
       }
-
-      props.setItemPrice({ ...petReservationDetail.item, subServiceVariations: subServiceVariations },'CREATE')
     }
 
     return (
@@ -190,9 +188,13 @@ const GroomingFormWizardSecond = props => {
             </div>
           ))
         }
-        <div className='div-additional-charge-summary'>
-          <span className='charge-amount'><b>${totalPrice}</b></span>
-        </div>
+        {
+          hasPriceChange && hasPriceChange.length > 0 && (
+            <div className='div-additional-charge-summary'>
+              <span className='charge-amount'><b>${totalPrice}</b></span>
+            </div>
+          )
+        }
         {
           submitFailed && error && (
             <Form.Group widths='equal'>
@@ -295,6 +297,7 @@ export default compose(
         petReservationDetail: petReservationDetail,
         services,
         serviceAttribute,
+        hasPriceChange,
         totalPrice,
         initialValues       : petReservationDetail.item,
         clientPet           : clientPetDuck.selectors.list(state),
@@ -304,8 +307,7 @@ export default compose(
     },
     {
       getClientPets: clientPetDuck.creators.get,
-      setItem      : trainingMethodDetailDuck.creators.setItem,
-      setItemPrice : petReservationDetailDuck.creators.setItem
+      setItem      : trainingMethodDetailDuck.creators.setItem
     }
   ),
   reduxForm({

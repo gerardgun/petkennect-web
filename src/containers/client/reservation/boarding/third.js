@@ -27,6 +27,8 @@ const BoardingFormWizardThird = props => {
     endDate,
     checkOutTime,
     petReservationDetail,
+    addons,
+    clientPet,
     selectedPetName,
     currentTenant,
     submitting,
@@ -35,6 +37,8 @@ const BoardingFormWizardThird = props => {
 
   const { client: clientId } = useParams()
   const history = useHistory()
+
+  let totalCost = 0
 
   const _handleClose = () => {
     reset()
@@ -168,48 +172,101 @@ const BoardingFormWizardThird = props => {
           </Grid>
         </Segment>
         <Segment>
-          <Header as='h3'>Add Ons</Header>
+          <Header as='h3'>Charges</Header>
           <List className='list-total-addons' divided verticalAlign='middle'>
             <List.Item>
+              <List.Content>
+                <b>Boarding</b>
+              </List.Content>
+            </List.Item>
+            {
+              petReservationDetail.item.serviceVariations && petReservationDetail.item.serviceVariations.map((item,index)=>{
+                totalCost += Number(item.price)
+
+                return (
+
+                  <List.Item key={index}>
+                    <List.Content floated='right'>
+                      ${Number(item.price)}
+                    </List.Content>
+                    <List.Content>
+                      {clientPet.items && clientPet.items.find(_ => _.id == item.petId).name}
+                    </List.Content>
+
+                  </List.Item>
+                )
+              })}
+            <List.Item>
               <List.Content floated='right'>
-                $34
+                $0
               </List.Content>
               <List.Content>
-                Kennel
+                <b>Kennel</b>
               </List.Content>
             </List.Item>
             <List.Item>
               <List.Content floated='right'>
-                $34
+                $0
               </List.Content>
               <List.Content>
-               Activity Package
+                <b>Activity Package</b>
               </List.Content>
             </List.Item>
+            {
+              addons && addons.length > 0 && (
+                <>
+                  <List.Item>
+                    <List.Content>
+                      <Header as='h3'>Add Ons</Header>
+                    </List.Content>
+                  </List.Item>
+                  {
+                    addons && addons.map((item,index)=>{
+                      return (
+                        <>
+                          <List.Item key={index}>
+                            <List.Content>
+                              <b>{item.name}</b>
+                            </List.Content>
+                          </List.Item>
+                          {
+                            item.subVariation && item.subVariation.map((item,index)=>{
+                              totalCost += Number(item.price)
+
+                              return (
+                                <>
+                                  <List.Item key={index}>
+                                    <List.Content floated='right'>
+                                ${Number(item.price)}
+                                    </List.Content>
+                                    <List.Content>
+                                      {clientPet.items && clientPet.items.find(_ => _.id == item.petId).name}
+                                    </List.Content>
+                                  </List.Item>
+                                </>
+                              )
+                            })}
+                        </>
+                      )
+                    })}
+                </>
+              )
+            }
+
             <List.Item>
+              <List.Content floated='right'>
+                $0
+              </List.Content>
               <List.Content>
-                <b>Add Ons</b>
+                <b>Client Discount</b>
               </List.Content>
             </List.Item>
             <List.Item>
               <List.Content floated='right'>
-                $34
+                <List.Header as='a'>${totalCost}</List.Header>
               </List.Content>
               <List.Content>
-                Name
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                $34
-              </List.Content>
-              <List.Content>
-               Name
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                <List.Header as='a'>Total $155</List.Header>
+                <b>Total Cost</b>
               </List.Content>
             </List.Item>
           </List>
@@ -269,11 +326,14 @@ export default compose(
       }).join(', ')
       const employeeDetail = employeeDetailDuck.selectors.detail(state)
       const employeeName = employeeDetail.item && employeeDetail.item.first_name + ' ' + employeeDetail.item.last_name
+      const addons = formValueSelector(boardingFormId)(state, 'boarding_reservation_list')
 
       return {
         employeeName,
+        addons,
         petReservationDetail,
         selectedPets,
+        clientPet,
         selectedPetName,
         startDate    : check_in,
         checkInTime  : check_in_time,

@@ -142,6 +142,13 @@ function* post({ payload: { ...payload } }) {
         }
         else if(payload.serviceType === 'B')
         {
+          if(payload.boarding_reservation_list)
+            for (let items of payload.boarding_reservation_list)
+              for (let item of items.subVariation)
+                yield call(Post, `reservations/${_order_services.id}/addons/`, {
+                  service_variation: item.id,
+                  price            : item.price
+                })
           yield call(Patch, `reservations/${_order_services.id}/`,{ ...reservationDetail, boarding: {
             checkout_at: moment.utc(payload.check_out , 'YYYY-MM-DD HH-mm:ss Z'), kennel: payload.kennel_type
           } })
@@ -169,7 +176,7 @@ function* _put({ payload : { ...payload } }) {
     {
       const reservationDetail = {
         reserved_at           : moment.utc(payload.check_in , 'YYYY-MM-DD HH-mm:ss Z'),
-        price                 : parseInt(payload.serviceVariations.price),
+        price                 : parseInt(_order_services.price),
         employee              : payload.currentTenant.id,
         pet                   : _order_services.pet,
         location              : payload.location,

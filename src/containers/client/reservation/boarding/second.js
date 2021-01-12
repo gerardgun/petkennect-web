@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector, FieldArray } from 'redux-form'
-import { Button, Form, Header, Segment, Checkbox, Select, Input, Icon, Dropdown } from 'semantic-ui-react'
+import { Button, Form, Header, Segment, Checkbox, Select, Input, Icon, Dropdown, Grid } from 'semantic-ui-react'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
@@ -11,26 +11,44 @@ import FormError from '@components/Common/FormError'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import clientPetDuck from '@reducers/client/pet'
 import petKennelDuck from '@reducers/pet/pet-kennel'
-import PetItem from './PetItem'
+import serviceDuck from '@reducers/service'
+import serviceAttributeDuck from '@reducers/service/service-attribute'
+import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
+import PetItem from './PetItem'
+import AlertModal from './../alert-modal'
 import { boardingFormId } from './first'
 
-function AddOnsItem({ item }) {
+function AddOnsItem({ item, petDetail, index }) {
   return (
     <div className='div-kannel-selection'>
-      <Header as='h3' className='section-info-header'>What Frequency will be for {item[0].name}</Header>
-      <Field
-        component={FormField}
-        control={Select}
-        key={item[0].id}
-        label='Frequency'
-        name={`${item[0].id}.Frequency`}
-        options={[
-          { key: 1, value: 1, text: 'Test1' },
-          { key: 2, value: 2, text: 'Test2' }
-        ]}
-        placeholder='Select frequency'
-        selectOnBlur={false}/>
+      <Header as='h3' className='section-info-header'>What Frequency will be for {petDetail.name}</Header>
+      <Grid>
+        <Grid.Column computer={11} mobile={16} tablet={8}>
+          <Field
+            component={FormField}
+            control={Select}
+            key={item.id}
+            label='Frequency'
+            name={`${item.id}.Frequency`}
+            options={[
+              { key: 1, value: 1, text: 'Test1' },
+              { key: 2, value: 2, text: 'Test2' }
+            ]}
+            placeholder='Select frequency'
+            selectOnBlur={false}/>
+        </Grid.Column>
+        <Grid.Column computer={5} mobile={16} tablet={8}>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Price'
+            name={`${item}.subVariation[${index}].price`}
+            required
+            type='number'/>
+        </Grid.Column>
+      </Grid>
+
     </div>
   )
 }
@@ -39,23 +57,60 @@ const BoardingFormWizardSecond = props => {
   const {
     clientPet,
     petKennel,
+    services,
+    totalPrice = 0,
+    hasPriceChange,
+    serviceAttribute,
     error, handleSubmit, reset // redux-form
   } = props
 
-  const addOns = [
-    { key: 1, value: 'Test1', text: 'Test1' },
-    { key: 2, value: 'Test2', text: 'Test2' }
-  ]
-
   function AddOnsList({ fields, meta: { error, submitFailed } }) {
-    const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
+    const groomingServiceId = services.items && services.items.find(_ => _.type === 'B')
+    const subServices = services.items && services.items.filter(_ => _.parent_service === (groomingServiceId && groomingServiceId.id))
 
     const _handleAddOnChange = (value)=>{
+      let subServiceVariations = []
       fields.removeAll()
-      // eslint-disable-next-line no-unused-vars
-      value.map((item, index) => (
-        fields.push(item)
-      ))
+
+      for (let item of value) {
+        let petSubServiceVariation = []
+        const subService = subServices.find(_ => _.id === item)
+
+        const location = props.selectedLocation
+        const pets = props.selectedPets
+
+        for (let pet of pets) {
+          const petSize = clientPet.items.find(_ => _.id === pet).size
+          const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S').values.find(_petSize => _petSize.value == petSize).id
+          const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L').values.find(_location => _location.value == location).id
+
+          const variation = subService.variations
+
+          let variationId
+          for (let item of variation) {
+            let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+            let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+
+            if(locationExist != null && petSizeExist != null)
+            {
+              variationId = locationExist.service_variation_id
+              break
+            }
+          }
+
+          if(variationId != null) {
+            const subVariation = variation.find(_ => _.id === variationId)
+
+            petSubServiceVariation.push({ price: subVariation.price, id: subVariation.id, petId: pet })
+          }
+          else {
+            props.setItem(null, 'READ')
+          }
+        }
+
+        fields.push({ name: subService.name, subVariation: petSubServiceVariation })
+        subServiceVariations.push({ name: subService.name, subVariation: petSubServiceVariation })
+      }
     }
 
     return (
@@ -71,7 +126,8 @@ const BoardingFormWizardSecond = props => {
             multiple
             name='addon'
             onChange={_handleAddOnChange}
-            options={addOns}
+            options={subServices.map(_subService =>
+              ({ key: _subService.id, value: _subService.id, text: `${_subService.name}` }))}
             placeholder='Search addon'
             required
             search
@@ -91,25 +147,28 @@ const BoardingFormWizardSecond = props => {
 
               <Segment className='mt16' style={{ padding: '2rem',margin: 0 }}>
                 <Form.Group widths='equal'>
-                  <Header as='h3' className='section-info-header'>{fields.get(index)}</Header>
-                  <button
-                    className='ui red basic icon button delete-addons'  data-index={index} onClick={_handleRemoveBtnClick}
-                    type='button'>
-                    <i aria-hidden='true' className='trash alternate outline icon' ></i>
-                  </button>
+                  <Header as='h3' className='section-info-header'>{fields.get(index).name}</Header>
                 </Form.Group>
-                {props.selectedPets && props.selectedPets.map((petId)=> (
-                  <AddOnsItem
-                    item={clientPet.items.filter(_pet => _pet.id === petId)}
-                    key={index}/>
+                {props.selectedPets && props.selectedPets.map((petId,index)=> (
+                  <>
+                    <AddOnsItem
+                      index={index}
+                      item={item}
+                      key={index}
+                      petDetail={clientPet.items.find(_pet => _pet.id === petId)}/>
+                  </>
                 ))}
               </Segment>
 
-              <div className='div-addon-summary'>
-                <b>$25</b>
-              </div>
             </div>
           ))
+        }
+        {
+          hasPriceChange && hasPriceChange.length > 0 && (
+            <div className='div-addon-summary'>
+              <b className='charge-amount'>${totalPrice}</b>
+            </div>
+          )
         }
 
         {
@@ -314,6 +373,7 @@ const BoardingFormWizardSecond = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+      <AlertModal/>
     </>
   )
 }
@@ -323,6 +383,9 @@ export default compose(
   connect(
     ({ ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const selectedLocation = formValueSelector(boardingFormId)(state, 'location')
+      const services = serviceDuck.selectors.list(state)
+      const serviceAttribute = serviceAttributeDuck.selectors.list(state)
       const belongings = formValueSelector(boardingFormId)(state, 'chk_belongings')
       const medication = formValueSelector(boardingFormId)(state, 'chk_medication')
       const feeding = formValueSelector(boardingFormId)(state, 'chk_feeding')
@@ -335,14 +398,24 @@ export default compose(
         let checkInDate = new Date(checkIn)
         checkOut  = new Date(checkInDate.setDate((checkInDate.getDate() + ((7 * unitOfOccurrences) - 1))))
       }
+      const hasPriceChange = formValueSelector(boardingFormId)(state, 'boarding_reservation_list')
+      const totalPrice = hasPriceChange && hasPriceChange.map(_ => _.subVariation).map((item)=>
+        item.map(_ => _.price).reduce((price1, price2) => Number(price1) + Number(price2), 0)).reduce((price1, price2) =>
+        Number(price1) + Number(price2), 0)
 
       return {
+        hasPriceChange,
+        petReservationDetail    : petReservationDetail,
         initialValues           : { ...petReservationDetail.item },
         petKennel               : petKennelDuck.selectors.list(state),
         clientPet               : clientPetDuck.selectors.list(state),
         checkIn   ,
         checkOut,
+        services,
+        serviceAttribute,
+        totalPrice,
         selectedPets            : selectedPets,
+        selectedLocation        : selectedLocation,
         hasBelongingsChecked    : Boolean(belongings),
         hasMedicationChecked    : Boolean(medication),
         hasFeedingChecked       : Boolean(feeding),
@@ -350,7 +423,8 @@ export default compose(
       }
     },
     {
-      getPetKennels: petKennelDuck.creators.get
+      getPetKennels: petKennelDuck.creators.get,
+      setItem      : trainingMethodDetailDuck.creators.setItem
     }
   ),
   reduxForm({

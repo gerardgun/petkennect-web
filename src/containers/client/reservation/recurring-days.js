@@ -158,7 +158,7 @@ const RecurringDaysForm = ({ serviceType, ...props }) => {
       {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form onReset={reset} onSubmit={handleSubmit}>
 
-        <Segment className='recurring_date_div section-info-item-step1'>
+        <Segment className='recurring_date_div section-info-item-step1' style={{ marginTop: '1rem !important' }}>
           <Header as='h3'>
         Select Dates
           </Header>
@@ -275,13 +275,13 @@ const RecurringDaysForm = ({ serviceType, ...props }) => {
             </Grid.Column>
           </Grid>
 
-          <Accordion styled>
+          <Accordion className='mt16' styled>
             <Accordion.Title
               active={activeIndex === 0}
               index={0}
               onClick={_handleSelectRecurringDaysClick}>
               <Header as='h3' className='mb0'>
-              Manually Add Additional Dates
+              Manually Add/Edit Dates
                 <Icon name='dropdown'/>
               </Header>
             </Accordion.Title>
