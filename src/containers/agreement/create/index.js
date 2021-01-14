@@ -9,7 +9,7 @@ import ModalDelete from '@components/Modal/Delete'
 import FormInformation from './FormInformation'
 
 import useModal from '@components/Modal/useModal'
-import { parseResponseError } from '@lib/utils/functions'
+import { parseFormValues, parseResponseError } from '@lib/utils/functions'
 
 import agreementDetailDuck from '@reducers/agreement/detail'
 import Layout from '@components/Common/Layout'
@@ -19,7 +19,6 @@ export const formIds = [ 'agreement-create-information' ]
 const AgreementCreate = props => {
   const {
     agreementDetail,
-    forms,
     history,
     resetItem,
     match,
@@ -29,7 +28,7 @@ const AgreementCreate = props => {
     destroy
   } = props
 
-  const [ activeTabIndex, setTabActiveIndex ] = useState(0)
+  const [ activeTabIndex ] = useState(0)
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(()=> {
@@ -54,49 +53,18 @@ const AgreementCreate = props => {
     else _handleSubmit()
   }
 
-  const _handleSubmit = () => {
-    const formIndexWithErrors = isUpdating ? (
-      forms.findIndex(form => {
-        return Object.keys(form.errors).length > 0
-      })
-    ) : (
-      forms.findIndex((form, index) => {
-        return (form.fields.length === 0 || Object.keys(form.errors).length > 0) && [ 0, 1 ].includes(index)
-      })
-    )
+  const _handleSubmit = values => {
+    values = parseFormValues(values)
 
-    if(formIndexWithErrors !== -1) {
-      setTabActiveIndex(formIndexWithErrors)
-      setTimeout(() => submit(formIds[formIndexWithErrors]), 100)
-    } else {
-      const values = forms
-        .map(({ fields, ...rest }) => {
-          let parsedFields = fields.reduce((a, b) => {
-            const fieldname = /^(\w+).*/.exec(b)[1]
+    values.is_active = Boolean(values.is_active)
 
-            return a.includes(fieldname) ? a : [ ...a, fieldname ]
-          }, [])
-
-          return { fields: parsedFields, ...rest }
-        })
-        .filter(item => item.fields.length > 0 && Boolean(item.values))
-        .map(({ fields, values }) => {
-          return fields.reduce((a, b) => ({ ...a, [b]: values[b] }), {})
-        })
-        .reduce((a, b) => ({ ...a, ...b }))
-
-      let finalValues = Object.entries(values)
-        .filter(([ , value ]) => value !== null)
-        .reduce((a, [ key, value ]) => ({ ...a, [key]: value }), {})
-
-      if(isUpdating)
-        return put({ id: agreementDetail.item.id, ...finalValues })
-          .catch(parseResponseError)
-      else
-        return post(finalValues)
-          .then(result => history.replace(`/setup/agreement/${result.id}`))
-          .catch(parseResponseError)
-    }
+    if(isUpdating)
+      return put({ id: agreementDetail.item.id, ...values })
+        .catch(parseResponseError)
+    else
+      return post(values)
+        .then(result => history.replace(`/setup/agreement/${result.id}`))
+        .catch(parseResponseError)
   }
 
   const isUpdating = Boolean(match.params.id)
