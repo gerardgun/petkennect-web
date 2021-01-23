@@ -178,7 +178,7 @@
        }
 
 .list-total-addons > .item {
-  padding: 0.8rem !important;
+  padding: 0.8rem 0rem !important;
 }
 
 .ui.ordered.steps .step.active:before, .ui.steps .active.step .icon{
@@ -389,3 +389,8 @@ display: none;
 .subService-margin {
   margin-top: 30px !important;
 }
+
+.form-modal-action-button{
+    text-align: center !important;
+}
+

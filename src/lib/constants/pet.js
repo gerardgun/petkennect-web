@@ -49,3 +49,8 @@ export const TemperamentPeoplePreferenceOptions
       value,
       text
     }))
+
+export const PeekDaysAndFullDays = {
+  peekday: [],
+  fullDay: []
+}

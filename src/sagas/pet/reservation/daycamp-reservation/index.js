@@ -1,43 +1,37 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { Get } from '@lib/utils/http-client'
 import faker from 'faker'
-import _times from 'lodash/times'
 
+import moment from 'moment'
+
+import petDetailDuck from '@reducers/pet/detail'
 import petDaycampReservationDuck from '@reducers/pet/reservation/daycamp-reservation'
 
 const { types, selectors } = petDaycampReservationDuck
 
-function* get() {
+function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
+    const filters = yield select(selectors.filters)
     const list = yield select(selectors.list)
 
-    const meta = {
-      current_page: 1,
-      from        : 1,
-      last_page   : 1,
-      links       : { next: null, previous: null },
-      page_size   : 15,
-      to          : 14,
-      total_items : 14 }
-
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-
+    const { results, ...meta  } = yield call(Get, `/pets/${petDetail.item.id}/reservations/`,filters)
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(10, index => ({
-          id        : index,
-          date      : faker.date.future(),
-          location  : '01-RH',
-          type      : 'Full Day',
-          timeOut   : '05:00 PM',
-          timeIn    : '10:00 AM',
-          run       : 'A15',
-          lunch     : 'Yes',
-          yard      : 'Large Dog',
-          isCheckOut: index % 2 == 0 ? false : true,
-          isCheckIn : index % 2 == 0 ? true : false
+        items: results.filter(_ => _.service_type == 'D').map(({ employee_first_name = '-', employee_last_name = '', reserved_at = '', ...rest })=> ({
+          employee_fullname: `${employee_first_name} ${employee_last_name}`,
+          ischeckOut       : faker.random.arrayElement([ 'true','false' ]),
+          reserved_at      : `${reserved_at}`,
+          checkout_at      : moment.utc(`${rest.daycamp && rest.daycamp.checkout_at}`).format('hh:mm:ss a'),
+          checkout         : `${rest.daycamp && rest.daycamp.checkout_at}`,
+          yard_type        : `${rest.daycamp && rest.daycamp.yard_type}`,
+          type             : `${rest.daycamp && rest.daycamp.type}`,
+          reserved_at_time : moment.utc(`${reserved_at}`).format('hh:mm:ss a'),
+          ...rest
         })),
         pagination: {
           ...list.pagination,

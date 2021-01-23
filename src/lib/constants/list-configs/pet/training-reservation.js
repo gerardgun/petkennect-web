@@ -4,6 +4,11 @@ export default {
     options        : [ ],
     dropdownOptions: [
       {
+        icon        : 'edit',
+        display_name: 'Edit Reserve',
+        name        : 'edit_reserve'
+      },
+      {
         icon        : 'file pdf',
         display_name: 'Report Cards',
         name        : 'report_cards'
@@ -18,8 +23,8 @@ export default {
   columns: [
     {
       display_name: 'Date',
-      name        : 'date',
-      type        : 'datetime', // image, boolean, date, datetime, money, label
+      name        : 'reserved_at',
+      type        : 'date', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
       sort        : false,
@@ -30,7 +35,7 @@ export default {
     },
     {
       display_name: 'Package',
-      name        : 'package_name',
+      name        : 'package',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -82,7 +87,7 @@ export default {
     },
     {
       display_name: 'Location',
-      name        : 'location',
+      name        : 'location_name',
       type        : 'string',
       width       : null,
       align       : 'left',

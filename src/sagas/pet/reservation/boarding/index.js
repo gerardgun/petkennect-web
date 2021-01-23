@@ -1,42 +1,36 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
-import faker from 'faker'
-import _times from 'lodash/times'
+import { Get } from '@lib/utils/http-client'
 
-import ReservationBoardingDuck from '@reducers/pet/reservation/boarding'
+import petDetailDuck from '@reducers/pet/detail'
 
-const { types, selectors } = ReservationBoardingDuck
+import petReservationBoardingDuck from '@reducers/pet/reservation/boarding'
+import moment from 'moment'
 
-function* get() {
+const { types, selectors } = petReservationBoardingDuck
+
+function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+
     const list = yield select(selectors.list)
 
-    const meta = {
-      current_page: 1,
-      from        : 1,
-      last_page   : 1,
-      links       : { next: null, previous: null },
-      page_size   : 15,
-      to          : 14,
-      total_items : 14 }
+    const { results, ...meta  } = yield call(Get, `/pets/${petDetail.item.id}/reservations/`)
 
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-
+    const  filterdResults = results.filter(_item => _item.service_type === 'B')
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(10, index => ({
-          id              : index,
-          kennel          : 'shared',
-          reserved_at     : faker.date.future(),
-          check_in_date   : faker.date.future(),
-          check_out_date  : faker.date.future(),
-          location_code   : '01-RH',
-          night           : 2,
-          type            : '',
-          est_cost_of_stay: '240',
-          email_on        : faker.date.future()
+        items: filterdResults.map(({ employee_first_name = '-', employee_last_name = '',...rest })=> ({
+          employee_fullname: `${employee_first_name} ${employee_last_name}`,
+          is_pending       : moment.utc(rest.reserved_at, 'YYYY-MM-DD HH-mm:ss Z')
+            .isSameOrAfter(moment(),'day'),
+          reserved     : moment.utc(rest.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD'),
+          checkout_at  : moment.utc(rest.boarding.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD'),
+          check_in_date: moment.utc(rest.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD'),
+
+          ...rest
         })),
         pagination: {
           ...list.pagination,

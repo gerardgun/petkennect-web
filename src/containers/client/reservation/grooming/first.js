@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Dropdown, Form, Header, Grid, Select, Segment, Icon } from 'semantic-ui-react'
+import { Button, Dropdown, Form, Header, Grid, Select, Segment, Icon, Input } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -27,6 +27,8 @@ export const groomingFormId = 'grooming-reservation-form'
 
 const GroomingFormWizardFirst = props => {
   const {
+
+    addonArray,
     services,
     petReservationDetail,
     selectedLocation,
@@ -72,7 +74,7 @@ const GroomingFormWizardFirst = props => {
       else
         props.setItemVariation(null, 'READ')
 
-      props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
+      props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations,calculatedAddons: addonArray }, 'CREATE')
     }
   }, [ selectedLocation, selectedPet ])
 
@@ -119,6 +121,7 @@ const GroomingFormWizardFirst = props => {
               closeOnChange
               component={FormField}
               control={Dropdown}
+              disabled={petReservationDetail.item.pet != undefined}
               fluid
               label='Pet'
               name='pet'
@@ -153,7 +156,29 @@ const GroomingFormWizardFirst = props => {
           </div>
         </Segment>
 
-        <RecurringDaysForm serviceType='G'/>
+        { petReservationDetail.item.id
+          ? <Segment className='section-info-item-step1'>
+            <Header as='h3' className='section-info-header'>When will this event be?</Header>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Input}
+                label='reserved date'
+                name='check_in'
+                required
+                type='date'/>
+              <Field
+                component={FormField}
+                control={Input}
+                label='Check in time'
+                name='check_in_time'
+                required
+                type='time'/>
+            </Form.Group>
+
+          </Segment> : <RecurringDaysForm serviceType='G'/>
+
+        }
         <Segment>
           <Grid>
             <Grid.Row>
@@ -242,19 +267,45 @@ export default compose(
       const selectedLocation = formValueSelector(groomingFormId)(state, 'location')
       const selectedPet = formValueSelector(groomingFormId)(state, 'pet')
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
+      const intialLocation =  petReservationDetail.item.location ?  petReservationDetail.item.location : auth.location
       const service = serviceDuck.selectors.list(state)
+      const checkInTime = petReservationDetail.item.reserved_at && petReservationDetail.item.reserved_at
+      const initialCheckInTime =  moment.utc(`${checkInTime}`).format('HH:mm')
       const grommingServices = service.items && service.items.filter(_ => _.type === 'G')
+      let serviceArray = []
+      let  addonArray = []
+      const sub_services =  petReservationDetail.item.addons && service.items.filter(
+        item => item.parent_service === petReservationDetail.item.service)
+
+      petReservationDetail.item.id &&  petReservationDetail.item.addons.forEach(addons=>{
+        for (let item of sub_services) {
+          let serviceVariation = item.variations.find(variation=>variation.id === addons.service_variation)
+
+          if(serviceVariation !== undefined) {
+            serviceArray.push(item.id)
+            addonArray.push({ ...addons, name: item.name, addOn_id: item.id })
+          }
+        }
+      })
+
       const defaultInitialValues = petReservationDetail.item.id ? {
-        check_in     : moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD'),
-        groomer      : petReservationDetail.item.employee, check_in_time: moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('HH:mm:ss')
+        check_in      : moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD'),
+        groomer       : petReservationDetail.item.employee,
+        check_in_time : initialCheckInTime,
+        grooming_offer: serviceArray
       } : {}
 
       return {
+        addonArray,
+        serviceArray,
+        service,
+        sub_services,
+        intialLocation,
         serviceAttribute    : serviceAttribute,
         petReservationDetail: petReservationDetail,
         services            : grommingServices,
         clientPet           : clientPetDuck.selectors.list(state),
-        initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,  location: auth.location },
+        initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,  location: intialLocation },
         location            : locationDuck.selectors.list(state),
         employee            : employeeDuck.selectors.list(state),
         selectedLocation    : selectedLocation,

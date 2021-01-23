@@ -6,7 +6,7 @@ export default {
         display_name      : 'Check In',
         name              : 'check_in',
         icon              : 'arrow right',
-        conditional_render: item => item.isCheckIn
+        conditional_render: item => !item.isCheckOut
       },
       {
         display_name      : 'Check Out',
@@ -16,6 +16,11 @@ export default {
       }
     ],
     dropdownOptions: [
+      {
+        icon        : 'edit',
+        display_name: 'Edit Reserve',
+        name        : 'edit_reserve'
+      },
       {
         icon        : 'sticky note',
         display_name: 'View Notes',
@@ -54,7 +59,7 @@ export default {
   columns: [
     {
       display_name: 'Date',
-      name        : 'date',
+      name        : 'reserved_at',
       type        : 'date', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
@@ -66,7 +71,7 @@ export default {
     },
     {
       display_name: 'Location',
-      name        : 'location',
+      name        : 'location_code',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -74,7 +79,7 @@ export default {
     },
     {
       display_name: 'Type',
-      name        : 'type',
+      name        : 'daycamp.type',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -96,7 +101,7 @@ export default {
     },
     {
       display_name: 'In',
-      name        : 'timeIn',
+      name        : 'reserved_at_time',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -104,7 +109,7 @@ export default {
     },
     {
       display_name: 'Out',
-      name        : 'timeOut',
+      name        : 'checkout_at',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -120,20 +125,11 @@ export default {
     },
     {
       display_name: 'Yard',
-      name        : 'yard',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Run',
-      name        : 'run',
+      name        : 'daycamp.yard_type',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
     }
-
   ]
 }

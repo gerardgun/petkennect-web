@@ -43,6 +43,9 @@ textarea {
     .logo-img{
       height: 9rem !important;
     }
+    .ui.container.appbar-items{
+      width:auto !important;
+    }
   }
   
   
@@ -324,4 +327,12 @@ textarea {
 
 .save-button-align {
   vertical-align: bottom !important;
+}
+
+.color_peak{
+  background-color:#95dc8a !important;
+}
+
+.service_full{
+   background: repeating-linear-gradient( 45deg, #a9cece, teal 10px, teal 10px, rgba(0, 0, 0, 0.3) 14px ) !important;
 }

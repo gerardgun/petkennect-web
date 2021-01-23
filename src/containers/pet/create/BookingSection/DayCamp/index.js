@@ -1,21 +1,25 @@
-
 import React,{ useEffect } from 'react'
 import { connect } from 'react-redux'
-
+import { useHistory } from 'react-router-dom'
 import { Header, Segment, Dropdown, Button, Grid, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
 
+import petDetailDuck from '@reducers/pet/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import dayCampReservationDuck from '@reducers/pet/reservation/daycamp-reservation'
 import dayCampReservationDetailDuck from '@reducers/pet/reservation/daycamp-reservation/detail'
 
 import PackageCreateForm from './package-create'
 
-function DaycampServiceSection({  ...props }) {
+function DaycampServiceSection({ petDetail,  ...props }) {
   useEffect(() => {
     props.getDayCampReservation()
   }, [])
+  const history = useHistory()
+
+  const clientId = `${petDetail.item.client}`
 
   const _handleAddPackageBtnClick = () =>{
     props.setItem(null, 'CREATE')
@@ -27,9 +31,12 @@ function DaycampServiceSection({  ...props }) {
   const _handleRowOptionClick = () => {
     // wip
   }
-  const _handleOptionDropdownChange = (e, { value: optionName }) => {
-    if(optionName === 'edit')
-      props.setItem(null, 'UPDATE')
+  const _handleOptionDropdownChange = (optionName, item) => {
+    switch (optionName) {
+      case 'edit_reserve' : props.setItemReservation(item,'UPDATE')
+        history.replace(`/client/${clientId}/book`)
+        break
+    }
   }
 
   return (
@@ -156,10 +163,12 @@ function DaycampServiceSection({  ...props }) {
 export default compose(
   connect(
     (state) => ({
+      petDetail         : petDetailDuck.selectors.detail(state),
       daycampReservation: dayCampReservationDuck.selectors.list(state)
     }),{
       getDayCampReservation: dayCampReservationDuck.creators.get,
-      setItem              : dayCampReservationDetailDuck.creators.setItem
+      setItem              : dayCampReservationDetailDuck.creators.setItem,
+      setItemReservation   : petReservationDetailDuck.creators.setItem
     })
 )(DaycampServiceSection)
 

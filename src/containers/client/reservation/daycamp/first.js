@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector,reduxForm } from 'redux-form'
-import { Button, Dropdown, Grid, Form, Header, Select, Segment, Icon } from 'semantic-ui-react'
+import { Button, Dropdown, Grid, Form, Header, Select, Segment, Icon, Input } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -27,6 +27,7 @@ export const daycampFormId = 'daycamp-reservation-form'
 const DaycampFormWizardFirst = props => {
   const {
     petReservationDetail,
+    addonArray,
     clientPet,
     location,
     serviceAttribute,
@@ -67,7 +68,7 @@ const DaycampFormWizardFirst = props => {
           else
             props.setItemVariation(null, 'READ')
         }
-        props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
+        props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations, calculatedAddons: addonArray }, 'CREATE')
       }
     }
   }, [ selectedLocation, selectedPets ])
@@ -110,10 +111,12 @@ const DaycampFormWizardFirst = props => {
               placeholder='Location'
               required
               selectOnBlur={false}/>
+
             <Field
               closeOnChange
               component={FormField}
               control={Dropdown}
+              disabled={petReservationDetail && petReservationDetail.item.pet != undefined}
               fluid
               label='Pet'
               multiple
@@ -130,7 +133,38 @@ const DaycampFormWizardFirst = props => {
           </Form.Group>
         </Segment>
 
-        <RecurringDaysForm serviceType='D'/>
+        {
+          petReservationDetail.item.id === undefined ? <RecurringDaysForm serviceType='D'/>
+            : <>
+              <Segment className='section-info-item-step1'>
+                <Header as='h3' className='section-info-header'>When will this event be?</Header>
+                <Form.Group widths='equal'>
+                  <Field
+                    component={FormField}
+                    control={Input}
+                    label='reserved date'
+                    name='check_in'
+                    required
+                    type='date'/>
+                  <Field
+                    component={FormField}
+                    control={Input}
+                    label='Check in time'
+                    name='check_in_time'
+                    required
+                    type='time'/>
+                  <Field
+                    component={FormField}
+                    control={Input}
+                    label='Check out time'
+                    name='check_out_time'
+                    required
+                    type='time'/>
+                </Form.Group>
+
+              </Segment>
+            </>
+        }
 
         {
           error && (
@@ -174,22 +208,46 @@ export default compose(
   connect(
     ({ auth, ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
+      const checkInTime = petReservationDetail.item.reserved_at && petReservationDetail.item.reserved_at
+      const initialCheckInTime =  moment.utc(`${checkInTime}`).format('HH:mm')
+      const checkOutTime = petReservationDetail.item.checkout && petReservationDetail.item.checkout
+      const initialCheckOutTime = moment.utc(checkOutTime).format('HH:mm')
       const selectedLocation = formValueSelector(daycampFormId)(state, 'location')
       const selectedPets = formValueSelector(daycampFormId)(state, 'pet')
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
+      const initialLocation =  petReservationDetail.item.location ?  petReservationDetail.item.location : auth.location
       const service = serviceDuck.selectors.list(state)
       const daycampServices = service.items && service.items.filter(_ => _.type === 'D')
+      let serviceArray = []
+      let  addonArray = []
+      const sub_services =  petReservationDetail.item.addons && service.items.filter(
+        item => item.parent_service === petReservationDetail.item.service)
+      petReservationDetail.item.id &&  petReservationDetail.item.addons.forEach(addons=>{
+        for (let item of sub_services) {
+          let serviceVariation = item.variations.find(variation=>variation.id === addons.service_variation)
 
+          if(serviceVariation !== undefined) {
+            serviceArray.push(item.id)
+
+            addonArray.push({ ...addons, name: item.name, petId: selectedPets, addOn_id: item.id })
+          }
+        }
+      })
       const defaultInitialValues = petReservationDetail.item.id ? {
-        check_in : petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
-        check_out: petReservationDetail.item.daycamp ? moment(petReservationDetail.item.daycamp.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '', pet      : [ petReservationDetail.item.pet ]
+        check_in      : petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
+        check_out     : petReservationDetail.item.daycamp ? moment(petReservationDetail.item.daycamp.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '', pet           : [ petReservationDetail.item.pet ],
+        addon         : serviceArray, check_in_time : initialCheckInTime, check_out_time: initialCheckOutTime
       } : {}
 
       return {
+        service,
+        sub_services,
+        addonArray,
+        serviceArray,
         auth,
         clientPet       : clientPetDuck.selectors.list(state),
         services        : daycampServices,
-        initialValues   : { ...petReservationDetail.item, ...defaultInitialValues, location: auth.location },
+        initialValues   : { ...petReservationDetail.item, ...defaultInitialValues, location: initialLocation },
         location        : locationDuck.selectors.list(state),
         petReservationDetail,
         serviceAttribute,
@@ -208,16 +266,13 @@ export default compose(
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        location      : Yup.mixed().required('Location is required'),
-        pet           : Yup.mixed().required('Pet is required'),
+        location: Yup.mixed().required('Location is required'),
+        pet     : Yup.mixed().required('Pet is required'),
+        check_in: Yup
+          .date()
+          .required('Start date is required'),
         check_in_time : Yup.mixed().required('Check In time is required'),
         check_out_time: Yup.mixed().required('Check Out time is required')
-        // check_out: Yup
-        //   .date().required('Check Out date is required')
-        //   .when(
-        //     'check_in',
-        //     (check_in, schema) => (check_in && schema.min(check_in))
-        //   )
       }
 
       return syncValidate(Yup.object().shape(schema), values)

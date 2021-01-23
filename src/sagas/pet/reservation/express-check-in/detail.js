@@ -10,63 +10,68 @@ const { types } = petReservationCheckInDetailDuck
 
 function* post({ payload: { ...payload } }) {
   try {
-    let startDate = new Date()
     yield put({ type: types.POST_PENDING })
-    let orderServices = []
-    payload.serviceVariations && payload.serviceVariations.map(_pet => {
-      orderServices.push({
-        service_variation     : _pet.id,
-        employee              : payload.currentTenant.id,
-        price                 : parseInt(_pet.price),
-        reserved_at           : moment.utc(startDate , 'YYYY-MM-DD HH-mm:ss Z'),
-        location              : payload.location,
-        pet                   : _pet.petId,
-        belongings            : payload.belongings,
-        medication_name       : payload.medication_name,
-        medication_purpose    : payload.medication_purpose,
-        medication_instruction: payload.medication_instruction,
-        feeding               : payload.feeding,
-        comment               : payload.comment
+
+    let startDate = new Date()
+    const uniqueClient = [ ...new Set(payload.serviceVariations.map(item => item.clientId)) ]
+
+    for (let client of uniqueClient) {
+      let orderServices = []
+      payload.serviceVariations && payload.serviceVariations.filter(_pet =>client === _pet.clientId).map(_pet => {
+        orderServices.push({
+          service_variation     : _pet.id,
+          employee              : payload.currentTenant.id,
+          price                 : parseInt(_pet.price),
+          reserved_at           : moment.utc(startDate , 'YYYY-MM-DD HH-mm:ss Z'),
+          location              : payload.location,
+          pet                   : _pet.petId,
+          belongings            : payload.belongings,
+          medication_name       : payload.medication_name,
+          medication_purpose    : payload.medication_purpose,
+          medication_instruction: payload.medication_instruction,
+          feeding               : payload.feeding,
+          comment               : payload.comment
+        })
       })
-    })
 
-    const order = yield call(Post, 'orders/', {
-      client  : payload.clientId,
-      employee: payload.currentTenant.id,
-      location: payload.currentTenant.employee.location,
-      services: orderServices
+      const order = yield call(Post, 'orders/', {
+        client  : client,
+        employee: payload.currentTenant.id,
+        location: payload.currentTenant.employee.location,
+        services: orderServices
 
-    })
+      })
 
-    for (let _order_services of order.order_services)
-    {
-      const reservationDetail = {
-        reserved_at           : moment.utc(startDate, 'YYYY-MM-DD HH-mm:ss Z'),
-        price                 : parseInt(_order_services.price),
-        employee              : payload.currentTenant.id,
-        pet                   : _order_services.pet,
-        location              : payload.location,
-        parent_order_service  : _order_services.id,
-        belongings            : payload.belongings,
-        medication_name       : payload.medication_name,
-        medication_purpose    : payload.medication_purpose,
-        medication_instruction: payload.medication_instruction,
-        feeding               : payload.feeding
+      for (let _order_services of order.order_services)
+      {
+        const reservationDetail = {
+          reserved_at           : moment.utc(startDate, 'YYYY-MM-DD HH-mm:ss Z'),
+          price                 : parseInt(_order_services.price),
+          employee              : payload.currentTenant.id,
+          pet                   : _order_services.pet,
+          location              : payload.location,
+          parent_order_service  : _order_services.id,
+          belongings            : payload.belongings,
+          medication_name       : payload.medication_name,
+          medication_purpose    : payload.medication_purpose,
+          medication_instruction: payload.medication_instruction,
+          feeding               : payload.feeding
+        }
+
+        if(payload.service_type === 'T')
+          yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  training: {
+            method       : payload.method,
+            comment      : payload.comment,
+            contracted_at: moment.utc(startDate , 'YYYY-MM-DD HH-mm:ss Z')
+          } })
+
+        else if(payload.service_type === 'F' || payload.service_type === 'D')
+          yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  daycamp: {
+            card       : '6',
+            yard_type  : payload.yard,
+            checkout_at: moment.utc(startDate, 'YYYY-MM-DD HH-mm:ss Z')
+          } })
       }
-
-      if(payload.service_type === 'T')
-        yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  training: {
-          method       : payload.method,
-          comment      : payload.comment,
-          contracted_at: moment.utc(startDate , 'YYYY-MM-DD HH-mm:ss Z')
-        } })
-
-      else if(payload.service_type === 'F' || payload.service_type === 'D')
-        yield call(Patch, `reservations/${_order_services.id}/`, { ...reservationDetail,  daycamp: {
-          card       : '6',
-          yard_type  : payload.yard,
-          checkout_at: moment.utc(startDate, 'YYYY-MM-DD HH-mm:ss Z')
-        } })
     }
     yield put({ type: types.POST_FULFILLED })
   }

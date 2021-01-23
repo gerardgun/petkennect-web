@@ -27,6 +27,7 @@ export const boardingFormId = 'boarding-reservation-form'
 
 const BoardingFormWizardFirst = props => {
   const {
+    addonArray,
     clientPet,
     petReservationDetail,
     location,
@@ -73,7 +74,7 @@ const BoardingFormWizardFirst = props => {
           else
             props.setItemVariation(null, 'READ')
         }
-        props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
+        props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations, calculatedAddons: addonArray }, 'CREATE')
       }
     }
   }, [ selectedPets, selectedLocation ])
@@ -120,6 +121,7 @@ const BoardingFormWizardFirst = props => {
               closeOnChange
               component={FormField}
               control={Dropdown}
+              disabled={petReservationDetail.item.pet != undefined}
               fluid
               label='Pet'
               multiple
@@ -158,14 +160,14 @@ const BoardingFormWizardFirst = props => {
               component={FormField}
               control={Input}
               label='Departing Time'
-              name='check_in_time'
+              name='check_out_time'
               required
               type='time'/>
             <Field
               component={FormField}
               control={Input}
               label='Arriving Time'
-              name='check_out_time'
+              name='check_in_time'
               required
               type='time'/>
           </Form.Group>
@@ -257,24 +259,55 @@ export default compose(
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
       const service = serviceDuck.selectors.list(state)
+      const selectedPetID  = petReservationDetail.item.pet && petReservationDetail.item.pet
+      const initialLocation =  petReservationDetail.item.location ?  petReservationDetail.item.location : auth.location
+
       const boardingServices = service.items && service.items.filter(_ => _.type === 'B')
+      let serviceArray = []
+      let addonArray = []
+      const sub_services =  petReservationDetail.item.addons && service.items.filter(
+        item => item.parent_service === petReservationDetail.item.service)
+      petReservationDetail.item.id &&  petReservationDetail.item.addons.forEach(addons=>{
+        for (let item of sub_services) {
+          let serviceVariation = item.variations.find(variation=>variation.id === addons.service_variation)
+
+          if(serviceVariation !== undefined) {
+            serviceArray.push(item.id)
+
+            addonArray.push({ ...addons, name: item.name, petId: selectedPetID, addOn_id: item.id })
+          }
+        }
+      })
+      const checkOutTime = petReservationDetail.item.boarding && petReservationDetail.item.boarding.checkout_at
+      const initialCheckOutTime =  moment(`${checkOutTime}`).format('HH:mm')
+      const checkInTime = petReservationDetail.item.reserved_at && petReservationDetail.item.reserved_at
+      const initialCheckInTime =  moment.utc(`${checkInTime}`).format('HH:mm')
       const defaultInitialValues = petReservationDetail.item.id ? {
-        check_in  : petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
-        check_out : petReservationDetail.item.boarding ? moment(petReservationDetail.item.boarding.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '', pet       : [ petReservationDetail.item.pet ],
-        KennelType: petReservationDetail.item.boarding ? petReservationDetail.item.boarding.kennel_type : '' } : {}
+        check_in      : petReservationDetail.item.reserved_at ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '',
+        check_out     : petReservationDetail.item.boarding ? moment(petReservationDetail.item.boarding.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : '', pet           : [ petReservationDetail.item.pet ],
+        KennelType    : petReservationDetail.item.boarding ? petReservationDetail.item.boarding.kennel_type : '',
+        check_in_time : initialCheckInTime,
+        check_out_time: initialCheckOutTime, addon         : serviceArray
+      } : {}
 
       return {
+        addonArray,
+        initialCheckInTime,
+        initialCheckOutTime,
+        initialLocation,
         auth,
         clientPet           : clientPetDuck.selectors.list(state),
         services            : boardingServices,
         serviceAttribute    : serviceAttribute,
         petReservationDetail: petReservationDetail,
-        initialValues       : { ...petReservationDetail.item, ...defaultInitialValues, location: auth.location },
-        location            : locationDuck.selectors.list(state),
-        petKennelType       : petKennelTypeDuck.selectors.list(state),
-        hasSharedKennelType : KennelType === 'shared' ? true : false,
-        selectedPets        : selectedPets,
-        selectedLocation    : selectedLocation
+        initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,
+          location: initialLocation
+        },
+        location           : locationDuck.selectors.list(state),
+        petKennelType      : petKennelTypeDuck.selectors.list(state),
+        hasSharedKennelType: KennelType === 'shared' ? true : false,
+        selectedPets       : selectedPets,
+        selectedLocation   : selectedLocation
       }
     },
     {

@@ -22,7 +22,7 @@ import clientDocumentDuck from '@reducers/client/document'
 import clientPetDuck from '@reducers/client/pet'
 import clientAgreementDuck from '@reducers/client/agreement'
 import petReservationCheckInDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
-
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import './../styles.scss'
 
 const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocument, clientPet, ...props }) => {
@@ -67,6 +67,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
 
   const _handleBookBtnClick = () => {
     history.replace(`/client/${clientId}/book`)
+    props.resetReserveItem()
   }
 
   const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
@@ -79,7 +80,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
   }
 
   const _handleExpressCheckInBtnClick = () =>{
-    props.setReservationCheckInItem(clientDetail.item, 'CREATE')
+    props.setReservationCheckInItem({ client: clientPet.items[0].client }, 'CREATE')
   }
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
@@ -263,6 +264,7 @@ export default compose(
       setReservationCheckInItem: petReservationCheckInDetailDuck.creators.setItem,
       resetItem                : clientDetailDuck.creators.resetItem,
       resetClientComments      : clientCommentDuck.creators.reset,
-      resetClientPets          : clientPetDuck.creators.reset
+      resetClientPets          : clientPetDuck.creators.reset,
+      resetReserveItem         : petReservationDetailDuck.creators.resetItem
     })
 )(ClientShow)

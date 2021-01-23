@@ -12,7 +12,7 @@ export default base({
     config,
     pagination: {
       params: {
-        page_size: 5
+        page_size: 20
       }
     }
   }

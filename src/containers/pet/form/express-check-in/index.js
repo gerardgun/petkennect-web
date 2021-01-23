@@ -27,6 +27,7 @@ export const formId = 'express-check-in-form'
 const ExpressCheckInForm = props => {
   const {
     clientPet,
+    selectedPets,
     currentTenant,
     petReservationDetail,
     serviceAttribute,
@@ -42,6 +43,7 @@ const ExpressCheckInForm = props => {
 
   const getIsOpened = mode => (mode === 'CREATE')
   const [ variationAlert,setVariationAlert ] = useState(false)
+  const [ serviceVariation, setServiceVariation ] = useState([])
 
   useEffect(() => {
     props.getServices()
@@ -52,44 +54,50 @@ const ExpressCheckInForm = props => {
     props.getYardTypes()
   }, [])
 
-  let serviceVariations = []
-  const  _handlePetDropDownChange = (value) =>{
-    serviceVariations = []
-    let allSelectedPet = value.filter(_ => _ != null)
-    for (let item of allSelectedPet)
-    {
-      const petSize = clientPet.items.find(pet => pet.id === item).size
+  useEffect(()=>{
+    setServiceVariation(serviceVariation,[])
 
-      const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
-        .values.find(_location => _location.value == selectedLocation).id
+    if(selectedPets && selectedLocation) {
+      let  serviceVariations = []
+      let allSelectedPet = selectedPets.filter(_ => _ != null)
 
-      const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
-        .values.find(_petSize => _petSize.value == petSize).id
+      for (let item of allSelectedPet)
+      {
+        const petSize = clientPet.items.find(pet => pet.id === item).size
+        const clientId = clientPet.items.find(pet => pet.id === item).client
+        const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
+          .values.find(_location => _location.value == selectedLocation).id
 
-      const variation = services.variations
+        const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
+          .values.find(_petSize => _petSize.value == petSize).id
 
-      let variationId
+        const variation = services.variations
 
-      for (let item of variation) {
-        let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
-        let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+        let variationId
 
-        if(locationExist != null && petSizeExist != null)
-        {
-          variationId = locationExist.service_variation_id
-          break
+        for (let item of variation) {
+          let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+          let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+
+          if(locationExist != null && petSizeExist != null)
+          {
+            variationId = locationExist.service_variation_id
+            break
+          }
         }
-      }
 
-      if(variationId != null) {
-        serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
-        setVariationAlert(false)
-      }
+        if(variationId != null) {
+          serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item, clientId: clientId })
 
-      else
-      {setVariationAlert(true)}
+          setVariationAlert(false)
+        }
+
+        else
+        {setVariationAlert(true)}
+      }
+      setServiceVariation(serviceVariations)
     }
-  }
+  },[ selectedPets, selectedLocation ])
 
   const locationItems = useMemo(() => {
     return location.items.map(item => ({
@@ -103,13 +111,14 @@ const ExpressCheckInForm = props => {
     reset()
     props.resetItem()
     setVariationAlert(false)
+    setServiceVariation([])
   }
   // eslint-disable-next-line no-unused-vars
   const _handleSubmit = values => {
     values = parseFormValues(values)
 
     return props
-      .post({ ...values, serviceVariations, currentTenant,  clientId: petReservationDetail.item.client })
+      .post({ ...values, serviceVariations: serviceVariation, currentTenant })
       .then(_handleClose)
       .catch(parseResponseError)
   }
@@ -170,7 +179,7 @@ const ExpressCheckInForm = props => {
                   { key: 2, value: 'T', text: 'Training' },
                   { key: 3, value: 'boarding_chk_in', text: 'Boarding Chk-In' },
                   { key: 4, value: 'boarding_chk_out', text: 'Boarding Chk-Out' },
-                  { key: 5, value: 'daycamp_reservation', text: 'DayCamp Reservations' }
+                  { key: 5, value: 'D', text: 'DayCamp Reservations' }
                 ]}
                 placeholder='Select option'
                 required
@@ -182,12 +191,12 @@ const ExpressCheckInForm = props => {
                 closeOnChange
                 component={FormField}
                 control={Dropdown}
-                disabled={Boolean(petReservationDetail.item.pet) || isDisabled}
+                disabled={Boolean(petReservationDetail.item.petId) || isDisabled}
                 fluid
                 label='Pet'
                 multiple
                 name='pet'
-                onChange={_handlePetDropDownChange}
+
                 options={[ ...clientPet.items ].map((_clientPet) => ({
                   key  : _clientPet.id,
                   value: _clientPet.id,
@@ -252,6 +261,7 @@ const ExpressCheckInForm = props => {
                         ({ key: _trainingMethod.id, value: _trainingMethod.id, text: `${_trainingMethod.name}` }))
                       }
                       placeholder='Select option'
+                      requied
                       selectOnBlur={false}/>
                   </Form.Group>
                 </>
@@ -278,7 +288,7 @@ const ExpressCheckInForm = props => {
                 <Button
                   color='teal'
                   content='Check In!'
-                  disabled={submitting || isDisabled}
+                  disabled={submitting || isDisabled || variationAlert}
                   loading={submitting}
                   type='submit'/>
               </Form.Field>
@@ -294,6 +304,7 @@ export default compose(
   withRouter,
   connect(
     ({ location, auth, ...state }) => {
+      const selectedPets = formValueSelector(formId)(state, 'pet')
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const hasExpressCheckIn = formValueSelector(formId)(state, 'service_type')
       const selectedLocation = formValueSelector(formId)(state, 'location')
@@ -305,6 +316,7 @@ export default compose(
         petReservationDetail,
         service,
         location,
+        selectedPets,
         selectedLocation,
         serviceAttribute,
         hasExpressCheckIn,
@@ -314,7 +326,7 @@ export default compose(
         services   ,
         trainingMethod: trainingMethodDuck.selectors.list(state),
         clientPet     : clientPetDuck.selectors.list(state),
-        initialValues : { ...petReservationDetail.item, location: auth.location, pet: [ petReservationDetail.item.pet ], service_type: 'D' }
+        initialValues : { ...petReservationDetail.item, location: auth.location, pet: [ petReservationDetail.item.petId ],service_type: 'D' }
       }
     },
     { getEmployees        : employeeDuck.creators.get,
@@ -338,7 +350,8 @@ export default compose(
         pet     : Yup.string().required('Pet is required'),
         location: Yup.string().required('Location is required'),
         yard    : Yup.string().required('Yard is required'),
-        lunch   : Yup.string().required('Lunch is required')
+        lunch   : Yup.string().required('Lunch is required'),
+        method  : Yup.string().required('Method is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

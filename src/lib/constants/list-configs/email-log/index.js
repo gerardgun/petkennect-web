@@ -16,14 +16,17 @@ export default {
     options        : [],
     dropdownOptions: [
       {
+        icon        : 'mail',
         display_name: 'Email Logs view',
         name        : 'email_logs_view'
       },
       {
+        icon        : 'redo',
         display_name: 'Resend',
         name        : 'resend'
       },
       {
+        icon        : 'send',
         display_name: 'forward',
         name        : 'forward'
       }

@@ -53,7 +53,7 @@ export default {
   columns: [
     {
       display_name: 'RESERVATION DATE',
-      name        : 'reserved_at',
+      name        : 'reserved_date',
       type        : 'date', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
@@ -70,7 +70,7 @@ export default {
     },
     {
       display_name: 'Time',
-      name        : 'time',
+      name        : 'reserved_at_time',
       type        : 'time',
       width       : null,
       align       : 'left',

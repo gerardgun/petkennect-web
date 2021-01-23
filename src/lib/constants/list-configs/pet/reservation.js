@@ -42,14 +42,17 @@ export default {
     ],
     dropdownOptions: [
       {
+        icon        : 'eye',
         display_name: 'View Report',
         name        : 'view_report'
       },
       {
+        icon        : 'edit',
         display_name: 'Edit Note',
         name        : 'edit_note'
       },
       {
+        icon        : 'edit outline',
         display_name: 'Edit Reserve',
         name        : 'edit_reserve'
       },

@@ -2,15 +2,18 @@ import React  from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm, formValueSelector } from 'redux-form'
-import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
+import { reduxForm, formValueSelector, Field } from 'redux-form'
+import { TextArea, Button, Form, Grid, Header, Segment, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
+import FormField from '@components/Common/FormField'
 
 import moment from 'moment'
 
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
+
+import DatesSummary from '../dates-summary'
 
 import authDuck from '@reducers/auth'
 import clientPetDuck from '@reducers/client/pet'
@@ -18,37 +21,6 @@ import employeeDetailDuck from '@reducers/employee/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import { trainingFormId } from './first'
-
-// function SelectedReservationDateList({ startDate,endDate, selectedWeek, untilNoOfOccurrences, checkInTime }) {
-//   let arrDate = [ ]
-//   let dfEndDate = new Date(endDate)
-
-//   if(untilNoOfOccurrences) {
-//     dfEndDate = new Date(startDate)
-//     dfEndDate = new Date(dfEndDate.setDate((dfEndDate.getDate() + (7 * untilNoOfOccurrences))))
-//   }
-
-//   let weekCount = 0
-//   for (let d = new Date(startDate); d <=  dfEndDate; d.setDate(d.getDate() + 1)) {
-//     if(d.getDay() % 7 == 0)
-//       weekCount = weekCount + 1
-
-//     if(selectedWeek.includes('' + d.getDay() + ''))
-//       arrDate.push(moment(d).format('MM/DD/YYYY'))
-//   }
-
-//   return arrDate.map((dateItem,i) =>{
-//     return  (
-//       <>
-//         <List.Item>
-//           <List.Content>
-//             { dateItem }  {checkInTime}
-//           </List.Content>
-//         </List.Item>
-//       </>
-//     )
-//   })
-// }
 
 const TrainingFormWizardThird = props => {
   const {
@@ -118,7 +90,7 @@ const TrainingFormWizardThird = props => {
       <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
 
         <Segment className='section-info-item'>
-          <Header as='h3' className='section-info-header text-center'>Training Package1 Summary</Header>
+          <Header as='h3' className='section-info-header text-center'>Summary</Header>
           <Grid>
             <Grid.Column computer={8} mobile={16} tablet={8}>
               <Segment style={{ height: '100%' }}>
@@ -153,71 +125,32 @@ const TrainingFormWizardThird = props => {
                 <div className='flex justify-between align-center'>
                   <div className='w100'>
                     <Header as='h3'>
-                   Reservation note
+                    Reservation Comments
                     </Header>
                     <div className='mt16'>
-                      <label>Contract Comments</label>
-                      <textarea className='w100' name='comment' rows='5'></textarea>
+                      <label>Comment</label>
+                      <Form.Group widths='equal'>
+                        <Field
+                          component={FormField}
+                          control={TextArea}
+                          name='comment'
+                          selectOnBlur={false}/>
+                      </Form.Group>
                     </div>
                   </div>
                 </div>
               </Segment>
             </Grid.Column >
           </Grid>
-        </Segment>
-        <Segment>
-          <Header as='h3'>Reservation Date</Header>
-          <p><b>Starting From:</b> {moment(startDate).format('MM/DD/YYYY')} </p>
-          {untilNoOfOccurrences
-            ? <p><b>Number of Occurence:</b> {untilNoOfOccurrences}</p>
-            : <p><b>Ending Date:</b> { moment(endDate).format('MM/DD/YYYY')} </p>
+          {
+            !isUpdating && (
+              <DatesSummary
+                allSelectedWeek={props.allSelectedWeek} endDate={endDate} frequency={frequency}
+                selectedDates={props.selectedDate.join(', ')} startDate={startDate} untilNoOfOccurrences={untilNoOfOccurrences}/>
+            )
           }
-          <p><b>Frequency:</b> {frequency == 'every_other_week' ? 'Every Other Week' : 'Every Week'}</p>
-          <p><b>Days:</b> { props.allSelectedWeek.join(', ') }</p>
-          <p><b>Selected Dates:</b> { props.selectedDate.join(', ') }</p>
         </Segment>
-        <Segment>
-          <Header as='h3'>Charges</Header>
-          <List className='list-total-addons' divided verticalAlign='middle'>
-            <List.Item>
-              <List.Content floated='right'>
-                $34
-              </List.Content>
-              <List.Content>
-              Lorem Ipsum
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                $34
-              </List.Content>
-              <List.Content>
-              Lorem Ipsum
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                $34
-              </List.Content>
-              <List.Content>
-              Lorem Ipsum
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                $34
-              </List.Content>
-              <List.Content>
-              Lorem Ipsum
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                <List.Header as='a'>Total $155</List.Header>
-              </List.Content>
-            </List.Item>
-          </List>
-        </Segment>
+
         {
           error && (
             <Form.Group widths='equal'>
@@ -266,7 +199,7 @@ export default compose(
       const untilNoOfOccurrences = formValueSelector(trainingFormId)(state,'until_no_of_occurrences')
       const clientPet = clientPetDuck.selectors.list(state)
       const selectedPets = formValueSelector(trainingFormId)(state, 'pet')
-      const selectedPetName = selectedPets && selectedPets.map((item)=> {
+      const selectedPetName = selectedPets && selectedPets.filter(_=>_ != undefined).map((item)=> {
         let petDetail = clientPet.items.find(_ => _.id == item)
 
         return (

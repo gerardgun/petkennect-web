@@ -10,7 +10,7 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
 import Message from '@components/Message'
-
+import moment from 'moment'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
@@ -42,7 +42,6 @@ const TrainingFormWizardFirst = props => {
     location,
     error, handleSubmit, reset
   } = props
-
   useEffect(() => {
     props.getEmployees()
     props.getTrainingMethod()
@@ -51,12 +50,14 @@ const TrainingFormWizardFirst = props => {
 
   useEffect(() => {
     let serviceVariations = []
+
     if(selectedPets && selectedLocation) {
+      let allSelectedPet = selectedPets.filter(_ => _ != null)
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
-        .values.find(_location => _location.value == selectedLocation).id
+        .values.find(_location => _location.value == selectedLocation)
       const petLength = selectedPets && selectedPets.length
-      if(petLength > 0) {
-        for (let item of selectedPets) {
+      if(petLength > 0 && locationId) {
+        for (let item of allSelectedPet) {
           const petSize = clientPet.items.find(pet => pet.id === item).size
           const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
             .values.find(_petSize => _petSize.value == petSize).id
@@ -65,7 +66,7 @@ const TrainingFormWizardFirst = props => {
 
           let variationId
           for (let item of variation) {
-            let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+            let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId.id)
             let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
 
             if(locationExist != null && petSizeExist != null)
@@ -125,10 +126,12 @@ const TrainingFormWizardFirst = props => {
               closeOnChange
               component={FormField}
               control={Dropdown}
+              disabled={petReservationDetail.item.pet != undefined}
               fluid
               label='Pet'
               multiple
               name='pet'
+
               options={[ ...clientPet.items ].map((_clientPet) => ({
                 key  : _clientPet.id,
                 value: _clientPet.id,
@@ -216,7 +219,29 @@ const TrainingFormWizardFirst = props => {
 
         </Segment>
 
-        <RecurringDaysForm serviceType='T'/>
+        { petReservationDetail.item.training === undefined ? <RecurringDaysForm serviceType='T'/>
+          : <Segment className='section-info-item-step1'>
+            <Header as='h3' className='section-info-header'>When will this event be?</Header>
+            <Form.Group widths='equal'>
+              <Field
+                component={FormField}
+                control={Input}
+                label='reserved date'
+                name='check_in'
+                required
+                type='date'/>
+              <Field
+                component={FormField}
+                control={Input}
+                label='Check in time'
+                name='check_in_time'
+                required
+                type='time'/>
+            </Form.Group>
+
+          </Segment>
+
+        }
 
         {
           error && (
@@ -267,14 +292,31 @@ export default compose(
       const selectedPets = formValueSelector(trainingFormId)(state, 'pet')
       const service = serviceDuck.selectors.list(state)
       const trainingServices = service.items && service.items.filter(_ => _.type === 'T')
+      const method  = petReservationDetail.item.training  && petReservationDetail.item.training.method
+      const initialLocation =  petReservationDetail.item.location ?  petReservationDetail.item.location : auth.location
+      const initialComment  = petReservationDetail.item.training  && petReservationDetail.item.training.comment
+      const check_in     = moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD')
+      const checkInTime = petReservationDetail.item.reserved_at && petReservationDetail.item.reserved_at
+      const initialCheckInTime =  moment.utc(`${checkInTime}`).format('HH:mm')
+
+      const defaultInitialValues = petReservationDetail.item.id ? {
+        method       : method,
+        comment      : initialComment ,
+        check_in     : check_in ,
+        check_in_time: initialCheckInTime,
+        pet          : [ petReservationDetail.item.pet ]
+      } : {}
 
       return {
         selectedPets    : selectedPets,
         selectedLocation: selectedLocation,
         serviceAttribute,
+        initialComment,
+        method,
+        initialLocation,
         services        : trainingServices,
         petReservationDetail,
-        initialValues   : { ...petReservationDetail.item, location: auth.location },
+        initialValues   : { ...petReservationDetail.item, location: initialLocation, ...defaultInitialValues    },
         location        : locationDuck.selectors.list(state),
         trainingMethod  : trainingMethodDuck.selectors.list(state),
         trainingReason  : trainingReasonDuck.selectors.list(state),

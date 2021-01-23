@@ -31,9 +31,8 @@ function BookingSection({ petDetail, ...props }) {
   useEffect(()=> {
     props.getPet(petId)
     props.getPetReservationGrooming({ service_type_what_ever_name: 'G' })
-    props.getPetReservationBoarding()
-    props.getTrainingPackages()
-    props.getTrainingReservations()
+    props.getPetReservationBoarding({ service_type_what_ever_name: 'B' })
+    props.getTrainingPackages({ service_type_what_ever_name: 'T' })
   }, [])
 
   const clientId = `${petDetail.item.client}`
@@ -54,7 +53,7 @@ function BookingSection({ petDetail, ...props }) {
       case 'edit_note' : props.setNoteItem(item,'READ')
         break
 
-      case 'edit_reserve' : props.setItem(item,'UPDATE')
+      case 'edit_reserve' : props.setReserveItem(item,'UPDATE')
         history.replace(`/client/${clientId}/book`)
         break
 
@@ -108,7 +107,7 @@ function BookingSection({ petDetail, ...props }) {
       {
         (activeServiceItem === 'G' ||  activeServiceItem === 'B') && (
           <>
-            <div className='mh28 ui-table-overflow'>
+            <div className='ui-table-overflow'>
               <Table
                 duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
                 onOptionDropdownChange={_handleOptionDropdownChange}
@@ -138,7 +137,7 @@ export default compose(
       getPetReservationGrooming: petReservationGroomingDuck.creators.get,
       getPetReservationBoarding: petReservationBoardingDuck.creators.get,
       setPackageFilters        : petTrainingReservationDuck.creators.setFilters,
-      setItem                  : petReservationDetailDuck.creators.setItem,
+      setReserveItem           : petReservationDetailDuck.creators.setItem,
       setNoteItem              : petNoteDetailDuck.creators.setItem,
       setViewReportItem        : petDetailDuck.creators.setItem,
       getPet                   : petDetailDuck.creators.get,
@@ -146,4 +145,3 @@ export default compose(
       getTrainingReservations  : petTrainingReservationDuck.creators.get
     })
 )(BookingSection)
-

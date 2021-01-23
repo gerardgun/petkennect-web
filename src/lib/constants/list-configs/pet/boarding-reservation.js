@@ -32,7 +32,7 @@ export default {
         name        : 'edit_note'
       },
       {
-        icon              : 'widnow close outline',
+        icon              : 'window close outline',
         display_name      : 'Cancel CheckIn',
         name              : 'cancel_checkIn',
         conditional_render: item => item.is_pending
@@ -53,7 +53,7 @@ export default {
   columns: [
     {
       display_name: 'RESERVATION DATE',
-      name        : 'reserved_at',
+      name        : 'reserved',
       type        : 'date', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
@@ -86,7 +86,7 @@ export default {
     },
     {
       display_name: 'Check Out',
-      name        : 'check_out_date',
+      name        : 'checkout_at',
       type        : 'date',
       width       : null,
       align       : 'left',

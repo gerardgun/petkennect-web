@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { reduxForm, formValueSelector, Field } from 'redux-form'
-import { Button, Form, Grid, Header, Segment, Icon } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment, Icon, List } from 'semantic-ui-react'
 import { parseFormValues, parseResponseError } from '@lib/utils/functions'
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
@@ -11,6 +11,7 @@ import FormField from '@components/Common/FormField'
 
 import moment from 'moment'
 
+import DatesSummary from '../dates-summary'
 import AddReportCardForm from  './AddReportCardForm'
 
 import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
@@ -34,12 +35,16 @@ const DaycampFormWizardThird = props => {
     checkInTime,
     selectedPetName,
     petReservationDetail,
+    addons,
+    clientPet,
     error,
     frequency,
     handleSubmit,
     submitting,
     currentTenant, reset // redux-form
   } = props
+
+  let totalCost = 0
 
   const _handleAddReportCardBtnClick = () => {
     props.setItemDaycampQuesItem(null, 'CREATE')
@@ -144,15 +149,15 @@ const DaycampFormWizardThird = props => {
                 <div className='flex justify-between align-center'>
                   <div className='w100'>
                     <Header as='h3'>
-                   Reservation Note
+                    Reservation Comment
                     </Header>
                     <div className='mt16'>
                       <Field
                         component={FormField}
                         control={Form.TextArea}
-                        label='Note'
+                        label='Comment'
                         name='comment'
-                        placeholder='Enter Note'
+                        placeholder='Enter Comment'
                         rows='4'/>
                     </div>
                   </div>
@@ -160,17 +165,12 @@ const DaycampFormWizardThird = props => {
               </Segment>
             </Grid.Column >
           </Grid>
-          <Segment>
-            <Header as='h3'>Reservation Date</Header>
-            <p><b>Starting From:</b> {moment(startDate).format('MM/DD/YYYY')} </p>
-            {untilNoOfOccurrences
-              ? <p><b>Number of Occurence:</b> {untilNoOfOccurrences}</p>
-              : <p><b>Ending Date:</b> { moment(endDate).format('MM/DD/YYYY')} </p>
-            }
-            <p><b>Frequency:</b> {frequency == 'every_other_week' ? 'Every Other Week' : 'Every Week'}</p>
-            <p><b>Days:</b> { props.allSelectedWeek.join(', ') }</p>
-            <p><b>Selected Dates:</b> { props.selectedDate.join(', ') }</p>
-          </Segment>
+          {
+            !isUpdating && (
+              <DatesSummary
+                allSelectedWeek={props.allSelectedWeek} endDate={endDate} frequency={frequency}
+                selectedDates={props.selectedDate.join(', ')} startDate={startDate} untilNoOfOccurrences={untilNoOfOccurrences}/>)
+          }
           {
             petReservationDetail.item.id && (
               <>
@@ -210,6 +210,102 @@ const DaycampFormWizardThird = props => {
             )
           }
 
+          <Segment>
+            <Header as='h3'>Estimate Charges</Header>
+            <List className='list-total-addons' divided verticalAlign='middle'>
+              {
+                petReservationDetail.item.serviceVariations && petReservationDetail.item.serviceVariations.map((item,index)=>{
+                  totalCost += Number(item.price)
+
+                  return (
+                    <>
+                      <List.Item key={index}>
+                        <List.Content floated='right'>
+                        </List.Content>
+                        <List.Content>
+                          <b>{clientPet.items && clientPet.items.find(_ => _.id == item.petId).name}</b>
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content floated='right'>
+                      ${Number(item.price)}
+                        </List.Content>
+                        <List.Content>
+                          Boarding
+                        </List.Content>
+                      </List.Item>
+                      {
+                        addons && addons.length > 0 && (
+                          <>
+                            <List.Item>
+                              <List.Content>
+                                <Header as='h3'>Add Ons</Header>
+                              </List.Content>
+                            </List.Item>
+                            {
+                              addons && addons.map((_item,index)=>{
+                                let addOnPrice = _item.subVariation.find(_ => _.petId == item.petId)
+                                 && _item.subVariation.find(_ => _.petId == item.petId).price
+                                totalCost += Number(addOnPrice)
+
+                                return (
+                                  <>
+                                    <List.Item key={index}>
+                                      <List.Content floated='right'>
+                                      ${ addOnPrice }
+                                      </List.Content>
+                                      <List.Content>
+                                        {_item.name}
+                                      </List.Content>
+                                    </List.Item>
+                                  </>
+                                )
+                              })}
+                          </>
+                        )
+                      }
+                      <List.Item>
+                        <List.Content floated='right'>
+                      $0
+                        </List.Content>
+                        <List.Content>
+                          <b>Kennel</b>
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content floated='right'>
+                      $0
+                        </List.Content>
+                        <List.Content>
+                          <b>Activity Package</b>
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content floated='right'>
+                      $0
+                        </List.Content>
+                        <List.Content>
+                          <b>Client Discount</b>
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content floated='right'>
+                      &nbsp;
+                        </List.Content>
+                      </List.Item>
+                    </>
+                  )
+                })}
+              <List.Item>
+                <List.Content floated='right'>
+                  <b>${ totalCost }</b>
+                </List.Content>
+                <List.Content>
+                  <b>Total Cost</b>
+                </List.Content>
+              </List.Item>
+            </List>
+          </Segment>
         </Segment>
         {
           error && (
@@ -269,6 +365,7 @@ export default compose(
       }).join(', ')
       const employeeDetail = employeeDetailDuck.selectors.detail(state)
       const employeeName = employeeDetail.item && employeeDetail.item.first_name + ' ' + employeeDetail.item.last_name
+      const addons = formValueSelector(daycampFormId)(state, 'daycamp_reservation_list')
 
       return {
         employeeName,
@@ -279,14 +376,16 @@ export default compose(
         reservationDate     : [].concat(petReservationDetail.item.selectedDate),
         selectedDate        : [].concat(petReservationDetail.item.selectedDate).map((item) => moment(item).format('MM/DD/YYYY')),
         selectedPetName,
+        addons,
+        clientPet,
         petReservationDetail,
         services            : service,
         clientDetail,
-        currentTenant       : authDuck.selectors.getCurrentTenant(auth),
         allSelectedWeek     : [].concat(petReservationDetail.item.allSelectedWeek),
         frequency           : petReservationDetail.item.frequency,
         clientDocumentDetail: clientDocumentDetailDuck.selectors.detail(state),
-        initialValues       : petReservationDetail.item
+        initialValues       : { ...petReservationDetail.item },
+        currentTenant       : authDuck.selectors.getCurrentTenant(auth)
       }
     },
     {

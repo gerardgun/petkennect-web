@@ -245,28 +245,58 @@ export const sortByProperty = property=>{
 }
 
 export const formatPhoneNumber = phoneNumberString=>{
-  phoneNumberString = phoneNumberString == null ? '' : phoneNumberString
-  var cleaned = ('' + phoneNumberString.split(' ')[1]).replace(/\D/g, '')
-  var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
-  if(match)
-    return '(' + match[1] + ') ' + match[2] + '-' + match[3]
-
-  return null
+  try {
+    phoneNumberString = phoneNumberString == null ? '' : phoneNumberString
+    let cleaned = ('' + phoneNumberString.split(' ')[1]).replace(/\D/g, '')
+    let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+    if(match)
+      return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+  }
+  catch {
+    return null
+  }
 }
 
 export const printAlphabets = () => {
   // set the default value of i & j to print A to Z
-  var i = 65
-  var j = 91
+  let i = 65
+  let j = 91
   let k
   let strArr = []
   // loop through the values from i to j
   for (k = i; k < j; k++) {
     // convert the char code to string (Alphabets)
-    var str = String.fromCharCode(k)
+    let str = String.fromCharCode(k)
     // print the result in console
     strArr.push({ key: k, value: `${str}`, text: `${str}` })
   }
 
   return strArr
+}
+
+export const monthDiff = (d1, d2) => {
+  let months
+  months = (d2.getFullYear() - d1.getFullYear()) * 12
+  months -= d1.getMonth()
+  months += d2.getMonth()
+
+  return months <= 0 ? 1 : months + 1
+}
+
+export const weekAndDay = (date) => {
+  var days = [ 'Sunday','Monday','Tuesday','Wednesday',
+      'Thursday','Friday','Saturday' ],
+    prefixes = [ '1st', '2nd', '3rd', '4th', '5th' ]
+
+  return prefixes[Math.floor(date.getDate() / 7)] + ' ' + days[date.getDay()]
+}
+
+export const DayNth = function(d) {
+  if(d > 3 && d < 21) return d + 'th'
+  switch (d % 10) {
+    case 1:  return d + 'st'
+    case 2:  return d + 'nd'
+    case 3:  return d + 'rd'
+    default: return d + 'th'
+  }
 }

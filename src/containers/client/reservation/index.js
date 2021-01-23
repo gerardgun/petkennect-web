@@ -45,12 +45,15 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
 
   const _handleReservationTypeClick = type => () => {
-    setActiveReservationItem(type)
+    if(!isUpdating)
+      setActiveReservationItem(type)
   }
 
   const _handleAddNoteBtnClick = (item) =>{
     props.setNoteItem(item, 'CREATE')
   }
+
+  const isUpdating = Boolean(petReservationDetail.item.id)
 
   const comesfromScreenName = useMemo(() => Boolean(history.location.state), [])
 
@@ -69,7 +72,7 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
               </Breadcrumb.Section>
               <Breadcrumb.Divider/>
               <Breadcrumb.Section>
-                New Reservation
+                {petReservationDetail.item.service_type ? 'Update ' : 'New '}Reservation
               </Breadcrumb.Section>
             </Breadcrumb>
             {
@@ -88,7 +91,7 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
                 )
               ) : (
                 <>
-                  <Header as='h2'>New Reservation</Header>
+                  <Header as='h2'>{petReservationDetail.item.service_type ? 'Update ' : 'New '}Reservation</Header>
                 </>
               )
             }

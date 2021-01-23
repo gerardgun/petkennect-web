@@ -55,6 +55,7 @@ function AddOnsItem({ item, petDetail, index }) {
 
 const BoardingFormWizardSecond = props => {
   const {
+    petReservationDetail,
     clientPet,
     petKennel,
     services,
@@ -68,9 +69,20 @@ const BoardingFormWizardSecond = props => {
     const groomingServiceId = services.items && services.items.find(_ => _.type === 'B')
     const subServices = services.items && services.items.filter(_ => _.parent_service === (groomingServiceId && groomingServiceId.id))
 
-    const _handleAddOnChange = (value)=>{
-      let subServiceVariations = []
+    petReservationDetail.item.addons && petReservationDetail.mode === 'CREATE' && subServiceUpdate(petReservationDetail.item.calculatedAddons)
+
+    function subServiceUpdate(value) {    // addon price update function
+      petReservationDetail.item.addons && props.setReserveItem({ ...petReservationDetail.item },'UPDATE')
       fields.removeAll()
+      for (let item of value)
+        fields.push({ subVariation: [ { price: item.price, id: item.service_variation, petId: item.petId } ],
+          name        : item.name,  addOn_id    : item.addOn_id })
+    }
+
+    const _handleAddOnChange = (value)=>{
+      fields.removeAll()
+
+      let oldSelectedAddOn = props.hasPriceChange
 
       for (let item of value) {
         let petSubServiceVariation = []
@@ -79,37 +91,45 @@ const BoardingFormWizardSecond = props => {
         const location = props.selectedLocation
         const pets = props.selectedPets
 
+        let alreadyExistsAddon = oldSelectedAddOn && oldSelectedAddOn.find(_ => _.addOn_id == item)
+
         for (let pet of pets) {
-          const petSize = clientPet.items.find(_ => _.id === pet).size
-          const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S').values.find(_petSize => _petSize.value == petSize).id
-          const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L').values.find(_location => _location.value == location).id
+          let alreadyExistAddonForPet = alreadyExistsAddon &&  alreadyExistsAddon.subVariation.find(_ => _.petId == pet)
 
-          const variation = subService.variations
+          if(alreadyExistAddonForPet) {
+            petSubServiceVariation.push({ ...alreadyExistAddonForPet })
+          }
+          else
+          {
+            const petSize = clientPet.items.find(_ => _.id === pet).size
+            const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S').values.find(_petSize => _petSize.value == petSize).id
+            const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L').values.find(_location => _location.value == location).id
 
-          let variationId
-          for (let item of variation) {
-            let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
-            let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+            const variation = subService.variations
 
-            if(locationExist != null && petSizeExist != null)
-            {
-              variationId = locationExist.service_variation_id
-              break
+            let variationId
+            for (let item of variation) {
+              let locationExist = item.attributes.find(_id => _id.service_attribute_value_id == locationId)
+              let petSizeExist = item.attributes.find(_id => _id.service_attribute_value_id == petSizeId)
+
+              if(locationExist != null && petSizeExist != null)
+              {
+                variationId = locationExist.service_variation_id
+                break
+              }
+            }
+
+            if(variationId != null) {
+              const subVariation = variation.find(_ => _.id === variationId)
+
+              petSubServiceVariation.push({ price: subVariation.price, id: subVariation.id, petId: pet })
+            }
+            else {
+              props.setItem(null, 'READ')
             }
           }
-
-          if(variationId != null) {
-            const subVariation = variation.find(_ => _.id === variationId)
-
-            petSubServiceVariation.push({ price: subVariation.price, id: subVariation.id, petId: pet })
-          }
-          else {
-            props.setItem(null, 'READ')
-          }
         }
-
-        fields.push({ name: subService.name, subVariation: petSubServiceVariation })
-        subServiceVariations.push({ name: subService.name, subVariation: petSubServiceVariation })
+        fields.push({ name: subService.name, subVariation: petSubServiceVariation, addOn_id: item  })
       }
     }
 
@@ -423,8 +443,9 @@ export default compose(
       }
     },
     {
-      getPetKennels: petKennelDuck.creators.get,
-      setItem      : trainingMethodDetailDuck.creators.setItem
+      getPetKennels : petKennelDuck.creators.get,
+      setItem       : trainingMethodDetailDuck.creators.setItem,
+      setReserveItem: petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({

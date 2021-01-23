@@ -18,7 +18,9 @@ import employeeDuck from '@reducers/employee'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
+import DatesSummary from '../dates-summary'
 import AlertModal from './../alert-modal'
+
 import { groomingFormId } from './first'
 
 const GroomingFormWizardThird = props => {
@@ -32,7 +34,6 @@ const GroomingFormWizardThird = props => {
     addons,
     petReservationDetail,
     currentTenant,
-    allSelectedWeek,
     frequency,
     submitting,
     error, handleSubmit, reset // redux-form
@@ -133,92 +134,93 @@ const GroomingFormWizardThird = props => {
                 <div className='flex justify-between align-center'>
                   <div className='w100'>
                     <Header as='h3'>
-                   Reservation note
+                    Reservation Comments
                     </Header>
                     <div className='mt16'>
                       <Field
                         component={FormField}
                         control={Form.TextArea}
-                        label='Instructions'
-                        name='comment'
-                        placeholder='Enter instructions'/>
+                        label='Comment'
+                        name='comment'/>
                     </div>
                   </div>
                 </div>
               </Segment>
             </Grid.Column >
           </Grid>
-        </Segment>
-        <Segment>
-          <Header as='h3'>Reservation Date</Header>
-          <p><b>Starting From:</b> {moment(startDate).format('MM/DD/YYYY')} </p>
-          {untilNoOfOccurrences
-            ? <p><b>Number of Occurence:</b> {untilNoOfOccurrences}</p>
-            : <p><b>Ending Date:</b> { moment(endDate).format('MM/DD/YYYY')} </p>
+          {
+            !isUpdating && (
+              <DatesSummary
+                allSelectedWeek={props.allSelectedWeek} endDate={endDate} frequency={frequency}
+                selectedDates={props.selectedDate.join(', ')} startDate={startDate} untilNoOfOccurrences={untilNoOfOccurrences}/>
+            )
           }
-          <p><b>Frequency:</b> {frequency == 'every_other_week' ? 'Every Other Week' : 'Every Week'}</p>
-          <p><b>Days:</b> { allSelectedWeek.join(', ') }</p>
-          <p><b>Selected Dates:</b> { props.selectedDate.join(', ') }</p>
-        </Segment>
-        <Segment>
-          <Header as='h3' className='charges-heading'>Charges</Header>
-          <List className='list-total-addons' divided verticalAlign='middle'>
-            <List.Item>
-              <List.Content floated='right'>
+          <Segment>
+            <Header as='h3' className='charges-heading'>Estimate Charges</Header>
+            <List className='list-total-addons' divided verticalAlign='middle'>
+              <List.Item>
+                <List.Content>
+                  <b>{selectedPetName}</b>
+                </List.Content>
+              </List.Item>
+              <List.Item>
+                <List.Content floated='right'>
                 ${
-                  petReservationDetail.item && petReservationDetail.item.serviceVariations && (
-                    totalCost += Number(petReservationDetail.item.serviceVariations.price)
-                  )
-                }
-              </List.Content>
-              <List.Content>
+                    petReservationDetail.item && petReservationDetail.item.serviceVariations && (
+                      totalCost += Number(petReservationDetail.item.serviceVariations.price)
+                    )
+                  }
+                </List.Content>
+                <List.Content>
                     Grooming
-              </List.Content>
-            </List.Item>
-            {
-              addons && addons.length > 0 && (
-                <>
-                  <List.Item>
-                    <List.Content>
-                      <Header as='h4'>Add Ons</Header>
-                    </List.Content>
-                  </List.Item>
+                </List.Content>
+              </List.Item>
+              {
+                addons && addons.length > 0 && (
+                  <>
+                    <List.Item>
+                      <List.Content>
+                        <Header as='h4'>Add Ons</Header>
+                      </List.Content>
+                    </List.Item>
 
-                  {
-                    addons && addons.map((item,index)=>{
-                      totalCost += Number(item.price)
+                    {
+                      addons && addons.map((item,index)=>{
+                        totalCost += Number(item.price)
 
-                      return (
-                        <List.Item key={index}>
-                          <List.Content floated='right'>
+                        return (
+                          <List.Item key={index}>
+                            <List.Content floated='right'>
                       ${Number(item.price)}
-                          </List.Content>
-                          <List.Content>
-                            {item.name}
-                          </List.Content>
-                        </List.Item>
-                      )
-                    })}
-                </>
-              )
-            }
-            <List.Item>
-              <List.Content floated='right'>
+                            </List.Content>
+                            <List.Content>
+                              {item.name}
+                            </List.Content>
+                          </List.Item>
+                        )
+                      })}
+                  </>
+                )
+              }
+              <List.Item>
+                <List.Content floated='right'>
                 $0
-              </List.Content>
-              <List.Content>
-                <b>Client Discount</b>
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                <List.Header as='a'>${totalCost}</List.Header>
-              </List.Content>
-              <List.Content>
-                <b>Total Cost</b>
-              </List.Content>
-            </List.Item>
-          </List>
+                </List.Content>
+                <List.Content>
+                  <b>Client Discount</b>
+                </List.Content>
+              </List.Item>
+              <List.Item>
+                <List.Content floated='right'>
+                  <b>${totalCost}</b>
+                </List.Content>
+                <List.Content>
+                  <b>Total Cost</b>
+                </List.Content>
+              </List.Item>
+            </List>
+          </Segment>
+
         </Segment>
         {
           error && (

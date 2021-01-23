@@ -45,17 +45,17 @@
   }
 }
 
-.grid_custom_input{
-  @media (min-width:1023px) {
-    .w_input_set{
-      width: 5rem !important;
-      input{
-        height: 3.1rem;
-      }
-    }
-    }
+// .grid_custom_input{
+//   @media (min-width:1023px) {
+//     .w_input_set{
+//       width: 5rem !important;
+//       input{
+//         height: 3.1rem;
+//       }
+//     }
+//     }
 
-  }
+//   }
 
   .custom_or{
     display: flex;
@@ -69,6 +69,46 @@
   .ui.styled.accordion{
     width:100% !important;
   }
+  
+.custom_radio_input{
+  display:flex;
+  align-items: center;
+}
+
+.grid_border_right{
+  border-right: 1px solid gray; 
+  .ui.radio.checkbox{
+    padding-top: 1rem;
+  }
+}
+
+.div_align_center{
+  display: flex !important;
+  align-items: center !important;
+}
+.wc8{
+  width:8rem !important;
+}
+
+.wc9{
+  width:9rem !important;
+}
+
+.w_input_set{
+  width: 5rem !important;
+  margin-bottom: 0rem !important;
+}
+
+.w_input_3{
+  width:3rem !important;
+  .ui.input{
+    input{
+      padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    }
+  }
+}
 }
 
 @media only screen
@@ -81,8 +121,12 @@ and (-webkit-min-device-pixel-ratio: 2) {
 }
 }
 
-.DayPicker{
-  .DayPicker-Month{
-    margin-left: 0rem !important;
-  }
+.DayPicker-Day--peekday {
+  background-color:#95dc8a;
+  color: black !important;
+}
+
+.DayPicker-Day--fullDay {
+  background: repeating-linear-gradient( 45deg, #a9cece, teal 10px, teal 10px, rgba(0, 0, 0, 0.3) 14px ) !important;
+  color: white !important;
 }

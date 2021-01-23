@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { reduxForm, formValueSelector, Field } from 'redux-form'
-import { Button, Form, Grid, Header, Segment, Checkbox, List, Icon } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
+
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
 import moment from 'moment'
@@ -156,12 +157,11 @@ const BoardingFormWizardThird = props => {
                           value='61'/>
                       </Grid.Column >
                     </Grid>
-                    <Checkbox label='Special Pick Up'/>
                     <div className='mt16'>
                       <Field
                         component={FormField}
                         control={Form.TextArea}
-                        label='Special Pick Up Information'
+                        label='Comment'
                         name='comment'
                         placeholder='Enter Comment'/>
                     </div>
@@ -170,106 +170,104 @@ const BoardingFormWizardThird = props => {
               </Segment>
             </Grid.Column >
           </Grid>
-        </Segment>
-        <Segment>
-          <Header as='h3'>Charges</Header>
-          <List className='list-total-addons' divided verticalAlign='middle'>
-            <List.Item>
-              <List.Content>
-                <b>Boarding</b>
-              </List.Content>
-            </List.Item>
-            {
-              petReservationDetail.item.serviceVariations && petReservationDetail.item.serviceVariations.map((item,index)=>{
-                totalCost += Number(item.price)
 
-                return (
+          <Segment>
+            <Header as='h3'>Estimate Charges</Header>
+            <List className='list-total-addons' divided verticalAlign='middle'>
+              {
+                petReservationDetail.item.serviceVariations && petReservationDetail.item.serviceVariations.map((item,index)=>{
+                  totalCost += Number(item.price)
 
-                  <List.Item key={index}>
-                    <List.Content floated='right'>
+                  return (
+                    <>
+                      <List.Item key={index}>
+                        <List.Content floated='right'>
+                        </List.Content>
+                        <List.Content>
+                          <b>{clientPet.items && clientPet.items.find(_ => _.id == item.petId).name}</b>
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content floated='right'>
                       ${Number(item.price)}
-                    </List.Content>
-                    <List.Content>
-                      {clientPet.items && clientPet.items.find(_ => _.id == item.petId).name}
-                    </List.Content>
+                        </List.Content>
+                        <List.Content>
+                          Boarding
+                        </List.Content>
+                      </List.Item>
+                      {
+                        addons && addons.length > 0 && (
+                          <>
+                            <List.Item>
+                              <List.Content>
+                                <Header as='h3'>Add Ons</Header>
+                              </List.Content>
+                            </List.Item>
+                            {
+                              addons && addons.map((_item,index)=>{
+                                let addOnPrice = _item.subVariation.find(_ => _.petId == item.petId)
+                                 && _item.subVariation.find(_ => _.petId == item.petId).price
+                                totalCost += Number(addOnPrice)
 
-                  </List.Item>
-                )
-              })}
-            <List.Item>
-              <List.Content floated='right'>
-                $0
-              </List.Content>
-              <List.Content>
-                <b>Kennel</b>
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                $0
-              </List.Content>
-              <List.Content>
-                <b>Activity Package</b>
-              </List.Content>
-            </List.Item>
-            {
-              addons && addons.length > 0 && (
-                <>
-                  <List.Item>
-                    <List.Content>
-                      <Header as='h3'>Add Ons</Header>
-                    </List.Content>
-                  </List.Item>
-                  {
-                    addons && addons.map((item,index)=>{
-                      return (
-                        <>
-                          <List.Item key={index}>
-                            <List.Content>
-                              <b>{item.name}</b>
-                            </List.Content>
-                          </List.Item>
-                          {
-                            item.subVariation && item.subVariation.map((item,index)=>{
-                              totalCost += Number(item.price)
+                                return (
+                                  <>
+                                    <List.Item key={index}>
+                                      <List.Content floated='right'>
+                                      ${ addOnPrice }
+                                      </List.Content>
+                                      <List.Content>
+                                        {_item.name}
+                                      </List.Content>
+                                    </List.Item>
+                                  </>
+                                )
+                              })}
+                          </>
+                        )
+                      }
+                      <List.Item>
+                        <List.Content floated='right'>
+                      $0
+                        </List.Content>
+                        <List.Content>
+                          <b>Kennel</b>
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content floated='right'>
+                      $0
+                        </List.Content>
+                        <List.Content>
+                          <b>Activity Package</b>
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content floated='right'>
+                      $0
+                        </List.Content>
+                        <List.Content>
+                          <b>Client Discount</b>
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content floated='right'>
+                      &nbsp;
+                        </List.Content>
+                      </List.Item>
+                    </>
+                  )
+                })}
+              <List.Item>
+                <List.Content floated='right'>
+                  <b>${ totalCost }</b>
+                </List.Content>
+                <List.Content>
+                  <b>Total Cost</b>
+                </List.Content>
+              </List.Item>
+            </List>
+          </Segment>
 
-                              return (
-                                <>
-                                  <List.Item key={index}>
-                                    <List.Content floated='right'>
-                                ${Number(item.price)}
-                                    </List.Content>
-                                    <List.Content>
-                                      {clientPet.items && clientPet.items.find(_ => _.id == item.petId).name}
-                                    </List.Content>
-                                  </List.Item>
-                                </>
-                              )
-                            })}
-                        </>
-                      )
-                    })}
-                </>
-              )
-            }
-
-            <List.Item>
-              <List.Content floated='right'>
-                $0
-              </List.Content>
-              <List.Content>
-                <b>Client Discount</b>
-              </List.Content>
-            </List.Item>
-            <List.Item>
-              <List.Content floated='right'>
-                <List.Header as='a'>${totalCost}</List.Header>
-              </List.Content>
-              <List.Content>
-                <b>Total Cost</b>
-              </List.Content>
-            </List.Item>
-          </List>
         </Segment>
         {
           error && (

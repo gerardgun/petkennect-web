@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { Header, Button, Grid, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 
@@ -18,6 +18,14 @@ import petReservationTrainingPackageDetail from '@reducers/pet/reservation/train
 function TrainingServiceSection({ petDetail, ...props }) {
   const history = useHistory()
 
+  const { pet: petId } = useParams()
+
+  useEffect(()=> {
+    props.getPet(petId)
+    props.getPetReservationTraining({ service_type_what_ever_name: 'T' })
+  }, [])
+
+  const clientId = `${petDetail.item.client}`
   const _handleAddPackageBtnClick = () =>{
     props.setItem(null, 'CREATE')
   }
@@ -37,6 +45,13 @@ function TrainingServiceSection({ petDetail, ...props }) {
     }
     else if(option === 'view_performance' || option === 'view_report_card') {
       props.setItem(null,'READ')
+    }
+  }
+
+  const _handleOptionDropdownChange = (option, item) => {
+    if(option === 'edit_reserve') {
+      props.setReserveItem(item ,'UPDATE')
+      history.replace(`/client/${clientId}/book`)
     }
   }
 
@@ -72,7 +87,7 @@ function TrainingServiceSection({ petDetail, ...props }) {
         </Grid.Column>
       </Grid>
       <Table
-        duck={petTrainingReservationDuck} onOptionDropdownChange={_handleOptionClick}/>
+        duck={petTrainingReservationDuck} onOptionDropdownChange={_handleOptionDropdownChange}/>
       <PackageCreateForm/>
       <TrainingPackageEmailForm/>
     </Container>
@@ -82,12 +97,16 @@ function TrainingServiceSection({ petDetail, ...props }) {
 export default compose(
   connect(
     (state) => ({
+
       petReservation       : petTrainingPackageDuck.selectors.list(state),
       petDetail            : petDetailDuck.selectors.detail(state),
       trainingPackageDetail: petReservationTrainingPackageDetail.selectors.detail(state)
     }),{
-      setItem       : petReservationTrainingPackageDetail.creators.setItem,
-      setReserveItem: petReservationDetailDuck.creators.setItem
+      setItem                  : petReservationTrainingPackageDetail.creators.setItem,
+      setReserveItem           : petReservationDetailDuck.creators.setItem,
+      getPet                   : petDetailDuck.creators.get,
+      getPetReservationTraining: petTrainingReservationDuck.creators.get
+
     })
 )(TrainingServiceSection)
 
