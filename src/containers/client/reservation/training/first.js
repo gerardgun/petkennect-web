@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -19,7 +19,6 @@ import trainingReasonDuck from '@reducers/training-reason'
 import employeeDuck from '@reducers/employee'
 import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
-import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
 import AlertModal from './../alert-modal'
 import RecurringDaysForm from './../recurring-days'
@@ -42,11 +41,18 @@ const TrainingFormWizardFirst = props => {
     location,
     error, handleSubmit, reset
   } = props
+
   useEffect(() => {
     props.getEmployees()
     props.getTrainingMethod()
     props.getTrainingReason()
   }, [])
+
+  const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
+
+  const _handleOkBtnClick = () =>{
+    setOverridePopupOpen(false)
+  }
 
   useEffect(() => {
     let serviceVariations = []
@@ -79,7 +85,7 @@ const TrainingFormWizardFirst = props => {
             serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
 
           else
-            props.setItemVariation(null, 'READ')
+            setOverridePopupOpen(true)
         }
         props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations }, 'CREATE')
       }
@@ -263,7 +269,7 @@ const TrainingFormWizardFirst = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <AlertModal/>
+      <AlertModal isOpened={overridePopupOpen} onReply={_handleOkBtnClick}/>
 
     </>
     ) : (<><Message
@@ -328,8 +334,7 @@ export default compose(
       getEmployees     : employeeDuck.creators.get,
       getTrainingMethod: trainingMethodDuck.creators.get,
       getTrainingReason: trainingReasonDuck.creators.get,
-      setItem          : petReservationDetailDuck.creators.setItem,
-      setItemVariation : trainingMethodDetailDuck.creators.setItem
+      setItem          : petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({

@@ -8,12 +8,13 @@ import Table from '@components/Table'
 
 import PackageCreateForm from './package-create'
 import TrainingPackageEmailForm from './email-form'
-
+import PetNotes from '../Notes'
 import petDetailDuck from '@reducers/pet/detail'
 import petTrainingPackageDuck from '@reducers/pet/reservation/training/package'
 import petTrainingReservationDuck from '@reducers/pet/reservation/training/reservation'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
 
 function TrainingServiceSection({ petDetail, ...props }) {
   const history = useHistory()
@@ -48,10 +49,14 @@ function TrainingServiceSection({ petDetail, ...props }) {
     }
   }
 
-  const _handleOptionDropdownChange = (option, item) => {
-    if(option === 'edit_reserve') {
-      props.setReserveItem(item ,'UPDATE')
-      history.replace(`/client/${clientId}/book`)
+  const _handleOptionDropdownChange = (optionName, item) => {
+    switch (optionName) {
+      case 'edit_reserve' :  props.setReserveItem(item ,'UPDATE')
+        history.replace(`/client/${clientId}/book`)
+        break
+
+      case 'edit_note' : props.setNoteItem(item,'READ')
+        break
     }
   }
 
@@ -90,6 +95,7 @@ function TrainingServiceSection({ petDetail, ...props }) {
         duck={petTrainingReservationDuck} onOptionDropdownChange={_handleOptionDropdownChange}/>
       <PackageCreateForm/>
       <TrainingPackageEmailForm/>
+      <PetNotes/>
     </Container>
   )
 }
@@ -105,7 +111,8 @@ export default compose(
       setItem                  : petReservationTrainingPackageDetail.creators.setItem,
       setReserveItem           : petReservationDetailDuck.creators.setItem,
       getPet                   : petDetailDuck.creators.get,
-      getPetReservationTraining: petTrainingReservationDuck.creators.get
+      getPetReservationTraining: petTrainingReservationDuck.creators.get,
+      setNoteItem              : petNoteDetailDuck.creators.setItem
 
     })
 )(TrainingServiceSection)

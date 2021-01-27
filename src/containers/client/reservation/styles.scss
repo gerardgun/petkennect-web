@@ -178,7 +178,7 @@
        }
 
 .list-total-addons > .item {
-  padding: 0.8rem 0rem !important;
+  padding: 18px 0rem !important;
 }
 
 .ui.ordered.steps .step.active:before, .ui.steps .active.step .icon{
@@ -386,6 +386,10 @@ display: none;
   }
 }
 
+.mt_input{
+  margin-top: 0.28571429rem !important;
+}
+
 .subService-margin {
   margin-top: 30px !important;
 }
@@ -394,3 +398,24 @@ display: none;
     text-align: center !important;
 }
 
+.charge-card-check{
+  margin-top: -15px !important;
+    margin-bottom: 10px !important;
+}
+
+.final-cost{
+  color: teal !important;
+}
+
+.total-cost {
+  margin: 46px 0 1em !important;
+}
+
+.addons-grid {
+padding-left: 0rem !important;
+padding-right: 0rem !important;
+}
+
+.total-cost-input {
+margin-top: 4px !important;
+}

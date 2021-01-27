@@ -364,7 +364,7 @@ const RecurringDaysForm = ({ ...props }) => {
                 </>
                   : <>
                     <p className='mb0'><b>On Days:</b></p>
-                    <Form.Group style={{ marginTop: '-1rem' }}>
+                    <Form.Group width='equl'>
                       <Field
                         component={FormField}
                         control={Checkbox}

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import {  withRouter ,useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import {  reduxForm } from 'redux-form'
 import { Button, Form, Icon, Header, Modal } from 'semantic-ui-react'
@@ -8,43 +8,60 @@ import { Button, Form, Icon, Header, Modal } from 'semantic-ui-react'
 import FormError from '@components/Common/FormError'
 
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
-
+import emailMessageDetailDuck from '@reducers/email-message/detail'
 export const formId = 'service-alert-form'
 
-const AlertModal = props => {
+const EmailAlert = (props) => {
   const {
-    error,
-    isOpened,
-    onReply
+    trainingMethodDetail,
+    petDetail,
+    error
   } = props
 
-  const _handleConfirmClick = () =>{
-    onReply()
-  }
+  const clientId = trainingMethodDetail.item.clientId && trainingMethodDetail.item.clientId
+
+  const history = useHistory()
+  const getIsOpened = mode => (mode === 'READ')
 
   const _handleClose = () =>{
-    props.reset()
-    props.resetItem()
+    props.resetEmailAlertItem()
+    // props.resetItem()
+    history.push({
+      pathname: `/client/${clientId}`,
+      state   : { option: 'reserves' }
+    })
   }
+  // const { client: clientId } = useParams()
+  // eslint-disable-next-line no-unused-vars
+  const _handleConfirmClick = values => {
+    _handleClose()
+  }
+
+  const _handleYesClick = ()=>{
+    props.setEmailItem({ clientId: clientId },'CREATE')
+    props.resetEmailAlertItem()
+  }
+
+  const isOpened = useMemo(() => getIsOpened(petDetail.mode), [ petDetail.mode ])
 
   return (
     <Modal
       className='ui-delete-modal'
       onClose={_handleClose}
       open={isOpened}
-      size='small'>
+      size='medium'>
       <Modal.Content style={{ textAlign: 'center', paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
         <Icon
           circular color='blue' name='info circle'
           size='big' style={{ backgroundColor: 'blue', boxShadow: 'none', fontSize: '2.5rem' }}/>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Header as='h2' style={{ fontWeight: 500 }}>
-        No Variation Exists!
+        Send Confirmation Email?
         </Header>
         {
           <>
             <p style={{ color: 'gray' }}>
-              This location and pet does not have a Price Variation.
+               No email confirmation has been sent to client, would you like to do this now?
             </p>
           </>
         }
@@ -60,11 +77,14 @@ const AlertModal = props => {
         }
       </Modal.Content>
       <Modal.Actions className='form-modal-action-button'>
-
         <Button
           className='w120'
           color='teal'
-          content='OK' onClick={_handleConfirmClick}/>
+          content='yes' onClick={_handleYesClick}/>
+        <Button
+          className='w120'
+          color='teal'
+          content='No' onClick={_handleConfirmClick}/>
 
       </Modal.Actions>
     </Modal>
@@ -76,13 +96,17 @@ export default compose(
   connect(
     state => {
       const petDetail = trainingMethodDetailDuck.selectors.detail(state)
+      const trainingMethodDetail = trainingMethodDetailDuck.selectors.detail(state)
 
       return {
-        petDetail
+        petDetail,
+        trainingMethodDetail
       }
     },
     {
-      resetItem: trainingMethodDetailDuck.creators.resetItem
+      resetEmailAlertItem: trainingMethodDetailDuck.creators.resetItem,
+
+      setEmailItem: emailMessageDetailDuck.creators.setItem
     }
   ),
   reduxForm({
@@ -90,4 +114,4 @@ export default compose(
     destroyOnUnmount  : false,
     enableReinitialize: true
   })
-)(AlertModal)
+)(EmailAlert)

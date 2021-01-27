@@ -109,6 +109,7 @@
     }
   }
 }
+
 }
 
 @media only screen
@@ -124,9 +125,11 @@ and (-webkit-min-device-pixel-ratio: 2) {
 .DayPicker-Day--peekday {
   background-color:#95dc8a;
   color: black !important;
+  border: 1px solid #95dc8a !important;
 }
 
 .DayPicker-Day--fullDay {
   background: repeating-linear-gradient( 45deg, #a9cece, teal 10px, teal 10px, rgba(0, 0, 0, 0.3) 14px ) !important;
   color: white !important;
+  border: 1px solid teal !important;
 }

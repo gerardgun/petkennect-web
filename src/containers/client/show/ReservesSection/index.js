@@ -71,7 +71,7 @@ function ReservesSection({ ...props }) {
         <Grid.Column
           className='pl0'
           verticalAlign='middle'>
-          <Header as='h2' >Service Hostory</Header>
+          <Header as='h2' >Service History</Header>
         </Grid.Column>
       </Grid>
       <div className='mh16 mv32 div-booking-button'>

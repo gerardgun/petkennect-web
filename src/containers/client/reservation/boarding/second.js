@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector, FieldArray } from 'redux-form'
-import { Button, Form, Header, Segment, Checkbox, Select, Input, Icon, Dropdown, Grid } from 'semantic-ui-react'
+import { Button, Form, Header, Segment, Checkbox, Input, Icon, Dropdown, Grid } from 'semantic-ui-react'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
@@ -13,57 +13,61 @@ import clientPetDuck from '@reducers/client/pet'
 import petKennelDuck from '@reducers/pet/pet-kennel'
 import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
-import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
 import PetItem from './PetItem'
 import AlertModal from './../alert-modal'
 import { boardingFormId } from './first'
 
-function AddOnsItem({ item, petDetail, index }) {
-  return (
-    <div className='div-kannel-selection'>
-      <Header as='h3' className='section-info-header'>What Frequency will be for {petDetail.name}</Header>
-      <Grid>
-        <Grid.Column computer={11} mobile={16} tablet={8}>
-          <Field
-            component={FormField}
-            control={Select}
-            key={item.id}
-            label='Frequency'
-            name={`${item.id}.Frequency`}
-            options={[
-              { key: 1, value: 1, text: 'Test1' },
-              { key: 2, value: 2, text: 'Test2' }
-            ]}
-            placeholder='Select frequency'
-            selectOnBlur={false}/>
-        </Grid.Column>
-        <Grid.Column computer={5} mobile={16} tablet={8}>
-          <Field
-            component={FormField}
-            control={Input}
-            label='Price'
-            name={`${item}.subVariation[${index}].price`}
-            required
-            type='number'/>
-        </Grid.Column>
-      </Grid>
+// function AddOnsItem({ item, petDetail, index }) {
+//   return (
+//     <div className='div-kannel-selection'>
+//       <Header as='h3' className='section-info-header'>What Frequency will be for {petDetail.name}</Header>
+//       <Grid>
+//         <Grid.Column computer={11} mobile={16} tablet={8}>
+//           <Field
+//             component={FormField}
+//             control={Select}
+//             key={item.id}
+//             label='Frequency'
+//             name={`${item.id}.Frequency`}
+//             options={[
+//               { key: 1, value: 1, text: 'Test1' },
+//               { key: 2, value: 2, text: 'Test2' }
+//             ]}
+//             placeholder='Select frequency'
+//             selectOnBlur={false}/>
+//         </Grid.Column>
+//         <Grid.Column computer={5} mobile={16} tablet={8}>
+//           <Field
+//             component={FormField}
+//             control={Input}
+//             label='Price'
+//             name={`${item}.subVariation[${index}].price`}
+//             required
+//             type='number'/>
+//         </Grid.Column>
+//       </Grid>
 
-    </div>
-  )
-}
+//     </div>
+//   )
+// }
 
 const BoardingFormWizardSecond = props => {
   const {
     petReservationDetail,
     clientPet,
     petKennel,
+    state,
     services,
-    totalPrice = 0,
-    hasPriceChange,
     serviceAttribute,
     error, handleSubmit, reset // redux-form
   } = props
+
+  const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
+
+  const _handleOkBtnClick = () =>{
+    setOverridePopupOpen(false)
+  }
 
   function AddOnsList({ fields, meta: { error, submitFailed } }) {
     const groomingServiceId = services.items && services.items.find(_ => _.type === 'B')
@@ -72,11 +76,23 @@ const BoardingFormWizardSecond = props => {
     petReservationDetail.item.addons && petReservationDetail.mode === 'CREATE' && subServiceUpdate(petReservationDetail.item.calculatedAddons)
 
     function subServiceUpdate(value) {    // addon price update function
+      let frequency = 1
       petReservationDetail.item.addons && props.setReserveItem({ ...petReservationDetail.item },'UPDATE')
       fields.removeAll()
       for (let item of value)
-        fields.push({ subVariation: [ { price: item.price, id: item.service_variation, petId: item.petId } ],
+        fields.push({ subVariation: [ { price: item.price, id: item.service_variation, petId: item.petId, frequency: frequency } ],
           name        : item.name,  addOn_id    : item.addOn_id })
+    }
+
+    const _handleFrequencyChange = (index, _index) => {
+      const price = formValueSelector(boardingFormId)(state, 'boarding_reservation_list[' + index + '].subVariation[' + _index + '].price')
+      const frequency = formValueSelector(boardingFormId)(state, 'boarding_reservation_list[' + index + '].subVariation[' + _index + '].frequency')
+      const totalCost = Number(price) * Number(frequency)
+      let inputTotalCost = document.getElementsByName('boarding_reservation_list[' + index + '].subVariation[' + _index + '].totalCost')
+      if(inputTotalCost.length > 0)
+        setTimeout(() =>
+          inputTotalCost[0].value = totalCost
+        , 500)
     }
 
     const _handleAddOnChange = (value)=>{
@@ -94,6 +110,8 @@ const BoardingFormWizardSecond = props => {
         let alreadyExistsAddon = oldSelectedAddOn && oldSelectedAddOn.find(_ => _.addOn_id == item)
 
         for (let pet of pets) {
+          let frequency = 1
+
           let alreadyExistAddonForPet = alreadyExistsAddon &&  alreadyExistsAddon.subVariation.find(_ => _.petId == pet)
 
           if(alreadyExistAddonForPet) {
@@ -122,14 +140,16 @@ const BoardingFormWizardSecond = props => {
             if(variationId != null) {
               const subVariation = variation.find(_ => _.id === variationId)
 
-              petSubServiceVariation.push({ price: subVariation.price, id: subVariation.id, petId: pet })
+              petSubServiceVariation.push({ price    : subVariation.price, id       : subVariation.id, petId    : pet,
+                frequency: frequency  })
             }
             else {
-              props.setItem(null, 'READ')
+              setOverridePopupOpen(true)
             }
           }
         }
-        fields.push({ name: subService.name, subVariation: petSubServiceVariation, addOn_id: item  })
+        if(petSubServiceVariation.length > 0)
+          fields.push({ name: subService.name, subVariation: petSubServiceVariation, addOn_id: item  })
       }
     }
 
@@ -169,26 +189,46 @@ const BoardingFormWizardSecond = props => {
                 <Form.Group widths='equal'>
                   <Header as='h3' className='section-info-header'>{fields.get(index).name}</Header>
                 </Form.Group>
-                {props.selectedPets && props.selectedPets.map((petId,index)=> (
-                  <>
-                    <AddOnsItem
-                      index={index}
-                      item={item}
-                      key={index}
-                      petDetail={clientPet.items.find(_pet => _pet.id === petId)}/>
-                  </>
-                ))}
+                {props.selectedPets && props.selectedPets.map((petId, _index)=> {
+                  let petDetail = clientPet.items.find(_pet => _pet.id === petId)
+
+                  return (
+                    <div className='div-kannel-selection' key={index + '_' + _index}>
+                      <Header as='h3' className='section-info-header'>What Frequency will be for {petDetail.name}</Header>
+                      <Grid>
+                        <Grid.Column computer={5} mobile={16} tablet={8}>
+                          <Field
+                            component={FormField}
+                            control={Input}
+                            label='Frequency'
+                            name={`${item}.subVariation[${_index}].frequency`}
+                            onChange={_handleFrequencyChange(index, _index)}
+                            type='number'/>
+                        </Grid.Column> <p className='total-cost addons-grid'>X</p>
+                        <Grid.Column computer={5} mobile={16} tablet={8}>
+                          <Field
+                            component={FormField}
+                            control={Input}
+                            label='Price'
+                            min={0}
+                            name={`${item}.subVariation[${_index}].price`}
+                            onChange={_handleFrequencyChange(index, _index)}
+                            required
+                            type='number'/>
+                        </Grid.Column> <p className='total-cost addons-grid'>=</p>
+                        <Grid.Column computer={5} mobile={16} tablet={8}>
+                          <label>Total Cost</label>
+                          <input className='mt_input total-cost-input' disabled name={`${item}.subVariation[${_index}].totalCost`}/>
+                        </Grid.Column>
+                      </Grid>
+
+                    </div>
+                  )
+                })}
               </Segment>
 
             </div>
           ))
-        }
-        {
-          hasPriceChange && hasPriceChange.length > 0 && (
-            <div className='div-addon-summary'>
-              <b className='charge-amount'>${totalPrice}</b>
-            </div>
-          )
         }
 
         {
@@ -393,7 +433,7 @@ const BoardingFormWizardSecond = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <AlertModal/>
+      <AlertModal isOpened={overridePopupOpen} onReply={_handleOkBtnClick}/>
     </>
   )
 }
@@ -419,9 +459,6 @@ export default compose(
         checkOut  = new Date(checkInDate.setDate((checkInDate.getDate() + ((7 * unitOfOccurrences) - 1))))
       }
       const hasPriceChange = formValueSelector(boardingFormId)(state, 'boarding_reservation_list')
-      const totalPrice = hasPriceChange && hasPriceChange.map(_ => _.subVariation).map((item)=>
-        item.map(_ => _.price).reduce((price1, price2) => Number(price1) + Number(price2), 0)).reduce((price1, price2) =>
-        Number(price1) + Number(price2), 0)
 
       return {
         hasPriceChange,
@@ -430,10 +467,10 @@ export default compose(
         petKennel               : petKennelDuck.selectors.list(state),
         clientPet               : clientPetDuck.selectors.list(state),
         checkIn   ,
+        state,
         checkOut,
         services,
         serviceAttribute,
-        totalPrice,
         selectedPets            : selectedPets,
         selectedLocation        : selectedLocation,
         hasBelongingsChecked    : Boolean(belongings),
@@ -444,7 +481,6 @@ export default compose(
     },
     {
       getPetKennels : petKennelDuck.creators.get,
-      setItem       : trainingMethodDetailDuck.creators.setItem,
       setReserveItem: petReservationDetailDuck.creators.setItem
     }
   ),

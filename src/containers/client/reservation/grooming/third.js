@@ -53,7 +53,7 @@ const GroomingFormWizardThird = props => {
 
   const groomerName = groomerDetail && groomerDetail.first_name + ' ' + groomerDetail.last_name
   let totalCost = 0
-
+  const reccuringDays = props.selectedDate.length
   const _handleSubmit = values => {
     values = parseFormValues(values)
     let serviceVariations = petReservationDetail.item.serviceVariations
@@ -159,7 +159,7 @@ const GroomingFormWizardThird = props => {
             <Header as='h3' className='charges-heading'>Estimate Charges</Header>
             <List className='list-total-addons' divided verticalAlign='middle'>
               <List.Item>
-                <List.Content>
+                <List.Content className='final-cost'>
                   <b>{selectedPetName}</b>
                 </List.Content>
               </List.Item>
@@ -202,22 +202,46 @@ const GroomingFormWizardThird = props => {
                   </>
                 )
               }
-              <List.Item>
-                <List.Content floated='right'>
-                $0
-                </List.Content>
-                <List.Content>
-                  <b>Client Discount</b>
-                </List.Content>
-              </List.Item>
-              <List.Item>
-                <List.Content floated='right'>
-                  <b>${totalCost}</b>
-                </List.Content>
-                <List.Content>
-                  <b>Total Cost</b>
-                </List.Content>
-              </List.Item>
+              {
+                !isUpdating && (
+                  <>
+                    <List.Item className='final-cost'>
+                      <List.Content floated='right'>
+                        <b>${ totalCost }</b>
+                      </List.Content>
+                      <List.Content>
+                        <b>Total cost for one day</b>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item className='final-cost'>
+                      <List.Content floated='right'>
+                        <b>  {reccuringDays} * ${ totalCost }</b>
+                      </List.Content>
+                      <List.Content>
+                        <b>Reccuring days cost</b>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item className='final-cost'>
+                      <List.Content floated='right'>
+                        <b>${reccuringDays * totalCost }</b>
+                      </List.Content>
+                      <List.Content>
+                        <b>Total recurring cost</b>
+                      </List.Content>
+                    </List.Item>
+                  </>)
+              }
+              {
+                isUpdating && (
+                  <List.Item className='final-cost'>
+                    <List.Content floated='right'>
+                      <b>${ totalCost }</b>
+                    </List.Content>
+                    <List.Content>
+                      <b>Total Cost</b>
+                    </List.Content>
+                  </List.Item>
+                ) }
             </List>
           </Segment>
 

@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
-import { Button, Dropdown, Input, Grid, Form, Header, Select, Segment, Icon } from 'semantic-ui-react'
+import { Button, Dropdown, Confirm, Input, Grid, Form, Header, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import { syncValidate } from '@lib/utils/functions'
+import { monthDiff, syncValidate } from '@lib/utils/functions'
+import { PeekDaysAndFullDays } from '@lib/constants/pet'
+
+import DayPicker from 'react-day-picker'
+
 import Message from '@components/Message'
 
 import moment  from 'moment'
@@ -21,7 +25,6 @@ import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
-import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
 export const boardingFormId = 'boarding-reservation-form'
 
@@ -39,8 +42,17 @@ const BoardingFormWizardFirst = props => {
     error, handleSubmit, reset
   } = props
 
+  const [ startDate, setStartDate ] = useState(new Date())
+  const [ endDate, setEndDate ] = useState(new Date())
+  const [ numberOfMonths, setNumberOfMonth ] = useState(1)
+  const [ selectedDates, setCalendarDates ] = useState([])
+  const [ PeekAndFullDay, setPeekAndFullDay ] = useState({ peekday: [], fullDay: [] })
+  const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
+  const [ alertPopupOpen, setAlertPopupOpen ] = useState(false)
+
   useEffect(() => {
     props.getPetKennelType()
+    setPeekAndFullDay(PeekDaysAndFullDays)
   }, [])
 
   useEffect(() => {
@@ -72,12 +84,62 @@ const BoardingFormWizardFirst = props => {
             serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
 
           else
-            props.setItemVariation(null, 'READ')
+            setAlertPopupOpen(true)
         }
         props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations, calculatedAddons: addonArray }, 'CREATE')
       }
     }
   }, [ selectedPets, selectedLocation ])
+
+  useEffect(() => {
+    let allSelectedDate = []
+    for (let d = new Date(startDate); d <=  new Date(endDate); d.setDate(d.getDate() + 1))
+      allSelectedDate.push(new Date(d))
+
+    for (let date of PeekAndFullDay.fullDay) {
+      let fullDayExists = allSelectedDate.find(_ => moment(_).format('MM/DD/YYYY') == moment(date).format('MM/DD/YYYY'))
+      if(fullDayExists) {
+        setOverridePopupOpen(true)
+        break
+      }
+    }
+
+    setCalendarDates([].concat(allSelectedDate))
+    setNumberOfMonth(monthDiff(startDate, endDate))
+  },[ startDate, endDate ])
+
+  const _handleCheckInChange = (value)=>{
+    setStartDate(new Date(value))
+  }
+
+  const _handleCheckOutChange = (value)=>{
+    setEndDate(new Date(value))
+  }
+
+  const _handleOkBtnClick = () =>{
+    setAlertPopupOpen(false)
+  }
+
+  const _handleCancelOverride = () => {
+    setOverridePopupOpen(false)
+    let selectedDays = [].concat(selectedDates)
+
+    for (let date of PeekAndFullDay.fullDay) {
+      let fullDayExists = selectedDays.find(_ => moment(_).format('MM/DD/YYYY') == moment(date).format('MM/DD/YYYY'))
+      if(fullDayExists) {
+        const index = selectedDays.indexOf(fullDayExists)
+        if(index > -1)
+          selectedDays.splice(index, 1)
+      }
+    }
+
+    setCalendarDates(selectedDays)
+  }
+
+  const _handleConfirmOverride = () =>{
+    setOverridePopupOpen(false)
+    setPeekAndFullDay({ peekday: PeekAndFullDay.peekday, fullDay: [] })
+  }
 
   return (
     services[0] ? (<>
@@ -145,6 +207,7 @@ const BoardingFormWizardFirst = props => {
               control={Input}
               label='Check In'
               name='check_in'
+              onChange={_handleCheckInChange}
               required
               type='date'/>
             <Field
@@ -152,6 +215,7 @@ const BoardingFormWizardFirst = props => {
               control={Input}
               label='Check Out'
               name='check_out'
+              onChange={_handleCheckOutChange}
               required
               type='date'/>
           </Form.Group>
@@ -172,6 +236,38 @@ const BoardingFormWizardFirst = props => {
               type='time'/>
           </Form.Group>
         </Segment>
+        <Segment className='section-info-item-step1'>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Select}
+              label='Source'
+              name='source'
+              options={
+                [ { key: 1 , value: 1, text: 'Online' },
+                  { key: 2 , value: 2, text: 'Email' },
+                  { key: 3 , value: 3, text: 'Phone Call' },
+                  { key: 4 , value: 4, text: 'Walk In' }
+                ]
+              }
+              placeholder='Select Source'
+              required/>
+            <Field
+              component={FormField}
+              control={Select}
+              label='Type of stay'
+              name='type_of_stay'
+              options={
+                [ { key: 1 , value: 1, text: 'Dog Boarding' },
+                  { key: 2 , value: 2, text: 'Add\'l Dog' },
+                  { key: 3 , value: 3 ,  text: 'Boarding' }
+                ]
+              }
+              placeholder='Select type of stay '
+              required/>
+          </Form.Group>
+        </Segment>
+        <br/>
         <Segment>
           <div  className='div-section-info-item-single'>
             <Header as='h3' className='section-info-header'>Select package and kennel type</Header>
@@ -188,28 +284,17 @@ const BoardingFormWizardFirst = props => {
                 required
                 selectOnBlur={false}/>
             </Form.Group>
-            {
-              props.hasSharedKennelType && (
-                props.selectedPets && props.selectedPets.map((petId)=> (
-                  <Form.Group key={petId} widths='equal'>
-                    <Field
-                      component={FormField}
-                      control={Select}
-                      label={`Type of stay for ${clientPet.items.filter(_pet => _pet.id === petId)[0].name}`}
-                      name={`type_of_stay_${petId}`}
-                      options={[
-                        { key: 1, value: 1, text: 'Dog Boarding' },
-                        { key: 2, value: 2, text: 'Additional Dog Boarding' }
-                      ]}
-                      placeholder='Select status'
-                      required
-                      selectOnBlur={false}/>
-                  </Form.Group>
-                ))
-
-              )
-            }
           </div>
+        </Segment>
+        <Segment className='section-info-item-step1'>
+          <DayPicker
+            fixedWeeks
+            fromMonth={startDate}
+            modifiers={PeekAndFullDay}
+            month={startDate}
+            numberOfMonths={numberOfMonths}
+            selectedDays={selectedDates}
+            toMonth={endDate}/>
         </Segment>
 
         {
@@ -232,19 +317,27 @@ const BoardingFormWizardFirst = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <AlertModal/>
-    </>) : (<><Message
-      content={
-        <Grid padded style={{ marginLeft: -16 }}>
-          <Grid.Column className='mb0 pb0' width='16'>
-            <div className='message__title'>The service is not available for selected company</div>
-          </Grid.Column>
-          <Grid.Column width='16'>
+      <AlertModal isOpened={alertPopupOpen} onReply={_handleOkBtnClick}/>
+      <Confirm
+        cancelButton='No'
+        confirmButton='Yes'
+        content='The reservation is full on some of the selected dates, do you want to overwrite and select the dates?'
+        onCancel={_handleCancelOverride}
+        onConfirm={_handleConfirmOverride}
+        open={overridePopupOpen}/>
+    </>) : (<>
+      <Message
+        content={
+          <Grid padded style={{ marginLeft: -16 }}>
+            <Grid.Column className='mb0 pb0' width='16'>
+              <div className='message__title'>The service is not available for selected company</div>
+            </Grid.Column>
+            <Grid.Column width='16'>
 
-          </Grid.Column>
-        </Grid>
+            </Grid.Column>
+          </Grid>
 
-      } type='warning'/></>)
+        } type='warning'/></>)
 
   )
 }
@@ -312,8 +405,7 @@ export default compose(
     },
     {
       getPetKennelType: petKennelTypeDuck.creators.get,
-      setItem         : petReservationDetailDuck.creators.setItem,
-      setItemVariation: trainingMethodDetailDuck.creators.setItem
+      setItem         : petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({

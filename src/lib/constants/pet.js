@@ -51,6 +51,6 @@ export const TemperamentPeoplePreferenceOptions
     }))
 
 export const PeekDaysAndFullDays = {
-  peekday: [],
-  fullDay: []
+  peekday: [ new Date(2020, 11, 24),  new Date(2018, 8, 25) ],
+  fullDay: [ new Date(2020, 11, 26) ]
 }

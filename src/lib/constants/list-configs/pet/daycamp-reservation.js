@@ -27,6 +27,11 @@ export default {
         name        : 'view_notes'
       },
       {
+        icon        : 'edit outline',
+        display_name: 'Edit Note',
+        name        : 'edit_note'
+      },
+      {
         icon        : 'file pdf',
         display_name: 'Report Cards',
         name        : 'add_report_card'

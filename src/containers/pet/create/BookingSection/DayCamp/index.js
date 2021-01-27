@@ -5,12 +5,12 @@ import { Header, Segment, Dropdown, Button, Grid, Container } from 'semantic-ui-
 import { compose } from 'redux'
 
 import Table from '@components/Table'
-
+import PetNotes from '../Notes'
 import petDetailDuck from '@reducers/pet/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import dayCampReservationDuck from '@reducers/pet/reservation/daycamp-reservation'
 import dayCampReservationDetailDuck from '@reducers/pet/reservation/daycamp-reservation/detail'
-
+import petNoteDetailDuck from '@reducers/pet/note/detail'
 import PackageCreateForm from './package-create'
 
 function DaycampServiceSection({ petDetail,  ...props }) {
@@ -35,6 +35,9 @@ function DaycampServiceSection({ petDetail,  ...props }) {
     switch (optionName) {
       case 'edit_reserve' : props.setItemReservation(item,'UPDATE')
         history.replace(`/client/${clientId}/book`)
+        break
+
+      case 'edit_note' : props.setNoteItem(item,'READ')
         break
     }
   }
@@ -156,6 +159,7 @@ function DaycampServiceSection({ petDetail,  ...props }) {
         onRowClick={_handleRowClick}
         onRowOptionClick={_handleRowOptionClick}/>
       <PackageCreateForm/>
+      <PetNotes/>
     </Container>
   )
 }
@@ -166,6 +170,7 @@ export default compose(
       petDetail         : petDetailDuck.selectors.detail(state),
       daycampReservation: dayCampReservationDuck.selectors.list(state)
     }),{
+      setNoteItem          : petNoteDetailDuck.creators.setItem,
       getDayCampReservation: dayCampReservationDuck.creators.get,
       setItem              : dayCampReservationDetailDuck.creators.setItem,
       setItemReservation   : petReservationDetailDuck.creators.setItem

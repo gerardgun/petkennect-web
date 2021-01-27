@@ -44,8 +44,9 @@ const DaycampFormWizardThird = props => {
     currentTenant, reset // redux-form
   } = props
 
+  let finalTotalCost = 0
   let totalCost = 0
-
+  const reccuringDays = props.selectedDate.length
   const _handleAddReportCardBtnClick = () => {
     props.setItemDaycampQuesItem(null, 'CREATE')
   }
@@ -215,14 +216,27 @@ const DaycampFormWizardThird = props => {
             <List className='list-total-addons' divided verticalAlign='middle'>
               {
                 petReservationDetail.item.serviceVariations && petReservationDetail.item.serviceVariations.map((item,index)=>{
+                  totalCost = 0
                   totalCost += Number(item.price)
+                  finalTotalCost += Number(item.price)
+
+                  addons && addons.map((_item)=>{
+                    let frequency = _item.subVariation.find(_ => _.petId == item.petId)
+                    && _item.subVariation.find(_ => _.petId == item.petId).frequency
+
+                    let addOnPrice = _item.subVariation.find(_ => _.petId == item.petId)
+                     && _item.subVariation.find(_ => _.petId == item.petId).price
+
+                    totalCost += (Number(addOnPrice) * Number(frequency))
+                  })
 
                   return (
                     <>
                       <List.Item key={index}>
-                        <List.Content floated='right'>
+                        <List.Content className='final-cost' floated='right'>
+                          <b>{totalCost}</b>
                         </List.Content>
-                        <List.Content>
+                        <List.Content className='final-cost'>
                           <b>{clientPet.items && clientPet.items.find(_ => _.id == item.petId).name}</b>
                         </List.Content>
                       </List.Item>
@@ -233,26 +247,31 @@ const DaycampFormWizardThird = props => {
                         <List.Content>
                           Boarding
                         </List.Content>
+
                       </List.Item>
                       {
                         addons && addons.length > 0 && (
                           <>
                             <List.Item>
                               <List.Content>
-                                <Header as='h3'>Add Ons</Header>
+                                <Header as='h4'>Add Ons</Header>
                               </List.Content>
                             </List.Item>
                             {
                               addons && addons.map((_item,index)=>{
+                                let frequency = _item.subVariation.find(_ => _.petId == item.petId)
+                                && _item.subVariation.find(_ => _.petId == item.petId).frequency
+
                                 let addOnPrice = _item.subVariation.find(_ => _.petId == item.petId)
                                  && _item.subVariation.find(_ => _.petId == item.petId).price
-                                totalCost += Number(addOnPrice)
+
+                                finalTotalCost += Number(addOnPrice) * Number(frequency)
 
                                 return (
                                   <>
                                     <List.Item key={index}>
                                       <List.Content floated='right'>
-                                      ${ addOnPrice }
+                                      ${ frequency * addOnPrice }
                                       </List.Content>
                                       <List.Content>
                                         {_item.name}
@@ -289,21 +308,59 @@ const DaycampFormWizardThird = props => {
                         </List.Content>
                       </List.Item>
                       <List.Item>
-                        <List.Content floated='right'>
-                      &nbsp;
+                        <List.Content >
+                        </List.Content>
+                        <List.Content floated='right' >
                         </List.Content>
                       </List.Item>
+                      {/* <List.Item>
+                        <List.Content floated='right'>
+                       &nbsp;
+                        </List.Content>
+                      </List.Item> */}
                     </>
                   )
                 })}
-              <List.Item>
-                <List.Content floated='right'>
-                  <b>${ totalCost }</b>
-                </List.Content>
-                <List.Content>
-                  <b>Total Cost</b>
-                </List.Content>
-              </List.Item>
+              {
+                !isUpdating && (
+                  <>
+                    <List.Item className='final-cost'>
+                      <List.Content floated='right'>
+                        <b>${ finalTotalCost }</b>
+                      </List.Content>
+                      <List.Content>
+                        <b>Total Cost for 1 Day</b>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item className='final-cost'>
+                      <List.Content floated='right'>
+                        <b>  {reccuringDays} * ${ finalTotalCost }</b>
+                      </List.Content>
+                      <List.Content>
+                        <b>Reccuring Days Cost</b>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item className='final-cost'>
+                      <List.Content floated='right'>
+                        <b>${reccuringDays * finalTotalCost }</b>
+                      </List.Content>
+                      <List.Content>
+                        <b>Total Recurring Cost</b>
+                      </List.Content>
+                    </List.Item>
+                  </>)
+              }
+              {
+                isUpdating && (
+                  <List.Item className='final-cost'>
+                    <List.Content floated='right'>
+                      <b>${ finalTotalCost }</b>
+                    </List.Content>
+                    <List.Content>
+                      <b>Total Cost</b>
+                    </List.Content>
+                  </List.Item>
+                ) }
             </List>
           </Segment>
         </Segment>

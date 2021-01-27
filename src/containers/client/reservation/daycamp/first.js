@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -17,7 +17,6 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
 import serviceDuck from '@reducers/service'
-import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
 import AlertModal from './../alert-modal'
 import RecurringDaysForm from './../recurring-days'
@@ -36,6 +35,8 @@ const DaycampFormWizardFirst = props => {
     selectedPets,
     error, handleSubmit, reset
   } = props
+
+  const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
 
   useEffect(() => {
     let serviceVariations = []
@@ -66,12 +67,16 @@ const DaycampFormWizardFirst = props => {
             serviceVariations.push({ ...variation.find(_ => _.id == variationId), petId: item })
 
           else
-            props.setItemVariation(null, 'READ')
+            setOverridePopupOpen(true)
         }
         props.setItem({ ...petReservationDetail.item, serviceVariations: serviceVariations, calculatedAddons: addonArray }, 'CREATE')
       }
     }
   }, [ selectedLocation, selectedPets ])
+
+  const _handleOkBtnClick = () =>{
+    setOverridePopupOpen(false)
+  }
 
   return (
     services[0] ? (<>
@@ -132,6 +137,46 @@ const DaycampFormWizardFirst = props => {
               selectOnBlur={false}/>
           </Form.Group>
         </Segment>
+        <Segment className='section-info-item-step1'>
+          <Header as='h3' className='section-info-header'>Select  Package Details</Header>
+          <Grid>
+            <Grid.Column computer={16}>
+              <Form.Group widths='2'>
+                <Field
+                  component={FormField}
+                  control={Select}
+                  label='Select Package'
+                  name='package'
+                  options={[
+                    { key: 1, value: 'Package1', text: 'Package1' }
+                  ]}
+                  placeholder='Select Package'
+
+                  selectOnBlur={false}/>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  label='Price'
+                  name='price'
+
+                  selectOnBlur={false}
+                  type='number'/>
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  label='Description'
+                  name='package_description'
+                  placeholder='package description'
+                  readOnly/>
+              </Form.Group>
+
+            </Grid.Column>
+
+          </Grid>
+
+        </Segment>
 
         {
           petReservationDetail.item.id === undefined ? <RecurringDaysForm serviceType='D'/>
@@ -186,7 +231,7 @@ const DaycampFormWizardFirst = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <AlertModal/>
+      <AlertModal isOpened={overridePopupOpen} onReply={_handleOkBtnClick}/>
     </>) : (<><Message
       content={
         <Grid padded style={{ marginLeft: -16 }}>
@@ -256,8 +301,7 @@ export default compose(
       }
     },
     {
-      setItem         : petReservationDetailDuck.creators.setItem,
-      setItemVariation: trainingMethodDetailDuck.creators.setItem
+      setItem: petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({

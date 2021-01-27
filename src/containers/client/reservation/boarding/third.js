@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter, useParams, useHistory } from 'react-router-dom'
+import { withRouter, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { reduxForm, formValueSelector, Field } from 'redux-form'
-import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment, List, Icon, Checkbox } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
@@ -17,7 +17,9 @@ import authDuck from '@reducers/auth'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import employeeDetailDuck from '@reducers/employee/detail'
 import clientPetDuck from '@reducers/client/pet'
-
+import trainingMethodDetailDuck from '@reducers/training-method/detail'
+import EmailCreateForm from './email/email-create'
+import EmailAlert from './email/email-alert'
 import { boardingFormId } from './first'
 
 const BoardingFormWizardThird = props => {
@@ -37,19 +39,24 @@ const BoardingFormWizardThird = props => {
   } = props
 
   const { client: clientId } = useParams()
-  const history = useHistory()
 
   let totalCost = 0
+  let finalTotalCost = 0
+  let selectedStartDate = new Date(startDate)
+  let selectedEndDate = new Date(endDate)
+  let difference_in_time = selectedEndDate.getTime() - selectedStartDate.getTime()
+  let difference_in_days = difference_in_time / (1000 * 3600 * 24)
 
   const _handleClose = () => {
     reset()
     props.resetItem()
-    history.push({
-      pathname: `/client/${clientId}`,
-      state   : { option: 'reserves' }
-    })
-  }
+    props.setItemEmail({ clientId: clientId } , 'READ')
 
+    // history.push({
+    //   pathname: `/client/${clientId}`,
+    //   state   : { option: 'reserves' }
+    // })
+  }
   const _handleSubmit = values => {
     values = parseFormValues(values)
     let serviceVariations = petReservationDetail.item.serviceVariations
@@ -142,7 +149,7 @@ const BoardingFormWizardThird = props => {
                     <Grid>
                       <Grid.Column width={5}>
                         <InputReadOnly
-                          label='Off peach nights'
+                          label='Off peak nights'
                           value='56'/>
                         <br/>
                       </Grid.Column >
@@ -154,9 +161,19 @@ const BoardingFormWizardThird = props => {
                       <Grid.Column width={6}>
                         <InputReadOnly
                           label='Total night'
-                          value='61'/>
+                          value={difference_in_days}/>
                       </Grid.Column >
                     </Grid>
+                    <Form.Group widths='equal'>
+                      <Field
+                        className='charge-card-check'
+                        component={FormField}
+                        control={Checkbox}
+                        format={Boolean}
+                        label='Charge card on file'
+                        name='charge_card_on_file'
+                        type='checkbox'/>
+                    </Form.Group>
                     <div className='mt16'>
                       <Field
                         component={FormField}
@@ -176,12 +193,24 @@ const BoardingFormWizardThird = props => {
             <List className='list-total-addons' divided verticalAlign='middle'>
               {
                 petReservationDetail.item.serviceVariations && petReservationDetail.item.serviceVariations.map((item,index)=>{
+                  totalCost = 0
                   totalCost += Number(item.price)
+                  finalTotalCost += Number(item.price)
+                  addons && addons.map((_item)=>{
+                    let frequency = _item.subVariation.find(_ => _.petId == item.petId)
+                    && _item.subVariation.find(_ => _.petId == item.petId).frequency
+
+                    let addOnPrice = _item.subVariation.find(_ => _.petId == item.petId)
+                     && _item.subVariation.find(_ => _.petId == item.petId).price
+
+                    totalCost += (Number(addOnPrice) * Number(frequency))
+                  })
 
                   return (
                     <>
-                      <List.Item key={index}>
+                      <List.Item className='final-cost' key={index}>
                         <List.Content floated='right'>
+                          <b>{totalCost}</b>
                         </List.Content>
                         <List.Content>
                           <b>{clientPet.items && clientPet.items.find(_ => _.id == item.petId).name}</b>
@@ -207,13 +236,17 @@ const BoardingFormWizardThird = props => {
                               addons && addons.map((_item,index)=>{
                                 let addOnPrice = _item.subVariation.find(_ => _.petId == item.petId)
                                  && _item.subVariation.find(_ => _.petId == item.petId).price
-                                totalCost += Number(addOnPrice)
+
+                                let frequency = _item.subVariation.find(_ => _.petId == item.petId)
+                                 && _item.subVariation.find(_ => _.petId == item.petId).frequency
+
+                                finalTotalCost += Number(addOnPrice)  * Number(frequency)
 
                                 return (
                                   <>
                                     <List.Item key={index}>
                                       <List.Content floated='right'>
-                                      ${ addOnPrice }
+                                      ${ addOnPrice * Number(frequency)}
                                       </List.Content>
                                       <List.Content>
                                         {_item.name}
@@ -251,15 +284,15 @@ const BoardingFormWizardThird = props => {
                       </List.Item>
                       <List.Item>
                         <List.Content floated='right'>
-                      &nbsp;
+
                         </List.Content>
                       </List.Item>
                     </>
                   )
                 })}
-              <List.Item>
+              <List.Item className='final-cost'>
                 <List.Content floated='right'>
-                  <b>${ totalCost }</b>
+                  <b>${ finalTotalCost }</b>
                 </List.Content>
                 <List.Content>
                   <b>Total Cost</b>
@@ -300,6 +333,8 @@ const BoardingFormWizardThird = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+      <EmailAlert/>
+      <EmailCreateForm/>
     </>
   )
 }
@@ -342,9 +377,10 @@ export default compose(
       }
     },
     {
-      resetItem: petReservationDetailDuck.creators.resetItem,
-      post     : petReservationDetailDuck.creators.post,
-      put      : petReservationDetailDuck.creators.put
+      resetItem   : petReservationDetailDuck.creators.resetItem,
+      post        : petReservationDetailDuck.creators.post,
+      put         : petReservationDetailDuck.creators.put,
+      setItemEmail: trainingMethodDetailDuck.creators.setItem
     }
   ),
   reduxForm({

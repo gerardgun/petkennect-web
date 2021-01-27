@@ -95,7 +95,6 @@ const ProductFormFirst = props => {
                 category.items.length > 0  && category.items.filter(_ => _.id == _.parent || _.parent == null).map((item)=>(
                   <>
                     <Field
-                      className='label_h0'
                       component={FormField}
                       control={Checkbox}
                       label={`${item.name}`}
@@ -106,7 +105,6 @@ const ProductFormFirst = props => {
                         category.items.filter(_ => _.id != _.parent && _.parent == item.id).map((item)=>(
                           <>
                             <Field
-                              className='label_h0'
                               component={FormField}
                               control={Checkbox}
                               label={`${item.name}`}

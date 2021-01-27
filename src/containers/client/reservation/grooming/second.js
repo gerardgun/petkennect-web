@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -12,7 +12,6 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 import clientPetDuck from '@reducers/client/pet'
-import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
 import AlertModal from './../alert-modal'
 import { groomingFormId } from './first'
@@ -89,6 +88,12 @@ const GroomingFormWizardSecond = props => {
     error, handleSubmit, reset // redux-form
   } = props
 
+  const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
+
+  const _handleOkBtnClick = () =>{
+    setOverridePopupOpen(false)
+  }
+
   useEffect(() => {
     props.getClientPets()
   }, [])
@@ -149,7 +154,7 @@ const GroomingFormWizardSecond = props => {
           }
 
           else {
-            props.setItem(null, 'READ')
+            setOverridePopupOpen(true)
           }
         }
       }
@@ -192,6 +197,7 @@ const GroomingFormWizardSecond = props => {
                       component={FormField}
                       control={Input}
                       label='Price'
+                      min={0}
                       name={`${item}.price`}
                       required
                       type='number'/>
@@ -295,7 +301,7 @@ const GroomingFormWizardSecond = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <AlertModal/>
+      <AlertModal isOpened={overridePopupOpen} onReply={_handleOkBtnClick}/>
     </>
   )
 }
@@ -329,7 +335,6 @@ export default compose(
     },
     {
       getClientPets : clientPetDuck.creators.get,
-      setItem       : trainingMethodDetailDuck.creators.setItem,
       setReserveItem: petReservationDetailDuck.creators.setItem
     }
   ),
