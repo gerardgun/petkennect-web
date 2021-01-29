@@ -214,8 +214,8 @@ const DaycampFormWizardSecond = props => {
             placeholder='Search addon'
             required
             search
-            selection
-            selectOnBlur={false}/>
+            selectOnBlur={false}
+            selection/>
           <Button
             basic
             className='w100'
@@ -320,8 +320,8 @@ const DaycampFormWizardSecond = props => {
             selectedPets={props.selectedPets}
             title='Yard Detail'
             type={type}
-            yard_type={yard_type}
-            yardTypesOptions={yardTypesOptions}/>
+            yardTypesOptions={yardTypesOptions}
+            yard_type={yard_type}/>
         </>
 
         <Segment>

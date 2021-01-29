@@ -32,7 +32,7 @@ function TrainingServiceSection({ petDetail, ...props }) {
   }
 
   const _handleAddReservationBtnClick = () => {
-    props.setReserveItem({ service_type: 'T' },'UPDATE')
+    props.setReserveItem(null,'CREATE')
     history.replace(`/client/${petDetail.item.client}/book`)
   }
 

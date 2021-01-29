@@ -2,12 +2,11 @@ import React  from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm, formValueSelector, Field } from 'redux-form'
-import { TextArea, Button, Form, Grid, Header, Segment, Icon } from 'semantic-ui-react'
+import { reduxForm, formValueSelector } from 'redux-form'
+import { Button, Form, Grid, Header, Segment, Icon } from 'semantic-ui-react'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
-import FormField from '@components/Common/FormField'
 
 import moment from 'moment'
 
@@ -19,7 +18,10 @@ import authDuck from '@reducers/auth'
 import clientPetDuck from '@reducers/client/pet'
 import employeeDetailDuck from '@reducers/employee/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
 
+import AddNote from './../notesSection/create'
+import ViewNoteSection from './../notesSection/view'
 import { trainingFormId } from './first'
 
 const TrainingFormWizardThird = props => {
@@ -39,6 +41,14 @@ const TrainingFormWizardThird = props => {
   const { client: clientId } = useParams()
   const history = useHistory()
 
+  const _handleAddNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'CREATE')
+  }
+
+  const _handleViewNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'READ')
+  }
+
   const _handleClose = () => {
     reset()
     props.resetItem()
@@ -48,6 +58,17 @@ const TrainingFormWizardThird = props => {
     })
   }
 
+  const _handleCloseForUpdate = () => {
+    reset()
+    props.resetItem()
+    history.push({
+      pathname: `/pet/${petId}`,
+      state   : { option: 'services' }
+    })
+  }
+
+  const petId = petReservationDetail.item.pet && petReservationDetail.item.pet
+
   const _handleSubmit = values => {
     values = parseFormValues(values)
     let serviceVariations = petReservationDetail.item.serviceVariations
@@ -56,7 +77,7 @@ const TrainingFormWizardThird = props => {
         .put({ ...values, serviceVariations, reservationDate     : props.reservationDate,
           petReservationDetail: petReservationDetail.item,
           currentTenant, serviceType         : props.serviceType, clientId })
-        .then(_handleClose)
+        .then(_handleCloseForUpdate)
         .catch(parseResponseError)
     else
       return props
@@ -125,9 +146,9 @@ const TrainingFormWizardThird = props => {
                 <div className='flex justify-between align-center'>
                   <div className='w100'>
                     <Header as='h3'>
-                    Reservation Comments
+                    Reservation Notes
                     </Header>
-                    <div className='mt16'>
+                    {/* <div className='mt16'>
                       <label>Comment</label>
                       <Form.Group widths='equal'>
                         <Field
@@ -136,7 +157,31 @@ const TrainingFormWizardThird = props => {
                           name='comment'
                           selectOnBlur={false}/>
                       </Form.Group>
-                    </div>
+                    </div> */}
+                    <Form.Group className='form-modal-actions' widths='equal'>
+                      <Form.Field className='btnBack'>
+                        <Button
+                          basic
+                          className='w140'
+                          color='teal'
+                          onClick={_handleAddNoteBtnClick}
+                          type='button'>
+                          <Icon name='plus'/> Add Note
+                        </Button>
+                      </Form.Field>
+                      {
+                        isUpdating && (
+                          <Form.Field>
+                            <Button
+                              basic
+                              className='w120'
+                              color='teal'
+                              onClick={_handleViewNoteBtnClick}
+                              type='button'> View Note
+                            </Button>
+                          </Form.Field>)
+                      }
+                    </Form.Group>
                   </div>
                 </div>
               </Segment>
@@ -173,7 +218,7 @@ const TrainingFormWizardThird = props => {
           </Form.Field>
           <Form.Field>
             <Button
-              className='w120'
+              className='w120 button-margin'
               color='teal'
               content='Reserve!'
               disabled={submitting}
@@ -182,6 +227,8 @@ const TrainingFormWizardThird = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+      <AddNote/>
+      <ViewNoteSection/>
     </>
   )
 }
@@ -229,9 +276,10 @@ export default compose(
       }
     },
     {
-      resetItem: petReservationDetailDuck.creators.resetItem,
-      post     : petReservationDetailDuck.creators.post,
-      put      : petReservationDetailDuck.creators.put
+      resetItem  : petReservationDetailDuck.creators.resetItem,
+      post       : petReservationDetailDuck.creators.post,
+      put        : petReservationDetailDuck.creators.put,
+      setNoteItem: petNoteDetailDuck.creators.setItem
     }
   ),
   reduxForm({

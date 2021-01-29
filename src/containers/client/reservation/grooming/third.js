@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm, formValueSelector,Field } from 'redux-form'
+import { reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, List, Icon } from 'semantic-ui-react'
 
 import moment from 'moment'
@@ -10,14 +10,16 @@ import moment from 'moment'
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
-import FormField from '@components/Common/FormField'
 import authDuck from '@reducers/auth'
 
 import clientPetDuck from '@reducers/client/pet'
 import employeeDuck from '@reducers/employee'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
 
+import AddNote from './../notesSection/create'
+import ViewNoteSection from './../notesSection/view'
 import DatesSummary from '../dates-summary'
 import AlertModal from './../alert-modal'
 
@@ -42,6 +44,14 @@ const GroomingFormWizardThird = props => {
   const { client: clientId } = useParams()
   const history = useHistory()
 
+  const _handleAddNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'CREATE')
+  }
+
+  const _handleViewNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'READ')
+  }
+
   const _handleClose = () => {
     reset()
     props.resetItem()
@@ -50,6 +60,16 @@ const GroomingFormWizardThird = props => {
       state   : { option: 'reserves' }
     })
   }
+
+  const _handleCloseForUpdate = () => {
+    reset()
+    props.resetItem()
+    history.push({
+      pathname: `/pet/${petId}`,
+      state   : { option: 'services' }
+    })
+  }
+  const petId = petReservationDetail.item.pet && petReservationDetail.item.pet
 
   const groomerName = groomerDetail && groomerDetail.first_name + ' ' + groomerDetail.last_name
   let totalCost = 0
@@ -63,7 +83,7 @@ const GroomingFormWizardThird = props => {
         .put({ ...values, serviceVariations,
           petReservationDetail: petReservationDetail.item,
           currentTenant, serviceType         : props.serviceType, clientId, reservationDate     : props.reservationDate })
-        .then(_handleClose)
+        .then(_handleCloseForUpdate)
         .catch(parseResponseError)
     else
       return props
@@ -134,15 +154,41 @@ const GroomingFormWizardThird = props => {
                 <div className='flex justify-between align-center'>
                   <div className='w100'>
                     <Header as='h3'>
-                    Reservation Comments
+                    Reservation Notes
                     </Header>
-                    <div className='mt16'>
+                    {/* <div className='mt16'>
                       <Field
                         component={FormField}
                         control={Form.TextArea}
                         label='Comment'
                         name='comment'/>
-                    </div>
+                    </div> */}
+
+                    <Form.Group className='form-modal-actions' widths='equal'>
+                      <Form.Field className='btnBack'>
+                        <Button
+                          basic
+                          className='w140'
+                          color='teal'
+                          onClick={_handleAddNoteBtnClick}
+                          type='button'>
+                          <Icon name='plus'/> Add Note
+                        </Button>
+                      </Form.Field>
+                      {
+                        isUpdating && (
+                          <Form.Field>
+                            <Button
+                              basic
+                              className='w120'
+                              color='teal'
+                              onClick={_handleViewNoteBtnClick}
+                              type='button'> View Note
+                            </Button>
+                          </Form.Field>)
+                      }
+                    </Form.Group>
+
                   </div>
                 </div>
               </Segment>
@@ -266,6 +312,7 @@ const GroomingFormWizardThird = props => {
               onClick={props.onPreviousStep}
               type='button'/>
           </Form.Field>
+
           <Form.Field>
             <Button
               className='w120'
@@ -278,6 +325,8 @@ const GroomingFormWizardThird = props => {
         </Form.Group>
       </Form>
       <AlertModal/>
+      <AddNote/>
+      <ViewNoteSection/>
     </>
   )
 }
@@ -317,10 +366,11 @@ export default compose(
       }
     },
     {
-      resetItem: petReservationDetailDuck.creators.resetItem,
-      post     : petReservationDetailDuck.creators.post,
-      put      : petReservationDetailDuck.creators.put,
-      setItem  : trainingMethodDetailDuck.creators.setItem
+      resetItem  : petReservationDetailDuck.creators.resetItem,
+      post       : petReservationDetailDuck.creators.post,
+      put        : petReservationDetailDuck.creators.put,
+      setItem    : trainingMethodDetailDuck.creators.setItem,
+      setNoteItem: petNoteDetailDuck.creators.setItem
     }
   ),
   reduxForm({

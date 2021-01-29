@@ -19,17 +19,25 @@ const EmailAlert = (props) => {
   } = props
 
   const clientId = trainingMethodDetail.item.clientId && trainingMethodDetail.item.clientId
-
+  const petId = trainingMethodDetail.item.petId && trainingMethodDetail.item.petId
   const history = useHistory()
   const getIsOpened = mode => (mode === 'READ')
 
   const _handleClose = () =>{
-    props.resetEmailAlertItem()
-    // props.resetItem()
-    history.push({
-      pathname: `/client/${clientId}`,
-      state   : { option: 'reserves' }
-    })
+    if(trainingMethodDetail.item.petId) {
+      props.resetEmailAlertItem()
+      history.push({
+        pathname: `/pet/${petId}`,
+        state   : { option: 'services' }
+      })
+    } else {
+      props.resetEmailAlertItem()
+      // props.resetItem()
+      history.push({
+        pathname: `/client/${clientId}`,
+        state   : { option: 'reserves' }
+      })
+    }
   }
   // const { client: clientId } = useParams()
   // eslint-disable-next-line no-unused-vars
@@ -38,8 +46,14 @@ const EmailAlert = (props) => {
   }
 
   const _handleYesClick = ()=>{
-    props.setEmailItem({ clientId: clientId },'CREATE')
-    props.resetEmailAlertItem()
+    if(trainingMethodDetail.item.petId) {
+      props.setEmailItem({ clientId: clientId, petId: petId },'CREATE')
+      props.resetEmailAlertItem()
+    }
+    else {
+      props.setEmailItem({ clientId: clientId },'CREATE')
+      props.resetEmailAlertItem()
+    }
   }
 
   const isOpened = useMemo(() => getIsOpened(petDetail.mode), [ petDetail.mode ])

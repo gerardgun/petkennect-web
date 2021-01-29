@@ -171,8 +171,8 @@ const BoardingFormWizardSecond = props => {
             placeholder='Search addon'
             required
             search
-            selection
-            selectOnBlur={false}/>
+            selectOnBlur={false}
+            selection/>
           <Button
             basic
             className='w100'

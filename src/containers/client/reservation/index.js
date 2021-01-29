@@ -5,7 +5,6 @@ import { compose } from 'redux'
 import { Header, Image, Grid, Button, Icon, Segment, Breadcrumb } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
-import Message from '@components/Message'
 import BoardingReservationFormWizard from './boarding'
 import DaycampReservationFormWizard from './daycamp'
 import FitnessReservationFormWizard from './daycamp'
@@ -95,24 +94,6 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
                 </>
               )
             }
-
-            <Message
-              content={
-                <Grid padded style={{ marginLeft: -16 }}>
-                  <Grid.Column className='mb0 pb0' width='16'>
-                    <div className='message__title'>Pet vaccinations are out of date</div>
-                  </Grid.Column>
-                  <Grid.Column width='16'>
-                    <Grid>
-                      <Grid.Column>
-                        <div  className='message__subtitle'>Lala does not have an updated rabias vaccine</div>
-                      </Grid.Column>
-                    </Grid>
-
-                  </Grid.Column>
-                </Grid>
-
-              } type='warning'/>
 
             <Header as='h3'>What is the Service?</Header>
             <div className='mv32 btn-service-type'>

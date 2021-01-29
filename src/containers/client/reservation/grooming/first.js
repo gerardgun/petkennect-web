@@ -21,6 +21,7 @@ import employeeDuck from '@reducers/employee'
 
 import RecurringDaysForm from './../recurring-days'
 import AlertModal from './../alert-modal'
+import VaccinationAlert from '../vaccination-alert'
 
 export const groomingFormId = 'grooming-reservation-form'
 
@@ -44,6 +45,8 @@ const GroomingFormWizardFirst = props => {
   }, [])
 
   const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
+  const [ vaccinationAlert,setVaccinationAlert ] = useState(false)
+  const [ petName,setPetName ] = useState('')
 
   const _handleOkBtnClick = () =>{
     setOverridePopupOpen(false)
@@ -52,6 +55,17 @@ const GroomingFormWizardFirst = props => {
   useEffect(() => {
     let serviceVariations
     if(selectedPet && selectedLocation) {
+      if(selectedPet === undefined)
+        setVaccinationAlert(false)
+
+      const petInfo =  clientPet.items.length != 0 && clientPet.items.find(_item=>_item.id === selectedPet)
+      if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired') {
+        setVaccinationAlert(true)
+        setPetName(petInfo.name)
+      }
+      else {
+        setVaccinationAlert(false)
+      }
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
         .values.find(_location => _location.value == selectedLocation).id
 
@@ -137,9 +151,21 @@ const GroomingFormWizardFirst = props => {
               }))}
               placeholder='Search pet'
               required
-              selection
-              selectOnBlur={false}/>
+              selectOnBlur={false}
+              selection/>
           </Form.Group>
+          {vaccinationAlert !== false && <Grid>
+            <Grid.Column computer={8}>
+
+            </Grid.Column>
+            <Grid.Column
+              className='message-grid' computer={8} mobile={16}
+              tablet={16}>
+              <VaccinationAlert petName={petName}/>
+            </Grid.Column>
+          </Grid>
+
+          }
         </Segment>
         <Segment className='section-info-item-step1'>
           <Header as='h3' className='section-info-header'>Select  Package Details</Header>
@@ -283,6 +309,7 @@ const GroomingFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
+              disabled={vaccinationAlert}
               type='submit'/>
           </Form.Field>
         </Form.Group>

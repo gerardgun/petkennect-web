@@ -22,6 +22,7 @@ import serviceAttributeDuck from '@reducers/service/service-attribute'
 
 import AlertModal from './../alert-modal'
 import RecurringDaysForm from './../recurring-days'
+import VaccinationAlert from '../vaccination-alert'
 
 import './styles.scss'
 
@@ -49,6 +50,8 @@ const TrainingFormWizardFirst = props => {
   }, [])
 
   const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
+  const [ vaccinationAlert,setVaccinationAlert ] = useState(false)
+  const [ petName,setPetName ] = useState('')
 
   const _handleOkBtnClick = () =>{
     setOverridePopupOpen(false)
@@ -58,6 +61,21 @@ const TrainingFormWizardFirst = props => {
     let serviceVariations = []
 
     if(selectedPets && selectedLocation) {
+      if(selectedPets.length < 1)
+        setVaccinationAlert(false)
+      for (let pet of selectedPets) {
+        const petInfo =  clientPet.items.length != 0 && clientPet.items.find(_item=>_item.id === pet)
+        if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired') {
+          setVaccinationAlert(true)
+          setPetName(petInfo.name)
+          break
+        }
+
+        else {
+          setVaccinationAlert(false)
+        }
+      }
+
       let allSelectedPet = selectedPets.filter(_ => _ != null)
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
         .values.find(_location => _location.value == selectedLocation)
@@ -145,9 +163,21 @@ const TrainingFormWizardFirst = props => {
               }))}
               placeholder='Search pet'
               required
-              selection
-              selectOnBlur={false}/>
+              selectOnBlur={false}
+              selection/>
           </Form.Group>
+          {vaccinationAlert !== false && <Grid>
+            <Grid.Column computer={8}>
+
+            </Grid.Column>
+            <Grid.Column
+              className='message-grid' computer={8} mobile={16}
+              tablet={16}>
+              <VaccinationAlert petName={petName}/>
+            </Grid.Column>
+          </Grid>
+
+          }
         </Segment>
         <Segment className='section-info-item-step1'>
           <Header as='h3' className='section-info-header'>Select  Package Details</Header>
@@ -265,6 +295,7 @@ const TrainingFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
+              disabled={vaccinationAlert}
               type='submit'/>
           </Form.Field>
         </Form.Group>

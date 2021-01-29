@@ -126,9 +126,14 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
             <Breadcrumb>
               {
                 comesfromClientShowScreen ? (
-                  <Breadcrumb.Section>
-                    <Link to={`/client/${history.location.state.client}`}>{history.location.state.client_fullname}</Link>
-                  </Breadcrumb.Section>
+                  history.location.state.option ? (
+                    <Breadcrumb.Section>
+                      <Link to='/pet'>Pets</Link>
+                    </Breadcrumb.Section>
+                  )
+                    : (<Breadcrumb.Section>
+                      <Link to={`/client/${history.location.state.client}`}>{history.location.state.client_fullname}</Link>
+                    </Breadcrumb.Section>)
                 ) : (
                   <Breadcrumb.Section>
                     <Link to='/pet'>Pets</Link>

@@ -18,8 +18,13 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import employeeDetailDuck from '@reducers/employee/detail'
 import clientPetDuck from '@reducers/client/pet'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
+
 import EmailCreateForm from './email/email-create'
 import EmailAlert from './email/email-alert'
+import AddNote from './../notesSection/create'
+import ViewNoteSection from './../notesSection/view'
+
 import { boardingFormId } from './first'
 
 const BoardingFormWizardThird = props => {
@@ -47,16 +52,26 @@ const BoardingFormWizardThird = props => {
   let difference_in_time = selectedEndDate.getTime() - selectedStartDate.getTime()
   let difference_in_days = difference_in_time / (1000 * 3600 * 24)
 
+  const _handleAddNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'CREATE')
+  }
+
+  const _handleViewNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'READ')
+  }
+
   const _handleClose = () => {
     reset()
     props.resetItem()
     props.setItemEmail({ clientId: clientId } , 'READ')
-
-    // history.push({
-    //   pathname: `/client/${clientId}`,
-    //   state   : { option: 'reserves' }
-    // })
   }
+
+  const _handleCloseForUpdate = () => {
+    reset()
+    props.resetItem()
+    props.setItemEmail({ clientId: clientId ,petId: petId } , 'READ')
+  }
+
   const _handleSubmit = values => {
     values = parseFormValues(values)
     let serviceVariations = petReservationDetail.item.serviceVariations
@@ -65,7 +80,7 @@ const BoardingFormWizardThird = props => {
         .put({ ...values, serviceVariations,
           petReservationDetail: petReservationDetail.item,
           currentTenant, serviceType         : props.serviceType, clientId })
-        .then(_handleClose)
+        .then(_handleCloseForUpdate)
         .catch(parseResponseError)
     else
       return props
@@ -73,6 +88,8 @@ const BoardingFormWizardThird = props => {
         .then(_handleClose)
         .catch(parseResponseError)
   }
+
+  const petId = petReservationDetail.item.pet && petReservationDetail.item.pet
 
   const isUpdating = Boolean(petReservationDetail.item.id)
 
@@ -174,14 +191,38 @@ const BoardingFormWizardThird = props => {
                         name='charge_card_on_file'
                         type='checkbox'/>
                     </Form.Group>
-                    <div className='mt16'>
+                    {/* <div className='mt16'>
                       <Field
                         component={FormField}
                         control={Form.TextArea}
                         label='Comment'
                         name='comment'
                         placeholder='Enter Comment'/>
-                    </div>
+                    </div> */}
+                    <Form.Group className='form-modal-actions' widths='equal'>
+                      <Form.Field className='btnBack'>
+                        <Button
+                          basic
+                          className='w140'
+                          color='teal'
+                          onClick={_handleAddNoteBtnClick}
+                          type='button'>
+                          <Icon name='plus'/> Add Note
+                        </Button>
+                      </Form.Field>
+                      {
+                        isUpdating && (
+                          <Form.Field>
+                            <Button
+                              basic
+                              className='w120'
+                              color='teal'
+                              onClick={_handleViewNoteBtnClick}
+                              type='button'> View Note
+                            </Button>
+                          </Form.Field>)
+                      }
+                    </Form.Group>
                   </div>
                 </div>
               </Segment>
@@ -335,6 +376,8 @@ const BoardingFormWizardThird = props => {
       </Form>
       <EmailAlert/>
       <EmailCreateForm/>
+      <AddNote/>
+      <ViewNoteSection/>
     </>
   )
 }
@@ -380,7 +423,8 @@ export default compose(
       resetItem   : petReservationDetailDuck.creators.resetItem,
       post        : petReservationDetailDuck.creators.post,
       put         : petReservationDetailDuck.creators.put,
-      setItemEmail: trainingMethodDetailDuck.creators.setItem
+      setItemEmail: trainingMethodDetailDuck.creators.setItem,
+      setNoteItem : petNoteDetailDuck.creators.setItem
     }
   ),
   reduxForm({

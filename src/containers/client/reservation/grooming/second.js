@@ -177,8 +177,8 @@ const GroomingFormWizardSecond = props => {
               ({ key: _subService.id, value: _subService.id, text: `${_subService.name}` }))}
             placeholder='Search detail'
             search
-            selection
-            selectOnBlur={false}/>
+            selectOnBlur={false}
+            selection/>
         </div>
         {
           fields.map((item, index) => (

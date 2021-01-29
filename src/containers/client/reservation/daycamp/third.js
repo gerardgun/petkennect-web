@@ -2,12 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { reduxForm, formValueSelector, Field } from 'redux-form'
+import { reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Grid, Header, Segment, Icon, List } from 'semantic-ui-react'
 import { parseFormValues, parseResponseError } from '@lib/utils/functions'
 import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
-import FormField from '@components/Common/FormField'
 
 import moment from 'moment'
 
@@ -23,6 +22,10 @@ import clientDocumentDetailDuck from '@reducers/client/document/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import employeeDetailDuck from '@reducers/employee/detail'
 import petReservationDaycampQuestionDetailDuck from '@reducers/pet/reservation/dacamp-question/detail'
+import petNoteDetailDuck from '@reducers/pet/note/detail'
+
+import AddNote from './../notesSection/create'
+import ViewNoteSection from './../notesSection/view'
 
 import { daycampFormId } from './first'
 
@@ -47,6 +50,15 @@ const DaycampFormWizardThird = props => {
   let finalTotalCost = 0
   let totalCost = 0
   const reccuringDays = props.selectedDate.length
+
+  const _handleAddNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'CREATE')
+  }
+
+  const _handleViewNoteBtnClick = (item) =>{
+    props.setNoteItem(item, 'READ')
+  }
+
   const _handleAddReportCardBtnClick = () => {
     props.setItemDaycampQuesItem(null, 'CREATE')
   }
@@ -70,6 +82,17 @@ const DaycampFormWizardThird = props => {
     })
   }
 
+  const _handleCloseForUpdate = () => {
+    reset()
+    props.resetItem()
+    history.push({
+      pathname: `/pet/${petId}`,
+      state   : { option: 'services' }
+    })
+  }
+
+  const petId = petReservationDetail.item.pet && petReservationDetail.item.pet
+
   const _handleSubmit = values => {
     values = parseFormValues(values)
     let serviceVariations = petReservationDetail.item.serviceVariations
@@ -79,7 +102,7 @@ const DaycampFormWizardThird = props => {
         .put({ ...values, serviceVariations,  reservationDate     : props.reservationDate,
           petReservationDetail: petReservationDetail.item,
           currentTenant, serviceType         : props.serviceType, clientId })
-        .then(_handleClose)
+        .then(_handleCloseForUpdate)
         .catch(parseResponseError)
     else
       return props
@@ -146,13 +169,13 @@ const DaycampFormWizardThird = props => {
               </Segment>
             </Grid.Column >
             <Grid.Column  computer={8} mobile={16} tablet={8}>
-              <Segment>
+              <Segment style={{ height: '100%' }}>
                 <div className='flex justify-between align-center'>
                   <div className='w100'>
                     <Header as='h3'>
-                    Reservation Comment
+                    Reservation Notes
                     </Header>
-                    <div className='mt16'>
+                    {/* <div className='mt16'>
                       <Field
                         component={FormField}
                         control={Form.TextArea}
@@ -160,7 +183,32 @@ const DaycampFormWizardThird = props => {
                         name='comment'
                         placeholder='Enter Comment'
                         rows='4'/>
-                    </div>
+                    </div> */}
+
+                    <Form.Group className='form-modal-actions' widths='equal'>
+                      <Form.Field className='btnBack'>
+                        <Button
+                          basic
+                          className='w140'
+                          color='teal'
+                          onClick={_handleAddNoteBtnClick}
+                          type='button'>
+                          <Icon name='plus'/> Add Note
+                        </Button>
+                      </Form.Field>
+                      {
+                        isUpdating && (
+                          <Form.Field>
+                            <Button
+                              basic
+                              className='w120'
+                              color='teal'
+                              onClick={_handleViewNoteBtnClick}
+                              type='button'> View Note
+                            </Button>
+                          </Form.Field>)
+                      }
+                    </Form.Group>
                   </div>
                 </div>
               </Segment>
@@ -398,6 +446,8 @@ const DaycampFormWizardThird = props => {
       </Form>
       <ClientDocumentFormSendModal/>
       <AddReportCardForm/>
+      <AddNote/>
+      <ViewNoteSection/>
     </>
   )
 }
@@ -451,7 +501,8 @@ export default compose(
       setDocumentItem       : clientDocumentDetailDuck.creators.setItem,
       setItemDaycampQuesItem: petReservationDaycampQuestionDetailDuck.creators.setItem,
       post                  : petReservationDetailDuck.creators.post,
-      put                   : petReservationDetailDuck.creators.put
+      put                   : petReservationDetailDuck.creators.put,
+      setNoteItem           : petNoteDetailDuck.creators.setItem
     }
   ),
   reduxForm({

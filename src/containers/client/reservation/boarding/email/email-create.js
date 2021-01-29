@@ -1,6 +1,5 @@
 import React, { useEffect ,useMemo } from 'react'
 import { connect } from 'react-redux'
-// import { useDropzone } from 'react-dropzone'
 import { withRouter ,useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
@@ -31,13 +30,26 @@ const EmailCreateForm = (props) => {
   }, [])
   const history = useHistory()
   const clientId = emailMessageDetail.item.clientId && emailMessageDetail.item.clientId
+  const petId = emailMessageDetail.item.petId && emailMessageDetail.item.petId
+
   const _handleClose = () => {
-    props.reset()
-    props.resetItem()
-    history.push({
-      pathname: `/client/${clientId}`,
-      state   : { option: 'reserves' }
-    })
+    if(emailMessageDetail.item.petId) {
+      props.reset()
+      props.resetItem()
+
+      history.push({
+        pathname: `/pet/${petId}`,
+        state   : { option: 'services' }
+      })
+    }
+    else {
+      props.reset()
+      props.resetItem()
+      history.push({
+        pathname: `/client/${clientId}`,
+        state   : { option: 'reserves' }
+      })
+    }
   }
 
   const _handleSubmit = () => {
