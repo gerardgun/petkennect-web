@@ -30,6 +30,15 @@ import customizedField from '@reducers/customized-field/field'
 import customizedFieldDetail from '@reducers/customized-field/field/detail'
 import customizedFieldGroup from '@reducers/customized-field/group'
 import customizedFieldGroupDetail from '@reducers/customized-field/group/detail'
+
+import dashboardDaycamp from '@reducers/dashboard/daycamp'
+import dashboardDaycampCheckedIn from '@reducers/dashboard/daycamp/daycampCheckedIn'
+import dashboardDaycampCheckedOut from '@reducers/dashboard/daycamp/daycampCheckedOut'
+
+import dashboardBoarding from '@reducers/dashboard/boarding'
+import dashboardBoardingCheckedIn from '@reducers/dashboard/boarding/boardingCheckedIn'
+import dashboardBoardingCheckedOut from '@reducers/dashboard/boarding/boardingCheckedOut'
+
 import daycampCard from '@reducers/pet/reservation/daycamp-card'
 import daycampCardDetail from '@reducers/pet/reservation/daycamp-card/detail'
 import daycampCardQuestion from '@reducers/pet/reservation/daycamp-card/daycamp-card-question'
@@ -161,39 +170,48 @@ import zip from '@reducers/zip'
 import zipDetail from '@reducers/zip/detail'
 
 const createRootReducer = history => combineReducers({
-  form                                          : formReducer,
-  router                                        : connectRouter(history),
-  [agreement.store]                             : agreement.reducer,
-  [agreementDetail.store]                       : agreementDetail.reducer,
-  [auth.store]                                  : auth.reducer,
-  [application.store]                           : application.reducer,
-  [calendarDetail.store]                        : calendarDetail.reducer,
-  [category.store]                              : category.reducer,
-  [categoryDetail.store]                        : categoryDetail.reducer,
-  [client.store]                                : client.reducer,
-  [clientDetail.store]                          : clientDetail.reducer,
-  [clientDocument.store]                        : clientDocument.reducer,
-  [clientDocumentDetail.store]                  : clientDocumentDetail.reducer,
-  [clientDocumentType.store]                    : clientDocumentType.reducer,
-  [clientDocumentTypeDetail.store]              : clientDocumentTypeDetail.reducer,
-  [clientAgreement.store]                       : clientAgreement.reducer,
-  [clientAgreementDetail.store]                 : clientAgreementDetail.reducer,
-  [clientComment.store]                         : clientComment.reducer,
-  [clientCommentDetail.store]                   : clientCommentDetail.reducer,
-  [clientPet.store]                             : clientPet.reducer,
-  [clientEmailMessage.store]                    : clientEmailMessage.reducer,
-  [company.store]                               : company.reducer,
-  [companyDetail.store]                         : companyDetail.reducer,
-  [customReport.store]                          : customReport.reducer,
-  [customReportDetail.store]                    : customReportDetail.reducer                ,
-  [customized.store]                            : customized.reducer,
-  [customizedField.store]                       : customizedField.reducer,
-  [customizedFieldDetail.store]                 : customizedFieldDetail.reducer,
-  [customizedFieldGroup.store]                  : customizedFieldGroup.reducer,
-  [customizedFieldGroupDetail.store]            : customizedFieldGroupDetail.reducer,
-  [daycampCard.store]                           : daycampCard.reducer,
-  [daycampCardDetail.store]                     : daycampCardDetail.reducer,
-  [boardingReservation.store]                   : boardingReservation.reducer,
+  form                              : formReducer,
+  router                            : connectRouter(history),
+  [agreement.store]                 : agreement.reducer,
+  [agreementDetail.store]           : agreementDetail.reducer,
+  [auth.store]                      : auth.reducer,
+  [application.store]               : application.reducer,
+  [calendarDetail.store]            : calendarDetail.reducer,
+  [category.store]                  : category.reducer,
+  [categoryDetail.store]            : categoryDetail.reducer,
+  [client.store]                    : client.reducer,
+  [clientDetail.store]              : clientDetail.reducer,
+  [clientDocument.store]            : clientDocument.reducer,
+  [clientDocumentDetail.store]      : clientDocumentDetail.reducer,
+  [clientDocumentType.store]        : clientDocumentType.reducer,
+  [clientDocumentTypeDetail.store]  : clientDocumentTypeDetail.reducer,
+  [clientAgreement.store]           : clientAgreement.reducer,
+  [clientAgreementDetail.store]     : clientAgreementDetail.reducer,
+  [clientComment.store]             : clientComment.reducer,
+  [clientCommentDetail.store]       : clientCommentDetail.reducer,
+  [clientPet.store]                 : clientPet.reducer,
+  [clientEmailMessage.store]        : clientEmailMessage.reducer,
+  [company.store]                   : company.reducer,
+  [companyDetail.store]             : companyDetail.reducer,
+  [customReport.store]              : customReport.reducer,
+  [customReportDetail.store]        : customReportDetail.reducer                ,
+  [customized.store]                : customized.reducer,
+  [customizedField.store]           : customizedField.reducer,
+  [customizedFieldDetail.store]     : customizedFieldDetail.reducer,
+  [customizedFieldGroup.store]      : customizedFieldGroup.reducer,
+  [customizedFieldGroupDetail.store]: customizedFieldGroupDetail.reducer,
+  [daycampCard.store]               : daycampCard.reducer,
+  [daycampCardDetail.store]         : daycampCardDetail.reducer,
+  [boardingReservation.store]       : boardingReservation.reducer,
+
+  [dashboardDaycamp.store]          : dashboardDaycamp.reducer,    // dashboard
+  [dashboardDaycampCheckedIn.store] : dashboardDaycampCheckedIn.reducer,
+  [dashboardDaycampCheckedOut.store]: dashboardDaycampCheckedOut.reducer,
+
+  [dashboardBoarding.store]          : dashboardBoarding.reducer,    // dashboard
+  [dashboardBoardingCheckedIn.store] : dashboardBoardingCheckedIn.reducer,
+  [dashboardBoardingCheckedOut.store]: dashboardBoardingCheckedOut.reducer,
+
   [groomingReservation.store]                   : groomingReservation.reducer,
   [daycampReservation.store]                    : daycampReservation.reducer,
   [daycampReservationDetail.store]              : daycampReservationDetail.reducer,

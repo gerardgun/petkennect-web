@@ -16,11 +16,15 @@ import ViewNoteSection from '../../online-request/notesSection/'
 import clientDetailDuck from '@reducers/client/detail'
 import clientPetDuck from '@reducers/client/pet'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
+import employeeDuck from '@reducers/employee'
 import employeeDetailDuck from '@reducers/employee/detail'
+import trainingMethodDuck from '@reducers/training-method'
+import trainingReasonDuck from '@reducers/training-reason'
 import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 import authDuck from '@reducers/auth'
 import locationDuck from '@reducers/location'
+import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import './styles.scss'
@@ -39,6 +43,10 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
     props.getClientPets({ client__id: clientId })
     props.getServices()
     props.getServiceAttributes()
+    props.getPetKennelType()
+    props.getEmployees()
+    props.getTrainingMethod()
+    props.getTrainingReason()
   }, [])
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
@@ -136,11 +144,19 @@ export default compose(
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const services = serviceDuck.selectors.list(state)
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
+      const petKennelType = petKennelTypeDuck.selectors.list(state)
+      const employees = employeeDuck.selectors.list(state)
+      const trainingMethod = trainingMethodDuck.selectors.list(state)
+      const trainingReason = trainingReasonDuck.selectors.list(state)
 
       return {
         petReservationDetail,
         services,
         serviceAttribute,
+        petKennelType,
+        employees,
+        trainingMethod,
+        trainingReason,
         currentTenant: authDuck.selectors.getCurrentTenant(auth),
         clientDetail : clientDetailDuck.selectors.detail(state),
         clientPet    : clientPetDuck.selectors.list(state),
@@ -149,11 +165,15 @@ export default compose(
     },
     {
       getEmployee         : employeeDetailDuck.creators.get,
+      getEmployees        : employeeDuck.creators.get,
       getClient           : clientDetailDuck.creators.get,
       getClientPets       : clientPetDuck.creators.get,
       getServices         : serviceDuck.creators.get,
       getServiceAttributes: serviceAttributeDuck.creators.get,
       getLocations        : locationDuck.creators.get,
+      getPetKennelType    : petKennelTypeDuck.creators.get,
+      getTrainingMethod   : trainingMethodDuck.creators.get,
+      getTrainingReason   : trainingReasonDuck.creators.get,
       setNoteItem         : petNoteDetailDuck.creators.setItem
     }
   )

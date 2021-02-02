@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector,reduxForm } from 'redux-form'
-import { Button, Dropdown, Grid, Form, Header, Select, Segment, Icon, Input } from 'semantic-ui-react'
+import { Button, Grid, Form, Header, Select, Segment, Icon, Input } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -14,13 +14,13 @@ import Message from '@components/Message'
 import moment  from 'moment'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
-import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
 import serviceDuck from '@reducers/service'
 
 import AlertModal from './../alert-modal'
 import RecurringDaysForm from './../recurring-days'
 import VaccinationAlert from '../vaccination-alert'
+import PetLocationForm from '../common-sections/location-pet-section'
 
 export const daycampFormId = 'daycamp-reservation-form'
 
@@ -29,7 +29,6 @@ const DaycampFormWizardFirst = props => {
     petReservationDetail,
     addonArray,
     clientPet,
-    location,
     serviceAttribute,
     services,
     selectedLocation,
@@ -39,7 +38,6 @@ const DaycampFormWizardFirst = props => {
 
   const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
   const [ vaccinationAlert,setVaccinationAlert ] = useState(false)
-  const [ petName,setPetName ] = useState('')
 
   useEffect(() => {
     let serviceVariations = []
@@ -48,15 +46,10 @@ const DaycampFormWizardFirst = props => {
         setVaccinationAlert(false)
       for (let pet of selectedPets) {
         const petInfo =  clientPet.items.length != 0 && clientPet.items.find(_item=>_item.id === pet)
-        if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired') {
+        if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired')
           setVaccinationAlert(true)
-          setPetName(petInfo.name)
-          break
-        }
-
-        else {
+        else
           setVaccinationAlert(false)
-        }
       }
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
         .values.find(_location => _location.value == selectedLocation).id
@@ -120,39 +113,7 @@ const DaycampFormWizardFirst = props => {
       <Form onReset={reset} onSubmit={handleSubmit}>
 
         <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header'>Select location and pet</Header>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Location'
-              name='location'
-              options={location.items.map(_location =>
-                ({ key: _location.id, value: _location.id, text: `${_location.code}` }))
-              }
-              placeholder='Location'
-              required
-              selectOnBlur={false}/>
-
-            <Field
-              closeOnChange
-              component={FormField}
-              control={Dropdown}
-              disabled={petReservationDetail && petReservationDetail.item.pet != undefined}
-              fluid
-              label='Pet'
-              multiple
-              name='pet'
-              options={clientPet.items.map((_clientPet) => ({
-                key  : _clientPet.id,
-                value: _clientPet.id,
-                text : `${_clientPet.name}`
-              }))}
-              placeholder='Search pet'
-              required
-              selectOnBlur={false}
-              selection/>
-          </Form.Group>
+          <PetLocationForm multiple={true}/>
           {vaccinationAlert !== false && <Grid>
             <Grid.Column computer={8}>
 
@@ -160,7 +121,7 @@ const DaycampFormWizardFirst = props => {
             <Grid.Column
               className='message-grid' computer={8} mobile={16}
               tablet={16}>
-              <VaccinationAlert petName={petName}/>
+              <VaccinationAlert/>
             </Grid.Column>
           </Grid>
 
@@ -256,7 +217,6 @@ const DaycampFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
-              disabled={vaccinationAlert}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -315,6 +275,7 @@ export default compose(
       } : {}
 
       return {
+        initialLocation,
         service,
         sub_services,
         addonArray,
@@ -323,7 +284,6 @@ export default compose(
         clientPet       : clientPetDuck.selectors.list(state),
         services        : daycampServices,
         initialValues   : { ...petReservationDetail.item, ...defaultInitialValues, location: initialLocation },
-        location        : locationDuck.selectors.list(state),
         petReservationDetail,
         serviceAttribute,
         selectedPets    : selectedPets,

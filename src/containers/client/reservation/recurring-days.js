@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field } from 'redux-form'
-import { Button, Form, Radio, Header, Label, Icon, Accordion, Input, Checkbox, Grid, Segment, Confirm } from 'semantic-ui-react'
+import { Button, Form, Header, Label, Icon, Accordion, Input, Checkbox, Grid, Segment, Confirm } from 'semantic-ui-react'
 import DayPicker, { DateUtils } from 'react-day-picker'
 import { monthDiff, DayNth, weekAndDay } from '@lib/utils/functions'
 import { PeekDaysAndFullDays } from '@lib/constants/pet'
@@ -43,9 +43,9 @@ const RecurringDaysForm = ({ ...props }) => {
 
   useEffect(() => {
     if(petReservationDetail.item.selectedDate) {
-      setSelectedDates([].concat(petReservationDetail.item.selectedDate))
+      setSelectedDates(petReservationDetail.item.selectedDate)
       setFrequency(petReservationDetail.item.frequency)
-      setAllSelectedWeek([].concat(petReservationDetail.item.allSelectedWeek))
+      setAllSelectedWeek(petReservationDetail.item.allSelectedWeek)
       setEndByAfter(petReservationDetail.item.endByAfter)
       setUntilNoOfOccurrences(petReservationDetail.item.untilNoOfOccurrences)
       setSelectedMonthly(petReservationDetail.item.selectedMonthly)
@@ -138,7 +138,7 @@ const RecurringDaysForm = ({ ...props }) => {
           break
         }
       }
-      setSelectedDates([].concat(reservationDateArr))
+      setSelectedDates(reservationDateArr)
       setCalendarDates({ endDate: dfEndDate, numberOfMonths: monthDiff(startDate, dfEndDate) })
       props.setItem({ ...petReservationDetail.item, selectedDate: reservationDateArr,
         frequency, allSelectedWeek, startDate, untilNoOfOccurrences, endByAfter, calendarDates, selectedMonthly, endDate })
@@ -153,7 +153,7 @@ const RecurringDaysForm = ({ ...props }) => {
   const _handleStartDateChange = (value) =>{
     setStartDate(new Date(value))
     let currentDay = (new Date(value)).getDay()
-    setAllSelectedWeek([].concat(weekday[currentDay]))
+    setAllSelectedWeek(weekday[currentDay])
   }
 
   const _handleEndDateChange = (value) =>{
@@ -170,7 +170,7 @@ const RecurringDaysForm = ({ ...props }) => {
     let remainingDays = selectedDays.filter(value => !weekDays.includes(value))
     if(value)
       remainingDays.push('Monday', 'Tuesday','Wednesday','Thursday','Friday')
-    setAllSelectedWeek([].concat(remainingDays))
+    setAllSelectedWeek(remainingDays)
   }
 
   const _handleOnlyWeekEndChange = (value) =>{
@@ -179,27 +179,27 @@ const RecurringDaysForm = ({ ...props }) => {
     let remainingDays = selectedDays.filter(value => !weekEndDays.includes(value))
     if(value)
       remainingDays.push('Saturday','Sunday')
-    setAllSelectedWeek([].concat(remainingDays))
+    setAllSelectedWeek(remainingDays)
   }
 
-  const _handleFrequencyClick = (e ,{ radioType }) =>{
-    if(radioType === 'every_custom_week')
+  const _handleFrequencyClick = (e, value) =>{
+    if(value === 'every_custom_week')
       setCustomWeekNumber(1)
     else
       setCustomWeekNumber('')
-    setFrequency(radioType)
+    setFrequency(value)
   }
 
   const _handleCustomWeekChange = (e, { value }) =>{
     setCustomWeekNumber(value)
   }
 
-  const _handleEndByAfterChange = (e ,{ radioType }) =>{
-    setEndByAfter(radioType)
+  const _handleEndByAfterChange = (e , value) =>{
+    setEndByAfter(value)
   }
 
-  const _handleMonthlyRadioChange = (e, { radioType }) =>{
-    setSelectedMonthly(radioType)
+  const _handleMonthlyRadioChange = (e, value) =>{
+    setSelectedMonthly(value)
   }
 
   const _handleWeekDayClick = (e ,{ name }) =>{
@@ -210,7 +210,7 @@ const RecurringDaysForm = ({ ...props }) => {
     else
       allItem.push(name)
 
-    setAllSelectedWeek([].concat(allItem))
+    setAllSelectedWeek(allItem)
   }
 
   const _handleDayClick = (day, { selected }) => {
@@ -309,20 +309,28 @@ const RecurringDaysForm = ({ ...props }) => {
               className='grid_border_right pv0'  computer={4} mobile={16}
               tablet={16}>
               <p className='mb0'><b>Recurring:</b></p>
-              <Radio
-                checked={frequency === 'every_week'} label='Every Week' name='frequency'
-                onChange={_handleFrequencyClick}
-                radioType='every_week'/>
-              <Radio
-                checked={frequency === 'every_other_week'} label='Every Other Week' name='frequency'
-                onChange={_handleFrequencyClick}
-                radioType='every_other_week'/>
-              <div className='div_align_center'>
-                <Radio
-                  checked={frequency === 'every_custom_week'}
-                  className='pt0' label='Every' name='frequency'
+              <Form.Group className='div_align_center mh0'>
+                <Field
+                  component='input'
+                  name='frequency'
                   onChange={_handleFrequencyClick}
-                  radioType='every_custom_week'/>
+                  type='radio' value='every_week'/>
+                <label className='mh4'> Every Week</label>
+              </Form.Group>
+              <Form.Group className='div_align_center mh0'>
+                <Field
+                  component='input' name='frequency'
+                  onChange={_handleFrequencyClick}
+                  type='radio' value='every_other_week'/>
+                <label className='mh4'> Every Other Week</label>
+              </Form.Group>
+              <Form.Group className='div_align_center mh0'>
+                <Field
+                  className='pt0'
+                  component='input' name='frequency'
+                  onChange={_handleFrequencyClick}
+                  type='radio' value='every_custom_week'/>
+                <label className='mh4'> Every</label>
                 <Form.Field
                   className='ml8 mv8 w_input_3'
                   control={Input}
@@ -332,35 +340,36 @@ const RecurringDaysForm = ({ ...props }) => {
                   type='number'
                   value={customWeekNumber}/>
                 <label className='ml8'>Week(s)</label>
-              </div>
-
-              <Radio
-                checked={frequency === 'monthly'} className='pt0' label='Monthly'
-                name='frequency'
-                onChange={_handleFrequencyClick}
-                radioType='monthly'/>
+              </Form.Group>
+              <Form.Group  className='div_align_center mh0'>
+                <Field
+                  className='pt0'
+                  component='input'
+                  name='frequency'
+                  onChange={_handleFrequencyClick}
+                  type='radio' value='monthly'/>
+                <label className='mh4'> Monthly</label>
+              </Form.Group>
             </Grid.Column>
             <Grid.Column
               className='pv0'  computer={12} mobile={16}
               tablet={16}>
               {
                 frequency === 'monthly' ? <>
-                  <div>
-                    <Radio
-                      checked={selectedMonthly === 'monthly_date'}
-                      label={monthlyRadio.first}
-                      name='monthy_radio'
+                  <Form.Group className='div_align_center'>
+                    <Field
+                      component='input' name='monthy_radio'
                       onChange={_handleMonthlyRadioChange}
-                      radioType='monthly_date'/>
-                  </div>
-                  <div className='mt8'>
-                    <Radio
-                      checked={selectedMonthly === 'monthly_day'}
-                      label={monthlyRadio.second}
-                      name='monthy_radio'
+                      type='radio' value='monthly_date'/>
+                    <label className='mh4'>{monthlyRadio.first}</label>
+                  </Form.Group>
+                  <Form.Group className='mt8 div_align_center'>
+                    <Field
+                      component='input' name='monthy_radio'
                       onChange={_handleMonthlyRadioChange}
-                      radioType='monthly_day'/>
-                  </div>
+                      type='radio' value='monthly_day'/>
+                    <label className='mh4'>{monthlyRadio.second}</label>
+                  </Form.Group>
                 </>
                   : <>
                     <p className='mb0'><b>On Days:</b></p>
@@ -415,10 +424,12 @@ const RecurringDaysForm = ({ ...props }) => {
               className='pt8'  computer={6} mobile={16}
               tablet={16}>
               <div className='div_align_center'>
-                <Radio
-                  checked={endByAfter === 'end_by'} className='wc8' label='End by'
-                  name='endby_until_no'
-                  onChange={_handleEndByAfterChange} radioType='end_by'/>
+                <Form.Group className='wc8 div_align_center mh0 mv0'>
+                  <Field
+                    component='input' name='endby_until_no'
+                    onChange={_handleEndByAfterChange} type='radio' value='end_by'/>
+                  <label className='mh4'> End by</label>
+                </Form.Group>
                 <Field
                   className='ml8'
                   component={FormField}
@@ -433,10 +444,12 @@ const RecurringDaysForm = ({ ...props }) => {
               className='pt8'  computer={6} mobile={16}
               tablet={16}>
               <div className='div_align_center'>
-                <Radio
-                  checked={endByAfter === 'end_after'} className='wc8' label='End after'
-                  name='endby_until_no'
-                  onChange={_handleEndByAfterChange} radioType='end_after'/>
+                <Form.Group className='wc8 div_align_center mh0 mv0'>
+                  <Field
+                    component='input' name='endby_until_no'
+                    onChange={_handleEndByAfterChange} type='radio' value='end_after'/>
+                  <label className='mh4'> End after</label>
+                </Form.Group>
                 <Field
                   className='w_input_set'
                   component={FormField}
@@ -449,12 +462,14 @@ const RecurringDaysForm = ({ ...props }) => {
               </div>
             </Grid.Column>
             <Grid.Column
-              className='div_align_center'  computer={3} mobile={16}
-              tablet={16}>
-              <Radio
-                checked={endByAfter === 'no_end_date'} className='wc8 mb8' label='No End Date'
-                name='endby_until_no'
-                onChange={_handleEndByAfterChange} radioType='no_end_date'/>
+              className='div_align_center'
+              computer={3} mobile={16} tablet={16}>
+              <Form.Group className='wc8 mb8 div_align_center mh0 mv0'>
+                <Field
+                  component='input' name='endby_until_no'
+                  onChange={_handleEndByAfterChange} type='radio' value='no_end_date'/>
+                <label className='mh4'> No End Date</label>
+              </Form.Group>
             </Grid.Column>
           </Grid>
           <Accordion className='mt32'>
@@ -524,6 +539,7 @@ export default compose(
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
 
       return {
+        state,
         petReservationDetail,
         initialValues: { ...petReservationDetail.item }
       }

@@ -2,7 +2,7 @@ import React  from 'react'
 import { Grid } from 'semantic-ui-react'
 import Message from '@components/Message'
 
-const VaccinationAlert = ({ petName }) => {
+const VaccinationAlert = () => {
   return (
 
     <Message
@@ -14,7 +14,7 @@ const VaccinationAlert = ({ petName }) => {
           <Grid.Column width='16'>
             <Grid>
               <Grid.Column>
-                <div  className='message__subtitle'>{petName} does not have an updated vaccine</div>
+                <div  className='message__subtitle'>This pet does not have an updated vaccine</div>
               </Grid.Column>
             </Grid>
 

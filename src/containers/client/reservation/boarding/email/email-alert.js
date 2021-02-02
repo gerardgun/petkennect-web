@@ -1,11 +1,10 @@
+// changes
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
-import {  withRouter ,useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import {  reduxForm } from 'redux-form'
-import { Button, Form, Icon, Header, Modal } from 'semantic-ui-react'
 
-import FormError from '@components/Common/FormError'
+import { Button, Icon, Header, Modal } from 'semantic-ui-react'
 
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 import emailMessageDetailDuck from '@reducers/email-message/detail'
@@ -14,8 +13,8 @@ export const formId = 'service-alert-form'
 const EmailAlert = (props) => {
   const {
     trainingMethodDetail,
-    petDetail,
-    error
+    petDetail
+
   } = props
 
   const clientId = trainingMethodDetail.item.clientId && trainingMethodDetail.item.clientId
@@ -80,15 +79,6 @@ const EmailAlert = (props) => {
           </>
         }
 
-        {
-          error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )
-        }
       </Modal.Content>
       <Modal.Actions className='form-modal-action-button'>
         <Button
@@ -106,7 +96,6 @@ const EmailAlert = (props) => {
 }
 
 export default compose(
-  withRouter,
   connect(
     state => {
       const petDetail = trainingMethodDetailDuck.selectors.detail(state)
@@ -122,10 +111,6 @@ export default compose(
 
       setEmailItem: emailMessageDetailDuck.creators.setItem
     }
-  ),
-  reduxForm({
-    form              : formId,
-    destroyOnUnmount  : false,
-    enableReinitialize: true
-  })
+  )
+
 )(EmailAlert)

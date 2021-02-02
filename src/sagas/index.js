@@ -25,6 +25,16 @@ import customizedField from './customized-field/field'
 import customizedFieldDetail from './customized-field/field/detail'
 import customizedFieldGroup from './customized-field/group'
 import customizedFieldGroupDetail from './customized-field/group/detail'
+
+import dashboardDaycampReservation from './dashboard/daycamp/daycamp'
+
+import dashboardDaycampCheckedOutReservation from './dashboard/daycamp/daycampCheckedOut'
+import dashboardDaycampCheckedInReservation from './dashboard/daycamp/daycampCheckedIn'
+
+import dashboardBoardingReservation from './dashboard/boarding/boarding'
+import dashboardBoardingCheckedOutReservation from './dashboard/boarding/boardingCheckedOut'
+import dashboardBoardingCheckedInReservation from './dashboard/boarding/boardingCheckedIn'
+
 import daycampCard from './pet/reservation/daycamp-card'
 import daycampCardDetail from './pet/reservation/daycamp-card/detail'
 import daycampCardQuestion from './pet/reservation/daycamp-card/daycamp-card-question'
@@ -165,6 +175,12 @@ export default function* rootSaga() {
     ...customizedFieldGroup,
     ...customizedFieldGroupDetail,
     ...daycampCard,
+    ...dashboardDaycampReservation,
+    ... dashboardDaycampCheckedInReservation,
+    ...dashboardDaycampCheckedOutReservation,
+    ...dashboardBoardingReservation,
+    ... dashboardBoardingCheckedOutReservation,
+    ... dashboardBoardingCheckedInReservation,
     ...petDaycampReservation,
     ...daycampCardDetail,
     ...daycampCardQuestion,

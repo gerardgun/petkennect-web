@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { Button, Dropdown, Form, Header, Grid, Select, Segment, Icon, Input } from 'semantic-ui-react'
+import { Button, Form, Header, Grid, Select, Segment, Icon, Input } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -15,19 +15,18 @@ import serviceDuck from '@reducers/service'
 
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
-import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
 import employeeDuck from '@reducers/employee'
 
 import RecurringDaysForm from './../recurring-days'
 import AlertModal from './../alert-modal'
 import VaccinationAlert from '../vaccination-alert'
+import PetLocationForm from '../common-sections/location-pet-section'
 
 export const groomingFormId = 'grooming-reservation-form'
 
 const GroomingFormWizardFirst = props => {
   const {
-
     addonArray,
     services,
     petReservationDetail,
@@ -36,17 +35,11 @@ const GroomingFormWizardFirst = props => {
     serviceAttribute,
     employee,
     clientPet,
-    location,
     error, handleSubmit, reset
   } = props
 
-  useEffect(() => {
-    props.getEmployees()
-  }, [])
-
   const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
   const [ vaccinationAlert,setVaccinationAlert ] = useState(false)
-  const [ petName,setPetName ] = useState('')
 
   const _handleOkBtnClick = () =>{
     setOverridePopupOpen(false)
@@ -59,13 +52,12 @@ const GroomingFormWizardFirst = props => {
         setVaccinationAlert(false)
 
       const petInfo =  clientPet.items.length != 0 && clientPet.items.find(_item=>_item.id === selectedPet)
-      if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired') {
+      if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired')
         setVaccinationAlert(true)
-        setPetName(petInfo.name)
-      }
-      else {
+
+      else
         setVaccinationAlert(false)
-      }
+
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
         .values.find(_location => _location.value == selectedLocation).id
 
@@ -123,37 +115,7 @@ const GroomingFormWizardFirst = props => {
       <Form id={groomingFormId} onReset={reset} onSubmit={handleSubmit}>
 
         <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header'>Select location and pet</Header>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Location'
-              name='location'
-              options={location.items.map(_location =>
-                ({ key: _location.id, value: _location.id, text: `${_location.code}` }))
-              }
-              placeholder='Location'
-              required
-              selectOnBlur={false}/>
-            <Field
-              closeOnChange
-              component={FormField}
-              control={Dropdown}
-              disabled={petReservationDetail.item.pet != undefined}
-              fluid
-              label='Pet'
-              name='pet'
-              options={clientPet.items.map((_clientPet) => ({
-                key  : _clientPet.id,
-                value: _clientPet.id,
-                text : `${_clientPet.name}`
-              }))}
-              placeholder='Search pet'
-              required
-              selectOnBlur={false}
-              selection/>
-          </Form.Group>
+          <PetLocationForm multiple={false}/>
           {vaccinationAlert !== false && <Grid>
             <Grid.Column computer={8}>
 
@@ -161,7 +123,7 @@ const GroomingFormWizardFirst = props => {
             <Grid.Column
               className='message-grid' computer={8} mobile={16}
               tablet={16}>
-              <VaccinationAlert petName={petName}/>
+              <VaccinationAlert/>
             </Grid.Column>
           </Grid>
 
@@ -309,7 +271,6 @@ const GroomingFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
-              disabled={vaccinationAlert}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -378,15 +339,13 @@ export default compose(
         services            : grommingServices,
         clientPet           : clientPetDuck.selectors.list(state),
         initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,  location: intialLocation },
-        location            : locationDuck.selectors.list(state),
         employee            : employeeDuck.selectors.list(state),
         selectedLocation    : selectedLocation,
         selectedPet         : selectedPet
       }
     },
     {
-      getEmployees: employeeDuck.creators.get,
-      setItem     : petReservationDetailDuck.creators.setItem
+      setItem: petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({

@@ -1,19 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import { compose } from 'redux'
-import {  reduxForm } from 'redux-form'
-import { Button, Form, Icon, Header, Modal } from 'semantic-ui-react'
 
-import FormError from '@components/Common/FormError'
-
-import trainingMethodDetailDuck from '@reducers/training-method/detail'
-
-export const formId = 'service-alert-form'
+import { Button, Icon, Header, Modal } from 'semantic-ui-react'
 
 const AlertModal = props => {
   const {
-    error,
+
     isOpened,
     onReply
   } = props
@@ -22,15 +13,9 @@ const AlertModal = props => {
     onReply()
   }
 
-  const _handleClose = () =>{
-    props.reset()
-    props.resetItem()
-  }
-
   return (
     <Modal
       className='ui-delete-modal'
-      onClose={_handleClose}
       open={isOpened}
       size='small'>
       <Modal.Content style={{ textAlign: 'center', paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
@@ -49,15 +34,6 @@ const AlertModal = props => {
           </>
         }
 
-        {
-          error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )
-        }
       </Modal.Content>
       <Modal.Actions className='form-modal-action-button'>
 
@@ -71,23 +47,4 @@ const AlertModal = props => {
   )
 }
 
-export default compose(
-  withRouter,
-  connect(
-    state => {
-      const petDetail = trainingMethodDetailDuck.selectors.detail(state)
-
-      return {
-        petDetail
-      }
-    },
-    {
-      resetItem: trainingMethodDetailDuck.creators.resetItem
-    }
-  ),
-  reduxForm({
-    form              : formId,
-    destroyOnUnmount  : false,
-    enableReinitialize: true
-  })
-)(AlertModal)
+export default AlertModal

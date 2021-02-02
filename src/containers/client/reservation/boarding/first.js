@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
-import { Button, Dropdown, Confirm, Input, Grid, Form, Header, Select, Segment, Icon } from 'semantic-ui-react'
+import { Button, Confirm, Input, Grid, Form, Header, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -17,24 +17,25 @@ import Message from '@components/Message'
 
 import moment  from 'moment'
 
-import AlertModal from './../alert-modal'
-
-import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
 import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+
 import VaccinationAlert from '../vaccination-alert'
+import AlertModal from './../alert-modal'
+import PetLocationForm from '../common-sections/location-pet-section'
 
 export const boardingFormId = 'boarding-reservation-form'
 
 const BoardingFormWizardFirst = props => {
   const {
+    startDate,
+    endDate,
     addonArray,
     clientPet,
     petReservationDetail,
-    location,
     selectedLocation,
     selectedPets,
     services,
@@ -43,18 +44,14 @@ const BoardingFormWizardFirst = props => {
     error, handleSubmit, reset
   } = props
 
-  const [ startDate, setStartDate ] = useState(new Date())
-  const [ endDate, setEndDate ] = useState(new Date())
   const [ numberOfMonths, setNumberOfMonth ] = useState(1)
   const [ selectedDates, setCalendarDates ] = useState([])
   const [ PeekAndFullDay, setPeekAndFullDay ] = useState({ peekday: [], fullDay: [] })
   const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
   const [ alertPopupOpen, setAlertPopupOpen ] = useState(false)
   const [ vaccinationAlert,setVaccinationAlert ] = useState(false)
-  const [ petName,setPetName ] = useState('')
 
   useEffect(() => {
-    props.getPetKennelType()
     setPeekAndFullDay(PeekDaysAndFullDays)
   }, [])
 
@@ -65,15 +62,10 @@ const BoardingFormWizardFirst = props => {
         setVaccinationAlert(false)
       for (let pet of selectedPets) {
         const petInfo =  clientPet.items.length != 0 && clientPet.items.find(_item=>_item.id === pet)
-        if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired') {
+        if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired')
           setVaccinationAlert(true)
-          setPetName(petInfo.name)
-          break
-        }
-
-        else {
+        else
           setVaccinationAlert(false)
-        }
       }
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
         .values.find(_location => _location.value == selectedLocation).id
@@ -125,14 +117,6 @@ const BoardingFormWizardFirst = props => {
     setNumberOfMonth(monthDiff(startDate, endDate))
   },[ startDate, endDate ])
 
-  const _handleCheckInChange = (value)=>{
-    setStartDate(new Date(value))
-  }
-
-  const _handleCheckOutChange = (value)=>{
-    setEndDate(new Date(value))
-  }
-
   const _handleOkBtnClick = () =>{
     setAlertPopupOpen(false)
   }
@@ -183,38 +167,7 @@ const BoardingFormWizardFirst = props => {
       <Form onReset={reset} onSubmit={handleSubmit}>
 
         <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header'>Select location and pet</Header>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Location'
-              name='location'
-              options={location.items.map(_location =>
-                ({ key: _location.id, value: _location.id, text: `${_location.code}` }))
-              }
-              placeholder='Location'
-              required
-              selectOnBlur={false}/>
-            <Field
-              closeOnChange
-              component={FormField}
-              control={Dropdown}
-              disabled={petReservationDetail.item.pet != undefined}
-              fluid
-              label='Pet'
-              multiple
-              name='pet'
-              options={clientPet.items.map((_clientPet) => ({
-                key  : _clientPet.id,
-                value: _clientPet.id,
-                text : `${_clientPet.name}`
-              }))}
-              placeholder='Search pet'
-              required
-              selectOnBlur={false}
-              selection/>
-          </Form.Group>
+          <PetLocationForm multiple={true}/>
           {vaccinationAlert !== false && <Grid>
             <Grid.Column computer={8}>
 
@@ -222,7 +175,7 @@ const BoardingFormWizardFirst = props => {
             <Grid.Column
               className='message-grid' computer={8} mobile={16}
               tablet={16}>
-              <VaccinationAlert petName={petName}/>
+              <VaccinationAlert/>
             </Grid.Column>
           </Grid>
 
@@ -236,7 +189,6 @@ const BoardingFormWizardFirst = props => {
               control={Input}
               label='Check In'
               name='check_in'
-              onChange={_handleCheckInChange}
               required
               type='date'/>
             <Field
@@ -244,7 +196,6 @@ const BoardingFormWizardFirst = props => {
               control={Input}
               label='Check Out'
               name='check_out'
-              onChange={_handleCheckOutChange}
               required
               type='date'/>
           </Form.Group>
@@ -342,7 +293,6 @@ const BoardingFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
-              disabled={vaccinationAlert}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -376,11 +326,16 @@ export default compose(
   withRouter,
   connect(
     ({ auth, ...state }) => {
+      const check_in = formValueSelector(boardingFormId)(state, 'check_in')
+      const check_out = formValueSelector(boardingFormId)(state, 'check_out')
+      let startDate =  check_in ? new Date(check_in) : new Date()
+      let endDate = check_out ? new Date(check_out) : new Date()
       const KennelType = formValueSelector(boardingFormId)(state, 'kennel_type')
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
       const selectedLocation = formValueSelector(boardingFormId)(state, 'location')
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
+      const petKennelType = petKennelTypeDuck.selectors.list(state)
       const service = serviceDuck.selectors.list(state)
       const selectedPetID  = petReservationDetail.item.pet && petReservationDetail.item.pet
       const initialLocation =  petReservationDetail.item.location ?  petReservationDetail.item.location : auth.location
@@ -414,7 +369,11 @@ export default compose(
       } : {}
 
       return {
+        startDate,
+        endDate,
         addonArray,
+        check_in,
+        check_out,
         initialCheckInTime,
         initialCheckOutTime,
         initialLocation,
@@ -426,16 +385,14 @@ export default compose(
         initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,
           location: initialLocation
         },
-        location           : locationDuck.selectors.list(state),
-        petKennelType      : petKennelTypeDuck.selectors.list(state),
+        petKennelType      : petKennelType,
         hasSharedKennelType: KennelType === 'shared' ? true : false,
         selectedPets       : selectedPets,
         selectedLocation   : selectedLocation
       }
     },
     {
-      getPetKennelType: petKennelTypeDuck.creators.get,
-      setItem         : petReservationDetailDuck.creators.setItem
+      setItem: petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({

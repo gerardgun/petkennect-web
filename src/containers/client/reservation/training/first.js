@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
-import { Button, Dropdown, Form, Header, Input, Grid, Select, Segment, Icon } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Grid, Select, Segment, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -11,8 +11,8 @@ import FormField from '@components/Common/FormField'
 import { syncValidate } from '@lib/utils/functions'
 import Message from '@components/Message'
 import moment from 'moment'
+
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
-import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
 import trainingMethodDuck from '@reducers/training-method'
 import trainingReasonDuck from '@reducers/training-reason'
@@ -23,6 +23,7 @@ import serviceAttributeDuck from '@reducers/service/service-attribute'
 import AlertModal from './../alert-modal'
 import RecurringDaysForm from './../recurring-days'
 import VaccinationAlert from '../vaccination-alert'
+import PetLocationForm from '../common-sections/location-pet-section'
 
 import './styles.scss'
 
@@ -39,19 +40,11 @@ const TrainingFormWizardFirst = props => {
     trainingReason,
     clientPet,
     petReservationDetail,
-    location,
     error, handleSubmit, reset
   } = props
 
-  useEffect(() => {
-    props.getEmployees()
-    props.getTrainingMethod()
-    props.getTrainingReason()
-  }, [])
-
   const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
   const [ vaccinationAlert,setVaccinationAlert ] = useState(false)
-  const [ petName,setPetName ] = useState('')
 
   const _handleOkBtnClick = () =>{
     setOverridePopupOpen(false)
@@ -65,15 +58,11 @@ const TrainingFormWizardFirst = props => {
         setVaccinationAlert(false)
       for (let pet of selectedPets) {
         const petInfo =  clientPet.items.length != 0 && clientPet.items.find(_item=>_item.id === pet)
-        if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired') {
+        if(petInfo.summary.vaccination_status === 'missing' || petInfo.summary.vaccination_status === 'expired')
           setVaccinationAlert(true)
-          setPetName(petInfo.name)
-          break
-        }
 
-        else {
+        else
           setVaccinationAlert(false)
-        }
       }
 
       let allSelectedPet = selectedPets.filter(_ => _ != null)
@@ -133,39 +122,7 @@ const TrainingFormWizardFirst = props => {
       <Form id={trainingFormId} onReset={reset} onSubmit={handleSubmit}>
 
         <Segment className='section-info-item-step1'>
-          <Header as='h3' className='section-info-header'>Select location and pet</Header>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Location'
-              name='location'
-              options={location.items.map(_location =>
-                ({ key: _location.id, value: _location.id, text: `${_location.code}` }))
-              }
-              placeholder='Location'
-              required
-              selectOnBlur={false}/>
-            <Field
-              closeOnChange
-              component={FormField}
-              control={Dropdown}
-              disabled={petReservationDetail.item.pet != undefined}
-              fluid
-              label='Pet'
-              multiple
-              name='pet'
-
-              options={[ ...clientPet.items ].map((_clientPet) => ({
-                key  : _clientPet.id,
-                value: _clientPet.id,
-                text : `${_clientPet.name}`
-              }))}
-              placeholder='Search pet'
-              required
-              selectOnBlur={false}
-              selection/>
-          </Form.Group>
+          <PetLocationForm multiple={true}/>
           {vaccinationAlert !== false && <Grid>
             <Grid.Column computer={8}>
 
@@ -173,7 +130,7 @@ const TrainingFormWizardFirst = props => {
             <Grid.Column
               className='message-grid' computer={8} mobile={16}
               tablet={16}>
-              <VaccinationAlert petName={petName}/>
+              <VaccinationAlert/>
             </Grid.Column>
           </Grid>
 
@@ -295,7 +252,6 @@ const TrainingFormWizardFirst = props => {
               className='w120'
               color='teal'
               content='Next'
-              disabled={vaccinationAlert}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -328,6 +284,7 @@ export default compose(
       const selectedLocation = formValueSelector(trainingFormId)(state, 'location')
       const selectedPets = formValueSelector(trainingFormId)(state, 'pet')
       const service = serviceDuck.selectors.list(state)
+      const employees = employeeDuck.selectors.list(state)
       const trainingServices = service.items && service.items.filter(_ => _.type === 'T')
       const method  = petReservationDetail.item.training  && petReservationDetail.item.training.method
       const initialLocation =  petReservationDetail.item.location ?  petReservationDetail.item.location : auth.location
@@ -347,6 +304,7 @@ export default compose(
       return {
         selectedPets    : selectedPets,
         selectedLocation: selectedLocation,
+        employee        : employees,
         serviceAttribute,
         initialComment,
         method,
@@ -354,18 +312,13 @@ export default compose(
         services        : trainingServices,
         petReservationDetail,
         initialValues   : { ...petReservationDetail.item, location: initialLocation, ...defaultInitialValues    },
-        location        : locationDuck.selectors.list(state),
         trainingMethod  : trainingMethodDuck.selectors.list(state),
         trainingReason  : trainingReasonDuck.selectors.list(state),
-        clientPet       : clientPetDuck.selectors.list(state),
-        employee        : employeeDuck.selectors.list(state)
+        clientPet       : clientPetDuck.selectors.list(state)
       }
     },
     {
-      getEmployees     : employeeDuck.creators.get,
-      getTrainingMethod: trainingMethodDuck.creators.get,
-      getTrainingReason: trainingReasonDuck.creators.get,
-      setItem          : petReservationDetailDuck.creators.setItem
+      setItem: petReservationDetailDuck.creators.setItem
     }
   ),
   reduxForm({
