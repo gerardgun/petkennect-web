@@ -179,7 +179,7 @@ const GroomingFormWizardFirst = props => {
                 control={Select}
                 label='Groomer'
                 name='groomer'
-                options={employee.items.filter(_employee => _employee.title_name === 'Groomer').map(_employee=>
+                options={employee.items.filter(_employee => _employee.title_name === 'Groomer')(_employee=>
                   ({ key: _employee.id, value: _employee.id, text: `${_employee.first_name + ' ' + _employee.last_name}` }))
                 }
                 placeholder='Select Groomer'

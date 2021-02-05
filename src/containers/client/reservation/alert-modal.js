@@ -4,7 +4,6 @@ import { Button, Icon, Header, Modal } from 'semantic-ui-react'
 
 const AlertModal = props => {
   const {
-
     isOpened,
     onReply
   } = props

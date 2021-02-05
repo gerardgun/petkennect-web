@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Popup, Label } from 'semantic-ui-react'
+import { Label } from 'semantic-ui-react'
 
 export default {
   base_uri: null,

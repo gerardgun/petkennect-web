@@ -99,7 +99,7 @@ const DaycampFormWizardFirst = props => {
         </div>
         <div className='div-bar-content'>
           <Icon name='check circle'/>
-          <span>Pet Information</span>
+          <span>Reservation Information</span>
         </div>
         <div className='div-bar-line'>
         </div>

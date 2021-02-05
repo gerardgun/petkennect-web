@@ -104,7 +104,7 @@ const BoardingFormWizardThird = props => {
         </div>
         <div className='div-bar-content active'>
           <Icon name='check circle'/>
-          <span>Pet Information</span>
+          <span>Reservation Information</span>
         </div>
         <div className='div-bar-line active'>
         </div>

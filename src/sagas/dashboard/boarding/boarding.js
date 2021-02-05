@@ -18,7 +18,6 @@ function* get() {
           { pet: 'Goldy',check_out: '1-23-2021', activity: 'Daycamp', groom: 'Yes', by: 'Jhon Edward',nights: 3, current: 'no' }
 
         ]
-
       }
     })
   } catch (e) {

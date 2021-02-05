@@ -46,7 +46,9 @@ import daycampCardQuestionDetail from '@reducers/pet/reservation/daycamp-card/da
 import daycampCardAnswerDetail from '@reducers/pet/reservation/daycamp-card/daycamp-card-answer/detail'
 import daycampReservation from '@reducers/pet/reservation/daycamp-reservation'
 import boardingReservation from '@reducers/pet/reservation/boarding'
+import boardingReservationAddon from '@reducers/pet/reservation/boarding/add-on'
 import groomingReservation from '@reducers/pet/reservation/grooming'
+import groomingReservationAddon from '@reducers/pet/reservation/grooming/add-on'
 import daycampReservationDetail from '@reducers/pet/reservation/daycamp-reservation/detail'
 import emailMessage from '@reducers/email-message'
 import emailMessageDetail from '@reducers/email-message/detail'
@@ -203,6 +205,7 @@ const createRootReducer = history => combineReducers({
   [daycampCard.store]               : daycampCard.reducer,
   [daycampCardDetail.store]         : daycampCardDetail.reducer,
   [boardingReservation.store]       : boardingReservation.reducer,
+  [boardingReservationAddon.store]  : boardingReservationAddon.reducer,
 
   [dashboardDaycamp.store]          : dashboardDaycamp.reducer,    // dashboard
   [dashboardDaycampCheckedIn.store] : dashboardDaycampCheckedIn.reducer,
@@ -213,6 +216,7 @@ const createRootReducer = history => combineReducers({
   [dashboardBoardingCheckedOut.store]: dashboardBoardingCheckedOut.reducer,
 
   [groomingReservation.store]                   : groomingReservation.reducer,
+  [groomingReservationAddon.store]              : groomingReservationAddon.reducer,
   [daycampReservation.store]                    : daycampReservation.reducer,
   [daycampReservationDetail.store]              : daycampReservationDetail.reducer,
   [daycampCardQuestion.store]                   : daycampCardQuestion.reducer,

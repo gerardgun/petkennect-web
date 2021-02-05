@@ -1,4 +1,3 @@
-// changes
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -8,7 +7,6 @@ import { Button, Icon, Header, Modal } from 'semantic-ui-react'
 
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 import emailMessageDetailDuck from '@reducers/email-message/detail'
-export const formId = 'service-alert-form'
 
 const EmailAlert = (props) => {
   const {

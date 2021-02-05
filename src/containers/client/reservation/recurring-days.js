@@ -34,7 +34,7 @@ const RecurringDaysForm = ({ ...props }) => {
   const [ customWeekNumber, setCustomWeekNumber ] = useState(1)
   const [ allSelectedWeek, setAllSelectedWeek ] = useState([])
   const [ selectedDates, setSelectedDates ] = useState([])
-  const [ activeIndex, setActiveIndex ] = useState(0)
+  const [ activeIndex, setActiveIndex ] = useState(false)
   const [ selectedMonthly, setSelectedMonthly ] = useState('monthly_date')
   const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
   const [ PeekAndFullDay, setPeekAndFullDay ] = useState({ peekday: [], fullDay: [] })
@@ -237,10 +237,8 @@ const RecurringDaysForm = ({ ...props }) => {
     props.setItem({ ...petReservationDetail.item, selectedDate: selectedDays })
   }
 
-  const  _handleSelectRecurringDaysClick = (e, titleProps) => {
-    const { index } = titleProps
-    const newIndex = activeIndex === index ? -1 : index
-    setActiveIndex(newIndex)
+  const  _handleSelectRecurringDaysClick = () => {
+    setActiveIndex(!activeIndex)
   }
 
   const _handleCancelOverride = () => {
@@ -273,6 +271,13 @@ const RecurringDaysForm = ({ ...props }) => {
 
         <Segment className='recurring_date_div section-info-item-step1' style={{ marginTop: '1rem !important' }}>
           <Grid className='mt8'>
+
+            <Grid.Column
+              className='pt0' width={16}>
+              <Header as='h3' className='mt0'>
+                ADD RECURRING DAYS
+              </Header>
+            </Grid.Column>
             <Grid.Column
               className='pt0 pb0' computer={7} mobile={16}
               tablet={16}>
@@ -300,16 +305,10 @@ const RecurringDaysForm = ({ ...props }) => {
               </div>
             </Grid.Column>
             <Grid.Column
-              className='pt0' width={16}>
-              <Header as='h3' className='mt0'>
-          Add Recurring Reservations
-              </Header>
-            </Grid.Column>
-            <Grid.Column
               className='grid_border_right pv0'  computer={4} mobile={16}
               tablet={16}>
               <p className='mb0'><b>Recurring:</b></p>
-              <Form.Group className='div_align_center mh0'>
+              <Form.Group className='div_align_center mh0' style={{ 'margin-top': '10px' }}>
                 <Field
                   component='input'
                   name='frequency'
@@ -317,14 +316,14 @@ const RecurringDaysForm = ({ ...props }) => {
                   type='radio' value='every_week'/>
                 <label className='mh4'> Every Week</label>
               </Form.Group>
-              <Form.Group className='div_align_center mh0'>
+              <Form.Group className='div_align_center mh0 mb0'>
                 <Field
                   component='input' name='frequency'
                   onChange={_handleFrequencyClick}
                   type='radio' value='every_other_week'/>
                 <label className='mh4'> Every Other Week</label>
               </Form.Group>
-              <Form.Group className='div_align_center mh0'>
+              <Form.Group className='div_align_center mh0 mb0'>
                 <Field
                   className='pt0'
                   component='input' name='frequency'
@@ -332,7 +331,7 @@ const RecurringDaysForm = ({ ...props }) => {
                   type='radio' value='every_custom_week'/>
                 <label className='mh4'> Every</label>
                 <Form.Field
-                  className='ml8 mv8 w_input_3'
+                  className='ml8 mv8 pl0 pr4 w_input_3'
                   control={Input}
                   name='custom_week_number'
                   onChange={_handleCustomWeekChange}
@@ -474,15 +473,15 @@ const RecurringDaysForm = ({ ...props }) => {
           </Grid>
           <Accordion className='mt32'>
             <Accordion.Title
-              active={activeIndex === 0}
-              index={0}
+              active={activeIndex}
+              className='heading-color'
               onClick={_handleSelectRecurringDaysClick}>
-              <Header as='h3' className='mb0'>
-              Manually Add/Edit Dates
-                <Icon name='dropdown'/>
+              <Header as='h3' className='mb0 pt4 heading-color heading-height ml8'>
+                CALENDAR VIEW
+                <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
               </Header>
             </Accordion.Title>
-            <Accordion.Content active={activeIndex === 0}>
+            <Accordion.Content active={activeIndex}>
               <div>
                 <DayPicker
                   disabledDays={

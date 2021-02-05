@@ -6,6 +6,7 @@ const VaccinationAlert = () => {
   return (
 
     <Message
+      className='vaccination-alert'
       content={
         <Grid padded style={{ marginLeft: -16 }}>
           <Grid.Column className='mb0 pb0' width='16'>
@@ -14,7 +15,7 @@ const VaccinationAlert = () => {
           <Grid.Column width='16'>
             <Grid>
               <Grid.Column>
-                <div  className='message__subtitle'>This pet does not have an updated vaccine</div>
+                <div  className='message__title'>This pet does not have an updated vaccine</div>
               </Grid.Column>
             </Grid>
 

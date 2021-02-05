@@ -27,10 +27,8 @@ import customizedFieldGroup from './customized-field/group'
 import customizedFieldGroupDetail from './customized-field/group/detail'
 
 import dashboardDaycampReservation from './dashboard/daycamp/daycamp'
-
 import dashboardDaycampCheckedOutReservation from './dashboard/daycamp/daycampCheckedOut'
 import dashboardDaycampCheckedInReservation from './dashboard/daycamp/daycampCheckedIn'
-
 import dashboardBoardingReservation from './dashboard/boarding/boarding'
 import dashboardBoardingCheckedOutReservation from './dashboard/boarding/boardingCheckedOut'
 import dashboardBoardingCheckedInReservation from './dashboard/boarding/boardingCheckedIn'
@@ -81,7 +79,9 @@ import petReservationCheckInDetail from './pet/reservation/express-check-in/deta
 import petReservationTrainingPackage from './pet/reservation/training/package'
 import petReservationTrainingReservation from './pet/reservation/training/reservation'
 import petReservationBoarding from './pet/reservation/boarding'
+import petReservationBoardingAddon from './pet/reservation/boarding/addon'
 import petReservationGrooming from './pet/reservation/grooming'
+import petReservationGroomingAddon from './pet/reservation/grooming/addon'
 import petDaycampReservation from './pet/reservation/daycamp-reservation'
 import petVaccination from './pet/vaccination'
 import petVaccinationDetail from './pet/vaccination/detail'
@@ -227,7 +227,9 @@ export default function* rootSaga() {
     ...petReservationTrainingPackage,
     ...petReservationTrainingReservation,
     ...petReservationBoarding,
+    ...petReservationBoardingAddon,
     ...petReservationGrooming,
+    ...petReservationGroomingAddon,
     ...petVaccination,
     ...petVaccinationDetail,
     ...petVaccinationType,

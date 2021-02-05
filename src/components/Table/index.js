@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import { compose } from 'redux'
+import { compose } from 'redux'
 import { Button, Checkbox, Dimmer, Dropdown, Grid, Icon, Image, Input, Label, Loader, Popup, Segment, Table } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
@@ -13,7 +13,7 @@ import { useDebounceText } from '@hooks/Shared'
 
 import { defaultImageUrl } from '@lib/constants'
 
-const TableList = ({ duck, list, ...props }) => {
+const TableList = ({ duck, list, striped, ...props }) => {
   const {
     options: configOptions = []
   } = list.config
@@ -97,6 +97,11 @@ const TableList = ({ duck, list, ...props }) => {
   const _handleOptionDropdownChange = (e, { value: optionName, itemID  }) => {
     const item = list.items.find(({ id }) => id === itemID)
     props.onOptionDropdownChange(optionName, item)
+  }
+
+  const _handleCheckboxChange = (e, { value: optionName, itemID  }) => {
+    const item = list.items.find(({ id }) => id === itemID)
+    props.onOptionCheckboxChange(optionName, item)
   }
 
   const _handleOptionBtnClick = e => {
@@ -298,6 +303,21 @@ const TableList = ({ duck, list, ...props }) => {
           )
         }
 
+        {/* Addon checkbox */}
+        {
+          list.config.row.checkboxOption && list.config.row.checkboxOption.length > 0 && (
+
+            <Table.Cell>
+              {
+                <Checkbox
+                  checked={checked} disabled={list.config.row.checkboxOption.length === 0} itemID={item.id}
+                  key={index}
+                  onChange={_handleCheckboxChange}/>
+              }
+            </Table.Cell>
+          )
+        }
+
         {/* Row expandedRows */}
         {
           list.config.expandedRows && (
@@ -407,6 +427,7 @@ const TableList = ({ duck, list, ...props }) => {
                   })
                 // )
               }
+
             </Grid.Column >
             <Grid.Column
               className='grid-filter-item' computer={10} mobile={16}
@@ -445,8 +466,9 @@ const TableList = ({ duck, list, ...props }) => {
       }
 
       <Table
-        basic='very'  className='table-primary' selectable
-        sortable unstackable>
+        basic='very'
+        className='table-primary'  selectable sortable
+        striped={striped} unstackable>
         <Table.Header>
           <Table.Row>
             {/* Row selection */}
@@ -491,6 +513,11 @@ const TableList = ({ duck, list, ...props }) => {
             }
             {
               list.config.row.dropdownOptions && list.config.row.dropdownOptions.length > 0 && (<Table.HeaderCell>Action</Table.HeaderCell>)
+            }
+
+            {/* Addon row option */}
+            {
+              list.config.row.checkboxOption && list.config.row.checkboxOption.length > 0 && (<Table.HeaderCell>Add</Table.HeaderCell>)
             }
           </Table.Row>
         </Table.Header>
@@ -545,10 +572,11 @@ const TableList = ({ duck, list, ...props }) => {
 }
 
 TableList.defaultProps = {
-  duck            : null,
-  onOptionClick   : () => {},
-  onRowOptionClick: () => {},
-  onRowClick      : null
+  duck                  : null,
+  onOptionClick         : () => {},
+  onRowOptionClick      : () => {},
+  onOptionCheckboxChange: () => {},
+  onRowClick            : null
 }
 
 export default compose(
