@@ -7,11 +7,14 @@ import { Button, Form, Header, TextArea, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import { getAbbreviature } from '@lib/utils/functions'
 
-import FormError from '@components/Common/FormError'
-import FormField from '@components/Common/FormField'
+import loadable from '@loadable/component'
+
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
+
+const FormError = loadable(() => import('@components/Common/FormError'))
+const FormField = loadable(() => import('@components/Common/FormField'))
 
 const NewNoteForm = props => {
   const {

@@ -15,6 +15,7 @@ import petKennelDuck from '@reducers/pet/pet-kennel'
 import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 import boardingReservationAddonDuck from '@reducers/pet/reservation/boarding/add-on'
+import feedingAddonDuck from '@reducers/pet/reservation/boarding/add-on/feeding-addon'
 import employeeDuck from '@reducers/employee'
 import groomingReservationAddonDuck from '@reducers/pet/reservation/grooming/add-on'
 
@@ -32,6 +33,7 @@ const BoardingFormWizardSecond = props => {
 
   useEffect(() => {
     props.getBoardingReservationAddons()
+    props.getFeedingAddons()
     props.getPetKennels()
     props.getGroomingReservationAddons()
   }, [])
@@ -74,8 +76,6 @@ const BoardingFormWizardSecond = props => {
     else
     {setGroomingAddon([ ...groomingAddon, index ])}
   }
-
-  let addons = [ 'Food Bag', 'Medication', 'Feeding' ]
 
   const AddTime = ({ fields, meta: { error, submitFailed } }) => {
     _handleAddBtnClick = () => fields.push({ ...contactDetailInitialState })
@@ -178,233 +178,525 @@ const BoardingFormWizardSecond = props => {
             <Accordion.Content active={activeIndex === 0} className='mt12'>
               <div>
                 <Grid>
-                  {
-                    addons && addons.map((addon, index) => (
-                      <>
-                        <Grid.Column className='padding-column' key={index} width={16}>
-                          <Accordion className='margin-accordian'>
-                            <Accordion.Title
-                              active={activeArray.includes(index)}
-                              className='heading-color'
-                              index={index}
-                              onClick={_handleSelectAddonClick}>
-                              <Header as='h5' className='mb0 heading-color ml8'>
-                                {addon}
-                                <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
-                              </Header>
-                            </Accordion.Title>
+                  <Grid.Column className='padding-column' width={16}>
+                    <Accordion className='margin-accordian'>
+                      <Accordion.Title
+                        active={activeArray.includes(0)}
+                        className='heading-color'
+                        index={0}
+                        onClick={_handleSelectAddonClick}>
+                        <Header as='h5' className='mb0 heading-color ml8'>
+                            Food Bagging Charges
+                          <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
+                        </Header>
+                      </Accordion.Title>
 
-                            <Accordion.Content active={activeArray.includes(index)}>
-                              <Segment>
-                                <Grid>
-                                  <Grid.Column width={16}>
-                                    <Header as='h5' className='mb0'>
+                      <Accordion.Content active={activeArray.includes(0)}>
+                        <Segment>
+                          <Grid>
+                            <Grid.Column width={16}>
+                              <Header as='h5' className='mb0'>
                                       Description of Service :
-                                    </Header>
-                                  </Grid.Column>
-                                  <span>{addon}</span>
-                                  <Grid.Column width={16}>
-                                    <b>Price :</b> <span> $2.00</span>
-                                  </Grid.Column>
-                                  <Grid.Column width={16}>
-                                    <span> Applies to Pets :</span>
-                                  </Grid.Column>
-                                  <Grid.Column width={7}>
-                                    {
-                                      props.selectedPets && props.selectedPets.map((petId) => (
-                                        <Form.Group className='mh4' key={petId}>
-                                          <Field
-                                            className='checkbox-label mh4'
-                                            component={FormField} control={Checkbox} id={petId}
-                                            name={clientPet.items.find(_pet => _pet.id === petId).name}
-                                            type='checkbox'/>
-                                          <label htmlFor={petId}>
-                                            {clientPet.items.find(_pet => _pet.id === petId).name}</label>
-                                        </Form.Group>
+                              </Header>
+                            </Grid.Column>
+                            <span>Food Bagging Charges</span>
+                            <Grid.Column width={16}>
+                              <b>Price :</b> <span> $2.00</span>
+                            </Grid.Column>
+                            <Grid.Column width={16}>
+                              <span> Applies to Pets :</span>
+                            </Grid.Column>
+                            <Grid.Column width={7}>
+                              {
+                                props.selectedPets && props.selectedPets.map((petId) => (
+                                  <Form.Group className='mh4' key={petId}>
+                                    <Field
+                                      className='checkbox-label mh4'
+                                      component={FormField} control={Checkbox}
+                                      name={`${clientPet.items.find(_pet => _pet.id === petId).name}.food`}
+                                      type='checkbox'/>
+                                    <label>
+                                      {clientPet.items.find(_pet => _pet.id === petId).name}</label>
+                                  </Form.Group>
 
-                                      ))
-                                    }
-                                    {
-                                      props.selectedPets && props.selectedPets.length > 1 && (
-                                        <Form.Group className='mh4'>
-                                          <Field
-                                            className='checkbox-label mh4'
-                                            component={FormField} control={Checkbox} id='all'
-                                            name='all'
-                                            type='checkbox'/>
-                                          <label htmlFor='all'> All</label>
-                                        </Form.Group>
-                                      )
-                                    }
-                                  </Grid.Column>
-                                  <Grid.Column width={5}>
-                                    <Form.Group className='align-center ml16'>
-                                      <label className='w33'>Quantity</label>
+                                ))
+                              }
+                              {
+                                props.selectedPets && props.selectedPets.length > 1 && (
+                                  <Form.Group className='mh4'>
+                                    <Field
+                                      className='checkbox-label mh4'
+                                      component={FormField} control={Checkbox}
+                                      name='allFood'
+                                      type='checkbox'/>
+                                    <label htmlFor='allFood'> All</label>
+                                  </Form.Group>
+                                )
+                              }
+                            </Grid.Column>
+                            <Grid.Column width={5}>
+                              <Form.Group className='align-center ml16'>
+                                <label className='w33'>Quantity</label>
+                                <Field
+                                  component={FormField}
+                                  control={Input}
+                                  min={0}
+                                  name='quantityFood'
+                                  type='number'/>
+                              </Form.Group>
+                              <Form.Group className='align-center ml16'>
+                                <label className='w33'>Total Price</label>
+                                <Field
+                                  component={FormField}
+                                  control={Input}
+                                  min={0}
+                                  name='totalPriceFood'
+                                  type='number'/>
+                              </Form.Group>
+                            </Grid.Column>
+
+                            <Grid.Column width={16}>
+                              <Grid>
+                                <Grid.Column width={12}>
+                                  <Field
+                                    component={FormField}
+                                    control={Form.TextArea}
+                                    label='Notes'
+                                    name='noteFood'
+                                    placeholder='Enter Notes'/>
+                                </Grid.Column>
+                                <Grid.Column className='addon-service-button' width={4}>
+                                  <Form.Field>
+                                    <Button
+                                      basic
+                                      className='w160'
+                                      color='teal'
+                                      // onClick={_handleAddNoteBtnClick}
+                                      type='button'><Icon name='plus'/>Add Service
+                                    </Button>
+                                  </Form.Field>
+                                </Grid.Column>
+                              </Grid>
+                            </Grid.Column>
+                          </Grid>
+                        </Segment>
+                      </Accordion.Content>
+                    </Accordion>
+                  </Grid.Column>
+
+                  <Grid.Column className='padding-column' width={16}>
+                    <Accordion className='margin-accordian'>
+                      <Accordion.Title
+                        active={activeArray.includes(1)}
+                        className='heading-color'
+                        index={1}
+                        onClick={_handleSelectAddonClick}>
+                        <Header as='h5' className='mb0 heading-color ml8'>
+                            Medication
+                          <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
+                        </Header>
+                      </Accordion.Title>
+
+                      <Accordion.Content active={activeArray.includes(1)}>
+                        <Segment>
+                          <Grid>
+                            <Grid.Column width={16}>
+                              <Header as='h5' className='mb0'>
+                                      Description of Service :
+                              </Header>
+                            </Grid.Column>
+                            <span>Medication</span>
+                            <Grid.Column width={16}>
+                              <b>Price :</b> <span> $2.00</span>
+                            </Grid.Column>
+                            <Grid.Column width={16}>
+                              <span> Applies to Pets :</span>
+                            </Grid.Column>
+                            <Grid.Column width={7}>
+                              {
+                                props.selectedPets && props.selectedPets.map((petId) => (
+                                  <Form.Group className='mh4' key={petId}>
+                                    <Field
+                                      className='checkbox-label mh4'
+                                      component={FormField} control={Checkbox}
+                                      name={`${clientPet.items.find(_pet => _pet.id === petId).name}.medication`}
+                                      type='checkbox'/>
+                                    <label htmlFor={petId}>
+                                      {clientPet.items.find(_pet => _pet.id === petId).name}</label>
+                                  </Form.Group>
+
+                                ))
+                              }
+                              {
+                                props.selectedPets && props.selectedPets.length > 1 && (
+                                  <Form.Group className='mh4'>
+                                    <Field
+                                      className='checkbox-label mh4'
+                                      component={FormField} control={Checkbox}
+                                      name='allMed'
+                                      type='checkbox'/>
+                                    <label htmlFor='allMed'> All</label>
+                                  </Form.Group>
+                                )
+                              }
+                            </Grid.Column>
+                            <Grid.Column width={5}>
+                              <Form.Group className='align-center ml16'>
+                                <label className='w33'>Quantity</label>
+                                <Field
+                                  component={FormField}
+                                  control={Input}
+                                  min={0}
+                                  name='quantityMed'
+                                  type='number'/>
+                              </Form.Group>
+                              <Form.Group className='align-center ml16'>
+                                <label className='w33'>Total Price</label>
+                                <Field
+                                  component={FormField}
+                                  control={Input}
+                                  min={0}
+                                  name='totalPriceMed'
+                                  type='number'/>
+                              </Form.Group>
+                            </Grid.Column>
+
+                            <Grid.Column width={16}>
+                              <Header as='h4'>Frequency</Header>
+                              <Grid>
+                                <Grid.Column className='ml16' width={6}>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
+                                      component='input'
+                                      name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='once'/>
+                                    <label className='mh4'> Once(Specific Date)</label>
+                                    <Form.Field
+                                      className='ml8 mv8 w_input_3'
+                                      control={Input}
+                                      name='once_date'
+                                      // onChange={_handleCustomWeekChange}
+                                      // readOnly={frequency !== 'every_custom_week'}
+                                      type='date'/>
+                                  </Form.Group>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
+                                      component='input' name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='every_other_day'/>
+                                    <label className='mh4'> Every Other Day (Starting First Day)</label>
+                                  </Form.Group>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
+                                      component='input'
+                                      name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='every_day'/>
+                                    <label className='mh4'> Every Day</label>
+                                  </Form.Group>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
+                                      component='input' name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='every_day_except_first'/>
+                                    <label className='mh4'> Every Day Except First Day</label>
+                                  </Form.Group>
+                                  <Form.Group  className='div_align_center mh0'>
+                                    <Field
+                                      className='pt0'
+                                      component='input'
+                                      name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='every_day_except_last'/>
+                                    <label className='mh4'> Every Day Except Last Day</label>
+                                  </Form.Group>
+                                </Grid.Column>
+
+                                <Grid.Column className='mt20' width={3}>
+                                  <Header as='h4'>Times :</Header>
+                                  <Form.Group>
+                                    <Form.Field
+                                      className='w_input_3'
+                                      control={Input}
+                                      name='custom_week_number'
+                                      // onChange={_handleCustomWeekChange}
+                                      // readOnly={frequency !== 'every_custom_week'}
+                                      type='time'/>
+                                    <Form.Field>
+                                      <Form.Button
+                                        className='align-button'
+                                        color='teal'
+                                        icon='plus'
+                                        onClick={_handleAddTime}
+                                        type='button'/>
+                                    </Form.Field>
+                                  </Form.Group>
+                                  <FieldArray
+                                    component={AddTime}
+                                    name='add_time'
+                                    title='Add Time'/>
+                                </Grid.Column>
+
+                                <Grid.Column className='mt20 ml32' width={3}>
+                                  <Header as='h4'>With Feedings :</Header>
+                                  <Form.Group>
+                                    <Field
+                                      className='checkbox-label'
+                                      component={FormField} control={Checkbox} id='breakfast'
+                                      name='breakfast'
+                                      type='checkbox'/>
+                                    <label htmlFor='breakfast'>W/Breakfast </label>
+                                  </Form.Group>
+                                  <Form.Group>
+                                    <Field
+                                      className='checkbox-label'
+                                      component={FormField} control={Checkbox} id='lunch'
+                                      name='lunch'
+                                      type='checkbox'/>
+                                    <label htmlFor='lunch'>W/Lunch</label>
+                                  </Form.Group>
+                                  <Form.Group>
+                                    <Field
+                                      className='checkbox-label'
+                                      component={FormField} control={Checkbox} id='dinner'
+                                      name='dinner'
+                                      type='checkbox'/>
+                                    <label htmlFor='dinner'>W/Dinner</label>
+                                  </Form.Group>
+                                </Grid.Column>
+                              </Grid>
+                            </Grid.Column>
+                            <Grid.Column width={16}>
+                              <Grid>
+                                <Grid.Column width={12}>
+                                  <Field
+                                    component={FormField}
+                                    control={Form.TextArea}
+                                    label='Notes'
+                                    name='noteMed'
+                                    placeholder='Enter Notes'/>
+                                </Grid.Column>
+                                <Grid.Column className='addon-service-button' width={4}>
+                                  <Form.Field>
+                                    <Button
+                                      basic
+                                      className='w160'
+                                      color='teal'
+                                      // onClick={_handleAddNoteBtnClick}
+                                      type='button'><Icon name='plus'/>Add Service
+                                    </Button>
+                                  </Form.Field>
+                                </Grid.Column>
+                              </Grid>
+                            </Grid.Column>
+                          </Grid>
+                        </Segment>
+                      </Accordion.Content>
+                    </Accordion>
+                  </Grid.Column>
+
+                  <Grid.Column className='padding-column' width={16}>
+                    <Accordion className='margin-accordian'>
+                      <Accordion.Title
+                        active={activeArray.includes(2)}
+                        className='heading-color'
+                        index={2}
+                        onClick={_handleSelectAddonClick}>
+                        <Header as='h5' className='mb0 heading-color ml8'>
+                            Feeding
+                          <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
+                        </Header>
+                      </Accordion.Title>
+                      <Accordion.Content active={activeArray.includes(2)}>
+                        <Segment>
+                          <Grid>
+                            <Grid.Column width={9}>
+                              <Grid.Column className='mb16'>
+                                <Header as='h5' className='mb0'>
+                                Description of Service :
+                                </Header>
+                              </Grid.Column>
+                              <span>Feeding</span>
+                              <Grid.Column className='mt16'>
+                                <b>Price :</b> <span> $2.00</span>
+                              </Grid.Column>
+                              <Grid.Column className='mv24'>
+                                <span> Applies to Pets :</span>
+                              </Grid.Column>
+                              <Grid.Column>
+                                {
+                                  props.selectedPets && props.selectedPets.map((petId) => (
+                                    <Form.Group className='mh4' key={petId}>
                                       <Field
-                                        component={FormField}
-                                        control={Input}
-                                        min={0}
-                                        name='quantity'
-                                        type='number'/>
+                                        className='checkbox-label mh4'
+                                        component={FormField} control={Checkbox}
+                                        name={`${clientPet.items.find(_pet => _pet.id === petId).name}.feeding`}
+                                        type='checkbox'/>
+                                      <label htmlFor={petId}>
+                                        {clientPet.items.find(_pet => _pet.id === petId).name}</label>
                                     </Form.Group>
-                                    <Form.Group className='align-center ml16'>
-                                      <label className='w33'>Total Price</label>
+
+                                  ))
+                                }
+                                {
+                                  props.selectedPets && props.selectedPets.length > 1 && (
+                                    <Form.Group className='mh4'>
                                       <Field
-                                        component={FormField}
-                                        control={Input}
-                                        min={0}
-                                        name='Total Price'
-                                        type='number'/>
+                                        className='checkbox-label mh4'
+                                        component={FormField} control={Checkbox}
+                                        name='allFeed'
+                                        type='checkbox'/>
+                                      <label htmlFor='allFeed'> All</label>
                                     </Form.Group>
-                                  </Grid.Column>
+                                  )
+                                }
+                              </Grid.Column>
+                            </Grid.Column>
+                            <Grid.Column width={7}>
+                              <Table duck={feedingAddonDuck} striped/>
+                            </Grid.Column>
 
-                                  <Grid.Column width={16}>
-                                    <Header as='h4'>Frequency</Header>
-                                    <Grid>
-                                      <Grid.Column className='ml16' width={6}>
-                                        <Form.Group className='div_align_center mh0'>
-                                          <Field
-                                            component='input'
-                                            name='frequency'
-                                            // onChange={_handleFrequencyClick}
-                                            type='radio' value='once'/>
-                                          <label className='mh4'> Once(Specific Date)</label>
-                                          <Form.Field
-                                            className='ml8 mv8 w_input_3'
-                                            control={Input}
-                                            name='once_date'
-                                            // onChange={_handleCustomWeekChange}
-                                            // readOnly={frequency !== 'every_custom_week'}
-                                            type='date'/>
-                                        </Form.Group>
-                                        <Form.Group className='div_align_center mh0'>
-                                          <Field
-                                            component='input' name='frequency'
-                                            // onChange={_handleFrequencyClick}
-                                            type='radio' value='every_other_day'/>
-                                          <label className='mh4'> Every Other Day (Starting First Day)</label>
-                                        </Form.Group>
-                                        <Form.Group className='div_align_center mh0'>
-                                          <Field
-                                            component='input'
-                                            name='frequency'
-                                            // onChange={_handleFrequencyClick}
-                                            type='radio' value='every_day'/>
-                                          <label className='mh4'> Every Day</label>
-                                        </Form.Group>
-                                        <Form.Group className='div_align_center mh0'>
-                                          <Field
-                                            component='input' name='frequency'
-                                            // onChange={_handleFrequencyClick}
-                                            type='radio' value='every_day_except_first'/>
-                                          <label className='mh4'> Every Day Except First Day</label>
-                                        </Form.Group>
-                                        <Form.Group  className='div_align_center mh0'>
-                                          <Field
-                                            className='pt0'
-                                            component='input'
-                                            name='frequency'
-                                            // onChange={_handleFrequencyClick}
-                                            type='radio' value='every_day_except_last'/>
-                                          <label className='mh4'> Every Day Except Last Day</label>
-                                        </Form.Group>
-                                      </Grid.Column>
-
-                                      <Grid.Column className='mt20' width={3}>
-                                        <Header as='h4'>Times :</Header>
-                                        <Form.Group>
-                                          <Form.Field
-                                            className='w_input_3'
-                                            control={Input}
-                                            name='custom_week_number'
-                                            // onChange={_handleCustomWeekChange}
-                                            // readOnly={frequency !== 'every_custom_week'}
-                                            type='time'/>
-                                          <Form.Field>
-                                            <Form.Button
-                                              className='align-button'
-                                              color='teal'
-                                              icon='plus'
-                                              onClick={_handleAddTime}
-                                              type='button'/>
-                                          </Form.Field>
-                                        </Form.Group>
-                                        <FieldArray
-                                          component={AddTime}
-                                          name='add_time'
-                                          title='Add Time'/>
-                                      </Grid.Column>
-
-                                      <Grid.Column className='mt20 ml32' width={3}>
-                                        <Header as='h4'>Feedings :</Header>
-                                        <Form.Group>
-                                          <Field
-                                            className='checkbox-label'
-                                            component={FormField} control={Checkbox} id='breakfast'
-                                            name='breakfast'
-                                            type='checkbox'/>
-                                          <label htmlFor='breakfast'> Breakfast </label>
-                                        </Form.Group>
-                                        <Form.Group>
-                                          <Field
-                                            className='checkbox-label'
-                                            component={FormField} control={Checkbox} id='lunch'
-                                            name='lunch'
-                                            type='checkbox'/>
-                                          <label htmlFor='lunch'> Lunch</label>
-                                        </Form.Group>
-                                        <Form.Group>
-                                          <Field
-                                            className='checkbox-label'
-                                            component={FormField} control={Checkbox} id='dinner'
-                                            name='dinner'
-                                            type='checkbox'/>
-                                          <label htmlFor='dinner'> Dinner</label>
-                                        </Form.Group>
-                                        <Form.Group>
-                                          <Field
-                                            className='checkbox-label'
-                                            component={FormField} control={Checkbox} id='other'
-                                            name='other'
-                                            type='checkbox'/>
-                                          <label htmlFor='other'> Other</label>
-                                        </Form.Group>
-                                      </Grid.Column>
-                                    </Grid>
-                                  </Grid.Column>
-
-                                  <Grid.Column width={16}>
-                                    <Grid>
-                                      <Grid.Column width={12}>
-                                        <Field
-                                          component={FormField}
-                                          control={Form.TextArea}
-                                          label='Notes'
-                                          name='note'
-                                          placeholder='Enter Notes'/>
-                                      </Grid.Column>
-                                      <Grid.Column className='addon-service-button' width={4}>
-                                        <Form.Field>
-                                          <Button
-                                            basic
-                                            className='w160'
-                                            color='teal'
-                                            // onClick={_handleAddNoteBtnClick}
-                                            type='button'><Icon name='plus'/>Add Service
-                                          </Button>
-                                        </Form.Field>
-                                      </Grid.Column>
-                                    </Grid>
-                                  </Grid.Column>
-                                </Grid>
-
-                              </Segment>
-                            </Accordion.Content>
-                          </Accordion>
-                        </Grid.Column>
-                      </>
-                    ))
-                  }
+                            <Grid.Column width={16}>
+                              <Header as='h4'>Frequency</Header>
+                              <Grid>
+                                <Grid.Column className='ml16' width={6}>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
+                                      component='input'
+                                      name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='once'/>
+                                    <label className='mh4'> Once(Specific Date)</label>
+                                    <Form.Field
+                                      className='ml8 mv8 w_input_3'
+                                      control={Input}
+                                      name='once_date'
+                                      // onChange={_handleCustomWeekChange}
+                                      // readOnly={frequency !== 'every_custom_week'}
+                                      type='date'/>
+                                  </Form.Group>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
+                                      component='input' name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='every_other_day'/>
+                                    <label className='mh4'> Every Other Day (Starting First Day)</label>
+                                  </Form.Group>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
+                                      component='input'
+                                      name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='every_day'/>
+                                    <label className='mh4'> Every Day</label>
+                                  </Form.Group>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
+                                      component='input' name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='every_day_except_first'/>
+                                    <label className='mh4'> Every Day Except First Day</label>
+                                  </Form.Group>
+                                  <Form.Group  className='div_align_center mh0'>
+                                    <Field
+                                      className='pt0'
+                                      component='input'
+                                      name='frequency'
+                                      // onChange={_handleFrequencyClick}
+                                      type='radio' value='every_day_except_last'/>
+                                    <label className='mh4'> Every Day Except Last Day</label>
+                                  </Form.Group>
+                                </Grid.Column>
+                                <Grid.Column className='mt20' width={3}>
+                                  <Header as='h4'>Times :</Header>
+                                  <Form.Group>
+                                    <Form.Field
+                                      className='w_input_3'
+                                      control={Input}
+                                      name='custom_week_number'
+                                      // onChange={_handleCustomWeekChange}
+                                      // readOnly={frequency !== 'every_custom_week'}
+                                      type='time'/>
+                                    <Form.Field>
+                                      <Form.Button
+                                        className='align-button'
+                                        color='teal'
+                                        icon='plus'
+                                        onClick={_handleAddTime}
+                                        type='button'/>
+                                    </Form.Field>
+                                  </Form.Group>
+                                  <FieldArray
+                                    component={AddTime}
+                                    name='add_time'
+                                    title='Add Time'/>
+                                </Grid.Column>
+                                <Grid.Column className='mt20 ml32' width={3}>
+                                  <Header as='h4'>Feedings :</Header>
+                                  <Form.Group>
+                                    <Field
+                                      className='checkbox-label'
+                                      component={FormField} control={Checkbox} id='breakfast'
+                                      name='breakfast'
+                                      type='checkbox'/>
+                                    <label htmlFor='breakfast'> Breakfast </label>
+                                  </Form.Group>
+                                  <Form.Group>
+                                    <Field
+                                      className='checkbox-label'
+                                      component={FormField} control={Checkbox} id='lunch'
+                                      name='lunch'
+                                      type='checkbox'/>
+                                    <label htmlFor='lunch'> Lunch</label>
+                                  </Form.Group>
+                                  <Form.Group>
+                                    <Field
+                                      className='checkbox-label'
+                                      component={FormField} control={Checkbox} id='dinner'
+                                      name='dinner'
+                                      type='checkbox'/>
+                                    <label htmlFor='dinner'> Dinner</label>
+                                  </Form.Group>
+                                  <Form.Group>
+                                    <Field
+                                      className='checkbox-label'
+                                      component={FormField} control={Checkbox} id='other'
+                                      name='other'
+                                      type='checkbox'/>
+                                    <label htmlFor='other'> Other</label>
+                                  </Form.Group>
+                                </Grid.Column>
+                              </Grid>
+                            </Grid.Column>
+                            <Grid.Column width={16}>
+                              <Grid>
+                                <Grid.Column width={12}>
+                                  <Field
+                                    component={FormField}
+                                    control={Form.TextArea}
+                                    label='Notes'
+                                    name='note'
+                                    placeholder='Enter Notes'/>
+                                </Grid.Column>
+                                <Grid.Column className='addon-service-button' width={4}>
+                                  <Form.Field>
+                                    <Button
+                                      basic
+                                      className='w160'
+                                      color='teal'
+                                      // onClick={_handleAddNoteBtnClick}
+                                      type='button'><Icon name='plus'/>Add Service
+                                    </Button>
+                                  </Form.Field>
+                                </Grid.Column>
+                              </Grid>
+                            </Grid.Column>
+                          </Grid>
+                        </Segment>
+                      </Accordion.Content>
+                    </Accordion>
+                  </Grid.Column>
 
                   <Grid.Column className='padding-column' width={16}>
                     <Accordion className='margin-accordian'>
@@ -414,7 +706,7 @@ const BoardingFormWizardSecond = props => {
                         index={3}
                         onClick={_handleSelectAddonClick}>
                         <Header as='h5' className='mb0 heading-color ml8'>
-                          Generic Charges
+                          Miscellaneous Charges
                           <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                         </Header>
                       </Accordion.Title>
@@ -428,12 +720,9 @@ const BoardingFormWizardSecond = props => {
                                 </Header>
                               </Grid.Column>
                               <Grid.Column className='padding-column'>
-                                <span>Generic Charges</span>
+                                <span>Miscellaneous Charges</span>
                               </Grid.Column>
 
-                              <Grid.Column className='mv4'>
-                                <b>Price :</b> <span> $3.00</span>
-                              </Grid.Column>
                               <Grid.Column className='mv24'>
                                 <span> Applies to Pets :</span>
                                 <Grid.Column className='mv28'>
@@ -442,8 +731,8 @@ const BoardingFormWizardSecond = props => {
                                       <Form.Group className='mh4' key={petId}>
                                         <Field
                                           className='checkbox-label mh4'
-                                          component={FormField} control={Checkbox} id={petId}
-                                          name={clientPet.items.find(_pet => _pet.id === petId).name}
+                                          component={FormField} control={Checkbox}
+                                          name={`${clientPet.items.find(_pet => _pet.id === petId).name}.misc`}
                                           type='checkbox'/>
                                         <label htmlFor={petId}>
                                           {clientPet.items.find(_pet => _pet.id === petId).name}</label>
@@ -457,9 +746,9 @@ const BoardingFormWizardSecond = props => {
                                         <Field
                                           className='checkbox-label mh4'
                                           component={FormField} control={Checkbox} id='all'
-                                          name='all'
+                                          name='allMisc'
                                           type='checkbox'/>
-                                        <label htmlFor='all'> All</label>
+                                        <label htmlFor='allMisc'> All</label>
                                       </Form.Group>
                                     )
                                   }
@@ -794,13 +1083,14 @@ export default compose(
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
       let checkOut = formValueSelector(boardingFormId)(state, 'check_out')
       let checkIn = formValueSelector(boardingFormId)(state, 'check_in')
+      const clientPet = clientPetDuck.selectors.list(state)
 
       return {
         sharedLodging,
         petReservationDetail: petReservationDetail,
         initialValues       : { ...petReservationDetail.item },
         petKennel           : petKennelDuck.selectors.list(state),
-        clientPet           : clientPetDuck.selectors.list(state),
+        clientPet           : clientPet,
         checkIn   ,
         state,
         checkOut,
@@ -813,6 +1103,7 @@ export default compose(
     },
     {
       getBoardingReservationAddons: boardingReservationAddonDuck.creators.get,
+      getFeedingAddons            : feedingAddonDuck.creators.get,
       getPetKennels               : petKennelDuck.creators.get,
       getGroomingReservationAddons: groomingReservationAddonDuck.creators.get,
       setReserveItem              : petReservationDetailDuck.creators.setItem

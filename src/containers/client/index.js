@@ -3,14 +3,15 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
-import Layout from '@components/Common/Layout'
-import ModalDelete from '@components/Modal/Delete'
-import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
-import ClientFormModal from './form/modal'
-
+import loadable from '@loadable/component'
 import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
+import ClientFormModal from './form/modal'
+import useModal from '@components/Modal/useModal'
+
+const Layout = loadable(() => import('@components/Common/Layout'))
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
+const Table = loadable(() => import('@components/Table'))
 
 const Client = ({ client, clientDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()

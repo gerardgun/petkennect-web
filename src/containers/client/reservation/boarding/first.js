@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector, reduxForm, FieldArray } from 'redux-form'
-import { Button, Confirm, Input, Grid, Form, Header, Select, Segment, Icon, Checkbox, Label, Divider } from 'semantic-ui-react'
+import { Button, Confirm, Input, Grid, Form, Header, Segment, Icon, Checkbox, Label, Divider } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -20,7 +20,6 @@ import moment  from 'moment'
 import clientPetDuck from '@reducers/client/pet'
 import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
-import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import VaccinationAlert from '../vaccination-alert'
@@ -40,7 +39,7 @@ const BoardingFormWizardFirst = props => {
     selectedPets,
     services,
     serviceAttribute,
-    petKennelType,
+    // petKennelType,
     error, handleSubmit, reset
   } = props
 
@@ -411,56 +410,6 @@ const BoardingFormWizardFirst = props => {
           </Segment>
 
         }
-        <Segment className='section-info-item-step1'>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Source'
-              name='source'
-              options={
-                [ { key: 1 , value: 1, text: 'Online' },
-                  { key: 2 , value: 2, text: 'Email' },
-                  { key: 3 , value: 3, text: 'Phone Call' },
-                  { key: 4 , value: 4, text: 'Walk In' }
-                ]
-              }
-              placeholder='Select Source'
-              required/>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Type of Stay'
-              name='type_of_stay'
-              options={
-                [ { key: 1 , value: 1, text: 'Dog Boarding' },
-                  { key: 2 , value: 2, text: 'Add\'l Dog' },
-                  { key: 3 , value: 3 ,  text: 'Boarding' }
-                ]
-              }
-              placeholder='Select type of stay '
-              required/>
-          </Form.Group>
-        </Segment>
-        <Segment className='section-info-item-step1'>
-          <div>
-            <Header as='h3' className='section-info-header'>Select package and kennel type</Header>
-            <Form.Group widths='2'>
-              <Field
-                component={FormField}
-                control={Select}
-                label='Kennel Type'
-                name='kennel_type'
-                options={petKennelType.items.map(_kennelType =>
-                  ({ key: _kennelType.id, value: _kennelType.id, text: `${_kennelType.name}` }))
-                }
-                placeholder='Select Kennel'
-                required
-                selectOnBlur={false}/>
-            </Form.Group>
-          </div>
-        </Segment>
-
         {
           error && (
             <Form.Group widths='equal'>
@@ -515,12 +464,10 @@ export default compose(
       let startDate =  check_in ? new Date(check_in) : new Date()
       let endDate = check_out ? new Date(check_out) : new Date()
       let todayDate = new Date()
-      const KennelType = formValueSelector(boardingFormId)(state, 'kennel_type')
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
       const selectedLocation = formValueSelector(boardingFormId)(state, 'location')
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
       const serviceAttribute = serviceAttributeDuck.selectors.list(state)
-      const petKennelType = petKennelTypeDuck.selectors.list(state)
       const service = serviceDuck.selectors.list(state)
       const selectedPetID  = petReservationDetail.item.pet && petReservationDetail.item.pet
       const initialLocation =  petReservationDetail.item.location ?  petReservationDetail.item.location : auth.location
@@ -542,7 +489,7 @@ export default compose(
         }
       })
       const checkOutTime = petReservationDetail.item.boarding && petReservationDetail.item.boarding.checkout_at
-      const initialCheckOutTime =  moment(`${checkOutTime}`).format('HH:mm')
+      const initialCheckOutTime =  moment.utc(`${checkOutTime}`).format('HH:mm')
       const checkInTime = petReservationDetail.item.reserved_at && petReservationDetail.item.reserved_at
       const initialCheckInTime =  moment.utc(`${checkInTime}`).format('HH:mm')
       const defaultInitialValues = petReservationDetail.item.id ? {
@@ -568,16 +515,15 @@ export default compose(
         serviceAttribute    : serviceAttribute,
         petReservationDetail: petReservationDetail,
         initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,
-          location: initialLocation,
-          check_in: petReservationDetail.item.reserved_at
+          location  : initialLocation,
+          lodgingPet: selectedPets != undefined && selectedPets,
+          check_in  : petReservationDetail.item.reserved_at
             ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : initialDate,
           check_out: petReservationDetail.item.boarding
             ? moment(petReservationDetail.item.boarding.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : initialDate
         },
-        petKennelType      : petKennelType,
-        hasSharedKennelType: KennelType === 'shared' ? true : false,
-        selectedPets       : selectedPets,
-        selectedLocation   : selectedLocation
+        selectedPets    : selectedPets,
+        selectedLocation: selectedLocation
       }
     },
     {
@@ -590,12 +536,9 @@ export default compose(
     forceUnregisterOnUnmount: true,
     validate                : (values) => {
       const schema = {
-        location      : Yup.mixed().required('Location is required'),
-        pet           : Yup.mixed().required('Pet is required'),
-        check_in_time : Yup.mixed().required('Departing Time is required'),
-        check_out_time: Yup.mixed().required('Arriving Time is required'),
-        kennel_type   : Yup.mixed().required('Kennel Type is required'),
-        check_in      : Yup
+        location: Yup.mixed().required('Location is required'),
+        pet     : Yup.mixed().required('Pet is required'),
+        check_in: Yup
           .date()
           .required('Check In date is required'),
         check_out: Yup

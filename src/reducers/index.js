@@ -47,6 +47,7 @@ import daycampCardAnswerDetail from '@reducers/pet/reservation/daycamp-card/dayc
 import daycampReservation from '@reducers/pet/reservation/daycamp-reservation'
 import boardingReservation from '@reducers/pet/reservation/boarding'
 import boardingReservationAddon from '@reducers/pet/reservation/boarding/add-on'
+import boardingReservationAddonFeeding from '@reducers/pet/reservation/boarding/add-on/feeding-addon'
 import groomingReservation from '@reducers/pet/reservation/grooming'
 import groomingReservationAddon from '@reducers/pet/reservation/grooming/add-on'
 import daycampReservationDetail from '@reducers/pet/reservation/daycamp-reservation/detail'
@@ -172,49 +173,47 @@ import zip from '@reducers/zip'
 import zipDetail from '@reducers/zip/detail'
 
 const createRootReducer = history => combineReducers({
-  form                              : formReducer,
-  router                            : connectRouter(history),
-  [agreement.store]                 : agreement.reducer,
-  [agreementDetail.store]           : agreementDetail.reducer,
-  [auth.store]                      : auth.reducer,
-  [application.store]               : application.reducer,
-  [calendarDetail.store]            : calendarDetail.reducer,
-  [category.store]                  : category.reducer,
-  [categoryDetail.store]            : categoryDetail.reducer,
-  [client.store]                    : client.reducer,
-  [clientDetail.store]              : clientDetail.reducer,
-  [clientDocument.store]            : clientDocument.reducer,
-  [clientDocumentDetail.store]      : clientDocumentDetail.reducer,
-  [clientDocumentType.store]        : clientDocumentType.reducer,
-  [clientDocumentTypeDetail.store]  : clientDocumentTypeDetail.reducer,
-  [clientAgreement.store]           : clientAgreement.reducer,
-  [clientAgreementDetail.store]     : clientAgreementDetail.reducer,
-  [clientComment.store]             : clientComment.reducer,
-  [clientCommentDetail.store]       : clientCommentDetail.reducer,
-  [clientPet.store]                 : clientPet.reducer,
-  [clientEmailMessage.store]        : clientEmailMessage.reducer,
-  [company.store]                   : company.reducer,
-  [companyDetail.store]             : companyDetail.reducer,
-  [customReport.store]              : customReport.reducer,
-  [customReportDetail.store]        : customReportDetail.reducer                ,
-  [customized.store]                : customized.reducer,
-  [customizedField.store]           : customizedField.reducer,
-  [customizedFieldDetail.store]     : customizedFieldDetail.reducer,
-  [customizedFieldGroup.store]      : customizedFieldGroup.reducer,
-  [customizedFieldGroupDetail.store]: customizedFieldGroupDetail.reducer,
-  [daycampCard.store]               : daycampCard.reducer,
-  [daycampCardDetail.store]         : daycampCardDetail.reducer,
-  [boardingReservation.store]       : boardingReservation.reducer,
-  [boardingReservationAddon.store]  : boardingReservationAddon.reducer,
-
-  [dashboardDaycamp.store]          : dashboardDaycamp.reducer,    // dashboard
-  [dashboardDaycampCheckedIn.store] : dashboardDaycampCheckedIn.reducer,
-  [dashboardDaycampCheckedOut.store]: dashboardDaycampCheckedOut.reducer,
-
-  [dashboardBoarding.store]          : dashboardBoarding.reducer,    // dashboard
-  [dashboardBoardingCheckedIn.store] : dashboardBoardingCheckedIn.reducer,
-  [dashboardBoardingCheckedOut.store]: dashboardBoardingCheckedOut.reducer,
-
+  form                                          : formReducer,
+  router                                        : connectRouter(history),
+  [agreement.store]                             : agreement.reducer,
+  [agreementDetail.store]                       : agreementDetail.reducer,
+  [auth.store]                                  : auth.reducer,
+  [application.store]                           : application.reducer,
+  [calendarDetail.store]                        : calendarDetail.reducer,
+  [category.store]                              : category.reducer,
+  [categoryDetail.store]                        : categoryDetail.reducer,
+  [client.store]                                : client.reducer,
+  [clientDetail.store]                          : clientDetail.reducer,
+  [clientDocument.store]                        : clientDocument.reducer,
+  [clientDocumentDetail.store]                  : clientDocumentDetail.reducer,
+  [clientDocumentType.store]                    : clientDocumentType.reducer,
+  [clientDocumentTypeDetail.store]              : clientDocumentTypeDetail.reducer,
+  [clientAgreement.store]                       : clientAgreement.reducer,
+  [clientAgreementDetail.store]                 : clientAgreementDetail.reducer,
+  [clientComment.store]                         : clientComment.reducer,
+  [clientCommentDetail.store]                   : clientCommentDetail.reducer,
+  [clientPet.store]                             : clientPet.reducer,
+  [clientEmailMessage.store]                    : clientEmailMessage.reducer,
+  [company.store]                               : company.reducer,
+  [companyDetail.store]                         : companyDetail.reducer,
+  [customReport.store]                          : customReport.reducer,
+  [customReportDetail.store]                    : customReportDetail.reducer                ,
+  [customized.store]                            : customized.reducer,
+  [customizedField.store]                       : customizedField.reducer,
+  [customizedFieldDetail.store]                 : customizedFieldDetail.reducer,
+  [customizedFieldGroup.store]                  : customizedFieldGroup.reducer,
+  [customizedFieldGroupDetail.store]            : customizedFieldGroupDetail.reducer,
+  [daycampCard.store]                           : daycampCard.reducer,
+  [daycampCardDetail.store]                     : daycampCardDetail.reducer,
+  [boardingReservation.store]                   : boardingReservation.reducer,
+  [boardingReservationAddon.store]              : boardingReservationAddon.reducer,
+  [boardingReservationAddonFeeding.store]       : boardingReservationAddonFeeding.reducer,
+  [dashboardDaycamp.store]                      : dashboardDaycamp.reducer,    // dashboard
+  [dashboardDaycampCheckedIn.store]             : dashboardDaycampCheckedIn.reducer,
+  [dashboardDaycampCheckedOut.store]            : dashboardDaycampCheckedOut.reducer,
+  [dashboardBoarding.store]                     : dashboardBoarding.reducer,    // dashboard
+  [dashboardBoardingCheckedIn.store]            : dashboardBoardingCheckedIn.reducer,
+  [dashboardBoardingCheckedOut.store]           : dashboardBoardingCheckedOut.reducer,
   [groomingReservation.store]                   : groomingReservation.reducer,
   [groomingReservationAddon.store]              : groomingReservationAddon.reducer,
   [daycampReservation.store]                    : daycampReservation.reducer,

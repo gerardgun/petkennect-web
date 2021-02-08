@@ -80,6 +80,7 @@ import petReservationTrainingPackage from './pet/reservation/training/package'
 import petReservationTrainingReservation from './pet/reservation/training/reservation'
 import petReservationBoarding from './pet/reservation/boarding'
 import petReservationBoardingAddon from './pet/reservation/boarding/addon'
+import petReservationBoardingAddonFeeding from './pet/reservation/boarding/addon/feeding-addon'
 import petReservationGrooming from './pet/reservation/grooming'
 import petReservationGroomingAddon from './pet/reservation/grooming/addon'
 import petDaycampReservation from './pet/reservation/daycamp-reservation'
@@ -228,6 +229,7 @@ export default function* rootSaga() {
     ...petReservationTrainingReservation,
     ...petReservationBoarding,
     ...petReservationBoardingAddon,
+    ...petReservationBoardingAddonFeeding,
     ...petReservationGrooming,
     ...petReservationGroomingAddon,
     ...petVaccination,

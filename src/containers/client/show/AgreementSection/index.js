@@ -2,11 +2,8 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Container, Grid, Header } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
-import Table from '@components/Table'
-import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
-import SignAgreementForm from './SignAgreementForm'
-import ShowAgreement from './ShowAgreement'
 import { downloadFileURL, printFileURL } from '@lib/utils/functions'
 
 import clientAgreementDuck from '@reducers/client/agreement'
@@ -14,6 +11,11 @@ import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
 import './styles.scss'
+
+const Table = loadable(() => import('@components/Table'))
+const ClientDocumentFormSendModal = loadable(() => import('@containers/client/show/DocumentSection/form/send/modal'))
+const SignAgreementForm = loadable(() => import('./SignAgreementForm'))
+const ShowAgreement = loadable(() => import('./ShowAgreement'))
 
 function AgreementsSection({ clientAgreementDetail, ...props }) {
   useEffect(() => {

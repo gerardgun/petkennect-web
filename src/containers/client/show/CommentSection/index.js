@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container, Header, Button, Grid, Loader, Message } from 'semantic-ui-react'
 import { compose } from 'redux'
+import loadable from '@loadable/component'
 
-import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
-import ClientCommentFormModal from './form/modal'
 import useInfiniteScroll from '@hooks/useInfiniteScroll'
 import { getAbbreviature } from '@lib/utils/functions'
 
@@ -15,6 +14,9 @@ import NoteCreate from './replyForm'
 import clientCommentDuck from '@reducers/client/comment'
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
 import authDuck from '@reducers/auth'
+
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
+const ClientCommentFormModal = loadable(() => import('./form/modal'))
 
 function CommentSection({ clientComment, ...props }) {
   const [ openDeleteModal, { _handleOpen, _handleClose } ] = useModal()

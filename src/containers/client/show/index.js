@@ -5,16 +5,7 @@ import { compose } from 'redux'
 import { Button, Grid, Message, Segment, Header, Icon, Image, Label, Menu, Breadcrumb, Dropdown } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
-import Layout from '@components/Common/Layout'
-import AgreementSection from './AgreementSection'
-import CommentSection from './CommentSection'
-import DocumentSection from './DocumentSection'
-import InformationSection from './InformationSection'
-import PetSection from './PetSection'
-import ReservesSection from './ReservesSection'
-import MessageHistorySection from './MessageHistory'
-import AccountingSection from './Accounting'
-import ExpressCheckInForm from '../../pet/form/express-check-in'
+import loadable from '@loadable/component'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientCommentDuck from '@reducers/client/comment'
@@ -24,6 +15,17 @@ import clientAgreementDuck from '@reducers/client/agreement'
 import petReservationCheckInDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import './../styles.scss'
+
+const Layout = loadable(() => import('@components/Common/Layout'))
+const AgreementSection = loadable(() => import('./AgreementSection'))
+const CommentSection = loadable(() => import('./CommentSection'))
+const DocumentSection = loadable(() => import('./DocumentSection'))
+const InformationSection = loadable(() => import('./InformationSection'))
+const PetSection = loadable(() => import('./PetSection'))
+const ReservesSection = loadable(() => import('./ReservesSection'))
+const MessageHistorySection = loadable(() => import('./MessageHistory'))
+const AccountingSection = loadable(() => import('./Accounting'))
+const ExpressCheckInForm = loadable(() => import('../../pet/form/express-check-in'))
 
 const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocument, clientPet, ...props }) => {
   const [ activeMenuItem, setActiveMenuItem ] = useState('info')

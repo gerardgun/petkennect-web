@@ -493,3 +493,19 @@
 .heading-height{
   height: 35px !important;
 }
+
+.lodging-text-align {
+  align-items: center !important;
+}
+
+.available-checkbox{
+  .ui.checkbox input:checked ~ label::after {
+    background-color: rgb(9, 165, 9);
+  }
+}
+
+.occupied-checkbox{
+  .ui.checkbox input:checked ~ label::after {
+    background-color: red;
+  }
+}

@@ -2,7 +2,8 @@ import React from 'react'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Grid, Header, Segment, Form, Input } from 'semantic-ui-react'
-import FormField from '@components/Common/FormField'
+import loadable from '@loadable/component'
+const FormField = loadable(() => import('@components/Common/FormField'))
 
 const Accounting = () => {
   return (

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Field } from 'redux-form'
 
 import FormField from '@components/Common/FormField'
-import { Button, Segment, Header, Accordion, Table, Select, Checkbox, Grid, Form, Icon,Dropdown } from 'semantic-ui-react'
+import { Button, Segment, Header, Accordion, Table, Select, Checkbox, Grid, Form, Icon,Dropdown, Label } from 'semantic-ui-react'
 
 function dateToYMD(date) {
   let strArray = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
@@ -76,10 +76,16 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
     const newIndex = activeIndex === index ? -1 : index
     setActiveIndex(newIndex)
   }
+
+  const [ allPet, setAllPet ] = useState(true)
+  const _handleAllChecked = (value) => {
+    setAllPet(value)
+  }
+
   let names = []
   if(lodging === true)
     for (let items of item)
-      names.push({ name: clientPet.items.find(_pet => _pet.id === items).name })
+      names.push({ id: clientPet.items.find(_pet => _pet.id === items).id , name: clientPet.items.find(_pet => _pet.id === items).name })
 
   return (
     <Segment>
@@ -87,98 +93,246 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
         lodging === true ? (
           <>
             <Grid>
-              <Grid.Column>Apply To: {
-                names && names.map((item,index)=>{
+              <Grid.Column width={8}>
+                  Apply To: { names.map((item, index) => {
                   return (
-                    <span key={index}>{item.name}{ names && names.length - 1 != index && (', ')} </span>
+                    <Label key={index}>{item.name}</Label>)})}
+              </Grid.Column>
+              <Grid.Column width={8}>
+                <Form.Group>
+                  <Field
+                    checked={allPet}
+                    className='checkbox-label'
+                    component={FormField} control={Checkbox} id='all'
+                    name='lodgingForAll'
+                    onChange={_handleAllChecked}
+                    type='checkbox'/>
+                  <label htmlFor='all'> All</label>
+                </Form.Group>
+              </Grid.Column>
+              <Grid.Column width={16}>
+                {
+                  allPet === false ? (
+                    item && item.map((petId)=> (
+                      <Segment key={petId}>
+                        <Grid>
+                          <Grid.Column width={16}>
+                            Apply To: {clientPet.items.find(_pet => _pet.id === petId).name}
+                          </Grid.Column>
+                          <Grid.Column width={8}>
+                            <Field
+                              component={FormField}
+                              control={Select}
+                              label='Type Of Stay'
+                              name='type_of_stay'
+                              options={
+                                [ { key: 1 , value: 1, text: 'Dog Boarding' },
+                                  { key: 2 , value: 2, text: 'Add\'l Dog' },
+                                  { key: 3 , value: 3 ,  text: 'Boarding' }
+                                ]
+                              }
+                              placeholder='Select type of stay '/>
+                          </Grid.Column>
+                          <Grid.Column width={8}>
+                            <Field
+                              component={FormField}
+                              control={Select}
+                              label='Daily Activity Package'
+                              name={`${item.id}.activityPackage`}
+                              options={[
+                                { key: 1, value: 1, text: 'Test' }
+                              ]}
+                              placeholder='Select Activity Package'
+                              selectOnBlur={false}/>
+                          </Grid.Column>
+                        </Grid>
+
+                        <Accordion className='mt32 mv12'>
+                          <Accordion.Title
+                            active={activeIndex === 0}
+                            className='heading-color'
+                            index={0}
+                            onClick={_handleSelectRecurringDaysClick}>
+                            <Header as='h3' className='mb0 section-info-header heading-color'>
+                              Select Accomodations for {clientPet.items.find(_pet => _pet.id === petId).name}
+                              <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
+                            </Header>
+                          </Accordion.Title>
+
+                          <Accordion.Content active={activeIndex === 0}>
+                            <div>
+                              <Grid className='mt12'>
+                                <Grid.Column width={10}>
+                                  <Header as='h3' className='mb0'>
+                                    Accomodations for {clientPet.items.find(_pet => _pet.id === petId).name}
+                                  </Header>
+                                </Grid.Column>
+                                <Grid.Column width={3}>
+                                  <Form.Group className='available-checkbox'>
+                                    <Field
+                                      checked={true}
+                                      className='checkbox-label'
+                                      component={FormField} control={Checkbox} id='available'
+                                      name='available'
+                                      type='checkbox'/>
+                                    <label htmlFor='available'> Available</label>
+                                  </Form.Group>
+                                </Grid.Column>
+                                <Grid.Column width={3}>
+                                  <Form.Group className='occupied-checkbox'>
+                                    <Field
+                                      checked={true}
+                                      className='checkbox-label'
+                                      component={FormField} control={Checkbox} id='occupied'
+                                      name='occupied'
+                                      type='checkbox'/>
+                                    <label htmlFor='occupied'> Occupied</label>
+                                  </Form.Group>
+                                </Grid.Column>
+
+                              </Grid>
+
+                              {/* <div className='div-kannel-selection'>
+                                <Header as='h3' className='section-info-header'>What kennel and activity will be for {item.name}</Header>
+                                <Field
+                                  component={FormField}
+                                  control={Select}
+                                  lebel='kennel'
+                                  name={`${item.id}.kennel`}
+                                  options={petKennelOptions}
+                                  placeholder='Select Kennel'
+                                  selectOnBlur={false}/>
+                              </div> */}
+                              <div style={{ overflowY: 'auto' }}>
+                                <Table
+                                  basic='very' celled collapsing
+                                  unstackable>
+                                  <Table.Body>
+                                    <ReservationCalenderList checkIn={checkIn} checkOut={checkOut}/>
+                                  </Table.Body>
+                                </Table>
+                              </div>
+                            </div>
+                          </Accordion.Content>
+                        </Accordion>
+                      </Segment>
+                    ))
+                  ) : (
+                    <>
+                      <Grid>
+                        <Grid.Column width={8}>
+                          <Field
+                            component={FormField}
+                            control={Select}
+                            label='Type Of Stay'
+                            name='type_of_stay'
+                            options={
+                              [ { key: 1 , value: 1, text: 'Dog Boarding' },
+                                { key: 2 , value: 2, text: 'Add\'l Dog' },
+                                { key: 3 , value: 3 ,  text: 'Boarding' }
+                              ]
+                            }
+                            placeholder='Select type of stay '/>
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+                          <Field
+                            component={FormField}
+                            control={Select}
+                            label='Daily Activity Package'
+                            name={`${item.id}.activityPackage`}
+                            options={[
+                              { key: 1, value: 1, text: 'Test' }
+                            ]}
+                            placeholder='Select Activity Package'
+                            selectOnBlur={false}/>
+                        </Grid.Column>
+                      </Grid>
+
+                      <Accordion className='mt32 mv12'>
+                        <Accordion.Title
+                          active={activeIndex === 0}
+                          className='heading-color'
+                          index={0}
+                          onClick={_handleSelectRecurringDaysClick}>
+                          <Header as='h3' className='mb0 section-info-header heading-color ml8'>
+                          Select Accomodations for All Pets
+                            <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
+                          </Header>
+                        </Accordion.Title>
+
+                        <Accordion.Content active={activeIndex === 0}>
+                          <div>
+                            <Grid className='mt12'>
+                              <Grid.Column width={10}>
+                                <Header as='h3' className='mb0'>
+                                Accomodations for All Pets
+                                </Header>
+                              </Grid.Column>
+                              <Grid.Column width={3}>
+                                <Form.Group className='available-checkbox'>
+                                  <Field
+                                    checked={true}
+                                    className='checkbox-label'
+                                    color='green'
+                                    component={FormField} control={Checkbox} id='available'
+                                    name='available'
+                                    type='checkbox'/>
+                                  <label htmlFor='available'> Available</label>
+                                </Form.Group>
+                              </Grid.Column>
+                              <Grid.Column width={3}>
+                                <Form.Group className='occupied-checkbox'>
+                                  <Field
+                                    checked={true}
+                                    className='checkbox-label'
+                                    component={FormField} control={Checkbox} id='occupied'
+                                    name='occupied'
+                                    type='checkbox'/>
+                                  <label htmlFor='occupied'> Occupied</label>
+                                </Form.Group>
+                              </Grid.Column>
+                            </Grid>
+                            <div style={{ overflowY: 'auto' }}>
+                              <Table
+                                basic='very' celled collapsing
+                                unstackable>
+                                <Table.Body>
+                                  <ReservationCalenderList checkIn={checkIn} checkOut={checkOut}/>
+                                </Table.Body>
+                              </Table>
+                            </div>
+                          </div>
+                        </Accordion.Content>
+                      </Accordion>
+                    </>
                   )
-                })}</Grid.Column>
-            </Grid>
-            <Grid>
-              <Grid.Column>Type Of Stay: Boarding Package</Grid.Column>
-            </Grid>
-            <Grid>
-              <Grid.Column className='span-margin' width={3}><span>Daily Activity Package:</span></Grid.Column>
-              <Grid.Column width={5}>
-                <Field
-                  component={FormField}
-                  control={Select}
-                  name={'activityPackage'}
-                  options={[
-                    { key: 1, value: 1, text: 'Test' }
-                  ]}
-                  placeholder='Select Activity Package'
-                  selectOnBlur={false}/>
+                }
               </Grid.Column>
             </Grid>
 
-            <Accordion className='mt32 mv12'>
-              <Accordion.Title
-                active={activeIndex === 0}
-                className='heading-color'
-                index={0}
-                onClick={_handleSelectRecurringDaysClick}>
-                <Header as='h3' className='mb0 section-info-header heading-color ml8'>
-                  Select Accomodations for All Pets
-                  <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
-                </Header>
-              </Accordion.Title>
-
-              <Accordion.Content active={activeIndex === 0}>
-                <div>
-                  <Grid className='mt12'>
-                    <Grid.Column width={10}>
-                      <Header as='h3' className='mb0'>
-                    Accomodations for All Pets
-                      </Header>
-                    </Grid.Column>
-                    <Grid.Column width={3}>
-                      <Form.Group>
-                        <Field
-                          checked={true}
-                          className='checkbox-label'
-                          component={FormField} control={Checkbox} id='available'
-                          name='available'
-                          type='checkbox'/>
-                        <label htmlFor='available'> Available</label>
-                      </Form.Group>
-                    </Grid.Column>
-                    <Grid.Column width={3}>
-                      <Form.Group>
-                        <Field
-                          checked={true}
-                          className='checkbox-label'
-                          component={FormField} control={Checkbox} id='occupied'
-                          name='occupied'
-                          type='checkbox'/>
-                        <label htmlFor='occupied'> Occupied</label>
-                      </Form.Group>
-                    </Grid.Column>
-                  </Grid>
-                  <div style={{ overflowY: 'auto' }}>
-                    <Table
-                      basic='very' celled collapsing
-                      unstackable>
-                      <Table.Body>
-                        <ReservationCalenderList checkIn={checkIn} checkOut={checkOut}/>
-                      </Table.Body>
-                    </Table>
-                  </div>
-                </div>
-              </Accordion.Content>
-            </Accordion>
           </>)
           : (
             <>
               <Grid>
-                <Grid.Column>Apply To: {item.name}</Grid.Column>
-              </Grid>
-              <Grid>
-                <Grid.Column>Type Of Stay: Boarding Package</Grid.Column>
-              </Grid>
-              <Grid>
-                <Grid.Column className='span-margin' width={3}><span>Daily Activity Package:</span></Grid.Column>
-                <Grid.Column width={5}>
+                <Grid.Column width={16}>
+                  Apply To: {item.name}
+                </Grid.Column>
+                <Grid.Column width={8}>
+                  <label>Type of Stay: </label>
+                  <Field
+                    component={FormField}
+                    control={Select}
+                    name='type_of_stay'
+                    options={
+                      [ { key: 1 , value: 1, text: 'Dog Boarding' },
+                        { key: 2 , value: 2, text: 'Add\'l Dog' },
+                        { key: 3 , value: 3 ,  text: 'Boarding' }
+                      ]
+                    }
+                    placeholder='Select type of stay '/>
+                </Grid.Column>
+                <Grid.Column width={8}>
+                  <label>Daily Activity Package: </label>
                   <Field
                     component={FormField}
                     control={Select}
@@ -212,7 +366,7 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
                         </Header>
                       </Grid.Column>
                       <Grid.Column width={3}>
-                        <Form.Group>
+                        <Form.Group className='available-checkbox'>
                           <Field
                             checked={true}
                             className='checkbox-label'
@@ -223,7 +377,7 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
                         </Form.Group>
                       </Grid.Column>
                       <Grid.Column width={3}>
-                        <Form.Group>
+                        <Form.Group className='occupied-checkbox'>
                           <Field
                             checked={true}
                             className='checkbox-label'
