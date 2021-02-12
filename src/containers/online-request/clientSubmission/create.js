@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -17,6 +17,7 @@ import PetInfo from './pets/petInfo'
 import AdditionalInfo from './pets/additionalInfo'
 import ViewNoteSection from '../../online-request/notesSection/'
 
+import clientDetailDuck from '@reducers/client/detail'
 import clientDocumentDuck from '@reducers/online-request/client-submission/client-document'
 import clientSubmissionDetailDuck from '@reducers/online-request/client-submission/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
@@ -29,6 +30,10 @@ const NewClientSubmission = props => {
     clientDocumentDetail,
     error, reset, submitting // redux-form
   } = props
+
+  useEffect(() => {
+    if(clientSubmissionDetail.mode === 'CREATE') props.get(clientSubmissionDetail.item.id)
+  }, [ clientSubmissionDetail.mode ])
 
   const [ activeMenuItem, setActiveMenuItem ] = useState('petInfo')
 
@@ -64,222 +69,231 @@ const NewClientSubmission = props => {
   const isOpened = useMemo(() => getIsOpened(clientSubmissionDetail.mode), [ clientSubmissionDetail.mode ])
 
   const panes = [
-    { menuItem: 'Client Info', render  : () => (<Tab.Pane>
+    {
+      menuItem: 'Client Info',
+      render  : () => (
+        <Tab.Pane>
+          <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
+          <Form.Group widths={2}>
+            <Field
+              autoFocus
+              component={FormField}
+              control={Input}
+              label='Name'
+              name='first_name'
+              placeholder='Enter name'
+              readOnly={!!props.user_exists}
+              required/>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Lastname'
+              name='last_name'
+              placeholder='Enter lastname'
+              readOnly={!!props.user_exists}
+              required/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={InputMask}
+              label='Phone Number'
+              mask='(999) 999 9999'
+              name='phones'
+              placeholder='Enter phone number'
+              type='tel'/>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              label='Email Address'
+              name='alt_email'
+              placeholder='Enter email'
+              type='email'/>
+          </Form.Group>
 
-      <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
-      <Form.Group widths={2}>
-        <Field
-          autoFocus
-          component={FormField}
-          control={Input}
-          label='Name'
-          name='first_name'
-          placeholder='Enter name'
-          readOnly={!!props.user_exists}
-          required/>
-        <Field
-          component={FormField}
-          control={Input}
-          label='Lastname'
-          name='last_name'
-          placeholder='Enter lastname'
-          readOnly={!!props.user_exists}
-          required/>
-      </Form.Group>
-      <Form.Group widths='equal'>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={InputMask}
-          label='Phone Number'
-          mask='(999) 999 9999'
-          name='phones'
-          placeholder='Enter phone number'
-          type='tel'/>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          label='Email Address'
-          name='alt_email'
-          placeholder='Enter email'
-          type='email'/>
-      </Form.Group>
+          <Header as='h6' className='section-header' color='blue'>Address</Header>
+          <Form.Group widths='equal'>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              label='First Address'
+              name='addresses[0]'
+              placeholder='Enter address'/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              label='Zip'
+              name='Zip'
+              placeholder='Enter Zip'/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              disabled={true}
+              label='Country'
+              name='country'/>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              disabled={true}
+              label='State'
+              name='state'/>
+          </Form.Group>
+          <Form.Group widths={2}>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              disabled={true}
+              label='City'
+              name='city'/>
+          </Form.Group>
 
-      <Header as='h6' className='section-header' color='blue'>Address</Header>
-      <Form.Group widths='equal'>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          label='First Address'
-          name='addresses[0]'
-          placeholder='Enter address'/>
-      </Form.Group>
-      <Form.Group widths='equal'>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          label='Zip'
-          name='Zip'
-          placeholder='Enter Zip'/>
-      </Form.Group>
-      <Form.Group widths='equal'>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          disabled={true}
-          label='Country'
-          name='country'/>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          disabled={true}
-          label='State'
-          name='state'/>
-      </Form.Group>
-      <Form.Group widths={2}>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          disabled={true}
-          label='City'
-          name='city'/>
-      </Form.Group>
+          <Header as='h6' className='section-header' color='blue'>Details</Header>
+          <Form.Group widths={2}>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              disabled={true}
+              label='Which location are you intersted in?'
+              name='intersted_location'/>
 
-      <Header as='h6' className='section-header' color='blue'>Details</Header>
-      <Form.Group widths={2}>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          disabled={true}
-          label='Which location are you intersted in?'
-          name='intersted_location'/>
-
-        <Checkbox checked={true} label='Boarding'/>
-      </Form.Group>
-      <Form.Field>
+            <Checkbox checked={true} label='Boarding'/>
+          </Form.Group>
+          <Form.Field>
           How did you hear about us?
-      </Form.Field>
-      <Form.Group widths='equal'>
-        <Checkbox
-          checked={true}
-          label='Friends/ Family'
-          name='checkboxRadioGroup'
-          radio
-          value='friends_family'/> &nbsp;&nbsp;&nbsp;
-        <Input disabled/>
-      </Form.Group>
-      <Form.Group widths='equal'>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          label='Veterinarion Name'
-          name='veterinarion_name'
-          placeholder='Enter the Veterinarion Name'/>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          label='Veterinarion Location'
-          name='veterinarion_location'
-          placeholder='Enter the Veterinarion Location'/>
-      </Form.Group>
-      <Header as='h6' className='section-header' color='blue'>People Authorized to pick up (Extended Family/ Friends)</Header>
-      <Form.Group widths='equal'>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          label='#1 Name'
-          name='authorized_name'
-          placeholder='Enter the Name'/>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={Input}
-          label='Relation'
-          name='relation_name'
-          placeholder='Enter the Relation'/>
-      </Form.Group>
-    </Tab.Pane>) },
-    { menuItem: 'Pets', render  : () => (<Tab.Pane>
-      <Segment className='petkennect-profile'>
-        <Grid>
-          <Grid.Column
-            computer={16} mobile={16} tablet={16}>
-            <Form.Group inline widths={2}>
-              <label>Choose Dog</label>
-              <Form.Field
-                autoFocus
-                component={FormField}
-                control={Select}
-                options={[
-                  { key: 1, value: 1, text: 'dog1' }
-                ]}
-                placeholder='Select dog'
-                required
-                selectOnBlur={false}
-                width={6}/>
-            </Form.Group>
-          </Grid.Column>
-        </Grid>
-        <Grid>
-          <Grid.Column
-            computer={5} mobile={16} tablet={16}>
-            <div className='flex justify-center align-center'>
-              <div className='c-image-profile profile-width'>
-                <Image circular src={defaultImageUrl}/>
+          </Form.Field>
+          <Form.Group widths='equal'>
+            <Checkbox
+              checked={true}
+              label='Friends/ Family'
+              name='checkboxRadioGroup'
+              radio
+              value='friends_family'/> &nbsp;&nbsp;&nbsp;
+            <Input disabled/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              label='Veterinarion Name'
+              name='veterinarion_name'
+              placeholder='Enter the Veterinarion Name'/>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              label='Veterinarion Location'
+              name='veterinarion_location'
+              placeholder='Enter the Veterinarion Location'/>
+          </Form.Group>
+          <Header as='h6' className='section-header' color='blue'>People Authorized to pick up (Extended Family/ Friends)</Header>
+          <Form.Group widths='equal'>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              label='#1 Name'
+              name='authorized_name'
+              placeholder='Enter the Name'/>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={Input}
+              label='Relation'
+              name='relation_name'
+              placeholder='Enter the Relation'/>
+          </Form.Group>
+        </Tab.Pane>) },
+    {
+      menuItem: 'Pets',
+      render  : () => (<Tab.Pane>
+        <Segment className='petkennect-profile'>
+          <Grid>
+            <Grid.Column
+              computer={16} mobile={16} tablet={16}>
+              <Form.Group inline widths={2}>
+                <label>Choose Dog</label>
+                <Form.Field
+                  autoFocus
+                  component={FormField}
+                  control={Select}
+                  options={[
+                    { key: 1, value: 1, text: 'dog1' }
+                  ]}
+                  placeholder='Select dog'
+                  required
+                  selectOnBlur={false}
+                  width={6}/>
+              </Form.Group>
+            </Grid.Column>
+          </Grid>
+          <Grid>
+            <Grid.Column
+              computer={5} mobile={16} tablet={16}>
+              <div className='flex justify-center align-center'>
+                <div className='c-image-profile profile-width'>
+                  <Image circular src={defaultImageUrl}/>
+                </div>
               </div>
-            </div>
-            <Menu
-              className='petkennect-profile-menu' color='teal' fluid
-              vertical>
-              <Menu.Item
-                active={activeMenuItem === 'petInfo'} link name='petInfo'
-                onClick={_handleMenuItemClick}>
+              <Menu
+                className='petkennect-profile-menu' color='teal' fluid
+                vertical>
+                <Menu.Item
+                  active={activeMenuItem === 'petInfo'} link name='petInfo'
+                  onClick={_handleMenuItemClick}>
                 Pet Info
-              </Menu.Item>
-              <Menu.Item
-                active={activeMenuItem === 'additionalInfo'} link name='additionalInfo'
-                onClick={_handleMenuItemClick}>
+                </Menu.Item>
+                <Menu.Item
+                  active={activeMenuItem === 'additionalInfo'} link name='additionalInfo'
+                  onClick={_handleMenuItemClick}>
                 Additional Info
-              </Menu.Item>
-              <Menu.Item
-                active={activeMenuItem === 'dayCamp'} link name='dayCamp'
-                onClick={_handleMenuItemClick}>
+                </Menu.Item>
+                <Menu.Item
+                  active={activeMenuItem === 'dayCamp'} link name='dayCamp'
+                  onClick={_handleMenuItemClick}>
                 Day Camp
-              </Menu.Item>
-              <Menu.Item
-                active={activeMenuItem === 'boarding'} link name='boarding'
-                onClick={_handleMenuItemClick}>
+                </Menu.Item>
+                <Menu.Item
+                  active={activeMenuItem === 'boarding'} link name='boarding'
+                  onClick={_handleMenuItemClick}>
                 Boarding
-              </Menu.Item>
-            </Menu>
-          </Grid.Column>
-          <Grid.Column
-            className='petkennect-profile-body'
-            computer={11} mobile={16} tablet={16}>
-            {activeMenuItem === 'petInfo' && <PetInfo/>}
-            {activeMenuItem === 'additionalInfo' && <AdditionalInfo/>}
-            {activeMenuItem === 'dayCamp' && ''}
-            {activeMenuItem === 'boarding' && ''}
-          </Grid.Column>
-        </Grid>
-      </Segment>
-    </Tab.Pane>) },
-    { menuItem: 'Documents', render  : () => (<Tab.Pane>
-      <Table
-        duck={clientDocumentDuck}
-        onOptionClick={_handleOptionClick}
-        onRowClick={_handleRowClick}/>
-    </Tab.Pane>) }
+                </Menu.Item>
+              </Menu>
+            </Grid.Column>
+            <Grid.Column
+              className='petkennect-profile-body'
+              computer={11} mobile={16} tablet={16}>
+              {activeMenuItem === 'petInfo' && <PetInfo/>}
+              {activeMenuItem === 'additionalInfo' && <AdditionalInfo/>}
+              {activeMenuItem === 'dayCamp' && ''}
+              {activeMenuItem === 'boarding' && ''}
+            </Grid.Column>
+          </Grid>
+        </Segment>
+      </Tab.Pane>) },
+    {
+      menuItem: 'Documents',
+      render  : () => (
+        <Tab.Pane>
+          <Table
+            duck={clientDocumentDuck}
+            onOptionClick={_handleOptionClick}
+            onRowClick={_handleRowClick}/>
+        </Tab.Pane>
+      )
+    }
   ]
 
   return (
@@ -365,6 +379,7 @@ const NewClientSubmission = props => {
           </Form>
         </Modal.Content>
       </Modal>
+
       <RejectForm/>
     </>
   )
@@ -374,15 +389,17 @@ export default compose(
   withRouter,
   connect(
     state => {
+      const clientDetail = clientDetailDuck.selectors.detail(state)
       const clientSubmissionDetail = clientSubmissionDetailDuck.selectors.detail(state)
 
       return {
+        clientDetail,
         clientSubmissionDetail,
-        initialValues: clientSubmissionDetail.item
+        initialValues: {}
       }
     },
     {
-      post       : clientSubmissionDetailDuck.creators.post,
+      get        : clientSubmissionDetailDuck.creators.get,
       put        : clientSubmissionDetailDuck.creators.put,
       resetItem  : clientSubmissionDetailDuck.creators.resetItem,
       setItem    : clientSubmissionDetailDuck.creators.setItem,
