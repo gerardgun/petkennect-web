@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Header, Image, Grid, Button, Icon, Segment, Breadcrumb } from 'semantic-ui-react'
-// import loadable from '@loadable/component'
 
 import Layout from '@components/Common/Layout'
 import BoardingReservationFormWizard from './boarding'
@@ -28,13 +27,6 @@ import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import './styles.scss'
-// const Layout = loadable(() => import('@components/Common/Layout'))
-// const BoardingReservationFormWizard = loadable(() => import('./boarding'))
-// const DaycampReservationFormWizard = loadable(() => import('./daycamp'))
-// const FitnessReservationFormWizard = loadable(() => import('./daycamp'))
-// const GroomingReservationFormWizard = loadable(() => import('./grooming'))
-// const TrainingReservationFormWizard = loadable(() => import('./training'))
-// const ViewNoteSection = loadable(() => import('../../online-request/notesSection/'))
 
 function Reservation({ petReservationDetail, currentTenant, clientDetail, ...props }) {
   const { client: clientId } = useParams()

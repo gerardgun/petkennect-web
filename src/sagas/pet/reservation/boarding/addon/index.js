@@ -13,10 +13,10 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [ { id: 1, boarding_service: 'Pool Time',price: '20', description: '20 min service' },
-          { id: 2, boarding_service: 'Daily Photos',price: '5', description: '5 Photos/Day' },
-          { id: 3, boarding_service: 'Individual Play Time',price: '15', description: '15 min service' },
-          { id: 4, boarding_service: 'Night Time Treat',price: '15', description: '2 treats and cuddles' }
+        items: [ { id: 1, boarding_service: 'Pool Time',price: '20.00', description: '20 min service' },
+          { id: 2, boarding_service: 'Daily Photos',price: '5.00', description: '5 Photos/Day' },
+          { id: 3, boarding_service: 'Individual Play Time',price: '15.00', description: '15 min service' },
+          { id: 4, boarding_service: 'Night Time Treat',price: '15.00', description: '2 treats and cuddles' }
 
         ]
       }

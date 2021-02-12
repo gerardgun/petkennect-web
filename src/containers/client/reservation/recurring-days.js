@@ -476,7 +476,7 @@ const RecurringDaysForm = ({ ...props }) => {
               active={activeIndex}
               className='heading-color'
               onClick={_handleSelectRecurringDaysClick}>
-              <Header as='h3' className='mb0 pt4 heading-color heading-height ml8'>
+              <Header as='h3' className='mb0 pt4 heading-color mv8 ml16'>
                 CALENDAR VIEW
                 <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
               </Header>

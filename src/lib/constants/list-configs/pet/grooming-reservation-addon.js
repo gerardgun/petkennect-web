@@ -39,7 +39,13 @@ export default {
       name        : 'price',
       width       : null,
       type        : 'string',
-      align       : 'center'
+      align       : 'center',
+      formatter   : (cell) => {
+        return (
+          <span>
+            <p>${cell}</p></span>
+        )
+      }
 
     }
 

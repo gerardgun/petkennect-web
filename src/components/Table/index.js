@@ -13,7 +13,7 @@ import { useDebounceText } from '@hooks/Shared'
 
 import { defaultImageUrl } from '@lib/constants'
 
-const TableList = ({ duck, list, striped, ...props }) => {
+const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
   const {
     options: configOptions = []
   } = list.config
@@ -99,9 +99,9 @@ const TableList = ({ duck, list, striped, ...props }) => {
     props.onOptionDropdownChange(optionName, item)
   }
 
-  const _handleCheckboxChange = (e, { value: optionName, itemID  }) => {
+  const _handleCheckboxChange = (e, { value: optionName, itemID, checked  }) => {
     const item = list.items.find(({ id }) => id === itemID)
-    props.onOptionCheckboxChange(optionName, item)
+    props.onOptionCheckboxChange(optionName, item , checked, checkboxIndex)
   }
 
   const _handleOptionBtnClick = e => {

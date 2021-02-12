@@ -497,7 +497,10 @@ export default compose(
         KennelType    : petReservationDetail.item.boarding ? petReservationDetail.item.boarding.kennel_type : '',
         check_in_time : initialCheckInTime,
         check_out_time: initialCheckOutTime, addon         : serviceArray
-      } : {}
+      } : {
+        check_in_time : '09:00',
+        check_out_time: '17:00'
+      }
 
       return {
         startDate,

@@ -19,6 +19,7 @@ import employeeDetailDuck from '@reducers/employee/detail'
 import clientPetDuck from '@reducers/client/pet'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
+import clientDetailDuck from '@reducers/client/detail'
 
 import EmailCreateForm from './email/email-create'
 import EmailAlert from './email/email-alert'
@@ -31,13 +32,12 @@ const BoardingFormWizardThird = props => {
   const {
     employeeName,
     startDate,
-    checkInTime,
     endDate,
-    checkOutTime,
     petReservationDetail,
     addons,
     clientPet,
     selectedPetName,
+    owner,
     currentTenant,
     submitting,
     error, handleSubmit, reset // redux-form
@@ -125,19 +125,25 @@ const BoardingFormWizardThird = props => {
                   <Header as='h3'>
                    General Information
                   </Header>
-                  <InputReadOnly
-                    label='Pets'
-                    value={`${selectedPetName}`}/>
-                  <br/>
                   <Grid>
                     <Grid.Column  computer={8} mobile={16} tablet={10}>
                       <InputReadOnly
-                        label='Check In'
-                        value={`${ moment(startDate + ' ' + checkInTime).format('MM/DD/YYYY')}`}/>
+                        label='Owner'
+                        value={`${owner}`}/>
                     </Grid.Column>
                     <Grid.Column  computer={8} mobile={16} tablet={6}>
                       <InputReadOnly
-                        label='By'
+                        label='Pets'
+                        value={`${selectedPetName}`}/>
+                    </Grid.Column>
+                    <Grid.Column  computer={8} mobile={16} tablet={10}>
+                      <InputReadOnly
+                        label='Check In'
+                        value={`${ moment(startDate).format('MM/DD/YYYY')}`}/>
+                    </Grid.Column>
+                    <Grid.Column  computer={8} mobile={16} tablet={6}>
+                      <InputReadOnly
+                        label='Confirmed By'
                         value={`${employeeName}`}/>
                     </Grid.Column>
                   </Grid>
@@ -145,11 +151,11 @@ const BoardingFormWizardThird = props => {
                     <Grid.Column computer={8} mobile={16} tablet={10}>
                       <InputReadOnly
                         label='Check Out'
-                        value={`${moment(endDate + ' ' + checkOutTime).format('MM/DD/YYYY')}`}/>
+                        value={`${moment(endDate).format('MM/DD/YYYY')}`}/>
                     </Grid.Column>
                     <Grid.Column computer={8} mobile={16} tablet={6}>
                       <InputReadOnly
-                        label='By'
+                        label='CheckOut By'
                         value={`${employeeName}`}/>
                     </Grid.Column>
                   </Grid>
@@ -158,7 +164,7 @@ const BoardingFormWizardThird = props => {
             </Grid.Column >
             <Grid.Column  computer={8} mobile={16} tablet={8}>
               <Segment>
-                <div className='flex justify-between align-center'>
+                <div className='flex justify-between align-center mb8'>
                   <div className='w100'>
                     <Header as='h3'>
                    Charges
@@ -203,11 +209,10 @@ const BoardingFormWizardThird = props => {
                       <Form.Field className='btnBack'>
                         <Button
                           basic
-                          className='w140'
                           color='teal'
                           onClick={_handleAddNoteBtnClick}
                           type='button'>
-                          <Icon name='plus'/> Add Note
+                          <Icon name='plus'/> Add Reservation Note
                         </Button>
                       </Form.Field>
                       {
@@ -215,10 +220,9 @@ const BoardingFormWizardThird = props => {
                           <Form.Field>
                             <Button
                               basic
-                              className='w120'
                               color='teal'
                               onClick={_handleViewNoteBtnClick}
-                              type='button'> View Note
+                              type='button'> View Reservation Note
                             </Button>
                           </Form.Field>)
                       }
@@ -251,7 +255,7 @@ const BoardingFormWizardThird = props => {
                     <>
                       <List.Item className='final-cost' key={index}>
                         <List.Content floated='right'>
-                          <b>{totalCost}</b>
+                          <b>${totalCost.toFixed(2)}</b>
                         </List.Content>
                         <List.Content>
                           <b>{clientPet.items && clientPet.items.find(_ => _.id == item.petId).name}</b>
@@ -259,7 +263,7 @@ const BoardingFormWizardThird = props => {
                       </List.Item>
                       <List.Item>
                         <List.Content floated='right'>
-                      ${Number(item.price)}
+                      ${Number(item.price).toFixed(2)}
                         </List.Content>
                         <List.Content>
                           Boarding
@@ -282,12 +286,13 @@ const BoardingFormWizardThird = props => {
                                  && _item.subVariation.find(_ => _.petId == item.petId).frequency
 
                                 finalTotalCost += Number(addOnPrice)  * Number(frequency)
+                                let price = addOnPrice * Number(frequency)
 
                                 return (
                                   <>
                                     <List.Item key={index}>
                                       <List.Content floated='right'>
-                                      ${ addOnPrice * Number(frequency)}
+                                      ${price.toFixed(2)}
                                       </List.Content>
                                       <List.Content>
                                         {_item.name}
@@ -301,7 +306,7 @@ const BoardingFormWizardThird = props => {
                       }
                       <List.Item>
                         <List.Content floated='right'>
-                      $0
+                      $0.00
                         </List.Content>
                         <List.Content>
                           <b>Kennel</b>
@@ -309,7 +314,7 @@ const BoardingFormWizardThird = props => {
                       </List.Item>
                       <List.Item>
                         <List.Content floated='right'>
-                      $0
+                      $0.00
                         </List.Content>
                         <List.Content>
                           <b>Activity Package</b>
@@ -317,7 +322,7 @@ const BoardingFormWizardThird = props => {
                       </List.Item>
                       <List.Item>
                         <List.Content floated='right'>
-                      $0
+                      $0.00
                         </List.Content>
                         <List.Content>
                           <b>Client Discount</b>
@@ -333,7 +338,7 @@ const BoardingFormWizardThird = props => {
                 })}
               <List.Item className='final-cost'>
                 <List.Content floated='right'>
-                  <b>${ finalTotalCost }</b>
+                  <b>${finalTotalCost.toFixed(2)}</b>
                 </List.Content>
                 <List.Content>
                   <b>Total Cost</b>
@@ -403,6 +408,8 @@ export default compose(
       const employeeDetail = employeeDetailDuck.selectors.detail(state)
       const employeeName = employeeDetail.item && employeeDetail.item.first_name + ' ' + employeeDetail.item.last_name
       const addons = formValueSelector(boardingFormId)(state, 'boarding_reservation_list')
+      const clientDetail = clientDetailDuck.selectors.detail(state)
+      const owner = clientDetail.item.first_name + ' ' + clientDetail.item.last_name
 
       return {
         employeeName,
@@ -411,6 +418,7 @@ export default compose(
         selectedPets,
         clientPet,
         selectedPetName,
+        owner,
         startDate    : check_in,
         checkInTime  : check_in_time,
         endDate      : check_out,

@@ -93,12 +93,12 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
         lodging === true ? (
           <>
             <Grid>
-              <Grid.Column width={8}>
+              <Grid.Column width={5}>
                   Apply To: { names.map((item, index) => {
                   return (
                     <Label key={index}>{item.name}</Label>)})}
               </Grid.Column>
-              <Grid.Column width={8}>
+              <Grid.Column className='mt4' width={8}>
                 <Form.Group>
                   <Field
                     checked={allPet}
@@ -153,7 +153,7 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
                             className='heading-color'
                             index={0}
                             onClick={_handleSelectRecurringDaysClick}>
-                            <Header as='h3' className='mb0 section-info-header heading-color'>
+                            <Header as='h3' className='mb0 section-info-header heading-color mv8 ml16'>
                               Select Accomodations for {clientPet.items.find(_pet => _pet.id === petId).name}
                               <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                             </Header>
@@ -254,7 +254,7 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
                           className='heading-color'
                           index={0}
                           onClick={_handleSelectRecurringDaysClick}>
-                          <Header as='h3' className='mb0 section-info-header heading-color ml8'>
+                          <Header as='h3' className='mb0 section-info-header heading-color mv8 ml16'>
                           Select Accomodations for All Pets
                             <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                           </Header>
@@ -351,7 +351,7 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
                   className='heading-color'
                   index={0}
                   onClick={_handleSelectRecurringDaysClick}>
-                  <Header as='h3' className='mb0 section-info-header heading-color'>
+                  <Header as='h3' className='mb0 section-info-header heading-color mv8 ml16'>
                     Select Accomodations for {item.name}
                     <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                   </Header>

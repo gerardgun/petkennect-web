@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import loadable from '@loadable/component'
+
 import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
 import ClientFormModal from './form/modal'

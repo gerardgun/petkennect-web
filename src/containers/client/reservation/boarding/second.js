@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm, formValueSelector, FieldArray } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Header, Segment, Checkbox, Accordion, Grid, Icon, Input, Select, TextArea, Dropdown } from 'semantic-ui-react'
+
+import moment from 'moment'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
@@ -20,6 +22,7 @@ import employeeDuck from '@reducers/employee'
 import groomingReservationAddonDuck from '@reducers/pet/reservation/grooming/add-on'
 
 import PetItem from './PetItem'
+import AddonTime from './addTime-fieldArray'
 import { boardingFormId } from './first'
 
 const BoardingFormWizardSecond = props => {
@@ -27,9 +30,27 @@ const BoardingFormWizardSecond = props => {
     clientPet,
     petKennel,
     employee,
+    state,
     sharedLodging,
+    checkInTime,
+    checkOutTime,
     error, handleSubmit, reset // redux-form
   } = props
+
+  const [ activeIndex, setActiveIndex ] = useState(-1)
+  const [ activeArray, setActiveArray ] = useState([])
+  const [ groomingAddon, setGroomingAddon ] = useState([])
+  const [ foodSubmitArray, setFoodSubmitArray ] = useState([])
+  const [ frequencyMed, setFrequencyMed ] = useState(0)
+  const [ frequencyFeed, setFrequencyFeed ] = useState(0)
+  const [ feedTableData, setFeedTableData ] = useState([])
+  const [ feedingFeedData, setFeedingFeedData ] = useState([])
+  const [ frequencyMisc, setFrequencyMisc ] = useState(0)
+  const [ miscTableData, setMiscTableData ] = useState([])
+  const [ groomingTableData, setGroomingTableData ] = useState([])
+  const [ showDateTime, setShowDateTime ] = useState(false)
+  const [ activeMoreFunctionality, setActiveMoreFunctionality ] = useState([])
+  const [ dateValue, setDateValue ] = useState('')
 
   useEffect(() => {
     props.getBoardingReservationAddons()
@@ -37,19 +58,33 @@ const BoardingFormWizardSecond = props => {
     props.getPetKennels()
     props.getGroomingReservationAddons()
   }, [])
+  const notAvailableDates = [ '2021-02-15','2021-02-28','2021-02-18' ]
 
-  let _handleAddBtnClick
+  const _handleAppointmenttwo = (e) =>{
+    let index = Number(e.currentTarget.id)
+    if(notAvailableDates.includes(e.target.value) && !activeMoreFunctionality.includes(index)) {
+      setActiveMoreFunctionality([ ...activeMoreFunctionality, index ])
+    }
 
-  const _handleAddTime = () => {
-    _handleAddBtnClick()
+    else {
+      let array = activeMoreFunctionality.filter(item=>item != index)
+      setActiveMoreFunctionality(array)
+      setShowDateTime(false)
+      setDateValue('')
+    }
   }
+
+  const _handleDateTimeShow = (e,value)=>{
+    setShowDateTime(true)
+    setDateValue(value.value)
+  }
+
+  let reservationDateArr = []
+  for (let d = new Date(props.checkIn); d <=  new Date(props.checkOut); d.setDate(d.getDate() + 1))
+    reservationDateArr.push(moment(new Date(d)).format('MM/DD/YYYY'))
 
   const petKennelOptions = petKennel.items.map(_petKennel =>
     ({ key: _petKennel.id, value: _petKennel.id, text: `${_petKennel.size}` }))
-
-  const [ activeIndex, setActiveIndex ] = useState(-1)
-  const [ activeArray,setActiveArray ] = useState([])
-  const [ groomingAddon,setGroomingAddon ] = useState([])
 
   const  _handleAddonServiceClick = (e, titleProps) => {
     const { index } = titleProps
@@ -58,7 +93,7 @@ const BoardingFormWizardSecond = props => {
   }
 
   const  _handleSelectAddonClick = (e, titleProps) => {
-    const { index } = titleProps
+    const index = titleProps.index
     if(activeArray.includes(index)) {
       let array = activeArray.filter(item=>item != index)
       setActiveArray(array)
@@ -77,45 +112,239 @@ const BoardingFormWizardSecond = props => {
     {setGroomingAddon([ ...groomingAddon, index ])}
   }
 
-  const AddTime = ({ fields, meta: { error, submitFailed } }) => {
-    _handleAddBtnClick = () => fields.push({ ...contactDetailInitialState })
-    const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
-
-    const contactDetailInitialState = {
-      time: ''
+  const _handleServiceBtnClick = (e,ownprop) =>{
+    if(groomingAddon.includes(ownprop.value)) {
+      let array = groomingAddon.filter(item=>item != ownprop.value)
+      setGroomingAddon(array)
     }
-
-    return (
-      <>
-        {
-          fields.map((item, index) => (
-            <Form.Group key={index}>
-              <Field
-                component={FormField}
-                control={Input}
-                name={`${item}.time`}
-                type='time'/>
-              <Form.Button
-                basic className='align-button mt4'
-                color='red' data-index={index}
-                icon='trash alternate outline'
-                onClick={_handleRemoveBtnClick}
-                type='button'/>
-            </Form.Group>
-          ))
-        }
-        {
-          submitFailed && error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )
-        }
-      </>
-    )
+    else
+    {setGroomingAddon([ ...groomingAddon, ownprop.value ])}
   }
+
+  // food total price
+  const foodPet = []
+  for (let petId of props.selectedPets)
+    foodPet.push({ value: formValueSelector(boardingFormId)(state, 'addon[' + petId + '].food'), id: petId })
+
+  let foodPetLength = 0
+  for (let item of foodPet)
+    if(item.value === true)
+      foodPetLength += 1
+
+  let totalPriceFood = Number(2.00) * Number(foodPetLength) * Number(formValueSelector(boardingFormId)(state, 'quantityFood'))
+
+  const _handleFoodAddonSubmit = (e,ownprop) =>{
+    if(activeArray.includes(ownprop.value)) {
+      let array = activeArray.filter(item=>item != ownprop.value)
+      setActiveArray(array)
+    }
+    else
+    {setActiveArray([ ...activeArray, ownprop.value ])}
+
+    if(foodSubmitArray.includes(ownprop.value)) {
+      // let array = foodSubmitArray.filter(item=>item != ownprop.value)
+      // setFoodSubmitArray(array)
+    }
+    else
+    {setFoodSubmitArray([ ...foodSubmitArray, ownprop.value ])}
+  }
+
+  // medication total price
+  const medicationPet = []
+  for (let petId of props.selectedPets)
+    medicationPet.push({ value: formValueSelector(boardingFormId)(state, 'addon[' + petId + '].medication'), id: petId })
+
+  let medicationPetLength = 0
+  for (let item of medicationPet)
+    if(item.value === true)
+      medicationPetLength += 1
+
+  const totalPriceMed = (2.00) * (medicationPetLength) * Number(formValueSelector(boardingFormId)(state, 'quantityMed'))
+
+  // Frequency calculate
+  let oddNumberDates
+  if(reservationDateArr.length % 2 != 0)
+    oddNumberDates = reservationDateArr.length + 1
+  else
+    oddNumberDates = reservationDateArr.length
+
+  let startFromSecond = 0
+  for (let i = 1; i <= reservationDateArr.length; i++)
+    if(i % 2 === 0)
+      startFromSecond += 1
+
+  const _handleFrequencyClick = (e, value) =>{
+    if(value === 'once')
+      setFrequencyMed(1)
+
+    else if(value === 'every_other_day_first')
+      setFrequencyMed(oddNumberDates / 2)
+
+    else if(value === 'every_other_day_second')
+      setFrequencyMed(startFromSecond)
+
+    else if(value === 'every_day')
+      setFrequencyMed(reservationDateArr.length)
+
+    else if(value === 'every_day_except_first')
+      setFrequencyMed(reservationDateArr.length - 1)
+
+    else if(value === 'every_day_except_last')
+      setFrequencyMed(reservationDateArr.length - 1)
+  }
+  let medicationTotalPrice = frequencyMed * totalPriceMed
+
+  // feeding total price
+  let feedingPet = []
+  for (let petId of props.selectedPets)
+    feedingPet.push({ value: formValueSelector(boardingFormId)(state, 'addon[' + petId + '].feeding'), id: petId })
+
+  let feedingPetLength = 0
+  for (let item of feedingPet)
+    if(item.value === true)
+      feedingPetLength += 1
+
+  const _handleFrequencyFeedClick = (e, value) =>{
+    if(value === 'once')
+      setFrequencyFeed(1)
+
+    else if(value === 'every_other_day_first')
+      setFrequencyFeed(oddNumberDates / 2)
+
+    else if(value === 'every_other_day_second')
+      setFrequencyFeed(startFromSecond)
+
+    else if(value === 'every_day')
+      setFrequencyFeed(reservationDateArr.length)
+
+    else if(value === 'every_day_except_first')
+      setFrequencyFeed(reservationDateArr.length - 1)
+
+    else if(value === 'every_day_except_last')
+      setFrequencyFeed(reservationDateArr.length - 1)
+  }
+
+  const _handleFeedingFeedChange = (e, value) => {
+    let selectedData =  [].concat(feedingFeedData)
+    if(value === true)
+    {
+      selectedData.push(e.currentTarget.name)
+      setFeedingFeedData(selectedData)
+    }
+    else {
+      let remainingData = selectedData.filter(value => value != e.currentTarget.name)
+      setFeedingFeedData(remainingData)
+    }
+  }
+
+  // feedTableData
+  const _handleCheckboxChangeFeed = (e, item, checked) => {
+    let selectedData =  [].concat(feedTableData)
+    if(checked === true)
+    {
+      selectedData.push({ id: item.id, price: Number(item.price) })
+      setFeedTableData(selectedData)
+    }
+    else {
+      let remainingData = selectedData.filter(value => value.id != item.id)
+      setFeedTableData(remainingData)
+    }
+  }
+
+  let feedingAddonPrice =  feedTableData.map(_ => _.price).reduce((price1, price2) =>  Number(price1) + Number(price2), 0)
+  const frequencyFeedData1 = formValueSelector(boardingFormId)(state, 'frequencyFeed')
+  const breakfastFeedData = formValueSelector(boardingFormId)(state, 'breakfastFeed')
+  const dinnerFeedData = formValueSelector(boardingFormId)(state, 'dinnerFeed')
+
+  let feedingDays = (frequencyFeed) * (feedingFeedData.length)
+  // for breakfast
+  if(frequencyFeedData1 === 'every_day' || frequencyFeedData1 === 'every_other_day_first' || frequencyFeedData1 === 'every_day_except_last')
+    if(breakfastFeedData === true && checkInTime > '09:00')
+      feedingDays = feedingDays - 1
+
+  // for dinner
+  if(frequencyFeedData1 === 'every_other_day_first' && (reservationDateArr % 2 != 0))
+    if(dinnerFeedData === true && checkOutTime < '17:00')
+      feedingDays = feedingDays - 1
+
+  if(frequencyFeedData1 === 'every_other_day_second' && (reservationDateArr % 2 === 0))
+    if(dinnerFeedData === true && checkOutTime < '17:00')
+      feedingDays = feedingDays - 1
+
+  if(frequencyFeedData1 === 'every_day' || frequencyFeedData1 === 'every_day_except_first')
+    if(dinnerFeedData === true && checkOutTime < '17:00')
+      feedingDays = feedingDays - 1
+
+  let feedingTotalPrice = 2 * (feedingPetLength) * (feedingDays) * (feedingAddonPrice)
+
+  // misc total price
+  const miscPet = []
+  for (let petId of props.selectedPets)
+    miscPet.push({ value: formValueSelector(boardingFormId)(state, 'addon[' + petId + '].misc'), id: petId })
+
+  let miscellaneousPetLength = 0
+  for (let item of miscPet)
+    if(item.value === true)
+      miscellaneousPetLength += 1
+
+  const _handleFrequencyMiscClick = (e, value) =>{
+    // if(e.currentTarget.name === frequencyMed) {
+    // if(value === 'every_custom_week')
+    //   setCustomWeekNumber(1)
+    // else
+    //   setCustomWeekNumber('')
+    if(value === 'once')
+      setFrequencyMisc(1)
+
+    else if(value === 'every_other_day_first')
+      setFrequencyMisc(oddNumberDates / 2)
+
+    else if(value === 'every_other_day_second')
+      setFrequencyMisc(startFromSecond)
+
+    else if(value === 'every_day')
+      setFrequencyMisc(reservationDateArr.length)
+
+    else if(value === 'every_day_except_first')
+      setFrequencyMisc(reservationDateArr.length - 1)
+
+    else if(value === 'every_day_except_last')
+      setFrequencyMisc(reservationDateArr.length - 1)
+  }
+
+  // MiscTableData
+  const _handleCheckboxChangeMisc = (e, item, checked) => {
+    let selectedData =  [].concat(miscTableData)
+    if(checked === true)
+    {
+      selectedData.push({ id: item.id, price: Number(item.price) })
+      setMiscTableData(selectedData)
+    }
+    else {
+      let remainingData = selectedData.filter(value => value.id != item.id)
+      setMiscTableData(remainingData)
+    }
+  }
+
+  let miscellaneousAddonPrice =  miscTableData.map(_ => _.price).reduce((price1, price2) =>  Number(price1) + Number(price2), 0)
+  let miscellaneousTotalPrice = (miscellaneousPetLength) * (frequencyMisc) * (miscellaneousAddonPrice)
+
+  // Grooming Table Data
+  const _handleCheckboxChangeGrooming = (e, item, checked) => {
+    let selectedData =  [].concat(groomingTableData)
+
+    if(checked === true)
+    {
+      selectedData.push({ id: item.id, price: Number(item.price) })
+      setGroomingTableData(selectedData)
+    }
+    else {
+      let remainingData = selectedData.filter(value => value.id != item.id)
+      setGroomingTableData(remainingData)
+    }
+  }
+  let groomingAddonPrice = 0
+  groomingAddonPrice = groomingTableData.map(_ => _.price).reduce((price1, price2) =>  Number(price1) + Number(price2), 0)
 
   return (
     <>
@@ -168,14 +397,14 @@ const BoardingFormWizardSecond = props => {
               index={0}
               onClick={_handleAddonServiceClick}
               value='Add'>
-              <Header as='h3' className='mb0 heading-color ml8'>
+              <Header as='h3' className='mb0 heading-color mv8 ml16'>
                 Add Additional Services
                 <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
               </Header>
 
             </Accordion.Title>
 
-            <Accordion.Content active={activeIndex === 0} className='mt12'>
+            <Accordion.Content active={activeIndex === 0} className='mt12 ml12'>
               <div>
                 <Grid>
                   <Grid.Column className='padding-column' width={16}>
@@ -185,8 +414,8 @@ const BoardingFormWizardSecond = props => {
                         className='heading-color'
                         index={0}
                         onClick={_handleSelectAddonClick}>
-                        <Header as='h5' className='mb0 heading-color ml8'>
-                            Food Bagging Charges
+                        <Header as='h5' className='mb0 heading-color mv4 ml16'>
+                            Food Bagging Charges {foodSubmitArray.includes(0) && (': $' + `${totalPriceFood.toFixed(2)}`)}
                           <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                         </Header>
                       </Accordion.Title>
@@ -213,25 +442,13 @@ const BoardingFormWizardSecond = props => {
                                     <Field
                                       className='checkbox-label mh4'
                                       component={FormField} control={Checkbox}
-                                      name={`${clientPet.items.find(_pet => _pet.id === petId).name}.food`}
+                                      name={`addon[${petId}].food`}
                                       type='checkbox'/>
                                     <label>
                                       {clientPet.items.find(_pet => _pet.id === petId).name}</label>
                                   </Form.Group>
 
                                 ))
-                              }
-                              {
-                                props.selectedPets && props.selectedPets.length > 1 && (
-                                  <Form.Group className='mh4'>
-                                    <Field
-                                      className='checkbox-label mh4'
-                                      component={FormField} control={Checkbox}
-                                      name='allFood'
-                                      type='checkbox'/>
-                                    <label htmlFor='allFood'> All</label>
-                                  </Form.Group>
-                                )
                               }
                             </Grid.Column>
                             <Grid.Column width={5}>
@@ -246,15 +463,9 @@ const BoardingFormWizardSecond = props => {
                               </Form.Group>
                               <Form.Group className='align-center ml16'>
                                 <label className='w33'>Total Price</label>
-                                <Field
-                                  component={FormField}
-                                  control={Input}
-                                  min={0}
-                                  name='totalPriceFood'
-                                  type='number'/>
+                                <Form.Input readOnly value={(totalPriceFood > 0 ?  totalPriceFood : '')}/>
                               </Form.Group>
                             </Grid.Column>
-
                             <Grid.Column width={16}>
                               <Grid>
                                 <Grid.Column width={12}>
@@ -268,11 +479,13 @@ const BoardingFormWizardSecond = props => {
                                 <Grid.Column className='addon-service-button' width={4}>
                                   <Form.Field>
                                     <Button
+                                      active={activeArray.includes(0)}
                                       basic
                                       className='w160'
                                       color='teal'
-                                      // onClick={_handleAddNoteBtnClick}
-                                      type='button'><Icon name='plus'/>Add Service
+                                      onClick={_handleFoodAddonSubmit}
+                                      type='button'
+                                      value={0}><Icon name='plus'/>Add Service
                                     </Button>
                                   </Form.Field>
                                 </Grid.Column>
@@ -291,18 +504,17 @@ const BoardingFormWizardSecond = props => {
                         className='heading-color'
                         index={1}
                         onClick={_handleSelectAddonClick}>
-                        <Header as='h5' className='mb0 heading-color ml8'>
-                            Medication
+                        <Header as='h5' className='mb0 heading-color mv4 ml16'>
+                          Medication {foodSubmitArray.includes(1) && (frequencyMed > 0 && ': $' + (`${medicationTotalPrice.toFixed(2)}`))}
                           <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                         </Header>
                       </Accordion.Title>
-
                       <Accordion.Content active={activeArray.includes(1)}>
                         <Segment>
                           <Grid>
                             <Grid.Column width={16}>
                               <Header as='h5' className='mb0'>
-                                      Description of Service :
+                                Description of Service :
                               </Header>
                             </Grid.Column>
                             <span>Medication</span>
@@ -319,25 +531,13 @@ const BoardingFormWizardSecond = props => {
                                     <Field
                                       className='checkbox-label mh4'
                                       component={FormField} control={Checkbox}
-                                      name={`${clientPet.items.find(_pet => _pet.id === petId).name}.medication`}
+                                      name={`addon[${petId}].medication`}
                                       type='checkbox'/>
                                     <label htmlFor={petId}>
                                       {clientPet.items.find(_pet => _pet.id === petId).name}</label>
                                   </Form.Group>
 
                                 ))
-                              }
-                              {
-                                props.selectedPets && props.selectedPets.length > 1 && (
-                                  <Form.Group className='mh4'>
-                                    <Field
-                                      className='checkbox-label mh4'
-                                      component={FormField} control={Checkbox}
-                                      name='allMed'
-                                      type='checkbox'/>
-                                    <label htmlFor='allMed'> All</label>
-                                  </Form.Group>
-                                )
                               }
                             </Grid.Column>
                             <Grid.Column width={5}>
@@ -352,15 +552,9 @@ const BoardingFormWizardSecond = props => {
                               </Form.Group>
                               <Form.Group className='align-center ml16'>
                                 <label className='w33'>Total Price</label>
-                                <Field
-                                  component={FormField}
-                                  control={Input}
-                                  min={0}
-                                  name='totalPriceMed'
-                                  type='number'/>
+                                <Form.Input readOnly value={(totalPriceMed > 0 ?  totalPriceMed : '')}/>
                               </Form.Group>
                             </Grid.Column>
-
                             <Grid.Column width={16}>
                               <Header as='h4'>Frequency</Header>
                               <Grid>
@@ -368,37 +562,44 @@ const BoardingFormWizardSecond = props => {
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
                                       component='input'
-                                      name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      name='frequencyMed'
+                                      onChange={_handleFrequencyClick}
                                       type='radio' value='once'/>
                                     <label className='mh4'> Once(Specific Date)</label>
                                     <Form.Field
                                       className='ml8 mv8 w_input_3'
                                       control={Input}
-                                      name='once_date'
+                                      name='once_dateMed'
                                       // onChange={_handleCustomWeekChange}
                                       // readOnly={frequency !== 'every_custom_week'}
                                       type='date'/>
                                   </Form.Group>
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
-                                      component='input' name='frequency'
-                                      // onChange={_handleFrequencyClick}
-                                      type='radio' value='every_other_day'/>
+                                      component='input' name='frequencyMed'
+                                      onChange={_handleFrequencyClick}
+                                      type='radio' value='every_other_day_first'/>
                                     <label className='mh4'> Every Other Day (Starting First Day)</label>
                                   </Form.Group>
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
+                                      component='input' name='frequencyMed'
+                                      onChange={_handleFrequencyClick}
+                                      type='radio' value='every_other_day_second'/>
+                                    <label className='mh4'> Every Other Day (Starting Second Day)</label>
+                                  </Form.Group>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
                                       component='input'
-                                      name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      name='frequencyMed'
+                                      onChange={_handleFrequencyClick}
                                       type='radio' value='every_day'/>
                                     <label className='mh4'> Every Day</label>
                                   </Form.Group>
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
-                                      component='input' name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      component='input' name='frequencyMed'
+                                      onChange={_handleFrequencyClick}
                                       type='radio' value='every_day_except_first'/>
                                     <label className='mh4'> Every Day Except First Day</label>
                                   </Form.Group>
@@ -406,63 +607,41 @@ const BoardingFormWizardSecond = props => {
                                     <Field
                                       className='pt0'
                                       component='input'
-                                      name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      name='frequencyMed'
+                                      onChange={_handleFrequencyClick}
                                       type='radio' value='every_day_except_last'/>
                                     <label className='mh4'> Every Day Except Last Day</label>
                                   </Form.Group>
                                 </Grid.Column>
-
                                 <Grid.Column className='mt20' width={3}>
                                   <Header as='h4'>Times :</Header>
-                                  <Form.Group>
-                                    <Form.Field
-                                      className='w_input_3'
-                                      control={Input}
-                                      name='custom_week_number'
-                                      // onChange={_handleCustomWeekChange}
-                                      // readOnly={frequency !== 'every_custom_week'}
-                                      type='time'/>
-                                    <Form.Field>
-                                      <Form.Button
-                                        className='align-button'
-                                        color='teal'
-                                        icon='plus'
-                                        onClick={_handleAddTime}
-                                        type='button'/>
-                                    </Form.Field>
-                                  </Form.Group>
-                                  <FieldArray
-                                    component={AddTime}
-                                    name='add_time'
-                                    title='Add Time'/>
+                                  <AddonTime name='add_time_med'/>
                                 </Grid.Column>
-
                                 <Grid.Column className='mt20 ml32' width={3}>
                                   <Header as='h4'>With Feedings :</Header>
                                   <Form.Group>
                                     <Field
                                       className='checkbox-label'
-                                      component={FormField} control={Checkbox} id='breakfast'
-                                      name='breakfast'
+                                      component={FormField} control={Checkbox}
+                                      name='breakfastMed'
                                       type='checkbox'/>
-                                    <label htmlFor='breakfast'>W/Breakfast </label>
+                                    <label>W/Breakfast </label>
                                   </Form.Group>
                                   <Form.Group>
                                     <Field
                                       className='checkbox-label'
-                                      component={FormField} control={Checkbox} id='lunch'
-                                      name='lunch'
+                                      component={FormField} control={Checkbox}
+                                      name='lunchMed'
                                       type='checkbox'/>
-                                    <label htmlFor='lunch'>W/Lunch</label>
+                                    <label>W/Lunch</label>
                                   </Form.Group>
                                   <Form.Group>
                                     <Field
                                       className='checkbox-label'
-                                      component={FormField} control={Checkbox} id='dinner'
-                                      name='dinner'
+                                      component={FormField} control={Checkbox}
+                                      name='dinnerMed'
                                       type='checkbox'/>
-                                    <label htmlFor='dinner'>W/Dinner</label>
+                                    <label>W/Dinner</label>
                                   </Form.Group>
                                 </Grid.Column>
                               </Grid>
@@ -480,11 +659,13 @@ const BoardingFormWizardSecond = props => {
                                 <Grid.Column className='addon-service-button' width={4}>
                                   <Form.Field>
                                     <Button
+                                      active={activeArray.includes(1)}
                                       basic
                                       className='w160'
                                       color='teal'
-                                      // onClick={_handleAddNoteBtnClick}
-                                      type='button'><Icon name='plus'/>Add Service
+                                      onClick={_handleFoodAddonSubmit}
+                                      type='button'
+                                      value={1}><Icon name='plus'/>Add Service
                                     </Button>
                                   </Form.Field>
                                 </Grid.Column>
@@ -503,8 +684,8 @@ const BoardingFormWizardSecond = props => {
                         className='heading-color'
                         index={2}
                         onClick={_handleSelectAddonClick}>
-                        <Header as='h5' className='mb0 heading-color ml8'>
-                            Feeding
+                        <Header as='h5' className='mb0 heading-color mv4 ml16'>
+                            Feeding {foodSubmitArray.includes(2) && (frequencyFeed > 0 && ': $' + (`${feedingTotalPrice.toFixed(2)}`))}
                           <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                         </Header>
                       </Accordion.Title>
@@ -531,32 +712,18 @@ const BoardingFormWizardSecond = props => {
                                       <Field
                                         className='checkbox-label mh4'
                                         component={FormField} control={Checkbox}
-                                        name={`${clientPet.items.find(_pet => _pet.id === petId).name}.feeding`}
+                                        name={`addon[${petId}].feeding`}
                                         type='checkbox'/>
                                       <label htmlFor={petId}>
                                         {clientPet.items.find(_pet => _pet.id === petId).name}</label>
                                     </Form.Group>
-
                                   ))
-                                }
-                                {
-                                  props.selectedPets && props.selectedPets.length > 1 && (
-                                    <Form.Group className='mh4'>
-                                      <Field
-                                        className='checkbox-label mh4'
-                                        component={FormField} control={Checkbox}
-                                        name='allFeed'
-                                        type='checkbox'/>
-                                      <label htmlFor='allFeed'> All</label>
-                                    </Form.Group>
-                                  )
                                 }
                               </Grid.Column>
                             </Grid.Column>
                             <Grid.Column width={7}>
-                              <Table duck={feedingAddonDuck} striped/>
+                              <Table duck={feedingAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeFeed} striped/>
                             </Grid.Column>
-
                             <Grid.Column width={16}>
                               <Header as='h4'>Frequency</Header>
                               <Grid>
@@ -564,37 +731,42 @@ const BoardingFormWizardSecond = props => {
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
                                       component='input'
-                                      name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      name='frequencyFeed'
+                                      onChange={_handleFrequencyFeedClick}
                                       type='radio' value='once'/>
                                     <label className='mh4'> Once(Specific Date)</label>
-                                    <Form.Field
-                                      className='ml8 mv8 w_input_3'
-                                      control={Input}
-                                      name='once_date'
-                                      // onChange={_handleCustomWeekChange}
-                                      // readOnly={frequency !== 'every_custom_week'}
+                                    <Field
+                                      className='ml8 mv8 date-field-width'
+                                      component='input'
+                                      name='once_dateFeed'
                                       type='date'/>
                                   </Form.Group>
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
-                                      component='input' name='frequency'
-                                      // onChange={_handleFrequencyClick}
-                                      type='radio' value='every_other_day'/>
+                                      component='input' name='frequencyFeed'
+                                      onChange={_handleFrequencyFeedClick}
+                                      type='radio' value='every_other_first'/>
                                     <label className='mh4'> Every Other Day (Starting First Day)</label>
                                   </Form.Group>
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
+                                      component='input' name='frequencyFeed'
+                                      onChange={_handleFrequencyFeedClick}
+                                      type='radio' value='every_other_day_second'/>
+                                    <label className='mh4'> Every Other Day (Starting Second Day)</label>
+                                  </Form.Group>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
                                       component='input'
-                                      name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      name='frequencyFeed'
+                                      onChange={_handleFrequencyFeedClick}
                                       type='radio' value='every_day'/>
                                     <label className='mh4'> Every Day</label>
                                   </Form.Group>
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
-                                      component='input' name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      component='input' name='frequencyFeed'
+                                      onChange={_handleFrequencyFeedClick}
                                       type='radio' value='every_day_except_first'/>
                                     <label className='mh4'> Every Day Except First Day</label>
                                   </Form.Group>
@@ -602,69 +774,53 @@ const BoardingFormWizardSecond = props => {
                                     <Field
                                       className='pt0'
                                       component='input'
-                                      name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      name='frequencyFeed'
+                                      onChange={_handleFrequencyFeedClick}
                                       type='radio' value='every_day_except_last'/>
                                     <label className='mh4'> Every Day Except Last Day</label>
                                   </Form.Group>
                                 </Grid.Column>
                                 <Grid.Column className='mt20' width={3}>
                                   <Header as='h4'>Times :</Header>
-                                  <Form.Group>
-                                    <Form.Field
-                                      className='w_input_3'
-                                      control={Input}
-                                      name='custom_week_number'
-                                      // onChange={_handleCustomWeekChange}
-                                      // readOnly={frequency !== 'every_custom_week'}
-                                      type='time'/>
-                                    <Form.Field>
-                                      <Form.Button
-                                        className='align-button'
-                                        color='teal'
-                                        icon='plus'
-                                        onClick={_handleAddTime}
-                                        type='button'/>
-                                    </Form.Field>
-                                  </Form.Group>
-                                  <FieldArray
-                                    component={AddTime}
-                                    name='add_time'
-                                    title='Add Time'/>
+                                  <AddonTime name='add_time_feed'/>
                                 </Grid.Column>
                                 <Grid.Column className='mt20 ml32' width={3}>
                                   <Header as='h4'>Feedings :</Header>
-                                  <Form.Group>
+                                  <Form.Group className='div_align_center ml0'>
                                     <Field
                                       className='checkbox-label'
-                                      component={FormField} control={Checkbox} id='breakfast'
-                                      name='breakfast'
+                                      component='input' id='breakfast'
+                                      name='breakfastFeed'
+                                      onChange={_handleFeedingFeedChange}
                                       type='checkbox'/>
-                                    <label htmlFor='breakfast'> Breakfast </label>
+                                    <label className='ml4' htmlFor='breakfast'> Breakfast </label>
                                   </Form.Group>
-                                  <Form.Group>
+                                  <Form.Group className='div_align_center ml0'>
                                     <Field
                                       className='checkbox-label'
-                                      component={FormField} control={Checkbox} id='lunch'
-                                      name='lunch'
+                                      component='input' id='lunch'
+                                      name='lunchFeed'
+                                      onChange={_handleFeedingFeedChange}
                                       type='checkbox'/>
-                                    <label htmlFor='lunch'> Lunch</label>
+                                    <label className='ml4' htmlFor='lunch'> Lunch</label>
                                   </Form.Group>
-                                  <Form.Group>
+                                  <Form.Group className='div_align_center ml0'>
                                     <Field
                                       className='checkbox-label'
-                                      component={FormField} control={Checkbox} id='dinner'
-                                      name='dinner'
+                                      component='input' id='dinner'
+                                      name='dinnerFeed'
+                                      onChange={_handleFeedingFeedChange}
                                       type='checkbox'/>
-                                    <label htmlFor='dinner'> Dinner</label>
+                                    <label className='ml4' htmlFor='dinner'> Dinner</label>
                                   </Form.Group>
-                                  <Form.Group>
+                                  <Form.Group className='div_align_center ml0'>
                                     <Field
                                       className='checkbox-label'
-                                      component={FormField} control={Checkbox} id='other'
-                                      name='other'
+                                      component='input' id='other'
+                                      name='otherFeed'
+                                      onChange={_handleFeedingFeedChange}
                                       type='checkbox'/>
-                                    <label htmlFor='other'> Other</label>
+                                    <label className='ml4' htmlFor='other'> Other</label>
                                   </Form.Group>
                                 </Grid.Column>
                               </Grid>
@@ -676,17 +832,19 @@ const BoardingFormWizardSecond = props => {
                                     component={FormField}
                                     control={Form.TextArea}
                                     label='Notes'
-                                    name='note'
+                                    name='noteFeed'
                                     placeholder='Enter Notes'/>
                                 </Grid.Column>
                                 <Grid.Column className='addon-service-button' width={4}>
                                   <Form.Field>
                                     <Button
+                                      active={activeArray.includes(2)}
                                       basic
                                       className='w160'
                                       color='teal'
-                                      // onClick={_handleAddNoteBtnClick}
-                                      type='button'><Icon name='plus'/>Add Service
+                                      onClick={_handleFoodAddonSubmit}
+                                      type='button'
+                                      value={2}><Icon name='plus'/>Add Service
                                     </Button>
                                   </Form.Field>
                                 </Grid.Column>
@@ -705,8 +863,8 @@ const BoardingFormWizardSecond = props => {
                         className='heading-color'
                         index={3}
                         onClick={_handleSelectAddonClick}>
-                        <Header as='h5' className='mb0 heading-color ml8'>
-                          Miscellaneous Charges
+                        <Header as='h5' className='mb0 heading-color mv4 ml16'>
+                          Miscellaneous Charges {foodSubmitArray.includes(3) && (frequencyMisc > 0 && ': $' + (`${miscellaneousTotalPrice.toFixed(2)}`))}
                           <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                         </Header>
                       </Accordion.Title>
@@ -722,7 +880,6 @@ const BoardingFormWizardSecond = props => {
                               <Grid.Column className='padding-column'>
                                 <span>Miscellaneous Charges</span>
                               </Grid.Column>
-
                               <Grid.Column className='mv24'>
                                 <span> Applies to Pets :</span>
                                 <Grid.Column className='mv28'>
@@ -732,33 +889,19 @@ const BoardingFormWizardSecond = props => {
                                         <Field
                                           className='checkbox-label mh4'
                                           component={FormField} control={Checkbox}
-                                          name={`${clientPet.items.find(_pet => _pet.id === petId).name}.misc`}
+                                          name={`addon[${petId}].misc`}
                                           type='checkbox'/>
                                         <label htmlFor={petId}>
                                           {clientPet.items.find(_pet => _pet.id === petId).name}</label>
                                       </Form.Group>
-
                                     ))
-                                  }
-                                  {
-                                    props.selectedPets && props.selectedPets.length > 1 && (
-                                      <Form.Group className='mh4'>
-                                        <Field
-                                          className='checkbox-label mh4'
-                                          component={FormField} control={Checkbox} id='all'
-                                          name='allMisc'
-                                          type='checkbox'/>
-                                        <label htmlFor='allMisc'> All</label>
-                                      </Form.Group>
-                                    )
                                   }
                                 </Grid.Column>
                               </Grid.Column>
                             </Grid.Column>
                             <Grid.Column className='addon-table' width={7}>
-                              <Table duck={boardingReservationAddonDuck} striped/>
+                              <Table duck={boardingReservationAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeMisc} striped/>
                             </Grid.Column>
-
                             <Grid.Column width={16}>
                               <Header as='h4'>Frequency</Header>
                               <Grid>
@@ -766,8 +909,8 @@ const BoardingFormWizardSecond = props => {
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
                                       component='input'
-                                      name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      name='frequencyMisc'
+                                      onChange={_handleFrequencyMiscClick}
                                       type='radio' value='once'/>
                                     <label className='mh4'> Once(Specific Date)</label>
                                     <Form.Field
@@ -779,23 +922,30 @@ const BoardingFormWizardSecond = props => {
                                   </Form.Group>
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
-                                      component='input' name='frequency'
-                                      // onChange={_handleFrequencyClick}
-                                      type='radio' value='every_other_day'/>
+                                      component='input' name='frequencyMisc'
+                                      onChange={_handleFrequencyMiscClick}
+                                      type='radio' value='every_other_day_first'/>
                                     <label className='mh4'> Every Other Day (Starting First Day)</label>
                                   </Form.Group>
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
+                                      component='input' name='frequencyMisc'
+                                      onChange={_handleFrequencyMiscClick}
+                                      type='radio' value='every_other_day_second'/>
+                                    <label className='mh4'> Every Other Day (Starting Second Day)</label>
+                                  </Form.Group>
+                                  <Form.Group className='div_align_center mh0'>
+                                    <Field
                                       component='input'
-                                      name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      name='frequencyMisc'
+                                      onChange={_handleFrequencyMiscClick}
                                       type='radio' value='every_day'/>
                                     <label className='mh4'> Every Day</label>
                                   </Form.Group>
                                   <Form.Group className='div_align_center mh0'>
                                     <Field
-                                      component='input' name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      component='input' name='frequencyMisc'
+                                      onChange={_handleFrequencyMiscClick}
                                       type='radio' value='every_day_except_first'/>
                                     <label className='mh4'> Every Day Except First Day</label>
                                   </Form.Group>
@@ -803,33 +953,15 @@ const BoardingFormWizardSecond = props => {
                                     <Field
                                       className='pt0'
                                       component='input'
-                                      name='frequency'
-                                      // onChange={_handleFrequencyClick}
+                                      name='frequencyMisc'
+                                      onChange={_handleFrequencyMiscClick}
                                       type='radio' value='every_day_except_last'/>
                                     <label className='mh4'> Every Day Except Last Day</label>
                                   </Form.Group>
                                 </Grid.Column>
                                 <Grid.Column className='mt20' width={3}>
                                   <Header as='h4'>Times :</Header>
-                                  <Form.Group>
-                                    <Form.Field
-                                      className='w_input_3'
-                                      control={Input}
-                                      name='time'
-                                      type='time'/>
-                                    <Form.Field>
-                                      <Form.Button
-                                        className='align-button'
-                                        color='teal'
-                                        icon='plus'
-                                        onClick={_handleAddTime}
-                                        type='button'/>
-                                    </Form.Field>
-                                  </Form.Group>
-                                  <FieldArray
-                                    component={AddTime}
-                                    name='add_time'
-                                    title='Add Time'/>
+                                  <AddonTime name='add_time_misc'/>
                                 </Grid.Column>
 
                                 <Grid.Column className='mt20 ml8' width={2}>
@@ -855,7 +987,6 @@ const BoardingFormWizardSecond = props => {
                                 </Grid.Column>
                               </Grid>
                             </Grid.Column>
-
                             <Grid.Column width={16}>
                               <Grid>
                                 <Grid.Column width={12}>
@@ -863,34 +994,35 @@ const BoardingFormWizardSecond = props => {
                                     component={FormField}
                                     control={Form.TextArea}
                                     label='Notes'
-                                    name='note'
+                                    name='noteMisc'
                                     placeholder='Enter Notes'/>
                                 </Grid.Column>
                                 <Grid.Column className='addon-service-button' width={4}>
                                   <Form.Field>
                                     <Button
+                                      active={activeArray.includes(3)}
                                       basic
                                       className='w160'
                                       color='teal'
-                                      // onClick={_handleAddNoteBtnClick}
-                                      type='button'><Icon name='plus'/>Add Service
+                                      onClick={_handleFoodAddonSubmit}
+                                      type='button'
+                                      value={3}><Icon name='plus'/>Add Service
                                     </Button>
                                   </Form.Field>
                                 </Grid.Column>
                               </Grid>
                             </Grid.Column>
                           </Grid>
-
                         </Segment>
                       </Accordion.Content>
                     </Accordion>
                   </Grid.Column>
                 </Grid>
-
               </div>
             </Accordion.Content>
           </Accordion>
         </Segment>
+
         <Segment >
           <Header as='h3' className='section-info-header'>Grooming Services</Header>
           {
@@ -905,7 +1037,7 @@ const BoardingFormWizardSecond = props => {
                       className='heading-color'
                       index={_index}
                       onClick={_handleGroomingService}>
-                      <Header as='h4' className='mb0 heading-color ml8'>
+                      <Header as='h4' className='mb0 heading-color mv8 ml16'>
                         Add Grooming Services for {petName}
                         <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                       </Header>
@@ -913,7 +1045,7 @@ const BoardingFormWizardSecond = props => {
                     <Accordion.Content  active={groomingAddon.includes(_index)}>
                       <Segment>
                         <Header as='h4' className='mb0'>
-                                Select Grooming Options for {petName}:
+                          Select Grooming Options for {petName}:
                         </Header>
                         <br/>
                         <Grid>
@@ -922,20 +1054,23 @@ const BoardingFormWizardSecond = props => {
                             <br/>
                             <br/>
                             <div className='addon-table'>
-                              <Table duck={groomingReservationAddonDuck} striped/>
+                              <Table
+                                checkboxIndex={_index} duck={groomingReservationAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeGrooming}
+                                striped/>
                             </div>
-                            <p style={{ 'float': 'right' , 'margin-right': '53px' }}><b>Total Price  $120.00 </b></p>
+                            <p style={{ 'margin-left': '336px' }}><b>Total Price  ${groomingAddonPrice.toFixed(2)} </b></p>
                           </Grid.Column>
-
                           <Grid.Column computer={8}>
                             <Header as='h5' className='mb0'>When?</Header>
                             <br/>
                             <Form.Group widths='equal'>
                               <Field
-                                component={FormField}
-                                control={Input}
+                                className='appointment-field'
+                                component='input'
+                                id={_index}
                                 label='Choose an Appointment Date'
-                                name='appointment_date'
+                                name={`appointment_date${_index}`}
+                                onChange={_handleAppointmenttwo}
                                 required
                                 type='date'/>
                             </Form.Group>
@@ -944,7 +1079,7 @@ const BoardingFormWizardSecond = props => {
                                 component={FormField}
                                 control={Select}
                                 label='Groomer'
-                                name='groomer'
+                                name={`${_item}.groomer`}
                                 options={employee.items.filter(_employee => _employee.title_name === 'Groomer').map(_employee=>
                                   ({ key: _employee.id, value: _employee.id, text: `${_employee.first_name + ' ' + _employee.last_name}` }))
                                 }
@@ -953,62 +1088,158 @@ const BoardingFormWizardSecond = props => {
                                 selectOnBlur={false}/>
                             </Form.Group>
                             <span>Schedules And Avaliablity</span>
+                            <br/>
+                            <br/>
                             <Grid>
-                              <Grid.Column computer={8}>
-                                <Segment className='available-message-two mt4'>
-                                  <Header as='h4'>
-                                 No Avaliablity
-                                  </Header>
-                                </Segment>
-                              </Grid.Column>
-                              <Grid.Column computer={8}>
-                                <Segment className='available-message mt4'>
-                                  <Header as='h4'>
-                                  5/10 Avaliable
-                                  </Header>
-
-                                </Segment>
+                              <Grid.Column  computer={16}>
+                                <Button
+                                  className={activeMoreFunctionality.includes(_index) ? 'Availability-button' : 'Availability-button-two'}
+                                  name='Monday'
+                                  type='button'>
+                                  {activeMoreFunctionality.includes(_index) ? 'No Availability' : '5/10 Avaliable'}
+                                </Button>
                               </Grid.Column>
                             </Grid>
-                            <br/>
-                            <label>Groomer/Barber</label>
-                            <br/>
-                            <Button
-                              className='avaiable-buttons'
-                              color='blue'
-                              name='Monday'
-                              type='button'>
-                              <Icon name='clock outline'/>
-                              9:00 am
-                            </Button>
-                            <Button
-                              className='avaiable-buttons'
-                              color='blue'
-                              name='Tuesday'
-                              type='button'>
-                              <Icon name='clock outline'/>
-                                11:00 am</Button>
-                            <Button
-                              className='avaiable-buttons'
-                              color='blue'
-                              name='Wednesday'
-                              type='button'>
-                              <Icon name='clock outline'/>
-                                4:00 pm</Button>
-                            <Button
-                              className='avaiable-buttons'
-                              color='blue'
-                              name='Thursday'
-                              type='button'>
-                              <Icon name='clock outline'/>
-                                10:00 am</Button>
-                            <Button
-                              className='avaiable-buttons'
-                              color='blue'
-                              name='Friday'
-                              type='button'>
-                              <Icon name='clock outline'/>
-                                3:00 pm</Button>
+
+                            { activeMoreFunctionality.includes(_index)
+                              ? <>
+                                <Grid>
+                                  <Grid.Column>
+                                    <span>Check Other Dates</span>
+                                  </Grid.Column>
+                                </Grid>
+
+                                <Grid>
+                                  <Grid.Column computer={2} >
+                                    <Form.Button
+                                      basic
+                                      color='blue'
+                                      icon='left chevron'
+                                      type='button'/>
+                                  </Grid.Column>
+
+                                  <Grid.Column computer={6}>
+                                    <span style={{ 'margin-left': '40px' }}>02/25/2021</span>
+                                    <Button
+                                      className='grooming-button-appoint mt12'
+                                      content='7/10 Available'
+                                      onClick={_handleDateTimeShow}
+                                      type='button'
+                                      value='02/25/2021'/>
+                                  </Grid.Column>
+                                  <Grid.Column computer={6}>
+                                    <span style={{ 'margin-left': '40px' }}>02/10/2021</span>
+                                    <Button
+                                      className='grooming-button-appoint mt12'
+                                      content='5/10 Available'
+                                      onClick={_handleDateTimeShow}
+                                      type='button'
+                                      value='02/10/2021'/>
+                                  </Grid.Column>
+                                  <Grid.Column computer={2} >
+                                    <Form.Button
+                                      basic
+                                      color='blue'
+                                      icon='chevron right'
+
+                                      type='button'/>
+                                  </Grid.Column>
+                                </Grid>
+                                {
+                                  showDateTime && <>
+                                    <Grid>
+                                      <Grid.Column>
+                                        <label>
+                                          <b> {dateValue}  Availability</b>
+                                        </label>
+                                        <br/>
+                                        <Button
+                                          className='avaiable-buttons'
+                                          color='blue'
+                                          name='Monday'
+                                          type='button'>
+                                          <Icon name='clock outline'/>
+                                          10:00 am
+                                        </Button>
+                                        <Button
+                                          className='avaiable-buttons'
+                                          color='blue'
+                                          name='Tuesday'
+                                          type='button'>
+                                          <Icon name='clock outline'/>
+                                          11:00 am</Button>
+                                        <Button
+                                          className='avaiable-buttons'
+                                          color='blue'
+                                          name='Wednesday'
+                                          type='button'>
+                                          <Icon name='clock outline'/>
+                                          6:00 pm</Button>
+                                        <Button
+                                          className='avaiable-buttons'
+                                          color='blue'
+                                          name='Thursday'
+                                          type='button'>
+                                          <Icon name='clock outline'/>
+                                          12:00 am</Button>
+                                        <Button
+                                          className='avaiable-buttons'
+                                          color='blue'
+                                          name='Friday'
+                                          type='button'>
+                                          <Icon name='clock outline'/>
+                                          6:00 pm</Button>
+                                      </Grid.Column>
+
+                                    </Grid>
+                                  </>
+                                }
+
+                              </> : <>
+
+                                <br/>
+                                <label>Groomer/Barber</label>
+                                <br/>
+                                <Button
+                                  className='avaiable-buttons'
+                                  color='blue'
+                                  name='Monday'
+                                  type='button'>
+                                  <Icon name='clock outline'/>
+                                 9:00 am
+                                </Button>
+                                <Button
+                                  className='avaiable-buttons'
+                                  color='blue'
+                                  name='Tuesday'
+                                  type='button'>
+                                  <Icon name='clock outline'/>
+                                  11:00 am</Button>
+                                <Button
+                                  className='avaiable-buttons'
+                                  color='blue'
+                                  name='Wednesday'
+                                  type='button'>
+                                  <Icon name='clock outline'/>
+                                 4:00 pm</Button>
+                                <Button
+                                  className='avaiable-buttons'
+                                  color='blue'
+                                  name='Thursday'
+                                  type='button'>
+                                  <Icon name='clock outline'/>
+                                  10:00 am</Button>
+                                <Button
+                                  className='avaiable-buttons'
+                                  color='blue'
+                                  name='Friday'
+                                  type='button'>
+                                  <Icon name='clock outline'/>
+                                    3:00 pm</Button>
+
+                              </>
+
+                            }
 
                             <Form.Group style={{ 'margin-top': '27px' }}   widths='equal'>
                               <Field
@@ -1023,9 +1254,10 @@ const BoardingFormWizardSecond = props => {
                                 className='w160'
                                 color='teal'
                                 floated='right'
-                                // onClick={_handleAddNoteBtnClick}
+                                onClick={_handleServiceBtnClick}
                                 style={{ 'margin-top': '35px' }}
-                                type='button'><Icon name='plus'/>Add Service
+                                type='button'
+                                value={_index}><Icon name='plus'/>Add Service
                               </Button>
                             </Form.Field>
                           </Grid.Column>
@@ -1083,6 +1315,8 @@ export default compose(
       const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
       let checkOut = formValueSelector(boardingFormId)(state, 'check_out')
       let checkIn = formValueSelector(boardingFormId)(state, 'check_in')
+      let checkInTime = formValueSelector(boardingFormId)(state, 'check_in_time')
+      let checkOutTime = formValueSelector(boardingFormId)(state, 'check_out_time')
       const clientPet = clientPetDuck.selectors.list(state)
 
       return {
@@ -1094,6 +1328,8 @@ export default compose(
         checkIn   ,
         state,
         checkOut,
+        checkInTime,
+        checkOutTime,
         services,
         serviceAttribute,
         employee            : employeeDuck.selectors.list(state),
