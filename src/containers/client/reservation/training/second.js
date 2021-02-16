@@ -4,23 +4,42 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Icon } from 'semantic-ui-react'
-
+import moment from 'moment'
 import FormError from '@components/Common/FormError'
 
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import trainingReservationGroupClassDetailDuck from '@reducers/pet/reservation/training/reservation/group-class/detail'
 
 import AddonForm from './../common-sections/addon-section'
-import { boardingFormId } from './first'
+import { trainingFormId } from './first'
 
 const BoardingFormWizardSecond = props => {
   const {
+    groupClass,
+    selectedProgram,
     selectedPets,
-    checkIn,
-    checkOut,
     checkInTime,
-    checkOutTime,
     error, handleSubmit, reset // redux-form
   } = props
+
+  const checkOutTime  = '17:00'
+  let checkIn
+  let checkOut
+  let reservationArray
+
+  if(selectedProgram == 1) {
+    checkIn = groupClass.item.start_date
+    checkOut = groupClass.item.ends
+  }
+  else {
+    let selectedDateArray = props.petReservationDetail.item.selectedDate && props.petReservationDetail.item.selectedDate
+    reservationArray = selectedDateArray.map(_item=>moment(new Date(_item)).format('MM/DD/YYYY'))
+    let startDate = selectedDateArray[0]
+    let endDate   = selectedDateArray[selectedDateArray.length - 1]
+
+    checkIn = moment(new Date(startDate)).format('YYYY-MM-DD')
+    checkOut = moment(new Date(endDate)).format('YYYY-MM-DD')
+  }
 
   return (
     <>
@@ -47,8 +66,9 @@ const BoardingFormWizardSecond = props => {
       <Form className='section-info-item-form' onReset={reset} onSubmit={handleSubmit}>
         <AddonForm
           checkIn={checkIn} checkInTime={checkInTime} checkOut={checkOut}
-          checkOutTime={checkOutTime}
-          reservation='boarding' selectedPets={selectedPets}/>
+          checkOutTime={checkOutTime} lodgingSection={selectedProgram == 3 ? true : false}
+          reservation='training' reservationDateArrayProp={selectedProgram == 1 ? [] : reservationArray} selectedPets={selectedPets}/>
+
         {
           error && (
             <Form.Group widths='equal'>
@@ -87,28 +107,22 @@ export default compose(
   connect(
     ({ ...state }) => {
       const petReservationDetail = petReservationDetailDuck.selectors.detail(state)
-      const selectedPets = formValueSelector(boardingFormId)(state, 'pet')
-      let checkOut = formValueSelector(boardingFormId)(state, 'check_out')
-      let checkIn = formValueSelector(boardingFormId)(state, 'check_in')
-      let checkInTime = formValueSelector(boardingFormId)(state, 'check_in_time')
-      let checkOutTime = formValueSelector(boardingFormId)(state, 'check_out_time')
+      const petReservationTrainingGroupClass = trainingReservationGroupClassDetailDuck.selectors.detail(state)
+      const selectedPets = formValueSelector(trainingFormId)(state, 'pet')
+      const selectedProgram = formValueSelector(trainingFormId)(state, 'program')
+      let checkInTime = formValueSelector(trainingFormId)(state, 'check_in_time')
 
       return {
         selectedPets,
-        checkOut,
-        checkIn,
+        selectedProgram,
         checkInTime,
-        checkOutTime,
         petReservationDetail: petReservationDetail,
+        groupClass          : petReservationTrainingGroupClass,
         initialValues       : { ...petReservationDetail.item }
       }
-    },
-    {
-      // setReserveItem              : petReservationDetailDuck.creators.setItem
-    }
-  ),
+    }),
   reduxForm({
-    form                    : boardingFormId,
+    form                    : trainingFormId,
     destroyOnUnmount        : false,
     forceUnregisterOnUnmount: true
   })

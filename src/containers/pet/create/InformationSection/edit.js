@@ -2,10 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Container, Grid, Header } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
-import PetForm, { formId } from './../../form'
+import { formId } from './../../form'
 
 import petDetailDuck from '@reducers/pet/detail'
+
+const  PetForm = loadable(() => import('./../../form'))
 
 function PetInformationEdit({ petDetail, ...props }) {
   const { item: pet } = petDetail

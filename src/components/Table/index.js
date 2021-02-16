@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { Button, Checkbox, Dimmer, Dropdown, Grid, Icon, Image, Input, Label, Loader, Popup, Segment, Table } from 'semantic-ui-react'
+import { Button, Checkbox, Dimmer, Dropdown, Grid, Icon, Image, Input, Label, Loader, Popup, Segment, Table, Radio } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import Pagination from '@components/Pagination'
@@ -22,7 +22,7 @@ const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const [ defaultTableBody, setTableBody ] = useState({ expandedRows: [] })
-
+  const [ radioButtonOn, setRadioButton ] = useState() // radio-button
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
 
@@ -59,6 +59,7 @@ const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
           <span>{`${column.action.label}`}</span>
         </Link>
       )
+
     else if(column.type === 'color')
       content = (
         <Label
@@ -97,6 +98,10 @@ const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
   const _handleOptionDropdownChange = (e, { value: optionName, itemID  }) => {
     const item = list.items.find(({ id }) => id === itemID)
     props.onOptionDropdownChange(optionName, item)
+  }
+  const _handleRadioButtonsChange = (e, { value }) =>{
+    setRadioButton(value.id)
+    props.onOptionRadioButtonChange(value)
   }
 
   const _handleCheckboxChange = (e, { value: optionName, itemID, checked  }) => {
@@ -310,12 +315,31 @@ const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
             <Table.Cell>
               {
                 <Checkbox
-                  checked={checked} disabled={list.config.row.checkboxOption.length === 0} itemID={item.id}
-                  key={index}
+                  checked={checked}
+                  disabled={list.config.row.checkboxOption.length === 0} itemID={item.id} key={index}
                   onChange={_handleCheckboxChange}/>
               }
             </Table.Cell>
           )
+        }
+        {/* Radio buttons */}
+
+        {
+
+          list.config.row.radioButtonOption && list.config.row.radioButtonOption.length > 0 && (
+            <Table.Cell>
+              {
+                <Radio
+                  checked={radioButtonOn === item.id}
+                  name={list.config.row.radioButtonOption[0].radioButtonName}
+                  onChange={_handleRadioButtonsChange}
+                  value={item}/>
+              }
+
+            </Table.Cell>
+
+          )
+
         }
 
         {/* Row expandedRows */}
@@ -519,6 +543,15 @@ const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
             {
               list.config.row.checkboxOption && list.config.row.checkboxOption.length > 0 && (<Table.HeaderCell>Add</Table.HeaderCell>)
             }
+
+            {/* Row option for raddioButton */}
+
+            {
+              list.config.row.radioButtonOption && list.config.row.radioButtonOption.length > 0
+              &&              (<Table.HeaderCell>{list.config.row.radioButtonOption[0].headerName ? list.config.row.radioButtonOption[0].headerName : 'Select'}</Table.HeaderCell>)
+
+            }
+
           </Table.Row>
         </Table.Header>
         <Table.Body>

@@ -2,16 +2,18 @@ import React,{ useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Header, Segment, Dropdown, Button, Grid, Container } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 import { compose } from 'redux'
 
-import Table from '@components/Table'
-import PetNotes from '../Notes'
 import petDetailDuck from '@reducers/pet/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import dayCampReservationDuck from '@reducers/pet/reservation/daycamp-reservation'
 import dayCampReservationDetailDuck from '@reducers/pet/reservation/daycamp-reservation/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
-import PackageCreateForm from './package-create'
+
+const Table = loadable(() => import('@components/Table'))
+const PetNotes = loadable(() => import('../Notes'))
+const PackageCreateForm = loadable(() => import('./package-create'))
 
 function DaycampServiceSection({ petDetail,  ...props }) {
   useEffect(() => {
@@ -23,6 +25,11 @@ function DaycampServiceSection({ petDetail,  ...props }) {
 
   const _handleAddPackageBtnClick = () =>{
     props.setItem(null, 'CREATE')
+  }
+
+  const _handleAddReservationBtnClick = () => {
+    props.setItemReservation({ service: 'D' },'CREATE')
+    history.replace(`/client/${petDetail.item.client}/book`)
   }
 
   const _handleRowClick = () => {
@@ -148,10 +155,18 @@ function DaycampServiceSection({ petDetail,  ...props }) {
 
       </Grid>
 
-      <Grid className='segment-content-header' columns={1}>
-        <Grid.Column computer={16} mobile={16} tablet={16}>
+      <Grid className='segment-content-header' columns={2}>
+        <Grid.Column computer={4} mobile={10} tablet={4}>
           <Header as='h2' className='child_header'>Reservations</Header>
         </Grid.Column >
+        <Grid.Column
+          className='ui-grid-align'
+          computer={12} mobile={10} tablet={12}>
+          <Button
+            color='teal'
+            content='New Reservation'
+            onClick={_handleAddReservationBtnClick}/>
+        </Grid.Column>
       </Grid>
       <Table
         duck={dayCampReservationDuck}

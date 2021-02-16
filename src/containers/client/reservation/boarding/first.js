@@ -290,11 +290,8 @@ const BoardingFormWizardFirst = props => {
         <Segment className='section-info-item-step1'>
           <PetLocationForm multiple={true}/>
           {vaccinationAlert !== false && <Grid>
-            <Grid.Column computer={5}>
-
-            </Grid.Column>
             <Grid.Column
-              className='message-grid pt0' computer={11} mobile={16}
+              className='message-grid pl28' computer={11} mobile={16}
               tablet={16}>
               <VaccinationAlert/>
             </Grid.Column>
@@ -518,9 +515,11 @@ export default compose(
         serviceAttribute    : serviceAttribute,
         petReservationDetail: petReservationDetail,
         initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,
-          location  : initialLocation,
-          lodgingPet: selectedPets != undefined && selectedPets,
-          check_in  : petReservationDetail.item.reserved_at
+          location    : initialLocation,
+          quantityFood: 0,
+          quantityMed : 0,
+          lodgingPet  : selectedPets != undefined && selectedPets,
+          check_in    : petReservationDetail.item.reserved_at
             ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : initialDate,
           check_out: petReservationDetail.item.boarding
             ? moment(petReservationDetail.item.boarding.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : initialDate

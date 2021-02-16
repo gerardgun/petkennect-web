@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Container, Form, Header, Grid, Label } from 'semantic-ui-react'
 import moment from 'moment'
-import  _get from 'lodash/get'
-import _defaultTo from 'lodash/defaultTo'
+
 import SizeTypes from '@lib/constants/SizeTypes'
 import { VaccinationStatus, TemperamentPeoplePreference } from '@lib/constants/pet'
 
@@ -28,6 +27,12 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
 
   const vaccinationStatus = VaccinationStatus[pet.summary.vaccination_request ? 'requested' : pet.summary.vaccination_status]
 
+  // console.log('selectedRetire Reason')
+  // console.log(selectedRetireReason)
+  // console.log('vaccinationStatus')
+  // console.log(vaccinationStatus)
+  // console.log('temperament')
+  // console.log(TemperamentPeoplePreference)
   return (
     <Container className='pet-information-section' fluid>
       <Grid className='petkennect-profile-body-header' columns={2}>
@@ -60,12 +65,12 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
           <>
             <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
             <Form.Group widths={2}>
-              <Form.Input label='Pet name' readOnly value={_defaultTo(pet.name, '-')}/>
+              <Form.Input label='Pet name' readOnly value={pet.name ? pet.name :  '-'}/>
               <Form.Input label='Date of Birth' readOnly value={(pet.born_at && moment(pet.born_at).format('MM/DD/YYYY')) || '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Breed' readOnly value={_defaultTo(pet.breed_name, '-')}/>
-              <Form.Input label='Size' readOnly value={_defaultTo(SizeTypes[petDetail.item.size], '-')}/>
+              <Form.Input label='Breed' readOnly value={pet.breed_name ? pet.breed_name : '-'}/>
+              <Form.Input label='Size' readOnly value={SizeTypes[petDetail.item.size] ? SizeTypes[petDetail.item.size] : '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
               <Form.Input label='Sex' readOnly value={pet.sex === 'F' ? 'Female' : 'Male'}/>
@@ -75,14 +80,14 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
               <Form.Input label='Retired' readOnly value={pet.retired ? 'Yes' : 'No'}/>
               {
                 pet.retired && pet.reason && (
-                  <Form.Input label='Reason' readOnly value={_get(selectedRetireReason, 'name', '-')}/>
+                  <Form.Input label='Reason' readOnly value={selectedRetireReason.name ? selectedRetireReason.name : '-'}/>
                 )
               }
             </Form.Group>
 
             <Form.Group widths={2}>
-              <Form.Input label='Vaccination Status' readOnly value={_get(vaccinationStatus, 'text', '-')}/>
-              <Form.Input label='Received Dog From' readOnly value={_defaultTo(pet.info_received_from, '-')}/>
+              <Form.Input label='Vaccination Status' readOnly value={vaccinationStatus ? vaccinationStatus.text : '-'}/>
+              <Form.Input label='Received Dog From' readOnly value={pet.info_received_from ? pet.info_received_from :  '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
               <Form.Input label='Created At' readOnly value={petDetail.item.created_at ? (new Date(petDetail.item.created_at).toLocaleString('en-US')) : '-'}/>
@@ -93,14 +98,14 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
             <Form.Group widths={2}>
               <Form.Input
                 label='Weight' labelPosition='right' readOnly
-                value={_defaultTo(pet.weight, '-')}>
+                value={pet.weight ? pet.weight :  '-'}>
                 <input/>
                 <Label content='lbs'/>
               </Form.Input>
-              <Form.Input label='Color' readOnly value={_defaultTo(pet.info_coloring, '-')}/>
+              <Form.Input label='Color' readOnly value={pet.info_coloring ? pet.info_coloring :  '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Markings' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.Input label='Markings' readOnly value={pet.not_defined ? pet.not_defined : '-'}/>
               <Form.Field/>
             </Form.Group>
           </>
@@ -117,8 +122,8 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
               <Form.Input label='Overall Temperament' readOnly value='-'/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Gender Preference' readOnly value={_get(TemperamentPeoplePreference, pet.temp_prefer, '-')}/>
-              <Form.Input label='Fears' readOnly value={_defaultTo(pet.temp_any_fears, '-')}/>
+              <Form.Input label='Gender Preference' readOnly value={TemperamentPeoplePreference.pet ? TemperamentPeoplePreference.pet.temp_prefer : '-'}/>
+              <Form.Input label='Fears' readOnly value={pet.temp_any_fears ? pet.temp_any_fears :  '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
               <Form.Input label='Bitten Humans' readOnly value={pet.temp_test_result ? 'Yes' : 'No'}/>
@@ -141,28 +146,28 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
             </Form.Group>
             <Header as='h6' className='section-header' color='blue'>GROUP PLAY</Header>
             <Form.Group widths={2}>
-              <Form.Input label='Eligibility' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.Input label='Eligibility' readOnly value={pet.not_defined ? pet.not_defined : '-'}/>
               {
                 pet.not_defined && (
-                  <Form.Input label='Ineligible Reason' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+                  <Form.Input label='Ineligible Reason' readOnly value={pet.not_defined ? pet.not_defined : '-'}/>
                 )
               }
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Date of Testing' readOnly value={_defaultTo(pet.not_defined, '-')}/>
-              <Form.Input label='Link to Day Care Evaluation Results' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.Input label='Date of Testing' readOnly value={pet.not_defined ? pet.not_defined : '-'}/>
+              <Form.Input label='Link to Day Care Evaluation Results' readOnly value={pet.not_defined ? pet.not_defined :   '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
               <Form.Input label='Attended Day Care Previously' readOnly value={pet.temp_daycare ? 'Yes' : 'No'}/>
               {
                 pet.temp_daycare && (
-                  <Form.Input label='Previus Day Care' readOnly value={_defaultTo(pet.temp_daycare_where, '-')}/>
+                  <Form.Input label='Previus Day Care' readOnly value={pet.temp_daycare_where ? pet.temp_daycare_where :  '-'}/>
                 )
               }
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Removed from Another Day Care' readOnly value={_defaultTo(pet.not_defined, '-')}/>
-              <Form.Input label='Reason for Removal' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.Input label='Removed from Another Day Care' readOnly value={pet.not_defined ? pet.not_defined :  '-'}/>
+              <Form.Input label='Reason for Removal' readOnly value={pet.not_defined ? pet.not_defined  : '-'}/>
             </Form.Group>
           </>
         )}
@@ -170,10 +175,10 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
           <>
             <Header as='h6' className='section-header' color='blue'>HEALTH</Header>
             <Form.Group widths='equal'>
-              <Form.TextArea label='Medical Restrictions' readOnly value={_defaultTo(pet.health_medical_restrictions, '-')}/>
+              <Form.TextArea label='Medical Restrictions' readOnly value={pet.health_medical_restrictions ? pet.health_medical_restrictions :   '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Allergies' readOnly value={_defaultTo(pet.health_is_allergic, '-')}/>
+              <Form.Input label='Allergies' readOnly value={pet.health_is_allergi ? pet.health_is_allergi :  '-'}/>
               <Form.Input label='On Flea or Tick Preventative' readOnly value={pet.health_flea_tick_preventive ? 'Yes' : 'No'}/>
             </Form.Group>
             <Form.Group widths={2}>
@@ -181,11 +186,11 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
             </Form.Group>
             <Header as='h6' className='section-header' color='blue'>FEEDING</Header>
             <Form.Group widths={2}>
-              <Form.Input label='Type of Food' readOnly value={_defaultTo(pet.not_defined, '-')}/>
-              <Form.Input label='Quantity' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.Input label='Type of Food' readOnly value={pet.not_defined ? pet.not_defined :  '-'}/>
+              <Form.Input label='Quantity' readOnly value={pet.not_defined ? pet.not_defined :  '-'}/>
             </Form.Group>
             <Form.Group widths='equal'>
-              <Form.TextArea label='Special Instructions' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.TextArea label='Special Instructions' readOnly value={pet.not_defined ? pet.not_defined :   '-'}/>
             </Form.Group>
             <Header as='h6' className='section-header' color='blue'>IF PET HESITATES TO EAT, ADD:</Header>
             <Form.Group widths={2}>
@@ -195,12 +200,12 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
             </Form.Group>
             <Header as='h6' className='section-header' color='blue'>MEDICATION</Header>
             <Form.Group widths='equal'>
-              <Form.Input label='Type of Medication' readOnly value={_defaultTo(pet.not_defined, '-')}/>
-              <Form.Input label='Reason' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.Input label='Type of Medication' readOnly value={pet.not_defined ? pet.not_defined :   '-'}/>
+              <Form.Input label='Reason' readOnly value={pet.not_defined ? pet.not_defined :  '-'}/>
             </Form.Group>
             <Form.Group widths='equal'>
-              <Form.Input label='Amount' readOnly value={_defaultTo(pet.not_defined, '-')}/>
-              <Form.Input label='Schedule' readOnly value={_defaultTo(pet.not_defined, '-')}/>
+              <Form.Input label='Amount' readOnly value={pet.not_defined ? pet.not_defined :   '-'}/>
+              <Form.Input label='Schedule' readOnly value={pet.not_defined ?  pet.not_defined :  '-'}/>
             </Form.Group>
           </>
         )}

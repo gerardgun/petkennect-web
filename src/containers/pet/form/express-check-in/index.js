@@ -6,12 +6,9 @@ import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Grid, Button, Form, Header, Dropdown, Select, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
-import _truncate from 'lodash/truncate'
+import loadable from '@loadable/component'
 
-import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import Message from '@components/Message'
-
 import { parseResponseError, parseFormValues, syncValidate } from '@lib/utils/functions'
 import clientPetDuck from '@reducers/client/pet'
 import petReservationDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
@@ -21,8 +18,10 @@ import serviceDuck from '@reducers/service'
 import authDuck from '@reducers/auth'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 import yardTypesDuck from '@reducers/pet/pet-yard-type'
-
 export const formId = 'express-check-in-form'
+
+const Message = loadable(() => import('@components/Message'))
+const FormError = loadable(() => import('@components/Common/FormError'))
 
 const ExpressCheckInForm = props => {
   const {
@@ -103,7 +102,7 @@ const ExpressCheckInForm = props => {
     return location.items.map(item => ({
       key  : item.id,
       value: item.id,
-      text : _truncate(item.code, { length: 16 })
+      text : item.code.length > 16 ? item.code.substr(0,15) + '...' : item.code
     }))
   }, [ location.status ])
 

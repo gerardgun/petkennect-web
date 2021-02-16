@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Container, Form, Header, Grid } from 'semantic-ui-react'
-import _defaultTo from 'lodash/defaultTo'
 
 import authDuck from '@reducers/auth'
 
@@ -31,11 +30,11 @@ function AuthMeInformationShow({ auth, ...props }) {
       <Form className='petkennect-profile-body-content'>
         <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
         <Form.Group widths={2}>
-          <Form.Input label='First Name' readOnly value={_defaultTo(user.first_name, '-')}/>
-          <Form.Input label='Last Name' readOnly value={_defaultTo(user.last_name, '-')}/>
+          <Form.Input label='First Name' readOnly value={user.first_name ? user.first_name : '-'}/>
+          <Form.Input label='Last Name' readOnly value={user.last_name ? user.last_name :  '-'}/>
         </Form.Group>
         <Form.Group widths={2}>
-          <Form.Input label='Username' readOnly value={_defaultTo(user.username, '-')}/>
+          <Form.Input label='Username' readOnly value={user.username ? user.username : '-'}/>
           <Form.Input label='Profile Image' readOnly value={user.image_path ? user.image_path.split('/').pop() : '-'}/>
         </Form.Group>
       </Form>

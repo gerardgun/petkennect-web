@@ -5,10 +5,10 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Header, Input, Modal, Divider } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 import * as Yup from 'yup'
 import moment from 'moment'
 
-import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
@@ -19,6 +19,7 @@ import authDuck from '@reducers/auth'
 import petVaccinationDuck from '@reducers/pet/vaccination'
 import petDetailDuck from '@reducers/pet/detail'
 import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
+const FormError = loadable(() => import('@components/Common/FormError'))
 
 const editorConfiguration = {
   toolbar: {

@@ -6,16 +6,19 @@ import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Header, Input, Modal, Select, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import moment from 'moment'
+import loadable from '@loadable/component'
 
-import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import Message from '@components/Message'
+
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
 import petIncidentTypeDuck from '@reducers/pet/incident-type'
 import petIncidentActionDuck from '@reducers/pet/incident-action'
 import petIncidentBehaviorDuck from '@reducers/pet/incident-behavior'
+
+const FormError = loadable(() => import('@components/Common/FormError'))
+const Message = loadable(() => import('@components/Message'))
 
 const IncidentSectionForm = (props) => {
   const {

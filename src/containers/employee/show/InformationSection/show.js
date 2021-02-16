@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Form, Container } from 'semantic-ui-react'
-import _defaultTo from 'lodash/defaultTo'
 
 import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
@@ -46,19 +45,19 @@ function EmployeeShow({ employeeDetail , ...props }) {
       <Form className='petkennect-profile-body-content'>
         <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
         <Form.Group widths={2}>
-          <Form.Input label='First Name' readOnly value={_defaultTo(employee.first_name, '-')}/>
-          <Form.Input label='Last Name' readOnly value={_defaultTo(employee.last_name, '-')}/>
+          <Form.Input label='First Name' readOnly value={employee.first_name ? employee.first_name : '-'}/>
+          <Form.Input label='Last Name' readOnly value={employee.last_name ? employee.last_name : '-'}/>
         </Form.Group>
         <Form.Group widths={2}>
-          <Form.Input label='Email' readOnly value={_defaultTo(employee.email, '-')}/>
-          <Form.Input label='Title' readOnly value={_defaultTo(employee.title_name, '-')}/>
+          <Form.Input label='Email' readOnly value={employee.email ? employee.email : '-'}/>
+          <Form.Input label='Title' readOnly value={employee.title_name ? employee.title_name : '-'}/>
         </Form.Group>
         <Form.Group widths={2}>
           <Form.Input label='Location' readOnly value={employee.location ? `${employee.location_code} - ${employee.location_name}` : ''}/>
-          <Form.Input label='Role' readOnly value={_defaultTo(employee.role_name, '-')}/>
+          <Form.Input label='Role' readOnly value={employee.role_name ? employee.role_name : '-'}/>
         </Form.Group>
         <Form.Group widths={2}>
-          <Form.Input label='Status' readOnly value={_defaultTo(employee.is_active ? 'Active' : 'Inactive')}/>
+          <Form.Input label='Status' readOnly value={employee.is_active ? 'Active' : 'Inactive'}/>
         </Form.Group>
       </Form>
 

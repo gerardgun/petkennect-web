@@ -2,19 +2,20 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
-
-import Table from '@components/Table'
-import Alert from '@components/Alert'
+import moment from 'moment'
+import loadable from '@loadable/component'
 
 import useModal from '@components/Modal/useModal'
-import VaccinationUploadForm from './VaccinationUploadForm'
-import EmailReminderForm from './EmailReminderForm'
 
 import petVaccinationDuck from '@reducers/pet/vaccination'
 import petDetailDuck from '@reducers/pet/detail'
 import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
 import { useParams } from 'react-router-dom'
-import moment from 'moment'
+
+const Table = loadable(() => import('@components/Table'))
+const Alert = loadable(() => import('@components/Alert'))
+const  VaccinationUploadForm = loadable(() => import('./VaccinationUploadForm'))
+const EmailReminderForm = loadable(() => import('./EmailReminderForm'))
 
 function VacinationSection(props) {
   const { petVaccinationDetail , petVaccination , petDetail } = props

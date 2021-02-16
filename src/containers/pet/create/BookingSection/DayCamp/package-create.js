@@ -4,12 +4,14 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Select, Header, TextArea, Input, Modal } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
-import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError } from '@lib/utils/functions'
 
 import dayCampReservationDetailDuck from '@reducers/pet/reservation/daycamp-reservation/detail'
+
+const FormError = loadable(() => import('@components/Common/FormError'))
 
 const DaycampPackageForm = props => {
   const {

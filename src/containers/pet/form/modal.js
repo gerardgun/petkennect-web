@@ -3,9 +3,13 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
-import PetForm, { formId } from './'
+import loadable from '@loadable/component'
+
+import  { formId } from './'
 
 import petDetailDuck from '@reducers/pet/detail'
+
+const PetForm = loadable(() => import('./'))
 
 const PetFormModal = ({ petDetail, ...props }) => {
   const _handleClose = () => {

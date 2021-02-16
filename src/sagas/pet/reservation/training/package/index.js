@@ -1,6 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
 import faker from 'faker'
-import _times from 'lodash/times'
 
 import petTrainingPackageDuck from '@reducers/pet/reservation/training/package'
 
@@ -26,7 +25,7 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(5, index => ({
+        items: Array.from({ length: 5 }, index => ({
           id           : index,
           package_name : '2 Week Day Train',
           trainer      : faker.name.firstName(),

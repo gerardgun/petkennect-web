@@ -1,6 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
 import faker from 'faker'
-import _times from 'lodash/times'
 
 import notificationDuck from '@reducers/notification'
 
@@ -15,7 +14,7 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(filters.page_size, index => ({
+        items: Array.from({ length: filters.page_size }, index => ({
           id        : index,
           comment   : faker.random.words(),
           from_date : faker.date.recent(),
