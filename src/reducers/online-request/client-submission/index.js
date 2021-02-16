@@ -8,7 +8,12 @@ export default base({
   namespace   : '@@pet-kennect',
   store       : 'online-request/client-submission',
   initialState: {
-    config
+    config,
+    pagination: {
+      params: {
+        page_size: 10
+      }
+    }
   }
 })
   .extend(list)
