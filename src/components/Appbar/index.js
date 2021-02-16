@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Button,Search,Container,Dropdown,Grid, Icon } from 'semantic-ui-react'
+import _truncate from 'lodash/truncate'
 
 import { getAbbreviature } from '@lib/utils/functions'
 
@@ -66,7 +67,7 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
     return location.items.map(item => ({
       key  : item.id,
       value: item.id,
-      text : item.code.length > 16 ? item.code.substr(0,15) + '...' : item.code
+      text : _truncate(item.code, { length: 16 })
     }))
   }, [ location.status ])
 

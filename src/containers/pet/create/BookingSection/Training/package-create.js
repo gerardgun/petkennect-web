@@ -4,13 +4,12 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Grid, TextArea, Segment, Select, Header, Input, Modal } from 'semantic-ui-react'
-import loadable from '@loadable/component'
 
+import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError } from '@lib/utils/functions'
 
 import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
-const FormError = loadable(() => import('@components/Common/FormError'))
 
 const TrainingPackageForm = props => {
   const {

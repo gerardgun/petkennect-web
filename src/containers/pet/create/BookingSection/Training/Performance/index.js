@@ -2,14 +2,10 @@ import  React, { useState }  from 'react'
 import { Grid, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-
-import loadable from '@loadable/component'
-
+import ReportShow from './reportShow'
+import TrainingPerformance from './performanceForm'
 import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
 import './style.scss'
-
-const ReportShow = loadable(() => import('./reportShow'))
-const TrainingPerformance = loadable(() => import('./performanceForm'))
 
 const TrainingPerformanceForm = ({ ...props }) => {
   const  [ state,setState ] = useState('performance')

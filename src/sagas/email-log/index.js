@@ -1,4 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
+import _times from 'lodash/times'
 import faker from 'faker'
 
 import emailLogDuck from '@reducers/email-log'
@@ -14,7 +15,7 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: Array.from({ length: 10 }, index => ({
+        items: _times(10, index => ({
           id     : index,
           subject: 'Thank you for your interest in No Leash Needed',
           date   : faker.random.arrayElement([ 'Monday , 10/22/2018','Tuesday , 11/22/2019', 'Wednesday , 11/22/2019' ]),

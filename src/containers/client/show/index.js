@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Message, Segment, Header, Icon, Image, Label, Menu, Breadcrumb, Dropdown } from 'semantic-ui-react'
+import _get from 'lodash/get'
 
 import loadable from '@loadable/component'
 
@@ -146,15 +147,15 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
             </div>
 
             <Button
-              color='teal' content='Book!' disabled={clientDetail.item.summary ? clientDetail.item.summary.has_pending_agreements : false}
+              color='teal' content='Book!' disabled={_get(clientDetail, 'item.summary.has_pending_agreements', false)}
               fluid onClick={_handleBookBtnClick} size='large'/>
             <Button
               className='mt8' color='teal' content='Check In'
-              disabled={clientDetail.item.summary ? clientDetail.item.summary.has_pending_agreements : false}
+              disabled={_get(clientDetail, 'item.summary.has_pending_agreements', false)}
               fluid onClick={_handleExpressCheckInBtnClick} size='large'/>
 
             {
-              (clientDetail.item.summary ? clientDetail.item.summary.has_pending_agreements : false) && (
+              _get(clientDetail, 'item.summary.has_pending_agreements', false) && (
                 <Message
                   content={
                     <>
@@ -204,7 +205,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
                 onClick={_handleMenuItemClick}>
                 Agreements
                 {
-                  (clientDetail.item.summary ? clientDetail.item.summary.has_pending_agreements : false) ? (
+                  _get(clientDetail, 'item.summary.has_pending_agreements', false) ? (
                     <Icon color='orange' name='warning circle' size='large'/>
                   ) : (
                     <Label color='teal'>{clientAgreement.items.length}</Label>

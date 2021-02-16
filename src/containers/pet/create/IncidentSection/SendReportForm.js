@@ -5,9 +5,9 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Header, Input, Modal, Divider } from 'semantic-ui-react'
-import loadable from '@loadable/component'
 import * as Yup from 'yup'
 
+import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
@@ -19,7 +19,6 @@ import petIncidentDetailDuck from '@reducers/pet/incident/detail'
 
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-const FormError = loadable(() => import('@components/Common/FormError'))
 
 const editorConfiguration = {
   toolbar: {

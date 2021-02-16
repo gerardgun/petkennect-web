@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-
+import _times from 'lodash/times'
 import faker from 'faker'
 
 import packagePricingDuck  from '@reducers/package-pricing'
@@ -15,7 +15,7 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: Array.from({ length: 10 }, index => ({
+        items: _times(10, index => ({
           id          : index,
           program     : faker.random.arrayElement([ 'Boarding','DayCamp','Grooming','Retail','Training' ]),
           sub_category: faker.random.arrayElement([ 'Boarding','Toys','Fitness','peak','food', 'Service','Collars', 'Misc' ]),

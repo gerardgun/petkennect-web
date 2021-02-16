@@ -3,17 +3,15 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Header, Container, Grid, Modal } from 'semantic-ui-react'
-import loadable from '@loadable/component'
 
+import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
 
 import { getAbbreviature } from '@lib/utils/functions'
 
+import PetNoteCreate from './create'
 import petNoteDuck from '@reducers/pet/note'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
-
-const PetNoteCreate = loadable(() => import('./create'))
-const ModalDelete = loadable(() => import('@components/Modal/Delete'))
 
 const PetNoteFormModal = ({ petNote, petNoteDetail, ...props }) => {
   const [ openDeleteModal, { _handleOpen, _handleClose } ] = useModal()

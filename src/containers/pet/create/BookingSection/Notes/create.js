@@ -3,17 +3,16 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import loadable from '@loadable/component'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
+import FormError from '@components/Common/FormError'
 
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import { Button, Form, Header, Modal, TextArea } from 'semantic-ui-react'
 
 import petNoteDetailDuck from '@reducers/pet/note/detail'
-const FormError = loadable(() => import('@components/Common/FormError'))
 
 function PetNoteCreateFormModal(props) {
   const {

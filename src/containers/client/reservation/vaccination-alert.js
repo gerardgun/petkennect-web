@@ -6,7 +6,7 @@ const VaccinationAlert = () => {
   return (
 
     <Message
-      className='vaccination-alert ml4'
+      className='vaccination-alert'
       content={
         <Grid padded style={{ marginLeft: -16 }}>
           <Grid.Column className='mb0 pb0' width='16'>

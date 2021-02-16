@@ -4,15 +4,16 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form'
 import { Button, Form, Header, Modal, Icon, Grid } from 'semantic-ui-react'
-import loadable from '@loadable/component'
 
+import FormError from '@components/Common/FormError'
 import { parseResponseError } from '@lib/utils/functions'
+
+import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
+
 import petDetailDuck from '@reducers/pet/detail'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
-import './styles.scss'
 
-const FormError = loadable(() => import('@components/Common/FormError'))
-const ClientDocumentFormSendModal = loadable(() => import('@containers/client/show/DocumentSection/form/send/modal'))
+import './styles.scss'
 
 const ViewReportCardForm = (props) => {
   const {

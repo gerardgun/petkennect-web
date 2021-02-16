@@ -1,5 +1,6 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
 import faker from 'faker'
+import _times from 'lodash/times'
 
 import vaccinationUpdateDuck from '@reducers/online-request/vaccination-update'
 
@@ -16,7 +17,7 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: Array.from({ length: filters.page_size }, index => ({
+        items: _times(filters.page_size, index => ({
           id              : index,
           client          : faker.name.firstName(),
           pet             : faker.name.lastName(),

@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import PropTypes from 'prop-types'
 import { Card, Dimmer, Loader } from 'semantic-ui-react'
-import loadable from '@loadable/component'
+
+import GalleryItem from './Item'
 
 import './styles.scss'
-
-const GalleryItem = loadable(() => import('./Item'))
 
 function Gallery({ duckDetail, detail, list, selectable, onItemClick, onItemOptionClick: _handleItemOptionClick, ...props }) {
   const _handleItemClick = (e, data) => {

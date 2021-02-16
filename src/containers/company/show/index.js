@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Breadcrumb, Button, Container, Grid, Header, Icon, Image, Label } from 'semantic-ui-react'
+import  _get from 'lodash/get'
+import _defaultTo from 'lodash/defaultTo'
 
 import Layout from '@components/Common/Layout'
 import InputReadOnly from '@components/Common/InputReadOnly'
@@ -57,7 +59,7 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
                 )
               }
               <Breadcrumb.Divider/>
-              <Breadcrumb.Section active>{company.legal_name ? company.legal_name :  '-'}</Breadcrumb.Section>
+              <Breadcrumb.Section active>{_defaultTo(company.legal_name, '-')}</Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>
           <Grid.Column
@@ -78,7 +80,7 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Legal name'
-              value={company.legal_name ? company.legal_name  :  '-'}/>
+              value={_defaultTo(company.legal_name, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
@@ -88,17 +90,17 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='DBA'
-              value={company.dba ? company.dba :  '-'}/>
+              value={_defaultTo(company.dba, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Subdomain prefix'
-              value={company.subdomain_prefix ? company.subdomain_prefix  :  '-'}/>
+              value={_defaultTo(company.subdomain_prefix, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Tax ID'
-              value={company.tax_id ? company.tax_id :   '-'}/>
+              value={_defaultTo(company.tax_id, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
@@ -119,12 +121,12 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={16}>
             <InputReadOnly
               label='Phone'
-              value={company.phones ? company.phones[0] : '-'}/>
+              value={_get(company, 'phones[0]', '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={16}>
             <InputReadOnly
               label='Email'
-              value={company.email ? company.email : '-'}/>
+              value={_defaultTo(company.email, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={16}>
             <InputReadOnly
@@ -140,21 +142,21 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
         <Grid columns={1}>
           <InputReadOnly
             label='First Address'
-            value={company.addresses ? company.addresses[0] : '-'}/>
+            value={_get(company, 'addresses[0]', '-')}/>
           <InputReadOnly
             label='Second Address'
-            value={company.addresses ? company.addresses[1] : '-'}/>
+            value={_get(company, 'addresses[1]', '-')}/>
         </Grid>
         <Grid columns={3}>
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
               label='Zip'
-              value={company.zip_code ? company.zip_code :  '-'}/>
+              value={_defaultTo(company.zip_code, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
               label='Country'
-              value={zip.country_code ? zip.country_code :  '-'}/>
+              value={_defaultTo(zip.country_code, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
@@ -165,7 +167,7 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
               label='City'
-              value={zip.city ? zip.city :   '-'}/>
+              value={_defaultTo(zip.city, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
@@ -195,17 +197,17 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={16}>
             <InputReadOnly
               label='User email'
-              value={company.main_admin_email ? company.main_admin_email : '-'}/>
+              value={_defaultTo(company.main_admin_email, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Names'
-              value={company.main_admin_first_name ? company.main_admin_first_name :  '-'}/>
+              value={_defaultTo(company.main_admin_first_name, '-')}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Last names'
-              value={company.main_admin_last_name ? company.main_admin_last_name :   '-'}/>
+              value={_defaultTo(company.main_admin_last_name, '-')}/>
           </Grid.Column>
         </Grid>
 

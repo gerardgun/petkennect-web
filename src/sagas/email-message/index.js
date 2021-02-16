@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-
+import _times from 'lodash/times'
 import faker from 'faker'
 import moment from 'moment'
 
@@ -16,7 +16,7 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: Array.from({ length: 10 }, index => ({
+        items: _times(10, index => ({
           id     : index,
           from   : faker.internet.email(),
           subject: 'Thank you for your interest in No Leash Needed',

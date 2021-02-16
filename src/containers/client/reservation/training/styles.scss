@@ -7,36 +7,6 @@
 }
 
 
-  .input-color{
-    .ui.form .ui.input input {
-
-      background-color: white !important;
-    }
-
-
-  }
-
-
-  .class-edit-button{
-
-    margin-top: 23px !important;
-    height: 39px !important;
-     width: 25px !important;
-
-     padding-left: 0.3rem !important;
-
-  }
-
-
-
-
-
-
-
-
-
-
-
 .recurring_date_div{
 
     .ui.button.blue:not(.basic) {
@@ -64,7 +34,7 @@
     }
 
     }
-
+  
     .selectedWeekDay{
       background-color: #005987 !important;
     }
@@ -99,14 +69,14 @@
   .ui.styled.accordion{
     width:100% !important;
   }
-
+  
 .custom_radio_input{
   display:flex;
   align-items: center;
 }
 
 .grid_border_right{
-  border-right: 1px solid gray;
+  border-right: 1px solid gray; 
   .ui.radio.checkbox{
     padding-top: 1rem;
   }
@@ -163,5 +133,3 @@ and (-webkit-min-device-pixel-ratio: 2) {
   color: white !important;
   border: 1px solid teal !important;
 }
-
-

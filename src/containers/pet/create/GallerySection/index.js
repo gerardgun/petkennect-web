@@ -4,19 +4,16 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Container, Header, Grid, Button } from 'semantic-ui-react'
-import loadable from '@loadable/component'
 
+import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
-
+import Gallery from './Gallery'
 import { useChangeStatusEffect } from '@hooks/Shared'
 import useCameraAvailable from '@hooks/useCameraAvailable'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
-
-const ModalDelete = loadable(() => import('@components/Modal/Delete'))
-const Gallery = loadable(() => import('./Gallery'))
 
 const GallerySection = props => {
   const {

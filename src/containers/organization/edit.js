@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Breadcrumb, Button, Container, Grid } from 'semantic-ui-react'
+import _defaultTo from 'lodash/defaultTo'
 
 import Layout from '@components/Common/Layout'
 import OrganizationForm, { formId } from './form'
@@ -33,7 +34,7 @@ function OrganizationEdit({ organizationDetail, ...props }) {
                 <Link to='/organization'>Organizations</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider/>
-              <Breadcrumb.Section active>{organization.legal_name ? organization.legal_name :  '-'}</Breadcrumb.Section>
+              <Breadcrumb.Section active>{_defaultTo(organization.legal_name, '-')}</Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>
           <Grid.Column

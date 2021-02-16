@@ -4,7 +4,13 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 
-import loadable from '@loadable/component'
+import Table from '@components/Table'
+import CancelReserve from './CancelReserve'
+import PetNotes from './Notes'
+import ViewReport from './ReportCard'
+import Absent from './Absent'
+import Training from './Training'
+import DayCamp from './DayCamp'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petReservationBoardingDuck from '@reducers/pet/reservation/boarding'
@@ -15,14 +21,6 @@ import petTrainingPackageDuck from '@reducers/pet/reservation/training/package'
 import petTrainingReservationDuck from '@reducers/pet/reservation/training/reservation'
 
 import  './styles.scss'
-
-const Table = loadable(() => import('@components/Table'))
-const CancelReserve = loadable(() => import('./CancelReserve'))
-const PetNotes = loadable(() => import('./Notes'))
-const ViewReport = loadable(() => import('./ReportCard'))
-const Absent = loadable(() => import('./Absent'))
-const Training = loadable(() => import('./Training'))
-const DayCamp = loadable(() => import('./DayCamp'))
 
 function BookingSection({ petDetail, ...props }) {
   const history = useHistory()
@@ -71,10 +69,6 @@ function BookingSection({ petDetail, ...props }) {
   const _handleFilterBtnClick = (e, { type }) => {
     setActiveServiceItem(type)
   }
-  const _handleAddReservationBtnClick = () => {
-    props.setReserveItem({ service: activeServiceItem },'CREATE')
-    history.replace(`/client/${petDetail.item.client}/book`)
-  }
 
   return (
     <Container className='c-booking' fluid>
@@ -112,30 +106,18 @@ function BookingSection({ petDetail, ...props }) {
       {activeServiceItem === 'F' && <DayCamp/>}
       {
         (activeServiceItem === 'G' ||  activeServiceItem === 'B') && (
-          <>  <Grid className='segment-content-header' columns={2}>
-            <Grid.Column computer={4} mobile={10} tablet={4}>
-              <Header as='h2' className='child_header'>Reservations</Header>
-            </Grid.Column >
-            <Grid.Column
-              className='ui-grid-align'
-              computer={12} mobile={10} tablet={12}>
-              <Button
-                color='teal'
-                content='New Reservation'
-                onClick={_handleAddReservationBtnClick}/>
-            </Grid.Column>
-          </Grid>
-          <div className='ui-table-overflow'>
-            <Table
-              duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
-              onOptionDropdownChange={_handleOptionDropdownChange}
-              onRowClick={_handleRowClick}
-              onRowOptionClick={_handleRowOptionClick}/>
-          </div>
-          <ViewReport/>
-          <CancelReserve/>
-          <PetNotes/>
-          <Absent/>
+          <>
+            <div className='ui-table-overflow'>
+              <Table
+                duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
+                onOptionDropdownChange={_handleOptionDropdownChange}
+                onRowClick={_handleRowClick}
+                onRowOptionClick={_handleRowOptionClick}/>
+            </div>
+            <ViewReport/>
+            <CancelReserve/>
+            <PetNotes/>
+            <Absent/>
           </>
         )
       }
@@ -161,6 +143,5 @@ export default compose(
       getPet                   : petDetailDuck.creators.get,
       getTrainingPackages      : petTrainingPackageDuck.creators.get,
       getTrainingReservations  : petTrainingReservationDuck.creators.get
-
     })
 )(BookingSection)

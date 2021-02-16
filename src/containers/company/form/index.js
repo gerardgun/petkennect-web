@@ -5,6 +5,7 @@ import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Checkbox, Form, Header, Input, Label, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
+import _times from 'lodash/times'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
@@ -22,9 +23,8 @@ import userDuck from '@reducers/user'
 import zipDuck from '@reducers/zip'
 import zipDetailDuck from '@reducers/zip/detail'
 
-const divisions = Array.from({ length: 2 }, (_,index) => ({ key: index, value: index, text: `Division ${index + 1}` }))
-const regions = Array.from({ length: 2 }, (_,index) => ({ key: index, value: index, text: `Region ${index + 1}` }))
-
+const divisions = _times(2, index => ({ key: index, value: index, text: `Division ${index + 1}` }))
+const regions = _times(2, index => ({ key: index, value: index, text: `Region ${index + 1}` }))
 export const formId = 'organization-company-form'
 
 const CompanyForm = props => {

@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import loadable from '@loadable/component'
+
+import PetInformationShow from './show'
+import PetInformationEdit from './edit'
 
 import petDetailDuck from '@reducers/pet/detail'
-
-const PetInformationShow = loadable(() => import('./show'))
-const PetInformationEdit = loadable(() => import('./edit'))
 
 const PetInformation = ({ petDetail, ...props }) => {
   useEffect(() => {

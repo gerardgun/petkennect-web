@@ -3,11 +3,19 @@ import { connect } from 'react-redux'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Grid, Segment, Breadcrumb, Image, Label, Menu, Header, Dropdown, Button, Icon } from 'semantic-ui-react'
+import _get from 'lodash/get'
 
-import loadable from '@loadable/component'
-
+import Layout from '@components/Common/Layout'
 import ImageEditor from '@components/Common/ImageEditor'
 import PetProfileProperty from '@components/Common/Pet/Profile/Property'
+import InformationSection from './InformationSection'
+import BookingSection from './BookingSection'
+import VaccinationSection from './VaccinationSection'
+import IncidentSection from './IncidentSection'
+import NoteSection from './NoteSection'
+import GallerySection from './GallerySection'
+import TrainingPerformance from './BookingSection/Training/Performance'
+
 import useCameraAvailable from '@hooks/useCameraAvailable'
 import { defaultImageUrl } from '@lib/constants'
 import { getAge } from '@lib/utils/functions'
@@ -18,16 +26,6 @@ import petImageDetailDuck from '@reducers/pet/image/detail'
 import petNoteDuck from '@reducers/pet/note'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
 import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
-import petReservationDetailDuck from '@reducers/pet/reservation/detail'
-
-const Layout = loadable(() => import('@components/Common/Layout'))
-const InformationSection = loadable(() => import('./InformationSection'))
-const IncidentSection = loadable(() => import('./IncidentSection'))
-const BookingSection = loadable(() => import('./BookingSection'))
-const  VaccinationSection  = loadable(() => import('./VaccinationSection'))
-const  NoteSection  = loadable(() => import('./NoteSection'))
-const  GallerySection  = loadable(() => import('./GallerySection'))
-const  TrainingPerformance  = loadable(() => import('./BookingSection/Training/Performance'))
 
 const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props }) => {
   const history = useHistory()
@@ -36,7 +34,6 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
   const inputFileRef = useRef()
   const { pet: petId } = useParams()
   const cameraIsAvailable = useCameraAvailable()
-  const clientId = petDetail && petDetail.item.client
 
   useEffect(() => {
     props.getPet(petId)
@@ -67,19 +64,6 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
         filetype  : 'image',
         is_profile: true
       }, 'CREATE')
-  }
-
-  // const _handleBookBtnClick = () => {
-  //   props.resetReserveItem()
-  //   history.replace(`/client/${clientId}/book`)
-  // }
-
-  const _handleBookBtnClick = () => {
-    props.resetReserveItem()
-    history.push({
-      pathname: `/pet/${petId}/book`,
-      state   : { option: 'Pet', clientid: clientId }
-    })
   }
 
   const _handleOptionDropdownChange = () => {
@@ -226,7 +210,7 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
             <Grid>
               <Grid.Row verticalAlign='middle'>
                 <Grid.Column computer={16} mobile={16} tablet={10}>
-                  <PetProfileProperty name='Breed' value={petDetail.item.breed_name ? petDetail.item.breed_name :  '-'}/>
+                  <PetProfileProperty name='Breed' value={_get(petDetail.item, 'breed_name', '-')}/>
                 </Grid.Column>
                 <Grid.Column computer={16} mobile={16} tablet={16}>
                   <PetProfileProperty name='Age' value={getAge(petDetail.item.born_at)}/>
@@ -241,9 +225,6 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
             </Grid>
 
             <br/>
-            <Button
-              color='teal' content='Book!'
-              fluid onClick={_handleBookBtnClick} size='large'/>
 
             <Menu
               className='petkennect-profile-menu' color='teal' fluid
@@ -320,7 +301,6 @@ export default compose(
       getPetRetireReasons: petRetireReasonDuck.creators.get,
       getPet             : petDetailDuck.creators.get,
       resetItem          : petDetailDuck.creators.resetItem,
-      setPetImage        : petImageDetailDuck.creators.setItem,
-      resetReserveItem   : petReservationDetailDuck.creators.resetItem
+      setPetImage        : petImageDetailDuck.creators.setItem
     })
 )(PetShow)

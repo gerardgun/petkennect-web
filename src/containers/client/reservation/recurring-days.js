@@ -20,7 +20,6 @@ import './styles.scss'
 
 const RecurringDaysForm = ({ ...props }) => {
   const {
-    dateFunction,
     petReservationDetail,
     error, handleSubmit, reset
   } = props
@@ -271,215 +270,207 @@ const RecurringDaysForm = ({ ...props }) => {
       <Form onReset={reset} onSubmit={handleSubmit}>
 
         <Segment className='recurring_date_div section-info-item-step1' style={{ marginTop: '1rem !important' }}>
-          {
-            dateFunction == true
+          <Grid className='mt8'>
 
-            && <>
-              <Grid className='mt8'>
-
-                <Grid.Column
-                  className='pt0' width={16}>
-                  <Header as='h3' className='mt0'>
-                    ADD RECURRING DAYS
-                  </Header>
-                </Grid.Column>
-                <Grid.Column
-                  className='pt0 pb0' computer={7} mobile={16}
-                  tablet={16}>
-                  <div className='div_align_center'>
-                    <label  className='wc8'>Start Date</label>
-                    <Field
-                      className='ml8'
-                      component={FormField}
-                      control={Input}
-                      name='check_in'
-                      onChange={_handleStartDateChange}
-                      type='date'/>
-                  </div>
-                </Grid.Column>
-                <Grid.Column
-                  className='pt0'  computer={9} mobile={16}
-                  tablet={16}>
-                  <div className='div_align_center'>
-                    <label className='wc9'>Check In Time</label>
-                    <Field
-                      component={FormField}
-                      control={Input}
-                      name='check_in_time'
-                      type='time'/>
-                  </div>
-                </Grid.Column>
-                <Grid.Column
-                  className='grid_border_right pv0'  computer={4} mobile={16}
-                  tablet={16}>
-                  <p className='mb0'><b>Recurring:</b></p>
-                  <Form.Group className='div_align_center mh0' style={{ 'margin-top': '10px' }}>
-                    <Field
-                      component='input'
-                      name='frequency'
-                      onChange={_handleFrequencyClick}
-                      type='radio' value='every_week'/>
-                    <label className='mh4'> Every Week</label>
-                  </Form.Group>
-                  <Form.Group className='div_align_center mh0 mb0'>
-                    <Field
-                      component='input' name='frequency'
-                      onChange={_handleFrequencyClick}
-                      type='radio' value='every_other_week'/>
-                    <label className='mh4'> Every Other Week</label>
-                  </Form.Group>
-                  <Form.Group className='div_align_center mh0 mb0'>
-                    <Field
-                      className='pt0'
-                      component='input' name='frequency'
-                      onChange={_handleFrequencyClick}
-                      type='radio' value='every_custom_week'/>
-                    <label className='mh4'> Every</label>
-                    <Form.Field
-                      className='ml8 mv8 pl0 pr4 w_input_3'
-                      control={Input}
-                      name='custom_week_number'
-                      onChange={_handleCustomWeekChange}
-                      readOnly={frequency !== 'every_custom_week'}
-                      type='number'
-                      value={customWeekNumber}/>
-                    <label className='ml8'>Week(s)</label>
-                  </Form.Group>
-                  <Form.Group  className='div_align_center mh0'>
-                    <Field
-                      className='pt0'
-                      component='input'
-                      name='frequency'
-                      onChange={_handleFrequencyClick}
-                      type='radio' value='monthly'/>
-                    <label className='mh4'> Monthly</label>
-                  </Form.Group>
-                </Grid.Column>
-                <Grid.Column
-                  className='pv0'  computer={12} mobile={16}
-                  tablet={16}>
-                  {
-                    frequency === 'monthly' ? <>
-                      <Form.Group className='div_align_center'>
-                        <Field
-                          component='input' name='monthy_radio'
-                          onChange={_handleMonthlyRadioChange}
-                          type='radio' value='monthly_date'/>
-                        <label className='mh4'>{monthlyRadio.first}</label>
-                      </Form.Group>
-                      <Form.Group className='mt8 div_align_center'>
-                        <Field
-                          component='input' name='monthy_radio'
-                          onChange={_handleMonthlyRadioChange}
-                          type='radio' value='monthly_day'/>
-                        <label className='mh4'>{monthlyRadio.second}</label>
-                      </Form.Group>
-                    </>
-                      : <>
-                        <p className='mb0'><b>On Days:</b></p>
-                        <Form.Group width='equl'>
-                          <Field
-                            component={FormField}
-                            control={Checkbox}
-                            label='Week Days'
-                            name='all_week_days'
-                            onChange={_handleAllWeekDayChange}/>
-                          <Field
-                            component={FormField}
-                            control={Checkbox}
-                            label='Weekend'
-                            name='only_week_end'
-                            onChange={_handleOnlyWeekEndChange}/>
-                        </Form.Group>
-                        <Button.Group className='week_btn_group'>
-                          <Button
-                            active={allSelectedWeek.includes('Monday')} name='Monday' onClick={_handleWeekDayClick}
-                            type='button'>Monday</Button>
-                          <Button
-                            active={allSelectedWeek.includes('Tuesday')} name='Tuesday' onClick={_handleWeekDayClick}
-                            type='button'>Tuesday</Button>
-                          <Button
-                            active={allSelectedWeek.includes('Wednesday')} name='Wednesday' onClick={_handleWeekDayClick}
-                            type='button'>Wednesday</Button>
-                          <Button
-                            active={allSelectedWeek.includes('Thursday')} name='Thursday' onClick={_handleWeekDayClick}
-                            type='button'>Thursday</Button>
-                          <Button
-                            active={allSelectedWeek.includes('Friday')} name='Friday' onClick={_handleWeekDayClick}
-                            type='button'>Friday</Button>
-                          <Button
-                            active={allSelectedWeek.includes('Saturday')} name='Saturday' onClick={_handleWeekDayClick}
-                            type='button'>Saturday</Button>
-                          <Button
-                            active={allSelectedWeek.includes('Sunday')} name='Sunday' onClick={_handleWeekDayClick}
-                            type='button'>Sunday</Button>
-                        </Button.Group>
-                      </>
-                  }
-
-                </Grid.Column>
-              </Grid>
-
-              <Header as='h3' className='pv16 mb0'>
-Recurrence Range
+            <Grid.Column
+              className='pt0' width={16}>
+              <Header as='h3' className='mt0'>
+                ADD RECURRING DAYS
               </Header>
-              <Grid>
-                <Grid.Column
-                  className='pt8'  computer={6} mobile={16}
-                  tablet={16}>
-                  <div className='div_align_center'>
-                    <Form.Group className='wc8 div_align_center mh0 mv0'>
-                      <Field
-                        component='input' name='endby_until_no'
-                        onChange={_handleEndByAfterChange} type='radio' value='end_by'/>
-                      <label className='mh4'> End by</label>
-                    </Form.Group>
+            </Grid.Column>
+            <Grid.Column
+              className='pt0 pb0' computer={7} mobile={16}
+              tablet={16}>
+              <div className='div_align_center'>
+                <label  className='wc8'>Start Date</label>
+                <Field
+                  className='ml8'
+                  component={FormField}
+                  control={Input}
+                  name='check_in'
+                  onChange={_handleStartDateChange}
+                  type='date'/>
+              </div>
+            </Grid.Column>
+            <Grid.Column
+              className='pt0'  computer={9} mobile={16}
+              tablet={16}>
+              <div className='div_align_center'>
+                <label className='wc9'>Check In Time</label>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  name='check_in_time'
+                  type='time'/>
+              </div>
+            </Grid.Column>
+            <Grid.Column
+              className='grid_border_right pv0'  computer={4} mobile={16}
+              tablet={16}>
+              <p className='mb0'><b>Recurring:</b></p>
+              <Form.Group className='div_align_center mh0' style={{ 'margin-top': '10px' }}>
+                <Field
+                  component='input'
+                  name='frequency'
+                  onChange={_handleFrequencyClick}
+                  type='radio' value='every_week'/>
+                <label className='mh4'> Every Week</label>
+              </Form.Group>
+              <Form.Group className='div_align_center mh0 mb0'>
+                <Field
+                  component='input' name='frequency'
+                  onChange={_handleFrequencyClick}
+                  type='radio' value='every_other_week'/>
+                <label className='mh4'> Every Other Week</label>
+              </Form.Group>
+              <Form.Group className='div_align_center mh0 mb0'>
+                <Field
+                  className='pt0'
+                  component='input' name='frequency'
+                  onChange={_handleFrequencyClick}
+                  type='radio' value='every_custom_week'/>
+                <label className='mh4'> Every</label>
+                <Form.Field
+                  className='ml8 mv8 pl0 pr4 w_input_3'
+                  control={Input}
+                  name='custom_week_number'
+                  onChange={_handleCustomWeekChange}
+                  readOnly={frequency !== 'every_custom_week'}
+                  type='number'
+                  value={customWeekNumber}/>
+                <label className='ml8'>Week(s)</label>
+              </Form.Group>
+              <Form.Group  className='div_align_center mh0'>
+                <Field
+                  className='pt0'
+                  component='input'
+                  name='frequency'
+                  onChange={_handleFrequencyClick}
+                  type='radio' value='monthly'/>
+                <label className='mh4'> Monthly</label>
+              </Form.Group>
+            </Grid.Column>
+            <Grid.Column
+              className='pv0'  computer={12} mobile={16}
+              tablet={16}>
+              {
+                frequency === 'monthly' ? <>
+                  <Form.Group className='div_align_center'>
                     <Field
-                      className='ml8'
-                      component={FormField}
-                      control={Input}
-                      name='check_out'
-                      onChange={_handleEndDateChange}
-                      readOnly={endByAfter !== 'end_by'}
-                      type='date'/>
-                  </div>
-                </Grid.Column>
-                <Grid.Column
-                  className='pt8'  computer={6} mobile={16}
-                  tablet={16}>
-                  <div className='div_align_center'>
-                    <Form.Group className='wc8 div_align_center mh0 mv0'>
-                      <Field
-                        component='input' name='endby_until_no'
-                        onChange={_handleEndByAfterChange} type='radio' value='end_after'/>
-                      <label className='mh4'> End after</label>
-                    </Form.Group>
-                    <Field
-                      className='w_input_set'
-                      component={FormField}
-                      control={Input}
-                      name='until_no_of_occurrences'
-                      onChange={_handleUntilNoChange}
-                      readOnly={endByAfter !== 'end_after'}
-                      type='number'/>
-                    <label className='ml8'>occurrences</label>
-                  </div>
-                </Grid.Column>
-                <Grid.Column
-                  className='div_align_center'
-                  computer={3} mobile={16} tablet={16}>
-                  <Form.Group className='wc8 mb8 div_align_center mh0 mv0'>
-                    <Field
-                      component='input' name='endby_until_no'
-                      onChange={_handleEndByAfterChange} type='radio' value='no_end_date'/>
-                    <label className='mh4'> No End Date</label>
+                      component='input' name='monthy_radio'
+                      onChange={_handleMonthlyRadioChange}
+                      type='radio' value='monthly_date'/>
+                    <label className='mh4'>{monthlyRadio.first}</label>
                   </Form.Group>
-                </Grid.Column>
-              </Grid>
+                  <Form.Group className='mt8 div_align_center'>
+                    <Field
+                      component='input' name='monthy_radio'
+                      onChange={_handleMonthlyRadioChange}
+                      type='radio' value='monthly_day'/>
+                    <label className='mh4'>{monthlyRadio.second}</label>
+                  </Form.Group>
+                </>
+                  : <>
+                    <p className='mb0'><b>On Days:</b></p>
+                    <Form.Group width='equl'>
+                      <Field
+                        component={FormField}
+                        control={Checkbox}
+                        label='Week Days'
+                        name='all_week_days'
+                        onChange={_handleAllWeekDayChange}/>
+                      <Field
+                        component={FormField}
+                        control={Checkbox}
+                        label='Weekend'
+                        name='only_week_end'
+                        onChange={_handleOnlyWeekEndChange}/>
+                    </Form.Group>
+                    <Button.Group className='week_btn_group'>
+                      <Button
+                        active={allSelectedWeek.includes('Monday')} name='Monday' onClick={_handleWeekDayClick}
+                        type='button'>Monday</Button>
+                      <Button
+                        active={allSelectedWeek.includes('Tuesday')} name='Tuesday' onClick={_handleWeekDayClick}
+                        type='button'>Tuesday</Button>
+                      <Button
+                        active={allSelectedWeek.includes('Wednesday')} name='Wednesday' onClick={_handleWeekDayClick}
+                        type='button'>Wednesday</Button>
+                      <Button
+                        active={allSelectedWeek.includes('Thursday')} name='Thursday' onClick={_handleWeekDayClick}
+                        type='button'>Thursday</Button>
+                      <Button
+                        active={allSelectedWeek.includes('Friday')} name='Friday' onClick={_handleWeekDayClick}
+                        type='button'>Friday</Button>
+                      <Button
+                        active={allSelectedWeek.includes('Saturday')} name='Saturday' onClick={_handleWeekDayClick}
+                        type='button'>Saturday</Button>
+                      <Button
+                        active={allSelectedWeek.includes('Sunday')} name='Sunday' onClick={_handleWeekDayClick}
+                        type='button'>Sunday</Button>
+                    </Button.Group>
+                  </>
+              }
 
-            </>
+            </Grid.Column>
+          </Grid>
 
-          }
+          <Header as='h3' className='pv16'>
+        Recurrence Range
+          </Header>
+          <Grid>
+            <Grid.Column
+              className='pt8'  computer={6} mobile={16}
+              tablet={16}>
+              <div className='div_align_center'>
+                <Form.Group className='wc8 div_align_center mh0 mv0'>
+                  <Field
+                    component='input' name='endby_until_no'
+                    onChange={_handleEndByAfterChange} type='radio' value='end_by'/>
+                  <label className='mh4'> End by</label>
+                </Form.Group>
+                <Field
+                  className='ml8'
+                  component={FormField}
+                  control={Input}
+                  name='check_out'
+                  onChange={_handleEndDateChange}
+                  readOnly={endByAfter !== 'end_by'}
+                  type='date'/>
+              </div>
+            </Grid.Column>
+            <Grid.Column
+              className='pt8'  computer={6} mobile={16}
+              tablet={16}>
+              <div className='div_align_center'>
+                <Form.Group className='wc8 div_align_center mh0 mv0'>
+                  <Field
+                    component='input' name='endby_until_no'
+                    onChange={_handleEndByAfterChange} type='radio' value='end_after'/>
+                  <label className='mh4'> End after</label>
+                </Form.Group>
+                <Field
+                  className='w_input_set'
+                  component={FormField}
+                  control={Input}
+                  name='until_no_of_occurrences'
+                  onChange={_handleUntilNoChange}
+                  readOnly={endByAfter !== 'end_after'}
+                  type='number'/>
+                <label className='ml8'>occurrences</label>
+              </div>
+            </Grid.Column>
+            <Grid.Column
+              className='div_align_center'
+              computer={3} mobile={16} tablet={16}>
+              <Form.Group className='wc8 mb8 div_align_center mh0 mv0'>
+                <Field
+                  component='input' name='endby_until_no'
+                  onChange={_handleEndByAfterChange} type='radio' value='no_end_date'/>
+                <label className='mh4'> No End Date</label>
+              </Form.Group>
+            </Grid.Column>
+          </Grid>
           <Accordion className='mt32'>
             <Accordion.Title
               active={activeIndex}
@@ -538,9 +529,7 @@ Recurrence Range
 RecurringDaysForm.propTypes = {
 }
 
-RecurringDaysForm.defaultProps = {
-  dateFunction: true
-}
+RecurringDaysForm.defaultProps = { }
 
 export default compose(
   withRouter,

@@ -32,21 +32,6 @@ const LocationPetForm = ({ ...props }) => {
         <Grid>
           <Grid.Column className='pb0' width={11}>
             <Form.Group widths='equal'>
-
-              <Field
-                component={FormField}
-                control={Select}
-                label='Source'
-                name='source'
-                options={
-                  [ { key: 1 , value: 1, text: 'Online' },
-                    { key: 2 , value: 2, text: 'Email' },
-                    { key: 3 , value: 3, text: 'Phone Call' },
-                    { key: 4 , value: 4, text: 'Walk In' }
-                  ]
-                }
-                placeholder='Select Source'
-                required/>
               <Field
                 component={FormField}
                 control={Select}
@@ -58,15 +43,6 @@ const LocationPetForm = ({ ...props }) => {
                 placeholder='Location'
                 required
                 selectOnBlur={false}/>
-
-            </Form.Group>
-          </Grid.Column>
-
-        </Grid>
-        <Grid>
-          <Grid.Column className='pb0' computer={11}>
-            <Form.Group widths='equal'>
-
               <Field
                 closeOnChange
                 component={FormField}
@@ -83,13 +59,12 @@ const LocationPetForm = ({ ...props }) => {
                 }))}
                 placeholder='Search pet'
                 required
-                selection
-                selectOnBlur={false}/>
+                selectOnBlur={false}
+                selection/>
             </Form.Group>
           </Grid.Column>
-
           <Grid.Column className='pb0' width={5}>
-            <Form.Group className='mt8'>
+            <Form.Group>
               <Field
                 component={FormField}
                 control={Checkbox}
@@ -101,7 +76,6 @@ const LocationPetForm = ({ ...props }) => {
                 type='checkbox'/>
             </Form.Group>
           </Grid.Column>
-
         </Grid>
 
         {

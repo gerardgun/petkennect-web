@@ -4,11 +4,12 @@ import { useHistory, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector, FieldArray, reduxForm } from 'redux-form'
 import { Checkbox, Header, Form, Button, Segment, Label, Input, Select, TextArea } from 'semantic-ui-react'
-
-import loadable from '@loadable/component'
+import _get from 'lodash/get'
 import * as Yup from 'yup'
 
+import PetBreedForm from '@containers/pet-breed/create'
 import FormField from '@components/Common/FormField'
+import FormError from '@components/Common/FormError'
 import YupFields from '@lib/constants/yup-fields'
 import { TemperamentPeoplePreferenceOptions, VaccinationStatus } from '@lib/constants/pet'
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
@@ -20,9 +21,6 @@ import petDetailDuck from '@reducers/pet/detail'
 import petBreedDuck from '@reducers/pet/breed'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
 import petBreedDetailDuck from '@reducers/pet/breed/detail'
-
-const PetBreedForm = loadable(() => import('@containers/pet-breed/create'))
-const FormError = loadable(() => import('@components/Common/FormError'))
 
 export const formId = 'pet-form'
 
@@ -329,7 +327,7 @@ function PetForm(props) {
             <Form.Group widths={2}>
               <Form.Input
                 label='Vaccination Status' placeholder='-' readOnly
-                value={vaccinationStatus ? vaccinationStatus.text : '-'}/>
+                value={_get(vaccinationStatus, 'text', '-')}/>
               <Field
                 component={FormField}
                 control={Input}
