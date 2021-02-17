@@ -29,11 +29,17 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import './styles.scss'
 
 function Reservation({ petReservationDetail, currentTenant, clientDetail, ...props }) {
-  const { client: clientId } = useParams()
   const history = useHistory()
+  const { client: client } = useParams()
+  let clientId
 
-  const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service_type || 'B')
+  if(history.location.state != undefined)
+    clientId  = history.location.state.clientid
 
+  else
+    clientId = client
+
+  const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service || petReservationDetail.item.service_type || 'B')
   useEffect(() => {
     if(currentTenant && currentTenant.employee)
       props.getEmployee(currentTenant.employee.id)

@@ -40,6 +40,7 @@ const DaycampFormWizardFirst = props => {
   const [ vaccinationAlert,setVaccinationAlert ] = useState(false)
 
   useEffect(() => {
+    let petSize
     let serviceVariations = []
     if(selectedPets && selectedLocation) {
       if(selectedPets.length < 1)
@@ -56,7 +57,8 @@ const DaycampFormWizardFirst = props => {
       const petLength = selectedPets && selectedPets.length
       if(petLength > 0) {
         for (let item of selectedPets) {
-          const petSize = clientPet.items.find(pet => pet.id === item).size
+          const size = clientPet.items.find(pet => pet.id === item).size
+          petSize = size != null ? size : 'M'
           const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
             .values.find(_petSize => _petSize.value == petSize).id
 

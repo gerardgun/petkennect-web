@@ -4,15 +4,16 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, FieldArray } from 'redux-form'
 import { Button, Form, Header, Input, Modal, Divider } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 import * as Yup from 'yup'
 import moment from 'moment'
 
-import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { syncValidate, parseResponseError } from '@lib/utils/functions'
 
 import petVaccinationDuck from '@reducers/pet/vaccination'
 import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
+const FormError = loadable(() => import('@components/Common/FormError'))
 
 const VaccinationUploadForm = (props) => {
   const {

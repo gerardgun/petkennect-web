@@ -4,11 +4,12 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 import * as Yup from 'yup'
 
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
-import FormError from '@components/Common/FormError'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+const FormError = loadable(() => import('@components/Common/FormError'))
 
 const AbsentForm = props => {
   const {

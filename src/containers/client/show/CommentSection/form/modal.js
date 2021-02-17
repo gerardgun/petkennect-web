@@ -2,10 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
-import ClientCommentForm, { formId } from './'
+import  { formId } from './'
 
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
+
+const ClientCommentForm = loadable(() => import('./'))
 
 const ClientCommentFormModal = ({ clientCommentDetail, ...props }) => {
   const { mode, status } = clientCommentDetail

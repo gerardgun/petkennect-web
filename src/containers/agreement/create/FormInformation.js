@@ -5,14 +5,16 @@ import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Checkbox, Form, Input, Tab } from 'semantic-ui-react'
 import * as Yup from 'yup'
+import loadable from '@loadable/component'
 
-import FormError from '@components/Common/FormError'
-import FormField from '@components/Common/FormField'
-import TextAreaEditor from '@components/Common/TextAreaEditor'
-import YupFields from '@lib/constants/yup-fields'
 import { syncValidate } from '@lib/utils/functions'
 
 import agreementDetailDuck from '@reducers/agreement/detail'
+
+const FormError = loadable(() => import('@components/Common/FormError'))
+const FormField = loadable(() => import('@components/Common/FormField'))
+const TextAreaEditor = loadable(() => import('@components/Common/TextAreaEditor'))
+const YupFields = loadable(() => import('@lib/constants/yup-fields'))
 
 const AgreementCreate = props => {
   const {

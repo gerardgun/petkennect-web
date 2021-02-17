@@ -9,7 +9,7 @@ import InputReadOnly from '@components/Common/InputReadOnly'
 import FormError from '@components/Common/FormError'
 
 import moment from 'moment'
-
+import loadable from '@loadable/component'
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
 import DatesSummary from '../dates-summary'
@@ -20,9 +20,10 @@ import employeeDetailDuck from '@reducers/employee/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 
-import AddNote from './../notesSection/create'
-import ViewNoteSection from './../notesSection/view'
 import { trainingFormId } from './first'
+
+const AddNote = loadable(() => import('./../notesSection/create'))
+const  ViewNoteSection = loadable(() => import('./../notesSection/view'))
 
 const TrainingFormWizardThird = props => {
   const {

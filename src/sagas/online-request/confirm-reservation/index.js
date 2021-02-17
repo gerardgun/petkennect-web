@@ -1,6 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
 import faker from 'faker'
-import _times from 'lodash/times'
 
 import confirmReservationDuck from '@reducers/online-request/confirm-reservation'
 
@@ -17,7 +16,7 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(filters.page_size, index => ({
+        items: Array.from({ length: filters.page_size }, index => ({
           id      : index,
           client  : faker.name.firstName(),
           pet     : faker.name.lastName(),

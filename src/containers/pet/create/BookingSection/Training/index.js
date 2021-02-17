@@ -2,19 +2,20 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { Header, Button, Grid, Container } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 import { compose } from 'redux'
 
-import Table from '@components/Table'
-
-import PackageCreateForm from './package-create'
-import TrainingPackageEmailForm from './email-form'
-import PetNotes from '../Notes'
 import petDetailDuck from '@reducers/pet/detail'
 import petTrainingPackageDuck from '@reducers/pet/reservation/training/package'
 import petTrainingReservationDuck from '@reducers/pet/reservation/training/reservation'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
+
+const Table = loadable(() => import('@components/Table'))
+const PackageCreateForm = loadable(() => import('./package-create'))
+const TrainingPackageEmailForm = loadable(() => import('./email-form'))
+const PetNotes = loadable(() => import('../Notes'))
 
 function TrainingServiceSection({ petDetail, ...props }) {
   const history = useHistory()
@@ -32,7 +33,7 @@ function TrainingServiceSection({ petDetail, ...props }) {
   }
 
   const _handleAddReservationBtnClick = () => {
-    props.setReserveItem(null,'CREATE')
+    props.setReserveItem({ service: 'T' },'CREATE')
     history.replace(`/client/${petDetail.item.client}/book`)
   }
 

@@ -4,15 +4,16 @@ import { Link, withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { submit, getFormSyncErrors, getFormValues, destroy, reset } from 'redux-form'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
-
-import ModalDelete from '@components/Modal/Delete'
-import FormInformation from './FormInformation'
+import loadable from '@loadable/component'
 
 import useModal from '@components/Modal/useModal'
 import { parseFormValues, parseResponseError } from '@lib/utils/functions'
 
 import agreementDetailDuck from '@reducers/agreement/detail'
-import Layout from '@components/Common/Layout'
+
+const Layout = loadable(() => import('@components/Common/Layout'))
+const FormInformation = loadable(() => import('./FormInformation'))
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
 
 export const formIds = [ 'agreement-create-information' ]
 

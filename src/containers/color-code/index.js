@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { Grid, Header, Segment, Input, Button, Icon, Table, Menu, Dropdown } from 'semantic-ui-react'
 import { BiTennisBall } from 'react-icons/bi'
 import { GiJumpingDog, GiDamagedHouse, GiDogBowl, GiSittingDog } from 'react-icons/gi'
-import Layout from '@components/Common/Layout'
+
+import loadable from '@loadable/component'
 
 import './styles.scss'
+const Layout = loadable(() => import('@components/Common/Layout'))
 
 const ColourCodeList = () => {
   const [ ActiveInfoItem, setActiveInfoItem ] = useState('system')

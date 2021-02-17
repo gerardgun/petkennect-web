@@ -16,6 +16,7 @@ import ColorCode from '@containers/color-code'
 import Client from '@containers/client'
 import ClientShow from '@containers/client/show'
 import ClientBook from '@containers/client/reservation'
+import PetBook from '@containers/client/reservation'
 import CustomizedField from '@containers/customized-field'
 import Calendar from '@containers/calendar'
 import EmailMessage from '@containers/email-message'
@@ -142,6 +143,11 @@ const privateRoutes = [
   {
     path     : '/client/:client/book',
     component: ClientBook
+  },
+  {
+    path     : '/pet/:pet/book',
+    component: PetBook
+
   },
   {
     path     : '/company',

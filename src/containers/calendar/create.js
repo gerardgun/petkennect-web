@@ -5,12 +5,16 @@ import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Header, Checkbox, TextArea, Select, Input, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
+import loadable from '@loadable/component'
 
-import FormError from '@components/Common/FormError'
-import FormField from '@components/Common/FormField'
+// import FormError from '@components/Common/FormError'
+// import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import calendarDetailDuck from '@reducers/calendar/detail'
+
+const FormError = loadable(() => import('@components/Common/FormError'))
+const FormField = loadable(() => import('@components/Common/FormField'))
 
 const CalendarCreateForm = props => {
   const {

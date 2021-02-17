@@ -6,27 +6,27 @@ import { Field, formValueSelector, reduxForm, FieldArray } from 'redux-form'
 import { Button, Confirm, Input, Grid, Form, Header, Segment, Icon, Checkbox, Label, Divider } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
-import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { monthDiff, syncValidate } from '@lib/utils/functions'
 import { PeekDaysAndFullDays } from '@lib/constants/pet'
 
 import DayPicker from 'react-day-picker'
-
-import Message from '@components/Message'
-
 import moment  from 'moment'
+import loadable from '@loadable/component'
 
+import RecurringDaysForm from './../recurring-days'
 import clientPetDuck from '@reducers/client/pet'
 import serviceDuck from '@reducers/service'
 import serviceAttributeDuck from '@reducers/service/service-attribute'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
-import VaccinationAlert from '../vaccination-alert'
-import AlertModal from './../alert-modal'
-import PetLocationForm from '../common-sections/location-pet-section'
-import RecurringDaysForm from './../recurring-days'
 export const boardingFormId = 'boarding-reservation-form'
+
+const Message = loadable(() => import('@components/Message'))
+const AlertModal = loadable(() => import('./../alert-modal'))
+const VaccinationAlert = loadable(() => import('../vaccination-alert'))
+const PetLocationForm = loadable(() => import('../common-sections/location-pet-section'))
+const FormError = loadable(() => import('@components/Common/FormError'))
 
 const BoardingFormWizardFirst = props => {
   const {
@@ -59,6 +59,7 @@ const BoardingFormWizardFirst = props => {
   let _handleAddBtnClick
 
   useEffect(() => {
+    let petSize
     let serviceVariations = []
     if(selectedPets && selectedLocation) {
       if(selectedPets.length < 1)
@@ -75,7 +76,8 @@ const BoardingFormWizardFirst = props => {
       const petLength = selectedPets && selectedPets.length
       if(petLength > 0) {
         for (let item of selectedPets) {
-          const petSize = clientPet.items.find(pet => pet.id === item).size
+          const size = clientPet.items.find(pet => pet.id === item).size
+          petSize = size != null ? size : 'M'
           const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
             .values.find(_petSize => _petSize.value == petSize).id
 
@@ -290,11 +292,8 @@ const BoardingFormWizardFirst = props => {
         <Segment className='section-info-item-step1'>
           <PetLocationForm multiple={true}/>
           {vaccinationAlert !== false && <Grid>
-            <Grid.Column computer={5}>
-
-            </Grid.Column>
             <Grid.Column
-              className='message-grid pt0' computer={11} mobile={16}
+              className='message-grid pl28' computer={11} mobile={16}
               tablet={16}>
               <VaccinationAlert/>
             </Grid.Column>
@@ -518,9 +517,11 @@ export default compose(
         serviceAttribute    : serviceAttribute,
         petReservationDetail: petReservationDetail,
         initialValues       : { ...petReservationDetail.item, ...defaultInitialValues,
-          location  : initialLocation,
-          lodgingPet: selectedPets != undefined && selectedPets,
-          check_in  : petReservationDetail.item.reserved_at
+          location    : initialLocation,
+          quantityFood: 0,
+          quantityMed : 0,
+          lodgingPet  : selectedPets != undefined && selectedPets,
+          check_in    : petReservationDetail.item.reserved_at
             ? moment(petReservationDetail.item.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : initialDate,
           check_out: petReservationDetail.item.boarding
             ? moment(petReservationDetail.item.boarding.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD') : initialDate

@@ -3,13 +3,9 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {  useHistory } from 'react-router-dom'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
-import Layout from '@components/Common/Layout'
-import ModalDelete from '@components/Modal/Delete'
-import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
-import PetFormModal from './form/modal'
-import ExpressCheckInForm from './form/express-check-in'
 
 import { useChangeStatusEffect } from '@hooks/Shared'
 
@@ -19,6 +15,12 @@ import petReservationCheckInDetailDuck from '@reducers/pet/reservation/express-c
 import petBreedDuck from '@reducers/pet/breed'
 
 import './styles.scss'
+
+const Layout = loadable(() => import('@components/Common/Layout'))
+const Table = loadable(() => import('@components/Table'))
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const PetFormModal = loadable(()=> import('./form/modal'))
+const ExpressCheckInForm = loadable(()=> import('./form/express-check-in'))
 
 const PetList = ({ petDetail, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()

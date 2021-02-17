@@ -12,6 +12,7 @@ import FormField from '@components/Common/FormField'
 import { parseResponseError, parseFormValues } from '@lib/utils/functions'
 
 import moment from 'moment'
+import loadable from '@loadable/component'
 
 import authDuck from '@reducers/auth'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
@@ -21,12 +22,12 @@ import trainingMethodDetailDuck from '@reducers/training-method/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import clientDetailDuck from '@reducers/client/detail'
 
-import EmailCreateForm from './email/email-create'
-import EmailAlert from './email/email-alert'
-import AddNote from './../notesSection/create'
-import ViewNoteSection from './../notesSection/view'
-
 import { boardingFormId } from './first'
+
+const EmailCreateForm = loadable(() => import('./email/email-create'))
+const  EmailAlert  = loadable(() => import('./email/email-alert'))
+const AddNote = loadable(() => import('./../notesSection/create'))
+const ViewNoteSection = loadable(() => import('./../notesSection/view'))
 
 const BoardingFormWizardThird = props => {
   const {

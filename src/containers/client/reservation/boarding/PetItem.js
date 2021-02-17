@@ -45,8 +45,8 @@ function ReservationCalenderList({ checkIn,checkOut }) {
                          { key: 4, value: 4, text: 'Area4' }
                        ]}
                        placeholder='Select Area'
-                       selectOnBlur={false}
-                       selection/></span></Table.Cell>
+                       selection
+                       selectOnBlur={false}/></span></Table.Cell>
                   }
                   {i == 0 && j > 0
                   && <Table.Cell><Button className='btn-reservation-calendar basic' style={{ width: '100%' }} type='button'>{dateItem}</Button></Table.Cell>
@@ -140,7 +140,8 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
                               label='Daily Activity Package'
                               name={`${item.id}.activityPackage`}
                               options={[
-                                { key: 1, value: 1, text: 'Test' }
+                                { key: 1, value: 1, text: 'Test' },
+                                { key: 2, value: 2, text: 'Training' }
                               ]}
                               placeholder='Select Activity Package'
                               selectOnBlur={false}/>

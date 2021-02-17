@@ -3,16 +3,18 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
-import Layout from '@components/Common/Layout'
-import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
-import CategoryForm from  './Form'
 
 import categoryDuck from '@reducers/category'
 import categoryDetailDuck from '@reducers/category/detail'
 import { useChangeStatusEffect } from '@hooks/Shared'
-import SortableList from './SortableList'
+
+const Layout = loadable(() => import('@components/Common/Layout'))
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
+const CategoryForm = loadable(() => import('./Form'))
+const SortableList = loadable(() => import('./SortableList'))
 
 const CategoryList = ({ ...props }) => {
   const { categoryDetail : { status } = {}, category } = props

@@ -1,7 +1,10 @@
 import React from 'react'
+import loadable from '@loadable/component'
 import PropTypes from 'prop-types'
 import { Grid } from 'semantic-ui-react'
-import Message from '@components/Message'
+
+
+const  Message = loadable(() => import('@components/Message'))
 
 function Summary({ warningIncidentTypes  }) {
   const isDanger = warningIncidentTypes.some(_type => _type.limit - _type.count <= 0)

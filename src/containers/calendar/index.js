@@ -10,12 +10,13 @@ import FormField from '@components/Common/FormField'
 import useModal from '@components/Modal/useModal'
 import { Button, Grid, List, Form, Header, Label, Icon, Select, Popup, Segment } from 'semantic-ui-react'
 
-import Layout from '@components/Common/Layout'
-import CalendarEventCreate from './create'
+import loadable from '@loadable/component'
 
 import calendarDetailDuck from '@reducers/calendar/detail'
 
 import './styles.scss'
+const Layout = loadable(() => import('@components/Common/Layout'))
+const CalendarEventCreate = loadable(() => import('./create'))
 
 const Calendar = props => {
   const {

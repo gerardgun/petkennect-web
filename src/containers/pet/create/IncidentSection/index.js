@@ -4,12 +4,10 @@ import { useParams } from 'react-router-dom'
 import { Header, Button, Container, Grid } from 'semantic-ui-react'
 import { compose } from 'redux'
 
-import Table from '@components/Table'
-import IncidentForm from './Form'
-import SendReportForm from './SendReportForm'
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
+
 import useModal from '@components/Modal/useModal'
-import Summary from './Summary'
+
 import { useChangeStatusEffect } from '@hooks/Shared'
 import { openIncidentPDF } from '@lib/utils/functions'
 
@@ -20,6 +18,12 @@ import petIncidentTypeDuck from '@reducers/pet/incident-type'
 import petDetailDuck from '@reducers/pet/detail'
 
 import './styles.scss'
+
+const Table = loadable(() => import('@components/Table'))
+const IncidentForm = loadable(() => import('./Form'))
+const SendReportForm = loadable(() => import('./SendReportForm'))
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
+const Summary = loadable(() => import('./Summary'))
 
 function IncidentSection(props) {
   const { petDetail } = props

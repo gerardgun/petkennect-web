@@ -77,6 +77,7 @@ import petReservationDaycampQuestion from './pet/reservation/daycamp-question'
 import petReservationDaycampQuestionDetail from './pet/reservation/daycamp-question/detail'
 import petReservationCheckInDetail from './pet/reservation/express-check-in/detail'
 import petReservationTrainingPackage from './pet/reservation/training/package'
+import petReservationTrainingReservationGroupClass from './pet/reservation/training/reservation/group-class'
 import petReservationTrainingReservation from './pet/reservation/training/reservation'
 import petReservationBoarding from './pet/reservation/boarding'
 import petReservationBoardingAddon from './pet/reservation/boarding/addon'
@@ -227,6 +228,7 @@ export default function* rootSaga() {
     ...petReservationDaycampQuestionDetail,
     ...petReservationTrainingPackage,
     ...petReservationTrainingReservation,
+    ...petReservationTrainingReservationGroupClass,
     ...petReservationBoarding,
     ...petReservationBoardingAddon,
     ...petReservationBoardingAddonFeeding,

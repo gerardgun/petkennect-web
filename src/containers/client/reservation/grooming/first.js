@@ -46,6 +46,7 @@ const GroomingFormWizardFirst = props => {
   }
 
   useEffect(() => {
+    let petSize
     let serviceVariations
     if(selectedPet && selectedLocation) {
       if(selectedPet === undefined)
@@ -61,7 +62,8 @@ const GroomingFormWizardFirst = props => {
       const locationId = serviceAttribute.items && serviceAttribute.items.find(_location => _location.type === 'L')
         .values.find(_location => _location.value == selectedLocation).id
 
-      const petSize = clientPet.items.find(pet => pet.id === selectedPet).size
+      const size = clientPet.items.find(pet => pet.id === selectedPet).size
+      petSize = size != null ? size : 'M'
       const petSizeId = serviceAttribute.items && serviceAttribute.items.find(_petSize => _petSize.type === 'S')
         .values.find(_petSize => _petSize.value == petSize).id
 

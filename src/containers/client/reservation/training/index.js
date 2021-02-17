@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { destroy } from 'redux-form'
 
 import TrainingFormWizardFirst from './first'
+import TrainingFormWizardSecond from './second'
 import TrainingFormWizardThird from './third'
 
 import { trainingFormId } from './first'
@@ -26,7 +27,8 @@ const ReservationFormWizard = props => {
   return (
     <>
       {step === 1 && <TrainingFormWizardFirst onSubmit={_handleNextStep}/>}
-      {step === 2 && <TrainingFormWizardThird
+      {step === 2 && <TrainingFormWizardSecond onPreviousStep={_handlePreviousStep} onSubmit={_handleNextStep}/>}
+      {step === 3 && <TrainingFormWizardThird
         onPreviousStep={_handlePreviousStep}
         serviceType={props.serviceType}/>}
     </>

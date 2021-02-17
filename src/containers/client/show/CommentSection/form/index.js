@@ -4,16 +4,18 @@ import { useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Checkbox, Form, TextArea } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
-import FormError from '@components/Common/FormError'
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 import clientCommentDetailDuck from '@reducers/client/comment/detail'
 
 export const formId = 'client-comment-form'
+
+const FormError = loadable(() => import('@components/Common/FormError'))
 
 function ClientCommentForm(props) {
   const {

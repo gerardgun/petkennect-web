@@ -6,13 +6,17 @@ import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import YupFields from '@lib/constants/yup-fields'
+import loadable from '@loadable/component'
 
-import FormError from '@components/Common/FormError'
-import FormField from '@components/Common/FormField'
+// import FormError from '@components/Common/FormError'
+// import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import categoryDetailDuck from '@reducers/category/detail'
 import categoryDuck from '@reducers/category'
+
+const FormError = loadable(() => import('@components/Common/FormError'))
+const FormField = loadable(() => import('@components/Common/FormField'))
 
 const CategoryForm = props => {
   const {

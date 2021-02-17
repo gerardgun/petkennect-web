@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import _times from 'lodash/times'
+
 import faker from 'faker'
 
 import emailTemplateDuck from '@reducers/email-template'
@@ -15,7 +15,7 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(10, index => ({
+        items: Array.from({ length: 10 }, index => ({
           id        : index,
           purpose   : 'Client Verification',
           subject   : 'Thank you for your interest in No Leash Needed',

@@ -3,8 +3,11 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import trainingPackageDuck from '@reducers/training-package'
 import { Container, Button, Grid } from 'semantic-ui-react'
-import Table from '@components/Table'
+import loadable from '@loadable/component'
+
 import './style.scss'
+
+const Table = loadable(() => import('@components/Table'))
 
 const ReportShow = ()=>{
   return (

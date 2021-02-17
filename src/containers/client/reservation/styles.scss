@@ -7,7 +7,7 @@
     letter-spacing: -0.04em;
     color: #f2994a;
   }
-  
+
   .ui.steps{
     width:100%;
   }
@@ -17,7 +17,7 @@
       padding: 1.3rem;
       margin-right: 2rem;
     }
-     
+
     .ui.button.gray:not(.basic) {
       background-color: teal !important;
       color: white !important;
@@ -28,11 +28,11 @@
     box-shadow: none;
     padding: 1.8rem;
   }
-      
+
   .section-info-item-step1{
     margin-top: 3rem !important;
   }
-      
+
   .section-info-header{
     text-align: left;
     text-transform: uppercase !important;
@@ -41,7 +41,7 @@
   .btnBack{
     text-align: left !important;
   }
-      
+
   .section-info-item-form{
     .ui.celled.table tr td, .ui.celled.table tr th {
       border-left: 0px solid !important;
@@ -80,7 +80,7 @@
       width: 7rem;
       display: inline-block;
     }
-    
+
     .btn-avaliable{
       background: #079477 !important;
       float: right;
@@ -262,13 +262,13 @@
       min-width: 100% !important;
     }
   }
- 
+
   .flex_imp{
     display:flex !important;
   }
 }
- 
-  
+
+
 #add-report-card-form {
   h6.ui.header.section-header{
     margin-top: 0.5rem;
@@ -302,7 +302,7 @@
   display: inline-flex;
   padding-left: 2rem;
   padding-right: 2rem;
-    
+
   .div-bar-content{
     width: 35% !important;
     margin: 0rem 2rem;
@@ -455,16 +455,10 @@
   }
 }
 
-// new boarding reservation css 
-
 .vaccination-alert{
-  width: 365px !important;
-  margin-left: 32px !important;
-}
+  width: 100% !important;
 
-// .send-confirmation{
-//   margin-bottom: 0.6rem !important;
-// }
+}
 
 .reservation-buttons{
   width: 245px !important;
@@ -501,12 +495,14 @@
 .available-checkbox{
   .ui.checkbox input:checked ~ label::after {
     background-color: rgb(9, 165, 9);
+    color: white;
   }
 }
 
 .occupied-checkbox{
   .ui.checkbox input:checked ~ label::after {
     background-color: red;
+    color: white;
   }
 }
 

@@ -4,14 +4,16 @@ import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
-import Layout from '@components/Common/Layout'
-import Table from '@components/Table'
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
 import agreementDuck from '@reducers/agreement'
 import agreementDetailDuck from '@reducers/agreement/detail'
+
+const Layout = loadable(() => import('@components/Common/Layout'))
+const Table = loadable(() => import('@components/Table'))
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
 
 const AgreementList = ({ agreement, agreementDetail ,...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal()

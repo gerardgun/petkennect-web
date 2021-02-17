@@ -2,10 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
-import PetNoteForm, { formId } from './'
+import  { formId } from './'
 
 import petNoteDetailDuck from '@reducers/pet/note/detail'
+const PetNoteForm = loadable(() => import('./'))
 
 const PetNoteFormModal = ({ petNoteDetail, ...props }) => {
   const { mode, status } = petNoteDetail
