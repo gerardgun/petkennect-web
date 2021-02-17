@@ -1,9 +1,22 @@
-import faker from 'faker'
-
 export default {
   base_uri      : null,
-  search_enabled: true,
-  row           : {
+  search_enabled: false,
+  group_by      : {
+    column_name: 'completed',
+    groups     : [
+      {
+        value     : true,
+        icon_label: 'flag outline',
+        text_label: 'Completed'
+      },
+      {
+        value     : false,
+        icon_label: 'flag outline',
+        text_label: 'InCompleted'
+      }
+    ]
+  },
+  row: {
     options: [
       {
         name        : 'review',
@@ -15,24 +28,20 @@ export default {
   },
   columns: [
     {
-      display_name: 'Client',
-      name        : 'client_first_name',
-      type        : null,
+      display_name: 'CLIENT',
+      name        : 'client',
+      type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false,
-      formatter   : (cell, row) => {
-        return `${row.client_last_name}, ${cell}`
-      }
+      sort        : true
     },
     {
-      display_name: 'Email',
+      display_name: 'EMAIL',
       name        : 'email',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false,
-      formatter   : () => faker.internet.email()
+      sort        : true
     },
     {
       display_name: 'MOBILE',
@@ -40,8 +49,7 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false,
-      formatter   : () => faker.phone.phoneNumber()
+      sort        : true
     },
     {
       display_name: 'LOCATION',
@@ -49,8 +57,7 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false,
-      formatter   : () => '02-RH'
+      sort        : true
     },
     {
       display_name: 'Notes',
@@ -58,7 +65,7 @@ export default {
       type        : 'action',
       width       : null,
       align       : 'left',
-      sort        : false,
+      sort        : true,
       action      : {
         name : 'view',
         label: 'View'

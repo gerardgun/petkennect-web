@@ -24,7 +24,7 @@ function* deleteItem({ ids }) {
   }
 }
 
-export function* get({ id }) {
+function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
