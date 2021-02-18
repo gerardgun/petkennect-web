@@ -57,7 +57,7 @@ const OnlineRequestsShow = () => {
               <Menu.Item
                 active={activeMenuItem === 'declinedClients'} link name='declinedClients'
                 onClick={_handleMenuItemClick}>
-                Declined Clients
+                Declined Submissions
               </Menu.Item>
             </Menu>
           </Grid.Column>

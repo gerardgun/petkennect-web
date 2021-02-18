@@ -7,23 +7,16 @@ export default {
     options: [
       {
         display_name: 'View',
-        content     : 'view',
+        name        : 'view',
+        icon        : 'file pdf outline',
         color       : 'teal'
       }
     ]
   },
   columns: [
     {
-      display_name: 'OWNER NAME',
-      name        : 'owner_name',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
       display_name: 'DOCUMENT NAME',
-      name        : 'document_name',
+      name        : 'filename',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -31,14 +24,14 @@ export default {
     },
     {
       display_name: 'DOCUMENT TYPE',
-      name        : 'document_type',
+      name        : 'type_name',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : true
     },
     {
-      display_name: 'DESCRIPTION',
+      display_name: 'COMMENT',
       name        : 'description',
       type        : 'string',
       width       : null,
@@ -46,21 +39,12 @@ export default {
       sort        : true
     },
     {
-      display_name: 'UPLOAD USER',
-      name        : 'upload_user',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
       display_name: 'DATE OF UPLOAD',
-      name        : 'date_of_upload',
-      type        : 'string',
+      name        : 'created_at',
+      type        : 'date',
       width       : null,
       align       : 'left',
       sort        : true
     }
-
   ]
 }

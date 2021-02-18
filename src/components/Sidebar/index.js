@@ -71,9 +71,16 @@ const categories = [
     ]
   },
   {
-    href : '/online-request',
-    icon : 'osi',
-    label: 'Online Requests'
+    href         : null,
+    icon         : 'osi',
+    label        : 'Online Requests',
+    subcategories: [
+      { href: '/online-request/client-submission', label: 'New Client Submission' },
+      { href: '/online-request/confirm-reservation', label: 'Confirm Reservations' },
+      { href: '/online-request/cancellation-log', label: 'Cancellations Logs' },
+      { href: '/online-request/vaccination-update', label: 'New Vacinations Update' },
+      { href: '/online-request/declined-client', label: 'Declined Submissions' }
+    ]
   },
   {
     href : '/email-message',

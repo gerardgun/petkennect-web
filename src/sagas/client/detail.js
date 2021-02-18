@@ -24,11 +24,11 @@ function* deleteItem({ ids }) {
   }
 }
 
-function* get({ id }) {
+export function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const client = yield call(Get, `clients/${id}`)
+    const client = yield call(Get, `clients/${id}/`)
 
     yield put({
       type   : types.GET_FULFILLED,

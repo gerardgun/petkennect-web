@@ -5,28 +5,36 @@ export const NoteType = {
   O: 'Owner'
 }
 
+export const Size = {
+  S: 'Small',
+  M: 'Medium',
+  L: 'Large',
+  G: 'Giant'
+}
+
 export const TemperamentPeoplePreference = {
   M: 'Men',
   W: 'Women',
   N: 'Neither'
 }
 
+// This object status keys are in order. Don't reoder the elements.
 export const VaccinationStatus = {
-  requested: {
-    color: 'orange',
-    text : 'Verify!'
-  },
-  missing: {
-    color: 'red',
-    text : 'Missing'
-  },
   expired: {
     color: 'red',
     text : 'Expired'
   },
+  missing: {
+    color: 'black',
+    text : 'Missing'
+  },
   comming_due: {
     color: 'orange',
     text : 'Coming Due'
+  },
+  requested: {
+    color: 'blue',
+    text : 'Pending'
   },
   vaccinated: {
     color: 'green',
@@ -36,6 +44,14 @@ export const VaccinationStatus = {
 
 export const NoteTypeOptions
   = Object.entries(NoteType)
+    .map(([ value, text ], index) => ({
+      key: index,
+      value,
+      text
+    }))
+
+export const SizeOptions
+  = Object.entries(Size)
     .map(([ value, text ], index) => ({
       key: index,
       value,

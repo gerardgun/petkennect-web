@@ -1,22 +1,6 @@
 export default {
-  base_uri      : null,
-  search_enabled: false,
-  group_by      : {
-    column_name: 'ready',
-    groups     : [
-      {
-        value     : true,
-        icon_label: 'flag outline',
-        text_label: 'Ready'
-      },
-      {
-        value     : false,
-        icon_label: 'flag outline',
-        text_label: 'Unfinished'
-      }
-    ]
-  },
-  row: {
+  base_uri: null,
+  row     : {
     options: [
       {
         name        : 'review',
@@ -28,28 +12,32 @@ export default {
   },
   columns: [
     {
-      display_name: 'CLIENT',
-      name        : 'client',
-      type        : 'string',
+      display_name: 'Client',
+      name        : 'client_first_name',
+      type        : null,
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : false,
+      formatter   : (cell, row) => {
+        return `${row.client_last_name}, ${cell}`
+      }
     },
     {
       display_name: 'PET',
-      name        : 'pet',
+      name        : 'pet_name',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : true
     },
     {
-      display_name: 'VACCINATION TYPE',
-      name        : 'vaccination_type',
+      display_name: 'LOCATION',
+      name        : 'client.location.code',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : false,
+      formatter   : () => '02-RH'
     }
   ]
 }

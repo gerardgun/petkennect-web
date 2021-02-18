@@ -50,6 +50,22 @@ export const getFileType = filepath => {
   return [ 'png', 'jpg', 'jpeg' ].includes(fileExt) ? 'image' : 'video'
 }
 
+export const getVaccinationStatus = item => {
+  if(!item.expired_at)
+    return 'missing'
+
+  if(item.request && !item.verified_at)
+    return 'requested'
+
+  const expiredAt = moment.utc(item.expired_at, 'YYYY-MM-DD HH-mm:ss Z')
+  const now = moment()
+
+  if(expiredAt.isSameOrBefore(now)) return 'expired'
+  if(expiredAt.isSameOrBefore(now.add(30,'days'), 'day')) return  'comming_due'
+
+  return 'vaccinated'
+}
+
 export const getMessageError = e => {
   let currentMessage = 'Error'
 

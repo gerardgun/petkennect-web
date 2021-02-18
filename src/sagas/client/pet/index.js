@@ -6,7 +6,7 @@ import clientPetDuck from '@reducers/client/pet'
 
 const { types, selectors } = clientPetDuck
 
-function* get(/* { payload }*/) {
+export function* get(/* { payload }*/) {
   try {
     yield put({ type: types.GET_PENDING })
 

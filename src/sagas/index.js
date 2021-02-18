@@ -132,8 +132,10 @@ import serviceAttributeDetail from './service/service-attribute/detail'
 import serviceAttributeValue from './service/service-attribute-value'
 import serviceAttributeValueDetail from './service/service-attribute-value/detail'
 import onlineRequestClientSubmission from './online-request/client-submission'
+import onlineRequestClientSubmissionDetail from './online-request/client-submission/detail'
 import onlineRequestConfirmReservation from './online-request/confirm-reservation'
 import onlineRequestVaccinationUpdate from './online-request/vaccination-update'
+import onlineRequestVaccinationUpdateDetail from './online-request/vaccination-update/detail'
 import ratingKey from './rating-key'
 import trainingCommand from './training-command'
 import trainingCommandDetail from './training-command/detail'
@@ -281,8 +283,10 @@ export default function* rootSaga() {
     ...serviceAttributeValue,
     ...serviceAttributeValueDetail,
     ...onlineRequestClientSubmission,
+    ...onlineRequestClientSubmissionDetail,
     ...onlineRequestConfirmReservation,
     ...onlineRequestVaccinationUpdate,
+    ...onlineRequestVaccinationUpdateDetail,
     ...ratingKey,
     ...trainingCommand,
     ...trainingCommandDetail,

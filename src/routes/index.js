@@ -61,6 +61,11 @@ import ServiceCreate from '@containers/service/create'
 import ServiceAttribute from '@containers/service-attribute'
 import ServiceAttributeValue from '@containers/service-attribute-value'
 import OnlineRequests from '@containers/online-request'
+import ClientSubmission from '@containers/online-request/clientSubmission'
+import ConfirmReservations from '@containers/online-request/confirmReservation'
+import CancellationsLogs from '@containers/online-request/cancellationLog'
+import DeclinedClients from '@containers/online-request/declinedClient'
+import VaccinationsUpdate from '@containers/online-request/vaccinationsUpdate'
 // import FoundationDetail from '@containers/foundation/detail'
 import Company from '@containers/company'
 import CompanyEdit from '@containers/company/edit'
@@ -305,6 +310,26 @@ const privateRoutes = [
   {
     path     : '/online-request',
     component: OnlineRequests
+  },
+  {
+    path     : '/online-request/client-submission',
+    component: ClientSubmission
+  },
+  {
+    path     : '/online-request/confirm-reservation',
+    component: ConfirmReservations
+  },
+  {
+    path     : '/online-request/cancellation-log',
+    component: CancellationsLogs
+  },
+  {
+    path     : '/online-request/declined-client',
+    component: DeclinedClients
+  },
+  {
+    path     : '/online-request/vaccination-update',
+    component: VaccinationsUpdate
   },
   {
     path     : '/custom-report',

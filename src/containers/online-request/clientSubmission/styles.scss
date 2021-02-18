@@ -1,32 +1,16 @@
-#new-client-submission-form{
-    .ui.tabular.menu .active.item{
-            background: rgba(7, 148, 119, 0.1) !important;
-            color: #00AA9F !important;
-        }
-}
-.modal-width{
-    @media screen and (min-width:1320px){
-        width: 1430px !important; 
-    }
-    
-}
+.modal-width {
+  min-height: 80vh;
 
-.profile-width {
-    @media screen and (min-width:1024px) and(max-width:1320px) {
-        height:10rem !important;
-    }
-}
+  @media screen and (min-width: 1320px) {
+    width: 1430px !important;
+  }
 
-.dropdown-width {
-    .ui.selection.dropdown {
-    @media screen and (min-width:1024px) and(max-width:1320px) {
-        min-width: 7em !important;
-    }
-}
-}
+  .ui.tabular.menu .active.item {
+    background: rgba(7, 148, 119, 0.1) !important;
+    color: #00aa9f !important;
+  }
 
-.notes-margin {
-    @media screen  and (max-width:1024px) {
-        margin-top: 20px !important;
-    }
+  .segment-content.ui.segment {
+    padding: 0rem;
+  }
 }

@@ -1,22 +1,9 @@
+import React from 'react'
+import { Label } from 'semantic-ui-react'
+
 export default {
-  base_uri      : null,
-  search_enabled: false,
-  group_by      : {
-    column_name: 'completed',
-    groups     : [
-      {
-        value     : true,
-        icon_label: 'flag outline',
-        text_label: 'Completed'
-      },
-      {
-        value     : false,
-        icon_label: 'flag outline',
-        text_label: 'InCompleted'
-      }
-    ]
-  },
-  row: {
+  base_uri: null,
+  row     : {
     options: [
       {
         name        : 'review',
@@ -29,35 +16,53 @@ export default {
   columns: [
     {
       display_name: 'CLIENT',
-      name        : 'client',
+      name        : 'client_last_name',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'EMAIL',
-      name        : 'email',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
+      sort        : false,
+      formatter   : (cell, row) => `${cell}, ${row.client_first_name}`
     },
     {
       display_name: 'MOBILE',
-      name        : 'mobile',
+      name        : 'client.phones[0].number',
       type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false
+    },
+    {
+      display_name: 'LOCATION',
+      name        : 'client.location.code',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false
+    },
+    {
+      display_name: 'Created at',
+      name        : 'created_at',
+      type        : 'datetime',
       width       : null,
       align       : 'left',
       sort        : true
     },
     {
-      display_name: 'LOCATION',
-      name        : 'location',
+      display_name: 'Status',
+      name        : 'count_notes',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : false,
+      formatter   : (cell, row) => {
+        const isNew = cell > 0 || row.status === 'P'
+
+        return (
+          <Label
+            circular color={isNew ? 'green' : 'orange'} horizontal
+            style={{ minWidth: '6rem' }}>{isNew ? 'New' : 'In Progress'}</Label>
+        )
+      }
     },
     {
       display_name: 'Notes',

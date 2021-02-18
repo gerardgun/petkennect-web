@@ -1,71 +1,40 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
+import { getVaccinationStatus } from '@lib/utils/functions'
 
 import petDetailDuck from '@reducers/pet/detail'
 import vaccinationDuck from '@reducers/pet/vaccination'
-import moment from 'moment'
 
 const { types } = vaccinationDuck
 
-function getStatus(item) {
-  if(!item.created_at)
-    return 'Missing'
-
-  if(item.verified_at)
-    return 'Verify!'
-  if(moment
-    .utc(item.expired_at, 'YYYY-MM-DD HH-mm:ss Z')
-    .isSameOrBefore(
-      moment()
-    ))
-    return 'Expired'
-
-  if(moment
-    .utc(item.expired_at, 'YYYY-MM-DD HH-mm:ss Z')
-    .isSameOrBefore(
-      moment().add(30,'days'),'day'
-    ))
-    return  'Comming due'
-
-  return  'Current'
-}
-
-function* get(/* { payload } */) {
+function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
     const petDetail = yield select(petDetailDuck.selectors.detail)
 
+    // Get the vaccination types
     const petVaccinationTypes = yield call(Get, '/pet-vaccination-types/')
 
-    petDetail.item.vaccinations.filter(_vaccination => _vaccination.type)
-
-    const results = petVaccinationTypes.map(_vaccinationType => {
-      const _vaccination = petDetail.item.vaccinations.find(_vaccination=> _vaccination.type === _vaccinationType.id)
-
-      if(_vaccination)
-        return _vaccination
+    const results = petVaccinationTypes.map(item => {
+      const dose = petDetail.item.vaccinations.find(({ type }) => type === item.id) || {}
 
       return {
-        id       : Math.floor(Math.random() * 100),
-        type     : _vaccinationType.id,
-        type_name: _vaccinationType.name
+        ...item,
+        status: getVaccinationStatus(dose),
+        dose  : {
+          ...dose,
+          document_path    : dose.document_path ? 'https://petkennect-collection.s3.us-east-2.amazonaws.com/' + dose.document_path : null,
+          employee_fullname: dose.verifier_employee ? `${dose.verifier_employee_name} ${dose.verifier_employee_lastname}` : null
+        }
       }
     })
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: results.map(({ verifier_employee_name = '-', verifier_employee_lastname = '', ...rest }) => ({
-          employee_fullname: `${verifier_employee_name} ${verifier_employee_lastname}`,
-          status           : getStatus(rest),
-          ...rest
-        }))
-        // pagination: {
-        //   ...list.pagination,
-        //   meta
-        // }
+        items: results
       }
     })
   } catch (e) {

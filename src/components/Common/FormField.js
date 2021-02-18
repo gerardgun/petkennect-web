@@ -24,7 +24,7 @@ const FormField = props => {
   const getComputedInput = () => {
     let { ...computed } = input
 
-    if(WrappedComponent.name === 'Checkbox')
+    if(props.type === 'checkbox' || props.type === 'radio')
       computed.label = label
 
     if(props.type === 'file')
@@ -44,8 +44,8 @@ const FormField = props => {
     return onBlur(value)
   }
 
-  const _handleChange = (e, { checked, value }) => {
-    return onChange(typeof checked !== 'undefined' ? checked : value)
+  const _handleChange = (e, { checked, value, type }) => {
+    return onChange(type === 'checkbox' ? checked : typeof value !== 'undefined' ? value : checked)
   }
 
   const computedInput = getComputedInput()
@@ -54,7 +54,7 @@ const FormField = props => {
   return (
     <Form.Field className={className} error={hasError} required={required}>
       {
-        WrappedComponent.name !== 'Checkbox' ? <label>{label}</label> : <label>&nbsp;</label>
+        [ 'checkbox', 'radio' ].includes(props.type) ? <label>&nbsp;</label> : <label>{label}</label>
       }
       <WrappedComponent
         onBlur={_handleBlur}

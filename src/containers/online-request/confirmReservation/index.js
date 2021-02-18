@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 
-import { Header , Grid, Container } from 'semantic-ui-react'
+import { Header , Grid, Segment } from 'semantic-ui-react'
 
+import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 
 import ViewNoteSection from '../notesSection/view'
@@ -32,20 +33,22 @@ function ConfirmReservations({ ...props }) {
   }
 
   return (
-    <Container className='c-booking' fluid>
-      <Grid className='petkennect-profile-body-header'>
-        <Grid.Column
-          verticalAlign='middle'>
-          <Header as='h2'>Confirm Reservations</Header>
-        </Grid.Column>
-      </Grid>
-      <div className='mh28 mv28 ui-table-overflow'>
-        <Table
-          duck={confirmReservationsDuck}
-          onRowOptionClick={_handleRowOptionClick}/>
-      </div>
-      <ViewNoteSection/>
-    </Container>
+    <Layout>
+      <Segment className='segment-content c-booking' padded='very'>
+        <Grid className='segment-content-header' columns={2}>
+          <Grid.Column
+            verticalAlign='middle'>
+            <Header as='h2'>Confirm Reservations</Header>
+          </Grid.Column>
+        </Grid>
+        <div className='table-row-padding'>
+          <Table
+            duck={confirmReservationsDuck}
+            onRowOptionClick={_handleRowOptionClick}/>
+        </div>
+        <ViewNoteSection/>
+      </Segment>
+    </Layout>
   )
 }
 
