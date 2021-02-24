@@ -45,7 +45,6 @@ const TrainingFormWizardFirst = props => {
     petReservationDetail,
     error, handleSubmit, reset
   } = props
-
   const [ overridePopupOpen, setOverridePopupOpen ] = useState(false)
   const [ vaccinationAlert,setVaccinationAlert ] = useState(false)
   const [ selectedProgram, setSelectedProgram ] = useState()

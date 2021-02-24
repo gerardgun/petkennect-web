@@ -1,0 +1,36 @@
+.general-tag-segment{
+  min-height: 200px !important;
+  background-color: ghostwhite !important;
+}
+
+
+.highlighted-tag{
+  box-shadow: 0 0 8px rgb(0, 26, 255) !important;
+
+
+}
+ .search-width{
+    width: 75% !important;
+    @media (min-width: 375px) and (max-width:812px) {
+      float: right !important;
+      width: 90% !important;
+     }
+
+  }
+
+.add-new-tag{
+  margin-top: 14px !important;
+  @media (min-width: 375px) and (max-width:812px) {
+    float: right !important;
+
+   }
+}
+
+.grid-button{
+  @media (min-width: 1024px) and (max-width:1366px) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+   }
+}
+
+

@@ -36,7 +36,6 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
   const inputFileRef = useRef()
   const { pet: petId } = useParams()
   const cameraIsAvailable = useCameraAvailable()
-  const clientId = petDetail && petDetail.item.client
 
   useEffect(() => {
     props.getPet(petId)
@@ -68,6 +67,8 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
         is_profile: true
       }, 'CREATE')
   }
+
+  const clientId = petDetail.item &&  petDetail.item.client
 
   // const _handleBookBtnClick = () => {
   //   props.resetReserveItem()

@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
+import { Field } from 'redux-form'
 import { compose } from 'redux'
 import { Button, Checkbox, Dimmer, Dropdown, Grid, Icon, Image, Input, Label, Loader, Popup, Segment, Table, Radio } from 'semantic-ui-react'
 import _get from 'lodash/get'
@@ -12,8 +13,9 @@ import FilterTagManager from './Filter/TagManager'
 import { useDebounceText } from '@hooks/Shared'
 
 import { defaultImageUrl } from '@lib/constants'
+import './styles.scss'
 
-const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
+const TableList = ({ duck, list, striped,service_type , checkboxIndex, ...props }) => {
   const {
     options: configOptions = []
   } = list.config
@@ -23,6 +25,7 @@ const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
 
   const [ defaultTableBody, setTableBody ] = useState({ expandedRows: [] })
   const [ radioButtonOn, setRadioButton ] = useState() // radio-button
+  const [ checkedValue,setCheckedValue ] = useState([])
   const getColumnContent = (item, column) => {
     let content = _get(item, column.name, null)
 
@@ -104,9 +107,19 @@ const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
     props.onOptionRadioButtonChange(value)
   }
 
-  const _handleCheckboxChange = (e, { value: optionName, itemID, checked  }) => {
-    const item = list.items.find(({ id }) => id === itemID)
-    props.onOptionCheckboxChange(optionName, item , checked, checkboxIndex)
+  const _handleCheckboxChange = (e) => {
+    let checked
+    if(checkedValue.includes(e.currentTarget.id)) {
+      let removing_array = checkedValue.filter(_item=>_item != e.currentTarget.id)
+      setCheckedValue(removing_array)
+      checked = false
+    }
+    else {
+      setCheckedValue([ ...checkedValue,e.currentTarget.id ])
+      checked = true
+    }
+    const item = list.items.find(({ id }) => id == Number(e.currentTarget.id))
+    props.onOptionCheckboxChange(item, checkboxIndex)
   }
 
   const _handleOptionBtnClick = e => {
@@ -314,10 +327,13 @@ const TableList = ({ duck, list, striped, checkboxIndex, ...props }) => {
 
             <Table.Cell>
               {
-                <Checkbox
-                  checked={checked}
-                  disabled={list.config.row.checkboxOption.length === 0} itemID={item.id} key={index}
-                  onChange={_handleCheckboxChange}/>
+                <div className='check-box-class'>
+                  <Field
+                    component='input' id={index}
+                    name={`${index}.addon.${service_type}.${checkboxIndex}`}
+                    onChange={_handleCheckboxChange}
+                    type='checkbox'
+                    value={item.id}/></div>
               }
             </Table.Cell>
           )
@@ -609,7 +625,9 @@ TableList.defaultProps = {
   onOptionClick         : () => {},
   onRowOptionClick      : () => {},
   onOptionCheckboxChange: () => {},
-  onRowClick            : null
+  onRowClick            : null,
+  service_type          : '',
+  checkboxIndex         : 0
 }
 
 export default compose(

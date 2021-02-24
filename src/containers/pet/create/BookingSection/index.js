@@ -38,7 +38,7 @@ function BookingSection({ petDetail, ...props }) {
   }, [])
 
   const clientId = `${petDetail.item.client}`
-
+  const client = petDetail.item &&  petDetail.item.client
   const _handleRowClick = () => {
   // wip
   }
@@ -73,7 +73,10 @@ function BookingSection({ petDetail, ...props }) {
   }
   const _handleAddReservationBtnClick = () => {
     props.setReserveItem({ service: activeServiceItem },'CREATE')
-    history.replace(`/client/${petDetail.item.client}/book`)
+    history.push({
+      pathname: `/pet/${petId}/book`,
+      state   : { option: 'Pet', clientid: client }
+    })
   }
 
   return (
@@ -142,10 +145,6 @@ function BookingSection({ petDetail, ...props }) {
     </Container>
   )
 }
-
-BookingSection.propTypes = {  }
-
-BookingSection.defaultProps = {  }
 
 export default compose(
   connect(

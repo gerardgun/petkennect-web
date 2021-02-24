@@ -12,11 +12,18 @@ function dateToYMD(date) {
   return '' + (d <= 9 ? '0' + d : d) + ' ' + m
 }
 
-function ReservationCalenderList({ checkIn,checkOut }) {
+function ReservationCalenderList({ checkIn,checkOut, trainingDateArray }) {
   let arrDate = [ '' ]
   let area = []
-  for (let d = new Date(checkIn); d <= new Date(checkOut); d.setDate(d.getDate() + 1))
-    arrDate.push(dateToYMD(d))
+  if(trainingDateArray.length > 0)
+    trainingDateArray.forEach(element => {
+      let d = new Date(element)
+      arrDate.push(dateToYMD(d))
+    })
+
+  else
+    for (let d = new Date(checkIn); d <= new Date(checkOut); d.setDate(d.getDate() + 1))
+      arrDate.push(dateToYMD(d))
 
   if(arrDate.length > 0)
     area.push('', 'AREA1','AREA2')
@@ -68,7 +75,7 @@ function ReservationCalenderList({ checkIn,checkOut }) {
   })
 }
 
-function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
+function PetItem({ checkIn , checkOut, item, lodging, clientPet, trainingDateArray }) {
   const [ activeIndex, setActiveIndex ] = useState(-1)
 
   const  _handleSelectRecurringDaysClick = (e, titleProps) => {
@@ -81,7 +88,6 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
   const _handleAllChecked = (value) => {
     setAllPet(value)
   }
-
   let names = []
   if(lodging === true)
     for (let items of item)
@@ -209,7 +215,9 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
                                   basic='very' celled collapsing
                                   unstackable>
                                   <Table.Body>
-                                    <ReservationCalenderList checkIn={checkIn} checkOut={checkOut}/>
+                                    <ReservationCalenderList
+                                      checkIn={checkIn} checkOut={checkOut}
+                                      trainingDateArray={trainingDateArray}/>
                                   </Table.Body>
                                 </Table>
                               </div>
@@ -298,7 +306,9 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
                                 basic='very' celled collapsing
                                 unstackable>
                                 <Table.Body>
-                                  <ReservationCalenderList checkIn={checkIn} checkOut={checkOut}/>
+                                  <ReservationCalenderList
+                                    checkIn={checkIn} checkOut={checkOut}
+                                    trainingDateArray={trainingDateArray}/>
                                 </Table.Body>
                               </Table>
                             </div>
@@ -407,7 +417,9 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
                         basic='very' celled collapsing
                         unstackable>
                         <Table.Body>
-                          <ReservationCalenderList checkIn={checkIn} checkOut={checkOut}/>
+                          <ReservationCalenderList
+                            checkIn={checkIn} checkOut={checkOut}
+                            trainingDateArray={trainingDateArray}/>
                         </Table.Body>
                       </Table>
                     </div>
@@ -421,9 +433,8 @@ function PetItem({ checkIn , checkOut, item, lodging, clientPet }) {
   )
 }
 
-PetItem.propTypes = {
+PetItem.defaultProps = {
+  trainingDateArray: []
 }
-
-PetItem.defaultProps = { }
 
 export default PetItem

@@ -28,17 +28,18 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
 import './styles.scss'
 
-function Reservation({ petReservationDetail, currentTenant, clientDetail, ...props }) {
+function Reservation({ petReservationDetail, currentTenant, clientDetail,clientPet , ...props }) {
   const history = useHistory()
   const { client: client } = useParams()
+  const { pet: pet } = useParams()
   let clientId
+  const comesFromPetScreen = useMemo(() => Boolean(history.location.state), [])
 
-  if(history.location.state != undefined)
+  if(comesFromPetScreen)
     clientId  = history.location.state.clientid
 
   else
     clientId = client
-
   const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service || petReservationDetail.item.service_type || 'B')
   useEffect(() => {
     if(currentTenant && currentTenant.employee)
@@ -53,10 +54,13 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
     props.getTrainingMethod()
     props.getTrainingReason()
   }, [])
-
+  let petInfo
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
 
+  petInfo = comesFromPetScreen &&  clientPet.items.find(_item=>_item.id == pet)
+  const petFullName =  petInfo != undefined ? petInfo.name : ''
   const _handleReservationTypeClick = type => () => {
+    props.resetReserveItem()
     if(!isUpdating)
       setActiveReservationItem(type)
   }
@@ -76,12 +80,23 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail, ...pro
           <Grid.Column width={16}>
             <Breadcrumb>
               <Breadcrumb.Section>
-                <Link to='/client'>Clients</Link>
+                {comesFromPetScreen
+                  ? <Link to='/pet'>Pets</Link>
+                  : <Link to='/client'>Clients</Link>}
               </Breadcrumb.Section>
-              <Breadcrumb.Divider/>
-              <Breadcrumb.Section active>
-                {fullname}
-              </Breadcrumb.Section>
+              <Breadcrumb.Divider/>{
+                comesFromPetScreen
+
+                  ? <Breadcrumb.Section active>
+                    <Link to={`/pet/${pet}`}> {petFullName} </Link>
+
+                  </Breadcrumb.Section>
+
+                  : <Breadcrumb.Section active>
+                    <Link to={`/client/${clientId}`}> {fullname} </Link>
+                  </Breadcrumb.Section>
+              }
+
               <Breadcrumb.Divider/>
               <Breadcrumb.Section>
                 {petReservationDetail.item.service_type ? 'Update ' : 'New '}Reservation
@@ -179,7 +194,8 @@ export default compose(
       getPetKennelType    : petKennelTypeDuck.creators.get,
       getTrainingMethod   : trainingMethodDuck.creators.get,
       getTrainingReason   : trainingReasonDuck.creators.get,
-      setNoteItem         : petNoteDetailDuck.creators.setItem
+      setNoteItem         : petNoteDetailDuck.creators.setItem,
+      resetReserveItem    : petReservationDetailDuck.creators.resetItem
     }
   )
 )(Reservation)

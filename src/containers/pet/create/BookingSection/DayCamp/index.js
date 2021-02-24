@@ -1,6 +1,6 @@
 import React,{ useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { Header, Segment, Dropdown, Button, Grid, Container } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
@@ -15,21 +15,32 @@ const Table = loadable(() => import('@components/Table'))
 const PetNotes = loadable(() => import('../Notes'))
 const PackageCreateForm = loadable(() => import('./package-create'))
 
-function DaycampServiceSection({ petDetail,  ...props }) {
+function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
   useEffect(() => {
     props.getDayCampReservation()
   }, [])
   const history = useHistory()
 
+  const { pet: petId } = useParams()
+  const { client: client_id } = useParams()
   const clientId = `${petDetail.item.client}`
-
+  const client = petDetail.item &&  petDetail.item.client
   const _handleAddPackageBtnClick = () =>{
     props.setItem(null, 'CREATE')
   }
 
   const _handleAddReservationBtnClick = () => {
-    props.setItemReservation({ service: 'D' },'CREATE')
-    history.replace(`/client/${petDetail.item.client}/book`)
+    if(comesFromScreen == 'from pet') {
+      props.setItemReservation({ service: 'D' },'CREATE')
+      history.push({
+        pathname: `/pet/${petId}/book`,
+        state   : { option: 'Pet', clientid: client }
+      })
+    }
+    else {
+      props.setItemReservation({ service: 'D' },'CREATE')
+      history.replace(`/client/${client_id}/book`)
+    }
   }
 
   const _handleRowClick = () => {
@@ -178,7 +189,10 @@ function DaycampServiceSection({ petDetail,  ...props }) {
     </Container>
   )
 }
+DaycampServiceSection.defaultProps = {
+  comesFromScreen: 'from pet'
 
+}
 export default compose(
   connect(
     (state) => ({

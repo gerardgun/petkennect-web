@@ -173,6 +173,7 @@ const categories = [
     label        : 'Setup',
     subcategories: [
       { href: '/setup/system-setting', label: 'Application System Settings' },
+      { href: '/setup/behavior-tag', label: 'Behavior Tags' },
       { href: '/setup/color-codes', label: 'System Icons/Codes' },
       { href: '/setup/location', label: 'Locations' },
       { href: '/setup/price-master', label: 'Price Master' },

@@ -17,24 +17,34 @@ const PackageCreateForm = loadable(() => import('./package-create'))
 const TrainingPackageEmailForm = loadable(() => import('./email-form'))
 const PetNotes = loadable(() => import('../Notes'))
 
-function TrainingServiceSection({ petDetail, ...props }) {
+function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
   const history = useHistory()
 
   const { pet: petId } = useParams()
-
+  const { client: client_id } = useParams()
   useEffect(()=> {
     props.getPet(petId)
     props.getPetReservationTraining({ service_type_what_ever_name: 'T' })
   }, [])
 
   const clientId = `${petDetail.item.client}`
+  const client = petDetail.item &&  petDetail.item.client
   const _handleAddPackageBtnClick = () =>{
     props.setItem(null, 'CREATE')
   }
 
   const _handleAddReservationBtnClick = () => {
-    props.setReserveItem({ service: 'T' },'CREATE')
-    history.replace(`/client/${petDetail.item.client}/book`)
+    if(comesFromScreen == 'from pet') {
+      props.setReserveItem({ service: 'T' },'CREATE')
+      history.push({
+        pathname: `/pet/${petId}/book`,
+        state   : { option: 'Pet', clientid: client }
+      })
+    }
+    else {
+      props.setReserveItem({ service: 'T' },'CREATE')
+      history.replace(`/client/${client_id}/book`)
+    }
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -99,6 +109,11 @@ function TrainingServiceSection({ petDetail, ...props }) {
       <PetNotes/>
     </Container>
   )
+}
+
+TrainingServiceSection.defaultProps = {
+  comesFromScreen: 'from pet'
+
 }
 
 export default compose(

@@ -10,6 +10,7 @@ import Error404 from '@containers/page/error-404'
 import Agreement from '@containers/agreement'
 import AgreementCreate from '@containers/agreement/create'
 import AuthMe from '@containers/auth/me'
+import BehaviorTag from '@containers/behavior-tag'
 import Dashboard from '@containers/dashboard'
 import DayCampForm from '@containers/day-camp-form'
 import ColorCode from '@containers/color-code'
@@ -132,6 +133,10 @@ const privateRoutes = [
   {
     path     : '/setup/color-codes',
     component: ColorCode
+  },
+  {
+    path     : '/setup/behavior-tag',
+    component: BehaviorTag
   },
   {
     path     : '/setup/notifications',

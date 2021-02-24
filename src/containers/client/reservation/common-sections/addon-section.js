@@ -19,8 +19,7 @@ import boardingReservationAddonDuck from '@reducers/pet/reservation/boarding/add
 import feedingAddonDuck from '@reducers/pet/reservation/boarding/add-on/feeding-addon'
 import employeeDuck from '@reducers/employee'
 import groomingReservationAddonDuck from '@reducers/pet/reservation/grooming/add-on'
-
-import PetItemBoarding from './../boarding/PetItem'
+import PetItemBoarding from './pet-item-section'
 import AddonTime from './../boarding/addTime-fieldArray'
 import { boardingFormId } from './../boarding/first'
 import { trainingFormId } from './../training/first'
@@ -31,6 +30,7 @@ const AddonForm = ({ ...props }) => {
     clientPet,
     petKennel,
     employee,
+    petReservationDetail,
     reservationDateArrayProp,
     state,
     selectedPets,
@@ -46,8 +46,7 @@ const AddonForm = ({ ...props }) => {
     formId = boardingFormId
   else if(reservation === 'training')
     formId = trainingFormId
-
-  const [ activeIndex, setActiveIndex ] = useState(-1)
+  const [ activeIndex, setActiveIndex ] = useState(false)
   const [ activeArray, setActiveArray ] = useState([])
   const [ foodSubmitArray, setFoodSubmitArray ] = useState([])
   const [ groomingAddon, setGroomingAddon ] = useState([])
@@ -62,16 +61,37 @@ const AddonForm = ({ ...props }) => {
   const [ showDateTime, setShowDateTime ] = useState(false)
   const [ activeMoreFunctionality, setActiveMoreFunctionality ] = useState([])
   const [ dateValue, setDateValue ] = useState('')
-
   useEffect(() => {
     props.getBoardingReservationAddons()
     props.getFeedingAddons()
     props.getPetKennels()
     props.getGroomingReservationAddons()
+
+    if(petReservationDetail.item.additional_service != undefined)
+      setActiveIndex(petReservationDetail.item.additional_service)
+    if(petReservationDetail.item.activeArray != undefined)
+      setActiveArray(petReservationDetail.item.activeArray)
+    if(petReservationDetail.item.groomingAddon != undefined)
+      setGroomingAddon(petReservationDetail.item.groomingAddon)
+    if(petReservationDetail.item.foodSubmitArray != undefined)
+      setFoodSubmitArray(petReservationDetail.item.foodSubmitArray)
+    if(petReservationDetail.item.frequencyMed != undefined)
+      setFrequencyMed(petReservationDetail.item.frequencyMed)
+    if(petReservationDetail.item.selected_feeding_addon != undefined)
+      setFeedTableData(petReservationDetail.item.selected_feeding_addon)
+    if(petReservationDetail.item.frequencyFeed != undefined)
+      setFrequencyFeed(petReservationDetail.item.frequencyFeed)
+    if(petReservationDetail.item.feedingFeedData != undefined)
+      setFeedingFeedData(petReservationDetail.item.feedingFeedData)
+    if(petReservationDetail.item.selected_misc_addon != undefined)
+      setMiscTableData(petReservationDetail.item.selected_misc_addon)
+    if(petReservationDetail.item.frequencyMisc != undefined)
+      setFrequencyMisc(petReservationDetail.item.frequencyMisc)
+    if(petReservationDetail.item.selected_grooming_addon !=  undefined)
+      setGroomingTableData(petReservationDetail.item.selected_grooming_addon)
   }, [])
 
   const notAvailableDates = [ '2021-02-15','2021-02-28','2021-02-18' ]
-
   const _handleAppointmenttwo = (e) =>{
     let index = Number(e.currentTarget.id)
     if(notAvailableDates.includes(e.target.value) && !activeMoreFunctionality.includes(index)) {
@@ -85,6 +105,19 @@ const AddonForm = ({ ...props }) => {
       setDateValue('')
     }
   }
+
+  useEffect(()=>{
+    props.setReserveItem({ ...petReservationDetail.item, activeArray: activeArray })
+    props.setReserveItem({ ...petReservationDetail.item, foodSubmitArray: foodSubmitArray })
+  },[ activeArray, foodSubmitArray ])
+  useEffect(() => {
+    props.setReserveItem({ ...petReservationDetail.item, frequencyMed: frequencyMed })
+  },[ frequencyMed ])
+
+  useEffect(()=>{
+    props.setReserveItem({ ...petReservationDetail.item, selected_feeding_addon: feedTableData,
+      feedingFeedData       : feedingFeedData })
+  },[ feedTableData, feedingFeedData  ])
 
   const _handleDateTimeShow = (e,value)=>{
     setShowDateTime(true)
@@ -102,20 +135,21 @@ const AddonForm = ({ ...props }) => {
   const petKennelOptions = petKennel.items.map(_petKennel =>
     ({ key: _petKennel.id, value: _petKennel.id, text: `${_petKennel.size}` }))
 
-  const  _handleAddonServiceClick = (e, titleProps) => {
-    const { index } = titleProps
-    const newIndex = activeIndex === index ? -1 : index
-    setActiveIndex(newIndex)
+  const  _handleAddonServiceClick = () => {
+    setActiveIndex(!activeIndex)
+    props.setReserveItem({ ...petReservationDetail.item, additional_service: !activeIndex })
   }
 
   const  _handleSelectAddonClick = (e, titleProps) => {
     const index = titleProps.index
+
     if(activeArray.includes(index)) {
       let array = activeArray.filter(item=>item != index)
       setActiveArray(array)
     }
     else
-    {setActiveArray([ ...activeArray, index ])}
+    {setActiveArray([ ...activeArray, index ])
+    }
   }
 
   const _handleGroomingService = (e, titleProps) => {
@@ -123,9 +157,11 @@ const AddonForm = ({ ...props }) => {
     if(groomingAddon.includes(index)) {
       let array = groomingAddon.filter(item=>item != index)
       setGroomingAddon(array)
+      props.setReserveItem({ ...petReservationDetail.item, groomingAddon: array })
     }
     else
-    {setGroomingAddon([ ...groomingAddon, index ])}
+    {setGroomingAddon([ ...groomingAddon, index ])
+      props.setReserveItem({ ...petReservationDetail.item, groomingAddon: [ ...groomingAddon, index ] })}
   }
 
   const _handleServiceBtnClick = (e,ownprop) =>{
@@ -160,19 +196,23 @@ const AddonForm = ({ ...props }) => {
   let totalPriceFood = Number(2.00) * Number(foodPetLength) * Number(formValueSelector(formId)(state, 'quantityFood'))
 
   const _handleFoodAddonSubmit = (e, ownprop) =>{
-    if(activeArray.includes(ownprop.value)) {
-      let array = activeArray.filter(item=>item != ownprop.value)
-      setActiveArray(array)
-    }
-    else
-    {setActiveArray([ ...activeArray, ownprop.value ])}
+    let selectedData = [ ...foodSubmitArray ]
 
     if(foodSubmitArray.includes(ownprop.value)) {
       // let array = foodSubmitArray.filter(item=>item != ownprop.value)
       // setFoodSubmitArray(array)
     }
+    else {
+      selectedData.concat(ownprop.value)
+      setFoodSubmitArray([ ...foodSubmitArray, ownprop.value ])
+    }
+    if(activeArray.includes(ownprop.value)) {
+      let array = activeArray.filter(item=>item != ownprop.value)
+      setActiveArray(array)
+    }
     else
-    {setFoodSubmitArray([ ...foodSubmitArray, ownprop.value ])}
+    {setActiveArray([ ...activeArray, ownprop.value ])
+    }
   }
 
   // medication total price
@@ -222,7 +262,6 @@ const AddonForm = ({ ...props }) => {
       setFrequencyMed(reservationDateArr.length - 1)
   }
   let medicationTotalPrice = frequencyMed * totalPriceMed
-
   // feeding total price
   let feedingPet = []
   for (let petId of selectedPets)
@@ -237,23 +276,34 @@ const AddonForm = ({ ...props }) => {
     feedingPetLength = 1
 
   const _handleFrequencyFeedClick = (e, value) =>{
-    if(value === 'once')
+    if(value === 'once') {
       setFrequencyFeed(1)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyFeed: 1 })
+    }
 
-    else if(value === 'every_other_day_first')
-      setFrequencyFeed(oddNumberDates / 2)
+    else if(value === 'every_other_day_first') {
+      let feed = oddNumberDates / 2
+      setFrequencyFeed(feed)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyFeed: feed })
+    }
 
-    else if(value === 'every_other_day_second')
-      setFrequencyFeed(startFromSecond)
+    else if(value === 'every_other_day_second') {
+      let feed = startFromSecond
+      setFrequencyFeed(feed)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyFeed: feed })
+    }
 
-    else if(value === 'every_day')
-      setFrequencyFeed(reservationDateArr.length)
+    else if(value === 'every_day') {
+      let feed = reservationDateArr.length
+      setFrequencyFeed(feed)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyFeed: feed })
+    }
 
-    else if(value === 'every_day_except_first')
-      setFrequencyFeed(reservationDateArr.length - 1)
-
-    else if(value === 'every_day_except_last')
-      setFrequencyFeed(reservationDateArr.length - 1)
+    else if(value === 'every_day_except_first' || value === 'every_day_except_last') {
+      let feed = reservationDateArr.length - 1
+      setFrequencyFeed(feed)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyFeed: feed })
+    }
   }
 
   const _handleFeedingFeedChange = (e, value) => {
@@ -270,15 +320,14 @@ const AddonForm = ({ ...props }) => {
   }
 
   // feedTableData
-  const _handleCheckboxChangeFeed = (e, item, checked) => {
-    let selectedData =  [].concat(feedTableData)
-    if(checked === true)
-    {
-      selectedData.push({ id: item.id, price: Number(item.price) })
-      setFeedTableData(selectedData)
+  const _handleCheckboxChangeFeed = (item) => {
+    const data_found = Boolean(feedTableData.find(_item=> _item.id == item.id))
+    if(data_found == false) {
+      setFeedTableData([ ...feedTableData, { id: item.id, price: Number(item.price) } ])
     }
+
     else {
-      let remainingData = selectedData.filter(value => value.id != item.id)
+      let remainingData = feedTableData.filter(value => value.id != item.id)
       setFeedTableData(remainingData)
     }
   }
@@ -337,36 +386,50 @@ const AddonForm = ({ ...props }) => {
     //   setCustomWeekNumber(1)
     // else
     //   setCustomWeekNumber('')
-    if(value === 'once')
+    if(value === 'once') {
       setFrequencyMisc(1)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyFeed: 1 })
+    }
 
-    else if(value === 'every_other_day_first')
-      setFrequencyMisc(oddNumberDates / 2)
+    else if(value === 'every_other_day_first') {
+      let misc = oddNumberDates / 2
+      setFrequencyMisc(misc)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyMisc: misc })
+    }
 
-    else if(value === 'every_other_day_second')
-      setFrequencyMisc(startFromSecond)
+    else if(value === 'every_other_day_second') {
+      let misc = startFromSecond
+      setFrequencyMisc(misc)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyMisc: misc })
+    }
 
-    else if(value === 'every_day')
-      setFrequencyMisc(reservationDateArr.length)
+    else if(value === 'every_day') {
+      let misc = reservationDateArr.length
+      setFrequencyMisc(misc)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyMisc: misc })
+    }
 
-    else if(value === 'every_day_except_first')
-      setFrequencyMisc(reservationDateArr.length - 1)
-
-    else if(value === 'every_day_except_last')
-      setFrequencyMisc(reservationDateArr.length - 1)
+    else if(value === 'every_day_except_first' || value === 'every_day_except_last') {
+      let misc = reservationDateArr.length - 1
+      setFrequencyMisc(misc)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyMisc: misc })
+    }
   }
 
   // MiscTableData
-  const _handleCheckboxChangeMisc = (e, item, checked) => {
+  const _handleCheckboxChangeMisc = (item) => {
+    const data_found = Boolean(miscTableData.find(_item=> _item.id == item.id))
     let selectedData =  [].concat(miscTableData)
-    if(checked === true)
+    if(data_found === false)
     {
       selectedData.push({ id: item.id, price: Number(item.price) })
       setMiscTableData(selectedData)
+      props.setReserveItem({ ...petReservationDetail.item, selected_misc_addon: selectedData })
     }
     else {
       let remainingData = selectedData.filter(value => value.id != item.id)
       setMiscTableData(remainingData)
+      props.setReserveItem({ ...petReservationDetail.item, selected_misc_addon: remainingData })
     }
   }
 
@@ -374,20 +437,23 @@ const AddonForm = ({ ...props }) => {
   let miscellaneousTotalPrice = (miscellaneousPetLength) * (frequencyMisc) * (miscellaneousAddonPrice)
 
   // Grooming Table Data
-  const _handleCheckboxChangeGrooming = (e, item, checked, index) => {
-    if(checked === true)
+  const _handleCheckboxChangeGrooming = (item, index) => {
+    const data_found = Boolean(groomingTableData.find(_item=> _item.id == item.id
+      && _item.index == index))
+    let selectedData =  [].concat(groomingTableData)
+    if(data_found === false)
     {
-      let selectedData =  [].concat(groomingTableData)
       selectedData.push({ index: index, id: item.id, price: Number(item.price) })
       setGroomingTableData(selectedData)
+      props.setReserveItem({ ...petReservationDetail.item, selected_grooming_addon: selectedData })
     }
     else {
-      let selectedData =  [].concat(groomingTableData)
       let indexData = selectedData.filter(value => value.index != index)
       let data = selectedData.filter(item => item.index === index)
       let remainingData = data.filter(value => value.id != item.id)
       let totalData = [].concat(indexData).concat(remainingData)
       setGroomingTableData(totalData)
+      props.setReserveItem({ ...petReservationDetail.item, selected_grooming_addon: remainingData })
     }
   }
 
@@ -406,13 +472,15 @@ const AddonForm = ({ ...props }) => {
                 sharedLodging && sharedLodging === true ? (<PetItemBoarding
                   checkIn={checkIn} checkOut={checkOut} clientPet={clientPet}
                   item={selectedPets && selectedPets.map((petId) => (petId))}
-                  lodging={sharedLodging} petKennelOptions={petKennelOptions}/>)
+                  lodging={sharedLodging}
+                  petKennelOptions={petKennelOptions} trainingDateArray={reservation == 'training' ? reservationDateArr : []}/>)
                   : (
                     selectedPets && selectedPets.map((petId)=> (
                       <PetItemBoarding
                         checkIn={checkIn} checkOut={checkOut} item={clientPet.items.find(_pet => _pet.id === petId)}
-                        key={petId} lodging={sharedLodging}
-                        petKennelOptions={petKennelOptions}/>
+                        key={petId}
+                        lodging={sharedLodging} petKennelOptions={petKennelOptions}
+                        trainingDateArray={reservation == 'training' ? reservationDateArr : []}/>
                     )
                     )
                   )
@@ -425,9 +493,8 @@ const AddonForm = ({ ...props }) => {
           <Header as='h3' className='section-info-header'>Add-On Services</Header>
           <Accordion className='mv12'>
             <Accordion.Title
-              active={activeIndex === 0}
+              active={activeIndex}
               className='heading-color'
-              index={0}
               onClick={_handleAddonServiceClick}
               value='Add'>
               <Header as='h3' className='mb0 heading-color mv8 ml16'>
@@ -437,7 +504,7 @@ const AddonForm = ({ ...props }) => {
 
             </Accordion.Title>
 
-            <Accordion.Content active={activeIndex === 0} className='mt12 ml12'>
+            <Accordion.Content active={activeIndex} className='mt12 ml12'>
               <div>
                 <Grid>
                   <Grid.Column className='padding-column' width={16}>
@@ -555,7 +622,7 @@ const AddonForm = ({ ...props }) => {
                         index={1}
                         onClick={_handleSelectAddonClick}>
                         <Header as='h5' className='mb0 heading-color mv4 ml16'>
-                          Medication {foodSubmitArray.includes(1) && (frequencyMed > 0 && ': $' + (`${medicationTotalPrice.toFixed(2)}`))}
+                        Medication {foodSubmitArray.includes(1) && (frequencyMed > 0 && ': $' + (`${medicationTotalPrice.toFixed(2)}`))}
                           <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                         </Header>
                       </Accordion.Title>
@@ -806,7 +873,9 @@ const AddonForm = ({ ...props }) => {
                               </Grid.Column>
                             </Grid.Column>
                             <Grid.Column width={7}>
-                              <Table duck={feedingAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeFeed} striped/>
+                              <Table
+                                duck={feedingAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeFeed} service_type={`${reservation}feeding`}
+                                striped/>
                             </Grid.Column>
                             <Grid.Column width={16}>
                               <Header as='h4'>Frequency</Header>
@@ -950,7 +1019,7 @@ const AddonForm = ({ ...props }) => {
                         <Header as='h5' className='mb0 heading-color mv4 ml16'>{
                           reservation == 'training' ? 'Training Miscellaneous Charges' : 'Miscellaneous Charges'
                         }
-                        {foodSubmitArray.includes(3) && (frequencyMisc > 0 && ': $' + (`${miscellaneousTotalPrice.toFixed(2)}`))}
+                        { foodSubmitArray.includes(3) && frequencyMisc > 0 && ': $' + (`${miscellaneousTotalPrice.toFixed(2)}`)}
                         <Header className='heading-color' floated='right'><Icon name='dropdown'/></Header>
                         </Header>
                       </Accordion.Title>
@@ -1004,7 +1073,10 @@ const AddonForm = ({ ...props }) => {
                               </Grid.Column>
                             </Grid.Column>
                             <Grid.Column className='addon-table' width={7}>
-                              <Table duck={boardingReservationAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeMisc} striped/>
+                              <Table
+                                duck={boardingReservationAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeMisc}
+                                service_type={`${reservation}miscellaneousCharges`}
+                                striped/>
                             </Grid.Column>
                             <Grid.Column width={16}>
                               <Header as='h4'>Frequency</Header>
@@ -1086,8 +1158,8 @@ const AddonForm = ({ ...props }) => {
                                       { key: 8, value: 50, text: '50 min' }
                                     ]}
                                     placeholder='Duration'
-                                    selectOnBlur={false}
-                                    selection/>
+                                    selection
+                                    selectOnBlur={false}/>
                                 </Grid.Column>
                               </Grid>
                             </Grid.Column>
@@ -1158,7 +1230,8 @@ const AddonForm = ({ ...props }) => {
                             <br/>
                             <div className='addon-table'>
                               <Table
-                                checkboxIndex={_index} duck={groomingReservationAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeGrooming}
+                                checkboxIndex={_index}  duck={groomingReservationAddonDuck}
+                                onOptionCheckboxChange={_handleCheckboxChangeGrooming} service_type={`grooming.addon.${reservation}`}
                                 striped/>
                             </div>
                             <p style={{ 'margin-left': '336px' }}><b>Total Price  ${groomingTableData.filter(_ => _.index === _index).map(_ => _.price).reduce((price1, price2) =>  Number(price1) + Number(price2), 0).toFixed(2)} </b></p>

@@ -52,7 +52,6 @@ const BoardingFormWizardThird = props => {
   let selectedEndDate = new Date(endDate)
   let difference_in_time = selectedEndDate.getTime() - selectedStartDate.getTime()
   let difference_in_days = difference_in_time / (1000 * 3600 * 24)
-
   const _handleAddNoteBtnClick = (item) =>{
     props.setNoteItem(item, 'CREATE')
   }

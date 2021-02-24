@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import  './styles.scss'
+
 import { connect } from 'react-redux'
 import { Header , Grid, Button } from 'semantic-ui-react'
 import { compose } from 'redux'
-
+import { useHistory, useParams } from 'react-router-dom'
 import Table from '@components/Table'
 import CancelReserve from '@containers/pet/create/BookingSection/CancelReserve'
 import PetNotes from '@containers/pet/create/BookingSection/Notes'
@@ -18,10 +18,12 @@ import petDetailDuck from '@reducers/pet/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import petReservationDuck from '@reducers/pet/reservation'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import  './styles.scss'
 
 function ReservesSection({ ...props }) {
   const { petReservation : { filters = {} }  = {} } = props
-
+  const history = useHistory()
+  const { client: client_id } = useParams()
   const [ activeServiceItem, setActiveServiceItem ] = useState('T')
 
   useEffect(()=> {
@@ -58,6 +60,11 @@ function ReservesSection({ ...props }) {
     }
   }
 
+  const _handleAddReservationBtnClick = ()=>{
+    props.setReserveItem({ service: activeServiceItem },'CREATE')
+    history.replace(`/client/${client_id}/book`)
+  }
+
   const _handleFilterBtnClick = type => () => {
     setActiveServiceItem(type)
     props.setFilters({ service_type_what_ever_name: type })
@@ -91,23 +98,35 @@ function ReservesSection({ ...props }) {
           basic={filters.service_type_what_ever_name !== 'G'} color='teal'
           content='Grooming' onClick={_handleFilterBtnClick('G')}/>
       </div>
-      {activeServiceItem === 'T' && <Training/>}
-      {activeServiceItem === 'D' && <Daycamp/>}
-      {activeServiceItem === 'F' && <Daycamp/>}
+      {activeServiceItem === 'T' && <Training comesFromScreen='from client'/>}
+      {activeServiceItem === 'D' && <Daycamp comesFromScreen='from client'/>}
+      {activeServiceItem === 'F' && <Daycamp comesFromScreen='from client'/>}
       {
         (activeServiceItem === 'G' ||  activeServiceItem === 'B') && (
-          <>
-            <div className='mh28 ui-table-overflow'>
-              <Table
-                duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
-                onOptionDropdownChange={_handleOptionDropdownChange}
-                onRowClick={_handleRowClick}
-                onRowOptionClick={_handleRowOptionClick}/>
-            </div>
-            <ViewReport/>
-            <CancelReserve/>
-            <PetNotes/>
-            <Absent/>
+          <>  <Grid className='segment-content-header' columns={2}>
+            <Grid.Column computer={4} mobile={10} tablet={4}>
+              <Header as='h2' className='child_header'>Reservations</Header>
+            </Grid.Column >
+            <Grid.Column
+              className='ui-grid-align'
+              computer={12} mobile={10} tablet={12}>
+              <Button
+                color='teal'
+                content='New Reservation'
+                onClick={_handleAddReservationBtnClick}/>
+            </Grid.Column>
+          </Grid>
+          <div className='mh28 ui-table-overflow'>
+            <Table
+              duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
+              onOptionDropdownChange={_handleOptionDropdownChange}
+              onRowClick={_handleRowClick}
+              onRowOptionClick={_handleRowOptionClick}/>
+          </div>
+          <ViewReport/>
+          <CancelReserve/>
+          <PetNotes/>
+          <Absent/>
           </>
         )
       }

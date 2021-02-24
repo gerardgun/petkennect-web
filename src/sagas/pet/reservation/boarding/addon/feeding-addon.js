@@ -13,9 +13,9 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [ { id: 1, feeding_service: ' Additional Feed',price: '20.00' },
-          { id: 2, feeding_service: 'Feed In Kennel Food',price: '15.00' },
-          { id: 3, feeding_service: 'Feed In Kennel Wet',price: '15.00' }
+        items: [ { id: 0, feeding_service: ' Additional Feed',price: '20.00' },
+          { id: 1, feeding_service: 'Feed In Kennel Food',price: '15.00' },
+          { id: 2, feeding_service: 'Feed In Kennel Wet',price: '15.00' }
 
         ]
       }

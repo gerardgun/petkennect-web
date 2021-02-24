@@ -38,7 +38,7 @@ const TrainingFormWizardThird = props => {
     submitting,
     currentTenant, error, handleSubmit, reset // redux-form
   } = props
-
+  console.log(petReservationDetail)
   const { client: clientId } = useParams()
   const history = useHistory()
 
