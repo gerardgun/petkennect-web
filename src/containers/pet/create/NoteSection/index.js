@@ -13,8 +13,8 @@ import authDuck from '@reducers/auth'
 
 import './styles.scss'
 
-const  ModalDelete = loadable(() => import('@components/Modal/Delete'))
-const  PetNoteFormModal = loadable(() => import('./form/modal'))
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
+const PetNoteFormModal = loadable(() => import('./form/modal'))
 
 function NoteSection({ petNote, ...props }) {
   const [ openDeleteModal, { _handleOpen, _handleClose } ] = useModal()

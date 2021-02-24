@@ -60,7 +60,7 @@ const RejectForm = props => {
               <Button
                 className='w120'
                 color='red'
-                content='Reject'
+                content='Decline'
                 disabled={submitting}
                 loading={submitting}
                 type='submit'/>

@@ -336,7 +336,7 @@ const NewClientSubmission = props => {
                       <Button
                         basic
                         color='teal'
-                        content='Reject'
+                        content='Decline'
                         disabled={submitting}
                         onClick={_handleButtonClick}
                         type='button'/>

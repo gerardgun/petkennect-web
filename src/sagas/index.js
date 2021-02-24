@@ -136,6 +136,8 @@ import onlineRequestClientSubmissionDetail from './online-request/client-submiss
 import onlineRequestConfirmReservation from './online-request/confirm-reservation'
 import onlineRequestVaccinationUpdate from './online-request/vaccination-update'
 import onlineRequestVaccinationUpdateDetail from './online-request/vaccination-update/detail'
+import onlineRequestNote from './online-request/note'
+import onlineRequestNoteDetail from './online-request/note/detail'
 import ratingKey from './rating-key'
 import trainingCommand from './training-command'
 import trainingCommandDetail from './training-command/detail'
@@ -287,6 +289,8 @@ export default function* rootSaga() {
     ...onlineRequestConfirmReservation,
     ...onlineRequestVaccinationUpdate,
     ...onlineRequestVaccinationUpdateDetail,
+    ...onlineRequestNote,
+    ...onlineRequestNoteDetail,
     ...ratingKey,
     ...trainingCommand,
     ...trainingCommandDetail,

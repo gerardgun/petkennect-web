@@ -8,8 +8,10 @@ import InformationSection from './sections/information'
 import PetsSection from './sections/pets'
 import DocumentsSection from './sections/documents'
 import RejectForm from './reject-form'
+import RequestNoteList from './request-note-list'
 
 import clientSubmissionDetailDuck from '@reducers/online-request/client-submission/detail'
+import onlineRequestNoteDuck from '@reducers/online-request/note'
 import clientDetailDuck from '@reducers/client/detail'
 import clientPetDuck from '@reducers/client/pet'
 import clientDocumentDuck from '@reducers/client/document'
@@ -22,14 +24,19 @@ const ClientSubmissionShow = props => {
     clientSubmissionDetail,
     clientDetail,
     clientPet,
-    clientDocument
+    clientDocument,
+    requestNote
   } = props
 
   const [ open, { _handleOpen: _handleRejectFormOpen, _handleClose: _handleRejectFormClose } ] = useModal()
 
   useEffect(() => {
-    if(clientSubmissionDetail.mode === 'READ')
+    if(clientSubmissionDetail.mode === 'READ') {
       props.get(clientSubmissionDetail.item.id)
+      props.getRequestNotes({
+        request_id: clientSubmissionDetail.item.id
+      })
+    }
   }, [ clientSubmissionDetail.mode ])
 
   useEffect(() => {
@@ -107,12 +114,14 @@ const ClientSubmissionShow = props => {
                 <Header as='h2'>New Customer</Header>
                 <p>Please do not forgot to confirm the following information</p>
 
+                <RequestNoteList/>
+
                 <Divider/>
 
                 <Button
                   basic
                   color='teal'
-                  content='Reject'
+                  content='Decline'
                   disabled={loading}
                   onClick={_handleRejectFormOpen}
                   type='button'/>
@@ -144,19 +153,22 @@ export default compose(
       const clientDetail = clientDetailDuck.selectors.detail(state)
       const clientPet = clientPetDuck.selectors.list(state)
       const clientDocument = clientDocumentDuck.selectors.list(state)
+      const requestNote = onlineRequestNoteDuck.selectors.list(state)
 
       return {
         clientSubmissionDetail,
         clientDetail,
         clientPet,
-        clientDocument
+        clientDocument,
+        requestNote
       }
     },
     {
-      get      : clientSubmissionDetailDuck.creators.get,
-      patch    : clientSubmissionDetailDuck.creators.patch,
-      resetItem: clientSubmissionDetailDuck.creators.resetItem,
-      resetPet : petDetailDuck.creators.resetItem
+      get            : clientSubmissionDetailDuck.creators.get,
+      getRequestNotes: onlineRequestNoteDuck.creators.get,
+      patch          : clientSubmissionDetailDuck.creators.patch,
+      resetItem      : clientSubmissionDetailDuck.creators.resetItem,
+      resetPet       : petDetailDuck.creators.resetItem
     }
   )
 )(ClientSubmissionShow)

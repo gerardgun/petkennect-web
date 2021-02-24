@@ -55,12 +55,14 @@ export default {
       align       : 'left',
       sort        : false,
       formatter   : (cell, row) => {
-        const isNew = cell > 0 || row.status === 'P'
+        let status = cell > 0 ? 'in-progress' : row.status
 
         return (
           <Label
-            circular color={isNew ? 'green' : 'orange'} horizontal
-            style={{ minWidth: '6rem' }}>{isNew ? 'New' : 'In Progress'}</Label>
+            circular color={
+              status === 'in-progress' ? 'orange' : status === 'P' ? 'green' : 'red'
+            } horizontal
+            style={{ minWidth: '6rem' }}>{status === 'in-progress' ? 'In Progress' : status === 'P' ? 'New' : 'Declined'}</Label>
         )
       }
     },

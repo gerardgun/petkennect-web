@@ -27,7 +27,7 @@ const OnlineRequestsShow = () => {
               </Breadcrumb.Section>
               <Breadcrumb.Divider/>
               <Breadcrumb.Section active>
-               New Client Submission
+               Client Submissions
               </Breadcrumb.Section>
             </Breadcrumb>
 
@@ -37,7 +37,7 @@ const OnlineRequestsShow = () => {
               <Menu.Item
                 active={activeMenuItem === 'newClientSubmission'} link name='newClientSubmission'
                 onClick={_handleMenuItemClick}>
-                New Client Submission
+                Client Submissions
               </Menu.Item>
               <Menu.Item
                 active={activeMenuItem === 'confirmReservations'} link name='confirmReservations'

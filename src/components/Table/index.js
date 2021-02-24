@@ -42,7 +42,7 @@ const TableList = ({ duck, list, striped,service_type , checkboxIndex, ...props 
     else if(column.type === 'image')
       content = <Image rounded size='mini' src={content || defaultImageUrl}/>
     else if(column.type === 'date')
-      content = content ? (new Date(content)).toLocaleString('en-US').split(', ').shift() : <span style={{ color: 'grey' }}>-</span>
+      content = content ? (new Date(content)).toLocaleDateString('en-US') : <span style={{ color: 'grey' }}>-</span>
     else if(column.type === 'datetime')
       content = (new Date(content)).toLocaleString('en-US')
     else if(column.type === 'money')

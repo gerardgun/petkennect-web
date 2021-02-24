@@ -160,6 +160,8 @@ import onlineRequestsVaccinationUpdate from '@reducers/online-request/vaccinatio
 import onlineRequestsVaccinationUpdateDetail from '@reducers/online-request/vaccination-update/detail'
 import onlineRequestsCancellationLogs from '@reducers/online-request/cancellation-log'
 import onlineRequestsCancellationLogsDetail from '@reducers/online-request/cancellation-log/detail'
+import onlineRequestNote from '@reducers/online-request/note'
+import onlineRequestNoteDetail from '@reducers/online-request/note/detail'
 import trainingCommand from '@reducers/training-command'
 import trainingCommandDetail from '@reducers/training-command/detail'
 import trainingMethod from '@reducers/training-method'
@@ -335,6 +337,8 @@ const createRootReducer = history => combineReducers({
   [onlineRequestsVaccinationUpdateDetail.store]            : onlineRequestsVaccinationUpdateDetail.reducer,
   [onlineRequestsCancellationLogs.store]                   : onlineRequestsCancellationLogs.reducer,
   [onlineRequestsCancellationLogsDetail.store]             : onlineRequestsCancellationLogsDetail.reducer,
+  [onlineRequestNote.store]                                : onlineRequestNote.reducer,
+  [onlineRequestNoteDetail.store]                          : onlineRequestNoteDetail.reducer,
   [trainingCommand.store]                                  : trainingCommand.reducer,
   [trainingCommandDetail.store]                            : trainingCommandDetail.reducer,
   [trainingMethod.store]                                   : trainingMethod.reducer,

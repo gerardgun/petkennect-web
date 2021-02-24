@@ -127,7 +127,7 @@ const ReviewForm = props => {
                 <Button
                   basic
                   color='teal'
-                  content='Reject'
+                  content='Decline'
                   disabled={submitting}
                   onClick={_handleRejectFormOpen}
                   type='button'/>
