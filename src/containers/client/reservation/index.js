@@ -41,6 +41,7 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail,clientP
   else
     clientId = client
   const [ activeReservationItem, setActiveReservationItem ] = useState(petReservationDetail.item.service || petReservationDetail.item.service_type || 'B')
+  console.log(clientId)
   useEffect(() => {
     if(currentTenant && currentTenant.employee)
       props.getEmployee(currentTenant.employee.id)

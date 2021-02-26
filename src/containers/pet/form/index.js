@@ -20,9 +20,11 @@ import petDetailDuck from '@reducers/pet/detail'
 import petBreedDuck from '@reducers/pet/breed'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
 import petBreedDetailDuck from '@reducers/pet/breed/detail'
+import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
 const PetBreedForm = loadable(() => import('@containers/pet-breed/create'))
 const FormError = loadable(() => import('@components/Common/FormError'))
+const  EmailAlert  = loadable(() => import('./email-alert'))
 
 export const formId = 'pet-form'
 
@@ -121,6 +123,7 @@ function PetForm(props) {
   const {
     client,
     clientDetail,
+    selectedClientId,
     petDetail,
     petBreed,
     petBreedDetail,
@@ -168,7 +171,8 @@ function PetForm(props) {
     }
   }
 
-  const _handleSubmit = values => {
+  const _handleSubmit = (values) => {
+    props.setItemEmail(null, 'READ')
     values = parseFormValues(values)
 
     if(updating)
@@ -733,6 +737,7 @@ function PetForm(props) {
         <Field component='input' name='id' type='hidden'/>
       </Form>
       <PetBreedForm/>
+      <EmailAlert clientId={selectedClientId}/>
     </>
   )
 }
@@ -754,7 +759,8 @@ export default compose(
         initialValues        : petDetail.item,
         hasRetiredChecked    : Boolean(retired),
         hasTempDaycareChecked: Boolean(temp_daycare),
-        hasEligibilityChecked: Boolean(hesitate_elegible)
+        hasEligibilityChecked: Boolean(hesitate_elegible),
+        selectedClientId     : formValueSelector(formId)(state, 'client')
       }
     },
     {
@@ -764,6 +770,7 @@ export default compose(
       post               : petDetailDuck.creators.post,
       put                : petDetailDuck.creators.put,
       resetItem          : petDetailDuck.creators.resetItem,
+      setItemEmail       : trainingMethodDetailDuck.creators.setItem,
       setPetBreed        : petBreedDetailDuck.creators.setItem
     }
   ),

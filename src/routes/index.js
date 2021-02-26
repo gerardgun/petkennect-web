@@ -11,7 +11,7 @@ import Agreement from '@containers/agreement'
 import AgreementCreate from '@containers/agreement/create'
 import AuthMe from '@containers/auth/me'
 import BehaviorTag from '@containers/behavior-tag'
-import Dashboard from '@containers/dashboard'
+import Dashboard from '@containers/client'
 import DayCampForm from '@containers/day-camp-form'
 import ColorCode from '@containers/color-code'
 import Client from '@containers/client'
@@ -77,6 +77,7 @@ import OrganizationShow from '@containers/organization/show'
 import TrainingCommand from '@containers/training-command'
 import TrainingMethod from '@containers/training-method'
 import TrainingReason from '@containers/training-reason'
+import TrainingQuestionnaire from '@containers/training-questionnaire'
 import Transaction from '@containers/transaction'
 // import Grant from '@containers/grant'
 // import GrantAdd from '@containers/grant/add'
@@ -404,6 +405,10 @@ const privateRoutes = [
   {
     path     : '/setup/training-method',
     component: TrainingMethod
+  },
+  {
+    path     : '/training-questionnaire/client/:clientId/pet/:petId',
+    component: TrainingQuestionnaire
   },
   {
     path     : '/setup/training-reason',

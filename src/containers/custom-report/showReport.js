@@ -17,7 +17,7 @@ const ShowReport = ({ showReportDetail, ...props }) => {
   return (
     <Modal
       basic
-      className='show-agreement-modal'
+      className='show-agreement-modal modal-position'
       closeIcon
       onClose={_handleClose}
       open={isOpened}

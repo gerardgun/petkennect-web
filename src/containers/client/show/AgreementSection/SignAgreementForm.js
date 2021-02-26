@@ -81,7 +81,7 @@ const SignAgreementForm = ({ agreementDetail, clientAgreementDetail, ...props })
 
   return (
     <Modal
-      className='sign-agreement-modal'
+      className='sign-agreement-modal modal-position'
       onClose={_handleClose}
       open={isOpened}
       size='large'>
