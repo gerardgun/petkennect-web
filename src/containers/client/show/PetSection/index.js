@@ -1,3 +1,4 @@
+// changes
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -178,7 +179,7 @@ function PetsSection({ clientDetail, clientPet, ...props }) {
         }
       </div>
 
-      <PetFormModal/>
+      <PetFormModal clientId={clientDetail.item.id}/>
     </Container>
   )
 }

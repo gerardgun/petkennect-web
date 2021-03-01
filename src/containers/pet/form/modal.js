@@ -1,3 +1,4 @@
+// changes
 import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -11,7 +12,7 @@ import petDetailDuck from '@reducers/pet/detail'
 
 const PetForm = loadable(() => import('./'))
 
-const PetFormModal = ({ petDetail, ...props }) => {
+const PetFormModal = ({ clientId, petDetail, ...props }) => {
   const _handleClose = () => {
     props.resetItem()
   }
@@ -30,7 +31,7 @@ const PetFormModal = ({ petDetail, ...props }) => {
         <Modal.Content>
           <Header as='h2'>{isUpdating ? 'Update' : 'New'} Pet</Header>
 
-          <PetForm/>
+          <PetForm clientsId={clientId}/>
 
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>

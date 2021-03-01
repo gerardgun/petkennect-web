@@ -1,3 +1,4 @@
+// changes
 import React, { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
@@ -125,11 +126,14 @@ function PetForm(props) {
     clientDetail,
     selectedClientId,
     petDetail,
+    clientsId,
     petBreed,
     petBreedDetail,
     petRetireReason,
     change, error, handleSubmit, reset // redux-form
   } = props
+
+  const petClientId = clientsId != undefined ? clientsId : selectedClientId
 
   const history = useHistory()
   const { client: clientId } = useParams()
@@ -737,7 +741,7 @@ function PetForm(props) {
         <Field component='input' name='id' type='hidden'/>
       </Form>
       <PetBreedForm/>
-      <EmailAlert clientId={selectedClientId}/>
+      <EmailAlert clientId={petClientId}/>
     </>
   )
 }

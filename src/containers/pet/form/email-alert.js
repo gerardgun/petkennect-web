@@ -1,3 +1,4 @@
+// changes
 import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -5,6 +6,7 @@ import { compose } from 'redux'
 import { Button, Icon, Header, Modal } from 'semantic-ui-react'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 import emailMessageDetailDuck from '@reducers/email-message/detail'
+import CryptoJS from 'crypto-js'
 
 const EmailAlert = (props) => {
   const {
@@ -28,8 +30,12 @@ const EmailAlert = (props) => {
     _handleClose()
   }
 
+  // Encrypt Client Id
+  let encryptedId = CryptoJS.AES.encrypt(`${clientId}`, 'code').toString()
+  const double_encryptedId = btoa(encryptedId)
+
   const _handleYesClick = ()=>{
-    window.open(`http://localhost:3000/training-questionnaire/client/${clientId}/pet/131`, '_blank')
+    window.open(`/training-questionnaire/client/${double_encryptedId}/pet/0`, '_blank')
     props.resetEmailAlertItem()
   }
 
