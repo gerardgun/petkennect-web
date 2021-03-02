@@ -389,7 +389,7 @@ const BoardingFormWizardFirst = props => {
             </Form.Field>
           </Form.Group>
         </Segment>
-        { recurringDays && <RecurringDaysForm serviceType='T'/>}
+        { recurringDays && <RecurringDaysForm serviceType='B'/>}
 
         {
           showDate &&  <Segment className='section-info-item-step1'>

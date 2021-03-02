@@ -1,4 +1,3 @@
-// changes
 import React, { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'

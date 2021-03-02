@@ -72,7 +72,7 @@ const BehaviorTag = ({ ...props }) => {
 
           </Grid.Column>
           <Grid.Column
-            className='ui-grid-align' computer={6} mobile={16}
+            className='ui-grid-align pr0' computer={6} mobile={16}
             tablet={10}>
             <div className='search-dropdown search-width'>
               <Search
@@ -85,7 +85,7 @@ const BehaviorTag = ({ ...props }) => {
           </Grid.Column>
 
           <Grid.Column
-            className='ui-grid-align grid-button'
+            className='ui-grid-align grid-button pl0'
             computer={3} mobile={16} tablet={6}>
 
             <Button
