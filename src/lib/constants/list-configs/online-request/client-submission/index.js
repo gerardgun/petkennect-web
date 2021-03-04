@@ -58,11 +58,10 @@ export default {
         let status = cell > 0 ? 'in-progress' : row.status
 
         return (
-          <Label
-            circular color={
-              status === 'in-progress' ? 'orange' : status === 'P' ? 'green' : 'red'
-            } horizontal
-            style={{ minWidth: '6rem' }}>{status === 'in-progress' ? 'In Progress' : status === 'P' ? 'New' : 'Declined'}</Label>
+          <span
+            className={`txt-${status === 'in-progress' ? 'orange' : status === 'P' ? 'green' : 'red'}`}>
+            {status === 'in-progress' ? 'In Progress' : status === 'P' ? 'New' : 'Declined'}
+          </span>
         )
       }
     },

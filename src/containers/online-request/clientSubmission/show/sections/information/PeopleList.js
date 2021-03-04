@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { Field } from 'redux-form'
-import { Form, Header, Input } from 'semantic-ui-react'
+import { Button, Form, Header, Input } from 'semantic-ui-react'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import InputMask from '@components/Common/InputMask'
 
 const PeopleList = ({ fields, meta: { error, submitFailed }, type }) => {
-  // const _handleAddBtnClick = () => fields.push({ ...personInitialState })
-  // const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
+  const _handleAddBtnClick = () => fields.push({ ...personInitialState })
+  const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
 
-  // const personInitialState = {
-  //   name    : '',
-  //   relation: '',
-  //   phone   : ''
-  // }
+  const personInitialState = {
+    name    : '',
+    relation: '',
+    phone   : ''
+  }
 
   return (
     <>
@@ -52,25 +52,25 @@ const PeopleList = ({ fields, meta: { error, submitFailed }, type }) => {
               placeholder='Enter phone number'
               required={type === 'contact'}
               type='tel'/>
-            {/* <Form.Button
+            <Form.Button
               basic color='red' content='Delete'
               data-index={index}
               icon='trash alternate outline'
               label='&nbsp;'
               onClick={_handleRemoveBtnClick}
-              type='button'/> */}
+              type='button'/>
           </Form.Group>
         ))
       }
 
-      {/* <div>
+      <div>
         <br/>
         <Button
           basic color='teal' content={type === 'authorized' ? 'Additional Authorized Person to Pick up' : 'Add Contact'}
           icon='plus'
           onClick={_handleAddBtnClick}
           type='button'/>
-      </div> */}
+      </div>
 
       {
         submitFailed && error && (

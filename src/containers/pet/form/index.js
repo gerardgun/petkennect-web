@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, formValueSelector, FieldArray, reduxForm } from 'redux-form'
-import { Checkbox, Header, Form, Button, Segment, Label, Input, Select, TextArea } from 'semantic-ui-react'
+import { Checkbox, Header, Form, Button, Label, Input, Select, TextArea } from 'semantic-ui-react'
 
 import loadable from '@loadable/component'
 import * as Yup from 'yup'
@@ -41,67 +41,61 @@ export const MedicationList = ({ fields, meta: { error, submitFailed } }) => {
 
   return (
     <>
-      <Segment className='form-primary-segment'>
-        {
-          fields.map((item, index) => (
-            <Form.Group key={index} widths='equal'>
-              <Field
-                className='cls_medication'
-                component={FormField}
-                control={Input}
-                label='Type of Medication'
-                name={`${item}.type_of_medication`}
-                placeholder='Enter type of medication'
-                required/>
-              <Field
-                className='cls_medication'
-                component={FormField}
-                control={Input}
-                label='Reason'
-                name={`${item}.reason`}
-                placeholder='Enter reason'
-                required/>
-              <Field
-                className='cls_medication'
-                component={FormField}
-                control={Input}
-                label='Amount'
-                name={`${item}.amount`}
-                placeholder='Enter amount'
-                required
-                type='number'/>
-              <Field
-                className='cls_medication'
-                component={FormField}
-                control={Input}
-                label='Schedule'
-                name={`${item}.schedule`}
-                placeholder='Enter schedule'
-                required/>
-              <Form.Button
-                data-index={index} icon='trash alternate outline' label='&nbsp;'
-                onClick={_handleRemoveBtnClick}
-                type='button'/>
-            </Form.Group>
-          ))
-        }
-        <div style={{ textAlign: 'center' }}>
-          <Button
-            basic
-            color='teal'  icon='plus icon'
-            onClick={_handleAddBtnClick}
-            type='button'/>
-        </div>
-        {
-          submitFailed && error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )
-        }
-      </Segment>
+      {
+        fields.map((item, index) => (
+          <Form.Group key={index} widths={5}>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Type of Medication'
+              name={`${item}.type_of_medication`}
+              placeholder='Enter type of medication'
+              required/>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Reason'
+              name={`${item}.reason`}
+              placeholder='Enter reason'
+              required/>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Amount'
+              name={`${item}.amount`}
+              placeholder='Enter amount'
+              required
+              type='number'/>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Schedule'
+              name={`${item}.schedule`}
+              placeholder='Enter schedule'
+              required/>
+            <Form.Button
+              data-index={index} icon='trash alternate outline' label='&nbsp;'
+              onClick={_handleRemoveBtnClick}
+              type='button'/>
+          </Form.Group>
+        ))
+      }
+
+      <Button
+        basic
+        color='teal' content='Add Medication' icon='plus icon'
+        onClick={_handleAddBtnClick}
+        type='button'/>
+
+      {
+        submitFailed && error && (
+          <Form.Group widths='equal'>
+            <Form.Field>
+              <FormError message={error}/>
+            </Form.Field>
+          </Form.Group>
+        )
+      }
     </>
   )
 }
@@ -342,7 +336,8 @@ function PetForm(props) {
                 control={Input}
                 label='Received Dog From'
                 name='info_received_from'
-                placeholder='Enter received dog from'/>
+                placeholder='Enter received dog from'
+                readOnly/>
             </Form.Group>
             <Form.Group widths={2}>
               <Field
@@ -404,18 +399,9 @@ function PetForm(props) {
               <Field
                 component={FormField}
                 control={Input}
-                label='Color'
+                label='Coloring/Markings'
                 name='info_coloring'
-                placeholder='Enter coloring'/>
-            </Form.Group>
-            <Form.Group widths={2}>
-              <Field
-                component={FormField}
-                control={Input}
-                disabled
-                label='Markings'
-                name='markings'
-                placeholder='Enter markings'/>
+                placeholder='Enter coloring/markings'/>
             </Form.Group>
           </>
         )}
@@ -513,6 +499,7 @@ function PetForm(props) {
               <Field
                 component={FormField}
                 control={Select}
+                disabled
                 label='Food Aggressive'
                 name='food_aggressive'
                 options={booleanOptions}
@@ -521,6 +508,7 @@ function PetForm(props) {
               <Field
                 component={FormField}
                 control={Select}
+                disabled
                 label='Toy Aggressive'
                 name='toy_aggressive'
                 options={booleanOptions}
@@ -531,6 +519,7 @@ function PetForm(props) {
               <Field
                 component={FormField}
                 control={Select}
+                disabled
                 label='Leash Reactive'
                 name='Leash Reactive'
                 options={booleanOptions}
@@ -551,6 +540,7 @@ function PetForm(props) {
               <Field
                 component={FormField}
                 control={Select}
+                disabled
                 label='Eligibility'
                 name='hesitate_elegible'
                 options={booleanOptions}
@@ -562,6 +552,7 @@ function PetForm(props) {
                     <Field
                       component={FormField}
                       control={Input}
+                      disabled
                       label='Ineligible Reason'
                       name='hesitate_reason_for_no'
                       placeholder='Enter reason for no'/>
@@ -637,13 +628,27 @@ function PetForm(props) {
                 name='health_medical_restrictions'
                 placeholder='Enter medical restrictions'/>
             </Form.Group>
-            <Form.Group widths='equal'>
+            <Form.Group widths={2}>
               <Field
                 component={FormField}
-                control={Input}
-                label='Allergies (If YES - please describe)'
+                control={Select}
+                label='Allergies'
                 name='health_is_allergic'
-                placeholder='Select option'/>
+                options={booleanOptions}
+                placeholder='Select option'
+                selectOnBlur={false}/>
+              {
+                props.hasAllergies && (
+                  <Field
+                    component={FormField}
+                    control={Input}
+                    label='Please list all allergies'
+                    name='health_allergic_description'
+                    placeholder='Enter all allergies'/>
+                )
+              }
+            </Form.Group>
+            <Form.Group widths={2}>
               <Field
                 component={FormField}
                 control={Select}
@@ -652,8 +657,6 @@ function PetForm(props) {
                 options={booleanOptions}
                 placeholder='Select option'
                 selectOnBlur={false}/>
-            </Form.Group>
-            <Form.Group widths={2}>
               <Field
                 component={FormField}
                 control={Select}
@@ -749,7 +752,7 @@ export default compose(
   connect(
     ({ client, ...state }) => {
       const petDetail = petDetailDuck.selectors.detail(state)
-      const { retired, temp_daycare, hesitate_elegible } = formValueSelector(formId)(state, 'retired', 'temp_daycare', 'hesitate_elegible')
+      const { retired, temp_daycare, hesitate_elegible, health_is_allergic } = formValueSelector(formId)(state, 'retired', 'temp_daycare', 'hesitate_elegible', 'health_is_allergic')
 
       return {
         client,
@@ -762,6 +765,7 @@ export default compose(
         initialValues        : petDetail.item,
         hasRetiredChecked    : Boolean(retired),
         hasTempDaycareChecked: Boolean(temp_daycare),
+        hasAllergies         : Boolean(health_is_allergic),
         hasEligibilityChecked: Boolean(hesitate_elegible),
         selectedClientId     : formValueSelector(formId)(state, 'client')
       }

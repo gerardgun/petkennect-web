@@ -7,48 +7,70 @@ textarea {
   font-family: "Poppins";
 }
 
-.dropdown_icon_hamburger_menu{
-  .visible.menu.transition{
-    .icon{
-  color:gray !important;
-}
-}
+// Text Colors
+.txt {
+  &-blue {
+    color: $blue;
+  }
+
+  &-green {
+    color: $green1;
+  }
+
+  &-black {
+    color: $black;
+  }
+
+  &-orange {
+    color: $orange;
+  }
+
+  &-red {
+    color: $red;
+  }
 }
 
-.appbar-grid{
-  @media (max-width: 767px){
+.dropdown_icon_hamburger_menu {
+  .visible.menu.transition {
+    .icon {
+      color: gray !important;
+    }
+  }
+}
+
+.appbar-grid {
+  @media (max-width: 767px) {
     height: auto !important;
-    img.logo-img{
+    img.logo-img {
       padding-left: 7rem !important;
       padding-right: 7rem !important;
     }
-    .search-dropdown{
+    .search-dropdown {
       margin-top: 0rem !important;
     }
-    .appbar-searchbar, .appbar-user-dropdown{
+    .appbar-searchbar,
+    .appbar-user-dropdown {
       margin-top: -3rem;
     }
-    .appbar-items{
+    .appbar-items {
       padding: 0px !important;
-    }
-   }
-
-   @media only screen and (min-width: 768px) and (max-width: 991px) {
-     .logo-img{
-       margin-top: 1.5rem;
-     }
-   }
-
-   @media only screen and (min-width: 1200px) {
-    .logo-img{
-      height: 9rem !important;
-    }
-    .ui.container.appbar-items{
-      width:auto !important;
     }
   }
 
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    .logo-img {
+      margin-top: 1.5rem;
+    }
+  }
 
+  @media only screen and (min-width: 1200px) {
+    .logo-img {
+      height: 9rem !important;
+    }
+    .ui.container.appbar-items {
+      width: auto !important;
+    }
+  }
 }
 
 .app-content {
@@ -58,9 +80,8 @@ textarea {
   background-color: $white !important;
 }
 
-.appbar-grid
-{
-  border-bottom:1px solid #E5EAEE !important;
+.appbar-grid {
+  border-bottom: 1px solid #e5eaee !important;
   height: 10rem;
   margin-left: 0rem !important;
   margin-right: 0rem !important;
@@ -151,14 +172,12 @@ textarea {
     @media only screen and (min-width: 768px) and (max-width: 1320px) {
       overflow-x: hidden;
     }
-
   }
 
   &-header.ui.grid {
     margin-bottom: 1.2rem;
     padding-left: 1rem;
     padding-right: 1rem;
-
   }
 
   .ui-grid-align {
@@ -220,12 +239,12 @@ textarea {
   .ui.header {
     margin-bottom: 2rem;
   }
-    position: initial !important;
-    height: auto !important;
-
+  position: initial !important;
+  height: auto !important;
 }
 
-.ui.fluid.container {   //change for menu items
+.ui.fluid.container {
+  //change for menu items
   max-width: 1500px !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -277,11 +296,10 @@ textarea {
   .section a,
   a.active.section {
     color: #616468 !important;
-
   }
 }
 
-.ui.basic.button.disabled{
+.ui.basic.button.disabled {
   box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) inset !important;
 }
 
@@ -323,7 +341,7 @@ textarea {
 }
 
 .button-width {
-  width:59px !important
+  width: 59px !important;
 }
 
 .field-margin {
@@ -338,12 +356,18 @@ textarea {
   vertical-align: bottom !important;
 }
 
-.color_peak{
-  background-color:#95dc8a !important;
+.color_peak {
+  background-color: #95dc8a !important;
 }
 
-.service_full{
-   background: repeating-linear-gradient( 45deg, #a9cece, teal 10px, teal 10px, rgba(0, 0, 0, 0.3) 14px ) !important;
+.service_full {
+  background: repeating-linear-gradient(
+    45deg,
+    #a9cece,
+    teal 10px,
+    teal 10px,
+    rgba(0, 0, 0, 0.3) 14px
+  ) !important;
 }
 
 .modal-position {

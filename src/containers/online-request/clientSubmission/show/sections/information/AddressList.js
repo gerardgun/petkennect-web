@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Field, change } from 'redux-form'
-import { Form, Header, Input, Select } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Select } from 'semantic-ui-react'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
@@ -12,8 +12,13 @@ export const AddressList = ({ fields, meta: { error, submitFailed, form }, ...pr
   const dispatch = useDispatch()
   const [ zipOptions, { _handleZipSearchChange } ] = useZipInputSearch(props.zip, props.zipDetail, props.getZipes, props.setZip)
 
-  // const _handleAddBtnClick = () => fields.push({ ...addressInitialState })
-  // const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
+  useEffect(() => {
+    if(fields.length === 0)
+      fields.push({ ...addressInitialState, type: 'home' }) // Add a default item
+  }, [])
+
+  const _handleAddBtnClick = () => fields.push({ ...addressInitialState })
+  const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
   const _handleZipChange = (zipId, fieldName) => {
     const zip = props.zip.items.find(item => item.id === zipId)
 
@@ -22,11 +27,11 @@ export const AddressList = ({ fields, meta: { error, submitFailed, form }, ...pr
     dispatch(change(form, `${fieldName}.city`, zip.city))
   }
 
-  // const addressInitialState = {
-  //   description: '',
-  //   zip_code   : null,
-  //   type       : null
-  // }
+  const addressInitialState = {
+    description: '',
+    zip_code   : null,
+    type       : null
+  }
 
   return (
     <>
@@ -49,7 +54,6 @@ export const AddressList = ({ fields, meta: { error, submitFailed, form }, ...pr
                 label='Zip'
                 loading={props.zip.status === 'GETTING'}
                 name={`${item}.zip_code`}
-                // eslint-disable-next-line react/jsx-handler-names
                 onChange={zipId => _handleZipChange(zipId, item)}
                 onSearchChange={_handleZipSearchChange}
                 options={zipOptions}
@@ -98,7 +102,7 @@ export const AddressList = ({ fields, meta: { error, submitFailed, form }, ...pr
                 required
                 selectOnBlur={false}/>
 
-              {/* {
+              {
                 index !== 0 && (
                   <Form.Button
                     basic color='red' content='Delete Address'
@@ -108,7 +112,7 @@ export const AddressList = ({ fields, meta: { error, submitFailed, form }, ...pr
                     onClick={_handleRemoveBtnClick}
                     type='button'/>
                 )
-              } */}
+              }
             </Form.Group>
 
             <br/>
@@ -117,19 +121,13 @@ export const AddressList = ({ fields, meta: { error, submitFailed, form }, ...pr
         ))
       }
 
-      {
-        fields.length === 0 && (
-          <span style={{ color: 'grey' }}>No addresses</span>
-        )
-      }
-
-      {/* <div>
+      <div>
         <Button
           basic color='teal' content='Add Address'
           icon='plus'
           onClick={_handleAddBtnClick}
           type='button'/>
-      </div> */}
+      </div>
 
       {
         submitFailed && error && (

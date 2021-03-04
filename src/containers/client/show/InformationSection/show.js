@@ -4,8 +4,7 @@ import { compose } from 'redux'
 import { Button, Popup, Container, Form, Header, Grid } from 'semantic-ui-react'
 import moment from 'moment'
 
-import { Referred } from '@lib/constants/client'
-import { formatPhoneNumber } from '@lib/utils/functions'
+import { AddressType, Referred, Status, PhoneType } from '@lib/constants/client'
 
 import clientDetailDuck from '@reducers/client/detail'
 
@@ -17,7 +16,6 @@ function ClienInformationShow({ clientDetail, ...props }) {
     props.setClient(client, 'UPDATE')
   }
   const _handleInfoItemClick = (e, { name }) => setActiveInfoItem(name)
-  const peopleToPickup = Array.isArray(client.authorized_people_pick_up) ? client.authorized_people_pick_up : []
 
   return (
     <Container className='client-information-section' fluid>
@@ -56,10 +54,10 @@ function ClienInformationShow({ clientDetail, ...props }) {
           basic={ActiveInfoItem !== 'Vet'} color='teal'
           content='Vet Information' name='Vet'
           onClick={_handleInfoItemClick}/>
-        <Button
+        {/* <Button
           basic={ActiveInfoItem !== 'intraction_history'} color='teal'
           content='Interaction History' name='intraction_history'
-          onClick={_handleInfoItemClick}/>
+          onClick={_handleInfoItemClick}/> */}
       </div>
 
       <Form className='petkennect-profile-body-content'>
@@ -71,59 +69,92 @@ function ClienInformationShow({ clientDetail, ...props }) {
               <Form.Input label='Last Name' readOnly value={client.last_name ? client.last_name : '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Spouse/Co-owner First Name' readOnly value={client.spouse ? client.spouse : '-'}/>
-              <Form.Input label='Last Name' readOnly value={client.spouse ? client.spouse : '-'}/>
+              <Form.Input label='Co-Owner/Spouse First Name' readOnly value={client.spouse ? client.spouse : '-'}/>
+              <Form.Input label='Co-Owner/Spouse Last Name' readOnly value={client.co_owner_name ? client.co_owner_name : '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Status' readOnly value={client.status}/>
-              <Form.Input label='Location' readOnly value={client.location ? `${client.location_name} - ${client.location_code}` : '-'}/>
+              <Form.Input label='Status'>
+                <input
+                  readOnly
+                  style={{
+                    color: client.status === 'active' ? 'green' : client.status === 'caution' ? '#fbbd08' : client.status === 'declined' ? 'red' : 'green'
+                  }}
+                  value={Status[client.status]}/>
+              </Form.Input>
+              <Form.Input label='Primary Location' readOnly value={client.location ? `${client.location_code} - ${client.location_name}` : '-'}/>
             </Form.Group>
-            <Form.Group widths={2}>
+            <Form.Group widths='equal'>
               <Form.Input label='Contact Date' readOnly value={(client.contact_date && moment(client.contact_date).format('MM/DD/YYYY')) || '-'}/>
-              <Form.Input label='Referred' readOnly value={Referred ? client.referred : '-'}/>
+              <Form.Input label='Referred' readOnly value={client.referred ? Referred[client.referred] : '-'}/>
+              {
+                [ 1, 6, 7 ].includes(client.referred) && client.referred_description && (
+                  <Form.Input
+                    label={
+                      props.referred == 1 ? 'Their name' : props.referred == 6 ? 'Referral\'s Name' : 'Description'
+                    }
+                    readOnly
+                    value={client.referred_description}/>
+                )
+              }
             </Form.Group>
 
             <Header as='h6' className='section-header' color='blue'>Contact Details</Header>
-            <Form.Group widths={2}>
-              <Form.Input label='Cell Phone' readOnly value={formatPhoneNumber(client.phones ? client.phones[0] : '-')}/>
-              <Form.Input label='Home Phone' readOnly value={formatPhoneNumber(client.phones ? client.phones[1] : '-')}/>
-            </Form.Group>
-            <Form.Group widths={2}>
-              <Form.Input label='Work Phone' readOnly value={formatPhoneNumber(client.phones ? client.phones[2] : '-')}/>
-              <Form.Input label='Other Phone' readOnly value={formatPhoneNumber(client.phones ? client.phones[3] : '-')}/>
-            </Form.Group>
+
             <Form.Group widths={2}>
               <Form.Input label='Email' readOnly value={client.email ? client.email : '-'}/>
               <Form.Input label='Alt Email' readOnly value={client.alt_email ? client.alt_email :  '-'}/>
             </Form.Group>
 
-            <Header as='h6' className='section-header' color='blue'>Client Address</Header>
-            <Form.Group widths='equal'>
-              <Form.Input label='First Address' readOnly value={client.addresses ? client.addresses[0] :  '-'}/>
-            </Form.Group>
-            <Form.Group widths='equal'>
-              <Form.Input label='Second Address' readOnly value={client.addresses ? client.addresses[1] : '-'}/>
-            </Form.Group>
-            <Form.Group widths={2}>
-              <Form.Input label='Zip' readOnly value={client.zip_code ? client.zip_code : '-'}/>
-              <Form.Input label='Country' readOnly value={client.country_code ? client.country_code : '-'}/>
-            </Form.Group>
-            <Form.Group widths={2}>
-              <Form.Input label='State' readOnly value={client.state ? client.state : '-'}/>
-              <Form.Input label='City' readOnly value={client.city ? client.city : '-'}/>
-            </Form.Group>
-
-            <Header as='h6' className='section-header' color='blue'>People Authorized to Pick Up</Header>
             {
-              peopleToPickup.length > 0 ? (
-                peopleToPickup.map(({ name, relation }, index) => (
-                  <Form.Group key={index} widths={2}>
-                    <Form.Input label={`#${index + 1} Name`} readOnly value={name ? name :  '-'}/>
-                    <Form.Input label='Relation' readOnly value={relation ? relation : '-'}/>
+              Array.isArray(client.phones) && client.phones.map((item, index) => (
+                <Form.Group key={index} widths={2}>
+                  <Form.Input label='Phone Number' readOnly value={item.number}/>
+                  <Form.Input label='Type' readOnly value={PhoneType[item.type]}/>
+                </Form.Group>
+              ))
+            }
+
+            <Header as='h6' className='section-header' color='blue'>Home Address</Header>
+
+            {
+              Array.isArray(client.addresses) && client.addresses.map((item, index) => (
+                <React.Fragment key={index}>
+                  <Form.Group widths='equal'>
+                    <Form.Input label='Street Address' readOnly value={item.description}/>
+                    <Form.Input label='Zip' readOnly value={item.zip.postal_code}/>
                   </Form.Group>
-                ))
-              ) : (
-                <p className='text-gray'>The are not authorized people to pick up.</p>
+
+                  <Form.Group widths={2}>
+                    <Form.Input label='Country' readOnly value={item.zip.country_code}/>
+                    <Form.Input label='State' readOnly value={item.zip.state}/>
+                  </Form.Group>
+
+                  <Form.Group widths={2}>
+                    <Form.Input label='City' readOnly value={item.zip.city}/>
+                    <Form.Input label='Type' readOnly value={item.type ? AddressType[item.type] : '-'}/>
+                  </Form.Group>
+
+                  {
+                    index !== client.addresses.length - 1 && <br/>
+                  }
+                </React.Fragment>
+              ))
+            }
+
+            <Header as='h6' className='section-header' color='blue'>Additional People Authorized to Pick Up</Header>
+            {
+              Array.isArray(client.authorized_people_pick_up) && (
+                client.authorized_people_pick_up.length > 0 ? (
+                  client.authorized_people_pick_up.map(({ name, phone, relation }, index) => (
+                    <Form.Group key={index} widths={3}>
+                      <Form.Input label={`#${index + 1} Name`} readOnly value={name}/>
+                      <Form.Input label='Relation' readOnly value={relation}/>
+                      <Form.Input label='Phone Number' readOnly value={phone}/>
+                    </Form.Group>
+                  ))
+                ) : (
+                  <p className='text-gray'>The are not authorized people to pick up.</p>
+                )
               )
             }
           </>
@@ -131,16 +162,25 @@ function ClienInformationShow({ clientDetail, ...props }) {
 
         {ActiveInfoItem === 'Emergency'  && (
           <>
-            <Header as='h6' className='section-header' color='blue'>Emergency Contact</Header>
-            <Form.Group widths={2}>
-              <Form.Input label='Name' readOnly value={client.emergency_contact_name ? client.emergency_contact_name : '-'}/>
-              <Form.Input label='Relation' readOnly value={client.emergency_contact_relationship ? client.emergency_contact_relationship : '-'}/>
-            </Form.Group>
-            <Form.Group widths={2}>
-              <Form.Input label='Phone' readOnly value={formatPhoneNumber(client.emergency_contact_phones ? client.emergency_contact_phones[0] : '-')}/>
-            </Form.Group>
+            <Header as='h6' className='section-header' color='blue'>Emergency Contacts Information</Header>
+            {
+              Array.isArray(client.emergency_contact_phones) && (
+                client.emergency_contact_phones.length > 0 ? (
+                  client.emergency_contact_phones.map(({ name, phone, relation }, index) => (
+                    <Form.Group key={index} widths={3}>
+                      <Form.Input label={`#${index + 1} Name`} readOnly value={name}/>
+                      <Form.Input label='Relation' readOnly value={relation}/>
+                      <Form.Input label='Phone Number' readOnly value={phone}/>
+                    </Form.Group>
+                  ))
+                ) : (
+                  <p className='text-gray'>The are not contacts.</p>
+                )
+              )
+            }
+
             <Form.Group widths='equal'>
-              <Form.TextArea label='Other Notes' readOnly value={client.not_defined ? client.not_defined : '-'}/>
+              <Form.TextArea label='Other Notes' readOnly value={client.emergency_contact_comment ? client.emergency_contact_comment : '-'}/>
             </Form.Group>
           </>
         )}
@@ -148,12 +188,11 @@ function ClienInformationShow({ clientDetail, ...props }) {
           <>
             <Header as='h6' className='section-header' color='blue'>Veterinarian Contact</Header>
             <Form.Group widths={2}>
-              <Form.Input label='Vet Name' readOnly value={client.emergency_vet_name ? client.emergency_vet_name : '-'}/>
-              <Form.Input label='Veterinary Facility Name' readOnly value={client.emergency_vet_facility_name ? client.emergency_vet_facility_name : '-'}/>
+              <Form.Input label='Veterinarian Name' readOnly value={client.emergency_vet_name ? client.emergency_vet_name : '-'}/>
+              <Form.Input label='Veterinarian Phone Number' readOnly value={client.emergency_vet_phones ? client.emergency_vet_phones[0] : '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Vet Phone' readOnly value={formatPhoneNumber(client.emergency_vet_phones ? client.emergency_vet_phones[0] : '-')}/>
-              <Form.Input label='Vet Location' readOnly value={client.emergency_vet_location ? client.emergency_vet_location : '-'}/>
+              <Form.Input label='Veterinarian Facility' readOnly value={client.emergency_vet_location ? client.emergency_vet_location : '-'}/>
             </Form.Group>
           </>
         )}

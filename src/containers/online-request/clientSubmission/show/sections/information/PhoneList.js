@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { Field } from 'redux-form'
-import { Form, Select } from 'semantic-ui-react'
+import { Button, Form, Select } from 'semantic-ui-react'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
@@ -13,7 +13,7 @@ const PhoneList = ({ fields, meta: { error, submitFailed } }) => {
   }, [])
 
   const _handleAddBtnClick = () => fields.push({ ...phoneInitialState })
-  // const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
+  const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
 
   const phoneInitialState = {
     number: '',
@@ -43,7 +43,7 @@ const PhoneList = ({ fields, meta: { error, submitFailed } }) => {
               placeholder='Select a type'
               required
               selectOnBlur={false}/>
-            {/* {
+            {
               index !== 0 && (
                 <Form.Button
                   basic color='red' content='Delete'
@@ -53,12 +53,12 @@ const PhoneList = ({ fields, meta: { error, submitFailed } }) => {
                   onClick={_handleRemoveBtnClick}
                   type='button'/>
               )
-            } */}
+            }
           </Form.Group>
         ))
       }
 
-      {/* <Form.Group widths='equal'>
+      <Form.Group widths='equal'>
         <Form.Field>
           <Button
             basic color='teal' content='Add Phone Number'
@@ -66,7 +66,7 @@ const PhoneList = ({ fields, meta: { error, submitFailed } }) => {
             onClick={_handleAddBtnClick}
             type='button'/>
         </Form.Field>
-      </Form.Group> */}
+      </Form.Group>
 
       {
         submitFailed && error && (

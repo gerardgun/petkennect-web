@@ -102,11 +102,7 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
                 <input/>
                 <Label content='lbs'/>
               </Form.Input>
-              <Form.Input label='Color' readOnly value={pet.info_coloring ? pet.info_coloring :  '-'}/>
-            </Form.Group>
-            <Form.Group widths={2}>
-              <Form.Input label='Markings' readOnly value={pet.not_defined ? pet.not_defined : '-'}/>
-              <Form.Field/>
+              <Form.Input label='Coloring/Markings' readOnly value={pet.info_coloring ? pet.info_coloring :  '-'}/>
             </Form.Group>
           </>
         )}
@@ -178,10 +174,15 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
               <Form.TextArea label='Medical Restrictions' readOnly value={pet.health_medical_restrictions ? pet.health_medical_restrictions :   '-'}/>
             </Form.Group>
             <Form.Group widths={2}>
-              <Form.Input label='Allergies' readOnly value={pet.health_is_allergi ? pet.health_is_allergi :  '-'}/>
-              <Form.Input label='On Flea or Tick Preventative' readOnly value={pet.health_flea_tick_preventive ? 'Yes' : 'No'}/>
+              <Form.Input label='Allergies' readOnly value={pet.health_is_allergic ? 'Yes' :  'No'}/>
+              {
+                pet.health_is_allergic && (
+                  <Form.Input label='Allergies description' readOnly value={pet.health_allergic_description ? pet.health_allergic_description :  '-'}/>
+                )
+              }
             </Form.Group>
             <Form.Group widths={2}>
+              <Form.Input label='On Flea or Tick Preventative' readOnly value={pet.health_flea_tick_preventive ? 'Yes' : 'No'}/>
               <Form.Input label='On Heartworm Preventative' readOnly value={pet.health_heartworm_preventive ? 'Yes' : 'No'}/>
             </Form.Group>
             <Header as='h6' className='section-header' color='blue'>FEEDING</Header>

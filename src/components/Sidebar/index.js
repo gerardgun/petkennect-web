@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import { Label } from 'semantic-ui-react'
 
 import { Link, withRouter } from 'react-router-dom'
 
@@ -75,10 +76,17 @@ const categories = [
     icon         : 'osi',
     label        : 'Online Requests',
     subcategories: [
-      { href: '/online-request/client-submission', label: 'Client Submissions' },
+      {
+        href     : '/online-request/client-submission',
+        label    : 'Client Submissions',
+        iconRight: <Label circular color='red'>2</Label>
+      },
       { href: '/online-request/confirm-reservation', label: 'Confirm Reservations' },
       { href: '/online-request/cancellation-log', label: 'Cancellations Logs' },
-      { href: '/online-request/vaccination-update', label: 'New Vacinations Update' },
+      {
+        href     : '/online-request/vaccination-update', label    : 'New Vacinations Update',
+        iconRight: <Label circular color='red'>4</Label>
+      },
       { href: '/online-request/declined-client', label: 'Declined Submissions' }
     ]
   },
@@ -271,10 +279,17 @@ const AppSidebar = ({ auth, ...props }) => {
                   {...rest}>
                   {
                     subcategories.length > 0 ? (
-                      subcategories.map(({ href: to, label }, index) => {
+                      subcategories.map(({ href: to, label, iconRight = null }, index) => {
                         const active = props.match.path === to
 
-                        return <Link className={active ? 'active' : ''} key={index} to={to}>{label}</Link>
+                        return (
+                          <Link className={active ? 'active' : ''} key={index} to={to}>
+                            {label}
+                            {
+                              iconRight && <div className='icon-right'>{iconRight}</div>
+                            }
+                          </Link>
+                        )
                       })
                     ) : null
                   }
