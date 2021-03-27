@@ -5,7 +5,6 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import Table from '@components/Table'
 import Form from '@containers/transaction/create'
 
@@ -17,9 +16,6 @@ const Transaction = props => {
     // transaction,
     transactionDetail
   } = props
-
-  // For Modal Delete
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     props.getTransactions()
@@ -38,13 +34,11 @@ const Transaction = props => {
     props.setItem(item, 'UPDATE')
   }
 
-  const _handleRowOptionClick = (option, item) => {
-    if(option === 'delete') {
-      props.setItem(item)
-      _handleOpen()
-    } else if(option === 'edit') {
+  const _handleRowButtonClick = (option, item) => {
+    if(option === 'delete')
+      props.setItem(item, 'DELETE')
+    else if(option === 'edit')
       props.setItem(item, 'UPDATE')
-    }
   }
 
   return (
@@ -62,14 +56,11 @@ const Transaction = props => {
         </Grid>
         <Table
           duck={transactionDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
+          onRowButtonClick={_handleRowButtonClick}
+          onRowClick={_handleRowClick}/>
 
         <Form/>
-        <ModalDelete
-          duckDetail={transactionDetailDuck}
-          onClose={_handleClose}
-          open={open}/>
+        <ModalDelete duckDetail={transactionDetailDuck}/>
 
       </Segment>
     </Layout>

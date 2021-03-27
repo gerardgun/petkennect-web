@@ -2,33 +2,13 @@ import React from 'react'
 import { Label } from 'semantic-ui-react'
 
 export default {
-  base_uri: null,
-  options : [
-    {
-      display_name: 'Delete Message',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options        : [],
-    dropdownOptions: [
+  options: {
+    single: [
       {
-        icon        : 'mail',
-        display_name: 'Email Logs view',
-        name        : 'email_logs_view'
-      },
-      {
-        icon        : 'redo',
-        display_name: 'Resend',
-        name        : 'resend'
-      },
-      {
-        icon        : 'send',
-        display_name: 'forward',
-        name        : 'forward'
+        display_name: 'Delete Message',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
       }
     ]
   },
@@ -79,6 +59,28 @@ export default {
             style={{ minWidth: '6rem' }}>{cell}</Label>
         )
       }
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Email Logs view',
+          name        : 'email_logs_view',
+          icon        : 'mail'
+        },
+        {
+          display_name: 'Resend',
+          name        : 'resend',
+          icon        : 'redo'
+        },
+        {
+          display_name: 'forward',
+          name        : 'forward',
+          icon        : 'send'
+        }
+      ]
     }
   ]
 }

@@ -2,58 +2,8 @@ import React from 'react'
 import { Label } from 'semantic-ui-react'
 
 export default {
-  base_uri      : null,
   search_enabled: false,
-  group_by      : {
-    column_name: 'signed',
-    groups     : [
-      {
-        value     : false,
-        icon_label: 'flag outline',
-        text_label: 'Pending'
-      },
-      {
-        value     : true,
-        icon_label: 'flag outline',
-        text_label: 'Signed'
-      }
-    ]
-  },
-  row: {
-    options: [
-      {
-        display_name      : 'View PDF',
-        name              : 'view_pdf',
-        icon              : 'eye',
-        conditional_render: item => item.signed
-      },
-      {
-        display_name      : 'Print PDF',
-        name              : 'print',
-        icon              : 'print',
-        conditional_render: item => item.signed
-      },
-      {
-        display_name      : 'Download PDF',
-        name              : 'download',
-        icon              : 'download',
-        conditional_render: item => item.signed
-      },
-      {
-        display_name      : 'Email PDF',
-        name              : 'send_document',
-        icon              : 'envelope outline',
-        conditional_render: item => item.signed
-      },
-      {
-        display_name      : 'Sign Agreement',
-        name              : 'sign',
-        icon              : 'edit outline',
-        conditional_render: item => !item.signed
-      }
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'Name',
       name        : 'name',
@@ -82,6 +32,43 @@ export default {
       width       : 2,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'View PDF',
+          name        : 'view_pdf',
+          disable     : item => !item.signed,
+          icon        : 'eye'
+        },
+        {
+          display_name: 'Print PDF',
+          name        : 'print',
+          disable     : item => !item.signed,
+          icon        : 'print'
+        },
+        {
+          display_name: 'Download PDF',
+          name        : 'download',
+          disable     : item => !item.signed,
+          icon        : 'download'
+        },
+        {
+          display_name: 'Email PDF',
+          name        : 'send_document',
+          disable     : item => !item.signed,
+          icon        : 'envelope outline'
+        },
+        {
+          display_name: 'Sign Agreement',
+          name        : 'sign',
+          disable     : item => item.signed,
+          icon        : 'edit outline'
+        }
+      ]
     }
   ]
 }

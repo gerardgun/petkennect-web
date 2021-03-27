@@ -2,28 +2,27 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 export default {
-  base_uri: '/setup/agreement',
-  options : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Agreement',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options: {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Agreement',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {

@@ -2,10 +2,9 @@ import React from 'react'
 import { connect, useDispatch } from 'react-redux'
 import { compose } from 'redux'
 import { reset } from 'redux-form'
-import { Button, TextArea, Divider, Header, Tab, Grid, Modal } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
-import useModal from '@components/Modal/useModal'
 import RequestNoteForm from './request-note-form'
 import { parseFormValues, parseResponseError, getAbbreviature } from '@lib/utils/functions'
 
@@ -20,18 +19,16 @@ const RequestNoteList = props => {
   } = props
 
   const dispatch = useDispatch()
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const _handleDeleteBtnClick = (e, data) => {
     const item = requestNote.items.find(({ id }) => id === +data['data-item-id'])
 
     props.setItem(item, 'DELETE')
-    _handleOpen()
   }
 
-  const _handleEditBtnClick = () => {
+  // const _handleEditBtnClick = () => {
 
-  }
+  // }
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
@@ -92,10 +89,7 @@ const RequestNoteList = props => {
       <br/>
 
       <RequestNoteForm onSubmit={_handleSubmit}/>
-      <ModalDelete
-        duckDetail={onlineRequestNoteDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={onlineRequestNoteDetailDuck}/>
     </>
   )
 }

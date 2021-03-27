@@ -1,41 +1,20 @@
 
 export default {
-  base_uri      : null,
   search_enabled: false,
-
-  row: {
-    options        : [],
-    dropdownOptions: [
-
-      {
-        display_name: 'Availablity',
-        name        : 'availabiity'
-      },
-
-      {
-        display_name: 'Check In',
-        name        : 'check_in'
-      }
-
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'Pet',
       name        : 'pet',
       type        : 'string',
       align       : 'left',
       width       : null
-
     },
-
     {
       display_name: 'Check Out',
       name        : 'check_out',
       width       : null,
       type        : 'date',
       align       : 'center'
-
     },
     {
       display_name: 'Activity',
@@ -43,7 +22,6 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
     },
     {
       display_name: 'Groom',
@@ -51,7 +29,6 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
     },
     {
       display_name: 'by',
@@ -59,7 +36,6 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
     },
     {
       display_name: 'Nights',
@@ -67,7 +43,6 @@ export default {
       width       : null,
       type        : 'number',
       align       : 'center'
-
     },
     {
       display_name: 'Current',
@@ -75,8 +50,21 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Availablity',
+          name        : 'availabiity'
+        },
+        {
+          display_name: 'Check In',
+          name        : 'check_in'
+        }
+      ]
     }
-
   ]
 }

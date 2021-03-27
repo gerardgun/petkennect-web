@@ -8,6 +8,7 @@ import Layout from '@components/Common/Layout'
 import ClientSubmissionShow from './show'
 import ViewNoteSection from '../notesSection/view'
 import RequestNoteListModal from './request-note-list-modal'
+import config from '@lib/constants/list-configs/online-request/client-submission'
 
 import clientSubmissionDuck from '@reducers/online-request/client-submission'
 import clientSubmissionDetailDuck from '@reducers/online-request/client-submission/detail'
@@ -26,7 +27,7 @@ function ClientSubmission({ clientSubmissionDetail, ...props }) {
       })
   }, [ clientSubmissionDetail.status ])
 
-  const _handleRowOptionClick = (optionName, item) => {
+  const _handleRowButtonClick = (optionName, item) => {
     if(optionName === 'view')
       props.setItem(item, 'READ_NOTES')
     else if(optionName === 'review')
@@ -44,8 +45,9 @@ function ClientSubmission({ clientSubmissionDetail, ...props }) {
         </Grid>
         <div className='table-row-padding'>
           <Table
+            config={config}
             duck={clientSubmissionDuck}
-            onRowOptionClick={_handleRowOptionClick}/>
+            onRowButtonClick={_handleRowButtonClick}/>
         </div>
 
         <ClientSubmissionShow/>

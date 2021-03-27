@@ -46,7 +46,7 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
   const _handleRowClick = () => {
     // wip
   }
-  const _handleRowOptionClick = () => {
+  const _handleRowButtonClick = () => {
     // wip
   }
   const _handleOptionDropdownChange = (optionName, item) => {
@@ -182,8 +182,8 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
       <Table
         duck={dayCampReservationDuck}
         onOptionDropdownChange={_handleOptionDropdownChange}
-        onRowClick={_handleRowClick}
-        onRowOptionClick={_handleRowOptionClick}/>
+        onRowButtonClick={_handleRowButtonClick}
+        onRowClick={_handleRowClick}/>
       <PackageCreateForm/>
       <PetNotes/>
     </Container>

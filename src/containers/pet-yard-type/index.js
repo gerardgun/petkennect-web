@@ -6,7 +6,6 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
 import PetYardForm from  './create'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
@@ -14,7 +13,6 @@ import petYardTypeDuck from '@reducers/pet/pet-yard-type'
 import petYardTypeDetailDuck from '@reducers/pet/pet-yard-type/detail'
 
 const PetYardTypeList = ({ petYardType, petYardTypeDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPetYardTypes, petYardTypeDetail.status)
 
   useEffect(() => {
@@ -30,10 +28,8 @@ const PetYardTypeList = ({ petYardType, petYardTypeDetail, ...props }) => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(petYardType.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -57,10 +53,7 @@ const PetYardTypeList = ({ petYardType, petYardTypeDetail, ...props }) => {
           onRowClick={_handleRowClick}/>
       </Segment>
 
-      <ModalDelete
-        duckDetail={petYardTypeDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petYardTypeDetailDuck}/>
       <PetYardForm/>
     </Layout>
   )

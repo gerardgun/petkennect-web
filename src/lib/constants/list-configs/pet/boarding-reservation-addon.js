@@ -1,17 +1,8 @@
 import React from 'react'
+
 export default {
-  base_uri      : null,
   search_enabled: false,
-  options       : [],
-  row           : {
-    options       : [],
-    checkboxOption: [
-      {
-        name: 'add'
-      }
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'Boarding Misc Services',
       name        : 'boarding_service',
@@ -41,6 +32,5 @@ export default {
         )
       }
     }
-
   ]
 }

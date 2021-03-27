@@ -27,7 +27,6 @@ const Summary = loadable(() => import('./Summary'))
 
 function IncidentSection(props) {
   const { petDetail } = props
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   const [ openSendReportModal, { _handleOpen :  _handleOpenSendReportModal, _handleClose : _handleCloseSendReportModal } ] = useModal()
 
   const { pet: petId } = useParams()
@@ -54,11 +53,8 @@ function IncidentSection(props) {
       props.setItem(props.petIncident.selector.selected_items[0], 'UPDATE')
     if(option === 'preview_report')
       _handleOpenSendReportModal()
-
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(props.petIncident.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   const _warningIncidentTypes = useMemo(()=> {
@@ -99,10 +95,7 @@ function IncidentSection(props) {
       </div>
       <IncidentForm/>
       <SendReportForm onClose={_handleCloseSendReportModal} open={openSendReportModal}/>
-      <ModalDelete
-        duckDetail={petIncidentDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petIncidentDetailDuck}/>
     </Container>
   )
 }

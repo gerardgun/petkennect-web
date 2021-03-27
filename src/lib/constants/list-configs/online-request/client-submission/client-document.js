@@ -1,19 +1,6 @@
 export default {
-  base_uri      : null,
   search_enabled: false,
-  options       : [
-  ],
-  row: {
-    options: [
-      {
-        display_name: 'View',
-        name        : 'view',
-        icon        : 'file pdf outline',
-        color       : 'teal'
-      }
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'DOCUMENT NAME',
       name        : 'filename',
@@ -45,6 +32,19 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'View',
+          name        : 'view',
+          icon        : 'file pdf outline',
+          color       : 'teal'
+        }
+      ]
     }
   ]
 }

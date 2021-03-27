@@ -1,35 +1,20 @@
 
 export default {
-  base_uri      : null,
   search_enabled: false,
-
-  row: {
-    options        : [],
-    dropdownOptions: [
-      { icon        : 'sign in',
-        display_name: 'Notes',
-        name        : 'notes'
-      }
-
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'Pet',
       name        : 'pet',
       type        : 'string',
       align       : 'left',
       width       : null
-
     },
-
     {
       display_name: 'Check In',
       name        : 'check_in',
       width       : null,
       type        : 'date',
       align       : 'center'
-
     },
     {
       display_name: 'Dayleft',
@@ -37,7 +22,6 @@ export default {
       width       : null,
       type        : 'number',
       align       : 'center'
-
     },
     {
       display_name: 'Groom',
@@ -45,7 +29,6 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
     },
     {
       display_name: 'Lunch',
@@ -53,7 +36,6 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
     },
     {
       display_name: 'AddOn',
@@ -61,16 +43,18 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Notes',
+          name        : 'notes',
+          icon        : 'sign in'
+        }
+      ]
     }
-    // {
-    //   display_name: 'Note',
-    //   name        : 'action',
-    //   width       : null,
-    //   type        : 'string',
-    //   align       : 'left'
-
-    // }
-
   ]
 }

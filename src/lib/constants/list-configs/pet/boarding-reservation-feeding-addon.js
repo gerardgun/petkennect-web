@@ -1,17 +1,8 @@
 import React from 'react'
+
 export default {
-  base_uri      : null,
   search_enabled: false,
-  options       : [],
-  row           : {
-    options       : [],
-    checkboxOption: [
-      {
-        name: 'add'
-      }
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'Feeding Services',
       name        : 'feeding_service',
@@ -34,6 +25,5 @@ export default {
         )
       }
     }
-
   ]
 }

@@ -7,14 +7,12 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import PetKindForm from  './create'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
 import petKindDuck from '@reducers/pet/kind'
 import petKindDetailDuck from '@reducers/pet/kind/detail'
 
 const PetKindList = ({ petKind, petKindDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPetKinds, petKindDetail.status)
 
   useEffect(() => {
@@ -30,10 +28,8 @@ const PetKindList = ({ petKind, petKindDetail, ...props }) => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(petKind.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -56,10 +52,7 @@ const PetKindList = ({ petKind, petKindDetail, ...props }) => {
       </Segment>
 
       <PetKindForm/>
-      <ModalDelete
-        duckDetail={petKindDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petKindDetailDuck}/>
 
     </Layout>
   )

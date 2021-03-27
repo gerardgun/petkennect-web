@@ -7,14 +7,11 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Form from './create'
 import LocationItem from './Item'
-import useModal from '@components/Modal/useModal'
 
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
 
 const Location = ({ location, locationDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
-
   useEffect(() => {
     props.getLocations()
   }, [])
@@ -33,8 +30,7 @@ const Location = ({ location, locationDetail, ...props }) => {
   }
 
   const _handleDeleteBtnClick = (item) => {
-    props.setItem(item)
-    _handleOpen()
+    props.setItem(item, 'DELETE')
   }
 
   const loading = location.status === 'GETTING'
@@ -68,10 +64,7 @@ const Location = ({ location, locationDetail, ...props }) => {
       </Segment>
 
       <Form/>
-      <ModalDelete
-        duckDetail={locationDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={locationDetailDuck}/>
 
     </Layout>
   )

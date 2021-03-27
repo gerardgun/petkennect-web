@@ -1,31 +1,4 @@
 export default {
-  base_uri: null,
-  row     : {
-    // options: [
-    //   {
-    //     display_name: 'Send reminder',
-    //     name        : 'send_reminder',
-    //     icon        : 'paper plane outline'
-    //   },
-    //   {
-    //     display_name: 'View Incident Report',
-    //     name        : 'view_incident_report',
-    //     icon        : 'search plus'
-    //   }
-    // ]
-    options: [
-      {
-        display_name: 'Edit',
-        name        : 'edit',
-        icon        : 'edit outline'
-      },
-      {
-        display_name: 'Delete',
-        name        : 'delete',
-        icon        : 'trash alternate outline'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Pet Name',
@@ -82,6 +55,33 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Edit',
+          name        : 'edit',
+          icon        : 'edit outline'
+        },
+        {
+          display_name: 'Delete',
+          name        : 'delete',
+          icon        : 'trash alternate outline'
+        }
+        // {
+        //   display_name: 'Send reminder',
+        //   name        : 'send_reminder',
+        //   icon        : 'paper plane outline'
+        // },
+        // {
+        //   display_name: 'View Incident Report',
+        //   name        : 'view_incident_report',
+        //   icon        : 'search plus'
+        // }
+      ]
     }
   ]
 }

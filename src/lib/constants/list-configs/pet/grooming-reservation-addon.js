@@ -1,18 +1,8 @@
 import React from 'react'
 
 export default {
-  base_uri      : null,
   search_enabled: false,
-
-  row: {
-    options       : [],
-    checkboxOption: [
-      {
-        name: 'add'
-      }
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'Addon',
       name        : 'addon',
@@ -31,9 +21,7 @@ export default {
           </>
         )
       }
-
     },
-
     {
       display_name: 'price',
       name        : 'price',
@@ -46,8 +34,6 @@ export default {
             <p>${cell}</p></span>
         )
       }
-
     }
-
   ]
 }

@@ -8,8 +8,6 @@ import { Button, Grid, Header, Segment, Tab, Menu, Label, Icon } from 'semantic-
 import ModalDelete from '@components/Modal/Delete'
 import FormInformation from './FormInformation'
 import FormAddons from './FormAddons'
-
-import useModal from '@components/Modal/useModal'
 import { parseResponseError } from '@lib/utils/functions'
 
 import serviceDetailDuck from '@reducers/service/detail'
@@ -32,7 +30,6 @@ const ServiceCreate = props => {
   } = props
 
   const [ activeTabIndex, setTabActiveIndex ] = useState(0)
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const  { addons = [] } = serviceDetail.item
 
@@ -50,6 +47,10 @@ const ServiceCreate = props => {
     if(serviceDetail.status === 'DELETED')
       history.replace('/service')
   }, [ serviceDetail.status ])
+
+  const _handleDeleteBtn = () => {
+    props.setItem(null, 'DELETE')
+  }
 
   const _handleSaveBtnClick = () => {
     const formId = formIds[activeTabIndex]
@@ -158,15 +159,12 @@ const ServiceCreate = props => {
           {
             isUpdating && serviceDetail.status === 'GOT' && serviceDetail.item.type === 'C' && (<Button
               color='google plus' content='Delete Service' fluid
-              onClick={_handleOpen} size='large'/>)
+              onClick={_handleDeleteBtn} size='large'/>)
           }
         </Grid.Column>
       </Grid>
 
-      <ModalDelete
-        duckDetail={serviceDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={serviceDetailDuck}/>
     </Layout>
   )
 }

@@ -6,7 +6,6 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
 import PetKennelForm from  './create'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
@@ -14,7 +13,6 @@ import petKennelDuck from '@reducers/pet/pet-kennel'
 import petKennelDetailDuck from '@reducers/pet/pet-kennel/detail'
 
 const PetKennelList = ({ petKennel, petKennelDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPetKennels, petKennelDetail.status)
 
   useEffect(() => {
@@ -30,10 +28,8 @@ const PetKennelList = ({ petKennel, petKennelDetail, ...props }) => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(petKennel.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -57,10 +53,7 @@ const PetKennelList = ({ petKennel, petKennelDetail, ...props }) => {
           onRowClick={_handleRowClick}/>
       </Segment>
 
-      <ModalDelete
-        duckDetail={petKennelDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petKennelDetailDuck}/>
       <PetKennelForm/>
     </Layout>
   )

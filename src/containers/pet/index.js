@@ -5,8 +5,7 @@ import {  useHistory } from 'react-router-dom'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
-import useModal from '@components/Modal/useModal'
-
+import config from '@lib/constants/list-configs/pet'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
 import petDuck from '@reducers/pet'
@@ -23,7 +22,6 @@ const PetFormModal = loadable(()=> import('./form/modal'))
 const ExpressCheckInForm = loadable(()=> import('./form/express-check-in'))
 
 const PetList = ({ petDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPets,petDetail.status)
   const history = useHistory()
 
@@ -37,19 +35,15 @@ const PetList = ({ petDetail, ...props }) => {
   }
 
   const _handleOptionClick = (option,item) => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(item, 'DELETE')
-      _handleOpen()
-    }
-    else if(option === 'express_check_in') {
+    else if(option === 'express_check_in')
       props.setReservationCheckInItem({ client: item.client, pet: item.id }, 'CREATE')
-    }
-    else if(option === 'vaccination' || option === 'services') {
+    else if(option === 'vaccination' || option === 'services')
       history.push({
         pathname: `/pet/${item.id}`,
         state   : { option: option }
       })
-    }
   }
 
   const _handleExpressCheckInBtnClick = () =>{
@@ -71,16 +65,17 @@ const PetList = ({ petDetail, ...props }) => {
           </Grid.Column>
         </Grid>
         <div className='table-row-padding'>
-          <Table duck={petDuck} onOptionClick={_handleOptionClick} onOptionDropdownChange={_handleOptionClick}/>
+          <Table
+            config={config}
+            duck={petDuck}
+            onOptionClick={_handleOptionClick}
+            onOptionDropdownChange={_handleOptionClick}/>
         </div>
       </Segment>
 
       <PetFormModal/>
       <ExpressCheckInForm/>
-      <ModalDelete
-        duckDetail={petDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petDetailDuck}/>
 
     </Layout>
   )

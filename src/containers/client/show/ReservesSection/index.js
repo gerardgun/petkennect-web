@@ -11,6 +11,8 @@ import ViewReport from '@containers/pet/create/BookingSection/ReportCard'
 import Absent from '@containers/pet/create/BookingSection/Absent'
 import Training from '@containers/pet/create/BookingSection/Training'
 import Daycamp from '@containers/pet/create/BookingSection/DayCamp'
+import groomingReservationListConfig from '@lib/constants/list-configs/pet/grooming-reservation'
+import boardingReservationListConfig from '@lib/constants/list-configs/pet/boarding-reservation'
 
 import petReservationBoardingDuck from '@reducers/pet/reservation/boarding'
 import petReservationGroomingDuck from '@reducers/pet/reservation/grooming'
@@ -18,6 +20,7 @@ import petDetailDuck from '@reducers/pet/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import petReservationDuck from '@reducers/pet/reservation'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+
 import  './styles.scss'
 
 function ReservesSection({ ...props }) {
@@ -30,13 +33,6 @@ function ReservesSection({ ...props }) {
     props.setFilters({ service_type_what_ever_name: 'T', service__upcoming: true, service__current: true  })
     props.getPetReservations()
   }, [])
-
-  const _handleRowClick = () => {
-  // wip
-  }
-  const _handleRowOptionClick = () => {
-    // wip
-  }
 
   const _handleOptionDropdownChange = (optionName, item) => {
     switch (optionName)
@@ -118,10 +114,9 @@ function ReservesSection({ ...props }) {
           </Grid>
           <div className='mh28 ui-table-overflow'>
             <Table
+              config={activeServiceItem === 'G' ? groomingReservationListConfig : boardingReservationListConfig}
               duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
-              onOptionDropdownChange={_handleOptionDropdownChange}
-              onRowClick={_handleRowClick}
-              onRowOptionClick={_handleRowOptionClick}/>
+              onOptionDropdownChange={_handleOptionDropdownChange}/>
           </div>
           <ViewReport/>
           <CancelReserve/>

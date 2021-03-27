@@ -1,23 +1,19 @@
 import locationDuck from '@reducers/location'
 export default {
-  base_uri: null,
-  options : [
-    {
-      display_name: 'Delete Notification',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    },
-    {
-      display_name: 'Email',
-      name        : 'send_email',
-      icon        : 'envelope outline',
-      is_multiple : false
-    }
-  ],
-  row: {
-    options: []
+  options: {
+    single: [
+      {
+        display_name: 'Delete Notification',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      },
+      {
+        display_name: 'Email',
+        name        : 'send_email',
+        icon        : 'envelope outline'
+      }
+    ]
   },
   columns: [
     {
@@ -56,9 +52,9 @@ export default {
       align       : 'left',
       sort        : false,
       filter      : {
-        type        : 'dropdown',
-        name        : 'location',
-        source_store: locationDuck.store
+        type   : 'dropdown',
+        name   : 'location',
+        options: locationDuck.store
       }
     },
     {
@@ -69,9 +65,9 @@ export default {
       align       : 'left',
       sort        : false,
       filter      : {
-        type        : 'dropdown',
-        name        : 'status',
-        source_store: [
+        type   : 'dropdown',
+        name   : 'status',
+        options: [
           {
             value: true,
             text : 'Active'

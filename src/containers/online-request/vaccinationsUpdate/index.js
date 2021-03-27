@@ -20,7 +20,7 @@ function VaccinationUpdate({ vaccinationUpdateDetail,...props }) {
       props.getVaccinationUpdates()
   }, [ vaccinationUpdateDetail.status ])
 
-  const _handleRowOptionClick = (option, item) => {
+  const _handleRowButtonClick = (option, item) => {
     props.setItem(item, 'READ')
   }
 
@@ -36,7 +36,7 @@ function VaccinationUpdate({ vaccinationUpdateDetail,...props }) {
         <div className='table-row-padding'>
           <Table
             duck={vaccinationUpdateDuck}
-            onRowOptionClick={_handleRowOptionClick}/>
+            onRowButtonClick={_handleRowButtonClick}/>
         </div>
         <ReviewVaccination/>
       </Segment>

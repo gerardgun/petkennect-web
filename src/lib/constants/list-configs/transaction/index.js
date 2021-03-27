@@ -5,23 +5,22 @@ import { Image } from 'semantic-ui-react'
 import { defaultImageUrl } from '@lib/constants'
 
 export default {
-  base_uri: null,
-  options : [
-    {
-      display_name: 'Download Excel',
-      name        : 'download-excel',
-      icon        : 'file excel outline'
-    },
-    {
-      display_name: 'Delete Transaction',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options: {
+    basic: [
+      {
+        display_name: 'Download Excel',
+        name        : 'download-excel',
+        icon        : 'file excel outline'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Transaction',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {

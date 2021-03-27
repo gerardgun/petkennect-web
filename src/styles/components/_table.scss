@@ -3,6 +3,7 @@
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 3rem;
     margin-top: 0rem;
+    border-radius: 0rem;
 
     thead th {
       border-left: none;
@@ -11,7 +12,7 @@
       font-weight: normal;
       padding-top: 0.8rem;
       padding-bottom: 0.8rem;
-      text-transform: uppercase;     
+      text-transform: uppercase;
 
       &:hover {
         background-color: transparent;
@@ -21,7 +22,7 @@
         background: transparent;
 
         &:not(.ascending):not(.descending)::after {
-          content: '\f0dc';
+          content: "\f0dc";
         }
 
         &.ascending,
@@ -49,7 +50,13 @@
 
           .ui.image {
             cursor: default;
-            opacity: .45;
+            opacity: 0.45;
+          }
+        }
+
+        &.child {
+          td:nth-child(2) {
+            padding-left: 3rem;
           }
         }
       }
@@ -60,19 +67,19 @@
         padding-bottom: 1.5rem;
         color: #222b3bd9;
         vertical-align: middle;
-        
+
         a {
           color: #005987;
           text-decoration: underline;
         }
-        
+
         .image.profile {
           display: inline-block;
           margin-right: 0.8rem;
         }
-        .visible.menu.transition{
-          .icon{
-            color:gray !important;
+        .visible.menu.transition {
+          .icon {
+            color: gray !important;
           }
         }
       }
@@ -96,7 +103,7 @@
   }
 
   &-segment.ui.segment.dimmable {
-    padding: 0rem 1rem 0rem;
+    padding: 0rem 0rem 0rem;
     border: none;
     box-shadow: none;
     margin: 0;
@@ -113,35 +120,13 @@
   &-header.ui.grid {
     margin-bottom: 0.3em;
 
-    input[type=search] {
+    input[type="search"] {
       min-width: 18rem;
     }
   }
 
-  
-.ui.dropdown .menu {
-  right: 0 !important;
-  left : auto !important;
-}
-
-}
-
-// .table-primary-segment{
-// overflow-x: auto !important;
-// overflow-y: hidden;
-// }
-
-  @media only screen and (max-width: 767px) {
-    .table-primary-segment{
-.grid-filter-item{
-  display: inline-flex !important;
-}
-}
-.popup-filter-form{
-  min-width: auto !important;
-  .ui.button {
-    margin-top: 1rem;
-    width: 100%;
-}
-}
+  .ui.dropdown .menu {
+    right: 0 !important;
+    left: auto !important;
+  }
 }

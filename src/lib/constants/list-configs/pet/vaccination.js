@@ -4,12 +4,8 @@ import { Label } from 'semantic-ui-react'
 import { VaccinationStatus } from '@lib/constants/pet'
 
 export default {
-  base_uri      : null,
   search_enabled: false,
-  row           : {
-    options: []
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'Vaccine',
       name        : 'name',
@@ -20,7 +16,6 @@ export default {
     {
       display_name: 'File',
       name        : 'dose.document_path',
-      type        : null, // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
       formatter   : value => {

@@ -11,6 +11,9 @@ import moment from 'moment'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Table from '@components/Table'
+import groomingReservationAddonListConfig from '@lib/constants/list-configs/pet/grooming-reservation-addon'
+import feedingAddonListConfig from '@lib/constants/list-configs/pet/boarding-reservation-feeding-addon'
+import boardingAddonListConfig from '@lib/constants/list-configs/pet/boarding-reservation-addon'
 
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import clientPetDuck from '@reducers/client/pet'
@@ -873,9 +876,12 @@ const AddonForm = ({ ...props }) => {
                               </Grid.Column>
                             </Grid.Column>
                             <Grid.Column width={7}>
-                              <Table
-                                duck={feedingAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeFeed} service_type={`${reservation}feeding`}
-                                striped/>
+                              <Table config={feedingAddonListConfig} duck={feedingAddonDuck}/>
+                              {/*
+                              onOptionCheckboxChange={_handleCheckboxChangeFeed}
+                              service_type={`${reservation}feeding`}
+                              striped
+                              */}
                             </Grid.Column>
                             <Grid.Column width={16}>
                               <Header as='h4'>Frequency</Header>
@@ -1073,10 +1079,12 @@ const AddonForm = ({ ...props }) => {
                               </Grid.Column>
                             </Grid.Column>
                             <Grid.Column className='addon-table' width={7}>
-                              <Table
-                                duck={boardingReservationAddonDuck} onOptionCheckboxChange={_handleCheckboxChangeMisc}
+                              <Table config={boardingAddonListConfig} duck={boardingReservationAddonDuck}/>
+                              {/*
+                                onOptionCheckboxChange={_handleCheckboxChangeMisc}
                                 service_type={`${reservation}miscellaneousCharges`}
-                                striped/>
+                                striped
+                              */}
                             </Grid.Column>
                             <Grid.Column width={16}>
                               <Header as='h4'>Frequency</Header>
@@ -1230,9 +1238,12 @@ const AddonForm = ({ ...props }) => {
                             <br/>
                             <div className='addon-table'>
                               <Table
-                                checkboxIndex={_index}  duck={groomingReservationAddonDuck}
-                                onOptionCheckboxChange={_handleCheckboxChangeGrooming} service_type={`grooming.addon.${reservation}`}
-                                striped/>
+                                config={groomingReservationAddonListConfig}
+                                duck={groomingReservationAddonDuck}/>
+                              {/* checkboxIndex={_index}
+                                onOptionCheckboxChange={_handleCheckboxChangeGrooming}
+                                service_type={`grooming.addon.${reservation}`}
+                                striped */}
                             </div>
                             <p style={{ 'margin-left': '336px' }}><b>Total Price  ${groomingTableData.filter(_ => _.index === _index).map(_ => _.price).reduce((price1, price2) =>  Number(price1) + Number(price2), 0).toFixed(2)} </b></p>
 

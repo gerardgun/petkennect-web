@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { Grid, Header, Button, Segment } from 'semantic-ui-react'
 
 import Table from '@components/Table'
+import clientEmailListConfig from '@lib/constants/list-configs/client/email-message'
 
 import clientEmailMessageDuck from '@reducers/client/email-message'
 
@@ -31,6 +32,7 @@ const ClientEmailMessage = ({ ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={clientEmailListConfig}
           duck={clientEmailMessageDuck} onOptionDropdownChange={_handleOptionClick}/>
       </Segment>
 
@@ -42,7 +44,6 @@ export default compose(
   connect(
     ({ clientEmailMessage }) => ({
       clientEmailMessage
-
     }), {
       getEmailMessages: clientEmailMessageDuck.creators.get
     })

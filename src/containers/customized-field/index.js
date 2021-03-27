@@ -6,7 +6,6 @@ import { Button, Checkbox, Dropdown, Icon, Grid, Header, Form, Segment } from 's
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Message from '@components/Message'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
 
 import GroupCreate from './group/create'
@@ -21,15 +20,6 @@ import customizedFieldGroupDetailDuck from '@reducers/customized-field/group/det
 import './styles.scss'
 
 const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFieldGroup, customizedGroupDetail, EavEntities, ...props }) => {
-  const [ openDeleteFieldModal, {
-    _handleOpen : _handleOpenDeleteFieldModal,
-    _handleClose :  _handleCloseDeleteFieldModal
-  } ] = useModal()
-  const [ openDeleteGroupModal, {
-    _handleOpen : _handleOpenDeleteGroupModal,
-    _handleClose: _handleCloseDeleteGroupModal
-  } ] = useModal()
-
   const [ ActiveInfoItem, setActiveInfoItem ] = useState({ name: '', entitiId: '' })
 
   useChangeStatusEffect(() => props.getCustomizedFields(ActiveInfoItem.entitiId), customizedFieldDetail.status)
@@ -68,7 +58,6 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
   const _handleDeleteGroupBtnClick = (e, { itemID }) =>{
     const selectedDetail = customizedFieldGroup.item.filter(_ => _.id === itemID)
     props.setGroupItem(selectedDetail[0], 'DELETE')
-    _handleOpenDeleteGroupModal()
   }
 
   const _handleCreateFieldBtnClick = (e, { itemID }) =>{
@@ -84,7 +73,6 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
   const _handleDeleteFieldBtnClick = (e, { itemID }) =>{
     const selectedDetail = customizedField.item.filter(_ => _.id === itemID)
     props.setItem(selectedDetail[0], 'DELETE')
-    _handleOpenDeleteFieldModal()
   }
 
   const _handleHeaderGroupSortClick = (e, { index, dataOrderType }) => {
@@ -312,14 +300,8 @@ const CustomizedField = ({ customizedField, customizedFieldDetail, customizedFie
       </Segment>
       <GroupCreate/>
       <FieldCreate/>
-      <ModalDelete
-        duckDetail={customizedFieldDetailDuck}
-        onClose={_handleCloseDeleteFieldModal}
-        open={openDeleteFieldModal}/>
-      <ModalDelete
-        duckDetail={customizedFieldGroupDetailDuck}
-        onClose={_handleCloseDeleteGroupModal}
-        open={openDeleteGroupModal}/>
+      <ModalDelete duckDetail={customizedFieldDetailDuck}/>
+      <ModalDelete duckDetail={customizedFieldGroupDetailDuck}/>
     </Layout>
   )
 }

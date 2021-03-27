@@ -1,28 +1,27 @@
 
 export default {
-  base_uri          : null,
   search_placeholder: 'Search',
-  options           : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Client',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : true,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options           : {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    multiple: [
+      {
+        display_name: 'Delete Client',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {
@@ -33,9 +32,9 @@ export default {
       align       : 'left',
       sort        : true,
       filter      : {
-        type        : 'dropdown',
-        name        : 'program',
-        source_store: [
+        type   : 'dropdown',
+        name   : 'program',
+        options: [
           {
             value: 'Boarding',
             text : 'Boarding'
@@ -90,9 +89,9 @@ export default {
       align       : 'left',
       sort        : true,
       filter      : {
-        type        : 'dropdown',
-        name        : 'type',
-        source_store: [
+        type   : 'dropdown',
+        name   : 'type',
+        options: [
           {
             value: 'Service',
             text : 'Service'
@@ -129,9 +128,9 @@ export default {
       align       : 'center',
       sort        : true,
       filter      : {
-        type        : 'dropdown',
-        name        : 'Send Contract',
-        source_store: [
+        type   : 'dropdown',
+        name   : 'Send Contract',
+        options: [
           {
             value: 'Yes',
             text : 'Yes'
@@ -154,9 +153,9 @@ export default {
       align       : 'left',
       sort        : true,
       filter      : {
-        type        : 'dropdown',
-        name        : 'status',
-        source_store: [
+        type   : 'dropdown',
+        name   : 'status',
+        options: [
           {
             value: 'active',
             text : 'Active'

@@ -4,6 +4,7 @@ import { Container, Message } from 'semantic-ui-react'
 import { compose } from 'redux'
 
 import Table from '@components/Table'
+import petVaccinationListConfig from '@lib/constants/list-configs/pet/vaccination'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petVaccinationDuck from '@reducers/pet/vaccination'
@@ -19,7 +20,7 @@ function VaccinationSection(props) {
       props.getPetVaccinations()
   }, [ petDetail.status ])
 
-  const _handleRowOptionClick = (option, item) => {
+  const _handleRowButtonClick = (option, item) => {
     switch (option) {
       case 'view':
         window.open(item.dose.document_path)
@@ -50,8 +51,9 @@ function VaccinationSection(props) {
 
       <div className='mt20'>
         <Table
+          config={petVaccinationListConfig}
           duck={petVaccinationDuck}
-          onRowOptionClick={_handleRowOptionClick}/>
+          onRowButtonClick={_handleRowButtonClick}/>
       </div>
     </Container>
   )

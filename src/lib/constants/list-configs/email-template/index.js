@@ -1,26 +1,25 @@
 export default {
-  base_uri: null,
-  options : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Title',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options: {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Title',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {
@@ -32,7 +31,7 @@ export default {
       filter      : {
         type        : 'dropdown',
         name        : 'category',
-        source_store: [
+        options: [
           {
             value: 'Client',
             text : 'Client'
@@ -80,7 +79,7 @@ export default {
       filter      : {
         type        : 'dropdown',
         name        : 'is_active',
-        source_store: [
+        options: [
           {
             value: true,
             text : 'Active'

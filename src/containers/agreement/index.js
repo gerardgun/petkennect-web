@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import loadable from '@loadable/component'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import agreementListConfig from '@lib/constants/list-configs/agreement'
 
 import agreementDuck from '@reducers/agreement'
 import agreementDetailDuck from '@reducers/agreement/detail'
@@ -16,7 +16,8 @@ const Table = loadable(() => import('@components/Table'))
 const ModalDelete = loadable(() => import('@components/Modal/Delete'))
 
 const AgreementList = ({ agreement, agreementDetail ,...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const history = useHistory()
+
   useChangeStatusEffect(props.getAgreements, agreementDetail.status)
 
   useEffect(() => {
@@ -24,10 +25,12 @@ const AgreementList = ({ agreement, agreementDetail ,...props }) => {
   }, [])
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(agreement.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
+  }
+
+  const _handleRowClick = (e, item) => {
+    history.push(`/setup/agreement/${item.id}`)
   }
 
   return (
@@ -46,14 +49,13 @@ const AgreementList = ({ agreement, agreementDetail ,...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={agreementListConfig}
           duck={agreementDuck}
-          onOptionClick={_handleOptionClick}/>
+          onOptionClick={_handleOptionClick}
+          onRowClick={_handleRowClick}/>
       </Segment>
 
-      <ModalDelete
-        duckDetail={agreementDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={agreementDetailDuck}/>
 
     </Layout>
   )

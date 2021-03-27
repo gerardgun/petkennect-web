@@ -5,7 +5,6 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import Table from '@components/Table'
 import OrganizationFormModal from '@containers/organization/form/modal'
 
@@ -19,7 +18,6 @@ const Organization = props => {
   } = props
 
   // For Modal Delete
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     props.getOrganizations()
@@ -35,10 +33,8 @@ const Organization = props => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(organization.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -58,10 +54,7 @@ const Organization = props => {
       </Segment>
 
       <OrganizationFormModal/>
-      <ModalDelete
-        duckDetail={organizationDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={organizationDetailDuck}/>
     </Layout>
   )
 }

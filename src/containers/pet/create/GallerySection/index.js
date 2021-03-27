@@ -6,8 +6,6 @@ import { compose } from 'redux'
 import { Container, Header, Grid, Button } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
-import useModal from '@components/Modal/useModal'
-
 import { useChangeStatusEffect } from '@hooks/Shared'
 import useCameraAvailable from '@hooks/useCameraAvailable'
 
@@ -24,7 +22,6 @@ const GallerySection = props => {
     petImageDetail
   } = props
 
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   const { pet: petId } = useParams()
   const cameraIsAvailable = useCameraAvailable()
   useChangeStatusEffect(() => props.getPetImages({ pet_id: petId }), petImageDetail.status, [ 'POSTED', 'PUT' ])
@@ -59,7 +56,6 @@ const GallerySection = props => {
         return
       case 'delete':
         props.setItem(item, 'DELETE')
-        _handleOpen()
 
         return
     }
@@ -105,10 +101,7 @@ const GallerySection = props => {
           onItemOptionClick={_handleItemOptionClick}/>
       </div>
 
-      <ModalDelete
-        duckDetail={petImageDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petImageDetailDuck}/>
     </Container>
   )
 }

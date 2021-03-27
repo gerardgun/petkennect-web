@@ -10,11 +10,9 @@ import TrainingReasonCreate from './create'
 
 import trainingReasonDuck from '@reducers/training-reason'
 import trainingReasonDetailDuck from '@reducers/training-reason/detail'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
 
 const TrainingReason = ({ trainingReason, trainingReasonDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getTrainingReason, trainingReasonDetail.status)
 
   useEffect(() => {
@@ -30,10 +28,8 @@ const TrainingReason = ({ trainingReason, trainingReasonDetail, ...props }) => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(trainingReason.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -57,10 +53,7 @@ const TrainingReason = ({ trainingReason, trainingReasonDetail, ...props }) => {
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>
         <TrainingReasonCreate/>
-        <ModalDelete
-          duckDetail={trainingReasonDetailDuck}
-          onClose={_handleClose}
-          open={open}/>
+        <ModalDelete duckDetail={trainingReasonDetailDuck}/>
       </Segment>
 
     </Layout>

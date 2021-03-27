@@ -1,51 +1,49 @@
 import React from 'react'
 
 export default {
-  base_uri          : null,
   search_placeholder: 'Search',
-  options           : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'View Document',
-      name        : 'view_pdf',
-      icon        : 'file pdf outline',
-      is_multiple : false
-    },
-    {
-      display_name: 'Edit Document',
-      name        : 'edit',
-      icon        : 'edit outline',
-      is_multiple : false
-    },
-    {
-      display_name: 'Email Document',
-      name        : 'send_document',
-      icon        : 'envelope outline',
-      is_multiple : false
-    },
-    {
-      display_name: 'Delete Documents',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : true,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options           : {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'View Document',
+        name        : 'view_pdf',
+        icon        : 'file pdf outline'
+      },
+      {
+        display_name: 'Edit Document',
+        name        : 'edit',
+        icon        : 'edit outline'
+      },
+      {
+        display_name: 'Email Document',
+        name        : 'send_document',
+        icon        : 'envelope outline'
+      }
+    ],
+    multiple: [
+      {
+        display_name: 'Delete Documents',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {
-      display_name: 'DOCUMENT NAME',
+      display_name: 'Document Name',
       name        : 'filename',
       type        : 'string',
       width       : null,
@@ -54,7 +52,7 @@ export default {
       formatter   : cell => <a style={{ cursor: 'pointer' }}>{cell}</a>
     },
     {
-      display_name: 'TYPE',
+      display_name: 'Type',
       name        : 'type_name',
       type        : 'string',
       width       : null,
@@ -62,7 +60,7 @@ export default {
       sort        : true
     },
     {
-      display_name: 'COMMENT',
+      display_name: 'Comment',
       name        : 'description',
       type        : 'string',
       width       : null,

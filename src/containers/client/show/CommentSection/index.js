@@ -5,7 +5,6 @@ import { Container, Header, Button, Grid, Loader, Message } from 'semantic-ui-re
 import { compose } from 'redux'
 import loadable from '@loadable/component'
 
-import useModal from '@components/Modal/useModal'
 import useInfiniteScroll from '@hooks/useInfiniteScroll'
 import { getAbbreviature } from '@lib/utils/functions'
 
@@ -19,7 +18,6 @@ const ModalDelete = loadable(() => import('@components/Modal/Delete'))
 const ClientCommentFormModal = loadable(() => import('./form/modal'))
 
 function CommentSection({ clientComment, ...props }) {
-  const [ openDeleteModal, { _handleOpen, _handleClose } ] = useModal()
   useInfiniteScroll('.c-note-item', clientComment, props.getClientComments)
   const { client: clientId } = useParams()
   const [ commentId, setCommentId ] = useState(null)
@@ -44,8 +42,8 @@ function CommentSection({ clientComment, ...props }) {
 
   const _handleDeleteBtnClick = (e, data) => {
     const item = clientComment.items.find(({ id }) => id === +data['data-item-id'])
+
     props.setItem(item, 'DELETE')
-    _handleOpen()
   }
 
   const _handleReplyNoteBtnClick = (e, data) =>{
@@ -139,10 +137,7 @@ function CommentSection({ clientComment, ...props }) {
       </div>
       <NoteCreate/>
       <ClientCommentFormModal/>
-      <ModalDelete
-        duckDetail={clientCommentDetailDuck}
-        onClose={_handleClose}
-        open={openDeleteModal}/>
+      <ModalDelete duckDetail={clientCommentDetailDuck}/>
     </Container>
   )
 }

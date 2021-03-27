@@ -6,15 +6,13 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
+import emailTemplateListConfig from '@lib/constants/list-configs/email-template'
 
 import EmailTemplateCreate from './create'
 import emailTemplateDuck from '@reducers/email-template'
 import emailTemplateDetailDuck from '@reducers/email-template/detail'
 
-const EmailTemplate = ({ ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
-
+const EmailTemplate = ({ emailTemplateDetail, ...props }) => {
   useEffect(() => {
     props.getEmailTemplate()
   }, [])
@@ -25,7 +23,7 @@ const EmailTemplate = ({ ...props }) => {
 
   const _handleOptionClick = option => {
     if(option === 'delete')
-      _handleOpen()
+      props.setItem(emailTemplateDetail.item, 'DELETE')
   }
 
   return (
@@ -42,15 +40,13 @@ const EmailTemplate = ({ ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={emailTemplateListConfig}
           duck={emailTemplateDuck}
           onOptionClick={_handleOptionClick}/>
       </Segment>
 
       <EmailTemplateCreate/>
-      <ModalDelete
-        duckDetail={emailTemplateDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={emailTemplateDetailDuck}/>
 
     </Layout>
   )
@@ -61,7 +57,6 @@ export default compose(
     ({ emailTemplate ,...state }) => ({
       emailTemplate,
       emailTemplateDetail: emailTemplateDetailDuck.selectors.detail(state)
-
     }), {
       getEmailTemplate: emailTemplateDuck.creators.get,
       setItem         : emailTemplateDetailDuck.creators.setItem

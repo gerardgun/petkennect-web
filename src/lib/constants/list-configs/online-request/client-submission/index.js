@@ -2,17 +2,6 @@ import React from 'react'
 import { Label } from 'semantic-ui-react'
 
 export default {
-  base_uri: null,
-  row     : {
-    options: [
-      {
-        name        : 'review',
-        display_name: 'Review',
-        content     : 'Review',
-        color       : 'teal'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'CLIENT',
@@ -68,15 +57,29 @@ export default {
     },
     {
       display_name: 'Notes',
-      name        : 'notes',
-      type        : 'action',
-      width       : null,
-      align       : 'left',
-      sort        : true,
-      action      : {
-        name : 'view',
-        label: 'View'
-      }
+      name        : 'note',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'View',
+          name        : 'view',
+          content     : 'View',
+          color       : 'blue'
+        }
+      ]
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Review',
+          name        : 'review',
+          content     : 'Review',
+          color       : 'teal'
+        }
+      ]
     }
   ]
 }

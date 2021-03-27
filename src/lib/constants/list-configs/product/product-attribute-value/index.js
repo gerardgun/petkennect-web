@@ -1,26 +1,25 @@
 export default {
-  base_uri: null,
-  options : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Product',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options: {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Product',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {
@@ -40,13 +39,12 @@ export default {
       sort        : false
     },
     {
-      display_name      : 'Color',
-      name              : 'value',
-      type              : 'color',
-      width             : null,
-      align             : 'left',
-      sort              : false,
-      conditional_render: item => item.isColorVisible
+      display_name: 'Color',
+      name        : 'value',
+      type        : 'color',
+      width       : null,
+      align       : 'left',
+      sort        : false
     }
   ]
 }

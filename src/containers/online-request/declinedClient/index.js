@@ -26,7 +26,7 @@ function ClientSubmission({ clientSubmissionDetail, ...props }) {
       })
   }, [ clientSubmissionDetail.status ])
 
-  const _handleRowOptionClick = (optionName, item) => {
+  const _handleRowButtonClick = (optionName, item) => {
     if(optionName === 'view')
       alert('WIP')
     else if(optionName === 'review')
@@ -45,7 +45,7 @@ function ClientSubmission({ clientSubmissionDetail, ...props }) {
         <div className='table-row-padding'>
           <Table
             duck={clientSubmissionDuck}
-            onRowOptionClick={_handleRowOptionClick}/>
+            onRowButtonClick={_handleRowButtonClick}/>
         </div>
 
         <ClientSubmissionShow/>

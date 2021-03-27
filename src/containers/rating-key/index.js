@@ -9,10 +9,9 @@ import { useChangeStatusEffect } from 'src/hooks/Shared'
 
 import ratingKeyDuck from '@reducers/rating-key'
 import ratingKeyDetailDuck from '@reducers/rating-key/detail'
-import useModal from '@components/Modal/useModal'
 import RatingkeyForm from './create'
+
 const RatingKey = ({ ratingKey, ratingKeyDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getRatingKey, ratingKeyDetail.status)
 
   useEffect(() => {
@@ -28,10 +27,8 @@ const RatingKey = ({ ratingKey, ratingKeyDetail, ...props }) => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(ratingKey.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -55,10 +52,7 @@ const RatingKey = ({ ratingKey, ratingKeyDetail, ...props }) => {
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>
         <RatingkeyForm/>
-        <ModalDelete
-          duckDetail={ratingKeyDetailDuck}
-          onClose={_handleClose}
-          open={open}/>
+        <ModalDelete duckDetail={ratingKeyDetailDuck}/>
       </Segment>
 
     </Layout>

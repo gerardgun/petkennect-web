@@ -1,66 +1,4 @@
 export default {
-  base_uri: null,
-  row     : {
-    options: [
-      {
-        display_name      : 'Check In',
-        name              : 'check_in',
-        icon              : 'arrow right',
-        conditional_render: item => !item.isCheckOut
-      },
-      {
-        display_name      : 'Check Out',
-        name              : 'check_out',
-        icon              : 'check',
-        conditional_render: item => item.isCheckOut
-      }
-    ],
-    dropdownOptions: [
-      {
-        icon        : 'edit',
-        display_name: 'Edit Reserve',
-        name        : 'edit_reserve'
-      },
-      {
-        icon        : 'sticky note',
-        display_name: 'View Notes',
-        name        : 'view_notes'
-      },
-      {
-        icon        : 'edit outline',
-        display_name: 'Edit Note',
-        name        : 'edit_note'
-      },
-      {
-        icon        : 'file pdf',
-        display_name: 'Report Cards',
-        name        : 'add_report_card'
-      },
-      {
-        icon        : 'plus circle',
-        display_name: 'Add Grooming',
-        name        : 'add_grooming'
-      },
-      {
-        icon        : 'clipboard list icon',
-        display_name: 'Add-On Services',
-        name        : 'add_on'
-      },
-      {
-        icon        : 'blind',
-        display_name: 'Add Incident',
-        name        : 'add_incident'
-      },{
-        icon        : 'fast forward icon',
-        display_name: 'Convert to Boarding',
-        name        : 'convert_to_boarding'
-      },{
-        icon        : 'close',
-        display_name: 'Cancel Reservation',
-        name        : 'cancel_reservation'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Date',
@@ -92,7 +30,7 @@ export default {
       filter      : {
         type        : 'dropdown',
         name        : 'type',
-        source_store: [
+        options: [
           {
             value: 'type1',
             text : 'type1'
@@ -135,6 +73,77 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Edit Reserve',
+          name        : 'edit_reserve',
+          icon        : 'edit'
+        },
+        {
+          display_name: 'View Notes',
+          name        : 'view_notes',
+          icon        : 'sticky note'
+        },
+        {
+          display_name: 'Edit Note',
+          name        : 'edit_note',
+          icon        : 'edit outline'
+        },
+        {
+          display_name: 'Report Cards',
+          name        : 'add_report_card',
+          icon        : 'file pdf'
+        },
+        {
+          display_name: 'Add Grooming',
+          name        : 'add_grooming',
+          icon        : 'plus circle'
+        },
+        {
+          display_name: 'Add-On Services',
+          name        : 'add_on',
+          icon        : 'clipboard list icon'
+        },
+        {
+          display_name: 'Add Incident',
+          name        : 'add_incident',
+          icon        : 'blind'
+        },
+        {
+          display_name: 'Convert to Boarding',
+          name        : 'convert_to_boarding',
+          icon        : 'fast forward icon'
+        },
+        {
+          display_name: 'Cancel Reservation',
+          name        : 'cancel_reservation',
+          icon        : 'close'
+        }
+      ]
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Check In',
+          name        : 'check_in',
+          disable     : item => item.isCheckOut,
+          icon        : 'arrow right'
+        },
+        {
+          display_name: 'Check Out',
+          name        : 'check_out',
+          disable     : item => !item.isCheckOut,
+          icon        : 'check'
+        }
+      ]
     }
   ]
 }

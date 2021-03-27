@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
@@ -7,14 +8,15 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import FormCreate from './create'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import employeeListConfig from '@lib/constants/list-configs/employee'
 
 import employeeDuck from '@reducers/employee'
 import employeeDetailDuck from '@reducers/employee/detail'
 
 const EmployeeList = ({ employee, employeeeDetail ,...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+  const history = useHistory()
+
   useChangeStatusEffect(props.getEmployees, employeeeDetail.status)
 
   useEffect(() => {
@@ -26,10 +28,11 @@ const EmployeeList = ({ employee, employeeeDetail ,...props }) => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(employee.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
+    if(option === 'delete') props.setItem(employee.selector.selected_items[0], 'DELETE')
+  }
+
+  const _handleRowClick = (e, item) => {
+    history.push(`/employee/show/${item.id}`)
   }
 
   return (
@@ -49,15 +52,14 @@ const EmployeeList = ({ employee, employeeeDetail ,...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={employeeListConfig}
           duck={employeeDuck}
-          onOptionClick={_handleOptionClick}/>
+          onOptionClick={_handleOptionClick}
+          onRowClick={_handleRowClick}/>
       </Segment>
 
       <FormCreate/>
-      <ModalDelete
-        duckDetail={employeeDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={employeeDetailDuck}/>
 
     </Layout>
   )

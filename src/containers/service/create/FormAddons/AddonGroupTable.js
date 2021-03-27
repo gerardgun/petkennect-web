@@ -6,7 +6,6 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import ModalDelete from '@components/Modal/Delete'
 import SimpleTable from '@components/Common/SimpleTable'
-import useModal from '@components/Modal/useModal'
 
 import serviceDetailDuck from '@reducers/service/detail'
 import serviceAddonDuck from '@reducers/service/addon'
@@ -16,15 +15,6 @@ import serviceAddonGroupDetailDuck from '@reducers/service/addon/group/detail'
 import { defaultGroups } from './index'
 
 const AddonGroupTable = ({ ...props }) => {
-  const [ openDeleteAddonModal, {
-    _handleOpen : _handleOpenDeleteAddonModal,
-    _handleClose :  _handleCloseDeleteAddonModal
-  } ] = useModal()
-  const [ openDeleteAddonGroupModal, {
-    _handleOpen : _handleOpenDeleteAddonGroupModal,
-    _handleClose: _handleCloseDeleteAddonGroupModal
-  } ] = useModal()
-
   const _handleAddBtnClick = () => {
     props.setServiceAddonGroupItem(props.group)
     props.setServiceAddonItem(null, 'CREATE')
@@ -37,19 +27,16 @@ const AddonGroupTable = ({ ...props }) => {
     props.setServiceAddonItem(item, 'UPDATE')
   }
 
-  const _handleRowOptionClick = (option, item) => {
+  const _handleRowButtonClick = (option, item) => {
     props.setServiceAddonGroupItem(props.group)
-    if(option === 'edit') {
+    if(option === 'edit')
       props.setServiceAddonItem(item, 'UPDATE')
-    } else if(option === 'delete') {
-      props.setServiceAddonItem(item)
-      _handleOpenDeleteAddonModal()
-    }
+    else if(option === 'delete')
+      props.setServiceAddonItem(item, 'DELETE')
   }
 
   const _handleDeleteAddonGroupClick = () => {
-    props.setServiceAddonGroupItem(props.group)
-    _handleOpenDeleteAddonGroupModal()
+    props.setServiceAddonGroupItem(props.group, 'DELETE')
   }
 
   // const loading = [ 'DELETED','PUT','POSTED' ].includes(serviceAddonDetail.status) &&
@@ -84,17 +71,11 @@ const AddonGroupTable = ({ ...props }) => {
       <SimpleTable
         config={props.serviceAddon.config}
         items={props.group.addons}
-        onRowClick={_handleRowClick}
-        onRowOptionClick={_handleRowOptionClick}/>
-      <ModalDelete
-        duckDetail={serviceAddonDetailDuck}
-        onClose={_handleCloseDeleteAddonModal}
-        open={openDeleteAddonModal}/>
+        onRowButtonClick={_handleRowButtonClick}
+        onRowClick={_handleRowClick}/>
 
-      <ModalDelete
-        duckDetail={serviceAddonGroupDetailDuck}
-        onClose={_handleCloseDeleteAddonGroupModal}
-        open={openDeleteAddonGroupModal}/>
+      <ModalDelete duckDetail={serviceAddonDetailDuck}/>
+      <ModalDelete duckDetail={serviceAddonGroupDetailDuck}/>
     </Segment>
 
   )

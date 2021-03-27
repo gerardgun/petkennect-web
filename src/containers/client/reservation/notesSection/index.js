@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 
 import NoteItem from './Item'
 import NoteCreate from './create'
@@ -12,10 +11,8 @@ import petNoteDuck from '@reducers/pet/note'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 
 function Notes({ ...props }) {
-  const [ openDeleteModal, { _handleOpen, _handleClose } ] = useModal()
-
   const _handleDeleteBtnClick = () => {
-    _handleOpen()
+    props.setItem(null, 'DELETE')
   }
 
   const _handleReplyNoteBtnClick = (item) =>{
@@ -25,10 +22,7 @@ function Notes({ ...props }) {
   return (
     <>
       <NoteItem onDelete={_handleDeleteBtnClick} onReply={_handleReplyNoteBtnClick}/>
-      <ModalDelete
-        duckDetail={petNoteDetailDuck}
-        onClose={_handleClose}
-        open={openDeleteModal}/>
+      <ModalDelete duckDetail={petNoteDetailDuck}/>
       <NoteCreate/>
     </>
   )

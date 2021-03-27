@@ -1,15 +1,4 @@
 export default {
-  base_uri: null,
-  row     : {
-    options: [
-      {
-        name        : 'review',
-        display_name: 'Review',
-        content     : 'Review',
-        color       : 'teal'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Client',
@@ -38,6 +27,19 @@ export default {
       align       : 'left',
       sort        : false,
       formatter   : () => '02-RH'
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Review',
+          name        : 'review',
+          content     : 'Review',
+          color       : 'teal'
+        }
+      ]
     }
   ]
 }

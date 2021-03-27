@@ -6,6 +6,7 @@ import { Button, Header, Modal } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
 import trainingReservationGroupClassDuck from '@reducers/pet/reservation/training/reservation/group-class'
+import trainingGroupClassListConfig from '@lib/constants/list-configs/pet/training-reservation-group-class'
 
 import trainingReservationGroupClassDetailDuck from '@reducers/pet/reservation/training/reservation/group-class/detail'
 
@@ -22,9 +23,9 @@ const GroupClass = ({ ...props }) => {
     props.setGroupClassItem(props.petReservationTrainingGroupClass.item ,'READ')
   }
 
-  const _handleRadioButtonChange = (item) =>{
-    props.setGroupClassItem(item,'CREATE')
-  }
+  // const _handleRadioButtonChange = (item) =>{
+  //   props.setGroupClassItem(item,'CREATE')
+  // }
 
   const _handleCancelButtonClick = () =>{
     props.setGroupClassItem(null ,'READ')
@@ -38,7 +39,7 @@ const GroupClass = ({ ...props }) => {
 
         <Header as='h2'>Group Classes</Header>
 
-        <Table duck={trainingReservationGroupClassDuck}  onOptionRadioButtonChange={_handleRadioButtonChange} striped/>
+        <Table config={trainingGroupClassListConfig} duck={trainingReservationGroupClassDuck}/>
 
         <Button
           className='w120 mb12'
@@ -60,13 +61,12 @@ const GroupClass = ({ ...props }) => {
 
 export default compose(
   connect(
-    ({  ...state }) => ({
+    state => ({
       petReservationTrainingGroupClass: trainingReservationGroupClassDetailDuck.selectors.detail(state)
     }),
     {
       getGroupClass    : trainingReservationGroupClassDuck.creators.get,
       setGroupClassItem: trainingReservationGroupClassDetailDuck.creators.setItem
-
     }
   )
 )(GroupClass)

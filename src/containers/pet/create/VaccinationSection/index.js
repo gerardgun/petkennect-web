@@ -38,7 +38,7 @@ function VacinationSection(props) {
   const _handleRowClick = () => {
   // wip
   }
-  const _handleRowOptionClick = () => {
+  const _handleRowButtonClick = () => {
     // wip
   }
 
@@ -94,8 +94,8 @@ function VacinationSection(props) {
       <div className='mh28 mt20'>
         <Table
           duck={petVaccinationDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
+          onRowButtonClick={_handleRowButtonClick}
+          onRowClick={_handleRowClick}/>
 
       </div>
       <EmailReminderForm onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>

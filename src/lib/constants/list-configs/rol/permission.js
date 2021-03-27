@@ -1,24 +1,9 @@
 export default {
-  base_uri: null,
-  row     : {
-    options: [
-      {
-        display_name: 'Edit',
-        name        : 'edit',
-        icon        : 'edit outline'
-      },
-      {
-        display_name: 'Delete',
-        name        : 'delete',
-        icon        : 'trash alternate outline'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Seller',
       name        : 'seller_legal_name',
-      type        : 'string', // image, boolean, date, datetime, money, label
+      type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false
@@ -54,6 +39,23 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Edit',
+          name        : 'edit',
+          icon        : 'edit outline'
+        },
+        {
+          display_name: 'Delete',
+          name        : 'delete',
+          icon        : 'trash alternate outline'
+        }
+      ]
     }
   ]
 }

@@ -1,4 +1,3 @@
-import Duck from 'extensible-duck'
 import produce from 'immer'
 
 export default {
@@ -10,8 +9,7 @@ export default {
         search: '',
         ...filters
       },
-      items : [],
-      config: {},
+      items: [],
       ...rest
     }
   },
@@ -91,63 +89,6 @@ export default {
         ...filters,
         ...(pagination.params || {})
       }
-    },
-    // Filters
-    filterColumns: new Duck.Selector(selectors => state => {
-      return selectors.list(state).config.columns
-        .filter(item => Boolean(item.filter))
-    }),
-    selectedFilterColumns: new Duck.Selector(selectors => state => {
-      const filters = selectors.filters(state)
-
-      return selectors.filterColumns(state)
-        .filter(item => {
-          const filterNames = [].concat(item.filter.name) // get a flat array of filter names
-
-          return filterNames.every(item => item in filters)
-        })
-    }),
-    filterColumnSources: new Duck.Selector(selectors => state => {
-      return selectors.filterColumns(state)
-        .filter(item => 'source_store' in item.filter)
-        .reduce((a, b) => {
-          const source = b.filter.source_store
-          let sourceItems = []
-
-          if(typeof source === 'string' && source in state)  // is a reducer store
-            sourceItems = state[source].items
-              .map(item => ({
-                key  : item.id,
-                value: item.id,
-                text : item.code || item.name
-              }))
-          else if(Array.isArray(source)) // is a customize dropdown
-            sourceItems = source
-              .map((item, index) => ({
-                key  : index,
-                value: item.value,
-                text : item.text
-              }))
-
-          return { ...a, [b.filter.name]: sourceItems }
-        }, {})
-    }),
-    // Grouping
-    groups: new Duck.Selector(selectors => state => {
-      const list = selectors.list(state)
-      const config = list.config.group_by
-
-      if(!config) return []
-
-      return config.groups
-        .map(group => {
-          const items = list.items.filter(item => item[config.column_name] === group.value)
-
-          return {
-            ...group,
-            items
-          }
-        })
-    })
+    }
   })
 }

@@ -5,8 +5,6 @@ import { compose } from 'redux'
 import { Button, Header, Container, Grid, Modal } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
-import useModal from '@components/Modal/useModal'
-
 import { getAbbreviature } from '@lib/utils/functions'
 
 import petNoteDuck from '@reducers/pet/note'
@@ -16,7 +14,6 @@ const PetNoteCreate = loadable(() => import('./create'))
 const ModalDelete = loadable(() => import('@components/Modal/Delete'))
 
 const PetNoteFormModal = ({ petNote, petNoteDetail, ...props }) => {
-  const [ openDeleteModal, { _handleOpen, _handleClose } ] = useModal()
   const { pet: petId } = useParams()
 
   const { mode } = petNoteDetail
@@ -31,7 +28,7 @@ const PetNoteFormModal = ({ petNote, petNoteDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleNotesClose = () =>{
+  const _handleClose = () => {
     props.resetItem()
   }
 
@@ -39,7 +36,6 @@ const PetNoteFormModal = ({ petNote, petNoteDetail, ...props }) => {
     const item = petNote.items.find(({ id }) => id === +data['data-item-id'])
 
     props.setItem(item, 'DELETE')
-    _handleOpen()
   }
 
   return (
@@ -65,7 +61,7 @@ const PetNoteFormModal = ({ petNote, petNoteDetail, ...props }) => {
                   className='w120'
                   color='teal'
                   content='Cancel'
-                  onClick={_handleNotesClose}
+                  onClick={_handleClose}
                   type='button'/>
                 <Button color='teal' content='New Note' onClick={_handleAddBtnClick}/>
               </Grid.Column>
@@ -121,10 +117,7 @@ const PetNoteFormModal = ({ petNote, petNoteDetail, ...props }) => {
           </Container>
         </Modal.Content>
       </Modal>
-      <ModalDelete
-        duckDetail={petNoteDetailDuck}
-        onClose={_handleClose}
-        open={openDeleteModal}/>
+      <ModalDelete duckDetail={petNoteDetailDuck}/>
       <PetNoteCreate/>
     </>
   )

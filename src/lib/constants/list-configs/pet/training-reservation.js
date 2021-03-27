@@ -1,30 +1,4 @@
 export default {
-  base_uri: null,
-  row     : {
-    options        : [ ],
-    dropdownOptions: [
-      {
-        icon        : 'edit',
-        display_name: 'Edit Reserve',
-        name        : 'edit_reserve'
-      },
-      {
-        icon        : 'edit outline',
-        display_name: 'Edit Note',
-        name        : 'edit_note'
-      },
-      {
-        icon        : 'file pdf',
-        display_name: 'Report Cards',
-        name        : 'report_cards'
-      },
-      {
-        icon        : 'list icon',
-        display_name: 'Training Logs',
-        name        : 'training_logs'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Date',
@@ -46,9 +20,9 @@ export default {
       align       : 'left',
       sort        : false,
       filter      : {
-        type        : 'dropdown',
-        name        : 'packageName',
-        source_store: [
+        type   : 'dropdown',
+        name   : 'packageName',
+        options: [
           {
             value: 'package1',
             text : 'Package1'
@@ -68,9 +42,9 @@ export default {
       align       : 'left',
       sort        : false,
       filter      : {
-        type        : 'dropdown',
-        name        : 'type',
-        source_store: [
+        type   : 'dropdown',
+        name   : 'type',
+        options: [
           {
             value: 'type1',
             text : 'type1'
@@ -105,7 +79,33 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Edit Reserve',
+          name        : 'edit_reserve',
+          icon        : 'edit'
+        },
+        {
+          display_name: 'Edit Note',
+          name        : 'edit_note',
+          icon        : 'edit outline'
+        },
+        {
+          display_name: 'Report Cards',
+          name        : 'report_cards',
+          icon        : 'file pdf'
+        },
+        {
+          display_name: 'Training Logs',
+          name        : 'training_logs',
+          icon        : 'list icon'
+        }
+      ]
     }
-
   ]
 }

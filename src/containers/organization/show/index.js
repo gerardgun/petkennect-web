@@ -7,7 +7,6 @@ import { Breadcrumb, Button, Container, Grid, Header, Icon, Image, Label } from 
 import Layout from '@components/Common/Layout'
 import InputReadOnly from '@components/Common/InputReadOnly'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import { defaultImageUrl } from '@lib/constants'
 
 import organizationDetailDuck from '@reducers/organization/detail'
@@ -23,7 +22,6 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
 
   const history = useHistory()
   const { organization: organizationId } = useParams()
-  const [ open, { _handleOpen, _handleClose } ] = useModal() // For Modal Delete
 
   useEffect(() => {
     props.getOrganization(organizationId)
@@ -36,7 +34,6 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
 
   const _handleDeleteBtnClick = () => {
     props.setOrganization(organization, 'DELETE')
-    _handleOpen()
   }
 
   return (
@@ -172,10 +169,7 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
 
       </Container>
 
-      <ModalDelete
-        duckDetail={organizationDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={organizationDetailDuck}/>
     </Layout>
   )
 }

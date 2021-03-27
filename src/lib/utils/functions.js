@@ -8,6 +8,17 @@ import * as Yup from 'yup'
 
 import { Get } from '@lib/utils/http-client'
 
+export const obj2options = obj => {
+  const options = Object.entries(obj)
+    .map(([ value, text ], index) => ({
+      key: index,
+      value,
+      text
+    }))
+
+  return options
+}
+
 export const getAbbreviature = (str = '') => {
   const matches = str.match(/([\w']+)/g)
   let abbreviature = matches[0].substring(0, 2)

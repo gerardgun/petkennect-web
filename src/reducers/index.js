@@ -13,6 +13,8 @@ import client from '@reducers/client'
 import clientDetail from '@reducers/client/detail'
 import clientComment from '@reducers/client/comment'
 import clientAgreement from '@reducers/client/agreement'
+import clientAgreementSignedDuck from '@reducers/client/agreement/signed'
+import clientAgreementUnsignedDuck from '@reducers/client/agreement/unsigned'
 import clientAgreementDetail from '@reducers/client/agreement/detail'
 import clientCommentDetail from '@reducers/client/comment/detail'
 import clientDocument from '@reducers/client/document'
@@ -118,14 +120,12 @@ import productAttribute from '@reducers/product/product-attribute'
 import productAttributeDetail from '@reducers/product/product-attribute/detail'
 import productAttributeValue from '@reducers/product/product-attribute-value'
 import productAttributeValueDetail from '@reducers/product/product-attribute-value/detail'
-import productClasses from '@reducers/product/product-classes'
-import productClassesDetail from '@reducers/product/product-classes/detail'
 import priceMaster from '@reducers/price-master'
 import priceMasterDetail from '@reducers/price-master/detail'
 import productImage from '@reducers/product/image'
 import productImageDetail from '@reducers/product/image/detail'
-import productFamilies from '@reducers/product/product-families'
-import productFamiliesDetail from '@reducers/product/product-families/detail'
+import productFamily from '@reducers/product/family'
+import productFamilyDetail from '@reducers/product/family/detail'
 import productVariations from '@reducers/product/product-variations'
 import productVariationsDetail from '@reducers/product/product-variations/detail'
 import productVariationsImageDetail from '@reducers/product/product-variations/image/detail'
@@ -193,6 +193,8 @@ const createRootReducer = history => combineReducers({
   [clientDocumentType.store]                               : clientDocumentType.reducer,
   [clientDocumentTypeDetail.store]                         : clientDocumentTypeDetail.reducer,
   [clientAgreement.store]                                  : clientAgreement.reducer,
+  [clientAgreementSignedDuck.store]                        : clientAgreementSignedDuck.reducer,
+  [clientAgreementUnsignedDuck.store]                      : clientAgreementUnsignedDuck.reducer,
   [clientAgreementDetail.store]                            : clientAgreementDetail.reducer,
   [clientComment.store]                                    : clientComment.reducer,
   [clientCommentDetail.store]                              : clientCommentDetail.reducer,
@@ -296,12 +298,10 @@ const createRootReducer = history => combineReducers({
   [productAttributeDetail.store]                           : productAttributeDetail.reducer,
   [productAttributeValue.store]                            : productAttributeValue.reducer,
   [productAttributeValueDetail.store]                      : productAttributeValueDetail.reducer,
-  [productClasses.store]                                   : productClasses.reducer,
-  [productClassesDetail.store]                             : productClassesDetail.reducer,
   [productImage.store]                                     : productImage.reducer,
   [productImageDetail.store]                               : productImageDetail.reducer,
-  [productFamilies.store]                                  : productFamilies.reducer,
-  [productFamiliesDetail.store]                            : productFamiliesDetail.reducer,
+  [productFamily.store]                                    : productFamily.reducer,
+  [productFamilyDetail.store]                              : productFamilyDetail.reducer,
   [productPackage.store]                                   : productPackage.reducer,
   [productPackageDetail.store]                             : productPackageDetail.reducer,
   [productVariations.store]                                : productVariations.reducer,

@@ -42,7 +42,7 @@ function BookingSection({ petDetail, ...props }) {
   const _handleRowClick = () => {
   // wip
   }
-  const _handleRowOptionClick = () => {
+  const _handleRowButtonClick = () => {
     // wip
   }
 
@@ -132,8 +132,8 @@ function BookingSection({ petDetail, ...props }) {
             <Table
               duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
               onOptionDropdownChange={_handleOptionDropdownChange}
-              onRowClick={_handleRowClick}
-              onRowOptionClick={_handleRowOptionClick}/>
+              onRowButtonClick={_handleRowButtonClick}
+              onRowClick={_handleRowClick}/>
           </div>
           <ViewReport/>
           <CancelReserve/>

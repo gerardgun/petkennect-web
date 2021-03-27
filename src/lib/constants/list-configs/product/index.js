@@ -1,37 +1,35 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Image } from 'semantic-ui-react'
 
 import { defaultImageUrl } from '@lib/constants'
 
 export default {
-  base_uri          : null,
   search_placeholder: 'Search by product name',
-  options           : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Product',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options           : {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Product',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {
-      display_name: 'Name',
+      display_name: 'Product Name',
       name        : 'name',
       type        : 'string',
       width       : null,
@@ -39,12 +37,12 @@ export default {
       sort        : true,
       formatter   : (cell, row) => {
         return (
-          <Link to={`/product/${row.id}`}>
+          <>
             <Image
               className='profile' rounded size='mini'
-              src={row.image_filepath || defaultImageUrl}/>
+              src={row.filepath || defaultImageUrl}/>
             <span>{cell}</span>
-          </Link>
+          </>
         )
       }
     },
@@ -54,10 +52,26 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : cell => {
+        const auth_tenant = localStorage.getItem('@auth_tenant')
+
+        return <a href={`https://${auth_tenant}.petkennect.com/${cell}`} rel='noopener noreferrer' target='_blank'>{cell}</a>
+      }
     },
     {
-      display_name: 'Price',
+      display_name: 'Class',
+      name        : 'family',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false,
+      formatter   : (cell, row) => {
+        return cell == null ? '' : row.product_family.name
+      }
+    },
+    {
+      display_name: 'Base Price',
       name        : 'price',
       type        : 'money',
       width       : null,
@@ -83,14 +97,6 @@ export default {
     {
       display_name: 'Outstanding',
       name        : 'is_outstanding',
-      type        : 'boolean',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Package',
-      name        : 'is_package',
       type        : 'boolean',
       width       : null,
       align       : 'left',

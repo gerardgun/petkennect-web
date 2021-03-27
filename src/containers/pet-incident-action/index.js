@@ -6,7 +6,6 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
 import PetIncidentActionForm from  './Form'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
@@ -14,7 +13,6 @@ import petIncidentActionDuck from '@reducers/pet/incident-action'
 import petIncidentActionDetailDuck from '@reducers/pet/incident-action/detail'
 
 const PetIncidentActionList = ({ petIncidentAction, petIncidentActionDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPetIncidentActions, petIncidentActionDetail.status)
 
   useEffect(() => {
@@ -30,10 +28,8 @@ const PetIncidentActionList = ({ petIncidentAction, petIncidentActionDetail, ...
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(petIncidentAction.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -58,10 +54,7 @@ const PetIncidentActionList = ({ petIncidentAction, petIncidentActionDetail, ...
       </Segment>
 
       <PetIncidentActionForm/>
-      <ModalDelete
-        duckDetail={petIncidentActionDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petIncidentActionDetailDuck}/>
 
     </Layout>
   )

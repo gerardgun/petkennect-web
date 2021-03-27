@@ -6,7 +6,6 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
 import PetVaccinationTypeForm from  './form'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
@@ -14,7 +13,6 @@ import petVaccinationTypeDuck from '@reducers/pet/vaccination-type'
 import petVaccinationTypeDetailDuck from '@reducers/pet/vaccination-type/detail'
 
 const PetVaccinationTypeList = ({ petVaccinationType, petVaccinationTypeDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPetVaccinationType, petVaccinationTypeDetail.status)
 
   useEffect(() => {
@@ -30,10 +28,8 @@ const PetVaccinationTypeList = ({ petVaccinationType, petVaccinationTypeDetail, 
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(petVaccinationType.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -57,10 +53,7 @@ const PetVaccinationTypeList = ({ petVaccinationType, petVaccinationTypeDetail, 
           onRowClick={_handleRowClick}/>
       </Segment>
       <PetVaccinationTypeForm/>
-      <ModalDelete
-        duckDetail={petVaccinationTypeDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petVaccinationTypeDetailDuck}/>
 
     </Layout>
   )

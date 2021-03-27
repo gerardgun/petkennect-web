@@ -1,18 +1,14 @@
 export default {
-  base_uri      : null,
   search_enabled: false,
-
-  options: [
-    {
-      display_name: 'Delete Kennel Area',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options       : {
+    single: [
+      {
+        display_name: 'Delete Kennel Area',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {

@@ -11,9 +11,10 @@ import Agreement from '@containers/agreement'
 import AgreementCreate from '@containers/agreement/create'
 import AuthMe from '@containers/auth/me'
 import BehaviorTag from '@containers/behavior-tag'
+import Category from '@containers/category'
+import ColorCode from '@containers/color-code'
 import Dashboard from '@containers/dashboard'
 import DayCampForm from '@containers/day-camp-form'
-import ColorCode from '@containers/color-code'
 import Client from '@containers/client'
 import ClientShow from '@containers/client/show'
 import ClientBook from '@containers/client/reservation'
@@ -42,16 +43,12 @@ import PetYardType from '@containers/pet-yard-type'
 import PriceMaster from '@containers/price-master'
 import PriceMasterCreate from '@containers/price-master/create'
 import PackagePricing from '@containers/package-pricing'
-import Product from '@containers/product'
-import ProductCreate from '@containers/product/create/RootProvider'
 import ProductAttribute from '@containers/product-attribute'
 import ProductAttributeValue from '@containers/product-attribute-value'
-import ProductClasses from '@containers/product-classes'
-import ProductFamilies from '@containers/product-families'
-import ProductFamiliesShow from '@containers/product-families/show'
+import ProductFamily from '@containers/product/family'
+import Product from '@containers/product'
+import ProductShow from '@containers/product/show'
 import RatingKey from '@containers/rating-key'
-import Category from '@containers/category'
-// import PetBreed from '@containers/product/create'
 import CustomReport from '@containers/custom-report'
 import EmployeeTitle from '@containers/employee-title'
 import Employee from '@containers/employee'
@@ -67,7 +64,6 @@ import ConfirmReservations from '@containers/online-request/confirmReservation'
 import CancellationsLogs from '@containers/online-request/cancellationLog'
 import DeclinedClients from '@containers/online-request/declinedClient'
 import VaccinationsUpdate from '@containers/online-request/vaccinationsUpdate'
-// import FoundationDetail from '@containers/foundation/detail'
 import Company from '@containers/company'
 import CompanyEdit from '@containers/company/edit'
 import CompanyShow from '@containers/company/show'
@@ -78,20 +74,6 @@ import TrainingCommand from '@containers/training-command'
 import TrainingMethod from '@containers/training-method'
 import TrainingReason from '@containers/training-reason'
 import Transaction from '@containers/transaction'
-// import Grant from '@containers/grant'
-// import GrantAdd from '@containers/grant/add'
-// import GrantDetail from '@containers/grant/detail'
-// import Grantee from '@containers/grantee'
-// import GranteeAdd from '@containers/grantee/add'
-// import GranteeDetail from '@containers/grantee/detail'
-// import GranteeFocusAreaDetail from '@containers/grantee/focus_area/detail'
-// import ProgramEvaluation from '@containers/program_evaluation'
-// import ProgramEvaluationAdd from '@containers/program_evaluation/add'
-// import ProgramEvaluationDetail from '@containers/program_evaluation/detail'
-// import Proposal from '@containers/proposal'
-// import ProposalAdd from '@containers/proposal/add'
-// import ProposalDetail from '@containers/proposal/detail'
-// import ServedAreaDetail from '@containers/served_area/detail'
 import User from '@containers/user'
 
 const publicRoutes = [
@@ -261,12 +243,8 @@ const privateRoutes = [
     component: Product
   },
   {
-    path     : '/product/create',
-    component: ProductCreate
-  },
-  {
-    path     : '/product/:id',
-    component: ProductCreate
+    path     : '/product/:id(\\d+)',
+    component: ProductShow
   },
   {
     path     : '/product-attribute',
@@ -277,16 +255,8 @@ const privateRoutes = [
     component: ProductAttributeValue
   },
   {
-    path     : '/product-classes',
-    component: ProductClasses
-  },
-  {
-    path     : '/product-families',
-    component: ProductFamilies
-  },
-  {
-    path     : '/product-families/show/:id',
-    component: ProductFamiliesShow
+    path     : '/product/family',
+    component: ProductFamily
   },
   {
     path     : '/category',

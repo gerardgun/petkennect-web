@@ -4,6 +4,13 @@ import { compose } from 'redux'
 import { Grid, Segment, Menu, Label, Button, Icon } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
+import dashboardDaycampListConfig from '@lib/constants/list-configs/dashboard/daycamp/daycamp'
+import dashboardDaycampCheckedInListConfig from '@lib/constants/list-configs/dashboard/daycamp/daycampCheckedIn'
+import dashboardDaycampCheckedOutListConfig from '@lib/constants/list-configs/dashboard/daycamp/daycampCheckedOut'
+import dashboardBoardingListConfig from '@lib/constants/list-configs/dashboard/boarding/boarding'
+import dashboardBoardingCheckedOutListConfig from '@lib/constants/list-configs/dashboard/boarding/boardingCheckedOut'
+import dashboardBoardingCheckedInListConfig from '@lib/constants/list-configs/dashboard/boarding/boardingCheckedIn'
+
 import dayCampDashboardDuck from '@reducers/dashboard/daycamp'
 import daycampDashboardCheckedInDuck  from '@reducers/dashboard/daycamp/daycampCheckedIn'
 import daycampDashboardCheckedOutDuck  from '@reducers/dashboard/daycamp/daycampCheckedOut'
@@ -51,21 +58,21 @@ const Dashboard = ({ ...props }) => {
                     </Grid.Row>
                   </Grid>
                 </Menu.Item>
-                <Table duck={dayCampDashboardDuck}/>
+                <Table config={dashboardDaycampListConfig} duck={dayCampDashboardDuck}/>
               </Segment>
             </Grid.Column>
 
             <Grid.Column className='table-column'>
               <Segment  className='table-segment table-heading-padding'>
                 <Menu.Item className='menu-info count-label'>Checked In<Label>{3}</Label></Menu.Item>
-                <Table duck={daycampDashboardCheckedInDuck}/>
+                <Table config={dashboardDaycampCheckedInListConfig} duck={daycampDashboardCheckedInDuck}/>
               </Segment>
             </Grid.Column>
 
             <Grid.Column>
               <Segment className='table-segment table-heading-padding'>
                 <Menu.Item className='menu-info count-label'>Checked Out<Label>{2}</Label></Menu.Item>
-                <Table duck={daycampDashboardCheckedOutDuck}/>
+                <Table config={dashboardDaycampCheckedOutListConfig} duck={daycampDashboardCheckedOutDuck}/>
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -84,7 +91,7 @@ const Dashboard = ({ ...props }) => {
                   </Grid>
                 </Menu.Item>
                 <div style={{ width: '100%', overflow: 'auto' }}>
-                  <Table duck={boardingDashboardDuck}/>
+                  <Table config={dashboardBoardingListConfig} duck={boardingDashboardDuck}/>
                 </div>
               </Segment>
             </Grid.Column>
@@ -92,14 +99,14 @@ const Dashboard = ({ ...props }) => {
             <Grid.Column className='table-column'>
               <Segment  className='table-segment table-heading-padding'>
                 <Menu.Item className='menu-info count-label'>Check Outs<Label>{1}</Label></Menu.Item>
-                <Table duck={boardingDashboardCheckedOutDuck}/>
+                <Table config={dashboardBoardingCheckedOutListConfig} duck={boardingDashboardCheckedOutDuck}/>
               </Segment>
             </Grid.Column>
 
             <Grid.Column>
               <Segment className='table-segment table-heading-padding'>
                 <Menu.Item className='menu-info count-label'>In Boarding<Label>{2}</Label></Menu.Item>
-                <Table duck={boardingDashboardCheckedInDuck}/>
+                <Table config={dashboardBoardingCheckedInListConfig} duck={boardingDashboardCheckedInDuck}/>
               </Segment>
             </Grid.Column>
           </Grid.Row>

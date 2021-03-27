@@ -7,29 +7,28 @@ import { formatPhoneNumber } from '@lib/utils/functions'
 import locationDuck from '@reducers/location'
 
 export default {
-  base_uri          : null,
   search_placeholder: 'Search by name or email',
-  options           : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Client',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : true,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options           : {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    multiple: [
+      {
+        display_name: 'Delete Client',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {
@@ -133,9 +132,9 @@ export default {
       sort        : true,
       sort_name   : 'location__code',
       filter      : {
-        type        : 'dropdown',
-        name        : 'location__id',
-        source_store: locationDuck.store
+        type   : 'dropdown',
+        name   : 'location__id',
+        options: locationDuck.store
       }
     },
     {

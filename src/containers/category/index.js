@@ -5,8 +5,6 @@ import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
-import useModal from '@components/Modal/useModal'
-
 import categoryDuck from '@reducers/category'
 import categoryDetailDuck from '@reducers/category/detail'
 import { useChangeStatusEffect } from '@hooks/Shared'
@@ -18,7 +16,6 @@ const SortableList = loadable(() => import('./SortableList'))
 
 const CategoryList = ({ ...props }) => {
   const { categoryDetail : { status } = {}, category } = props
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     props.getCategories()
@@ -35,27 +32,9 @@ const CategoryList = ({ ...props }) => {
   }
 
   const _handleDeleteClick = (id) => {
-    props.setItem({ id })
-    _handleOpen()
+    props.setItem({ id }, 'DELETE')
   }
-  /** future implementation with "order" field */
-  // const getTreeCategories = useMemo(() => {
-  //   const _categories = category.items
-  //   const groupByParentCategory = _groupBy(_categories,'parent')
-  //   const rootCategories = _orderBy(groupByParentCategory[null], [ 'order','id' ],[ 'asc','asc' ])
 
-  //   return rootCategories
-  //     .map(_rootCategory => ({
-  //       ..._rootCategory,
-  //       children: groupByParentCategory[_rootCategory.id]
-  //     }))
-  //     .map(_rootCategory=>({
-  //       ..._rootCategory ,
-  //       children: _rootCategory.children
-  //         ? _orderBy(_rootCategory.children, [ 'order','id' ],[ 'asc','asc' ])
-  //         : _rootCategory.children
-  //     }))
-  // }, [ category.items ])
   return (
     <Layout>
       <Segment className='segment-content' padded='very'>
@@ -76,12 +55,9 @@ const CategoryList = ({ ...props }) => {
         <SortableList items={category.items} onDelete={_handleDeleteClick} onUpdate={_handleUpdateClick}/>
 
       </Segment>
-      <CategoryForm/>
-      <ModalDelete
-        duckDetail={categoryDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
 
+      <CategoryForm/>
+      <ModalDelete duckDetail={categoryDetailDuck}/>
     </Layout>
   )
 }

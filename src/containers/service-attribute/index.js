@@ -7,7 +7,6 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
 
 import ServiceAttributeCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
@@ -16,8 +15,6 @@ import serviceAttributeDuck from '@reducers/service/service-attribute'
 import serviceAttributeDetailDuck from '@reducers/service/service-attribute/detail'
 
 const ServiceAttributeList = ({ serviceAttribute, serviceAttributeDetail, ...props }) => {
-  const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
-
   const history = useHistory()
 
   useChangeStatusEffect(props.getServiceAttributes, serviceAttributeDetail.status)
@@ -31,13 +28,11 @@ const ServiceAttributeList = ({ serviceAttribute, serviceAttributeDetail, ...pro
   }, [])
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(serviceAttribute.selector.selected_items[0], 'DELETE')
-      _handleOpenDeleteModal()
-    }
   }
 
-  const _handleRowOptionClick = (option, item) => {
+  const _handleRowButtonClick = (option, item) => {
     props.setItem(item)
     history.push(`/service-attribute-value/${item.id}`)
   }
@@ -69,15 +64,12 @@ const ServiceAttributeList = ({ serviceAttribute, serviceAttributeDetail, ...pro
         <Table
           duck={serviceAttributeDuck}
           onOptionClick={_handleOptionClick}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
-
+          onRowButtonClick={_handleRowButtonClick}
+          onRowClick={_handleRowClick}/>
       </Segment>
+
       <ServiceAttributeCreate/>
-      <ModalDelete
-        duckDetail={serviceAttributeDetailDuck}
-        onClose={_handleCloseDeleteModal}
-        open={openDeleteModal}/>
+      <ModalDelete duckDetail={serviceAttributeDetailDuck}/>
 
     </Layout>
   )

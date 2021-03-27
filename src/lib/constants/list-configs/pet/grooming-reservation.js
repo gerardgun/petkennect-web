@@ -1,55 +1,4 @@
 export default {
-  base_uri: null,
-  row     : {
-    options: [
-      {
-        display_name      : 'Check In',
-        name              : 'check_in',
-        icon              : 'arrow right',
-        conditional_render: item => item.is_pending
-      },
-      {
-        display_name      : 'Check Out',
-        name              : 'check_out',
-        icon              : 'check',
-        conditional_render: item => !item.is_pending
-      }
-    ],
-    dropdownOptions: [
-      {
-        icon        : 'edit',
-        display_name: 'Edit Reserve',
-        name        : 'edit_reserve'
-      },
-      {
-        icon        : 'eye',
-        display_name: 'View Report',
-        name        : 'view_report'
-      },
-      {
-        icon        : 'edit outline',
-        display_name: 'Edit Note',
-        name        : 'edit_note'
-      },
-      {
-        icon              : 'widnow close outline',
-        display_name      : 'Cancel CheckIn',
-        name              : 'cancel_checkIn',
-        conditional_render: item => item.is_pending
-      },
-      {
-        icon              : 'trash alternate outline',
-        display_name      : 'Absent',
-        name              : 'absent',
-        conditional_render: item => !item.is_pending
-      },
-      {
-        icon        : 'close',
-        display_name: 'Cancel Reserve',
-        name        : 'cancel_reserve'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'RESERVATION DATE',
@@ -91,6 +40,64 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Edit Reserve',
+          name        : 'edit_reserve',
+          icon        : 'edit'
+        },
+        {
+          display_name: 'View Report',
+          name        : 'view_report',
+          icon        : 'eye'
+        },
+        {
+          display_name: 'Edit Note',
+          name        : 'edit_note',
+          icon        : 'edit outline'
+        },
+        {
+          display_name: 'Cancel CheckIn',
+          name        : 'cancel_checkIn',
+          disable     : item => !item.is_pending,
+          icon        : 'widnow close outline'
+        },
+        {
+          display_name: 'Absent',
+          name        : 'absent',
+          disable     : item => item.is_pending,
+          icon        : 'trash alternate outline'
+        },
+        {
+          display_name: 'Cancel Reserve',
+          name        : 'cancel_reserve',
+          icon        : 'close'
+        }
+      ]
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Check In',
+          name        : 'check_in',
+          disable     : item => !item.is_pending,
+          icon        : 'arrow right'
+        },
+        {
+          display_name: 'Check Out',
+          name        : 'check_out',
+          disable     : item => item.is_pending,
+          icon        : 'check'
+        }
+      ]
     }
   ]
 }

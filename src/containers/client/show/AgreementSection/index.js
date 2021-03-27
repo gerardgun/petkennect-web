@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Container, Grid, Header } from 'semantic-ui-react'
+import { Container, Grid, Header, Icon } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
 import { downloadFileURL, printFileURL } from '@lib/utils/functions'
 
 import clientAgreementDuck from '@reducers/client/agreement'
+import clientAgreementSignedDuck from '@reducers/client/agreement/signed'
+import clientAgreementUnsignedDuck from '@reducers/client/agreement/unsigned'
 import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
+import clientAgreementListConfig from '@lib/constants/list-configs/client/agreement'
 
 import './styles.scss'
 
@@ -22,7 +25,7 @@ function AgreementsSection({ clientAgreementDetail, ...props }) {
     if(clientAgreementDetail.status  === 'POSTED') props.getClientAgreements()
   }, [ clientAgreementDetail.status ])
 
-  const _handleRowOptionClick = (option, item) => {
+  const _handleRowButtonClick = (option, item) => {
     if(option === 'view_pdf')
       props.setItem(item, 'READ')
     else if(option === 'print')
@@ -43,9 +46,26 @@ function AgreementsSection({ clientAgreementDetail, ...props }) {
         </Grid.Column>
       </Grid>
       <div className='mt40 mh8'>
+
+        <p>
+          <Icon name='flag outline'/>
+          <span>Pending</span>
+        </p>
+
         <Table
-          duck={clientAgreementDuck}
-          onRowOptionClick={_handleRowOptionClick}/>
+          config={clientAgreementListConfig}
+          duck={clientAgreementUnsignedDuck}
+          onRowButtonClick={_handleRowButtonClick}/>
+
+        <p>
+          <Icon name='flag outline'/>
+          <span>Signed</span>
+        </p>
+
+        <Table
+          config={clientAgreementListConfig}
+          duck={clientAgreementSignedDuck}
+          onRowButtonClick={_handleRowButtonClick}/>
 
         <ClientDocumentFormSendModal/>
         <ShowAgreement/>

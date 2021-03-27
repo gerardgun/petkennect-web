@@ -11,6 +11,7 @@ import FormField from '@components/Common/FormField'
 import InputMask from '@components/Common/InputMask'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
+import requestClientDocumentListConfig from '@lib/constants/list-configs/online-request/client-submission/client-document'
 
 import RejectForm from './rejectForm'
 import PetInfo from './pets/petInfo'
@@ -276,6 +277,7 @@ const NewClientSubmission = props => {
     </Tab.Pane>) },
     { menuItem: 'Documents', render  : () => (<Tab.Pane>
       <Table
+        config={requestClientDocumentListConfig}
         duck={clientDocumentDuck}
         onOptionClick={_handleOptionClick}
         onRowClick={_handleRowClick}/>

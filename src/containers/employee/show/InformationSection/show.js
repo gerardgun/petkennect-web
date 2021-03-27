@@ -5,24 +5,24 @@ import { compose } from 'redux'
 import { Button, Grid, Header, Form, Container } from 'semantic-ui-react'
 
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 
 import employeeDuck from '@reducers/employee'
 import employeeDetailDuck from '@reducers/employee/detail'
 
 function EmployeeShow({ employeeDetail , ...props }) {
   const { item: employee } = employeeDetail
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   const history = useHistory()
 
-  useEffect(()=> {
+  useEffect(() => {
     if(employeeDetail.status === 'DELETED')
       history.replace('/employee')
   }, [ employeeDetail.status ])
+
   const _handleDeleteClick = () => {
-    _handleOpen()
+    props.setEmployee(employeeDetail.item, 'DELETE')
   }
+
   const _handleEditBtnClick = () => {
     props.setEmployee(employeeDetail, 'UPDATE')
   }
@@ -61,10 +61,7 @@ function EmployeeShow({ employeeDetail , ...props }) {
         </Form.Group>
       </Form>
 
-      <ModalDelete
-        duckDetail={employeeDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={employeeDetailDuck}/>
 
     </Container>
   )

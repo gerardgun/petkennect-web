@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 
-import { Header , Grid, Segment } from 'semantic-ui-react'
+import { Grid, Header, Icon, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
-
+import config from '@lib/constants/list-configs/online-request/confirm-reservation'
 import ViewNoteSection from '../notesSection/view'
 
 import confirmReservationsDuck from '@reducers/online-request/confirm-reservation'
@@ -20,7 +20,7 @@ function ConfirmReservations({ ...props }) {
 
   const history = useHistory()
 
-  const _handleRowOptionClick = (optionName, item) => {
+  const _handleRowButtonClick = (optionName, item) => {
     if(optionName === 'view')
       props.setNoteItem(item, 'READ')
     else if(optionName === 'review')
@@ -42,9 +42,26 @@ function ConfirmReservations({ ...props }) {
           </Grid.Column>
         </Grid>
         <div className='table-row-padding'>
+
+          <p>
+            <Icon name='flag outline'/>
+            <span>Ready</span>
+          </p>
+
           <Table
+            config={config}
             duck={confirmReservationsDuck}
-            onRowOptionClick={_handleRowOptionClick}/>
+            onRowButtonClick={_handleRowButtonClick}/>
+
+          <p>
+            <Icon name='flag outline'/>
+            <span>Unfinished</span>
+          </p>
+
+          <Table
+            config={config}
+            duck={confirmReservationsDuck}
+            onRowButtonClick={_handleRowButtonClick}/>
         </div>
         <ViewNoteSection/>
       </Segment>

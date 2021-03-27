@@ -2,42 +2,6 @@ import React from 'react'
 import { FaFileSignature } from 'react-icons/fa'
 
 export default {
-  base_uri: null,
-  row     : {
-    options        : [ ],
-    dropdownOptions: [
-      {
-        icon        : 'calendar alternate outline icon',
-        display_name: 'Add Reservation',
-        name        : 'reservation'
-      },
-      {
-        icon        : 'trophy',
-        display_name: 'Training Performance',
-        name        : 'view_performance'
-      },
-      {
-        icon        : 'address card outline',
-        display_name: 'Report Cards',
-        name        : 'view_report_card'
-      },
-      {
-        iconTag     : <><FaFileSignature/></>,
-        display_name: 'Digitally Sign Agreement in Person',
-        name        : 'digitally_sign'
-      },
-      {
-        icon        : 'mail',
-        display_name: 'Contract to Agreement',
-        name        : 'email'
-      },
-      {
-        icon        : 'print',
-        display_name: 'Print Agreement',
-        name        : 'email'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Package',
@@ -49,7 +13,7 @@ export default {
       filter      : {
         type        : 'dropdown',
         name        : 'packageName',
-        source_store: [
+        options: [
           {
             value: 'package1',
             text : 'Package1'
@@ -91,7 +55,7 @@ export default {
       filter      : {
         type        : 'dropdown',
         name        : 'type',
-        source_store: [
+        options: [
           {
             value: 'type1',
             text : 'type1'
@@ -110,7 +74,43 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Add Reservation',
+          name        : 'reservation',
+          icon        : 'calendar alternate outline icon'
+        },
+        {
+          display_name: 'Training Performance',
+          name        : 'view_performance',
+          icon        : 'trophy'
+        },
+        {
+          display_name: 'Report Cards',
+          name        : 'view_report_card',
+          icon        : 'address card outline'
+        },
+        {
+          display_name: 'Digitally Sign Agreement in Person',
+          name        : 'digitally_sign',
+          icon        : <FaFileSignature/>
+        },
+        {
+          display_name: 'Contract to Agreement',
+          name        : 'email',
+          icon        : 'mail'
+        },
+        {
+          display_name: 'Print Agreement',
+          name        : 'email',
+          icon        : 'print'
+        }
+      ]
     }
-
   ]
 }

@@ -6,7 +6,6 @@ import { submit, getFormSyncErrors, getFormValues, destroy, reset } from 'redux-
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
-import useModal from '@components/Modal/useModal'
 import { parseFormValues, parseResponseError } from '@lib/utils/functions'
 
 import agreementDetailDuck from '@reducers/agreement/detail'
@@ -30,7 +29,6 @@ const AgreementCreate = props => {
   } = props
 
   const [ activeTabIndex ] = useState(0)
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(()=> {
     if(isUpdating)
@@ -46,6 +44,10 @@ const AgreementCreate = props => {
     if(agreementDetail.status === 'DELETED')
       history.replace('/setup/agreement/')
   }, [ agreementDetail.status ])
+
+  const _handleDeleteBtn = () => {
+    props.setAgreement(agreementDetail.item, 'DELETE')
+  }
 
   const _handleSaveBtnClick = () => {
     const formId = formIds[activeTabIndex]
@@ -105,16 +107,13 @@ const AgreementCreate = props => {
             {
               isUpdating &&  (<Button
                 color='google plus' content='Delete Agreement' fluid
-                onClick={_handleOpen} size='large'/>)
+                onClick={_handleDeleteBtn} size='large'/>)
             }
           </Segment>
         </Grid.Column>
       </Grid>
 
-      <ModalDelete
-        duckDetail={agreementDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={agreementDetailDuck}/>
     </Layout>
   )
 }
@@ -134,10 +133,11 @@ export default compose(
       submit,
       destroy,
       reset,
-      resetItem: agreementDetailDuck.creators.resetItem,
-      post     : agreementDetailDuck.creators.post,
-      get      : agreementDetailDuck.creators.get,
-      put      : agreementDetailDuck.creators.put
+      resetItem   : agreementDetailDuck.creators.resetItem,
+      setAgreement: agreementDetailDuck.creators.setItem,
+      post        : agreementDetailDuck.creators.post,
+      get         : agreementDetailDuck.creators.get,
+      put         : agreementDetailDuck.creators.put
     }
   )
 )(AgreementCreate)

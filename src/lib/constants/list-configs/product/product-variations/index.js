@@ -1,17 +1,14 @@
 export default {
-  base_uri          : null,
   search_placeholder: 'Search by product name',
-  options           : [
-    {
-      display_name: 'Delete Product',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options           : {
+    single: [
+      {
+        display_name: 'Delete Product',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {

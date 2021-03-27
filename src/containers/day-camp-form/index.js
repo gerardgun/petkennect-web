@@ -8,7 +8,6 @@ import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import Message from '@components/Message'
 import { parseResponseError } from '@lib/utils/functions'
 import VersionCreate from './create'
@@ -182,11 +181,6 @@ const DayCampForm = props => {
   const [ is_active, setIsActive ] = useState(null)
   const [ activeVersion, setActiveVersion ] = useState(null)
 
-  const [ openDeleteVersionModal, {
-    _handleOpen : _handleOpenDeleteVersionModal,
-    _handleClose :  _handleCloseDeleteVersionModal
-  } ] = useModal()
-
   useEffect(() => {
     props.getDaycampCards()
   }, [])
@@ -236,9 +230,9 @@ const DayCampForm = props => {
 
   const _handleDeleteVersionBtnClick = () =>{
     const currentCardDetail = daycampCard.item && daycampCard.item.find(_version => _version.id == activeVersion)
+
     if(currentCardDetail)
       props.setItem(currentCardDetail, 'DELETE')
-    _handleOpenDeleteVersionModal()
   }
 
   const _handleSubmit = values => {
@@ -363,10 +357,7 @@ const DayCampForm = props => {
         </Form>
       </Segment>
       <VersionCreate/>
-      <ModalDelete
-        duckDetail={daycampCardDetailDuck}
-        onClose={_handleCloseDeleteVersionModal}
-        open={openDeleteVersionModal}/>
+      <ModalDelete duckDetail={daycampCardDetailDuck}/>
     </Layout>
   )
 }

@@ -105,12 +105,10 @@ import productAttribute from './product/product-attribute'
 import productAttributeDetail from './product/product-attribute/detail'
 import productAttributeValue from './product/product-attribute-value'
 import productAttributeValueDetail from './product/product-attribute-value/detail'
-import productClasses from './product/product-classes'
-import productClassesDetail from './product/product-classes/detail'
 import productImage from './product/image'
 import productImageDetail from './product/image/detail'
-import productFamilies from './product/product-families'
-import productFamiliesDetail from './product/product-families/detail'
+import productFamily from './product/family'
+import productFamilyDetail from './product/family/detail'
 import productPackage from './product/package'
 import productPackageDetail from './product/package/detail'
 import productVariations from './product/product-variations'
@@ -258,12 +256,10 @@ export default function* rootSaga() {
     ...productAttributeDetail,
     ...productAttributeValue,
     ...productAttributeValueDetail,
-    ...productClasses,
-    ...productClassesDetail,
     ...productImage,
     ...productImageDetail,
-    ...productFamilies,
-    ...productFamiliesDetail,
+    ...productFamily,
+    ...productFamilyDetail,
     ...productPackage,
     ...productPackageDetail,
     ...productVariations,

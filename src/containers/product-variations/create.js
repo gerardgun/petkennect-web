@@ -10,7 +10,6 @@ import * as Yup from 'yup'
 import ModalDelete from '@components/Modal/Delete'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import useModal from '@components/Modal/useModal'
 
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
@@ -26,7 +25,6 @@ const ProductVariationsCreateForm = (props) => {
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
-  const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
   useEffect(() => {
@@ -51,8 +49,8 @@ const ProductVariationsCreateForm = (props) => {
   const _handleImageDelete = e =>{
     const itemID = e.currentTarget.attributes.itemID.nodeValue
     const selectedImageData = productVariationsImageDetail.item.filter(_ => _.id == itemID)[0]
+
     props.setItem(selectedImageData, 'DELETE')
-    _handleOpenDeleteModal()
   }
 
   const _handleDrop = useCallback(acceptedFiles => {
@@ -181,10 +179,7 @@ const ProductVariationsCreateForm = (props) => {
           </Form>
         </Modal.Content>
       </Modal>
-      <ModalDelete
-        duckDetail={productVariationsImageDetailDuck}
-        onClose={_handleCloseDeleteModal}
-        open={openDeleteModal}/>
+      <ModalDelete duckDetail={productVariationsImageDetailDuck}/>
     </>
   )
 }

@@ -1,8 +1,4 @@
 export default {
-  base_uri: null,
-  row     : {
-    options: []
-  },
   columns: [
     {
       display_name: 'Trainer',
@@ -34,6 +30,5 @@ export default {
       width       : null,
       align       : 'left'
     }
-
   ]
 }

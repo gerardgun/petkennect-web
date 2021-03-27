@@ -5,6 +5,8 @@ import { Button, Icon, Grid, Header, Message, Step, Segment } from 'semantic-ui-
 
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
+import emailListConfig from '@lib/constants/list-configs/email-message'
+import emailLogListConfig from '@lib/constants/list-configs/email-log'
 
 import EmailMessageCreate from './create'
 import emailLogDuck from '@reducers/email-log'
@@ -88,9 +90,14 @@ const EmailMessage = ({ ...props }) => {
 
           <Grid.Column width={13}>
 
-            {activeMenuItem === 'inbox'
-            && <Table
-              duck={emailMessageDuck}/>}
+            {
+              activeMenuItem === 'inbox'
+              && (
+                <Table
+                  config={emailListConfig}
+                  duck={emailMessageDuck}/>
+              )
+            }
 
             {activeMenuItem === 'logs'
 
@@ -101,6 +108,7 @@ const EmailMessage = ({ ...props }) => {
                   <b>#Opened:</b> 18 (51%)   |  <b>#Clicked:</b> 4 (11%)  |  <b>#Bounced:</b> 0 (0%)</p>
               </Message>
               <Table
+                config={emailLogListConfig}
                 duck={emailLogDuck}/>
             </>
             }

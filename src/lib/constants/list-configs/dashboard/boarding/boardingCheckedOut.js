@@ -1,26 +1,13 @@
 
 export default {
-  base_uri      : null,
   search_enabled: false,
-
-  row: {
-    options        : [],
-    dropdownOptions: [
-      {
-        display_name: 'Check Out',
-        name        : 'Check_out'
-      }
-
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'Pet',
       name        : 'pet',
       type        : 'string',
       align       : 'left',
       width       : null
-
     },
 
     {
@@ -29,7 +16,6 @@ export default {
       width       : null,
       type        : 'date',
       align       : 'center'
-
     },
     {
       display_name: 'Nights',
@@ -37,7 +23,6 @@ export default {
       width       : null,
       type        : 'number',
       align       : 'center'
-
     },
     {
       display_name: 'Card',
@@ -45,7 +30,6 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
     },
     {
       display_name: 'Groom',
@@ -53,7 +37,6 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
     },
     {
       display_name: 'by',
@@ -61,8 +44,17 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Check Out',
+          name        : 'Check_out'
+        }
+      ]
     }
-
   ]
 }

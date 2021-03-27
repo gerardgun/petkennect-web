@@ -7,14 +7,12 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
 import serviceDuck from '@reducers/service'
 import serviceDetailDuck from '@reducers/service/detail'
 
 const ServiceList = ({ service, serviceDetail ,...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getServices, serviceDetail.status)
 
   useEffect(() => {
@@ -26,10 +24,8 @@ const ServiceList = ({ service, serviceDetail ,...props }) => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(service.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -51,10 +47,7 @@ const ServiceList = ({ service, serviceDetail ,...props }) => {
         <Table duck={serviceDuck} onOptionClick={_handleOptionClick} onRowClick={_handleRowClick}/>
       </Segment>
 
-      <ModalDelete
-        duckDetail={serviceDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={serviceDetailDuck}/>
 
     </Layout>
   )

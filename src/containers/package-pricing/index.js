@@ -7,13 +7,12 @@ import Layout from '@components/Common/Layout'
 import packagePricingDuck from '@reducers/package-pricing'
 import packagePricingDetailDuck from '@reducers/package-pricing/detail'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
 import Form from './create'
 
-const PackagePricingList = ({  packagePricing, packagePricingDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+const PackagePricingList = ({ packagePricing, packagePricingDetail, ...props }) => {
   useChangeStatusEffect(props.getPackagePricing, packagePricingDetail.status)
+
   useEffect(() => {
     props.getPackagePricing()
   }, [])
@@ -25,11 +24,10 @@ const PackagePricingList = ({  packagePricing, packagePricingDetail, ...props })
   const _handleRowClick = (e, item) => {
     props.setItem(item, 'UPDATE')
   }
+
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(packagePricing.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -55,10 +53,7 @@ const PackagePricingList = ({  packagePricing, packagePricingDetail, ...props })
 
       </Segment>
       <Form/>
-      <ModalDelete
-        duckDetail={packagePricingDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={packagePricingDetailDuck}/>
     </Layout>
   )
 }

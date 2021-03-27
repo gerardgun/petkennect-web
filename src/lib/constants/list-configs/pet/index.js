@@ -11,48 +11,33 @@ import locationDuck from '@reducers/location'
 import petBreedDuck from '@reducers/pet/breed'
 
 export default {
-  base_uri          : null,
   search_placeholder: 'Search by pet name',
-  options           : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Fork',
-      name        : 'multiple',
-      icon        : 'fork',
-      is_multiple : true
-    },
-    {
-      display_name: 'Delete Pet',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options        : [],
-    dropdownOptions: [
-      { icon        : 'sign in',
-        display_name: 'Express Check In',
-        name        : 'express_check_in'
-      },
-      { icon        : 'qrcode',
-        display_name: 'Services',
-        name        : 'services'
+  options           : {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
       },
       {
-        icon        : 'medkit',
-        display_name: 'Vaccination',
-        name        : 'vaccination'
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Pet',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ],
+    multiple: [
+      {
+        display_name: 'Fork',
+        name        : 'multiple',
+        icon        : 'fork'
       }
     ]
   },
@@ -177,7 +162,7 @@ export default {
       filter      : {
         type        : 'dropdown',
         name        : 'breed__id',
-        source_store: petBreedDuck.store
+        options: petBreedDuck.store
       }
     },
     // {
@@ -204,7 +189,7 @@ export default {
       filter      : {
         type        : 'dropdown',
         name        : 'client__location__id',
-        source_store: locationDuck.store
+        options: locationDuck.store
       }
     },
     {
@@ -217,7 +202,7 @@ export default {
       filter      : {
         type        : 'dropdown',
         name        : 'retired',
-        source_store: [
+        options: [
           {
             value: true,
             text : 'Yes'
@@ -239,7 +224,7 @@ export default {
       filter      : {
         type        : 'dropdown',
         name        : 'sex',
-        source_store: [
+        options: [
           {
             value: 'M',
             text : 'Male'
@@ -253,6 +238,28 @@ export default {
       formatter: cell => {
         return cell === 'F' ? 'Female' : 'Male'
       }
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Express Check In',
+          name        : 'express_check_in',
+          icon        : 'sign in'
+        },
+        {
+          display_name: 'Services',
+          name        : 'services',
+          icon        : 'qrcode'
+        },
+        {
+          display_name: 'Vaccination',
+          name        : 'vaccination',
+          icon        : 'medkit'
+        }
+      ]
     }
   ]
 }

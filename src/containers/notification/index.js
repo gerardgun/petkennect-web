@@ -6,8 +6,8 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import notificationListConfig from '@lib/constants/list-configs/notification'
 
 import NotificationFormSendModal from '@containers/notification/send/modal'
 import NotificationForm from './create'
@@ -19,7 +19,6 @@ import notificationDuck from '@reducers/notification'
 import notificationDetailDuck from '@reducers/notification/detail'
 
 const NotificationList = ({ clientDocument, notification, notificationDetail ,...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getNotifications, notificationDetail.status)
 
   useEffect(() => {
@@ -34,7 +33,6 @@ const NotificationList = ({ clientDocument, notification, notificationDetail ,..
     switch (option) {
       case 'delete':
         props.setItem(notification.selector.selected_items[0], 'DELETE')
-        _handleOpen()
 
         return
       case 'send_email':
@@ -60,15 +58,13 @@ const NotificationList = ({ clientDocument, notification, notificationDetail ,..
           </Grid.Column>
         </Grid>
         <Table
+          config={notificationListConfig}
           duck={notificationDuck}
           onOptionClick={_handleOptionClick}/>
       </Segment>
 
       <NotificationFormSendModal/>
-      <ModalDelete
-        duckDetail={notificationDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={notificationDetailDuck}/>
       <NotificationForm/>
     </Layout>
   )

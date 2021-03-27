@@ -1,36 +1,20 @@
 
 export default {
-  base_uri      : null,
   search_enabled: false,
-
-  row: {
-    options        : [],
-    dropdownOptions: [
-
-      {
-        display_name: 'Reservation',
-        name        : 'reservation'
-      }
-
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'Pet',
       name        : 'pet',
       type        : 'string',
       align       : 'left',
       width       : null
-
     },
-
     {
       display_name: 'Checked In',
       name        : 'checked_in',
       width       : null,
       type        : 'date',
       align       : 'center'
-
     },
     {
       display_name: 'Activity',
@@ -38,7 +22,6 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
     },
     {
       display_name: 'Meds',
@@ -46,8 +29,17 @@ export default {
       width       : null,
       type        : 'string',
       align       : 'center'
-
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Reservation',
+          name        : 'reservation'
+        }
+      ]
     }
-
   ]
 }

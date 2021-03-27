@@ -1,6 +1,5 @@
 export default {
-  base_uri: null,
-  options : [
+  options: [
     {
       display_name: 'Download',
       name        : 'download',
@@ -12,26 +11,6 @@ export default {
       icon        : 'print'
     }
   ],
-  row: {
-    options        : [],
-    dropdownOptions: [
-      {
-        icon        : 'mail',
-        display_name: 'Email Logs view',
-        name        : 'email_logs_view'
-      },
-      {
-        icon        : 'redo',
-        display_name: 'Resend',
-        name        : 'resend'
-      },
-      {
-        icon        : 'send',
-        display_name: 'forward',
-        name        : 'forward'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'From',
@@ -64,7 +43,28 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          display_name: 'Email Logs view',
+          name        : 'email_logs_view',
+          icon        : 'mail'
+        },
+        {
+          display_name: 'Resend',
+          name        : 'resend',
+          icon        : 'redo'
+        },
+        {
+          display_name: 'forward',
+          name        : 'forward',
+          icon        : 'send'
+        }
+      ]
     }
-
   ]
 }
