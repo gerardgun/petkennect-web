@@ -3,13 +3,10 @@ import list from '@reducers/common/list'
 import pagination from '@reducers/common/pagination'
 import selector from '@reducers/common/selector'
 
-import config from '@lib/constants/list-configs/client/comment'
-
 export default base({
   namespace   : '@@pet-kennect',
   store       : 'client/comment',
   initialState: {
-    config,
     pending_comments: [], // Comments to resolve (follow_up = true)
     pagination      : {
       params: {

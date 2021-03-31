@@ -6,6 +6,7 @@ import { Header , Grid, Segment } from 'semantic-ui-react'
 import Table from '@components/Table'
 import Layout from '@components/Common/Layout'
 import ReviewVaccination from './reviewVaccination'
+import config from '@lib/constants/list-configs/online-request/vaccination-update'
 
 import vaccinationUpdateDuck from '@reducers/online-request/vaccination-update'
 import vaccinationUpdateDetailDuck from '@reducers/online-request/vaccination-update/detail'
@@ -35,6 +36,7 @@ function VaccinationUpdate({ vaccinationUpdateDetail,...props }) {
         </Grid>
         <div className='table-row-padding'>
           <Table
+            config={config}
             duck={vaccinationUpdateDuck}
             onRowButtonClick={_handleRowButtonClick}/>
         </div>

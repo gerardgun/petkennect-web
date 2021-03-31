@@ -23,7 +23,7 @@ import './dashboard.scss'
 const Dashboard = ({ ...props }) => {
   useEffect(() => {
     props.getdayCampReservation()
-    props. getdayCampCheckedInReservation()
+    props.getdayCampCheckedInReservation()
     props.getdayCampCheckedOutReservation()
     props.getBoardingReservation()
     props.getBoardingCheckedOutReservation()

@@ -5,6 +5,9 @@ import { Header, Button, Grid, Container } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 
+import config from '@lib/constants/list-configs/pet/training-package'
+import trainingReservationListConfig from '@lib/constants/list-configs/pet/training-reservation'
+
 import petDetailDuck from '@reducers/pet/detail'
 import petTrainingPackageDuck from '@reducers/pet/reservation/training/package'
 import petTrainingReservationDuck from '@reducers/pet/reservation/training/reservation'
@@ -86,8 +89,7 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
             onClick={_handleAddPackageBtnClick}/>
         </Grid.Column>
       </Grid>
-      <Table
-        duck={petTrainingPackageDuck} onOptionDropdownChange={_handleOptionClick}/>
+      <Table config={config} duck={petTrainingPackageDuck} onOptionDropdownChange={_handleOptionClick}/>
 
       <Grid className='segment-content-header' columns={2}>
         <Grid.Column computer={4} mobile={10} tablet={4}>
@@ -102,8 +104,7 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
             onClick={_handleAddReservationBtnClick}/>
         </Grid.Column>
       </Grid>
-      <Table
-        duck={petTrainingReservationDuck} onOptionDropdownChange={_handleOptionDropdownChange}/>
+      <Table config={trainingReservationListConfig} duck={petTrainingReservationDuck} onOptionDropdownChange={_handleOptionDropdownChange}/>
       <PackageCreateForm/>
       <TrainingPackageEmailForm/>
       <PetNotes/>

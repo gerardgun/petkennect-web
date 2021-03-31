@@ -7,6 +7,7 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import OrganizationFormModal from '@containers/organization/form/modal'
+import organizationListConfig from '@lib/constants/list-configs/organization'
 
 import organizationDuck from '@reducers/organization'
 import organizationDetailDuck from '@reducers/organization/detail'
@@ -50,7 +51,7 @@ const Organization = props => {
             <Button color='teal' content='New Organization' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
-        <Table duck={organizationDuck} onOptionClick={_handleOptionClick}/>
+        <Table config={organizationListConfig} duck={organizationDuck} onOptionClick={_handleOptionClick}/>
       </Segment>
 
       <OrganizationFormModal/>

@@ -8,6 +8,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import PetBreedForm from  './create'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import petBreedListConfig from '@lib/constants/list-configs/pet/breed'
 
 import petBreedDuck from '@reducers/pet/breed'
 import petBreedDetailDuck from '@reducers/pet/breed/detail'
@@ -48,6 +49,7 @@ const PetBreedList = ({ petBreed, petBreedDetail, ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={petBreedListConfig}
           duck={petBreedDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

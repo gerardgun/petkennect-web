@@ -7,9 +7,9 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-
 import ServiceAttributeValueCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import serviceAttributeValueListConfig from '@lib/constants/list-configs/service/service-attribute-value'
 
 import serviceAttributeValueDuck from '@reducers/service/service-attribute-value'
 import serviceAttributeValueDetailDuck from '@reducers/service/service-attribute-value/detail'
@@ -57,6 +57,7 @@ const ServiceAttributeList = ({ serviceAttributeValue, serviceAttributeValueDeta
           </Grid.Column>
         </Grid>
         <Table
+          config={serviceAttributeValueListConfig}
           duck={serviceAttributeValueDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

@@ -9,6 +9,7 @@ import packagePricingDetailDuck from '@reducers/package-pricing/detail'
 import ModalDelete from '@components/Modal/Delete'
 import { useChangeStatusEffect } from '@hooks/Shared'
 import Form from './create'
+import config from '@lib/constants/list-configs/package-pricing'
 
 const PackagePricingList = ({ packagePricing, packagePricingDetail, ...props }) => {
   useChangeStatusEffect(props.getPackagePricing, packagePricingDetail.status)
@@ -47,6 +48,7 @@ const PackagePricingList = ({ packagePricing, packagePricingDetail, ...props }) 
           </Grid.Column>
         </Grid>
         <Table
+          config={config}
           duck={packagePricingDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

@@ -7,6 +7,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import TrainingReasonCreate from './create'
+import trainingReasonListConfig from '@lib/constants/list-configs/training-reason'
 
 import trainingReasonDuck from '@reducers/training-reason'
 import trainingReasonDetailDuck from '@reducers/training-reason/detail'
@@ -49,6 +50,7 @@ const TrainingReason = ({ trainingReason, trainingReasonDetail, ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={trainingReasonListConfig}
           duck={trainingReasonDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

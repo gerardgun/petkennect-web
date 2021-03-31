@@ -8,6 +8,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import PetKindForm from  './create'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import petKindListConfig from '@lib/constants/list-configs/pet/kind'
 
 import petKindDuck from '@reducers/pet/kind'
 import petKindDetailDuck from '@reducers/pet/kind/detail'
@@ -46,6 +47,7 @@ const PetKindList = ({ petKind, petKindDetail, ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={petKindListConfig}
           duck={petKindDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

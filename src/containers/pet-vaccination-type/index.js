@@ -8,6 +8,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import PetVaccinationTypeForm from  './form'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import petVaccinationTypeListConfig from '@lib/constants/list-configs/pet/vaccination-type'
 
 import petVaccinationTypeDuck from '@reducers/pet/vaccination-type'
 import petVaccinationTypeDetailDuck from '@reducers/pet/vaccination-type/detail'
@@ -48,6 +49,7 @@ const PetVaccinationTypeList = ({ petVaccinationType, petVaccinationTypeDetail, 
           </Grid.Column>
         </Grid>
         <Table
+          config={petVaccinationTypeListConfig}
           duck={petVaccinationTypeDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

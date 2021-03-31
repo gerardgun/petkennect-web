@@ -5,9 +5,9 @@ import { Header , Grid, Segment } from 'semantic-ui-react'
 
 import Table from '@components/Table'
 import Layout from '@components/Common/Layout'
-
 import ClientSubmissionShow from './../clientSubmission/show'
 import ViewNoteSection from './../notesSection/view'
+import config from '@lib/constants/list-configs/online-request/client-submission'
 
 import clientSubmissionDuck from '@reducers/online-request/client-submission'
 import clientSubmissionDetailDuck from '@reducers/online-request/client-submission/detail'
@@ -44,6 +44,7 @@ function ClientSubmission({ clientSubmissionDetail, ...props }) {
         </Grid>
         <div className='table-row-padding'>
           <Table
+            config={config}
             duck={clientSubmissionDuck}
             onRowButtonClick={_handleRowButtonClick}/>
         </div>

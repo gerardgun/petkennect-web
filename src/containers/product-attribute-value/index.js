@@ -7,9 +7,9 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-
 import ProductAttributeValueCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import productAttributeValueListConfig from '@lib/constants/list-configs/product/product-attribute-value'
 
 import productAttributeDetailDuck from '@reducers/product/product-attribute/detail'
 import productAttributeValueDuck from '@reducers/product/product-attribute-value'
@@ -58,6 +58,7 @@ const ProductAttributeList = ({ productAttributeDetail, productAttributeValue, p
           </Grid.Column>
         </Grid>
         <Table
+          config={productAttributeValueListConfig}
           duck={productAttributeValueDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

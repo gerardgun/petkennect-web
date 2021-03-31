@@ -8,6 +8,7 @@ import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import PriceMasterCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import priceMasterListConfig from '@lib/constants/list-configs/price-master'
 
 import priceMasterDuck from '@reducers/price-master'
 import priceMasterDetailDuck from '@reducers/price-master/detail'
@@ -40,6 +41,7 @@ const PriceMaster = ({ priceMasterDetail, ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={priceMasterListConfig}
           duck={priceMasterDuck}/>
         <PriceMasterCreate/>
         <ModalDelete duckDetail={priceMasterDetailDuck}/>

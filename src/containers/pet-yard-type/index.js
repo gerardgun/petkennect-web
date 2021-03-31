@@ -8,6 +8,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import PetYardForm from  './create'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import petYardTypeListConfig from '@lib/constants/list-configs/pet/pet-yard-type'
 
 import petYardTypeDuck from '@reducers/pet/pet-yard-type'
 import petYardTypeDetailDuck from '@reducers/pet/pet-yard-type/detail'
@@ -48,6 +49,7 @@ const PetYardTypeList = ({ petYardType, petYardTypeDetail, ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={petYardTypeListConfig}
           duck={petYardTypeDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

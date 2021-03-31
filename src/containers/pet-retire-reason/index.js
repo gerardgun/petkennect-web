@@ -8,6 +8,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import PetRetireReasonForm from  './Form'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import petRetireReasonListConfig from '@lib/constants/list-configs/pet/retire-reason'
 
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
 import petRetireReasonDetailDuck from '@reducers/pet/retire-reason/detail'
@@ -48,6 +49,7 @@ const PetRetireReasonList = ({ petRetireReason, petRetireReasonDetail, ...props 
           </Grid.Column>
         </Grid>
         <Table
+          config={petRetireReasonListConfig}
           duck={petRetireReasonDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

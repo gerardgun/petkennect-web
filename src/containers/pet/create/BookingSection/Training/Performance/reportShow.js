@@ -5,6 +5,8 @@ import trainingPackageDuck from '@reducers/training-package'
 import { Container, Button, Grid } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
+import config from '@lib/constants/list-configs/training-package'
+
 import './style.scss'
 
 const Table = loadable(() => import('@components/Table'))
@@ -26,6 +28,7 @@ const ReportShow = ()=>{
         </Grid.Column>
       </Grid>
       <Table
+        config={config}
         duck={trainingPackageDuck}
         onOptionClick=''
         onRowClick=''/>

@@ -8,6 +8,7 @@ import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import TrainingCommandCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import trainingCommandListConfig from '@lib/constants/list-configs/training-command'
 
 import trainingCommandDuck from '@reducers/training-command'
 import trainingCommandDetailDuck from '@reducers/training-command/detail'
@@ -49,6 +50,7 @@ const TrainingCommand = ({ trainingCommand, trainingCommandDetail, ...props }) =
           </Grid.Column>
         </Grid>
         <Table
+          config={trainingCommandListConfig}
           duck={trainingCommandDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

@@ -3,8 +3,10 @@ import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
-
 import loadable from '@loadable/component'
+
+import groomingReservationListConfig from '@lib/constants/list-configs/pet/grooming-reservation'
+import boardingReservationListConfig from '@lib/constants/list-configs/pet/boarding-reservation'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petReservationBoardingDuck from '@reducers/pet/reservation/boarding'
@@ -130,6 +132,7 @@ function BookingSection({ petDetail, ...props }) {
           </Grid>
           <div className='ui-table-overflow'>
             <Table
+              config={activeServiceItem === 'G' ? groomingReservationListConfig : boardingReservationListConfig}
               duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
               onOptionDropdownChange={_handleOptionDropdownChange}
               onRowButtonClick={_handleRowButtonClick}

@@ -7,6 +7,7 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import Form from '@containers/transaction/create'
+import transactionListConfig from '@lib/constants/list-configs/transaction'
 
 import transactionDuck from '@reducers/transaction'
 import transactionDetailDuck from '@reducers/transaction/detail'
@@ -55,6 +56,7 @@ const Transaction = props => {
           </Grid.Column>
         </Grid>
         <Table
+          config={transactionListConfig}
           duck={transactionDuck}
           onRowButtonClick={_handleRowButtonClick}
           onRowClick={_handleRowClick}/>

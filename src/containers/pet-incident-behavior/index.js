@@ -8,6 +8,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import PetIncidentBehaviorForm from  './Form'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import petIncidentBehaviorListConfig from '@lib/constants/list-configs/pet/incident-behavior'
 
 import petIncidentBehaviorDuck from '@reducers/pet/incident-behavior'
 import petIncidentBehaviorDetailDuck from '@reducers/pet/incident-behavior/detail'
@@ -48,6 +49,7 @@ const PetIncidentBehaviorList = ({ petIncidentBehavior, petIncidentBehaviorDetai
           </Grid.Column>
         </Grid>
         <Table
+          config={petIncidentBehaviorListConfig}
           duck={petIncidentBehaviorDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

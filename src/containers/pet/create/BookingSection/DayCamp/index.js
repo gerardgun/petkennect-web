@@ -5,6 +5,8 @@ import { Header, Segment, Dropdown, Button, Grid, Container } from 'semantic-ui-
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 
+import config from '@lib/constants/list-configs/pet/daycamp-reservation'
+
 import petDetailDuck from '@reducers/pet/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import dayCampReservationDuck from '@reducers/pet/reservation/daycamp-reservation'
@@ -180,6 +182,7 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
         </Grid.Column>
       </Grid>
       <Table
+        config={config}
         duck={dayCampReservationDuck}
         onOptionDropdownChange={_handleOptionDropdownChange}
         onRowButtonClick={_handleRowButtonClick}

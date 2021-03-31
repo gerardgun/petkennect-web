@@ -8,6 +8,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import PetKennelAreaForm from  './create'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import petKennelAreaListConfig from '@lib/constants/list-configs/pet/pet-kennel-area'
 
 import petKennelAreaDuck from '@reducers/pet/pet-kennel-area'
 import petKennelAreaDetailDuck from '@reducers/pet/pet-kennel-area/detail'
@@ -48,6 +49,7 @@ const PetKennelAreaList = ({ petKennelArea, petKennelAreaDetail, ...props }) => 
           </Grid.Column>
         </Grid>
         <Table
+          config={petKennelAreaListConfig}
           duck={petKennelAreaDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>

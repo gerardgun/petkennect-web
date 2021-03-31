@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 import moment from 'moment'
 import loadable from '@loadable/component'
 
 import useModal from '@components/Modal/useModal'
+import petVaccinationListConfig from '@lib/constants/list-configs/pet/vaccination'
 
 import petVaccinationDuck from '@reducers/pet/vaccination'
 import petDetailDuck from '@reducers/pet/detail'
 import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
-import { useParams } from 'react-router-dom'
 
 const Table = loadable(() => import('@components/Table'))
 const Alert = loadable(() => import('@components/Alert'))
@@ -93,6 +94,7 @@ function VacinationSection(props) {
 
       <div className='mh28 mt20'>
         <Table
+          config={petVaccinationListConfig}
           duck={petVaccinationDuck}
           onRowButtonClick={_handleRowButtonClick}
           onRowClick={_handleRowClick}/>

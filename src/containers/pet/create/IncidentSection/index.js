@@ -3,13 +3,12 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Header, Button, Container, Grid } from 'semantic-ui-react'
 import { compose } from 'redux'
-
 import loadable from '@loadable/component'
 
 import useModal from '@components/Modal/useModal'
-
 import { useChangeStatusEffect } from '@hooks/Shared'
 import { openIncidentPDF } from '@lib/utils/functions'
+import petIncidentListConfig from '@lib/constants/list-configs/pet/incident'
 
 import petIncidentDuck from '@reducers/pet/incident'
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
@@ -91,6 +90,7 @@ function IncidentSection(props) {
       </div>
       <div className='mh28'>
         <Table
+          config={petIncidentListConfig}
           duck={petIncidentDuck} onOptionClick={_handleOptionClick}/>
       </div>
       <IncidentForm/>
@@ -99,10 +99,6 @@ function IncidentSection(props) {
     </Container>
   )
 }
-
-IncidentSection.propTypes = {  }
-
-IncidentSection.defaultProps = {  }
 
 export default compose(
   connect(

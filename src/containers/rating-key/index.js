@@ -6,6 +6,7 @@ import ModalDelete from '@components/Modal/Delete'
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import ratingKeyListConfig from '@lib/constants/list-configs/rating-key'
 
 import ratingKeyDuck from '@reducers/rating-key'
 import ratingKeyDetailDuck from '@reducers/rating-key/detail'
@@ -48,6 +49,7 @@ const RatingKey = ({ ratingKey, ratingKeyDetail, ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={ratingKeyListConfig}
           duck={ratingKeyDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>
