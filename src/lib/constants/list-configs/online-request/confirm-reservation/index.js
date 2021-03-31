@@ -1,31 +1,6 @@
 export default {
-  base_uri      : null,
   search_enabled: false,
-  group_by      : {
-    column_name: 'Ready',
-    groups     : [
-      {
-        value     : false,
-        icon_label: 'flag outline',
-        text_label: 'Ready'
-      },
-      {
-        value     : true,
-        icon_label: 'flag outline',
-        text_label: 'Unfinished'
-      }
-    ]
-  },
-  row: {
-    options: [
-      {
-        display_name: 'Review',
-        content     : 'Review',
-        color       : 'teal'
-      }
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'CLIENT',
       name        : 'client',
@@ -44,7 +19,7 @@ export default {
     },
     {
       display_name: 'RES TYPE',
-      name        : 'res-type',
+      name        : 'res_type',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -52,7 +27,7 @@ export default {
     },
     {
       display_name: 'RES DATE',
-      name        : 'res-date',
+      name        : 'res_date',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -60,7 +35,7 @@ export default {
     },
     {
       display_name: 'CHECK OUT',
-      name        : 'check-out',
+      name        : 'check_out',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -81,7 +56,32 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true
+    },
+    {
+      display_name: 'Notes',
+      name        : 'note',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'View',
+          name        : 'view',
+          content     : 'View',
+          color       : 'blue'
+        }
+      ]
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Review',
+          name        : 'review',
+          content     : 'Review',
+          color       : 'teal'
+        }
+      ]
     }
-
   ]
 }

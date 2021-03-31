@@ -8,13 +8,12 @@ import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import TrainingMethodCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import trainingMethodListConfig from '@lib/constants/list-configs/training-method'
 
 import trainingMethodDuck from '@reducers/training-method'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
-import useModal from '@components/Modal/useModal'
 
 const TrainingMethod = ({ trainingMethod, trainingMethodDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getTrainingMethod, trainingMethodDetail.status)
 
   useEffect(() => {
@@ -30,10 +29,8 @@ const TrainingMethod = ({ trainingMethod, trainingMethodDetail, ...props }) => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(trainingMethod.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -53,14 +50,12 @@ const TrainingMethod = ({ trainingMethod, trainingMethodDetail, ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={trainingMethodListConfig}
           duck={trainingMethodDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>
         <TrainingMethodCreate/>
-        <ModalDelete
-          duckDetail={trainingMethodDetailDuck}
-          onClose={_handleClose}
-          open={open}/>
+        <ModalDelete duckDetail={trainingMethodDetailDuck}/>
       </Segment>
 
     </Layout>

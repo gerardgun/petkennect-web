@@ -4,10 +4,8 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Container, Header, Grid, Button } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
-import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
-import Gallery from './Gallery'
 import { useChangeStatusEffect } from '@hooks/Shared'
 import useCameraAvailable from '@hooks/useCameraAvailable'
 
@@ -15,13 +13,15 @@ import petDetailDuck from '@reducers/pet/detail'
 import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
 
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
+const Gallery = loadable(() => import('./Gallery'))
+
 const GallerySection = props => {
   const {
     petDetail,
     petImageDetail
   } = props
 
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   const { pet: petId } = useParams()
   const cameraIsAvailable = useCameraAvailable()
   useChangeStatusEffect(() => props.getPetImages({ pet_id: petId }), petImageDetail.status, [ 'POSTED', 'PUT' ])
@@ -56,7 +56,6 @@ const GallerySection = props => {
         return
       case 'delete':
         props.setItem(item, 'DELETE')
-        _handleOpen()
 
         return
     }
@@ -102,10 +101,7 @@ const GallerySection = props => {
           onItemOptionClick={_handleItemOptionClick}/>
       </div>
 
-      <ModalDelete
-        duckDetail={petImageDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petImageDetailDuck}/>
     </Container>
   )
 }

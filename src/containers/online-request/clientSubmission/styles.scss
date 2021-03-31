@@ -1,6 +1,16 @@
-#new-client-submission-form{
-    .ui.tabular.menu .active.item{
-            background: rgba(7, 148, 119, 0.1) !important;
-            color: #00AA9F !important;
-        }
+.modal-width {
+  min-height: 80vh;
+
+  @media screen and (min-width: 1320px) {
+    width: 1430px !important;
+  }
+
+  .ui.tabular.menu .active.item {
+    background: rgba(7, 148, 119, 0.1) !important;
+    color: #00aa9f !important;
+  }
+
+  .segment-content.ui.segment {
+    padding: 0rem;
+  }
 }

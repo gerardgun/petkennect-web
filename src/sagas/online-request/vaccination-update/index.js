@@ -1,6 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
-import faker from 'faker'
-import _times from 'lodash/times'
+import { Get } from '@lib/utils/http-client'
 
 import vaccinationUpdateDuck from '@reducers/online-request/vaccination-update'
 
@@ -11,19 +10,23 @@ function* get() {
     yield put({ type: types.GET_PENDING })
 
     const filters = yield select(selectors.filters)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-    // const clients = yield call(Get, '/client')
+    const list = yield select(selectors.list)
+
+    const { results, ...meta } = yield call(Get, '/requests/', {
+      ordering: '-created_at',
+      type    : 'V',
+      status  : 'P',
+      ...filters
+    })
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(filters.page_size, index => ({
-          id              : index,
-          client          : faker.name.firstName(),
-          pet             : faker.name.lastName(),
-          vaccination_type: faker.name.title(),
-          ready           : faker.random.boolean()
-        }))
+        items     : results,
+        pagination: {
+          ...list.pagination,
+          meta
+        }
       }
     })
   } catch (e) {

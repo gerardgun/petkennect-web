@@ -1,38 +1,74 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Image } from 'semantic-ui-react'
+import { Icon, Popup } from 'semantic-ui-react'
 
-import { defaultImageUrl } from '@lib/constants'
 import { formatPhoneNumber } from '@lib/utils/functions'
 
 import locationDuck from '@reducers/location'
 
 export default {
-  base_uri          : null,
   search_placeholder: 'Search by name or email',
-  options           : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Client',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : true,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options           : {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    multiple: [
+      {
+        display_name: 'Delete Client',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
+    {
+      display_name: 'Status',
+      name        : 'status',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true,
+      sort_name   : 'status',
+      formatter   : cell => {
+        let type_str = ''
+
+        if(cell === 'Decline Client')
+          type_str = 'Decline Client'
+        else if(cell === 'VIP Client')
+          type_str = 'VIP Client'
+        else if(cell === 'Caution')
+          type_str = 'Caution'
+        else if(cell === 'Active')
+          type_str = 'Active'
+
+        if(cell == 'Decline Client')
+          cell = (<Icon name='user circle' style={{ color: 'red', fontSize: '35px' }} ></Icon>)
+        else if(cell == 'VIP Client')
+          cell = (<Icon name='user circle' style={{ color: 'green', fontSize: '35px' }}></Icon>)
+        else if(cell == 'Caution')
+          cell = (<Icon name='user circle' style={{ color: 'yellow', fontSize: '35px' }}></Icon>)
+        else if(cell == 'Active')
+          cell = (<Icon name='user circle' style={{ color: 'gray', fontSize: '35px' }}></Icon>)
+
+        return (
+          <span>
+            <Popup
+              content={type_str} inverted position='bottom center'
+              trigger={cell}/>
+          </span>
+        )
+      }
+    },
     {
       display_name: 'Client Name',
       name        : 'first_name',
@@ -43,12 +79,20 @@ export default {
       sort_name   : 'user__first_name',
       formatter   : (cell, row) => {
         return (
-          <Link to={`/client/${row.id}`}>
-            <Image
-              className='profile' rounded size='mini'
-              src={row.thumbnail_path || defaultImageUrl}/>
-            <span>{`${cell} ${row.last_name}`}</span>
-          </Link>
+          <>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Link to={`/client/${row.id}`}>
+                <span>{`${cell} ${row.last_name}`}</span>
+              </Link>
+            </div>
+            {
+              row.has_card && (
+                <p><Popup
+                  content='Credit Card' inverted position='top center'
+                  size='tiny' trigger={<Icon className='mt16' name='credit card outline' style={{ color: 'teal', fontSize: '15px' }}></Icon>}/></p>
+              )
+            }
+          </>
         )
       }
     },
@@ -88,9 +132,9 @@ export default {
       sort        : true,
       sort_name   : 'location__code',
       filter      : {
-        type        : 'dropdown',
-        name        : 'location__id',
-        source_store: locationDuck.store
+        type   : 'dropdown',
+        name   : 'location__id',
+        options: locationDuck.store
       }
     },
     {
@@ -105,15 +149,6 @@ export default {
           formatPhoneNumber(cell)
         )
       }
-    },
-    {
-      display_name: 'Status',
-      name        : 'is_active',
-      type        : 'boolean_active',
-      width       : null,
-      align       : 'left',
-      sort        : true,
-      sort_name   : 'status'
     },
     {
       display_name: 'Created At',

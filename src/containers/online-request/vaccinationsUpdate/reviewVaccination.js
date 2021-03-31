@@ -1,161 +1,171 @@
-import React, { useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
+import { reduxForm } from 'redux-form'
 import { Button, Form, Header, Input, Modal, Grid, Icon } from 'semantic-ui-react'
-import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
-import FormField from '@components/Common/FormField'
-import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import useModal from '@components/Modal/useModal'
+import { parseResponseError } from '@lib/utils/functions'
+import RejectForm from './../clientSubmission/show/reject-form'
 
 import vaccinationUpdateDetailDuck from '@reducers/online-request/vaccination-update/detail'
+import petDetailDuck from '@reducers/pet/detail'
+import petVaccinationDuck from '@reducers/pet/vaccination'
 
 const ReviewForm = props => {
   const {
+    petDetail,
+    petVaccination,
     vaccinationUpdateDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
-  const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
+  const [ open, { _handleOpen: _handleRejectFormOpen, _handleClose: _handleRejectFormClose } ] = useModal()
 
-  const _handleClose = () =>{
-    props.reset()
-    props.resetItem()
+  useEffect(() => {
+    if(vaccinationUpdateDetail.status === 'SET_ITEM')
+      props.getPet(vaccinationUpdateDetail.item.pet)
+  }, [ vaccinationUpdateDetail.status ])
+
+  useEffect(() => {
+    if(vaccinationUpdateDetail.status === 'PATCHED') {
+      _handleClose()
+      _handleRejectFormClose()
+    }
+  }, [ vaccinationUpdateDetail.status ])
+
+  useEffect(() => {
+    if(petDetail.status === 'GOT')
+      props.getPetVaccinations()
+  }, [ petDetail.status ])
+
+  const _handleClose = props.resetItem
+
+  const _handleApproveBtnClick = () => {
+    return props.patch({
+      id     : vaccinationUpdateDetail.item.id,
+      status : 'A', // A => Approved
+      comment: 'Approved'
+    })
+      .then(_handleClose)
+      .catch(parseResponseError)
   }
 
-  const _handleSubmit = values => {
-    if(isUpdating)
-      return props.put({ id: vaccinationUpdateDetail.item.id, ...values })
-        .then(_handleClose)
-        .catch(parseResponseError)
-    else
-      return props.post({ ...values })
-        .then(_handleClose)
-        .catch(parseResponseError)
+  const _handleRejectSubmit = ({ comment }) => {
+    props.patch({
+      id    : vaccinationUpdateDetail.item.id,
+      status: 'R', // R => Rejected
+      comment
+    })
   }
 
-  const isOpened = useMemo(() => getIsOpened(vaccinationUpdateDetail.mode), [ vaccinationUpdateDetail.mode ])
-  const isUpdating = Boolean(vaccinationUpdateDetail.item.id)
+  const vaccinations = petVaccination.items
+    .filter(item => item.dose.request === vaccinationUpdateDetail.item.id)
 
   return (
-    <Modal
-      className='form-modal'
-      onClose={_handleClose}
-      open={isOpened}
-      size='small'>
-      <Modal.Content>
-        {/* eslint-disable-next-line react/jsx-handler-names */}
-        <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>Review Upload Vaccinations</Header>
-          <Field component='input' name='id' type='hidden'/>
-          <Form.Group widths='equal'>
-            <Field
-              autoFocus
-              component={FormField}
-              control={Input}
-              label='Vaccine'
-              name='vaccine'
-              placeholder=''
-              required/>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Expiry date'
-              name='expiry_date'
-              required
-              type='date'/>
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              autoFocus
-              component={FormField}
-              control={Input}
-              label='Vaccine'
-              name='vaccine'
-              placeholder=''
-              required/>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Expiry date'
-              name='expiry_date'
-              required
-              type='date'/>
-          </Form.Group>
-          <Grid className='mt16'>
-            <Grid.Column  computer={10} mobile={16} tablet={7}>
-              <b>View Document</b>
-              <p>* Please send email to pet owner.</p>
-            </Grid.Column>
-            <Grid.Column  computer={6} mobile={16} tablet={9}>
-              <Button type='button'>
-                <Icon name='file pdf outline'/>
-                <p>View Document</p>
-              </Button>
-            </Grid.Column>
-          </Grid>
+    <>
+      <Modal
+        className='form-modal'
+        onClose={_handleClose}
+        open={vaccinationUpdateDetail.mode === 'READ'}
+        size='small'>
+        <Modal.Content>
+          {/* eslint-disable-next-line react/jsx-handler-names */}
+          <Form onReset={reset} onSubmit={handleSubmit(_handleApproveBtnClick)}>
+            <Header as='h2' className='segment-content-header'>Review Upload Vaccinations</Header>
 
-          {
-            error && (
-              <Form.Group widths='equal'>
-                <Form.Field>
-                  <FormError message={error}/>
-                </Form.Field>
-              </Form.Group>
-            )
-          }
+            {
+              vaccinations.map((item, index) => {
+                return (
+                  <Form.Group key={index} widths='equal'>
+                    <Form.Field
+                      autoFocus
+                      control={Input}
+                      label='Vaccine'
+                      readOnly
+                      value={item.name}/>
+                    <Form.Field
+                      autoFocus
+                      control={Input}
+                      label='Expiry date'
+                      readOnly
+                      type='date'
+                      value={item.dose.expired_at && item.dose.expired_at.split('T')[0]}/>
+                  </Form.Group>
+                )
+              })
+            }
 
-          <Form.Group className='form-modal-actions' widths='equal'>
-            <Form.Field>
-              <Button
-                basic
-                color='teal'
-                content='Reject'
-                disabled={submitting}
-                onClick={_handleClose}
-                type='button'/>
-              <Button
-                color='teal'
-                content='Approve'
-                disabled={submitting}
-                loading={submitting}/>
-            </Form.Field>
-          </Form.Group>
-        </Form>
-      </Modal.Content>
-    </Modal>
+            {
+              vaccinations.length > 0 && (
+                <Grid className='mt16'>
+                  <Grid.Column computer={16} mobile={16} tablet={16}>
+                    <Button
+                      as='a' href={vaccinations[0].dose.document_path} target='_blank'
+                      type='button'>
+                      <Icon name='file pdf outline'/>
+                    View Document
+                    </Button>
+                  </Grid.Column>
+                </Grid>
+              )
+            }
+
+            {
+              error && (
+                <Form.Group widths='equal'>
+                  <Form.Field>
+                    <FormError message={error}/>
+                  </Form.Field>
+                </Form.Group>
+              )
+            }
+
+            <Form.Group className='form-modal-actions' widths='equal'>
+              <Form.Field>
+                <Button
+                  basic
+                  color='teal'
+                  content='Decline'
+                  disabled={submitting}
+                  onClick={_handleRejectFormOpen}
+                  type='button'/>
+                <Button
+                  color='teal'
+                  content='Approve'
+                  disabled={submitting}
+                  loading={submitting}/>
+              </Form.Field>
+            </Form.Group>
+          </Form>
+        </Modal.Content>
+      </Modal>
+      {
+        open && <RejectForm onClose={_handleRejectFormClose} onSubmit={_handleRejectSubmit}/>
+      }
+    </>
   )
 }
 
 export default compose(
-  withRouter,
   connect(
     state => {
-      const vaccinationUpdateDetail = vaccinationUpdateDetailDuck.selectors.detail(state)
-
       return {
-        vaccinationUpdateDetail,
-        initialValues: vaccinationUpdateDetail.item
+        vaccinationUpdateDetail: vaccinationUpdateDetailDuck.selectors.detail(state),
+        petDetail              : petDetailDuck.selectors.detail(state),
+        petVaccination         : petVaccinationDuck.selectors.list(state)
       }
     },
     {
-      post     : vaccinationUpdateDetailDuck.creators.post,
-      put      : vaccinationUpdateDetailDuck.creators.put,
-      resetItem: vaccinationUpdateDetailDuck.creators.resetItem
+      getPet            : petDetailDuck.creators.get,
+      getPetVaccinations: petVaccinationDuck.creators.get,
+      patch             : vaccinationUpdateDetailDuck.creators.patch,
+      resetItem         : vaccinationUpdateDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
     form              : 'vaccination-update-form',
-    destroyOnUnmount  : false,
-    enableReinitialize: true,
-    validate          : values  => {
-      const schema = {
-        name: Yup.string().required()
-      }
-
-      return syncValidate(Yup.object().shape(schema), values)
-    }
+    enableReinitialize: true
   })
 )(ReviewForm)

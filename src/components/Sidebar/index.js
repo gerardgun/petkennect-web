@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import { Label } from 'semantic-ui-react'
 
 import { Link, withRouter } from 'react-router-dom'
 
@@ -56,8 +57,7 @@ const categories = [
       { href: '/category', label: 'Categories' },
       { href: '/service', label: 'Services' },
       { href: '/product-attribute', label: 'Product Attributes' },
-      { href: '/product-classes', label: 'Product Classes' },
-      { href: '/product-families', label: 'Product Families' },
+      { href: '/product/family', label: 'Product Families' },
       { href: '/service-attribute', label: 'Service Attributes' }
     ]
   },
@@ -71,9 +71,28 @@ const categories = [
     ]
   },
   {
-    href : '/online-request',
-    icon : 'osi',
-    label: 'Online Requests'
+    href         : null,
+    icon         : 'osi',
+    label        : 'Online Requests',
+    subcategories: [
+      {
+        href     : '/online-request/client-submission',
+        label    : 'Client Submissions',
+        iconRight: <Label circular color='red'>2</Label>
+      },
+      { href: '/online-request/confirm-reservation', label: 'Confirm Reservations' },
+      { href: '/online-request/cancellation-log', label: 'Cancellations Logs' },
+      {
+        href     : '/online-request/vaccination-update', label    : 'New Vacinations Update',
+        iconRight: <Label circular color='red'>4</Label>
+      },
+      { href: '/online-request/declined-client', label: 'Declined Submissions' }
+    ]
+  },
+  {
+    href : '/email-message',
+    icon : 'mail',
+    label: 'Email Messages'
   },
   {
     href : '/sale',
@@ -144,28 +163,47 @@ const categories = [
   //     { href: '/not-defined', label: 'Retail Sales Report' }
   //   ]
   // },
+
+  {
+    href         : null,
+    icon         : 'book',
+    label        : 'Report Center',
+    subcategories: [
+      { href: '/custom-report', label: '  Run Custom Reports' },
+      { href: '/custom-report', label: 'Dashboards' }
+
+    ]
+  },
   {
     href         : null,
     icon         : 'cogs',
     label        : 'Setup',
     subcategories: [
+      { href: '/setup/admin-item', label: 'Admin Items' },
+      { href: '/setup/system-setting', label: 'Application System Settings' },
+      { href: '/setup/animal-setting', label: 'Animal Setting' },
+      { href: '/setup/service-setting', label: 'Services Settings' },
+      { href: '/setup/color-codes', label: 'System Icons/Codes' },
+      // { href: '/setup/booking-sheet-setting', label: 'Booking Sheet Setting' },
       { href: '/setup/location', label: 'Locations' },
-      { href: '/setup/price-master', label: 'Price Master' },
-      { href: '/setup/document-type', label: 'Document Types' },
+      // { href: '/setup/document-type', label: 'Document Types' },
+      // { href: '/setup/day-camp-form', label: 'Day Camp Form' },
       { href: '/setup/agreement', label: 'Agreements' },
-      { href: '/setup/training-reason', label: 'Training Reason' },
-      { href: '/setup/training-method', label: 'Training Method' },
-      { href: '/setup/training-command', label: 'Training Command' },
-      { href: '/pet/kind', label: 'Species' },
-      { href: '/pet/breed', label: 'Breeds' },
-      { href: '/pet/incident-type', label: 'Incident Types' },
-      { href: '/pet/incident-action', label: 'Incident Actions' },
-      { href: '/pet/incident-behavior', label: 'Incident Behaviors' },
-      { href: '/pet/retire-reason', label: 'Retire Reasons' },
-      { href: '/pet/vaccination-type', label: 'Vaccination Types' },
-      { href: '/setup/customized-field', label: 'Customized Field' }
+      { href: '/setup/notifications', label: 'Notifications' },
+      // { href: '/setup/payment-method', label: 'Payment Method' },
+      // { href: '/setup/payment-instruction', label: 'Payment Instruction' },
+      // { href: '/setup/price-master', label: 'Price Master' },
+      { href: '/setup/package-pricing', label: 'Pricing Table' },
+      { href: '/setup/pet-kennel', label: 'Kennels' },
+      { href: '/setup/pet-kennel-type', label: 'Kennel Types' },
+      { href: '/setup/pet-kennel-area', label: 'Kennel Areas' },
+      { href: '/setup/pet-yard-type', label: 'Yard Types' },
+      { href: '/setup/customized-field', label: 'Customized Field' },
+      { href: '/setup/calendar', label: 'Calendar' },
+      { href: '/setup/email-template', label: 'Email Template' }
+      // { href: '/setup/system-setting', label: 'System Setting' }
+
       // { href: '/not-defined', label: 'Enable Decline Portal Client' },
-      // { href: '/not-defined', label: 'Calendar' },
       // { href: '/not-defined', label: 'Notifications' },
       // { href: '/not-defined', label: 'Overview' },
       // { href: '/not-defined', label: 'Cancellation Reason' },
@@ -232,10 +270,17 @@ const AppSidebar = ({ auth, ...props }) => {
                   {...rest}>
                   {
                     subcategories.length > 0 ? (
-                      subcategories.map(({ href: to, label }, index) => {
+                      subcategories.map(({ href: to, label, iconRight = null }, index) => {
                         const active = props.match.path === to
 
-                        return <Link className={active ? 'active' : ''} key={index} to={to}>{label}</Link>
+                        return (
+                          <Link className={active ? 'active' : ''} key={index} to={to}>
+                            {label}
+                            {
+                              iconRight && <div className='icon-right'>{iconRight}</div>
+                            }
+                          </Link>
+                        )
                       })
                     ) : null
                   }

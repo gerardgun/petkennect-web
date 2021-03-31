@@ -1,33 +1,45 @@
 import React from 'react'
-import { Header , Grid, Container } from 'semantic-ui-react'
+import { Grid, Header, Icon, Segment } from 'semantic-ui-react'
 
+import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
+import config from '@lib/constants/list-configs/online-request/cancellation-log'
 
 import cancellationLogsDuck from '@reducers/online-request/cancellation-log'
 
 function CancellationLogs() {
-  const _handleRowClick = () => {
-    // wip
-  }
-  const _handleRowOptionClick = () => {
-    // wip
-  }
-
   return (
-    <Container className='c-booking' fluid>
-      <Grid className='petkennect-profile-body-header'>
-        <Grid.Column
-          verticalAlign='middle'>
-          <Header as='h2'>Cancellation Logs</Header>
-        </Grid.Column>
-      </Grid>
-      <div className='mh28 mv28 ui-table-overflow'>
-        <Table
-          duck={cancellationLogsDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
-      </div>
-    </Container>
+    <Layout>
+      <Segment className='segment-content c-booking' padded='very'>
+        <Grid className='petkennect-profile-body-header'>
+          <Grid.Column
+            verticalAlign='middle'>
+            <Header as='h2'>Cancellation Logs</Header>
+          </Grid.Column>
+        </Grid>
+        <div className='mh28 mv28 ui-table-overflow'>
+
+          <p>
+            <Icon name='flag outline'/>
+            <span>Ready</span>
+          </p>
+
+          <Table
+            config={config}
+            duck={cancellationLogsDuck}/>
+
+          <p>
+            <Icon name='flag outline'/>
+            <span>Unfinished</span>
+          </p>
+
+          <Table
+            config={config}
+            duck={cancellationLogsDuck}/>
+
+        </div>
+      </Segment>
+    </Layout>
   )
 }
 

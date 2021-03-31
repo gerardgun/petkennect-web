@@ -1,0 +1,159 @@
+@media (min-width: 768px) and (max-width:1023px) {
+  .div-progress-bar{
+    .div-bar-content{
+      width: 50% !important;
+    }
+  }
+}
+
+  .input-color{
+    .ui.form .ui.input input {
+      background-color: white !important;
+    }
+  }
+
+  .class-edit-button{
+    margin-top: 19px !important;
+    height: 39px !important;
+     width: 25px !important;
+     padding-left: 0.3rem !important;
+  }
+
+
+
+
+
+
+
+
+
+
+
+.recurring_date_div{
+
+    .ui.button.blue:not(.basic) {
+        color: white !important;
+        background-color: #005987 !important;
+    }
+
+    .ui.basic.buttons .button:hover{
+      color: white !important;
+      background-color: #005987 !important;
+    }
+
+    .week_btn_group{
+      .ui.button{
+      border: 1px solid rgba(34, 36, 38, 0.15);
+      border-left: 1px solid rgba(34, 36, 38, 0.15) !important;
+      background-color:white !important;
+      cursor: pointer;
+      height: 3.1rem !important;
+    }
+
+    .ui.button.active{
+      background: #005987 !important;
+    color: white !important;
+    }
+
+    }
+
+    .selectedWeekDay{
+      background-color: #005987 !important;
+    }
+
+@media (max-width:1023px) {
+  .ui.buttons{
+    display: list-item !important;
+  }
+}
+
+// .grid_custom_input{
+//   @media (min-width:1023px) {
+//     .w_input_set{
+//       width: 5rem !important;
+//       input{
+//         height: 3.1rem;
+//       }
+//     }
+//     }
+
+//   }
+
+  .custom_or{
+    display: flex;
+  align-items: center;
+  }
+
+  .mt0_8{
+   margin-top: 0.7rem !important;
+  }
+
+  .ui.styled.accordion{
+    width:100% !important;
+  }
+
+.custom_radio_input{
+  display:flex;
+  align-items: center;
+}
+
+.grid_border_right{
+  border-right: 1px solid gray;
+  .ui.radio.checkbox{
+    padding-top: 1rem;
+  }
+}
+
+.div_align_center{
+  display: flex !important;
+  align-items: center !important;
+}
+.wc8{
+  width:8rem !important;
+}
+
+.wc9{
+  width:9rem !important;
+}
+
+.w_input_set{
+  width: 5rem !important;
+  margin-bottom: 0rem !important;
+}
+
+.w_input_3{
+  width:3rem !important;
+  .ui.input{
+    input{
+      padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    }
+  }
+}
+
+}
+
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (orientation: portrait)
+and (-webkit-min-device-pixel-ratio: 2) {
+  .six.wide.computer.sixteen.wide.mobile.sixteen.wide.tablet.column.grid_width_100{
+  width:100% !important;
+}
+}
+
+.DayPicker-Day--peekday {
+  background-color:#95dc8a;
+  color: black !important;
+  border: 1px solid #95dc8a !important;
+}
+
+.DayPicker-Day--fullDay {
+  background: repeating-linear-gradient( 45deg, #a9cece, teal 10px, teal 10px, rgba(0, 0, 0, 0.3) 14px ) !important;
+  color: white !important;
+  border: 1px solid teal !important;
+}
+
+

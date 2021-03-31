@@ -1,26 +1,6 @@
 export default {
-  base_uri      : null,
   search_enabled: false,
-  group_by      : {
-    column_name: 'Ready',
-    groups     : [
-      {
-        value     : false,
-        icon_label: 'flag outline',
-        text_label: 'Ready'
-      },
-      {
-        value     : true,
-        icon_label: 'flag outline',
-        text_label: 'Unfinished'
-      }
-    ]
-  },
-  row: {
-    options: [
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'CLIENT',
       name        : 'client',
@@ -93,6 +73,5 @@ export default {
       align       : 'left',
       sort        : true
     }
-
   ]
 }

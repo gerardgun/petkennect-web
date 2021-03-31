@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Header, Segment, Grid } from 'semantic-ui-react'
-import _get from 'lodash/get'
-import _defaultTo from 'lodash/defaultTo'
 
 import InputReadOnly from '@components/Common/InputReadOnly'
 
@@ -30,11 +28,11 @@ function Item({ item, onUpdate, onDelete }) {
           <br/>
           <InputReadOnly
             label='Address'
-            value={_get(item, 'addresses[0]', '-')}/>
+            value={item.addresses ? item.addresses[0] : '-'}/>
           <br/>
           <InputReadOnly
             label='Description'
-            value={_defaultTo(item.description, '-')}/>
+            value={item.description ? item.description :  '-'}/>
         </Grid.Column>
         <Grid.Column  computer={2} mobile={5} tablet={2}>
           <Button

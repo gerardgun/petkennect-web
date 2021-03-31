@@ -3,13 +3,10 @@ import { connect } from 'react-redux'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Breadcrumb, Button, Container, Grid, Header, Icon, Image, Label } from 'semantic-ui-react'
-import  _get from 'lodash/get'
-import _defaultTo from 'lodash/defaultTo'
 
 import Layout from '@components/Common/Layout'
 import InputReadOnly from '@components/Common/InputReadOnly'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import { defaultImageUrl } from '@lib/constants'
 
 import organizationDetailDuck from '@reducers/organization/detail'
@@ -25,7 +22,6 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
 
   const history = useHistory()
   const { organization: organizationId } = useParams()
-  const [ open, { _handleOpen, _handleClose } ] = useModal() // For Modal Delete
 
   useEffect(() => {
     props.getOrganization(organizationId)
@@ -38,7 +34,6 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
 
   const _handleDeleteBtnClick = () => {
     props.setOrganization(organization, 'DELETE')
-    _handleOpen()
   }
 
   return (
@@ -51,7 +46,7 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
                 <Link to='/organization'>Organizations</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider/>
-              <Breadcrumb.Section active>{_defaultTo(organization.legal_name, '-')}</Breadcrumb.Section>
+              <Breadcrumb.Section active>{organization.legal_name ? organization.legal_name : '-'}</Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>
           <Grid.Column
@@ -72,7 +67,7 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Legal name'
-              value={_defaultTo(organization.legal_name, '-')}/>
+              value={organization.legal_name ? organization.legal_name : '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
@@ -82,12 +77,12 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='DBA'
-              value={_defaultTo(organization.dba, '-')}/>
+              value={organization.dba ? organization.dba : '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Tax ID'
-              value={_defaultTo(organization.tax_id, '-')}/>
+              value={organization.tax_id ? organization.tax_id : '-'}/>
           </Grid.Column>
         </Grid>
         <br/>
@@ -97,12 +92,12 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Phone'
-              value={_get(organization, 'phones[0]', '-')}/>
+              value={organization.phones ? organization.phones[0]  :  '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Email'
-              value={_defaultTo(organization.email, '-')}/>
+              value={organization.email ? organization.email : '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
@@ -118,21 +113,21 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
         <Grid columns={1}>
           <InputReadOnly
             label='First Address'
-            value={_get(organization, 'addresses[0]', '-')}/>
+            value={organization.addresses ? organization.addresses[0] : '-'}/>
           <InputReadOnly
             label='Second Address'
-            value={_get(organization, 'addresses[1]', '-')}/>
+            value={organization.addresses ? organization.addresses[1] : '-'}/>
         </Grid>
         <Grid columns={3}>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Zip'
-              value={_defaultTo(organization.zip_code, '-')}/>
+              value={organization.zip_code ? organization.zip_code :  '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Country'
-              value={_defaultTo(zip.country_code, '-')}/>
+              value={zip.country_code ? zip.country_code :  '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
@@ -143,7 +138,7 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='City'
-              value={_defaultTo(zip.city, '-')}/>
+              value={zip.city ? zip.city :  '-'}/>
           </Grid.Column>
         </Grid>
 
@@ -174,10 +169,7 @@ function OrganizationShow({ organizationDetail, organizationCompany, zipDetail, 
 
       </Container>
 
-      <ModalDelete
-        duckDetail={organizationDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={organizationDetailDuck}/>
     </Layout>
   )
 }

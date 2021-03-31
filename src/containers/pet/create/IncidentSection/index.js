@@ -3,15 +3,12 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Header, Button, Container, Grid } from 'semantic-ui-react'
 import { compose } from 'redux'
+import loadable from '@loadable/component'
 
-import Table from '@components/Table'
-import IncidentForm from './Form'
-import SendReportForm from './SendReportForm'
-import ModalDelete from '@components/Modal/Delete'
 import useModal from '@components/Modal/useModal'
-import Summary from './Summary'
 import { useChangeStatusEffect } from '@hooks/Shared'
 import { openIncidentPDF } from '@lib/utils/functions'
+import petIncidentListConfig from '@lib/constants/list-configs/pet/incident'
 
 import petIncidentDuck from '@reducers/pet/incident'
 import petIncidentDetailDuck from '@reducers/pet/incident/detail'
@@ -21,9 +18,14 @@ import petDetailDuck from '@reducers/pet/detail'
 
 import './styles.scss'
 
+const Table = loadable(() => import('@components/Table'))
+const IncidentForm = loadable(() => import('./Form'))
+const SendReportForm = loadable(() => import('./SendReportForm'))
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
+const Summary = loadable(() => import('./Summary'))
+
 function IncidentSection(props) {
   const { petDetail } = props
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   const [ openSendReportModal, { _handleOpen :  _handleOpenSendReportModal, _handleClose : _handleCloseSendReportModal } ] = useModal()
 
   const { pet: petId } = useParams()
@@ -50,11 +52,8 @@ function IncidentSection(props) {
       props.setItem(props.petIncident.selector.selected_items[0], 'UPDATE')
     if(option === 'preview_report')
       _handleOpenSendReportModal()
-
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(props.petIncident.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   const _warningIncidentTypes = useMemo(()=> {
@@ -91,21 +90,15 @@ function IncidentSection(props) {
       </div>
       <div className='mh28'>
         <Table
+          config={petIncidentListConfig}
           duck={petIncidentDuck} onOptionClick={_handleOptionClick}/>
       </div>
       <IncidentForm/>
       <SendReportForm onClose={_handleCloseSendReportModal} open={openSendReportModal}/>
-      <ModalDelete
-        duckDetail={petIncidentDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={petIncidentDetailDuck}/>
     </Container>
   )
 }
-
-IncidentSection.propTypes = {  }
-
-IncidentSection.defaultProps = {  }
 
 export default compose(
   connect(

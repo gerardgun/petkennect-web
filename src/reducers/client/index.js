@@ -3,14 +3,9 @@ import list from '@reducers/common/list'
 import pagination from '@reducers/common/pagination'
 import selector from '@reducers/common/selector'
 
-import config from '@lib/constants/list-configs/client'
-
 export default base({
-  namespace   : '@@pet-kennect',
-  store       : 'client',
-  initialState: {
-    config
-  }
+  namespace: '@@pet-kennect',
+  store    : 'client'
 })
   .extend(list)
   .extend(pagination)

@@ -1,79 +1,83 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+
 export default {
-  base_uri      : null,
-  search_enabled: false,
-  group_by      : {
-    column_name: 'completed',
-    groups     : [
-      {
-        value     : true,
-        icon_label: 'flag outline',
-        text_label: 'Completed'
-      },
-      {
-        value     : false,
-        icon_label: 'flag outline',
-        text_label: 'InCompleted'
-      }
-    ]
-  },
-  row: {
-    options: [
-      {
-        display_name: 'Review',
-        content     : 'Review',
-        color       : 'teal'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'CLIENT',
-      name        : 'client',
+      name        : 'client_last_name',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'EMAIL',
-      name        : 'email',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
+      sort        : false,
+      formatter   : (cell, row) => `${cell}, ${row.client_first_name}`
     },
     {
       display_name: 'MOBILE',
-      name        : 'mobile',
+      name        : 'client.phones[0].number',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true
+      sort        : false
     },
     {
       display_name: 'LOCATION',
-      name        : 'location',
+      name        : 'client.location.code',
       type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : false
+    },
+    {
+      display_name: 'Created at',
+      name        : 'created_at',
+      type        : 'datetime',
       width       : null,
       align       : 'left',
       sort        : true
     },
     {
-      display_name: 'Notes',
-      name        : 'notes',
+      display_name: 'Status',
+      name        : 'count_notes',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : true,
+      sort        : false,
       formatter   : (cell, row) => {
+        let status = cell > 0 ? 'in-progress' : row.status
+
         return (
-          <Link to={`/notes/${row.id}`}>
-            <span>{cell}</span>
-          </Link>
+          <span
+            className={`txt-${status === 'in-progress' ? 'orange' : status === 'P' ? 'green' : 'red'}`}>
+            {status === 'in-progress' ? 'In Progress' : status === 'P' ? 'New' : 'Declined'}
+          </span>
         )
       }
+    },
+    {
+      display_name: 'Notes',
+      name        : 'note',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'View',
+          name        : 'view',
+          content     : 'View',
+          color       : 'blue'
+        }
+      ]
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Review',
+          name        : 'review',
+          content     : 'Review',
+          color       : 'teal'
+        }
+      ]
     }
   ]
 }

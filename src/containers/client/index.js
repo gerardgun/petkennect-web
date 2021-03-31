@@ -3,18 +3,18 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
-import Layout from '@components/Common/Layout'
-import ModalDelete from '@components/Modal/Delete'
-import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
-import ClientFormModal from './form/modal'
+import loadable from '@loadable/component'
 
 import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
+import ClientFormModal from './form/modal'
+import clientListConfig from '@lib/constants/list-configs/client'
+
+const Layout = loadable(() => import('@components/Common/Layout'))
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
+const Table = loadable(() => import('@components/Table'))
 
 const Client = ({ client, clientDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
-
   useEffect(() => {
     props.getClients()
   }, [])
@@ -28,10 +28,8 @@ const Client = ({ client, clientDetail, ...props }) => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(client.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -47,14 +45,11 @@ const Client = ({ client, clientDetail, ...props }) => {
             <Button color='teal' content='New Client' onClick={_handleNewBtnClick}/>
           </Grid.Column>
         </Grid>
-        <Table duck={clientDuck} onOptionClick={_handleOptionClick}/>
+        <Table config={clientListConfig} duck={clientDuck} onOptionClick={_handleOptionClick}/>
       </Segment>
 
       <ClientFormModal/>
-      <ModalDelete
-        duckDetail={clientDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={clientDetailDuck}/>
 
     </Layout>
   )

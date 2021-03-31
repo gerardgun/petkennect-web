@@ -29,9 +29,7 @@ const SimpleTableList = ({ items, config, ...props }) => {
     const isCheckbox = e.target.tagName === 'LABEL' && /ui.*checkbox/.test(e.target.parentNode.classList.value)
     const item = items.find(({ id }) => id === +e.currentTarget.dataset.itemId)
 
-    if(!isCheckbox)
-      if(props.onRowClick) props.onRowClick(e, item)
-      else if(config.base_uri) props.history.push(`${config.base_uri}/${item.id}`)
+    if(!isCheckbox && props.onRowClick) props.onRowClick(e, item)
   }
 
   return (
@@ -130,9 +128,8 @@ SimpleTableList.propTypes = {
   items           : PropTypes.arrayOf(PropTypes.shape({})),
   loading         : PropTypes.bool,
   config          : PropTypes.shape({
-    row     : PropTypes.shape({}),
-    columns : PropTypes.arrayOf(PropTypes.shape({})),
-    base_uri: PropTypes.string
+    row    : PropTypes.shape({}),
+    columns: PropTypes.arrayOf(PropTypes.shape({}))
   }).isRequired
 }
 export default  SimpleTableList

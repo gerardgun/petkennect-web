@@ -9,29 +9,28 @@ import locationDuck from '@reducers/location'
 import rolDuck from '@reducers/rol'
 
 export default {
-  base_uri          : '/employee/show',
   search_placeholder: 'Search by name or email',
-  options           : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Employee',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options           : {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Employee',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {
@@ -71,9 +70,9 @@ export default {
       sort        : true,
       sort_name   : 'location__code',
       filter      : {
-        type        : 'dropdown',
-        name        : 'location__id',
-        source_store: locationDuck.store
+        type   : 'dropdown',
+        name   : 'location__id',
+        options: locationDuck.store
       }
     },
     {
@@ -85,9 +84,9 @@ export default {
       sort        : true,
       sort_name   : 'title__name',
       filter      : {
-        type        : 'dropdown',
-        name        : 'title__id',
-        source_store: employeeTitleDuck.store
+        type   : 'dropdown',
+        name   : 'title__id',
+        options: employeeTitleDuck.store
       }
     },
     {
@@ -99,9 +98,9 @@ export default {
       sort        : true,
       sort_name   : 'role__name',
       filter      : {
-        type        : 'dropdown',
-        name        : 'role__id',
-        source_store: rolDuck.store
+        type   : 'dropdown',
+        name   : 'role__id',
+        options: rolDuck.store
       }
     },
     {
@@ -113,9 +112,9 @@ export default {
       sort        : true,
       sort_name   : 'is_active',
       filter      : {
-        type        : 'dropdown',
-        name        : 'is_active',
-        source_store: [
+        type   : 'dropdown',
+        name   : 'is_active',
+        options: [
           {
             value: true,
             text : 'Active'

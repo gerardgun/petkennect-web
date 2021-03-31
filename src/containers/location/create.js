@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Input, Modal, Select, TextArea } from 'semantic-ui-react'
-import _get from 'lodash/get'
+
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -241,7 +241,7 @@ export default compose(
     state => {
       const locationDetail = locationDetailDuck.selectors.detail(state)
       const location = locationDuck.selectors.list(state)
-      const initialValues = { ...locationDetail.item, address: _get(locationDetail.item, 'addresses[0]', '') }
+      const initialValues = { ...locationDetail.item, address: locationDetail.item.addresses ? locationDetail.item.addresses[0] : '' }
 
       return {
         locationDetail,

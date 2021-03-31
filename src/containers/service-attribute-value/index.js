@@ -7,17 +7,15 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
-
 import ServiceAttributeValueCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import serviceAttributeValueListConfig from '@lib/constants/list-configs/service/service-attribute-value'
 
 import serviceAttributeValueDuck from '@reducers/service/service-attribute-value'
 import serviceAttributeValueDetailDuck from '@reducers/service/service-attribute-value/detail'
 
 const ServiceAttributeList = ({ serviceAttributeValue, serviceAttributeValueDetail, ...props }) => {
   const { id: serviceAttributeId } = useParams()
-  const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
 
   useChangeStatusEffect(() => props.getSerivceAttributesValue(serviceAttributeId), serviceAttributeValueDetail.status, [ 'POSTED', 'PUT' ])
 
@@ -30,10 +28,8 @@ const ServiceAttributeList = ({ serviceAttributeValue, serviceAttributeValueDeta
   }, [])
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(serviceAttributeValue.selector.selected_items[0], 'DELETE')
-      _handleOpenDeleteModal()
-    }
   }
 
   const _handleCreateClick = ()=> {
@@ -61,16 +57,14 @@ const ServiceAttributeList = ({ serviceAttributeValue, serviceAttributeValueDeta
           </Grid.Column>
         </Grid>
         <Table
+          config={serviceAttributeValueListConfig}
           duck={serviceAttributeValueDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>
 
       </Segment>
       <ServiceAttributeValueCreate/>
-      <ModalDelete
-        duckDetail={serviceAttributeValueDetailDuck}
-        onClose={_handleCloseDeleteModal}
-        open={openDeleteModal}/>
+      <ModalDelete duckDetail={serviceAttributeValueDetailDuck}/>
 
     </Layout>
   )

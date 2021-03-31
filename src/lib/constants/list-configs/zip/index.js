@@ -1,14 +1,4 @@
 export default {
-  base_uri: '/client',
-  row     : {
-    options: [
-      {
-        display_name: 'Edit',
-        name        : 'edit',
-        icon        : 'edit outline'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Name',
@@ -65,6 +55,18 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Edit',
+          name        : 'edit',
+          icon        : 'edit outline'
+        }
+      ]
     }
   ]
 }

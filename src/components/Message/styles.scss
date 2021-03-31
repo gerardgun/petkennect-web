@@ -10,6 +10,9 @@
     &.danger {
       border-left: 6px solid #eb5757;
     }
+    &.success {
+      border-left: 6px solid teal;
+    }
     .c-message__icon {
       margin: 16px;
       &.warning {
@@ -17,6 +20,9 @@
       }
       &.danger {
         color: #eb5757;
+      }
+      &.success {
+        color: teal;
       }
     }
   }

@@ -8,13 +8,12 @@ import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import PriceMasterCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import priceMasterListConfig from '@lib/constants/list-configs/price-master'
 
 import priceMasterDuck from '@reducers/price-master'
 import priceMasterDetailDuck from '@reducers/price-master/detail'
-import useModal from '@components/Modal/useModal'
 
 const PriceMaster = ({ priceMasterDetail, ...props }) => {
-  const [ open, { _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPriceMaster, priceMasterDetail.status)
 
   useEffect(() => {
@@ -42,12 +41,10 @@ const PriceMaster = ({ priceMasterDetail, ...props }) => {
           </Grid.Column>
         </Grid>
         <Table
+          config={priceMasterListConfig}
           duck={priceMasterDuck}/>
         <PriceMasterCreate/>
-        <ModalDelete
-          duckDetail={priceMasterDetailDuck}
-          onClose={_handleClose}
-          open={open}/>
+        <ModalDelete duckDetail={priceMasterDetailDuck}/>
       </Segment>
 
     </Layout>

@@ -1,0 +1,61 @@
+.description-field-width {
+    width: 25rem !important;
+
+    @media screen and (max-width:768px) {
+        width: 20rem !important;
+    }
+
+    @media screen and (min-width:1024px) and (max-width:1366px) {
+        width: 20rem !important;
+    }
+}
+
+.description-width {
+    .ui.input {
+        width: 100% !important;
+    }
+}
+
+.dropdown-width {
+    width: 16rem !important;
+
+    @media screen and (max-width:768px) {
+        width: 10rem !important;
+    }
+
+    @media screen and (min-width:1024px) and (max-width:1366px) {
+        width: 12rem !important;
+    }
+}
+
+.menuItem-margin {
+    margin-left: -1rem;
+    margin-right: 1rem;
+}
+
+.save-button-align {
+    text-align: right;
+    @media screen and (max-width:768px) {
+        text-align: left;
+        margin-left: -8px;
+    }
+}
+
+.table-scroll {
+    @media screen and (max-width:1366px) {
+        width: 95% !important;
+        overflow-y: hidden;
+    }
+    
+}
+
+.table-width {
+    width: max-content !important;
+}
+
+.system-description-width {
+    @media screen and (min-width:768px) and (max-width:1024px) {
+        width: 12rem !important;
+    }
+
+}

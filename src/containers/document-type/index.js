@@ -6,15 +6,14 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
+import clientDocumentTypeListConfig from '@lib/constants/list-configs/client/document/type'
 import DocumentTypeCreate from './create'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
 
 import clientDocumentTypeDuck from '@reducers/client/document/type'
 import clientDocumentTypeDetailDuck from '@reducers/client/document/type/detail'
 
 const DocumentType = ({ clientDocumentType, clientDocumentTypeDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getDocumentTypes, clientDocumentTypeDetail.status)
 
   useEffect(() => {
@@ -30,10 +29,7 @@ const DocumentType = ({ clientDocumentType, clientDocumentTypeDetail, ...props }
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(clientDocumentType.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
+    if(option === 'delete') props.setItem(clientDocumentType.selector.selected_items[0], 'DELETE')
   }
 
   return (
@@ -49,17 +45,17 @@ const DocumentType = ({ clientDocumentType, clientDocumentTypeDetail, ...props }
             <Button color='teal' content='New Document Type' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
+
         <Table
+          config={clientDocumentTypeListConfig}
           duck={clientDocumentTypeDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>
+
       </Segment>
 
       <DocumentTypeCreate/>
-      <ModalDelete
-        duckDetail={clientDocumentTypeDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={clientDocumentTypeDetailDuck}/>
 
     </Layout>
   )

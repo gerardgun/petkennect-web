@@ -1,11 +1,9 @@
 import React, { useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { Button, Container, Grid, Header } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 import { compose } from 'redux'
 
-import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
-import PetNoteFormModal from './form/modal'
 import { getAbbreviature } from '@lib/utils/functions'
 
 import petNoteDuck from '@reducers/pet/note'
@@ -14,9 +12,10 @@ import authDuck from '@reducers/auth'
 
 import './styles.scss'
 
-function NoteSection({ petNote, ...props }) {
-  const [ openDeleteModal, { _handleOpen, _handleClose } ] = useModal()
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
+const PetNoteFormModal = loadable(() => import('./form/modal'))
 
+function NoteSection({ petNote, ...props }) {
   const [ type, setType ] = useState('B')
 
   const _handleAddBtnClick = () => {
@@ -33,7 +32,6 @@ function NoteSection({ petNote, ...props }) {
     const item = petNote.items.find(({ id }) => id === +data['data-item-id'])
 
     props.setItem(item, 'DELETE')
-    _handleOpen()
   }
 
   const _handleTypeBtnClick = (e, data) => {
@@ -132,10 +130,7 @@ function NoteSection({ petNote, ...props }) {
       </div>
 
       <PetNoteFormModal/>
-      <ModalDelete
-        duckDetail={petNoteDetailDuck}
-        onClose={_handleClose}
-        open={openDeleteModal}/>
+      <ModalDelete duckDetail={petNoteDetailDuck}/>
     </Container>
   )
 }

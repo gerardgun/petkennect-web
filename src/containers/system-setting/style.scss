@@ -1,0 +1,48 @@
+.multi-header{
+   margin-left: 5 !important;
+   margin-bottom: 1 !important;
+  
+
+}
+
+.ck-content .image > img {
+    display: block !important;
+    /* margin-left: auto; */
+    width: 40% !important;
+    margin-left: -300 !important;
+}
+    
+
+
+.header-check{
+margin-top: auto !important;
+margin-bottom: -10 !important;
+}
+.info{
+    color: #bdc0c0 !important;
+   
+}
+
+.ck-content .image > img {
+    @media only screen and (min-width:  1024px) and (max-width: 1366px){
+   
+    /* margin-left: auto; */
+    width: 25% !important;
+    margin-left: 0 !important;
+}
+}
+
+.ck-content .image > img {
+    @media only screen and (min-width:  375px) and (max-width: 812px){
+   
+    /* margin-left: auto; */
+    width: 35% !important;
+    margin-left: 0 !important;
+}
+}
+
+.text-area-header{
+
+    margin-top: auto !important;
+}
+    

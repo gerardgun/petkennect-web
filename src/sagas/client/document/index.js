@@ -3,10 +3,11 @@ import { call, put, select, takeEvery } from 'redux-saga/effects'
 import { Get } from '@lib/utils/http-client'
 
 import clientDocumentDuck from '@reducers/client/document'
+import clientSubmissionDocumentDuck from '@reducers/online-request/client-submission/client-document'
 
 const { types, selectors } = clientDocumentDuck
 
-function* get(/* { payload }*/) {
+export function* get(/* { payload }*/) {
   try {
     yield put({ type: types.GET_PENDING })
 
@@ -15,15 +16,22 @@ function* get(/* { payload }*/) {
 
     const { results, ...meta } = yield call(Get, `clients/${client_id}/documents/`, filters)
 
+    const payload = {
+      items     : results,
+      pagination: {
+        ...list.pagination,
+        meta
+      }
+    }
+
     yield put({
       type   : types.GET_FULFILLED,
-      payload: {
-        items     : results,
-        pagination: {
-          ...list.pagination,
-          meta
-        }
-      }
+      payload: payload
+    })
+
+    yield put({
+      type   : clientSubmissionDocumentDuck.types.GET_FULFILLED,
+      payload: payload
     })
   } catch (e) {
     yield put({

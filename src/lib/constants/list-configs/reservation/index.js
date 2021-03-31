@@ -1,24 +1,9 @@
 export default {
-  base_uri: null,
-  row     : {
-    options: [
-      // {
-      //   display_name: 'View Report',
-      //   name        : 'view_report',
-      //   icon        : 'print'
-      // },
-      // {
-      //   display_name: 'View Detail',
-      //   name        : 'view_detail',
-      //   icon        : 'eye'
-      // }
-    ]
-  },
   columns: [
     {
       display_name: 'RESERVATION DATE',
       name        : 'reserved_at',
-      type        : 'date', // image, boolean, date, datetime, money, label
+      type        : 'date',
       width       : null,
       align       : 'left',
       sort        : true

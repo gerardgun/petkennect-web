@@ -52,6 +52,25 @@
     }
   }
 
+  .c-icon-profile{
+    display: flex;
+    line-height: initial;
+    margin-bottom: 2.5rem;
+
+    .icon{
+      font-size: 14rem;
+      color: gray;
+    }
+
+    .icon_green{
+      color: green;
+    }
+
+    .icon_red{
+      color: red;
+    }
+  }
+
   .c-image-profile {
     position: relative;
     overflow: hidden;
@@ -59,10 +78,6 @@
     width: 14rem;
     height: 14rem;
     margin-bottom: 2.5rem;
-
-    @media only screen and (min-width: 768px) and (max-width: 1023px) {
-      height: 10rem;
-    }
 
     .ui.image {
       height: 100%;

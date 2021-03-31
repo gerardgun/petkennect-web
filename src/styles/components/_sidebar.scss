@@ -41,7 +41,7 @@
         align-items: center;
         margin-right: 0.5rem;
         background-color: transparent;
-  
+
         i {
           font-size: 1.2rem;
         }
@@ -63,6 +63,7 @@
         display: block;
         color: #222b3b80;
         margin-bottom: 0.8rem;
+        position: relative;
 
         &:hover, &.active {
           color: $green;
@@ -70,6 +71,12 @@
 
         &:last-child {
           margin-bottom: 0rem;
+        }
+
+        .icon-right {
+          position: absolute;
+          right: 1rem;
+          top: 0;
         }
       }
     }

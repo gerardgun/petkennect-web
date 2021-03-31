@@ -2,13 +2,15 @@ import base from '@reducers/base'
 import list from '@reducers/common/list'
 import pagination from '@reducers/common/pagination'
 
-import config from '@lib/constants/list-configs/online-request/confirm-reservation'
-
 export default base({
   namespace   : '@@pet-kennect',
-  store       : 'online-request/confirm-reservations',
+  store       : 'online-request/confirm-reservation',
   initialState: {
-    config
+    pagination: {
+      params: {
+        page_size: 8
+      }
+    }
   }
 })
   .extend(list)

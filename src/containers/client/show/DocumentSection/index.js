@@ -5,17 +5,15 @@ import { compose } from 'redux'
 
 import Table from '@components/Table'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import ClientDocumentFormSendModal from '@containers/client/show/DocumentSection/form/send/modal'
 import ClientDocumentFormModal from './form/modal'
 import ClientDocumentShowModal from './show/modal'
+import clientDocumentListConfig from '@lib/constants/list-configs/client/document'
 
 import clientDocumentDuck from '@reducers/client/document'
 import clientDocumentDetailDuck from '@reducers/client/document/detail'
 
 function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
-
   useEffect(() => {
     const { status } = clientDocumentDetail
 
@@ -34,7 +32,7 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
 
         return
       case 'delete':
-        _handleOpen()
+        props.setItem(null, 'DELETE')
 
         return
       case 'send_document':
@@ -71,6 +69,7 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
 
       <div className='mh12 mv20'>
         <Table
+          config={clientDocumentListConfig}
           duck={clientDocumentDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>
@@ -79,11 +78,7 @@ function DocumentsSection({ clientDocument, clientDocumentDetail, ...props }) {
       <ClientDocumentFormSendModal/>
       <ClientDocumentFormModal/>
       <ClientDocumentShowModal/>
-      <ModalDelete
-        duck={clientDocumentDuck}
-        duckDetail={clientDocumentDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duck={clientDocumentDuck} duckDetail={clientDocumentDetailDuck}/>
     </Container>
   )
 }

@@ -1,55 +1,87 @@
 body {
   font-family: "Poppins", -apple-system, sans-serif;
-  background-color: #fafcff;
+  background-color: #fafcff !important;
 }
 
 textarea {
   font-family: "Poppins";
 }
 
-.appbar-grid{
-  @media (max-width: 767px){
+// Text Colors
+.txt {
+  &-blue {
+    color: $blue;
+  }
+
+  &-green {
+    color: $green1;
+  }
+
+  &-black {
+    color: $black;
+  }
+
+  &-orange {
+    color: $orange;
+  }
+
+  &-red {
+    color: $red;
+  }
+}
+
+.dropdown_icon_hamburger_menu {
+  .visible.menu.transition {
+    .icon {
+      color: gray !important;
+    }
+  }
+}
+
+.appbar-grid {
+  @media (max-width: 767px) {
     height: auto !important;
-    img.logo-img{
+    img.logo-img {
       padding-left: 7rem !important;
       padding-right: 7rem !important;
     }
-    .search-dropdown{
+    .search-dropdown {
       margin-top: 0rem !important;
     }
-    .appbar-searchbar, .appbar-user-dropdown{
+    .appbar-searchbar,
+    .appbar-user-dropdown {
       margin-top: -3rem;
     }
-    .appbar-items{
+    .appbar-items {
       padding: 0px !important;
     }
-   }
+  }
 
-   @media only screen and (min-width: 768px) and (max-width: 991px) {
-     .logo-img{
-       margin-top: 1.5rem;
-     }
-   }
-
-   @media only screen and (min-width: 1200px) {
-    .logo-img{
-      height: 9rem !important;
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    .logo-img {
+      margin-top: 1.5rem;
     }
   }
-  
-  
+
+  @media only screen and (min-width: 1200px) {
+    .logo-img {
+      height: 9rem !important;
+    }
+    .ui.container.appbar-items {
+      width: auto !important;
+    }
+  }
 }
 
 .app-content {
-  height: 80vh;
+  // height: 80vh;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: $white;
+  background-color: $white !important;
 }
 
-.appbar-grid
-{
-  border-bottom:1px solid #E5EAEE;
+.appbar-grid {
+  border-bottom: 1px solid #e5eaee !important;
   height: 10rem;
   margin-left: 0rem !important;
   margin-right: 0rem !important;
@@ -140,14 +172,12 @@ textarea {
     @media only screen and (min-width: 768px) and (max-width: 1320px) {
       overflow-x: hidden;
     }
-    
   }
 
   &-header.ui.grid {
     margin-bottom: 1.2rem;
     padding-left: 1rem;
-    padding-right: 1rem;    
-
+    padding-right: 1rem;
   }
 
   .ui-grid-align {
@@ -172,9 +202,9 @@ textarea {
 
     &.tab {
       &.ui.modal {
-        background-color: #f6f7f8;
+        background-color: #f6f7f8 !important;
         .content {
-          background-color: #f6f7f8;
+          background-color: #f6f7f8 !important;
         }
       }
 
@@ -209,10 +239,15 @@ textarea {
   .ui.header {
     margin-bottom: 2rem;
   }
+  position: initial !important;
+  height: auto !important;
 }
 
 .ui.fluid.container {
+  //change for menu items
   max-width: 1500px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .text-area-container {
@@ -257,13 +292,14 @@ textarea {
   }
 }
 .ui.breadcrumb {
+  background-color: white !important;
   .section a,
   a.active.section {
     color: #616468 !important;
   }
 }
 
-.ui.basic.button.disabled{
+.ui.basic.button.disabled {
   box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) inset !important;
 }
 
@@ -296,4 +332,49 @@ textarea {
   @media only screen and (min-width: 768px) and (max-width: 1024px) {
     width: 100% !important;
   }
+}
+
+.ui-delete-modal {
+  width: 300px !important;
+  height: 350px !important;
+  position: initial !important;
+}
+
+.button-width {
+  width: 59px !important;
+}
+
+.field-margin {
+  margin-top: 19px !important;
+}
+
+.label-margin {
+  margin-top: 20px !important;
+}
+
+.save-button-align {
+  vertical-align: bottom !important;
+}
+
+.color_peak {
+  background-color: #95dc8a !important;
+}
+
+.service_full {
+  background: repeating-linear-gradient(
+    45deg,
+    #a9cece,
+    teal 10px,
+    teal 10px,
+    rgba(0, 0, 0, 0.3) 14px
+  ) !important;
+}
+
+.modal-position {
+  position: initial !important;
+  height: auto !important;
+}
+
+label {
+  margin-bottom: 0rem !important;
 }

@@ -28,7 +28,7 @@ const ReservationFormWizard = props => {
     <>
       {step === 1 && <DaycampFormWizardFirst onSubmit={_handleNextStep}/>}
       {step === 2 && <DaycampFormWizardSecond onPreviousStep={_handlePreviousStep} onSubmit={_handleNextStep}/>}
-      {step === 3 && <DaycampFormWizardThird onPreviousStep={_handlePreviousStep} onSubmit={_handleNextStep}/>}
+      {step === 3 && <DaycampFormWizardThird  onPreviousStep={_handlePreviousStep} serviceType={props.serviceType}/>}
     </>
   )
 }

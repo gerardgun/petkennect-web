@@ -3,24 +3,28 @@ import { connect } from 'react-redux'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Message, Segment, Header, Icon, Image, Label, Menu, Breadcrumb, Dropdown } from 'semantic-ui-react'
-import _get from 'lodash/get'
 
-import Layout from '@components/Common/Layout'
-import AgreementSection from './AgreementSection'
-import CommentSection from './CommentSection'
-import DocumentSection from './DocumentSection'
-import InformationSection from './InformationSection'
-import PetSection from './PetSection'
-import ReservesSection from './ReservesSection'
-import { defaultImageUrl } from '@lib/constants'
+import loadable from '@loadable/component'
 
 import clientDetailDuck from '@reducers/client/detail'
 import clientCommentDuck from '@reducers/client/comment'
 import clientDocumentDuck from '@reducers/client/document'
 import clientPetDuck from '@reducers/client/pet'
 import clientAgreementDuck from '@reducers/client/agreement'
-
+import petReservationCheckInDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import './../styles.scss'
+
+const Layout = loadable(() => import('@components/Common/Layout'))
+const AgreementSection = loadable(() => import('./AgreementSection'))
+const CommentSection = loadable(() => import('./CommentSection'))
+const DocumentSection = loadable(() => import('./DocumentSection'))
+const InformationSection = loadable(() => import('./InformationSection'))
+const PetSection = loadable(() => import('./PetSection'))
+const ReservesSection = loadable(() => import('./ReservesSection'))
+const MessageHistorySection = loadable(() => import('./MessageHistory'))
+const AccountingSection = loadable(() => import('./Accounting'))
+const ExpressCheckInForm = loadable(() => import('../../pet/form/express-check-in'))
 
 const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocument, clientPet, ...props }) => {
   const [ activeMenuItem, setActiveMenuItem ] = useState('info')
@@ -42,6 +46,10 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
       client_id: clientId
     })
 
+    if(history.location.state)
+      history.location.state.option === 'reserves' && (
+        setActiveMenuItem('reserves'))
+
     return () => {
       props.resetItem()
       props.resetClientPets()
@@ -60,17 +68,28 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
 
   const _handleBookBtnClick = () => {
     history.replace(`/client/${clientId}/book`)
+    props.resetReserveItem()
   }
 
   const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
 
   const _handleMessageClick = () => setActiveMenuItem('agreements')
 
-  const _handleOptionDropdownChange = () => {
-    alert('Work in Progress...')
+  // eslint-disable-next-line no-unused-vars
+  const _handleOptionDropdownChange = (e, { value }) => {
+
+  }
+
+  const _handleExpressCheckInBtnClick = () =>{
+    props.setReservationCheckInItem({ client: clientPet.items[0].client }, 'CREATE')
   }
 
   const fullname = `${clientDetail.item.first_name || ''} ${clientDetail.item.last_name || ''}`
+
+  const status = clientDetail.item.status == 'Decline Client' ? <Icon name='user circle' style={{ color: 'red', fontSize: '35px' }} ></Icon>
+    : clientDetail.item.status == 'VIP Client' ?  <Icon name='user circle' style={{ color: 'green', fontSize: '35px' }}></Icon>
+      : clientDetail.item.status == 'Caution' ? <Icon name='user circle' style={{ color: 'yellow', fontSize: '35px' }}></Icon>
+        : clientDetail.item.status == 'Active' ? <Icon name='user circle' style={{ color: 'gray', fontSize: '35px' }}></Icon> : null
 
   return (
     <Layout>
@@ -90,16 +109,26 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
             </Breadcrumb>
 
             <div className='flex justify-center align-center mt40'>
-              <div className='c-image-profile'>
-                <Image circular src={clientDetail.item.thumbnail_path || defaultImageUrl}/>
-              </div>
+
+              {
+                clientDetail.item.thumbnail_path
+                  ? <>
+                    <div className='c-image-profile'>
+                      <Image circular src={clientDetail.item.thumbnail_path}/>
+                    </div>
+                  </>
+                  :                   <div className='c-icon-profile'><Icon name='user circle'></Icon></div>
+
+              }
+
             </div>
 
             <div className='flex justify-between align-center mb24'>
               <div>
                 <Header as='h2' className='mb4'>{fullname}</Header>
                 <div className='flex align-center'>
-                  <span style={{ color: '#888888' }}>{clientDetail.item.is_active ? 'Active' : 'Inactive'}</span>
+
+                  <span>{status}</span>
                 </div>
               </div>
               <Dropdown
@@ -107,8 +136,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
                 icon={null}
                 onChange={_handleOptionDropdownChange}
                 options={[
-                  { key: 1, icon: 'download', value: 'download-profile', text: 'Download Profile' },
-                  { key: 2, icon: 'paper plane outline', value: 'send-email', text: 'Send Email' }
+                  { key: 1, icon: 'download', value: 'download-profile', text: 'Download Profile' }
                 ]}
                 selectOnBlur={false}
                 trigger={(
@@ -118,11 +146,15 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
             </div>
 
             <Button
-              color='teal' content='Book!' disabled={_get(clientDetail, 'item.summary.has_pending_agreements', false)}
+              color='teal' content='Book!' disabled={clientDetail.item.summary ? clientDetail.item.summary.has_pending_agreements : false}
               fluid onClick={_handleBookBtnClick} size='large'/>
+            <Button
+              className='mt8' color='teal' content='Check In'
+              disabled={clientDetail.item.summary ? clientDetail.item.summary.has_pending_agreements : false}
+              fluid onClick={_handleExpressCheckInBtnClick} size='large'/>
 
             {
-              _get(clientDetail, 'item.summary.has_pending_agreements', false) && (
+              (clientDetail.item.summary ? clientDetail.item.summary.has_pending_agreements : false) && (
                 <Message
                   content={
                     <>
@@ -172,7 +204,7 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
                 onClick={_handleMenuItemClick}>
                 Agreements
                 {
-                  _get(clientDetail, 'item.summary.has_pending_agreements', false) ? (
+                  (clientDetail.item.summary ? clientDetail.item.summary.has_pending_agreements : false) ? (
                     <Icon color='orange' name='warning circle' size='large'/>
                   ) : (
                     <Label color='teal'>{clientAgreement.items.length}</Label>
@@ -182,7 +214,17 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
               <Menu.Item
                 active={activeMenuItem === 'reserves'} link name='reserves'
                 onClick={_handleMenuItemClick}>
-                Reserves
+                Service History
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'email_messages'} link name='email_messages'
+                onClick={_handleMenuItemClick}>
+                Email Messages
+              </Menu.Item>
+              <Menu.Item
+                active={activeMenuItem === 'accounting'} link name='accounting'
+                onClick={_handleMenuItemClick}>
+                Accounting
               </Menu.Item>
             </Menu>
           </Grid.Column>
@@ -195,9 +237,13 @@ const ClientShow = ({ clientDetail, clientAgreement, clientComment, clientDocume
             {activeMenuItem === 'documents' && <DocumentSection/>}
             {activeMenuItem === 'agreements' && <AgreementSection/>}
             {activeMenuItem === 'reserves' && <ReservesSection/>}
+            {activeMenuItem === 'email_messages' && <MessageHistorySection/>}
+            {activeMenuItem === 'accounting' && <AccountingSection/>}
           </Grid.Column>
         </Grid>
       </Segment>
+
+      <ExpressCheckInForm/>
     </Layout>
   )
 }
@@ -211,13 +257,15 @@ export default compose(
       clientDocument : clientDocumentDuck.selectors.list(state),
       clientPet      : clientPetDuck.selectors.list(state)
     }), {
-      getClient          : clientDetailDuck.creators.get,
-      getClientAgreements: clientAgreementDuck.creators.get,
-      getClientComments  : clientCommentDuck.creators.get,
-      getClientDocuments : clientDocumentDuck.creators.get,
-      getClientPets      : clientPetDuck.creators.get,
-      resetItem          : clientDetailDuck.creators.resetItem,
-      resetClientComments: clientCommentDuck.creators.reset,
-      resetClientPets    : clientPetDuck.creators.reset
+      getClient                : clientDetailDuck.creators.get,
+      getClientAgreements      : clientAgreementDuck.creators.get,
+      getClientComments        : clientCommentDuck.creators.get,
+      getClientDocuments       : clientDocumentDuck.creators.get,
+      getClientPets            : clientPetDuck.creators.get,
+      setReservationCheckInItem: petReservationCheckInDetailDuck.creators.setItem,
+      resetItem                : clientDetailDuck.creators.resetItem,
+      resetClientComments      : clientCommentDuck.creators.reset,
+      resetClientPets          : clientPetDuck.creators.reset,
+      resetReserveItem         : petReservationDetailDuck.creators.resetItem
     })
 )(ClientShow)

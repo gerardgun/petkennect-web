@@ -3,7 +3,7 @@ import { call, put, select, takeEvery } from 'redux-saga/effects'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import productVariationsDetailDuck from '@reducers/product/product-variations/detail'
-import productFamiliesDetailDuck from '@reducers/product/product-families/detail'
+import productFamilyDetailDuck from '@reducers/product/family/detail'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -11,7 +11,7 @@ const { types } = productVariationsDetailDuck
 
 function* deleteItem({ ids: [ id ] }) {
   try {
-    const { item : { id: product_id } = {} } = yield select(productFamiliesDetailDuck.selectors.detail)
+    const { item : { id: product_id } = {} } = yield select(productFamilyDetailDuck.selectors.detail)
 
     yield put({ type: types.DELETE_PENDING })
 

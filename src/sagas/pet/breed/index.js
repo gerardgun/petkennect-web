@@ -1,17 +1,17 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
 import petBreedDuck from '@reducers/pet/breed'
 
-const { types } = petBreedDuck
+const { selectors, types } = petBreedDuck
 
 function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    // const filters = yield select(selectors.filters)
-    const petBreeds = yield call(Get, '/pet-breeds/')
+    const filters = yield select(selectors.filters)
+    const petBreeds = yield call(Get, '/pet-breeds/', filters)
 
     yield put({
       type   : types.GET_FULFILLED,

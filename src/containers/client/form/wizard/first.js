@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import moment  from 'moment'
-import { Button, Dropdown, Form, Header, Input, Select } from 'semantic-ui-react'
+import { Button, Divider, Dropdown, Form, Header, Input, Select, Icon } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import InputMask from '@components/Common/InputMask'
-import useZipInputSearch from '@components/useZipInputSearch'
+import PhoneList from '@containers/online-request/clientSubmission/show/sections/information/PhoneList'
+import AddressList from '@containers/online-request/clientSubmission/show/sections/information/AddressList'
 import { useDebounce } from '@hooks/Shared'
 import { syncValidate } from '@lib/utils/functions'
+import { ReferredOptions } from '@lib/constants/client'
 import YupFields from '@lib/constants/yup-fields'
 import { formId } from './../'
 
@@ -32,7 +33,6 @@ const ClientFormWizardFirst = props => {
     error, handleSubmit, reset // redux-form
   } = props
 
-  const [ zipOptions, { _handleZipChange, _handleZipSearchChange } ] = useZipInputSearch(zip, zipDetail, props.getZipes, props.setZip)
   const [ customUser, setCustomUser ] = useState({ id: 'CUSTOM_USER_OPTION_ID', email: '' })
 
   useEffect(() => {
@@ -125,13 +125,13 @@ const ClientFormWizardFirst = props => {
             placeholder='Search email'
             required
             search
-            selection
-            selectOnBlur={false}/>
+            selectOnBlur={false}
+            selection/>
           <Field
             autoFocus
             component={FormField}
             control={Input}
-            label='Name'
+            label='First Name'
             name='first_name'
             placeholder='Enter name'
             readOnly={!!props.user_exists}
@@ -139,26 +139,32 @@ const ClientFormWizardFirst = props => {
           <Field
             component={FormField}
             control={Input}
-            label='Lastname'
+            label='Last Name'
             name='last_name'
             placeholder='Enter lastname'
             readOnly={!!props.user_exists}
             required/>
         </Form.Group>
 
-        <Header as='h6' className='section-header' color='blue'>BASIC INFORMATION</Header>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Input}
-            label='Contact date'
-            name='contact_date'
-            required
-            type='date'/>
+        <Header as='h6' className='section-header' color='blue'>Basic Information</Header>
+        <Form.Group widths={3}>
           <Field
             component={FormField}
             control={Select}
-            label='Location'
+            label='Status'
+            name='status'
+            options={[
+              { key: 1, value: 'active', text: 'Active', image: (<Icon name='user circle' style={{ color: 'gray', fontSize: '20px' }}></Icon>) },
+              { key: 2, value: 'caution', text: 'Caution', image: (<Icon name='user circle' style={{ color: 'yellow', fontSize: '20px' }}></Icon>) },
+              { key: 3, value: 'declined', text: 'Decline Client', image: (<Icon name='user circle' style={{ color: 'red', fontSize: '20px' }}></Icon>) },
+              { key: 4, value: 'vip', text: 'VIP Client', image: (<Icon name='user circle' style={{ color: 'green', fontSize: '20px' }}></Icon>) }
+            ]}
+            placeholder='Select status'
+            selectOnBlur={false}/>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Primary Location'
             name='location'
             options={location.items.map(_location =>
               ({ key: _location.id, value: _location.id, text: `${_location.code}` }))
@@ -168,60 +174,28 @@ const ClientFormWizardFirst = props => {
             selectOnBlur={false}/>
           <Field
             component={FormField}
+            control={Input}
+            label='Contact Date'
+            name='contact_date'
+            required
+            type='date'/>
+        </Form.Group>
+
+        <Form.Group widths={3}>
+          <Field
+            component={FormField}
             control={Select}
-            label='Status'
-            name='status'
-            options={[
-              { key: 1, value: 1, text: 'DECLINED' },
-              { key: 2, value: 2, text: 'GREEN' },
-              { key: 3, value: 3, text: 'RED - See notes' },
-              { key: 4, value: 4, text: 'VIP CLIENT' }
-            ]}
-            placeholder='Select status'
+            label='Referred'
+            name='referred'
+            options={ReferredOptions}
+            placeholder='Select an option'
             selectOnBlur={false}/>
+
         </Form.Group>
 
-        <Header as='h6' className='section-header' color='blue'>CONTACT DETAILS</Header>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Cell Phone'
-            mask='(999) 999 9999'
-            name='phones[0]'
-            placeholder='Enter phone number'
-            type='tel'/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Home Phone'
-            mask='(999) 999 9999'
-            name='phones[1]'
-            placeholder='Enter phone number'
-            type='tel'/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Work Phone'
-            mask='(999) 999 9999'
-            name='phones[2]'
-            placeholder='Enter phone number'
-            type='tel'/>
-        </Form.Group>
+        <Header as='h6' className='section-header' color='blue'>Contact Details</Header>
 
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Other Phone'
-            mask='(999) 999 9999'
-            name='phones[3]'
-            placeholder='Enter phone number'
-            type='tel'/>
+        <Form.Group widths={3}>
           <Field
             autoComplete='off'
             component={FormField}
@@ -230,83 +204,21 @@ const ClientFormWizardFirst = props => {
             name='alt_email'
             placeholder='Enter email'
             type='email'/>
-          <Field
-            component={FormField}
-            control={Select}
-            label='Referred'
-            name='referred'
-            options={[
-              { key: 1, value: 1, text: 'Drive-by' },
-              { key: 2, value: 2, text: 'Event' },
-              { key: 3, value: 3, text: 'Internet search' },
-              { key: 4, value: 4, text: 'Referral' },
-              { key: 5, value: 5, text: 'Other' }
-            ]}
-            placeholder='Select an option'
-            selectOnBlur={false}/>
-
         </Form.Group>
 
-        <Header as='h6' className='section-header' color='blue'>Client Address</Header>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Address 1'
-            name='addresses[0]'
-            placeholder='Enter address'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Address 2'
-            name='addresses[1]'
-            placeholder='Enter address'/>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Field
-            component={FormField}
-            control={Select}
-            disabled={zip.status === 'GETTING'}
-            label='Zip'
-            loading={zip.status === 'GETTING'}
-            name='zip_code'
-            onChange={_handleZipChange}
-            onSearchChange={_handleZipSearchChange}
-            options={zipOptions}
-            placeholder='Search zip'
-            required
-            search
-            selectOnBlur={false}/>
-          <Form.Field>
-            <Form.Input
-              autoComplete='off'
-              label='Country'
-              readOnly
-              value={zipDetail.item.country_code}/>
-          </Form.Field>
-          <Form.Field>
-            <Form.Input
-              autoComplete='off'
-              label='State'
-              readOnly
-              value={zipDetail.item.state}/>
-          </Form.Field>
-        </Form.Group>
-        <Form.Group widths='equal'>
-          <Form.Field>
-            <Form.Input
-              autoComplete='off'
-              label='City'
-              readOnly
-              value={zipDetail.item.city}/>
-          </Form.Field>
-          <Form.Field/>
-          <Form.Field/>
-        </Form.Group>
+        <FieldArray
+          component={PhoneList}
+          name='phones'/>
+
+        <Divider/>
+
+        <FieldArray
+          component={AddressList}
+          getZipes={props.getZipes}
+          name='addresses'
+          setZip={props.setZip}
+          zip={zip}
+          zipDetail={zipDetail}/>
 
         {
           error && (

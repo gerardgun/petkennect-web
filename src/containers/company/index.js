@@ -5,9 +5,9 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import Table from '@components/Table'
 import CompanyFormModal from '@containers/company/form/modal'
+import companyListConfig from '@lib/constants/list-configs/company'
 
 import companyDuck from '@reducers/company'
 import companyDetailDuck from '@reducers/company/detail'
@@ -17,9 +17,6 @@ const Company = props => {
     company,
     companyDetail
   } = props
-
-  // For Modal Delete
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     props.getCompanies()
@@ -35,10 +32,8 @@ const Company = props => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(company.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -56,14 +51,12 @@ const Company = props => {
         </Grid>
 
         <Table
+          config={companyListConfig}
           duck={companyDuck}
           onOptionClick={_handleOptionClick}/>
 
         <CompanyFormModal/>
-        <ModalDelete
-          duckDetail={companyDetailDuck}
-          onClose={_handleClose}
-          open={open}/>
+        <ModalDelete duckDetail={companyDetailDuck}/>
 
       </Segment>
     </Layout>

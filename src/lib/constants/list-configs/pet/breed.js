@@ -1,26 +1,25 @@
 export default {
-  base_uri: null,
-  options : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Breed',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options: {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Breed',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {
@@ -29,7 +28,7 @@ export default {
       type        : 'string',
       width       : 4,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Size',
@@ -37,7 +36,7 @@ export default {
       type        : null,
       width       : 3,
       align       : 'left',
-      sort        : false,
+      sort        : true,
       formatter   : cell => {
         let size_str = '-'
 
@@ -55,8 +54,7 @@ export default {
       type        : 'string',
       width       : 8,
       align       : 'left',
-      sort        : false
+      sort        : true
     }
-
   ]
 }

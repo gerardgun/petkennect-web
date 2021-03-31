@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import SignatureCanvas from 'react-signature-canvas'
 import { compose } from 'redux'
 import { Button, Dimmer, Grid, Header, Loader, Modal } from 'semantic-ui-react'
-
-import FormError from '@components/Common/FormError'
+import loadable from '@loadable/component'
 
 import agreementDetailDuck from '@reducers/agreement/detail'
 import clientAgreementDetailDuck from '@reducers/client/agreement/detail'
+
+const FormError = loadable(() => import('@components/Common/FormError'))
 
 function dataURLtoFile(dataurl, filename) {
   var arr = dataurl.split(','),
@@ -80,7 +81,7 @@ const SignAgreementForm = ({ agreementDetail, clientAgreementDetail, ...props })
 
   return (
     <Modal
-      className='sign-agreement-modal'
+      className='sign-agreement-modal modal-position'
       onClose={_handleClose}
       open={isOpened}
       size='large'>

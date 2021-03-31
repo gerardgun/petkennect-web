@@ -1,325 +1,314 @@
 .petkennect-reservation {
-    .message__title {
-        font-style: normal;
-        font-weight: 600;
-        font-size: 11px;
-        line-height: 16px;
-        letter-spacing: -0.04em;
-        color: #f2994a;
-      }
-      .message__subtitle {
-        font-style: normal;
-        font-weight: normal;
-        font-size: 11px;
-        line-height: 16px;
-        letter-spacing: -0.04em;
-        color: #1c1d1e;
-      }
+  .message__title {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    letter-spacing: -0.04em;
+    color: #f2994a;
+  }
 
-      .ui.steps{
-        width:100%;
-      }
+  .ui.steps{
+    width:100%;
+  }
 
-      .btn-service-type{
-        .ui.button{
-        padding: 1.3rem;
-        margin-right: 2rem;
-      }
-     
-      .ui.button.gray:not(.basic) {
-        background-color: #005987 !important;
-        color: white !important;
+  .btn-service-type{
+    .ui.button{
+      padding: 1.3rem;
+      margin-right: 2rem;
     }
 
-      }
+    .ui.button.gray:not(.basic) {
+      background-color: teal !important;
+      color: white !important;
+    }
+  }
 
-      .section-info-item-step1.ui.segment {
-        box-shadow: none;
-        padding: 1.8rem 12rem;
-      }
-      
-      .section-info-item-step1{
-        margin-top: 3rem !important;
-      }
-      
-      .section-info-header{
-        text-align: center;
-      }
+  .section-info-item-step1.ui.segment {
+    box-shadow: none;
+    padding: 1.8rem;
+  }
 
-      .btnBack{
-        text-align: left !important;
-      }
-      
-      .section-info-item-form{
-        .ui.celled.table tr td, .ui.celled.table tr th {
-          border-left: 0px solid !important;
-      }
-      .ui.table tr td {
-        border-top: 0px solid !important;
+  .section-info-item-step1{
+    margin-top: 3rem !important;
+  }
+
+  .section-info-header{
+    text-align: left;
+    text-transform: uppercase !important;
+  }
+
+  .btnBack{
+    text-align: left !important;
+  }
+
+  .section-info-item-form{
+    .ui.celled.table tr td, .ui.celled.table tr th {
+      border-left: 0px solid !important;
+    }
+    .ui.table tr td {
+      border-top: 0px solid !important;
     }
     .ui.table{
       width:100% !important;
     }
-      .div-kannel-selection{
-        box-shadow: none;
-        padding: 1.8rem 24rem;
+    .div-kannel-selection{
+      box-shadow: none;
+      padding: 1.8rem 24rem;
+    }
+
+    .action-button-reservation{
+      hr{
+        margin-bottom: 1rem;
+        border: 0.1px solid rgba(34, 36, 38, 0.15);
       }
+    }
 
-      .action-button-reservation{
-        hr{
-          margin-bottom: 1rem;
-          border: 0.1px solid rgba(34, 36, 38, 0.15);
-        }
+    .btn-reservation-calendar{
+      height: 3rem;
+      margin-right: 0px !important;
+      padding: .58928571em 1.0em .58928571em !important;
+    }
+    .spn-reservation-calendar{
+      margin: 1rem;
+      padding-left: 1rem;
+      padding-right: 3rem;
+      padding-top: 0.8rem;
+      padding-bottom: 0.8rem;
+    }
+    .spn-area{
+      width: 7rem;
+      display: inline-block;
+    }
+
+    .btn-avaliable{
+      background: #079477 !important;
+      float: right;
+    }
+    .btn-spent{
+      background: #DD4B39 !important;
+      float: right;
+    }
+
+    .div-additional-information{
+      box-shadow: none;
+      padding: 1.8rem 20rem;
+    }
+
+    .text-center{
+      text-align: center;
+    }
+
+    .spn-calendar-btn{
+      width: 10rem;
+    }
+
+    .btn-reservation-calendar.basic{
+      box-shadow: 0 0 black !important;
+    }
+
+    .delete-addons{
+      position: absolute;
+      right: 2rem;
+    }
+
+    .div-addon-summary{
+      padding: 1rem;
+      background: #F7F9FC;
+      border: 1px solid #E5EAEE;
+      text-align: right;
+      border-radius: 3px;
+      padding-right: 2rem;
+    }
+  }
+
+  .btn-service-type{
+    display: flex;
+    .button-service{
+      border: 1px solid #E5EAEE;
+      box-sizing: border-box;
+      box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
+      border-radius: 3px;
+      width: 187px;
+      padding: 1rem;
+      cursor: pointer;
+      margin-right: 3rem;
+      &.selected {
+        background: #005987;
+        color: white;
       }
-
-      .btn-reservation-calendar{
-    height: 3rem;
-    // margin: 0.12rem !important;
-    margin-right: 0px !important;
-    padding: .58928571em 1.0em .58928571em !important;
+      span{
+        letter-spacing: 0.04em;
+        margin-left: 0.4em;
       }
-.spn-reservation-calendar{
-  margin: 1rem;
-  padding-left: 1rem;
-  padding-right: 3rem;
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
-}
-.spn-area{
-  width: 7rem;
-    display: inline-block;
-}
-.btn-avaliable{
-  background: #079477 !important;
-  float: right;
-}
-.btn-spent{
-  background: #DD4B39 !important;
-  float: right;
-}
-
-.div-additional-information{
-  box-shadow: none;
-  padding: 1.8rem 20rem;
-}
-
-.text-center{
-  text-align: center;
-}
-
-.spn-calendar-btn{
-  padding: 3rem;
-}
-
-.btn-reservation-calendar.basic{
-  box-shadow: 0 0 black !important;
-}
-
-.delete-addons{
-  position: absolute;
-  right: 2rem;
-}
-
-.div-addon-summary{
-  padding: 1rem;
-    background: #F7F9FC;
-    border: 1px solid #E5EAEE;
-    text-align: right;
-    border-radius: 3px;
-    padding-right: 2rem;
-}
+      img{
+        width: 40px;
+        height: 40px;
       }
+    }
+  }
 
-      .btn-service-type{
-        display: flex;
-          .button-service{
-            border: 1px solid #E5EAEE;
-            box-sizing: border-box;
-            box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
-            border-radius: 3px;
-            width: 187px;
-            padding: 1rem;
-            cursor: pointer;
-            margin-right: 3rem;
-            &.selected {
-              background: #005987;
-              color: white;
-            }
-            span{
-              letter-spacing: 0.04em;
-              margin-left: 0.4em;
-            }
-            img{
-              width: 40px;
-              height: 40px;
-            }
-          }
-         
+  @media (min-width: 767px) and (max-width:1250px) {
+    .btn-service-type{
+      text-align: center;
+      .button-service{
+        margin-right: 1rem;
+        width:auto !important;
       }
+    }
+  }
 
-      @media (min-width: 767px) and (max-width:1250px) {
-        .btn-service-type{
-          text-align: center;
-        .button-service{
-          margin-right: 1rem;
-          width:auto !important;
-        }
+  @media (max-width: 767px) {
+    .btn-service-type{
+      display: block;
+      .button-service{
+        margin-top: 1rem;
+        width:100% !important;
       }
-       }
+    }
+  }
 
-       @media (max-width: 767px) {
-        .btn-service-type{
-          display: block;
-        .button-service{
-          margin-top: 1rem;
-          width:100% !important;
-        }
-      }
-       }
+  .list-total-addons > .item {
+    padding: 18px 0rem !important;
+  }
 
-.list-total-addons > .item {
-  padding: 0.8rem !important;
-}
+  .ui.ordered.steps .step.active:before, .ui.steps .active.step .icon{
+    color :#079477 !important;
+  }
+  .ui.steps .step.active .title {
+    color :#079477 !important;
+  }
 
-.ui.ordered.steps .step.active:before, .ui.steps .active.step .icon{
-  color :#079477 !important;
-}
-.ui.steps .step.active .title {
-  color :#079477 !important;
-}
-
-.section-info-item-single.ui.segment {
-  box-shadow: none;
-  padding: 1.8rem 25rem;
-}
-
-.grooming-second-step-form{
-  .div-additional-charge{
+  .section-info-item-single.ui.segment {
     box-shadow: none;
     padding: 1.8rem 25rem;
   }
-  .div-additional-charge-summary{
-    padding: 1.5rem;
-    background: #F7F9FC;
-    border: 1px solid #e5e9ee;
-    border-radius: 3px;
-    padding-right: 2rem;
-    .charge-amount{
+
+  .grooming-second-step-form{
+    .div-additional-charge{
+      box-shadow: none;
+      padding: 1.8rem 25rem;
+    }
+    .div-additional-charge-summary{
+      padding: 1.5rem;
+      background: #F7F9FC;
+      border: 1px solid #e5e9ee;
+      border-radius: 3px;
+      padding-right: 2rem;
+      .charge-amount{
+        float: right;
+        color: #00AA9F;
+      }
+    }
+
+    .btn-trash-charge{
       float: right;
-      color: #00AA9F;
+      margin-top: 1.8rem;
     }
   }
 
-  .btn-trash-charge{
-    float: right;
-    margin-top: 1.8rem;
+  .div-section-info-item-single{
+    box-shadow: none;
+    padding: 1.8rem 25rem;
   }
 
+  .btn-groomer-time-select{
+    height: 3rem;
+  }
 
-}
+  .btn-groomer-time-select.active{
+    background-color: #079477 !important;
+  }
 
-.div-section-info-item-single{
-  box-shadow: none;
-padding: 1.8rem 25rem;
-}
-
-.btn-groomer-time-select{
-  height: 3rem;
-}
-
-.btn-groomer-time-select.active{
-  background-color: #079477 !important;
-}
-
-.grid-time-selection{
-  height: 30vh;
+  .grid-time-selection{
+    height: 30vh;
     overflow-y: auto;
     margin-right: -0.5rem;
     margin-bottom: 0rem;
-
     .row{
       padding-top:0rem !important;
     }
-}
+  }
 
-@media (max-width:1024px) {
-  .btn-service-type .ui.button {
-    margin-right: 0rem;
-    width: 11rem;
-    margin-top: 1rem;
-    margin-left: 1rem;
-}
-.section-info-item-step1.ui.segment{
-  padding: 1rem;
-}
-.section-info-item-form .div-kannel-selection {
-  padding: 1rem 0rem;
-}
+  @media (max-width:1024px) {
+    .btn-service-type .ui.button {
+      margin-right: 0rem;
+      width: 11rem;
+      margin-top: 1rem;
+      margin-left: 1rem;
+    }
+    .section-info-item-step1.ui.segment{
+      padding: 1rem;
+    }
+    .section-info-item-form .div-kannel-selection {
+      padding: 1rem 0rem;
+    }
 
-.div-section-info-item-single{
-  padding: 1rem;
-}
+    .div-section-info-item-single{
+      padding: 1rem;
+    }
 
-.grooming-second-step-form .div-additional-charge{
-  padding: 0rem;
-  padding-top: 1rem;
-}
+    .grooming-second-step-form .div-additional-charge{
+      padding: 0rem;
+      padding-top: 1rem;
+    }
 
-.form-modal-actions{
-  .ui.button{
-    width: 100% !important;
+    .form-modal-actions{
+      .ui.button{
+        width: 100% !important;
+      }
+    }
+    .selection.dropdown{
+      min-width: 100% !important;
+    }
+  }
+
+  .flex_imp{
+    display:flex !important;
   }
 }
-.selection.dropdown{
-  min-width: 100% !important;
-}
- }
 
 
-  }
- 
-  
 #add-report-card-form {
+  h6.ui.header.section-header{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem !important;
+  }
 
-h6.ui.header.section-header{
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem !important;
+  .ui.radio.checkbox {
+    padding: 0.5rem;
+  }
+
+  .report-card-radio{
+    padding: 2rem;
+  }
+
+  .report-card-header{
+    background: #E5EAEE;
+    padding: 2rem;
+    border-bottom: 1px solid #BDC3C9;
+    margin-bottom: 0rem;
+  }
+
+  .ui.segment{
+    padding: 0rem;
+  }
 }
 
-.ui.radio.checkbox {
-  padding: 0.5rem;
-}
-
-.report-card-radio{
-  padding: 2rem;
-}
-
-.report-card-header{
-  background: #E5EAEE;
-  padding: 2rem;
-  border-bottom: 1px solid #BDC3C9;
-  margin-bottom: 0rem;
-}
-
-.ui.segment{
-  padding: 0rem;
-}
-
-}
 //for progess bar
 .div-progress-bar{
   color: #BDC3C9;
   width: 100%;
-    display: inline-flex;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    
-.div-bar-content{
-  width: 20%;
-  margin: 0rem 2rem;
-  span{
-    margin-left: 0.5rem;
-  }
+  display: inline-flex;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  .div-bar-content{
+    width: 35% !important;
+    margin: 0rem 2rem;
+    span{
+      margin-left: 0.5rem;
+    }
   }
 
   .div-bar-line{
@@ -332,26 +321,23 @@ h6.ui.header.section-header{
     font-size: 1.5em;
   }
 
-
   .active{
     border-color:#079477;
     color:#079477;
   }
 }
 
-
 @media (max-width: 767px) {
   .div-progress-bar{
     display: contents;
-.div-bar-content{
-  margin: 0rem;
-  margin-top: 1rem;
-width: 100%;
-}
-
-.div-bar-line{
-display: none;
-}
+    .div-bar-content{
+      margin: 0rem;
+      margin-top: 1rem;
+      width: 100%;
+    }
+    .div-bar-line{
+      display: none;
+    }
   }
 }
 
@@ -377,7 +363,175 @@ display: none;
       margin-right: 1rem;
     }
     .div-bar-line {
-    display: none;
+      display: none;
     }
   }
+}
+
+.mt_input{
+  margin-top: 0.28571429rem !important;
+}
+
+.subService-margin {
+  margin-top: 30px !important;
+}
+
+.form-modal-action-button{
+  text-align: center !important;
+}
+
+.charge-card-check{
+  margin-top: -15px !important;
+  margin-bottom: 10px !important;
+}
+
+.final-cost{
+  color: teal !important;
+}
+
+.total-cost {
+  margin: 46px 0 1em !important;
+}
+
+.addons-grid {
+  padding-left: 0rem !important;
+  padding-right: 0rem !important;
+}
+
+.total-cost-input {
+  margin-top: 4px !important;
+}
+
+.button-margin {
+  margin: 0px 0px 0px 0px !important;
+}
+
+.message-grid{
+  padding :9px !important;
+}
+
+.heading-color {
+  background-color: #ebebeb;
+  color: teal !important;
+}
+
+.checkbox-label {
+  display: flex !important;
+}
+
+.span-margin {
+  margin-top: inherit !important;
+}
+
+.addon-service-button {
+  margin-top: auto;
+  text-align: right !important;
+}
+
+.div_align_center{
+  display: flex !important;
+  align-items: center !important;
+}
+
+.align-button {
+  .ui.button {
+    padding: 1em !important;
+  }
+}
+
+.padding-column {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.margin-accordian {
+  margin: 0 !important;
+}
+
+.addon-table {
+  .table-primary.ui.basic.table tbody td {
+    padding-top: 0.5em !important;
+    padding-bottom: 0.5em !important;
+  }
+}
+
+.vaccination-alert{
+  width: 99% !important;
+
+}
+
+.reservation-buttons{
+  width: 245px !important;
+}
+
+.delete-reservation{
+  margin-left: 100px !important;
+}
+
+.available-message {
+  background-color: rgb(200, 236, 236) !important;
+  text-align: center !important;
+}
+.available-message-two {
+  background-color:rgb(236, 226, 228) !important;
+  text-align: center !important;
+}
+
+.avaiable-buttons{
+  margin-top: 15px !important;
+  width: 150px !important;
+  margin-right: 15px !important;
+  height: 45px !important;
+}
+
+.heading-height{
+  height: 35px !important;
+}
+
+.lodging-text-align {
+  align-items: center !important;
+}
+
+.available-checkbox{
+  .ui.checkbox input:checked ~ label::after {
+    background-color: rgb(9, 165, 9);
+    color: white;
+  }
+}
+
+.occupied-checkbox{
+  .ui.checkbox input:checked ~ label::after {
+    background-color: red;
+    color: white;
+  }
+}
+
+.date-field-width {
+   width: auto !important;
+}
+.appointment-field{
+  margin-left: 8px !important;
+  margin-right: 8px !important;
+}
+.availability-button{
+  color: black !important;
+  background-color:rgb(236, 226, 228) !important;
+  width: 50% !important;
+  height: 140% !important;
+  margin-left: 125px !important;
+}
+
+.availability-button-two{
+  color: black !important;
+  background-color: rgb(200, 236, 236) !important;
+  width: 50% !important;
+  height: 140% !important;
+  margin-left: 125px !important;
+}
+.grooming-button-appoint{
+
+  color: black !important;
+ background-color:rgb(200, 236, 236) !important;
+ width: 178px !important;
+
 }

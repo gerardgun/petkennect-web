@@ -1,82 +1,55 @@
 import React from 'react'
 import { Label } from 'semantic-ui-react'
 
+import { VaccinationStatus } from '@lib/constants/pet'
+
 export default {
-  base_uri      : null,
   search_enabled: false,
-  row           : {
-    options: [
-      // {
-      //   display_name: 'Edit',
-      //   name        : 'edit',
-      //   icon        : 'edit outline'
-      // },
-      // {
-      //   display_name: 'Delete',
-      //   name        : 'delete',
-      //   icon        : 'trash alternate outline'
-      // }
-    ]
-  },
-  columns: [
+  columns       : [
     {
-      display_name: 'VACCINE',
-      name        : 'type_name',
-      type        : 'string', // image, boolean, date, datetime, money, label
+      display_name: 'Vaccine',
+      name        : 'name',
+      type        : 'string',
       width       : null,
       align       : 'left'
     },
     {
-      display_name: 'FILE',
-      name        : 'document_path',
-      type        : null, // image, boolean, date, datetime, money, label
+      display_name: 'File',
+      name        : 'dose.document_path',
       width       : null,
       align       : 'left',
-      formatter   : (value)=> {
+      formatter   : value => {
         return value ? (
           <a href={value} rel='noopener noreferrer'  target='_blank'>
             <span>File</span>
           </a>
         ) : '-'
       }
-      // action      : {
-      //   name : 'document_path',
-      //   label: 'File'
-      // }
     },
     {
-      display_name: 'EXPIRED DATE',
-      name        : 'expired_at',
+      display_name: 'Expiration date',
+      name        : 'dose.expired_at',
       type        : 'date',
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'VERIFY BY',
-      name        : 'employee_fullname',
+      display_name: 'Verified by',
+      name        : 'dose.employee_fullname',
       type        : 'string',
       width       : null,
       align       : 'left'
     },
     {
-      display_name: 'STATUS',
+      display_name: 'Status',
       name        : 'status',
       type        : 'badge',
-      formatter   : (value)=> {
-        const color = {
-          Missing      : 'black',
-          'Comming due': 'yellow',
-          'Verify!'    : 'blue',
-          Expired      : 'red',
-          Current      : 'teal'
-        }
-
-        return  (
-          <Label
-            circular color={color[value]} horizontal
-            style={{ minWidth: '6rem' }}>{value}</Label>)
-      },
+      formatter   : cell => (
+        <Label
+          circular color={VaccinationStatus[cell].color} horizontal
+          style={{ minWidth: '6rem' }}>{VaccinationStatus[cell].text}</Label>
+      ),
       width: null,
       align: 'left'
     }

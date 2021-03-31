@@ -1,17 +1,6 @@
 export default {
-  base_uri      : null,
   search_enabled: false,
-
-  row: {
-    options: [
-      {
-        display_name: 'Re-Aprove',
-        content     : 'Re-Aprove',
-        color       : 'teal'
-      }
-    ]
-  },
-  columns: [
+  columns       : [
     {
       display_name: 'CLIENT',
       name        : 'client',
@@ -51,6 +40,19 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Re-Aprove',
+          name        : 're-aprove',
+          content     : 'Re-Aprove',
+          color       : 'teal'
+        }
+      ]
     }
   ]
 }

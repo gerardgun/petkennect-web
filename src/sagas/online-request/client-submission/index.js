@@ -1,6 +1,6 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
-import faker from 'faker'
-import _times from 'lodash/times'
+
+import { Get } from '@lib/utils/http-client'
 
 import clientSubmissionDuck from '@reducers/online-request/client-submission'
 
@@ -11,21 +11,22 @@ function* get() {
     yield put({ type: types.GET_PENDING })
 
     const filters = yield select(selectors.filters)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
-    // const clients = yield call(Get, '/client')
+    const list = yield select(selectors.list)
+
+    const { results, ...meta } = yield call(Get, '/requests/', {
+      ordering: '-created_at',
+      type    : 'R',
+      ...filters
+    })
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: _times(filters.page_size, index => ({
-          id       : index,
-          client   : faker.name.firstName(),
-          email    : faker.internet.email(),
-          mobile   : faker.phone.phoneNumber(),
-          location : '02-RH',
-          notes    : 'view',
-          completed: faker.random.boolean()
-        }))
+        items     : results,
+        pagination: {
+          ...list.pagination,
+          meta
+        }
       }
     })
   } catch (e) {

@@ -8,6 +8,17 @@ import * as Yup from 'yup'
 
 import { Get } from '@lib/utils/http-client'
 
+export const obj2options = obj => {
+  const options = Object.entries(obj)
+    .map(([ value, text ], index) => ({
+      key: index,
+      value,
+      text
+    }))
+
+  return options
+}
+
 export const getAbbreviature = (str = '') => {
   const matches = str.match(/([\w']+)/g)
   let abbreviature = matches[0].substring(0, 2)
@@ -48,6 +59,22 @@ export const getFileType = filepath => {
   const fileExt = filepath.split('.').pop()
 
   return [ 'png', 'jpg', 'jpeg' ].includes(fileExt) ? 'image' : 'video'
+}
+
+export const getVaccinationStatus = item => {
+  if(!item.expired_at)
+    return 'missing'
+
+  if(item.request && !item.verified_at)
+    return 'requested'
+
+  const expiredAt = moment.utc(item.expired_at, 'YYYY-MM-DD HH-mm:ss Z')
+  const now = moment()
+
+  if(expiredAt.isSameOrBefore(now)) return 'expired'
+  if(expiredAt.isSameOrBefore(now.add(30,'days'), 'day')) return  'comming_due'
+
+  return 'vaccinated'
 }
 
 export const getMessageError = e => {
@@ -245,11 +272,58 @@ export const sortByProperty = property=>{
 }
 
 export const formatPhoneNumber = phoneNumberString=>{
-  phoneNumberString = phoneNumberString == null ? '' : phoneNumberString
-  var cleaned = ('' + phoneNumberString.split(' ')[1]).replace(/\D/g, '')
-  var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
-  if(match)
-    return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+  try {
+    phoneNumberString = phoneNumberString == null ? '' : phoneNumberString
+    let cleaned = ('' + phoneNumberString.split(' ')[1]).replace(/\D/g, '')
+    let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+    if(match)
+      return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+  }
+  catch {
+    return null
+  }
+}
 
-  return null
+export const printAlphabets = () => {
+  // set the default value of i & j to print A to Z
+  let i = 65
+  let j = 91
+  let k
+  let strArr = []
+  // loop through the values from i to j
+  for (k = i; k < j; k++) {
+    // convert the char code to string (Alphabets)
+    let str = String.fromCharCode(k)
+    // print the result in console
+    strArr.push({ key: k, value: `${str}`, text: `${str}` })
+  }
+
+  return strArr
+}
+
+export const monthDiff = (d1, d2) => {
+  let months
+  months = (d2.getFullYear() - d1.getFullYear()) * 12
+  months -= d1.getMonth()
+  months += d2.getMonth()
+
+  return months <= 0 ? 1 : months + 1
+}
+
+export const weekAndDay = (date) => {
+  var days = [ 'Sunday','Monday','Tuesday','Wednesday',
+      'Thursday','Friday','Saturday' ],
+    prefixes = [ '1st', '2nd', '3rd', '4th', '5th' ]
+
+  return prefixes[Math.floor(date.getDate() / 7)] + ' ' + days[date.getDay()]
+}
+
+export const DayNth = function(d) {
+  if(d > 3 && d < 21) return d + 'th'
+  switch (d % 10) {
+    case 1:  return d + 'st'
+    case 2:  return d + 'nd'
+    case 3:  return d + 'rd'
+    default: return d + 'th'
+  }
 }

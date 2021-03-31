@@ -1,38 +1,49 @@
-import React, { useEffect } from 'react'
-import  './styles.scss'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
+import loadable from '@loadable/component'
 
-import Table from '@components/Table'
-import CancelReserve from './CancelReserve'
-import PetNotes from './Notes'
-import ViewReport from './ReportCard'
-import Absent from './Absent'
+import groomingReservationListConfig from '@lib/constants/list-configs/pet/grooming-reservation'
+import boardingReservationListConfig from '@lib/constants/list-configs/pet/boarding-reservation'
 
 import petDetailDuck from '@reducers/pet/detail'
-import petReservationDuck from '@reducers/pet/reservation'
+import petReservationBoardingDuck from '@reducers/pet/reservation/boarding'
+import petReservationGroomingDuck from '@reducers/pet/reservation/grooming'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+import petTrainingPackageDuck from '@reducers/pet/reservation/training/package'
+import petTrainingReservationDuck from '@reducers/pet/reservation/training/reservation'
+
+import  './styles.scss'
+
+const Table = loadable(() => import('@components/Table'))
+const CancelReserve = loadable(() => import('./CancelReserve'))
+const PetNotes = loadable(() => import('./Notes'))
+const ViewReport = loadable(() => import('./ReportCard'))
+const Absent = loadable(() => import('./Absent'))
+const Training = loadable(() => import('./Training'))
+const DayCamp = loadable(() => import('./DayCamp'))
 
 function BookingSection({ petDetail, ...props }) {
   const history = useHistory()
-  const { pet: petId } = useParams()
-  const { petReservation : { filters = {} }  = {} } = props
 
+  const [ activeServiceItem, setActiveServiceItem ] = useState(history.location.state != undefined ? history.location.state.type : 'T')
+  const { pet: petId } = useParams()
   useEffect(()=> {
     props.getPet(petId)
-    props.setFilters({ service_type_what_ever_name: 'T', service__current_upcoming: [ 'current','upcoming' ]  })
-    props.getPetReservations()
+    props.getPetReservationGrooming({ service_type_what_ever_name: 'G' })
+    props.getPetReservationBoarding({ service_type_what_ever_name: 'B' })
+    props.getTrainingPackages({ service_type_what_ever_name: 'T' })
   }, [])
 
   const clientId = `${petDetail.item.client}`
-
+  const client = petDetail.item &&  petDetail.item.client
   const _handleRowClick = () => {
   // wip
   }
-  const _handleRowOptionClick = () => {
+  const _handleRowButtonClick = () => {
     // wip
   }
 
@@ -49,9 +60,9 @@ function BookingSection({ petDetail, ...props }) {
         history.replace(`/client/${clientId}/book`)
         break
 
-      case 'absent' : props.setCancelCheckInItem(item,'DELETE')
+      case 'absent' : props.setItem(item,'DELETE')
         break
-      case 'cancel_reserve' : props.setCancelReserveItem(item,'READ')
+      case 'cancel_reserve' : props.setItem(item,'DISABLE')
         break
 
       default : return
@@ -59,73 +70,98 @@ function BookingSection({ petDetail, ...props }) {
   }
 
   const _handleFilterBtnClick = (e, { type }) => {
-    props.setFilters({ service_type_what_ever_name: type })
-    props.getPetReservations()
+    setActiveServiceItem(type)
+  }
+  const _handleAddReservationBtnClick = () => {
+    props.setReserveItem({ service: activeServiceItem },'CREATE')
+    history.push({
+      pathname: `/pet/${petId}/book`,
+      state   : { option: 'Pet', clientid: client }
+    })
   }
 
   return (
     <Container className='c-booking' fluid>
       <Grid className='petkennect-profile-body-header'>
         <Grid.Column
-          verticalAlign='middle'>
-          <Header as='h2'>Booking</Header>
+          className='pl0'
+          mobile={16} verticalAlign='middle'>
+          <Header as='h2'>Services</Header>
         </Grid.Column>
       </Grid>
-      <div className='mh28 mv32 div-booking-button'>
+      <div className='mh16 mv32 div-booking-button'>
         <Button
-          basic={filters.service_type_what_ever_name !== 'T'} color='teal'
+          basic={activeServiceItem !== 'T'} color='teal'
           content='Training' onClick={_handleFilterBtnClick}
           type='T'/>
         <Button
-          basic={filters.service_type_what_ever_name !== 'F'} color='teal'
-          content='Fitness' onClick={_handleFilterBtnClick}
+          basic={activeServiceItem !== 'F'} color='teal'
+          content='Day Services' onClick={_handleFilterBtnClick}
           type='F'/>
         <Button
-          basic={filters.service_type_what_ever_name !== 'D'} color='teal'
+          basic={activeServiceItem !== 'D'} color='teal'
           content='Day Camp' onClick={_handleFilterBtnClick}
           type='D'/>
         <Button
-          basic={filters.service_type_what_ever_name !== 'B'} color='teal'
+          basic={activeServiceItem !== 'B'} color='teal'
           content='Boarding' onClick={_handleFilterBtnClick}
           type='B'/>
         <Button
-          basic={filters.service_type_what_ever_name !== 'G'} color='teal'
+          basic={activeServiceItem !== 'G'} color='teal'
           content='Grooming' onClick={_handleFilterBtnClick}
           type='G'/>
       </div>
-      <div className='mh28 ui-table-overflow'>
-        <Table
-          duck={petReservationDuck}
-          onOptionDropdownChange={_handleOptionDropdownChange}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
-      </div>
-      <ViewReport/>
-      <CancelReserve/>
-      <PetNotes/>
-      <Absent/>
+      {activeServiceItem === 'T' && <Training/>}
+      {activeServiceItem === 'D' && <DayCamp/>}
+      {activeServiceItem === 'F' && <DayCamp/>}
+      {
+        (activeServiceItem === 'G' ||  activeServiceItem === 'B') && (
+          <>  <Grid className='segment-content-header' columns={2}>
+            <Grid.Column computer={4} mobile={10} tablet={4}>
+              <Header as='h2' className='child_header'>Reservations</Header>
+            </Grid.Column >
+            <Grid.Column
+              className='ui-grid-align'
+              computer={12} mobile={10} tablet={12}>
+              <Button
+                color='teal'
+                content='New Reservation'
+                onClick={_handleAddReservationBtnClick}/>
+            </Grid.Column>
+          </Grid>
+          <div className='ui-table-overflow'>
+            <Table
+              config={activeServiceItem === 'G' ? groomingReservationListConfig : boardingReservationListConfig}
+              duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
+              onOptionDropdownChange={_handleOptionDropdownChange}
+              onRowButtonClick={_handleRowButtonClick}
+              onRowClick={_handleRowClick}/>
+          </div>
+          <ViewReport/>
+          <CancelReserve/>
+          <PetNotes/>
+          <Absent/>
+          </>
+        )
+      }
     </Container>
   )
 }
 
-BookingSection.propTypes = {  }
-
-BookingSection.defaultProps = {  }
-
 export default compose(
   connect(
     (state) => ({
-      petReservation: petReservationDuck.selectors.list(state),
-      petDetail     : petDetailDuck.selectors.detail(state)
+      petDetail: petDetailDuck.selectors.detail(state)
     }), {
-      getPetReservations  : petReservationDuck.creators.get,
-      setFilters          : petReservationDuck.creators.setFilters,
-      setCancelReserveItem: petReservationDetailDuck.creators.setItem,
-      setCancelCheckInItem: petReservationDetailDuck.creators.setItem,
-      setReserveItem      : petReservationDetailDuck.creators.setItem,
-      setNoteItem         : petNoteDetailDuck.creators.setItem,
-      setViewReportItem   : petDetailDuck.creators.setItem,
-      getPet              : petDetailDuck.creators.get
+      getPetReservationGrooming: petReservationGroomingDuck.creators.get,
+      getPetReservationBoarding: petReservationBoardingDuck.creators.get,
+      setPackageFilters        : petTrainingReservationDuck.creators.setFilters,
+      setReserveItem           : petReservationDetailDuck.creators.setItem,
+      setNoteItem              : petNoteDetailDuck.creators.setItem,
+      setViewReportItem        : petDetailDuck.creators.setItem,
+      getPet                   : petDetailDuck.creators.get,
+      getTrainingPackages      : petTrainingPackageDuck.creators.get,
+      getTrainingReservations  : petTrainingReservationDuck.creators.get
+
     })
 )(BookingSection)
-

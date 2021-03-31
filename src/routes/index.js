@@ -7,36 +7,55 @@ import AuthSSO from '@containers/auth/sso'
 import Error404 from '@containers/page/error-404'
 
 // Private Containers
+
 import Agreement from '@containers/agreement'
 import AgreementCreate from '@containers/agreement/create'
+import AnimalSetting from '@containers/animal-setting'
+import AdminItem from '@containers/admin-item'
+import FeedingSetting from '@containers/feeding-setting'
+import MedicationSetting from '@containers/medication-setting'
+import VaccinationSetting from '@containers/vaccination-setting'
 import AuthMe from '@containers/auth/me'
+import Category from '@containers/category'
+import ColorCode from '@containers/color-code'
 import Dashboard from '@containers/dashboard'
+import BehaviorTagSetting from '@containers/behavior-tag-setting'
+import BookingSheetSetting from '@containers/booking-sheet-setting'
+import BreedManagerSetting from '@containers/breed-manager-setting'
+import DayCampForm from '@containers/day-camp-form'
 import Client from '@containers/client'
 import ClientShow from '@containers/client/show'
 import ClientBook from '@containers/client/reservation'
+import PetBook from '@containers/client/reservation'
 import CustomizedField from '@containers/customized-field'
+import Calendar from '@containers/calendar'
+import EmailMessage from '@containers/email-message'
+import ServiceSetting from '@containers/service-setting'
+import SystemSetting from '@containers/system-setting'
+import EmailTemplate from '@containers/email-template'
+import Notification from '@containers/notification'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
+import PaymentMethod from '@containers/payment-method'
+import PaymentInstruction from '@containers/payment-instruction'
 import Pet from '@containers/pet'
 import PetCreate from '@containers/pet/create'
-import PetKind from '@containers/pet-kind'
-import PetBreed from '@containers/pet-breed'
-import PetIncidentType from '@containers/pet-incident-type'
-import PetIncidentAction from '@containers/pet-incident-action'
-import PetIncidentBehavior from '@containers/pet-incident-behavior'
-import PetRetireReason from '@containers/pet-retire-reason'
+import PetSetting from '@containers/pet-setting'
 import PetVaccinationType from '@containers/pet-vaccination-type'
+import PetKennel from '@containers/pet-kennel'
+import PetKennelType from '@containers/pet-kennel-type'
+import PetKennelArea from '@containers/pet-kennel-area'
+import PetYardType from '@containers/pet-yard-type'
 import PriceMaster from '@containers/price-master'
 import PriceMasterCreate from '@containers/price-master/create'
-import Product from '@containers/product'
-import ProductCreate from '@containers/product/create/RootProvider'
+import PackagePricing from '@containers/package-pricing'
 import ProductAttribute from '@containers/product-attribute'
 import ProductAttributeValue from '@containers/product-attribute-value'
-import ProductClasses from '@containers/product-classes'
-import ProductFamilies from '@containers/product-families'
-import ProductFamiliesShow from '@containers/product-families/show'
-import Category from '@containers/category'
-// import PetBreed from '@containers/product/create'
+import ProductFamily from '@containers/product/family'
+import Product from '@containers/product'
+import ProductShow from '@containers/product/show'
+import RatingKey from '@containers/rating-key'
+import CustomReport from '@containers/custom-report'
 import EmployeeTitle from '@containers/employee-title'
 import Employee from '@containers/employee'
 import EmployeeShow from '@containers/employee/show'
@@ -46,7 +65,11 @@ import ServiceCreate from '@containers/service/create'
 import ServiceAttribute from '@containers/service-attribute'
 import ServiceAttributeValue from '@containers/service-attribute-value'
 import OnlineRequests from '@containers/online-request'
-// import FoundationDetail from '@containers/foundation/detail'
+import ClientSubmission from '@containers/online-request/clientSubmission'
+import ConfirmReservations from '@containers/online-request/confirmReservation'
+import CancellationsLogs from '@containers/online-request/cancellationLog'
+import DeclinedClients from '@containers/online-request/declinedClient'
+import VaccinationsUpdate from '@containers/online-request/vaccinationsUpdate'
 import Company from '@containers/company'
 import CompanyEdit from '@containers/company/edit'
 import CompanyShow from '@containers/company/show'
@@ -56,21 +79,8 @@ import OrganizationShow from '@containers/organization/show'
 import TrainingCommand from '@containers/training-command'
 import TrainingMethod from '@containers/training-method'
 import TrainingReason from '@containers/training-reason'
+import TrainingQuestionnaire from '@containers/training-questionnaire'
 import Transaction from '@containers/transaction'
-// import Grant from '@containers/grant'
-// import GrantAdd from '@containers/grant/add'
-// import GrantDetail from '@containers/grant/detail'
-// import Grantee from '@containers/grantee'
-// import GranteeAdd from '@containers/grantee/add'
-// import GranteeDetail from '@containers/grantee/detail'
-// import GranteeFocusAreaDetail from '@containers/grantee/focus_area/detail'
-// import ProgramEvaluation from '@containers/program_evaluation'
-// import ProgramEvaluationAdd from '@containers/program_evaluation/add'
-// import ProgramEvaluationDetail from '@containers/program_evaluation/detail'
-// import Proposal from '@containers/proposal'
-// import ProposalAdd from '@containers/proposal/add'
-// import ProposalDetail from '@containers/proposal/detail'
-// import ServedAreaDetail from '@containers/served_area/detail'
 import User from '@containers/user'
 
 const publicRoutes = [
@@ -106,6 +116,50 @@ const privateRoutes = [
     component: AuthSSO
   },
   {
+    path     : '/setup/animal-setting',
+    component: AnimalSetting
+  },
+  {
+    path     : '/setup/admin-item',
+    component: AdminItem
+  },
+  {
+    path     : '/setup/animal-setting/feeding',
+    component: FeedingSetting
+  },
+  {
+    path     : '/setup/animal-setting/medication',
+    component: MedicationSetting
+  },
+  {
+    path     : '/setup/animal-setting/vaccination',
+    component: VaccinationSetting
+  },
+  {
+    path     : '/setup/animal-setting/behavior-tag',
+    component: BehaviorTagSetting
+  },
+  {
+    path     : '/setup/animal-setting/breed-manager',
+    component: BreedManagerSetting
+  },
+  {
+    path     : '/setup/day-camp-form',
+    component: DayCampForm
+  },
+  {
+    path     : '/setup/color-codes',
+    component: ColorCode
+  },
+  {
+    path     : '/setup/booking-sheet-setting',
+    component: BookingSheetSetting
+  },
+  {
+    path     : '/setup/notifications',
+    component: Notification
+  },
+  {
     path     : '/client',
     component: Client
   },
@@ -116,6 +170,11 @@ const privateRoutes = [
   {
     path     : '/client/:client/book',
     component: ClientBook
+  },
+  {
+    path     : '/pet/:pet/book',
+    component: PetBook
+
   },
   {
     path     : '/company',
@@ -130,6 +189,19 @@ const privateRoutes = [
     component: CompanyEdit
   },
   {
+    path     : '/setup/email-template',
+    component: EmailTemplate
+  },
+  {
+    path     : '/setup/system-setting',
+    component: SystemSetting
+
+  },
+  {
+    path     : '/email-message',
+    component: EmailMessage
+  },
+  {
     path     : '/setup/customized-field',
     component: CustomizedField
   },
@@ -138,32 +210,20 @@ const privateRoutes = [
     component: Dashboard
   },
   {
-    path     : '/pet/kind',
-    component: PetKind
+    path     : '/setup/payment-method',
+    component: PaymentMethod
   },
   {
-    path     : '/pet/breed',
-    component: PetBreed
+    path     : '/setup/payment-instruction',
+    component: PaymentInstruction
   },
   {
-    path     : '/pet/incident-type',
-    component: PetIncidentType
-  },
-  {
-    path     : '/pet/incident-action',
-    component: PetIncidentAction
-  },
-  {
-    path     : '/pet/incident-behavior',
-    component: PetIncidentBehavior
+    path     : '/setup/pet-setting',
+    component: PetSetting
   },
   {
     path     : '/pet/vaccination-type',
     component: PetVaccinationType
-  },
-  {
-    path     : '/pet/retire-reason',
-    component: PetRetireReason
   },
   {
     path     : '/pet',
@@ -174,6 +234,22 @@ const privateRoutes = [
     component: PetCreate
   },
   {
+    path     : '/setup/pet-kennel',
+    component: PetKennel
+  },
+  {
+    path     : '/setup/pet-kennel-type',
+    component: PetKennelType
+  },
+  {
+    path     : '/setup/pet-kennel-area',
+    component: PetKennelArea
+  },
+  {
+    path     : '/setup/pet-yard-type',
+    component: PetYardType
+  },
+  {
     path     : '/setup/price-master',
     component: PriceMaster
   },
@@ -182,16 +258,16 @@ const privateRoutes = [
     component: PriceMasterCreate
   },
   {
+    path     : '/setup/package-pricing',
+    component: PackagePricing
+  },
+  {
     path     : '/product',
     component: Product
   },
   {
-    path     : '/product/create',
-    component: ProductCreate
-  },
-  {
-    path     : '/product/:id',
-    component: ProductCreate
+    path     : '/product/:id(\\d+)',
+    component: ProductShow
   },
   {
     path     : '/product-attribute',
@@ -202,16 +278,8 @@ const privateRoutes = [
     component: ProductAttributeValue
   },
   {
-    path     : '/product-classes',
-    component: ProductClasses
-  },
-  {
-    path     : '/product-families',
-    component: ProductFamilies
-  },
-  {
-    path     : '/product-families/show/:id',
-    component: ProductFamiliesShow
+    path     : '/product/family',
+    component: ProductFamily
   },
   {
     path     : '/category',
@@ -238,9 +306,38 @@ const privateRoutes = [
     component: ServiceAttributeValue
   },
   {
+    path     : '/setup/service-setting',
+    component: ServiceSetting
+  },
+  {
     path     : '/online-request',
     component: OnlineRequests
   },
+  {
+    path     : '/online-request/client-submission',
+    component: ClientSubmission
+  },
+  {
+    path     : '/online-request/confirm-reservation',
+    component: ConfirmReservations
+  },
+  {
+    path     : '/online-request/cancellation-log',
+    component: CancellationsLogs
+  },
+  {
+    path     : '/online-request/declined-client',
+    component: DeclinedClients
+  },
+  {
+    path     : '/online-request/vaccination-update',
+    component: VaccinationsUpdate
+  },
+  {
+    path     : '/custom-report',
+    component: CustomReport
+  },
+
   {
     path     : '/employee',
     component: Employee
@@ -278,6 +375,10 @@ const privateRoutes = [
     component: DocumentType
   },
   {
+    path     : '/setup/calendar',
+    component: Calendar
+  },
+  {
     path     : '/organization',
     component: Organization
   },
@@ -290,12 +391,20 @@ const privateRoutes = [
     component: OrganizationEdit
   },
   {
+    path     : '/setup/rating-key',
+    component: RatingKey
+  },
+  {
     path     : '/setup/training-command',
     component: TrainingCommand
   },
   {
     path     : '/setup/training-method',
     component: TrainingMethod
+  },
+  {
+    path     : '/training-questionnaire/client/:clientId/pet/:petId',
+    component: TrainingQuestionnaire
   },
   {
     path     : '/setup/training-reason',

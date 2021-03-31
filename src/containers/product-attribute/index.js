@@ -7,17 +7,14 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
-
 import ProductAttributeCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import productAttributeListConfig from '@lib/constants/list-configs/product/product-attribute'
 
 import productAttributeDuck from '@reducers/product/product-attribute'
 import productAttributeDetailDuck from '@reducers/product/product-attribute/detail'
 
 const ProductAttributeList = ({ productAttribute, productAttributeDetail, ...props }) => {
-  const [ openDeleteModal, { _handleOpen: _handleOpenDeleteModal, _handleClose: _handleCloseDeleteModal } ] = useModal()
-
   const history = useHistory()
 
   useChangeStatusEffect(props.getProductAttributes, productAttributeDetail.status)
@@ -31,13 +28,11 @@ const ProductAttributeList = ({ productAttribute, productAttributeDetail, ...pro
   }, [])
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(productAttribute.selector.selected_items[0], 'DELETE')
-      _handleOpenDeleteModal()
-    }
   }
 
-  const _handleRowOptionClick = (option, item) => {
+  const _handleRowButtonClick = (option, item) => {
     props.setItem(item)
     history.push(`/product-attribute-value/${item.id}`)
   }
@@ -67,17 +62,15 @@ const ProductAttributeList = ({ productAttribute, productAttributeDetail, ...pro
           </Grid.Column>
         </Grid>
         <Table
+          config={productAttributeListConfig}
           duck={productAttributeDuck}
           onOptionClick={_handleOptionClick}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
+          onRowButtonClick={_handleRowButtonClick}
+          onRowClick={_handleRowClick}/>
 
       </Segment>
       <ProductAttributeCreate/>
-      <ModalDelete
-        duckDetail={productAttributeDetailDuck}
-        onClose={_handleCloseDeleteModal}
-        open={openDeleteModal}/>
+      <ModalDelete duckDetail={productAttributeDetailDuck}/>
 
     </Layout>
   )

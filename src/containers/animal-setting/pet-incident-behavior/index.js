@@ -1,0 +1,68 @@
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { Button, Grid, Icon } from 'semantic-ui-react'
+
+import ModalDelete from '@components/Modal/Delete'
+import Table from '@components/Table'
+import PetIncidentBehaviorForm from  './Form'
+import { useChangeStatusEffect } from '@hooks/Shared'
+import petIncidentBehaviorListConfig from '@lib/constants/list-configs/pet/animal-setting/incident-behavior'
+
+import petIncidentBehaviorDuck from '@reducers/pet/incident-behavior'
+import petIncidentBehaviorDetailDuck from '@reducers/pet/incident-behavior/detail'
+
+const PetIncidentBehaviorList = ({ petIncidentBehavior, petIncidentBehaviorDetail, ...props }) => {
+  useChangeStatusEffect(props.getPetIncidentBehaviors, petIncidentBehaviorDetail.status)
+
+  useEffect(() => {
+    props.getPetIncidentBehaviors()
+  }, [])
+
+  const _handleAddBtnClick = () => {
+    props.setItem(null, 'CREATE')
+  }
+
+  const _handleRowClick = (e, item) => {
+    props.setItem(item, 'UPDATE')
+  }
+
+  const _handleOptionClick = option => {
+    if(option === 'delete')
+      props.setItem(petIncidentBehavior.selector.selected_items[0], 'DELETE')
+  }
+
+  return (
+    <>
+      <Grid columns={2}>
+        <Grid.Column
+          computer={10} mobile={12} tablet={8}>
+          <Table
+            config={petIncidentBehaviorListConfig}
+            duck={petIncidentBehaviorDuck}
+            onOptionClick={_handleOptionClick}
+            onRowClick={_handleRowClick}/>
+        </Grid.Column>
+        <Grid.Column
+          computer={4} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>New Behavior</Button>
+        </Grid.Column>
+      </Grid>
+
+      <PetIncidentBehaviorForm/>
+      <ModalDelete duckDetail={petIncidentBehaviorDetailDuck}/>
+
+    </>
+  )
+}
+
+export default compose(
+  connect(
+    state => ({
+      petIncidentBehavior      : petIncidentBehaviorDuck.selectors.list(state),
+      petIncidentBehaviorDetail: petIncidentBehaviorDetailDuck.selectors.detail(state)
+    }), {
+      getPetIncidentBehaviors: petIncidentBehaviorDuck.creators.get,
+      setItem                : petIncidentBehaviorDetailDuck.creators.setItem
+    })
+)(PetIncidentBehaviorList)

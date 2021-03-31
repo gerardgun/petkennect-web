@@ -1,20 +1,22 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
-
-import Table from '@components/Table'
-import Alert from '@components/Alert'
+import moment from 'moment'
+import loadable from '@loadable/component'
 
 import useModal from '@components/Modal/useModal'
-import VaccinationUploadForm from './VaccinationUploadForm'
-import EmailReminderForm from './EmailReminderForm'
+import petVaccinationListConfig from '@lib/constants/list-configs/pet/vaccination'
 
 import petVaccinationDuck from '@reducers/pet/vaccination'
 import petDetailDuck from '@reducers/pet/detail'
 import petVaccinationDetailDuck from '@reducers/pet/vaccination/detail'
-import { useParams } from 'react-router-dom'
-import moment from 'moment'
+
+const Table = loadable(() => import('@components/Table'))
+const Alert = loadable(() => import('@components/Alert'))
+const  VaccinationUploadForm = loadable(() => import('./VaccinationUploadForm'))
+const EmailReminderForm = loadable(() => import('./EmailReminderForm'))
 
 function VacinationSection(props) {
   const { petVaccinationDetail , petVaccination , petDetail } = props
@@ -37,7 +39,7 @@ function VacinationSection(props) {
   const _handleRowClick = () => {
   // wip
   }
-  const _handleRowOptionClick = () => {
+  const _handleRowButtonClick = () => {
     // wip
   }
 
@@ -70,7 +72,7 @@ function VacinationSection(props) {
       </Grid>
       <Alert
         className='mh28 mt32' message={getAlertMessage()}
-        open={!!petDetail.item.vaccination_alert.length}/>
+        open={petDetail.item.vaccination_alert && !!petDetail.item.vaccination_alert.length}/>
       <div className='flex justify-end mh28 mt32'>
         <Button
           basic
@@ -92,9 +94,10 @@ function VacinationSection(props) {
 
       <div className='mh28 mt20'>
         <Table
+          config={petVaccinationListConfig}
           duck={petVaccinationDuck}
-          onRowClick={_handleRowClick}
-          onRowOptionClick={_handleRowOptionClick}/>
+          onRowButtonClick={_handleRowButtonClick}
+          onRowClick={_handleRowClick}/>
 
       </div>
       <EmailReminderForm onClose={_handleCloseEmailFormModal} open={openEmailFormModal}/>
@@ -121,4 +124,3 @@ export default compose(
       setItem           : petVaccinationDetailDuck.creators.setItem
     })
 )(VacinationSection)
-

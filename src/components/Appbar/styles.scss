@@ -6,13 +6,13 @@ padding: 2rem;
     width:100%;
     padding: 1rem 0rem;
     display: inline-flex;
-  
+
     .ui.selection.dropdown{
       min-width: 5rem;
     width: 114px;
     border-radius: 0;
     }
-   
+
     .ui.selection.dropdown:focus {
       background: #79afab;
     color: white;
@@ -34,7 +34,7 @@ padding: 2rem;
       width: 100%;
     }
   }
-  
+
   .auth-session-dropdown {
     text-align: right;
     padding: 1rem 0rem;
@@ -42,13 +42,13 @@ padding: 2rem;
     p {
       margin-bottom: 0.5rem;
     }
-  
+
     .avatar {
       &-trigger {
         display: flex;
         align-items: center;
       }
-  
+
       &-circle {
         width: 3rem;
         height: 3rem;
@@ -61,23 +61,23 @@ padding: 2rem;
         justify-content: center;
         align-items: center;
       }
-  
+
       &-user {
         color: #616468;
-  
+
         span {
           color: #1C1D1E;
         }
       }
-  
+
       &-icon {
         padding-left: 0.5rem;
         color: #616468;
         font-size: 1.3rem;
       }
-  
+
       &.ui.dropdown {
-        
+
          padding-left: 3rem;
 
          @media (min-width: 900px) and (max-width:1200px) {
@@ -87,7 +87,7 @@ padding: 2rem;
         .ui.dropdown.selection { // Location Dropdown
           width: 12rem;
           min-width: initial;
-  
+
           & > .menu {
             top: 100% !important;
             right:0;
@@ -96,14 +96,14 @@ padding: 2rem;
             border-radius: 0 0 .28571429rem .28571429rem !important;
           }
         }
-  
+
         .scrolling.menu {
           height:9.5rem;
           border-top: none;
           .item {
             font-weight: 300;
             padding-left: 3rem !important;
-  
+
             &.selected {
               &::before {
                 content: "✓";
@@ -113,14 +113,14 @@ padding: 2rem;
             }
           }
         }
-  
+
         & > .menu {
           padding-top: 0.7rem;
           left: -14rem;
           .item {
             padding: 1rem 1.8rem !important;
           }
-    
+
           .header {
             padding: 1.2rem 1.8rem !important;
             color: inherit;
@@ -129,7 +129,7 @@ padding: 2rem;
             text-transform: inherit;
             margin-top: 0;
             margin-bottom: 0;
-      
+
             .avatar {
               &-trigger {
                 margin-bottom: 1.2rem;
@@ -141,4 +141,4 @@ padding: 2rem;
     }
   }
 
- 
+

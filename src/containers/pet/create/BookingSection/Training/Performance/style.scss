@@ -1,0 +1,116 @@
+
+
+
+.performance-index{
+
+  .header-performance-report-bt{
+
+    @media only screen and (min-width:768px) and (max-width:1024px){
+      margin-top: 30px !important;
+   
+  
+    }
+    @media only screen and (min-width:375px) and (max-width:812px){
+      margin-top: 20px !important;
+      
+    }
+  
+  }
+  
+
+}
+
+
+
+.training-performance-button{ //index
+
+  @media only screen and (min-width:375px) and (max-width:812px){
+
+    margin-top: 25px !important;
+  }
+  @media only screen and (min-width:375px) and (max-width:812px){
+    margin-top: 20px !important;
+
+  }
+}
+
+.training-performance-form{
+
+
+  .radio-label{
+
+    padding-left: 0px !important;
+    margin-right:30px !important;
+    padding-right:0rem !important;
+  
+  }
+  
+  .seg-class{  
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+    }
+
+
+.radio-label-grid{
+  width: 15% !important ; 
+  padding-right: 0 !important;
+
+
+          @media only screen and (min-device-width:768px) and (max-device-width:1024px){
+            width: 30% !important;
+
+          }
+
+          @media only screen and (min-device-width:375px) and (max-device-width:812px){
+            width: 30% !important;
+
+          }
+
+          @media only screen
+        and (min-device-width: 1024px)
+        and (max-device-width: 1366px)
+        and (orientation: portrait)
+        and (-webkit-min-device-pixel-ratio: 2) {
+
+          
+          width: 30% !important;
+
+        }
+}
+
+.radio-field-grid{
+
+        width: 35% !important;  
+        padding-right: 0 !important;
+        padding-left: 2rem !important;
+
+        @media only screen and (min-device-width:768px) and (max-device-width:1024px){
+          width: 70% !important;
+
+        }
+
+       @media only screen and (min-device-width:375px) and (max-device-width:812px){
+          width: 70% !important;
+
+          }
+ 
+        @media only screen
+        and (min-device-width: 1024px)
+        and (max-device-width: 1366px)
+        and (orientation: portrait)
+        and (-webkit-min-device-pixel-ratio: 2) {
+        
+        
+          width: 70% !important;
+  
+  }
+
+        .radio-field{
+          margin-right: 25px !important;
+          margin-bottom: 7px !important;
+        
+        }
+
+}
+
+}

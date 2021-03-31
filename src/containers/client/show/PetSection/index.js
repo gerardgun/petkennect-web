@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
-import { Container, Header, Button, Card, Grid, Icon, Image, Loader } from 'semantic-ui-react'
+import { Container, Header, Button, Card, Grid, Image, Loader } from 'semantic-ui-react'
 
 import PetFormModal from '@containers/pet/form/modal'
 import { defaultImageUrl } from '@lib/constants'
@@ -178,7 +178,7 @@ function PetsSection({ clientDetail, clientPet, ...props }) {
         }
       </div>
 
-      <PetFormModal/>
+      <PetFormModal clientId={clientDetail.item.id}/>
     </Container>
   )
 }

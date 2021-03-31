@@ -3,17 +3,11 @@ import { connect } from 'react-redux'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Grid, Segment, Breadcrumb, Image, Label, Menu, Header, Dropdown, Button, Icon } from 'semantic-ui-react'
-import _get from 'lodash/get'
 
-import Layout from '@components/Common/Layout'
+import loadable from '@loadable/component'
+
 import ImageEditor from '@components/Common/ImageEditor'
 import PetProfileProperty from '@components/Common/Pet/Profile/Property'
-import InformationSection from './InformationSection'
-import BookingSection from './BookingSection'
-import VaccinationSection from './VaccinationSection'
-import IncidentSection from './IncidentSection'
-import NoteSection from './NoteSection'
-import GallerySection from './GallerySection'
 import useCameraAvailable from '@hooks/useCameraAvailable'
 import { defaultImageUrl } from '@lib/constants'
 import { getAge } from '@lib/utils/functions'
@@ -23,10 +17,21 @@ import petImageDuck from '@reducers/pet/image'
 import petImageDetailDuck from '@reducers/pet/image/detail'
 import petNoteDuck from '@reducers/pet/note'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
+import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
+import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
-const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
+const Layout = loadable(() => import('@components/Common/Layout'))
+const InformationSection = loadable(() => import('./InformationSection'))
+const IncidentSection = loadable(() => import('./IncidentSection'))
+const BookingSection = loadable(() => import('./BookingSection'))
+const  VaccinationSection  = loadable(() => import('./VaccinationSection'))
+const  NoteSection  = loadable(() => import('./NoteSection'))
+const  GallerySection  = loadable(() => import('./GallerySection'))
+const  TrainingPerformance  = loadable(() => import('./BookingSection/Training/Performance'))
+
+const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props }) => {
   const history = useHistory()
-  const [ activeMenuItem, setActiveMenuItem ] = useState('info')
+  const [ activeMenuItem, setActiveMenuItem ] = useState('info' || history.location.state.option) // coming from breed manager page through table link
   const inputFileRef = useRef()
   const { pet: petId } = useParams()
   const cameraIsAvailable = useCameraAvailable()
@@ -36,6 +41,12 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
     props.getPetImages({ pet_id: petId })
     props.getPetRetireReasons()
     props.getPetNotes({ pet_id: petId, ordering: '-created_at' })
+    if(history.location.state) {
+      history.location.state.option === 'vaccination' && (
+        setActiveMenuItem('vaccinations'))
+      history.location.state.option === 'services' && (
+        setActiveMenuItem('bookings'))
+    }
 
     return () => {
       props.resetItem()
@@ -54,6 +65,21 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
         filetype  : 'image',
         is_profile: true
       }, 'CREATE')
+  }
+
+  const clientId = petDetail.item &&  petDetail.item.client
+
+  // const _handleBookBtnClick = () => {
+  //   props.resetReserveItem()
+  //   history.replace(`/client/${clientId}/book`)
+  // }
+
+  const _handleBookBtnClick = () => {
+    props.resetReserveItem()
+    history.push({
+      pathname: `/pet/${petId}/book`,
+      state   : { option: 'Pet', clientid: clientId }
+    })
   }
 
   const _handleOptionDropdownChange = () => {
@@ -116,9 +142,14 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
             <Breadcrumb>
               {
                 comesfromClientShowScreen ? (
-                  <Breadcrumb.Section>
-                    <Link to={`/client/${history.location.state.client}`}>{history.location.state.client_fullname}</Link>
-                  </Breadcrumb.Section>
+                  history.location.state.option ? (
+                    <Breadcrumb.Section>
+                      <Link to='/pet'>Pets</Link>
+                    </Breadcrumb.Section>
+                  )
+                    : (<Breadcrumb.Section>
+                      <Link to={`/client/${history.location.state.client}`}>{history.location.state.client_fullname}</Link>
+                    </Breadcrumb.Section>)
                 ) : (
                   <Breadcrumb.Section>
                     <Link to='/pet'>Pets</Link>
@@ -195,7 +226,7 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
             <Grid>
               <Grid.Row verticalAlign='middle'>
                 <Grid.Column computer={16} mobile={16} tablet={10}>
-                  <PetProfileProperty name='Breed' value={_get(petDetail.item, 'breed_name', '-')}/>
+                  <PetProfileProperty name='Breed' value={petDetail.item.breed_name ? petDetail.item.breed_name :  '-'}/>
                 </Grid.Column>
                 <Grid.Column computer={16} mobile={16} tablet={16}>
                   <PetProfileProperty name='Age' value={getAge(petDetail.item.born_at)}/>
@@ -210,6 +241,9 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
             </Grid>
 
             <br/>
+            <Button
+              color='teal' content='Book!'
+              fluid onClick={_handleBookBtnClick} size='large'/>
 
             <Menu
               className='petkennect-profile-menu' color='teal' fluid
@@ -222,7 +256,7 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
               <Menu.Item
                 active={activeMenuItem === 'bookings'} link name='bookings'
                 onClick={_handleMenuItemClick}>
-                Bookings
+                Services
                 <Label color='teal'>4</Label>
               </Menu.Item>
               <Menu.Item
@@ -255,7 +289,7 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
             className='petkennect-profile-body'
             computer={11} mobile={16} tablet={16}>
             {activeMenuItem === 'info' && <InformationSection/>}
-            {activeMenuItem === 'bookings' && <BookingSection/>}
+            {activeMenuItem === 'bookings' && (trainingPackageDetail.mode === 'READ' ? <TrainingPerformance/> : <BookingSection/>)}
             {activeMenuItem === 'vaccinations' && <VaccinationSection/>}
             {activeMenuItem === 'incidents' && <IncidentSection/>}
             {activeMenuItem === 'notes' && <NoteSection/>}
@@ -276,15 +310,17 @@ const PetShow = ({ petDetail, petImage, petNote, ...props }) => {
 export default compose(
   connect(
     ({ ...state }) => ({
-      petDetail: petDetailDuck.selectors.detail(state),
-      petImage : petImageDuck.selectors.list(state),
-      petNote  : petNoteDuck.selectors.list(state)
+      petDetail            : petDetailDuck.selectors.detail(state),
+      trainingPackageDetail: petReservationTrainingPackageDetail.selectors.detail(state),
+      petImage             : petImageDuck.selectors.list(state),
+      petNote              : petNoteDuck.selectors.list(state)
     }), {
       getPetImages       : petImageDuck.creators.get,
       getPetNotes        : petNoteDuck.creators.get,
       getPetRetireReasons: petRetireReasonDuck.creators.get,
       getPet             : petDetailDuck.creators.get,
       resetItem          : petDetailDuck.creators.resetItem,
-      setPetImage        : petImageDetailDuck.creators.setItem
+      setPetImage        : petImageDetailDuck.creators.setItem,
+      resetReserveItem   : petReservationDetailDuck.creators.resetItem
     })
 )(PetShow)

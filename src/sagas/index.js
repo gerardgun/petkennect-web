@@ -1,8 +1,10 @@
+
 import { all } from 'redux-saga/effects'
 import agreement from './agreement'
 import agreementDetail from './agreement/detail'
 import auth from './auth'
 import application from './application'
+import breedManagerSetting from './pet/breed-manager-setting'
 import category from './category'
 import categoryDetail from './category/detail'
 import client from './client'
@@ -16,21 +18,56 @@ import clientDocumentDetail from './client/document/detail'
 import clientDocumentType from './client/document/type'
 import clientDocumentTypeDetail from './client/document/type/detail'
 import clientPet from './client/pet'
+import clientEmailMessage from './client/email-message'
 import company from './company'
 import companyDetail from './company/detail'
+import customReport from './custom-report'
 import customized from './customized-field'
 import customizedField from './customized-field/field'
 import customizedFieldDetail from './customized-field/field/detail'
 import customizedFieldGroup from './customized-field/group'
 import customizedFieldGroupDetail from './customized-field/group/detail'
+import clientPetBreed from    './pet/breed-manager-setting/client-pet-breed'
+import dashboardDaycampReservation from './dashboard/daycamp/daycamp'
+import dashboardDaycampCheckedOutReservation from './dashboard/daycamp/daycampCheckedOut'
+import dashboardDaycampCheckedInReservation from './dashboard/daycamp/daycampCheckedIn'
+import dashboardBoardingReservation from './dashboard/boarding/boarding'
+import dashboardBoardingCheckedOutReservation from './dashboard/boarding/boardingCheckedOut'
+import dashboardBoardingCheckedInReservation from './dashboard/boarding/boardingCheckedIn'
+import daycampCard from './pet/reservation/daycamp-card'
+import dayCareReservationBreed from    './pet/breed-manager-setting/day-care-reservation-breed'
+import daycampCardDetail from './pet/reservation/daycamp-card/detail'
+import daycampCardQuestion from './pet/reservation/daycamp-card/daycamp-card-question'
+import daycampCardQuestionDetail from './pet/reservation/daycamp-card/daycamp-card-question/detail'
+import daycampCardAnswerDetail from './pet/reservation/daycamp-card/daycamp-card-answer/detail'
 import employee from './employee'
 import employeeDetail from './employee/detail'
 import employeeTitle from './employee/title'
 import employeeTitleDetail from './employee/title/detail'
+import emailMessage from './email-message'
+import emailTemplate from './email-template'
+import emailLog from './email-log'
+import exampleOne from './example/one'
+import exampleTwo from './example/two'
+import feedingMeasurement from './pet/feeding-setting/feeding-measurement'
+import feedingMethod from './pet/feeding-setting/feeding-method'
+import feedingTime from './pet/feeding-setting/feeding-time'
+import feedingUnit from './pet/feeding-setting/feeding-unit'
+import foodType from './pet/feeding-setting/food-type'
+import mealStatus from './pet/feeding-setting/meal-status'
 import location from './location'
 import locationDetail from './location/detail'
+import medication from './pet/medication-setting/medication'
+import medicationMeasurement from './pet/medication-setting/medication-measurement'
+import medicationTime from './pet/medication-setting/medication-time'
+import medicationUnit from './pet/medication-setting/medication-unit'
+import medicationReportStatus from './pet/medication-setting/medication-report-status'
+import medicationType from './pet/medication-setting/medication-type'
+import notification from './notification'
 import organization from './organization'
 import organizationDetail from './organization/detail'
+import packagePricing from './package-pricing'
+import paymentMethod from './payment-method'
 import pet from './pet'
 import petDetail from './pet/detail'
 import petBreed from './pet/breed'
@@ -47,16 +84,38 @@ import petIncidentBehavior from './pet/incident-behavior'
 import petIncidentBehaviorDetail from './pet/incident-behavior/detail'
 import petIncident from './pet/incident'
 import petIncidentDetail from './pet/incident/detail'
+import petInteractionType from './pet/interaction-type'
+import petVeterinarianList from './pet/veterinarian-list'
 import petNote from './pet/note'
 import petNoteDetail from './pet/note/detail'
 import petRetireReason from './pet/retire-reason'
 import petRetireReasonDetail from './pet/retire-reason/detail'
 import petReservation from './pet/reservation'
 import petReservationDetail from './pet/reservation/detail'
+import petReservationDaycampQuestion from './pet/reservation/daycamp-question'
+import petReservationDaycampQuestionDetail from './pet/reservation/daycamp-question/detail'
+import petReservationCheckInDetail from './pet/reservation/express-check-in/detail'
+import petReservationTrainingPackage from './pet/reservation/training/package'
+import petReservationTrainingReservationGroupClass from './pet/reservation/training/reservation/group-class'
+import petReservationTrainingReservation from './pet/reservation/training/reservation'
+import petReservationBoarding from './pet/reservation/boarding'
+import petReservationBoardingAddon from './pet/reservation/boarding/addon'
+import petReservationBoardingAddonFeeding from './pet/reservation/boarding/addon/feeding-addon'
+import petReservationGrooming from './pet/reservation/grooming'
+import petReservationGroomingAddon from './pet/reservation/grooming/addon'
+import petDaycampReservation from './pet/reservation/daycamp-reservation'
 import petVaccination from './pet/vaccination'
 import petVaccinationDetail from './pet/vaccination/detail'
 import petVaccinationType from './pet/vaccination-type'
 import petVaccinationTypeDetail from './pet/vaccination-type/detail'
+import petKennel from './pet/pet-kennel'
+import petKennelDetail from './pet/pet-kennel/detail'
+import petKennelType from './pet/pet-kennel-type'
+import petKennelTypeDetail from './pet/pet-kennel-type/detail'
+import petKennelArea from './pet/pet-kennel-area'
+import petKennelAreaDetail from './pet/pet-kennel-area/detail'
+import petYardType from './pet/pet-yard-type'
+import petYardTypeDetail from './pet/pet-yard-type/detail'
 import priceMaster from './price-master'
 import priceMasterDetail from './price-master/detail'
 import product from './product'
@@ -65,12 +124,10 @@ import productAttribute from './product/product-attribute'
 import productAttributeDetail from './product/product-attribute/detail'
 import productAttributeValue from './product/product-attribute-value'
 import productAttributeValueDetail from './product/product-attribute-value/detail'
-import productClasses from './product/product-classes'
-import productClassesDetail from './product/product-classes/detail'
 import productImage from './product/image'
 import productImageDetail from './product/image/detail'
-import productFamilies from './product/product-families'
-import productFamiliesDetail from './product/product-families/detail'
+import productFamily from './product/family'
+import productFamilyDetail from './product/family/detail'
 import productPackage from './product/package'
 import productPackageDetail from './product/package/detail'
 import productVariations from './product/product-variations'
@@ -78,6 +135,7 @@ import productVariationsDetail from './product/product-variations/detail'
 import productVariationsImageDetail from './product/product-variations/image/detail'
 import reservation from './reservation'
 import reservationDetail from './reservation/detail'
+import reservationByDateBreed from    './pet/breed-manager-setting/reservation-by-date-breed'
 import rol from './rol'
 import rolDetail from './rol/detail'
 import rolPermission from './rol/permission'
@@ -92,7 +150,13 @@ import serviceAttributeDetail from './service/service-attribute/detail'
 import serviceAttributeValue from './service/service-attribute-value'
 import serviceAttributeValueDetail from './service/service-attribute-value/detail'
 import onlineRequestClientSubmission from './online-request/client-submission'
+import onlineRequestClientSubmissionDetail from './online-request/client-submission/detail'
+import onlineRequestConfirmReservation from './online-request/confirm-reservation'
 import onlineRequestVaccinationUpdate from './online-request/vaccination-update'
+import onlineRequestVaccinationUpdateDetail from './online-request/vaccination-update/detail'
+import onlineRequestNote from './online-request/note'
+import onlineRequestNoteDetail from './online-request/note/detail'
+import ratingKey from './rating-key'
 import trainingCommand from './training-command'
 import trainingCommandDetail from './training-command/detail'
 import trainingMethod from './training-method'
@@ -112,6 +176,7 @@ export default function* rootSaga() {
     ...agreementDetail,
     ...application,
     ...auth,
+    ...breedManagerSetting,
     ...category,
     ...categoryDetail,
     ...client,
@@ -124,22 +189,58 @@ export default function* rootSaga() {
     ...clientDocumentDetail,
     ...clientDocumentType,
     ...clientDocumentTypeDetail,
+    ...clientEmailMessage,
     ...clientPet,
+    ...clientPetBreed,
     ...company,
     ...companyDetail,
+    ...customReport,
     ...customized,
     ...customizedField,
     ...customizedFieldDetail,
     ...customizedFieldGroup,
     ...customizedFieldGroupDetail,
+    ...dayCareReservationBreed,
+    ...daycampCard,
+    ...dashboardDaycampReservation,
+    ... dashboardDaycampCheckedInReservation,
+    ...dashboardDaycampCheckedOutReservation,
+    ...dashboardBoardingReservation,
+    ... dashboardBoardingCheckedOutReservation,
+    ... dashboardBoardingCheckedInReservation,
+    ...exampleOne,
+    ...exampleTwo,
+    ...petDaycampReservation,
+    ...daycampCardDetail,
+    ...daycampCardQuestion,
+    ...daycampCardQuestionDetail,
+    ...daycampCardAnswerDetail,
+    ...emailMessage,
+    ...emailTemplate,
+    ...emailLog,
     ...employee,
     ...employeeDetail,
     ...employeeTitle,
     ...employeeTitleDetail,
+    ...feedingMeasurement,
+    ...feedingMethod,
+    ...feedingTime,
+    ...feedingUnit,
+    ...foodType,
+    ...mealStatus,
     ...location,
     ...locationDetail,
+    ...medication,
+    ...medicationMeasurement,
+    ...medicationReportStatus,
+    ...medicationTime,
+    ...medicationType,
+    ...medicationUnit,
+    ...notification,
     ...organization,
     ...organizationDetail,
+    ...packagePricing,
+    ...paymentMethod,
     ...pet,
     ...petDetail,
     ...petBreed,
@@ -156,16 +257,37 @@ export default function* rootSaga() {
     ...petIncidentBehaviorDetail,
     ...petIncident,
     ...petIncidentDetail,
+    ...petInteractionType,
+    ...petVeterinarianList,
     ...petNote,
     ...petNoteDetail,
     ...petRetireReason,
     ...petRetireReasonDetail,
     ...petReservation,
     ...petReservationDetail,
+    ...petReservationCheckInDetail,
+    ...petReservationDaycampQuestion,
+    ...petReservationDaycampQuestionDetail,
+    ...petReservationTrainingPackage,
+    ...petReservationTrainingReservation,
+    ...petReservationTrainingReservationGroupClass,
+    ...petReservationBoarding,
+    ...petReservationBoardingAddon,
+    ...petReservationBoardingAddonFeeding,
+    ...petReservationGrooming,
+    ...petReservationGroomingAddon,
     ...petVaccination,
     ...petVaccinationDetail,
     ...petVaccinationType,
     ...petVaccinationTypeDetail,
+    ...petKennel,
+    ...petKennelDetail,
+    ...petKennelType,
+    ...petKennelTypeDetail,
+    ...petKennelArea,
+    ...petKennelAreaDetail,
+    ...petYardType,
+    ...petYardTypeDetail,
     ...priceMaster,
     ...priceMasterDetail,
     ...product,
@@ -174,17 +296,16 @@ export default function* rootSaga() {
     ...productAttributeDetail,
     ...productAttributeValue,
     ...productAttributeValueDetail,
-    ...productClasses,
-    ...productClassesDetail,
     ...productImage,
     ...productImageDetail,
-    ...productFamilies,
-    ...productFamiliesDetail,
+    ...productFamily,
+    ...productFamilyDetail,
     ...productPackage,
     ...productPackageDetail,
     ...productVariations,
     ...productVariationsDetail,
     ...productVariationsImageDetail,
+    ...reservationByDateBreed,
     ...reservation,
     ...reservationDetail,
     ...rol,
@@ -201,7 +322,13 @@ export default function* rootSaga() {
     ...serviceAttributeValue,
     ...serviceAttributeValueDetail,
     ...onlineRequestClientSubmission,
+    ...onlineRequestClientSubmissionDetail,
+    ...onlineRequestConfirmReservation,
     ...onlineRequestVaccinationUpdate,
+    ...onlineRequestVaccinationUpdateDetail,
+    ...onlineRequestNote,
+    ...onlineRequestNoteDetail,
+    ...ratingKey,
     ...trainingCommand,
     ...trainingCommandDetail,
     ...trainingMethod,

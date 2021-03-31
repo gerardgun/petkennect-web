@@ -15,9 +15,9 @@ function* get(/* { payload } */) {
     const petDetail = yield select(petDetailDuck.selectors.detail)
 
     const filters = yield select(selectors.filters)
-    // const list = yield select(selectors.list)
+    const list = yield select(selectors.list)
 
-    const { results/* ...meta */ } = yield call(Get, `/pets/${petDetail.item.id}/reservations/`,filters)
+    const { results, ...meta  } = yield call(Get, `/pets/${petDetail.item.id}/reservations/`,filters)
 
     yield put({
       type   : types.GET_FULFILLED,
@@ -25,13 +25,13 @@ function* get(/* { payload } */) {
         items: results.map(({ employee_first_name = '-', employee_last_name = '',...rest })=> ({
           employee_fullname: `${employee_first_name} ${employee_last_name}`,
           is_pending       : moment.utc(rest.reserved_at, 'YYYY-MM-DD HH-mm:ss Z')
-            .isSameOrAfter(moment(),'day') || rest.is_canceled,
+            .isSameOrAfter(moment(),'day'),
           ...rest
-        }))
-        // pagination: {
-        //   ...list.pagination,
-        //   meta
-        // }
+        })),
+        pagination: {
+          ...list.pagination,
+          meta
+        }
       }
     })
   } catch (e) {

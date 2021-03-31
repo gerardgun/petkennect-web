@@ -1,0 +1,51 @@
+import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { Get } from '@lib/utils/http-client'
+
+import petDetailDuck from '@reducers/pet/detail'
+
+import petReservationBoardingDuck from '@reducers/pet/reservation/boarding'
+import moment from 'moment'
+
+const { types, selectors } = petReservationBoardingDuck
+
+function* get(/* { payload } */) {
+  try {
+    yield put({ type: types.GET_PENDING })
+
+    const petDetail = yield select(petDetailDuck.selectors.detail)
+
+    const list = yield select(selectors.list)
+
+    const { results, ...meta  } = yield call(Get, `/pets/${petDetail.item.id}/reservations/`)
+
+    const  filterdResults = results.filter(_item => _item.service_type === 'B')
+    yield put({
+      type   : types.GET_FULFILLED,
+      payload: {
+        items: filterdResults.map(({ employee_first_name = '-', employee_last_name = '',...rest })=> ({
+          employee_fullname: `${employee_first_name} ${employee_last_name}`,
+          is_pending       : moment.utc(rest.reserved_at, 'YYYY-MM-DD HH-mm:ss Z')
+            .isSameOrAfter(moment(),'day'),
+          reserved     : moment.utc(rest.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD'),
+          checkout_at  : moment.utc(rest.boarding.checkout_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD'),
+          check_in_date: moment.utc(rest.reserved_at,'YYYY-MM-DD[T]HH:mm:ss').format('YYYY-MM-DD'),
+
+          ...rest
+        })),
+        pagination: {
+          ...list.pagination,
+          meta
+        }
+      }
+    })
+  } catch (e) {
+    yield put({
+      type : types.GET_FAILURE,
+      error: e
+    })
+  }
+}
+
+export default [
+  takeEvery(types.GET, get)
+]

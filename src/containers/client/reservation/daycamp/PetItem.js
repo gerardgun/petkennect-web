@@ -2,9 +2,9 @@ import React from 'react'
 import { Field } from 'redux-form'
 
 import FormField from '@components/Common/FormField'
-import { Form, Segment, Header, Select, Checkbox } from 'semantic-ui-react'
+import { Form, Segment, Header, Select, Checkbox, Input } from 'semantic-ui-react'
 
-function PetItem({ item }) {
+function PetItem({ item, yardTypesOptions }) {
   return (
     <Segment >
       <div className='div-kannel-selection'>
@@ -15,23 +15,16 @@ function PetItem({ item }) {
             control={Select}
             label='Yard'
             name={`${item[0].id}.yard`}
-            options={[
-              { key: 1, value: 1, text: 'Test1' },
-              { key: 2, value: 1, text: 'Test2' }
-            ]}
-            placeholder='Select Tupe'
+            options={yardTypesOptions}
+            placeholder='Select Type'
             required
             selectOnBlur={false}/>
           <Field
             component={FormField}
-            control={Select}
+            control={Input}
             label='Type'
             name={`${item[0].id}.type`}
-            options={[
-              { key: 1, value: 1, text: 'Test1' },
-              { key: 2, value: 1, text: 'Test2' }
-            ]}
-            placeholder='Select Type'
+            placeholder='Enter Yard Type'
             required
             selectOnBlur={false}/>
         </Form.Group>

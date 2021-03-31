@@ -7,14 +7,13 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import EmployeeTitleFormModal from './form/modal'
-import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import employeeTitleListConfig from '@lib/constants/list-configs/employee/title'
 
 import employeeTitleDuck from '@reducers/employee/title'
 import employeeTitleDetailDuck from '@reducers/employee/title/detail'
 
 const EmployeeTitleList = ({ employeeTitle, employeeTitleDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
   useChangeStatusEffect(props.getEmployeeTitles, employeeTitleDetail.status)
 
   useEffect(() => {
@@ -30,10 +29,7 @@ const EmployeeTitleList = ({ employeeTitle, employeeTitleDetail, ...props }) => 
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(employeeTitle.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
+    if(option === 'delete') props.setItem(employeeTitle.selector.selected_items[0], 'DELETE')
   }
 
   return (
@@ -50,16 +46,14 @@ const EmployeeTitleList = ({ employeeTitle, employeeTitleDetail, ...props }) => 
           </Grid.Column>
         </Grid>
         <Table
+          config={employeeTitleListConfig}
           duck={employeeTitleDuck}
           onOptionClick={_handleOptionClick}
           onRowClick={_handleRowClick}/>
       </Segment>
 
       <EmployeeTitleFormModal/>
-      <ModalDelete
-        duckDetail={employeeTitleDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={employeeTitleDetailDuck}/>
 
     </Layout>
   )

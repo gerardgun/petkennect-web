@@ -1,24 +1,29 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import {  useHistory } from 'react-router-dom'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
-import Layout from '@components/Common/Layout'
-import ModalDelete from '@components/Modal/Delete'
-import Table from '@components/Table'
-import useModal from '@components/Modal/useModal'
-import PetFormModal from './form/modal'
+import config from '@lib/constants/list-configs/pet'
 import { useChangeStatusEffect } from '@hooks/Shared'
 
 import petDuck from '@reducers/pet'
 import petDetailDuck from '@reducers/pet/detail'
+import petReservationCheckInDetailDuck from '@reducers/pet/reservation/express-check-in/detail'
 import petBreedDuck from '@reducers/pet/breed'
 
 import './styles.scss'
 
-const PetList = ({ pet, petDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+const Layout = loadable(() => import('@components/Common/Layout'))
+const Table = loadable(() => import('@components/Table'))
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const PetFormModal = loadable(()=> import('./form/modal'))
+const ExpressCheckInForm = loadable(()=> import('./form/express-check-in'))
+
+const PetList = ({ petDetail, ...props }) => {
   useChangeStatusEffect(props.getPets,petDetail.status)
+  const history = useHistory()
 
   useEffect(() => {
     props.getPets({ retired: false })
@@ -29,11 +34,20 @@ const PetList = ({ pet, petDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(pet.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
+  const _handleOptionClick = (option,item) => {
+    if(option === 'delete')
+      props.setItem(item, 'DELETE')
+    else if(option === 'express_check_in')
+      props.setReservationCheckInItem({ client: item.client, pet: item.id }, 'CREATE')
+    else if(option === 'vaccination' || option === 'services')
+      history.push({
+        pathname: `/pet/${item.id}`,
+        state   : { option: option }
+      })
+  }
+
+  const _handleExpressCheckInBtnClick = () =>{
+    props.setReservationCheckInItem(null, 'CREATE')
   }
 
   return (
@@ -46,17 +60,22 @@ const PetList = ({ pet, petDetail, ...props }) => {
           <Grid.Column
             className='ui-grid-align'
             computer={12} mobile={8} tablet={12}>
+            <Button color='teal' content='Express Check In' onClick={_handleExpressCheckInBtnClick}/>
             <Button color='teal' content='New Pet' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
-        <Table duck={petDuck} onOptionClick={_handleOptionClick}/>
+        <div className='table-row-padding'>
+          <Table
+            config={config}
+            duck={petDuck}
+            onOptionClick={_handleOptionClick}
+            onOptionDropdownChange={_handleOptionClick}/>
+        </div>
       </Segment>
 
       <PetFormModal/>
-      <ModalDelete
-        duckDetail={petDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ExpressCheckInForm/>
+      <ModalDelete duckDetail={petDetailDuck}/>
 
     </Layout>
   )
@@ -68,8 +87,9 @@ export default compose(
       pet,
       petDetail: petDetailDuck.selectors.detail(state)
     }), {
-      getPets     : petDuck.creators.get,
-      getPetBreeds: petBreedDuck.creators.get,
-      setItem     : petDetailDuck.creators.setItem
+      getPets                  : petDuck.creators.get,
+      getPetBreeds             : petBreedDuck.creators.get,
+      setItem                  : petDetailDuck.creators.setItem,
+      setReservationCheckInItem: petReservationCheckInDetailDuck.creators.setItem
     })
 )(PetList)

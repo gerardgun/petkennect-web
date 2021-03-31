@@ -1,5 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
-
+import faker from 'faker'
 import { Get } from '@lib/utils/http-client'
 
 import clientDuck from '@reducers/client'
@@ -12,6 +12,7 @@ function* get(/* { payload } */) {
 
     const filters = yield select(selectors.filters)
     const list = yield select(selectors.list)
+    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
 
     const { results, ...meta } = yield call(Get, 'clients/', filters)
 
@@ -20,7 +21,9 @@ function* get(/* { payload } */) {
       payload: {
         items: results.map(item => ({
           ...item,
-          thumbnail_path: item.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${item.thumbnail_path}` : null
+          thumbnail_path: item.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${item.thumbnail_path}` : null,
+          status        : faker.random.arrayElement([ 'Decline Client', 'VIP Client', 'Caution', 'Active' ]),
+          has_card      : faker.random.boolean()
         })),
         pagination: {
           ...list.pagination,

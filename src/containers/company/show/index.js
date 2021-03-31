@@ -3,13 +3,10 @@ import { connect } from 'react-redux'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { compose } from 'redux'
 import { Breadcrumb, Button, Container, Grid, Header, Icon, Image, Label } from 'semantic-ui-react'
-import  _get from 'lodash/get'
-import _defaultTo from 'lodash/defaultTo'
 
 import Layout from '@components/Common/Layout'
 import InputReadOnly from '@components/Common/InputReadOnly'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import { defaultImageUrl } from '@lib/constants'
 
 import companyDetailDuck from '@reducers/company/detail'
@@ -23,7 +20,6 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
 
   const history = useHistory()
   const { id: companyId } = useParams()
-  const [ open, { _handleOpen, _handleClose } ] = useModal() // For Modal Delete
 
   useEffect(() => {
     props.getCompany(companyId)
@@ -36,7 +32,6 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
 
   const _handleDeleteBtnClick = () => {
     props.setCompany(company, 'DELETE')
-    _handleOpen()
   }
 
   const comesfromOrganizationShowScreen = useMemo(() => Boolean(history.location.state), [])
@@ -59,7 +54,7 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
                 )
               }
               <Breadcrumb.Divider/>
-              <Breadcrumb.Section active>{_defaultTo(company.legal_name, '-')}</Breadcrumb.Section>
+              <Breadcrumb.Section active>{company.legal_name ? company.legal_name :  '-'}</Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>
           <Grid.Column
@@ -80,7 +75,7 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Legal name'
-              value={_defaultTo(company.legal_name, '-')}/>
+              value={company.legal_name ? company.legal_name  :  '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
@@ -90,17 +85,17 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='DBA'
-              value={_defaultTo(company.dba, '-')}/>
+              value={company.dba ? company.dba :  '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Subdomain prefix'
-              value={_defaultTo(company.subdomain_prefix, '-')}/>
+              value={company.subdomain_prefix ? company.subdomain_prefix  :  '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Tax ID'
-              value={_defaultTo(company.tax_id, '-')}/>
+              value={company.tax_id ? company.tax_id :   '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
@@ -121,12 +116,12 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={16}>
             <InputReadOnly
               label='Phone'
-              value={_get(company, 'phones[0]', '-')}/>
+              value={company.phones ? company.phones[0] : '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={16}>
             <InputReadOnly
               label='Email'
-              value={_defaultTo(company.email, '-')}/>
+              value={company.email ? company.email : '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={16}>
             <InputReadOnly
@@ -142,21 +137,21 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
         <Grid columns={1}>
           <InputReadOnly
             label='First Address'
-            value={_get(company, 'addresses[0]', '-')}/>
+            value={company.addresses ? company.addresses[0] : '-'}/>
           <InputReadOnly
             label='Second Address'
-            value={_get(company, 'addresses[1]', '-')}/>
+            value={company.addresses ? company.addresses[1] : '-'}/>
         </Grid>
         <Grid columns={3}>
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
               label='Zip'
-              value={_defaultTo(company.zip_code, '-')}/>
+              value={company.zip_code ? company.zip_code :  '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
               label='Country'
-              value={_defaultTo(zip.country_code, '-')}/>
+              value={zip.country_code ? zip.country_code :  '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
@@ -167,7 +162,7 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
               label='City'
-              value={_defaultTo(zip.city, '-')}/>
+              value={zip.city ? zip.city :   '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={5}>
             <InputReadOnly
@@ -197,26 +192,23 @@ function CompanyShow({ companyDetail, zipDetail, ...props }) {
           <Grid.Column computer={5} mobile={16} tablet={16}>
             <InputReadOnly
               label='User email'
-              value={_defaultTo(company.main_admin_email, '-')}/>
+              value={company.main_admin_email ? company.main_admin_email : '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Names'
-              value={_defaultTo(company.main_admin_first_name, '-')}/>
+              value={company.main_admin_first_name ? company.main_admin_first_name :  '-'}/>
           </Grid.Column>
           <Grid.Column computer={5} mobile={16} tablet={8}>
             <InputReadOnly
               label='Last names'
-              value={_defaultTo(company.main_admin_last_name, '-')}/>
+              value={company.main_admin_last_name ? company.main_admin_last_name :   '-'}/>
           </Grid.Column>
         </Grid>
 
       </Container>
 
-      <ModalDelete
-        duckDetail={companyDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={companyDetailDuck}/>
     </Layout>
   )
 }

@@ -1,26 +1,25 @@
 export default {
-  base_uri: null,
-  options : [
-    {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Service',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
-    }
-  ],
-  row: {
-    options: []
+  options: {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Service',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
   },
   columns: [
     {
@@ -62,7 +61,7 @@ export default {
       formatter   : cell => {
         let plans_str = 'No plans'
 
-        if(cell.length > 0) {
+        if(cell && cell.length > 0) {
           const activePlans = cell.filter(item => item.is_active)
 
           plans_str = `${activePlans.length}/${cell.length} active plans`
@@ -80,7 +79,7 @@ export default {
       formatter   : cell => {
         let addons_str = 'No addons'
 
-        if(cell.length > 0) {
+        if(cell && cell.length > 0) {
           const activeAddons = cell.filter(item => item.is_active)
 
           addons_str = `${activeAddons.length}/${cell.length} active addons`

@@ -7,3 +7,8 @@ export default base({
   initialState: {}
 })
   .extend(detail)
+  .extend({
+    consts: {
+      modes: [ 'READ_NOTES' ]
+    }
+  })

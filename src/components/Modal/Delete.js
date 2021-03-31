@@ -4,7 +4,11 @@ import { compose } from 'redux'
 import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
-const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
+const ModalDelete = ({ detail, duck, duckDetail, list, ...props }) => {
+  const _handleClose = () => {
+    props.dispatch(duckDetail.creators.resetItem())
+  }
+
   const _handleDeleteBtnClick = () => {
     if(props.onDelete) {
       props.onDelete()
@@ -14,25 +18,26 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
       props.dispatch(duckDetail.creators.delete(...selectedIds))
         .then(() => {
           props.dispatch(duck.creators.removeSelectedIds())
-          props.onClose()
+          _handleClose()
         })
     } else {
       props.dispatch(duckDetail.creators.delete(detail.item.id))
         .then(() => {
-          props.onClose()
+          _handleClose()
         })
     }
   }
 
   const isMultipleDeleting = useMemo(() => Boolean(list), [])
-  const deleting = detail.status === 'DELETING'
+  const loading = detail.status === 'DELETING'
+  const open = detail.mode === 'DELETE'
 
   return (
     <Modal
-      closeOnDimmerClick={!deleting}
-      onClose={props.onClose}
-      open={open}
-      size='mini'>
+      className='ui-delete-modal'
+      closeOnDimmerClick={!loading}
+      onClose={_handleClose}
+      open={open}>
       <Modal.Content style={{ textAlign: 'center', paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
         <Icon
           circular color='red' name='trash alternate outline'
@@ -60,12 +65,12 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
       <Modal.Actions>
         <Button
           basic className='w120' content='Cancel'
-          disabled={deleting}
-          onClick={props.onClose}/>
+          disabled={loading}
+          onClick={_handleClose}/>
         <Button
           className='w120'
           color='google plus' content='Delete' icon='trash'
-          loading={deleting} onClick={_handleDeleteBtnClick}/>
+          loading={loading} onClick={_handleDeleteBtnClick}/>
       </Modal.Actions>
     </Modal>
   )
@@ -74,8 +79,6 @@ const ModalDelete = ({ detail, duck, duckDetail, list, open, ...props }) => {
 ModalDelete.defaultProps = {
   duck      : null,
   duckDetail: null,
-  open      : false,
-  onClose   : () => {},
   onDelete  : null
 }
 

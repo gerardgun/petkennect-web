@@ -4,12 +4,14 @@ import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Header, Modal, Radio, Select } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 import * as Yup from 'yup'
 
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 import FormField from '@components/Common/FormField'
-import FormError from '@components/Common/FormError'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
+
+const FormError = loadable(() => import('@components/Common/FormError'))
 
 const CancelReserveForm = props => {
   const {
@@ -17,7 +19,7 @@ const CancelReserveForm = props => {
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
-  const getIsOpened = mode => (mode === 'READ')
+  const getIsOpened = mode => (mode === 'DISABLE')
 
   const _handleClose = () =>{
     props.reset()

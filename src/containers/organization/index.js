@@ -5,9 +5,9 @@ import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
-import useModal from '@components/Modal/useModal'
 import Table from '@components/Table'
 import OrganizationFormModal from '@containers/organization/form/modal'
+import organizationListConfig from '@lib/constants/list-configs/organization'
 
 import organizationDuck from '@reducers/organization'
 import organizationDetailDuck from '@reducers/organization/detail'
@@ -19,7 +19,6 @@ const Organization = props => {
   } = props
 
   // For Modal Delete
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
 
   useEffect(() => {
     props.getOrganizations()
@@ -35,10 +34,8 @@ const Organization = props => {
   }
 
   const _handleOptionClick = option => {
-    if(option === 'delete') {
+    if(option === 'delete')
       props.setItem(organization.selector.selected_items[0], 'DELETE')
-      _handleOpen()
-    }
   }
 
   return (
@@ -54,14 +51,11 @@ const Organization = props => {
             <Button color='teal' content='New Organization' onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
-        <Table duck={organizationDuck} onOptionClick={_handleOptionClick}/>
+        <Table config={organizationListConfig} duck={organizationDuck} onOptionClick={_handleOptionClick}/>
       </Segment>
 
       <OrganizationFormModal/>
-      <ModalDelete
-        duckDetail={organizationDetailDuck}
-        onClose={_handleClose}
-        open={open}/>
+      <ModalDelete duckDetail={organizationDetailDuck}/>
     </Layout>
   )
 }
