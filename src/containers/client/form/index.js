@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -9,7 +10,6 @@ import * as Yup from 'yup'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import InputMask from '@components/Common/InputMask'
-import YupFields from '@lib/constants/yup-fields'
 import { ReferredOptions } from '@lib/constants/client'
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
 import PhoneList from '@containers/online-request/clientSubmission/show/sections/information/PhoneList'

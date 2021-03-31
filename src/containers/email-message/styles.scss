@@ -1,21 +1,20 @@
 .grid-email-message{
-    .step{
-        color:gray !important;
-    }
-.ui.steps .step.active {
+  .step{
+    color:gray !important;
+  }
+  .ui.steps .step.active {
     background: #00AA9F18 !important;
     color: #00aa9f;
-    
     .icon{
-        color: #00aa9f !important;
+      color: #00aa9f !important;
     }
-}
+  }
 
-.ui.steps .step > .icon {
+  .ui.steps .step > .icon {
     font-size: 1.2em !important;
-}
+  }
 
-.ui.info.message{
+  .ui.info.message{
     background-color: #f8ffff !important;
-}
+  }
 }

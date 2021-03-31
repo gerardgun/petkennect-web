@@ -27,9 +27,8 @@ const DayCamp = loadable(() => import('./DayCamp'))
 function BookingSection({ petDetail, ...props }) {
   const history = useHistory()
 
-  const [ activeServiceItem, setActiveServiceItem ] = useState('T')
+  const [ activeServiceItem, setActiveServiceItem ] = useState(history.location.state != undefined ? history.location.state.type : 'T')
   const { pet: petId } = useParams()
-
   useEffect(()=> {
     props.getPet(petId)
     props.getPetReservationGrooming({ service_type_what_ever_name: 'G' })

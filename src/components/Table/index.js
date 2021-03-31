@@ -338,6 +338,7 @@ const TableList = ({ duck, list, striped,service_type , checkboxIndex, ...props 
             </Table.Cell>
           )
         }
+
         {/* Radio buttons */}
 
         {

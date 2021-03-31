@@ -11,6 +11,7 @@ function* get(/* { payload } */) {
     yield put({ type: types.GET_PENDING })
 
     const filters = yield select(selectors.filters)
+
     const list = yield select(selectors.list)
 
     const { results, ...meta } = yield call(Get, 'employees/', filters)

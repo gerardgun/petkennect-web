@@ -31,8 +31,7 @@ const  TrainingPerformance  = loadable(() => import('./BookingSection/Training/P
 
 const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props }) => {
   const history = useHistory()
-
-  const [ activeMenuItem, setActiveMenuItem ] = useState('info')
+  const [ activeMenuItem, setActiveMenuItem ] = useState('info' || history.location.state.option) // coming from breed manager page through table link
   const inputFileRef = useRef()
   const { pet: petId } = useParams()
   const cameraIsAvailable = useCameraAvailable()

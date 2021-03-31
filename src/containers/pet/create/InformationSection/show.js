@@ -27,12 +27,6 @@ function PetInformationShow({ petDetail, petRetireReason, ...props }) {
 
   const vaccinationStatus = VaccinationStatus[pet.summary.vaccination_request ? 'requested' : pet.summary.vaccination_status]
 
-  // console.log('selectedRetire Reason')
-  // console.log(selectedRetireReason)
-  // console.log('vaccinationStatus')
-  // console.log(vaccinationStatus)
-  // console.log('temperament')
-  // console.log(TemperamentPeoplePreference)
   return (
     <Container className='pet-information-section' fluid>
       <Grid className='petkennect-profile-body-header' columns={2}>

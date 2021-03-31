@@ -1,6 +1,10 @@
+import React from 'react'
+import { Checkbox } from 'semantic-ui-react'
+
 export default {
-  base_uri: null,
-  options : [
+  base_uri          : null,
+  search_placeholder: 'Search by species, vaccine',
+  options           : [
     {
       display_name: 'Download',
       name        : 'download',
@@ -24,28 +28,46 @@ export default {
   },
   columns: [
     {
-      display_name: 'Name',
-      name        : 'name',
-      type        : 'string', // image, boolean, date, datetime, money, label
-      width       : 3,
+      display_name: 'Species',
+      name        : 'pet_class_name',
+      type        : 'string',
+      width       : null,
       align       : 'left',
       sort        : false
     },
     {
-      display_name: 'Pet Species',
-      name        : 'pet_class_name',
-      type        : 'string',
-      width       : 4,
+      display_name: 'Vaccine',
+      name        : 'name',
+      type        : 'string', // image, boolean, date, datetime, money, label
       align       : 'left',
       sort        : false
     },
     {
       display_name: 'Required',
-      name        : 'is_required',
+      name        : 'required',
       type        : 'boolean',
-      width       : 8,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : (cell,row) => {
+        return (
+
+          <Checkbox
+            checked={row.is_required ? true : false}/>)
+      }
+    },
+    {
+      display_name: 'Active',
+      name        : 'is_active',
+      type        : 'boolean', // image, boolean, date, datetime, money, label
+      align       : 'left',
+      sort        : false,
+      formatter   : (cell,row) => {
+        return (
+
+          <Checkbox
+            checked={row.id % 2 === 0 ? true : false}/>)
+      }
     }
+
   ]
 }

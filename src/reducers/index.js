@@ -6,6 +6,19 @@ import agreement from '@reducers/agreement'
 import agreementDetail from '@reducers/agreement/detail'
 import application from '@reducers/application'
 import auth from '@reducers/auth'
+import bookingSheetSetting from '@reducers/booking-sheet-setting'
+import breedManagerSetting from '@reducers/pet/breed-manager-setting'
+import breedManagerSettingDetail from '@reducers/pet/breed-manager-setting/detail'
+
+import clientPetBreed from '@reducers/pet/breed-manager-setting/client-pet-breed'
+import clientPetBreedDetail from '@reducers/pet/breed-manager-setting/client-pet-breed/detail'
+
+import reservationByDateBreed  from '@reducers/pet/breed-manager-setting/reservation-by-date-breed'
+import reservationByDateBreedDetail from '@reducers/pet/breed-manager-setting/reservation-by-date-breed/detail'
+
+import DaycareReservationBreed from '@reducers/pet/breed-manager-setting/day-care-reservation-breed'
+import DaycareReservationBreedDetail from '@reducers/pet/breed-manager-setting/day-care-reservation-breed/detail'
+
 import calendarDetail from '@reducers/calendar/detail'
 import category from '@reducers/category'
 import categoryDetail from '@reducers/category/detail'
@@ -61,8 +74,32 @@ import employee from '@reducers/employee'
 import employeeDetail from '@reducers/employee/detail'
 import employeeTitle from '@reducers/employee/title'
 import employeeTitleDetail from '@reducers/employee/title/detail'
+import feedingTime from '@reducers/pet/feeding-setting/feeding-time'   // feeding setting start
+import feedingTimeDetail from '@reducers/pet/feeding-setting/feeding-time/detail'
+import feedingMeasurement from '@reducers/pet/feeding-setting/feeding-measurement'
+import feedingMeasurementDetail from '@reducers/pet/feeding-setting/feeding-measurement/detail'
+import feedingMethod from '@reducers/pet/feeding-setting/feeding-method'
+import feedingMethodDetail from '@reducers/pet/feeding-setting/feeding-method/detail'
+import feedingUnit from '@reducers/pet/feeding-setting/feeding-unit'
+import feedingUnitDetail from '@reducers/pet/feeding-setting/feeding-unit/detail'
+import foodType from '@reducers/pet/feeding-setting/food-type'
+import foodTypeDetail from '@reducers/pet/feeding-setting/food-type/detail'
+import mealStatus from '@reducers/pet/feeding-setting/meal-status'
+import mealStatusDetail from '@reducers/pet/feeding-setting/meal-status/detail'    // feeding setting end
 import location from '@reducers/location'
 import locationDetail from '@reducers/location/detail'
+import MedicationType from '@reducers/pet/medication-setting/medication-type'
+import MedicationTypeDetail from '@reducers/pet/medication-setting/medication-type/detail'
+import medication from '@reducers/pet/medication-setting/medication'
+import medicationDetail from '@reducers/pet/medication-setting/medication/detail'
+import medicationTime from '@reducers/pet/medication-setting/medication-time'
+import medicationTimeDetail from '@reducers/pet/medication-setting/medication-time/detail'
+import medicationUnit from '@reducers/pet/medication-setting/medication-unit'
+import medicationUnitDetail from '@reducers/pet/medication-setting/medication-unit/detail'
+import medicationMeasurement from '@reducers/pet/medication-setting/medication-measurement'
+import medicationMeasurementDetail from '@reducers/pet/medication-setting/medication-measurement/detail'
+import medicationReportStatus from '@reducers/pet/medication-setting/medication-report-status'
+import medicationReportStatusDetail from '@reducers/pet/medication-setting/medication-report-status/detail'
 import notification from '@reducers/notification'
 import notificationDetail from '@reducers/notification/detail'
 import organization from '@reducers/organization'
@@ -70,6 +107,8 @@ import organizationDetail from '@reducers/organization/detail'
 import organizationCompany from '@reducers/organization/company'
 import packagePricing from '@reducers/package-pricing'
 import packagePricingDetail from '@reducers/package-pricing/detail'
+import paymentMethod from '@reducers/payment-method'
+import paymentMethodDetail from '@reducers/payment-method/detail'
 import pet from '@reducers/pet'
 import petDetail from '@reducers/pet/detail'
 import petBreed from '@reducers/pet/breed'
@@ -87,12 +126,16 @@ import petIncidentBehavior from '@reducers/pet/incident-behavior'
 import petIncidentBehaviorDetail from '@reducers/pet/incident-behavior/detail'
 import petIncident from '@reducers/pet/incident'
 import petIncidentDetail from '@reducers/pet/incident/detail'
+import petInteractionType from '@reducers/pet/interaction-type'
+import petInteractionTypeDetail from '@reducers/pet/interaction-type/detail'
 import petRetireReason from '@reducers/pet/retire-reason'
 import petRetireReasonDetail from '@reducers/pet/retire-reason/detail'
 import petVaccination from '@reducers/pet/vaccination'
 import petVaccinationDetail from '@reducers/pet/vaccination/detail'
 import petVaccinationType from '@reducers/pet/vaccination-type'
 import petVaccinationTypeDetail from '@reducers/pet/vaccination-type/detail'
+import petVeterinarian from '@reducers/pet/veterinarian-list'
+import petVeterinarianDetail from '@reducers/pet/veterinarian-list/detail'
 import petNote from '@reducers/pet/note'
 import petNoteDetail from '@reducers/pet/note/detail'
 import petReservation from '@reducers/pet/reservation'
@@ -175,7 +218,6 @@ import user from '@reducers/user'
 import userDetail from '@reducers/user/detail'
 import zip from '@reducers/zip'
 import zipDetail from '@reducers/zip/detail'
-
 const createRootReducer = history => combineReducers({
   form                                                     : formReducer,
   router                                                   : connectRouter(history),
@@ -183,6 +225,15 @@ const createRootReducer = history => combineReducers({
   [agreementDetail.store]                                  : agreementDetail.reducer,
   [auth.store]                                             : auth.reducer,
   [application.store]                                      : application.reducer,
+  [bookingSheetSetting.store]                              : bookingSheetSetting.reducer,
+  [breedManagerSetting.store]                              : breedManagerSetting.reducer,
+  [breedManagerSettingDetail.store]                        : breedManagerSettingDetail.reducer,
+  [reservationByDateBreed.store]                           : reservationByDateBreed.reducer,
+  [reservationByDateBreedDetail.store]                     : reservationByDateBreedDetail.reducer,
+  [DaycareReservationBreed.store]                          : DaycareReservationBreed .reducer,
+  [DaycareReservationBreedDetail.store]                    : DaycareReservationBreedDetail.reducer,
+  [clientPetBreed.store]                                   : clientPetBreed.reducer,
+  [clientPetBreedDetail.store]                             : clientPetBreedDetail.reducer,
   [calendarDetail.store]                                   : calendarDetail.reducer,
   [category.store]                                         : category.reducer,
   [categoryDetail.store]                                   : categoryDetail.reducer,
@@ -235,8 +286,32 @@ const createRootReducer = history => combineReducers({
   [employeeDetail.store]                                   : employeeDetail.reducer,
   [employeeTitle.store]                                    : employeeTitle.reducer,
   [employeeTitleDetail.store]                              : employeeTitleDetail.reducer,
+  [feedingTime.store]                                      : feedingTime.reducer,
+  [feedingTimeDetail.store]                                : feedingTimeDetail.reducer,
+  [feedingMeasurement.store]                               : feedingMeasurement.reducer,
+  [feedingMeasurementDetail.store]                         : feedingMeasurementDetail.reducer,
+  [feedingMethod.store]                                    : feedingMethod.reducer,
+  [feedingMethodDetail.store]                              : feedingMethodDetail.reducer,
+  [feedingUnit.store]                                      : feedingUnit.reducer,
+  [feedingUnitDetail.store]                                : feedingUnitDetail.reducer,
+  [foodType.store]                                         : foodType.reducer,
+  [foodTypeDetail.store]                                   : foodTypeDetail.reducer,
+  [mealStatus.store]                                       : mealStatus.reducer,
+  [mealStatusDetail.store]                                 : mealStatusDetail.reducer,
   [location.store]                                         : location.reducer,
   [locationDetail.store]                                   : locationDetail.reducer,
+  [MedicationType.store]                                   : MedicationType.reducer,
+  [MedicationTypeDetail.store]                             : MedicationTypeDetail.reducer,
+  [medication.store]                                       : medication.reducer,
+  [medicationDetail.store]                                 : medicationDetail.reducer,
+  [medicationMeasurement.store]                            : medicationMeasurement.reducer,
+  [medicationMeasurementDetail.store]                      : medicationMeasurementDetail.reducer,
+  [medicationReportStatus.store]                           : medicationReportStatus.reducer,
+  [medicationReportStatusDetail.store]                     : medicationReportStatusDetail.reducer,
+  [medicationTime.store]                                   : medicationTime.reducer,
+  [medicationTimeDetail.store]                             : medicationTimeDetail.reducer,
+  [medicationUnit.store]                                   : medicationUnit.reducer,
+  [medicationUnitDetail.store]                             : medicationUnitDetail.reducer,
   [notification.store]                                     : notification.reducer,
   [notificationDetail.store]                               : notificationDetail.reducer,
   [organization.store]                                     : organization.reducer,
@@ -244,6 +319,8 @@ const createRootReducer = history => combineReducers({
   [organizationCompany.store]                              : organizationCompany.reducer,
   [packagePricing.store]                                   : packagePricing.reducer,
   [packagePricingDetail.store]                             : packagePricingDetail.reducer,
+  [paymentMethod.store]                                    : paymentMethod.reducer,
+  [paymentMethodDetail.store]                              : paymentMethodDetail.reducer,
   [pet.store]                                              : pet.reducer,
   [petDetail.store]                                        : petDetail.reducer,
   [petReservationExpressCheckInDetail.store]               : petReservationExpressCheckInDetail.reducer,
@@ -261,12 +338,16 @@ const createRootReducer = history => combineReducers({
   [petIncidentBehaviorDetail.store]                        : petIncidentBehaviorDetail.reducer,
   [petIncident.store]                                      : petIncident.reducer,
   [petIncidentDetail.store]                                : petIncidentDetail.reducer,
+  [petInteractionType.store]                               : petInteractionType.reducer,
+  [petInteractionTypeDetail.store]                         : petInteractionTypeDetail.reducer,
   [petRetireReason.store]                                  : petRetireReason.reducer,
   [petRetireReasonDetail.store]                            : petRetireReasonDetail.reducer,
   [petVaccination.store]                                   : petVaccination.reducer,
   [petVaccinationDetail.store]                             : petVaccinationDetail.reducer,
   [petVaccinationType.store]                               : petVaccinationType.reducer,
   [petVaccinationTypeDetail.store]                         : petVaccinationTypeDetail.reducer,
+  [petVeterinarian.store]                                  : petVeterinarian.reducer,
+  [petVeterinarianDetail.store]                            : petVeterinarianDetail.reducer,
   [petNote.store]                                          : petNote.reducer,
   [petNoteDetail.store]                                    : petNoteDetail.reducer,
   [petReservation.store]                                   : petReservation.reducer,

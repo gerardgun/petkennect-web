@@ -29,7 +29,7 @@ export default {
       type        : 'string',
       width       : 4,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Size',
@@ -37,7 +37,7 @@ export default {
       type        : null,
       width       : 3,
       align       : 'left',
-      sort        : false,
+      sort        : true,
       formatter   : cell => {
         let size_str = '-'
 
@@ -55,7 +55,7 @@ export default {
       type        : 'string',
       width       : 8,
       align       : 'left',
-      sort        : false
+      sort        : true
     }
 
   ]

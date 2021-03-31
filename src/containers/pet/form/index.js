@@ -22,7 +22,7 @@ import petRetireReasonDuck from '@reducers/pet/retire-reason'
 import petBreedDetailDuck from '@reducers/pet/breed/detail'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 
-const PetBreedForm = loadable(() => import('@containers/pet-breed/create'))
+const PetBreedForm = loadable(() => import('@containers/pet-setting/pet-breed/create'))
 const FormError = loadable(() => import('@components/Common/FormError'))
 const  EmailAlert  = loadable(() => import('./email-alert'))
 
