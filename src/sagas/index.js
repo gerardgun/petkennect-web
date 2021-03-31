@@ -25,14 +25,12 @@ import customizedField from './customized-field/field'
 import customizedFieldDetail from './customized-field/field/detail'
 import customizedFieldGroup from './customized-field/group'
 import customizedFieldGroupDetail from './customized-field/group/detail'
-
 import dashboardDaycampReservation from './dashboard/daycamp/daycamp'
 import dashboardDaycampCheckedOutReservation from './dashboard/daycamp/daycampCheckedOut'
 import dashboardDaycampCheckedInReservation from './dashboard/daycamp/daycampCheckedIn'
 import dashboardBoardingReservation from './dashboard/boarding/boarding'
 import dashboardBoardingCheckedOutReservation from './dashboard/boarding/boardingCheckedOut'
 import dashboardBoardingCheckedInReservation from './dashboard/boarding/boardingCheckedIn'
-
 import daycampCard from './pet/reservation/daycamp-card'
 import daycampCardDetail from './pet/reservation/daycamp-card/detail'
 import daycampCardQuestion from './pet/reservation/daycamp-card/daycamp-card-question'
@@ -45,6 +43,8 @@ import employeeTitleDetail from './employee/title/detail'
 import emailMessage from './email-message'
 import emailTemplate from './email-template'
 import emailLog from './email-log'
+import exampleOne from './example/one'
+import exampleTwo from './example/two'
 import location from './location'
 import locationDetail from './location/detail'
 import notification from './notification'
@@ -185,6 +185,8 @@ export default function* rootSaga() {
     ...dashboardBoardingReservation,
     ... dashboardBoardingCheckedOutReservation,
     ... dashboardBoardingCheckedInReservation,
+    ...exampleOne,
+    ...exampleTwo,
     ...petDaycampReservation,
     ...daycampCardDetail,
     ...daycampCardQuestion,
