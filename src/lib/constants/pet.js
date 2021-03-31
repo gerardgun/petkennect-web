@@ -15,7 +15,7 @@ export const Size = {
 export const TemperamentPeoplePreference = {
   M: 'Men',
   W: 'Women',
-  N: 'Neither'
+  N: 'No preference'
 }
 
 // This object status keys are in order. Don't reoder the elements.

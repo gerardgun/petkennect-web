@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -54,9 +55,9 @@ function PetInfo() {
         <Field
           component={FormField}
           control={Input}
-          label='Color'
+          label='Coloring/Markings'
           name='info_coloring'
-          placeholder='Enter coloring'/>
+          placeholder='Enter coloring/markings'/>
 
       </Form.Group>
       <Form.Group widths={2}>

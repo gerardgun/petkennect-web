@@ -40,7 +40,8 @@ const SSO = props => {
     <Container className='auth-sso'>
       <div className='container'>
         <Header as='h2' className='text-center'>Select a company</Header>
-        <List className='list' selection>
+
+        <div className='list-align'><List className='list' selection>
           {
             companies.map(item => (
               <List.Item
@@ -58,11 +59,13 @@ const SSO = props => {
             ))
           }
         </List>
-
-        <Button
-          className='submit-button' color='teal' content='Continue'
-          disabled={!company.id}
-          onClick={_handleSubmit} size='large'/>
+        </div>
+        <div className='text-center'>
+          <Button
+            className='submit-button' color='teal' content='Continue'
+            disabled={!company.id}
+            onClick={_handleSubmit} size='large'/>
+        </div>
 
         {
           is_superadmin && (

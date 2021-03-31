@@ -35,6 +35,20 @@ function* deleteItem({ ids: [ id ] }) {
       })
     }
 
+    const clientSubmission = yield select(clientSubmissionDuck.selectors.list)
+
+    yield put({
+      type   : clientSubmissionDuck.types.SET,
+      payload: {
+        items: clientSubmission.items.map(item => {
+          return item.id === clientSubmissionDetail.item.id ? ({
+            ...item,
+            count_notes: requestNote.items.length - 1
+          }) : item
+        })
+      }
+    })
+
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
     yield put({

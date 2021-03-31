@@ -178,7 +178,7 @@ function PetsSection({ clientDetail, clientPet, ...props }) {
         }
       </div>
 
-      <PetFormModal/>
+      <PetFormModal clientId={clientDetail.item.id}/>
     </Container>
   )
 }

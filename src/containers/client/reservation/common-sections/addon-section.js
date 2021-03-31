@@ -1,4 +1,4 @@
-// changes
+
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -113,9 +113,6 @@ const AddonForm = ({ ...props }) => {
     props.setReserveItem({ ...petReservationDetail.item, activeArray: activeArray })
     props.setReserveItem({ ...petReservationDetail.item, foodSubmitArray: foodSubmitArray })
   },[ activeArray, foodSubmitArray ])
-  useEffect(() => {
-    props.setReserveItem({ ...petReservationDetail.item, frequencyMed: frequencyMed })
-  },[ frequencyMed ])
 
   useEffect(()=>{
     props.setReserveItem({ ...petReservationDetail.item, selected_feeding_addon: feedTableData,
@@ -246,23 +243,34 @@ const AddonForm = ({ ...props }) => {
       startFromSecond += 1
 
   const _handleFrequencyClick = (e, value) =>{
-    if(value === 'once')
+    if(value === 'once') {
       setFrequencyMed(1)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyMed: 1 })
+    }
 
-    else if(value === 'every_other_day_first')
-      setFrequencyMed(oddNumberDates / 2)
+    else if(value === 'every_other_day_first') {
+      let med = oddNumberDates / 2
+      setFrequencyMed(med)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyMed: med })
+    }
 
-    else if(value === 'every_other_day_second')
-      setFrequencyMed(startFromSecond)
+    else if(value === 'every_other_day_second') {
+      let med = startFromSecond
+      setFrequencyMed(med)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyMed: med })
+    }
 
-    else if(value === 'every_day')
-      setFrequencyMed(reservationDateArr.length)
+    else if(value === 'every_day') {
+      let med = reservationDateArr.length
+      setFrequencyMed(med)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyMed: med })
+    }
 
-    else if(value === 'every_day_except_first')
-      setFrequencyMed(reservationDateArr.length - 1)
-
-    else if(value === 'every_day_except_last')
-      setFrequencyMed(reservationDateArr.length - 1)
+    else if(value === 'every_day_except_first' || value === 'every_day_except_last') {
+      let med = reservationDateArr.length - 1
+      setFrequencyMed(med)
+      props.setReserveItem({ ...petReservationDetail.item, frequencyMed: med })
+    }
   }
   let medicationTotalPrice = frequencyMed * totalPriceMed
   // feeding total price
@@ -1166,8 +1174,8 @@ const AddonForm = ({ ...props }) => {
                                       { key: 8, value: 50, text: '50 min' }
                                     ]}
                                     placeholder='Duration'
-                                    selection
-                                    selectOnBlur={false}/>
+                                    selectOnBlur={false}
+                                    selection/>
                                 </Grid.Column>
                               </Grid>
                             </Grid.Column>

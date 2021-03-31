@@ -33,6 +33,7 @@ const GroupClass = ({ ...props }) => {
 
   return (
     <Modal
+      className='form-modal'
       open={isOpened}
       size='large'>
       <Modal.Content>

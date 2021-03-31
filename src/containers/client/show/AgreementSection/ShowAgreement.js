@@ -15,17 +15,19 @@ const ShowAgreement = ({ clientAgreementDetail, ...props }) => {
   const isOpened = useMemo(() => mode === 'READ', [ mode ])
 
   return (
-    <Modal
-      basic
-      className='show-agreement-modal'
-      closeIcon
-      onClose={_handleClose}
-      open={isOpened}
-      size='large'>
-      <Modal.Content style={{ padding: 0 }}>
-        <iframe src={agreement.document_filepath}/>
-      </Modal.Content>
-    </Modal>
+    <div>
+      <Modal
+        basic
+        className='show-agreement-modal modal-position'
+        closeIcon
+        onClose={_handleClose}
+        open={isOpened}
+        size='large'>
+        <Modal.Content style={{ padding: 0 }}>
+          <iframe src={agreement.document_filepath}/>
+        </Modal.Content>
+      </Modal>
+    </div>
   )
 }
 

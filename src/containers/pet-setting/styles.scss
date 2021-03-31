@@ -1,0 +1,11 @@
+
+.search-width {
+  .table-primary-header.ui.grid input[type=search] {
+    max-width: 11rem;
+    min-width: 5rem;
+  }
+}
+
+.align-heading {
+  align-self: center;
+}

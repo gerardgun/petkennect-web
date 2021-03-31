@@ -151,6 +151,30 @@ const RecurringDaysForm = ({ ...props }) => {
       setMonthlyRadio({ first: 'Monthly on the ' + DayNth((new Date(startDate)).getDate()) + ' day', second: 'Monthly on ' + weekAndDay(new Date(startDate)) })
   }, [ startDate, frequency ])
 
+  // Boarding reservations
+  function getDifferenceInDays(date1, date2) {
+    const diffInMs = Math.abs(date2 - date1)
+
+    return diffInMs / (1000 * 60 * 60 * 24)
+  }
+  let startDates = []
+  let datesArray = []   // return reservation start and end dates
+  let flag = 0
+  let index = 0
+  const selectedDatesLength = selectedDates.length
+  for (let i = 0; i <= selectedDatesLength - 1; i++) {
+    if(flag === 0) {
+      startDates.push(selectedDates[i])
+      flag = 1
+    }
+    let difference = getDifferenceInDays(selectedDates[i], selectedDates[i + 1])
+    if(difference != 1) {
+      datesArray.push({ startdate: startDates[index], endDate: selectedDates[i]  })
+      index += 1
+      flag = 0
+    }
+  }
+
   const _handleStartDateChange = (value) =>{
     setStartDate(new Date(value))
     let currentDay = (new Date(value)).getDay()

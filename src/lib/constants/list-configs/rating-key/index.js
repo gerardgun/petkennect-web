@@ -24,17 +24,22 @@ export default {
   },
   columns: [
     {
-      display_name: 'RATING KEY',
+      display_name: 'Rating key',
       name        : 'rating_key',
       type        : 'number',
       align       : 'left',
-      width       : 4,
       sort        : true
     },
     {
       display_name: 'Name',
       name        : 'name',
-      width       : 10,
+      type        : 'string',
+      align       : 'left',
+      sort        : true
+    },
+    {
+      display_name: 'Description',
+      name        : 'description',
       type        : 'string',
       align       : 'left',
       sort        : true

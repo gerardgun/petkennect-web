@@ -1,0 +1,52 @@
+
+
+.header-menu{
+    background: #00b5ad0a  !important;
+}
+
+.dropdown-class {
+    
+    width: 200px !important;
+
+}
+
+.setup-menu{
+  height: 530px !important;
+}
+
+.setup-menu-bottom{
+  height: 320px !important;
+}
+.admin-search-dropdown{
+  margin-right: 0 !important;
+  margin-left: 13px !important;
+  width:100%;
+  padding: 1rem 0rem;
+  display: inline-flex;
+
+  .ui.selection.dropdown{
+    min-width: 5rem;
+  width: 240px !important;
+  border-radius: 0;
+  }
+  .prompt{
+    border-radius: 0rem !important;
+  }
+
+  .ui.search > .results .result .image
+  {
+    float: left;
+  }
+  .ui.search
+  {
+    width: 100%;
+  }
+  .ui.input
+  {
+    width: 100%;
+  }
+}
+
+
+
+

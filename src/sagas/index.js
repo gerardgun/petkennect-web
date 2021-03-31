@@ -1,8 +1,10 @@
+
 import { all } from 'redux-saga/effects'
 import agreement from './agreement'
 import agreementDetail from './agreement/detail'
 import auth from './auth'
 import application from './application'
+import breedManagerSetting from './pet/breed-manager-setting'
 import category from './category'
 import categoryDetail from './category/detail'
 import client from './client'
@@ -25,6 +27,7 @@ import customizedField from './customized-field/field'
 import customizedFieldDetail from './customized-field/field/detail'
 import customizedFieldGroup from './customized-field/group'
 import customizedFieldGroupDetail from './customized-field/group/detail'
+import clientPetBreed from    './pet/breed-manager-setting/client-pet-breed'
 import dashboardDaycampReservation from './dashboard/daycamp/daycamp'
 import dashboardDaycampCheckedOutReservation from './dashboard/daycamp/daycampCheckedOut'
 import dashboardDaycampCheckedInReservation from './dashboard/daycamp/daycampCheckedIn'
@@ -32,6 +35,7 @@ import dashboardBoardingReservation from './dashboard/boarding/boarding'
 import dashboardBoardingCheckedOutReservation from './dashboard/boarding/boardingCheckedOut'
 import dashboardBoardingCheckedInReservation from './dashboard/boarding/boardingCheckedIn'
 import daycampCard from './pet/reservation/daycamp-card'
+import dayCareReservationBreed from    './pet/breed-manager-setting/day-care-reservation-breed'
 import daycampCardDetail from './pet/reservation/daycamp-card/detail'
 import daycampCardQuestion from './pet/reservation/daycamp-card/daycamp-card-question'
 import daycampCardQuestionDetail from './pet/reservation/daycamp-card/daycamp-card-question/detail'
@@ -45,12 +49,25 @@ import emailTemplate from './email-template'
 import emailLog from './email-log'
 import exampleOne from './example/one'
 import exampleTwo from './example/two'
+import feedingMeasurement from './pet/feeding-setting/feeding-measurement'
+import feedingMethod from './pet/feeding-setting/feeding-method'
+import feedingTime from './pet/feeding-setting/feeding-time'
+import feedingUnit from './pet/feeding-setting/feeding-unit'
+import foodType from './pet/feeding-setting/food-type'
+import mealStatus from './pet/feeding-setting/meal-status'
 import location from './location'
 import locationDetail from './location/detail'
+import medication from './pet/medication-setting/medication'
+import medicationMeasurement from './pet/medication-setting/medication-measurement'
+import medicationTime from './pet/medication-setting/medication-time'
+import medicationUnit from './pet/medication-setting/medication-unit'
+import medicationReportStatus from './pet/medication-setting/medication-report-status'
+import medicationType from './pet/medication-setting/medication-type'
 import notification from './notification'
 import organization from './organization'
 import organizationDetail from './organization/detail'
 import packagePricing from './package-pricing'
+import paymentMethod from './payment-method'
 import pet from './pet'
 import petDetail from './pet/detail'
 import petBreed from './pet/breed'
@@ -67,6 +84,8 @@ import petIncidentBehavior from './pet/incident-behavior'
 import petIncidentBehaviorDetail from './pet/incident-behavior/detail'
 import petIncident from './pet/incident'
 import petIncidentDetail from './pet/incident/detail'
+import petInteractionType from './pet/interaction-type'
+import petVeterinarianList from './pet/veterinarian-list'
 import petNote from './pet/note'
 import petNoteDetail from './pet/note/detail'
 import petRetireReason from './pet/retire-reason'
@@ -116,6 +135,7 @@ import productVariationsDetail from './product/product-variations/detail'
 import productVariationsImageDetail from './product/product-variations/image/detail'
 import reservation from './reservation'
 import reservationDetail from './reservation/detail'
+import reservationByDateBreed from    './pet/breed-manager-setting/reservation-by-date-breed'
 import rol from './rol'
 import rolDetail from './rol/detail'
 import rolPermission from './rol/permission'
@@ -156,6 +176,7 @@ export default function* rootSaga() {
     ...agreementDetail,
     ...application,
     ...auth,
+    ...breedManagerSetting,
     ...category,
     ...categoryDetail,
     ...client,
@@ -170,6 +191,7 @@ export default function* rootSaga() {
     ...clientDocumentTypeDetail,
     ...clientEmailMessage,
     ...clientPet,
+    ...clientPetBreed,
     ...company,
     ...companyDetail,
     ...customReport,
@@ -178,6 +200,7 @@ export default function* rootSaga() {
     ...customizedFieldDetail,
     ...customizedFieldGroup,
     ...customizedFieldGroupDetail,
+    ...dayCareReservationBreed,
     ...daycampCard,
     ...dashboardDaycampReservation,
     ... dashboardDaycampCheckedInReservation,
@@ -199,12 +222,25 @@ export default function* rootSaga() {
     ...employeeDetail,
     ...employeeTitle,
     ...employeeTitleDetail,
+    ...feedingMeasurement,
+    ...feedingMethod,
+    ...feedingTime,
+    ...feedingUnit,
+    ...foodType,
+    ...mealStatus,
     ...location,
     ...locationDetail,
+    ...medication,
+    ...medicationMeasurement,
+    ...medicationReportStatus,
+    ...medicationTime,
+    ...medicationType,
+    ...medicationUnit,
     ...notification,
     ...organization,
     ...organizationDetail,
     ...packagePricing,
+    ...paymentMethod,
     ...pet,
     ...petDetail,
     ...petBreed,
@@ -221,6 +257,8 @@ export default function* rootSaga() {
     ...petIncidentBehaviorDetail,
     ...petIncident,
     ...petIncidentDetail,
+    ...petInteractionType,
+    ...petVeterinarianList,
     ...petNote,
     ...petNoteDetail,
     ...petRetireReason,
@@ -267,6 +305,7 @@ export default function* rootSaga() {
     ...productVariations,
     ...productVariationsDetail,
     ...productVariationsImageDetail,
+    ...reservationByDateBreed,
     ...reservation,
     ...reservationDetail,
     ...rol,

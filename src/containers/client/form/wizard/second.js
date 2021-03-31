@@ -3,14 +3,15 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm, FieldArray } from 'redux-form'
-import { Button, Form, Header, Input } from 'semantic-ui-react'
+import { Button, Divider, Form, Header, Input } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import InputMask from '@components/Common/InputMask'
+import PeopleList from '@containers/online-request/clientSubmission/show/sections/information/PeopleList'
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
-import { formId, AuthorizedPeopleList } from './../'
+import { formId } from './../'
 
 import clientDetailDuck from '@reducers/client/detail'
 
@@ -24,12 +25,6 @@ const ClientFormWizardSecond = props => {
 
   const _handleSubmit = values => {
     values = parseFormValues(values)
-
-    // Set phone as array value
-    if(values.emergency_contact_phone) {
-      values.emergency_contact_phones = [ values.emergency_contact_phone ]
-      delete values.emergency_contact_phone
-    }
 
     if(!values.user_exists) delete values.user
 
@@ -56,35 +51,14 @@ const ClientFormWizardSecond = props => {
           Complete Emergency Data
         </span>
 
-        <Header as='h6' className='section-header' color='blue'>EMERGENCY CONTACT</Header>
-        <Form.Group widths='equal'>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Name'
-            name='emergency_contact_name'
-            placeholder='Enter names'
-            required/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Relation'
-            name='emergency_contact_relationship'
-            placeholder='Enter relationship'
-            required/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={InputMask}
-            label='Phone'
-            mask='(999) 999 9999'
-            name='emergency_contact_phones[0]'
-            placeholder='Enter phone number'
-            required
-            type='tel'/>
-        </Form.Group>
+        <FieldArray
+          component={PeopleList}
+          name='emergency_contact_phones'
+          type='contact'/>
+
+        {/* emergency_contact_name, emergency_contact_relationship WIP Deleted fields */}
+
+        <Divider/>
 
         <Header as='h6' className='section-header' color='blue'>VETERINARIAN CONTACT</Header>
         <Form.Group widths='equal'>
@@ -92,31 +66,32 @@ const ClientFormWizardSecond = props => {
             autoComplete='off'
             component={FormField}
             control={Input}
-            label='Vet name'
+            label='Veterinarian Name'
             name='emergency_vet_name'
-            placeholder='Enter vet name'/>
-          <Field
-            autoComplete='off'
-            component={FormField}
-            control={Input}
-            label='Vet location'
-            name='emergency_vet_location'
-            placeholder='Enter vet location'/>
+            placeholder='Enter veterinarian name'/>
           <Field
             autoComplete='off'
             component={FormField}
             control={InputMask}
-            label='Vet phone'
+            label='Veterinarian Phone Number'
             mask='(999) 999 9999'
             name='emergency_vet_phones[0]'
             placeholder='Enter phone number'
             type='tel'/>
+          <Field
+            autoComplete='off'
+            component={FormField}
+            control={Input}
+            label='Veterinarian Facility'
+            name='emergency_vet_location'
+            placeholder='Enter veterinarian facility'/>
         </Form.Group>
 
+        <Divider/>
+
         <FieldArray
-          component={AuthorizedPeopleList}
-          name='authorized_people_pick_up'
-          title='People Authorized to Pick Up'/>
+          component={PeopleList}
+          name='authorized_people_pick_up'/>
 
         {
           error && (

@@ -1,0 +1,20 @@
+.checkbox-box {
+    input[type="checkbox"] {
+      display: inline-flex !important;
+    }
+    .demo-form, .final-preview, .form_editor {
+      top: 0;
+      left: 0;
+      width: 100vw;
+      z-index: 10;
+      /* height: 100vh; */
+      position: fixed;
+      background-color: hsla(0,0%,98%,.8);
+      height: -webkit-fill-available !important;
+      overflow: auto !important;
+    }
+    .mr-3, .mx-3 {
+      margin-right: 0 !important;
+  }
+}
+  

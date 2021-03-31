@@ -8,13 +8,20 @@ export const Referred = {
   7: 'Other'
 }
 
-const AddressType = {
+export const Status = {
+  active  : 'Active',
+  caution : 'Caution',
+  declined: 'Decline Client',
+  vip     : 'VIP Client'
+}
+
+export const AddressType = {
   home : 'Home',
   work : 'Work',
   other: 'Other'
 }
 
-const PhoneType = {
+export const PhoneType = {
   cell : 'Cell Phone',
   home : 'Home Phone',
   work : 'Work Phone',

@@ -235,7 +235,7 @@ const ClientForm = props => {
             control={Input}
             label='Veterinarian Facility'
             name='emergency_vet_location'
-            placeholder='Enter Veterinarian Facility'/>
+            placeholder='Enter veterinarian facility'/>
         </Form.Group>
 
         <Divider/>
