@@ -17,17 +17,18 @@ const TableCellButton = ({ config, data, ...props }) => {
       width={width}>
       {
         config.options
-          .filter(({ disable }) => {
-            return !disable || !disable(data)
-          })
           .map(({ display_name, name, ...rest }, index) => {
+            const disabled = 'disable' in rest && rest.disable(data)
+
             return (
               <Popup
                 content={display_name} inverted
                 key={index} position='bottom center'
                 trigger={
                   <Button
-                    basic data-option-name={name}
+                    basic
+                    data-option-name={name}
+                    disabled={disabled}
                     onClick={_handleButtonClick}
                     {...rest}/>
                 }/>
