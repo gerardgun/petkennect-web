@@ -2,8 +2,12 @@ import React, { useState } from 'react'
 import { Grid, Header, Segment, Input, Button, Icon, Table, Menu, Dropdown } from 'semantic-ui-react'
 import { BiTennisBall } from 'react-icons/bi'
 import { GiJumpingDog, GiDamagedHouse, GiDogBowl, GiSittingDog } from 'react-icons/gi'
-
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { Field, reduxForm } from 'redux-form'
 import loadable from '@loadable/component'
+import FormField from '@components/Common/FormField'
+import InputColor from '@components/Common/InputColor'
 
 import './styles.scss'
 const Layout = loadable(() => import('@components/Common/Layout'))
@@ -14,20 +18,6 @@ const ColourCodeList = () => {
 
   const [ activeMenuItem, setActiveMenuItem ] = useState('client')
   const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
-
-  const colorOptions = [
-    { key: 1, value: 'red', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'red', fontSize: '20px' }}></Icon> Red</p>) },
-    { key: 2, value: 'green', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'green', fontSize: '20px' }}></Icon> Green</p>) },
-    { key: 3, value: 'yellow', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'yellow', fontSize: '20px' }}></Icon> Yellow</p>) },
-    { key: 4, value: 'dodgerBlue', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'DodgerBlue', fontSize: '20px' }}></Icon> DodgerBlue</p>) },
-    { key: 5, value: 'orange', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'orange', fontSize: '20px' }}></Icon> Orange</p>) },
-    { key: 6, value: 'pink', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'pink', fontSize: '20px' }}></Icon> Pink</p>) },
-    { key: 7, value: 'blue', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'blue', fontSize: '20px' }}></Icon> Blue</p>) },
-    { key: 8, value: 'grey', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'grey', fontSize: '20px' }}></Icon> Grey</p>) },
-    { key: 9, value: 'olive', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'olive', fontSize: '20px' }}></Icon> Olive</p>) },
-    { key: 10, value: 'purple', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'purple', fontSize: '20px' }}></Icon> Purple</p>) },
-    { key: 11, value: 'maroon', text: (<p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'maroon', fontSize: '20px' }}></Icon> Maroon</p>) }
-  ]
 
   const clientIconOptions = [
     { key: 1, value: 'user', text: (<p style={{ height: '13.6px' }}><Icon name='user circle' style={{ color: 'grey', fontSize: '20px' }}></Icon></p>)  }
@@ -67,15 +57,17 @@ const ColourCodeList = () => {
               name='custom'
               onClick={_handleInfoItemClick}/>
           </Grid.Column>
-          <Grid.Column
-            className='save-button-align'
-            computer={8} mobile={7} tablet={6}>
-            <Button
-              className='w120'
-              color='teal'
-              content='Save'
-              floated='right'/>
-          </Grid.Column>
+          { ActiveInfoItem === 'custom' && (
+            <Grid.Column
+              className='save-button-align'
+              computer={8} mobile={7} tablet={6}>
+              <Button
+                className='w120'
+                color='teal'
+                content='Save'
+                floated='right'/>
+            </Grid.Column>)
+          }
         </Grid>
         <Grid
           className='mh12' computer={16} mobile={16}
@@ -218,59 +210,107 @@ const ColourCodeList = () => {
                           <>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor1'
+                                required/></Table.Cell>
                               <Table.Cell ><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor2'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor3'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor4'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor5'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor6'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor7'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor8'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor9'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={clientIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='clientColor10'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
-
                           </>
                         </Table.Body>
                       </Table>
-
                     </>
                   )}
                   {activeMenuItem === 'pet'  && (
@@ -289,58 +329,111 @@ const ColourCodeList = () => {
                           <>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><GiSittingDog/></Icon></p></Table.Cell>
-                              <Table.Cell><p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'green', fontSize: '20px' }}></Icon> Green</p></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor01'/></Table.Cell>
                               <Table.Cell className='description-width'><p>Received Training</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><BiTennisBall/></Icon></p></Table.Cell>
-                              <Table.Cell><p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'orange', fontSize: '20px' }}></Icon> Orange</p></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor02'/></Table.Cell>
                               <Table.Cell className='description-width'><p>Toy Aggressive</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><GiDogBowl/></Icon></p></Table.Cell>
-                              <Table.Cell><p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'orange', fontSize: '20px' }}></Icon> Orange</p></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor03'/></Table.Cell>
                               <Table.Cell className='description-width'><p>Food Aggressive</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><GiDamagedHouse/></Icon></p></Table.Cell>
-                              <Table.Cell><p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'red', fontSize: '20px' }}></Icon> Red</p></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor04'/></Table.Cell>
                               <Table.Cell className='description-width'><p>Broke House</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><GiJumpingDog/></Icon></p></Table.Cell>
-                              <Table.Cell><p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'orange', fontSize: '20px' }}></Icon> Orange</p></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor05'/></Table.Cell>
                               <Table.Cell className='description-width'><p>Fence Jumping</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon name='lightning boltnis' style={{ color: 'grey', fontSize: '20px' }}></Icon></p></Table.Cell>
-                              <Table.Cell><p style={{ height: '13.6px' }}><Icon name='circle' style={{ color: 'yellow', fontSize: '20px' }}></Icon> Yellow</p></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor06'/></Table.Cell>
                               <Table.Cell className='description-width'><p>Afraid of Thunderstorm</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={petIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor1'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={petIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor2'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={petIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor3'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={petIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor4'
+                                required/></Table.Cell>
+                              <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
+                            </Table.Row>
+                            <Table.Row>
+                              <Table.Cell><Dropdown options={petIconOptions} placeholder='Select Icon'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='petColor5'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                           </>
                         </Table.Body>
                       </Table>
-
                     </>
                   )}
                   {activeMenuItem === 'miscellaneous'  && (
@@ -359,62 +452,114 @@ const ColourCodeList = () => {
                           <>
                             <Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor1'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor2'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor3'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor4'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor5'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor6'
+                                required/></Table.Cell>
+                              <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
+                            </Table.Row>
+                            <Table.Row>
+                              <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor7'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row><Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor8'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor9'
+                                required/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor10'/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
-                              <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
-                            </Table.Row>
-                            <Table.Row>
-                              <Table.Cell><Dropdown options={miscellaneousIconOptions} placeholder='Select Icon'/></Table.Cell>
-                              <Table.Cell><Dropdown options={colorOptions} placeholder='Select Color'/></Table.Cell>
+                              <Table.Cell><Field
+                                autoComplete='off'
+                                component={FormField}
+                                control={InputColor}
+                                name='miscColor11'/></Table.Cell>
                               <Table.Cell className='description-width'><Input placeholder='Enter Description'/></Table.Cell>
                             </Table.Row>
                           </>
                         </Table.Body>
                       </Table>
-
                     </>
                   )}
                 </Grid.Column>
@@ -423,9 +568,21 @@ const ColourCodeList = () => {
           }
         </Grid>
       </Segment>
-
     </Layout>
   )
 }
 
-export default (ColourCodeList)
+export default compose(
+  connect(
+    () => {
+      return {
+        initialValues: { petColor01: '#188B07', petColor02: '#F88C05', petColor03: '#F88C05', petColor04: '#E90E0E',
+          petColor05: '#E90E0E', petColor06: '#F2F531' }
+      }
+    }),
+  reduxForm({
+    form              : 'color-form',
+    destroyOnUnmount  : false,
+    enableReinitialize: true
+  })
+)(ColourCodeList)
