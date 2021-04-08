@@ -89,7 +89,12 @@ const BehaviorTagForm = props => {
               component={FormField} control={Checkbox}
               name='grooming'
               type='checkbox'/>
-            <label className='mt20'>Grooming</label>
+            <label className='mt20 mr40'>Grooming</label>
+            <Field
+              component={FormField} control={Checkbox}
+              name='general'
+              type='checkbox'/>
+            <label className='mt20'>General</label>
           </Form.Group>
 
           {
