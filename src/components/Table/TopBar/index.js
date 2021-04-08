@@ -48,7 +48,7 @@ const TopBar = ({ config, duck, ...props }) => {
 
   return (
     <Grid className='table-primary-header'>
-      <Grid.Column computer={6} mobile={16} tablet={16}>
+      <Grid.Column computer={16} mobile={16} tablet={16}>
         {
           basicOptions.length > 0 && (
             <Dropdown
@@ -65,7 +65,7 @@ const TopBar = ({ config, duck, ...props }) => {
               }
               selectOnBlur={false}
               trigger={(
-                <Button basic icon='ellipsis vertical'/>
+                <Button basic icon='ellipsis vertical' style={{ paddingBottom: '1.1rem' }}/>
               )}
               value={null}/>
           )
@@ -108,10 +108,15 @@ const TopBar = ({ config, duck, ...props }) => {
             )
           })
         }
-      </Grid.Column >
-      <Grid.Column
-        className='grid-filter-item' computer={10} mobile={16}
-        tablet={16} textAlign='right'>
+
+        {/* Search */}
+        {
+          config.search_enabled && (
+            <Input
+              icon='search' iconPosition='left' onChange={_handleSearchInputChange}
+              placeholder={config.search_placeholder} style={{ marginRight: '0.3rem' }} type='search'/>
+          )
+        }
         {
           filterColumns.length > 0 && (
             <Popup
@@ -123,13 +128,6 @@ const TopBar = ({ config, duck, ...props }) => {
                 <FilterForm config={config} duck={duck}/>
               </Popup.Content>
             </Popup>
-          )
-        }
-        {
-          config.search_enabled && (
-            <Input
-              icon='search' iconPosition='left' onChange={_handleSearchInputChange}
-              placeholder={config.search_placeholder} type='search'/>
           )
         }
       </Grid.Column>

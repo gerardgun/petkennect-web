@@ -5,29 +5,31 @@
     margin-top: 0rem;
     border-radius: 0rem;
 
-    thead th {
-      border-left: none;
-      color: #616468;
-      font-size: 0.8rem;
-      font-weight: normal;
-      padding-top: 0.8rem;
-      padding-bottom: 0.8rem;
-      text-transform: uppercase;
+    thead {
+      background-color: #EEEEEF;
 
-      &:hover {
-        background-color: transparent;
-      }
-
-      &.sorted {
-        background: transparent;
-
-        &:not(.ascending):not(.descending)::after {
-          content: "\f0dc";
+      th {
+        border-left: none;
+        color: #000000;
+        font-weight: 600;
+        padding-top: 0.8rem;
+        padding-bottom: 0.8rem;
+  
+        &:hover {
+          background-color: transparent;
         }
-
-        &.ascending,
-        &.descending {
-          color: $green;
+  
+        &.sorted {
+          background: transparent;
+  
+          &:not(.ascending):not(.descending)::after {
+            content: "\f0dc";
+          }
+  
+          &.ascending,
+          &.descending {
+            color: $green;
+          }
         }
       }
     }
@@ -63,8 +65,8 @@
 
       td {
         font-size: 0.9rem;
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
+        padding-top: 0.8rem;
+        padding-bottom: 0.8rem;
         color: #222b3bd9;
         vertical-align: middle;
 
@@ -119,6 +121,10 @@
 
   &-header.ui.grid {
     margin-bottom: 0.3em;
+
+    .column {
+      display: flex;
+    }
 
     input[type="search"] {
       min-width: 18rem;
