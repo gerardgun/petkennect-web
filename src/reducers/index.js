@@ -63,10 +63,16 @@ import daycampReservation from '@reducers/pet/reservation/daycamp-reservation'
 import exampleOne from '@reducers/example/one'
 import exampleTwo from '@reducers/example/two'
 import boardingReservation from '@reducers/pet/reservation/boarding'
+import boardingReservationDetail from '@reducers/pet/reservation/boarding/detail'
 import boardingReservationAddon from '@reducers/pet/reservation/boarding/add-on'
 import boardingReservationAddonFeeding from '@reducers/pet/reservation/boarding/add-on/feeding-addon'
+import boardingPackage from '@reducers/pet/reservation/boarding/package'
+import boardingPackageDetail from '@reducers/pet/reservation/boarding/package/detail'
 import groomingReservation from '@reducers/pet/reservation/grooming'
+import groomingReservationDetail from '@reducers/pet/reservation/grooming/detail'
 import groomingReservationAddon from '@reducers/pet/reservation/grooming/add-on'
+import groomingPackage from '@reducers/pet/reservation/grooming/package'
+import groomingPackageDetail from '@reducers/pet/reservation/grooming/package/detail'
 import daycampReservationDetail from '@reducers/pet/reservation/daycamp-reservation/detail'
 import emailMessage from '@reducers/email-message'
 import emailMessageDetail from '@reducers/email-message/detail'
@@ -146,9 +152,12 @@ import petReservation from '@reducers/pet/reservation'
 import petReservationDetail from '@reducers/pet/reservation/detail'
 import petReservationDaycampQuestion from '@reducers/pet/reservation/dacamp-question'
 import petReservationDaycampQuestionDetail from '@reducers/pet/reservation/dacamp-question/detail'
+import petReservationDayServicePackage from '@reducers/pet/reservation/day-service-package'
+import petReservationDayServicePackageDetail from '@reducers/pet/reservation/day-service-package/detail'
 import petReservationTrainingPackage from '@reducers/pet/reservation/training/package'
 import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
 import petReservationTrainingReservation from '@reducers/pet/reservation/training/reservation'
+import petReservationTrainingReservationDetail from '@reducers/pet/reservation/training/reservation/detail'
 import petReservationTrainingReservationGroupClass from '@reducers/pet/reservation/training/reservation/group-class'
 import petReservationTrainingReservationGroupClassDetail from '@reducers/pet/reservation/training/reservation/group-class/detail'
 import petKennel from '@reducers/pet/pet-kennel'
@@ -265,6 +274,9 @@ const createRootReducer = history => combineReducers({
   [daycampCard.store]                                      : daycampCard.reducer,
   [daycampCardDetail.store]                                : daycampCardDetail.reducer,
   [boardingReservation.store]                              : boardingReservation.reducer,
+  [boardingReservationDetail.store]                        : boardingReservationDetail.reducer,
+  [boardingPackage.store]                                  : boardingPackage.reducer,
+  [boardingPackageDetail.store]                            : boardingPackageDetail.reducer,
   [boardingReservationAddon.store]                         : boardingReservationAddon.reducer,
   [boardingReservationAddonFeeding.store]                  : boardingReservationAddonFeeding.reducer,
   [dashboardDaycamp.store]                                 : dashboardDaycamp.reducer,    // dashboard
@@ -274,6 +286,9 @@ const createRootReducer = history => combineReducers({
   [dashboardBoardingCheckedIn.store]                       : dashboardBoardingCheckedIn.reducer,
   [dashboardBoardingCheckedOut.store]                      : dashboardBoardingCheckedOut.reducer,
   [groomingReservation.store]                              : groomingReservation.reducer,
+  [groomingReservationDetail.store]                        : groomingReservationDetail.reducer,
+  [groomingPackage.store]                                  : groomingPackage.reducer,
+  [groomingPackageDetail.store]                            : groomingPackageDetail.reducer,
   [groomingReservationAddon.store]                         : groomingReservationAddon.reducer,
   [daycampReservation.store]                               : daycampReservation.reducer,
   [exampleOne.store]                                       : exampleOne.reducer,
@@ -360,9 +375,12 @@ const createRootReducer = history => combineReducers({
   [petReservationDetail.store]                             : petReservationDetail.reducer,
   [petReservationDaycampQuestion.store]                    : petReservationDaycampQuestion.reducer,
   [petReservationDaycampQuestionDetail.store]              : petReservationDaycampQuestionDetail.reducer,
+  [petReservationDayServicePackage.store]                  : petReservationDayServicePackage.reducer,
+  [petReservationDayServicePackageDetail.store]            : petReservationDayServicePackageDetail.reducer,
   [petReservationTrainingPackage.store]                    : petReservationTrainingPackage.reducer,
   [petReservationTrainingPackageDetail.store]              : petReservationTrainingPackageDetail.reducer,
   [petReservationTrainingReservation.store]                : petReservationTrainingReservation.reducer,
+  [petReservationTrainingReservationDetail.store]          : petReservationTrainingReservationDetail.reducer,
   [petReservationTrainingReservationGroupClass.store]      : petReservationTrainingReservationGroupClass.reducer,
   [petReservationTrainingReservationGroupClassDetail.store]: petReservationTrainingReservationGroupClassDetail.reducer,
   [petVaccination.store]                                   : petVaccination.reducer,

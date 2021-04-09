@@ -1,45 +1,114 @@
 export default {
   columns: [
     {
-      display_name: 'RESERVATION DATE',
-      name        : 'reserved_date',
+      display_name: 'Date',
+      name        : 'reserved_at',
       type        : 'date', // image, boolean, date, datetime, money, label
+      width       : null,
+      align       : 'left',
+      sort        : true,
+      filter      : {
+        type: 'range_date',
+        name: [ 'created_at__gt', 'created_at__lt' ]
+      }
+    },
+    {
+      display_name: 'Service',
+      name        : 'service',
+      type        : 'string',
+      align       : 'left',
+      width       : null,
+      sort        : false,
+      filter      : {
+        type        : 'dropdown',
+        name        : 'packageName',
+        source_store: [
+          {
+            value: 'package1',
+            text : 'Package1'
+          },
+          {
+            value: 'package2',
+            text : 'Package2'
+          }
+        ]
+      }
+    },
+    {
+      display_name: 'Location',
+      name        : 'location_name',
+      type        : 'string',
       width       : null,
       align       : 'left',
       sort        : true
     },
     {
-      display_name: 'LOCATION',
-      name        : 'location_code',
+      display_name: 'Res Type',
+      name        : 'type',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : true,
-      sort_name   : 'location__code'
+      filter      : {
+        type        : 'dropdown',
+        name        : 'type',
+        source_store: [
+          {
+            value: 'type1',
+            text : 'type1'
+          },
+          {
+            value: 'type2',
+            text : 'type2'
+          }
+        ]
+      }
     },
     {
-      display_name: 'Time',
-      name        : 'reserved_at_time',
-      type        : 'time',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'Price',
-      name        : 'price',
-      type        : 'money',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'Services',
-      name        : 'services',
+      display_name: 'Other',
+      name        : 'other_service',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : true
+    },
+
+    {
+      display_name: 'Run',
+      name        : 'run',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true
+    },
+    {
+      display_name: 'Time in',
+      name        : 'time_in',
+      type        : 'string',
+
+      align: 'left',
+      sort : true
+    },
+    {
+      display_name: 'Time Out',
+      name        : 'time_out',
+      type        : 'string',
+
+      align: 'left',
+      sort : true
+    },
+
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Check-In',
+          icon        : 'check',
+          name        : 'check_in',
+          color       : 'green'
+        }
+      ]
     },
     {
       display_name: 'Actions',
@@ -47,55 +116,44 @@ export default {
       type        : 'dropdown',
       options     : [
         {
+          icon        : 'edit',
           display_name: 'Edit Reserve',
-          name        : 'edit_reserve',
-          icon        : 'edit'
+          name        : 'edit_reserve'
         },
         {
-          display_name: 'View Report',
-          name        : 'view_report',
-          icon        : 'eye'
+          icon        : 'sticky note outline',
+          display_name: 'Add Note',
+          name        : 'add_note'
         },
         {
-          display_name: 'Edit Note',
-          name        : 'edit_note',
-          icon        : 'edit outline'
+          icon        : 'add',
+          display_name: 'Add Interaction',
+          name        : 'add_interaction'
         },
         {
-          display_name: 'Cancel CheckIn',
-          name        : 'cancel_checkIn',
-          disable     : item => !item.is_pending,
-          icon        : 'widnow close outline'
+          icon        : 'server',
+          display_name: 'Add-on Services',
+          name        : 'add_on'
         },
         {
-          display_name: 'Absent',
-          name        : 'absent',
-          disable     : item => item.is_pending,
-          icon        : 'trash alternate outline'
+          icon        : 'file text',
+          display_name: 'Add/Edit Logs',
+          name        : 'edit_logs'
         },
         {
-          display_name: 'Cancel Reserve',
-          name        : 'cancel_reserve',
-          icon        : 'close'
-        }
-      ]
-    },
-    {
-      display_name: 'Actions',
-      name        : 'custom_name',
-      type        : 'button',
-      options     : [
-        {
-          display_name: 'Check In',
-          name        : 'check_in',
-          disable     : item => !item.is_pending,
-          icon        : 'arrow right'
+          icon        : 'file pdf',
+          display_name: 'Add/Edit Report Card',
+          name        : 'report_cards'
         },
         {
-          display_name: 'Check Out',
-          name        : 'check_out',
-          disable     : item => item.is_pending,
-          icon        : 'check'
+          icon        : 'print',
+          display_name: 'Print Run Card',
+          name        : 'print_run_card'
+        },
+        {
+          icon        : 'trash alternate outline',
+          display_name: 'Delete Reservation',
+          name        : 'delete_reservation'
         }
       ]
     }

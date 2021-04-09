@@ -160,8 +160,8 @@ export default {
       sort        : true,
       sort_name   : 'breed__name',
       filter      : {
-        type        : 'dropdown',
-        name        : 'breed__id',
+        type   : 'dropdown',
+        name   : 'breed__id',
         options: petBreedDuck.store
       }
     },
@@ -187,8 +187,8 @@ export default {
       sort        : true,
       sort_name   : 'client__location__code',
       filter      : {
-        type        : 'dropdown',
-        name        : 'client__location__id',
+        type   : 'dropdown',
+        name   : 'client__location__id',
         options: locationDuck.store
       }
     },
@@ -200,8 +200,8 @@ export default {
       align       : 'left',
       sort        : true,
       filter      : {
-        type        : 'dropdown',
-        name        : 'retired',
+        type   : 'dropdown',
+        name   : 'retired',
         options: [
           {
             value: true,
@@ -222,8 +222,8 @@ export default {
       align       : 'left',
       sort        : true,
       filter      : {
-        type        : 'dropdown',
-        name        : 'sex',
+        type   : 'dropdown',
+        name   : 'sex',
         options: [
           {
             value: 'M',

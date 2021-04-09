@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { Button, Grid, Header } from 'semantic-ui-react'
 import { reduxForm } from 'redux-form'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import PetVaccinationTypeForm from  './form'
@@ -13,9 +13,9 @@ import petVaccinationTypeListConfig from '@lib/constants/list-configs/pet/vaccin
 
 import petVaccinationTypeDuck from '@reducers/pet/vaccination-type'
 import petVaccinationTypeDetailDuck from '@reducers/pet/vaccination-type/detail'
-
-const PetVaccinationTypeList = ({ petVaccinationType, petVaccinationTypeDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const PetVaccinationTypeList = ({  petVaccinationTypeDetail, ...props }) => {
+  const [ open, { _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPetVaccinationType, petVaccinationTypeDetail.status)
 
   useEffect(() => {
@@ -26,14 +26,11 @@ const PetVaccinationTypeList = ({ petVaccinationType, petVaccinationTypeDetail, 
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(petVaccinationType.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
 
@@ -47,12 +44,11 @@ const PetVaccinationTypeList = ({ petVaccinationType, petVaccinationTypeDetail, 
       <Grid columns={2}>
         <Grid.Column
           className='ml4'
-          computer={11} mobile={15} tablet={8}>
+          computer={10} mobile={15} tablet={8}>
           <Table
             config={petVaccinationTypeListConfig}
             duck={petVaccinationTypeDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+            onRowButtonClick={_handleButtonClick}/>
         </Grid.Column>
         <Grid.Column computer={4} mobile={12} tablet={8}>
           <Button

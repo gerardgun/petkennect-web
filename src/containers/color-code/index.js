@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { Grid, Header, Segment, Input, Button, Icon, Table, Menu, Dropdown } from 'semantic-ui-react'
-import { BiTennisBall } from 'react-icons/bi'
-import { GiJumpingDog, GiDamagedHouse, GiDogBowl, GiSittingDog } from 'react-icons/gi'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
+import { Grid, Header, Segment, Input, Button, Form, Icon, Table, Menu, Dropdown } from 'semantic-ui-react'
+import Switch from 'react-switch'
+import { BiTennisBall } from 'react-icons/bi'
+import { GiJumpingDog, GiDamagedHouse, GiDogBowl, GiSittingDog } from 'react-icons/gi'
+
 import loadable from '@loadable/component'
 import FormField from '@components/Common/FormField'
 import InputColor from '@components/Common/InputColor'
@@ -33,10 +35,23 @@ const ColourCodeList = () => {
 
   return (
     <Layout>
-      <Segment className='segment-content petkennect-profile'>
-        <Grid className='segment-content-header' columns={2}>
+      <Segment className='segment-content petkennect-profile pb32'>
+        <Grid className='segment-content-header'>
           <Grid.Column computer={16} mobile={16} tablet={16}>
             <Header as='h2'>System Icons/Codes</Header>
+          </Grid.Column>
+          <Grid.Column  computer={4}>
+            <Header as='h3' className='mt4' color='teal'>Enable Icons for Application</Header>
+          </Grid.Column>
+          <Grid.Column className='pl0' computer={1}>
+            <Form.Field>
+              <Switch
+                checked={true}
+                className='react-switch'
+                height={30}
+                onColor='#00aa9f'
+                width={60}/>
+            </Form.Field>
           </Grid.Column>
         </Grid>
         <Grid className='segment-content-header' columns={2}>
@@ -75,7 +90,7 @@ const ColourCodeList = () => {
           {ActiveInfoItem === 'system'  && (
             <>
               <Table
-                className='table-primary mt16' selectable
+                className='mt16 p0' selectable
                 sortable unstackable>
                 <Table.Header>
                   <Table.Row>
@@ -154,7 +169,7 @@ const ColourCodeList = () => {
                       <Table.Cell><p></p></Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                      <Table.Cell><p  style={{ height: '13.6px' }}><Icon name='chess queen' style={{ color: 'brown', fontSize: '20px' }}></Icon></p></Table.Cell>
+                      <Table.Cell><p  style={{ height: '13.6px' }}><Icon name='birthday cake' style={{ color: 'brown', fontSize: '20px' }}></Icon></p></Table.Cell>
                       <Table.Cell><p>Birthday</p></Table.Cell>
                       <Table.Cell><p>Pet</p></Table.Cell>
                       <Table.Cell><p></p></Table.Cell>
@@ -329,56 +344,45 @@ const ColourCodeList = () => {
                           <>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><GiSittingDog/></Icon></p></Table.Cell>
-                              <Table.Cell><Field
-                                autoComplete='off'
-                                component={FormField}
-                                control={InputColor}
-                                name='petColor01'/></Table.Cell>
+                              <Table.Cell><div className='box-style green-color'><span>#188B07</span><Icon
+                                circular className='margin-icon'
+                                inverted
+                                name='eye dropper'/></div></Table.Cell>
                               <Table.Cell className='description-width'><p>Received Training</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><BiTennisBall/></Icon></p></Table.Cell>
-                              <Table.Cell><Field
-                                autoComplete='off'
-                                component={FormField}
-                                control={InputColor}
-                                name='petColor02'/></Table.Cell>
+                              <Table.Cell><div className='box-style orange-color'><span>#F88C05</span><Icon
+                                circular className='margin-icon'
+                                inverted name='eye dropper'/></div></Table.Cell>
                               <Table.Cell className='description-width'><p>Toy Aggressive</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><GiDogBowl/></Icon></p></Table.Cell>
-                              <Table.Cell><Field
-                                autoComplete='off'
-                                component={FormField}
-                                control={InputColor}
-                                name='petColor03'/></Table.Cell>
+                              <Table.Cell><div className='box-style orange-color'><span>#F88C05</span><Icon
+                                circular className='margin-icon'
+                                inverted name='eye dropper'/></div></Table.Cell>
                               <Table.Cell className='description-width'><p>Food Aggressive</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><GiDamagedHouse/></Icon></p></Table.Cell>
-                              <Table.Cell><Field
-                                autoComplete='off'
-                                component={FormField}
-                                control={InputColor}
-                                name='petColor04'/></Table.Cell>
+                              <Table.Cell><div className='box-style red-color'><span>#E90E0E</span><Icon
+                                circular className='margin-icon'
+                                inverted name='eye dropper'/></div></Table.Cell>
                               <Table.Cell className='description-width'><p>Broke House</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon style={{ color: 'grey', fontSize: '20px' }}><GiJumpingDog/></Icon></p></Table.Cell>
-                              <Table.Cell><Field
-                                autoComplete='off'
-                                component={FormField}
-                                control={InputColor}
-                                name='petColor05'/></Table.Cell>
+                              <Table.Cell><div className='box-style red-color'><span>#E90E0E</span><Icon
+                                circular className='margin-icon'
+                                inverted name='eye dropper'/></div></Table.Cell>
                               <Table.Cell className='description-width'><p>Fence Jumping</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
                               <Table.Cell><p style={{ height: '13.6px' }}><Icon name='lightning boltnis' style={{ color: 'grey', fontSize: '20px' }}></Icon></p></Table.Cell>
-                              <Table.Cell><Field
-                                autoComplete='off'
-                                component={FormField}
-                                control={InputColor}
-                                name='petColor06'/></Table.Cell>
+                              <Table.Cell><div className='box-style yellow-color'><span>#EFF30A</span><Icon
+                                background-color='#EFF30A' circular className='margin-icon'
+                                inverted name='eye dropper'/></div></Table.Cell>
                               <Table.Cell className='description-width'><p>Afraid of Thunderstorm</p></Table.Cell>
                             </Table.Row>
                             <Table.Row>
@@ -577,7 +581,7 @@ export default compose(
     () => {
       return {
         initialValues: { petColor01: '#188B07', petColor02: '#F88C05', petColor03: '#F88C05', petColor04: '#E90E0E',
-          petColor05: '#E90E0E', petColor06: '#F2F531' }
+          petColor05: '#E90E0E', petColor06: '#EFF30A' }
       }
     }),
   reduxForm({

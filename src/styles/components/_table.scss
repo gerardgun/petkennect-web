@@ -7,13 +7,15 @@
 
     thead {
       background-color: #EEEEEF;
-
+    
       th {
         border-left: none;
         color: #000000;
         font-weight: 600;
         padding-top: 0.8rem;
         padding-bottom: 0.8rem;
+        border-top-color: #EEEEEF !important; // for removing the blue line from table top
+
   
         &:hover {
           background-color: transparent;

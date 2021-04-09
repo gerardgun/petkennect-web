@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
+
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import PetInteractionTypeForm from  './Form'
@@ -12,9 +13,9 @@ import petInteractionTypeListConfig from '@lib/constants/list-configs/pet/animal
 
 import petInteractionTypeDuck from '@reducers/pet/interaction-type'
 import petInteractionTypeDetailDuck from '@reducers/pet/interaction-type/detail'
-
-const PetInteractionTypeList = ({ petInteractionType, petInteractionTypeDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const PetInteractionTypeList = ({  petInteractionTypeDetail, ...props }) => {
+  const [ open, { _handleClose } ] = useModal()
   useChangeStatusEffect(props.getPetInteractionTypes, petInteractionTypeDetail.status)
 
   useEffect(() => {
@@ -25,14 +26,11 @@ const PetInteractionTypeList = ({ petInteractionType, petInteractionTypeDetail, 
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(petInteractionType.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
 
@@ -44,8 +42,8 @@ const PetInteractionTypeList = ({ petInteractionType, petInteractionTypeDetail, 
           <Table
             config={petInteractionTypeListConfig}
             duck={petInteractionTypeDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+            onRowButtonClick={_handleButtonClick}/>
+
         </Grid.Column>
         <Grid.Column
           computer={4} mobile={4} tablet={4}>

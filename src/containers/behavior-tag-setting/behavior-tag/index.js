@@ -61,8 +61,8 @@ const BehaviorTag = ({ ...props }) => {
     <>
       <Grid className='segment-content-header'>
         <Grid.Column
-          className='pb0' computer={16} mobile={16}
-          tablet={16}>
+          className='pb0'
+          computer={16} mobile={16} tablet={16}>
           <Header as='h4' className='cls-MainHeader'>Behavior tags can be added throughout a pet’s records.  You can also create tags specific to service types.</Header>
         </Grid.Column>
       </Grid>

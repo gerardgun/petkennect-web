@@ -1,29 +1,12 @@
-import React from 'react'
-import { FaFileSignature } from 'react-icons/fa'
-
 export default {
   columns: [
     {
-      display_name: 'Package',
-      name        : 'package_name',
+      display_name: 'Description',
+      name        : 'description',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false,
-      filter      : {
-        type        : 'dropdown',
-        name        : 'packageName',
-        options: [
-          {
-            value: 'package1',
-            text : 'Package1'
-          },
-          {
-            value: 'package2',
-            text : 'Package2'
-          }
-        ]
-      }
+      sort        : true
     },
     {
       display_name: 'Trainer',
@@ -31,7 +14,7 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Start Date',
@@ -39,33 +22,31 @@ export default {
       type        : 'date', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      sort        : false,
-      filter      : {
-        type: 'range_date',
-        name: [ 'created_at__gt', 'created_at__lt' ]
-      }
+      sort        : true
     },
     {
       display_name: 'Type',
-      name        : 'reason',
+      name        : 'type',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false,
-      filter      : {
-        type        : 'dropdown',
-        name        : 'type',
-        options: [
-          {
-            value: 'type1',
-            text : 'type1'
-          },
-          {
-            value: 'type2',
-            text : 'type2'
-          }
-        ]
-      }
+      sort        : true
+    },
+    {
+      display_name: 'Purchased',
+      name        : 'purchased',
+      type        : 'date', // image, boolean, date, datetime, money, label
+      width       : null,
+      align       : 'left',
+      sort        : true
+    },
+    {
+      display_name: 'Contract',
+      name        : 'contract',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true
     },
     {
       display_name: 'Status',
@@ -73,7 +54,7 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Actions',
@@ -81,34 +62,44 @@ export default {
       type        : 'dropdown',
       options     : [
         {
-          display_name: 'Add Reservation',
-          name        : 'reservation',
-          icon        : 'calendar alternate outline icon'
+          icon        : 'edit',
+          display_name: 'Edit Program',
+          name        : 'edit_program'
         },
         {
-          display_name: 'Training Performance',
-          name        : 'view_performance',
-          icon        : 'trophy'
+          icon        : 'file text',
+          display_name: 'View Logs',
+          name        : 'view_logs'
         },
         {
-          display_name: 'Report Cards',
-          name        : 'view_report_card',
-          icon        : 'address card outline'
+          icon        : 'address card outline',
+          display_name: 'View Report Card',
+          name        : 'view_report_card'
         },
         {
-          display_name: 'Digitally Sign Agreement in Person',
-          name        : 'digitally_sign',
-          icon        : <FaFileSignature/>
+          icon        : 'certificate',
+          display_name: 'Print Graduation Certificate',
+          name        : 'graduation_certificate'
         },
         {
-          display_name: 'Contract to Agreement',
-          name        : 'email',
-          icon        : 'mail'
+          icon        : 'mail',
+          display_name: 'Send Contract',
+          name        : 'send_contract'
         },
         {
-          display_name: 'Print Agreement',
-          name        : 'email',
-          icon        : 'print'
+          icon        : 'print',
+          display_name: 'Print Contract',
+          name        : 'print_contract'
+        },
+        {
+          icon        : 'redo',
+          display_name: 'Refund',
+          name        : 'refund'
+        },
+        {
+          icon        : 'trash alternate outline',
+          display_name: 'Delete',
+          name        : 'delete'
         }
       ]
     }
