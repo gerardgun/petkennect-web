@@ -1,6 +1,4 @@
 export default {
-  options: {
-  },
   columns: [
     {
       display_name: 'Incident Action',

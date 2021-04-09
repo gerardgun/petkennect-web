@@ -1,8 +1,6 @@
 export default {
-  search_placeholder         : 'Search',
-  search_placeholder_position: 'left', // only work when there is no  button has added to top bar
-
-  columns: [
+  search_placeholder: 'Search',
+  columns           : [
     {
       display_name: 'Name',
       name        : 'name',

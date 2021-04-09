@@ -2,8 +2,6 @@ import React from 'react'
 import Switch from 'react-switch'
 
 export default {
-  options: {
-  },
   columns: [
     {
       display_name: 'Food Types',

@@ -1,6 +1,4 @@
 export default {
-  options: {
-  },
   columns: [
     {
       display_name: 'Name',
@@ -27,7 +25,6 @@ export default {
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
   ]

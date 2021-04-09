@@ -1,7 +1,5 @@
 
 export default {
-  search_placeholder_position: 'left', // only work when there is no  button has added to top bar
-
   columns: [
     {
       display_name: 'Rating key',
@@ -41,7 +39,6 @@ export default {
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
   ]

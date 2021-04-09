@@ -1,6 +1,4 @@
 export default {
-  options: {
-  },
   columns: [
     {
       display_name: 'Retire Reason',
@@ -26,9 +24,7 @@ export default {
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
-
   ]
 }

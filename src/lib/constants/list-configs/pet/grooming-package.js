@@ -1,5 +1,4 @@
 export default {
-  base_uri      : null,
   search_enabled: false,
   columns       : [
     {
