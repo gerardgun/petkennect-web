@@ -26,23 +26,24 @@ export default {
       type        : 'button',
       options     : [
         {
-          display_name: 'View Record',
-          name        : 'show',
-          icon        : 'eye'
+          display_name: 'Delete Record',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
         },
         {
           display_name: 'Edit Record',
           name        : 'edit',
-          disable     : item => item.disabled,
-          icon        : 'edit outline'
+          icon        : 'edit outline',
+          color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
-          name        : 'delete',
-          disable     : item => item.disabled,
-          icon        : 'trash alternate outline',
-          color       : 'red'
+          display_name: 'View Record',
+          name        : 'show',
+          icon        : 'eye',
+          color       : 'teal'
         }
+
       ]
     }
   ]

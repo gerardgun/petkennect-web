@@ -2,28 +2,6 @@ import React from 'react'
 import Switch from 'react-switch'
 
 export default {
-  options: {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Medication',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Medication Name',
@@ -54,7 +32,7 @@ export default {
       name        : 'charges',
       type        : 'string',
       width       : null,
-      align       : 'left',
+      align       : 'center',
       sort        : false,
       formatter   : (cell) => {
         let checked
@@ -69,9 +47,9 @@ export default {
             <Switch
               checked={checked}
               className='react-switch'
-              height={30}
+              height={21}
               onColor='#00aa9f'
-              width={60}/>
+              width={40}/>
           </>
         )
       }
@@ -84,6 +62,23 @@ export default {
       width       : null,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Edit',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete',
+          name        : 'delete',
+          icon        : 'trash alternate outline'
+        }
+      ]
     }
   ]
 }

@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
+import { useHistory } from 'react-router-dom'
+import loadable from '@loadable/component'
 
-import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import PetKindForm from  './create'
 import { useChangeStatusEffect } from '@hooks/Shared'
@@ -11,10 +12,12 @@ import petKindListConfig from '@lib/constants/list-configs/pet/animal-setting/ki
 
 import petKindDuck from '@reducers/pet/kind'
 import petKindDetailDuck from '@reducers/pet/kind/detail'
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 
-const PetKindList = ({ petKind, petKindDetail, ...props }) => {
+const PetKindList = ({ petKindDetail, ...props }) => {
   useChangeStatusEffect(props.getPetKinds, petKindDetail.status)
 
+  const history = useHistory()
   useEffect(() => {
     props.getPetKinds()
   }, [])
@@ -23,13 +26,20 @@ const PetKindList = ({ petKind, petKindDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
+        break
+      case 'vaccine_list' :   history.push({
+        pathname: '/setup/animal-setting/vaccination',
+        state   : {
+          breedItem: item.id
 
-  const _handleOptionClick = option => {
-    if(option === 'delete')
-      props.setItem(petKind.selector.selected_items[0], 'DELETE')
+        }
+      })
+    }
   }
 
   return (
@@ -47,8 +57,7 @@ const PetKindList = ({ petKind, petKindDetail, ...props }) => {
           <Table
             config={petKindListConfig}
             duck={petKindDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+            onRowButtonClick={_handleButtonClick}/>
         </Grid.Column>
         <Grid.Column
           computer={4} mobile={4} tablet={4}>

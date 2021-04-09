@@ -5,9 +5,6 @@ import { Header , Grid, Button, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 import loadable from '@loadable/component'
 
-import groomingReservationListConfig from '@lib/constants/list-configs/pet/grooming-reservation'
-import boardingReservationListConfig from '@lib/constants/list-configs/pet/boarding-reservation'
-
 import petDetailDuck from '@reducers/pet/detail'
 import petReservationBoardingDuck from '@reducers/pet/reservation/boarding'
 import petReservationGroomingDuck from '@reducers/pet/reservation/grooming'
@@ -17,19 +14,15 @@ import petTrainingPackageDuck from '@reducers/pet/reservation/training/package'
 import petTrainingReservationDuck from '@reducers/pet/reservation/training/reservation'
 
 import  './styles.scss'
-
-const Table = loadable(() => import('@components/Table'))
-const CancelReserve = loadable(() => import('./CancelReserve'))
-const PetNotes = loadable(() => import('./Notes'))
-const ViewReport = loadable(() => import('./ReportCard'))
-const Absent = loadable(() => import('./Absent'))
 const Training = loadable(() => import('./Training'))
 const DayCamp = loadable(() => import('./DayCamp'))
+const Grooming = loadable(() => import('./grooming'))
+const Boarding = loadable(() => import('./boarding'))
 
-function BookingSection({ petDetail, ...props }) {
+function BookingSection({  ...props }) {
   const history = useHistory()
 
-  const [ activeServiceItem, setActiveServiceItem ] = useState(history.location.state != undefined ? history.location.state.type : 'T')
+  const [ activeServiceItem, setActiveServiceItem ] = useState(history.location.state != undefined ? history.location.state.type : 'D')
   const { pet: petId } = useParams()
   useEffect(()=> {
     props.getPet(petId)
@@ -38,112 +31,43 @@ function BookingSection({ petDetail, ...props }) {
     props.getTrainingPackages({ service_type_what_ever_name: 'T' })
   }, [])
 
-  const clientId = `${petDetail.item.client}`
-  const client = petDetail.item &&  petDetail.item.client
-  const _handleRowClick = () => {
-  // wip
-  }
-  const _handleRowButtonClick = () => {
-    // wip
-  }
-
-  const _handleOptionDropdownChange = (optionName, item) => {
-    switch (optionName)
-    {
-      case 'view_report' : props.setViewReportItem(item,'CREATE')
-        break
-
-      case 'edit_note' : props.setNoteItem(item,'READ')
-        break
-
-      case 'edit_reserve' : props.setReserveItem(item,'UPDATE')
-        history.replace(`/client/${clientId}/book`)
-        break
-
-      case 'absent' : props.setItem(item,'DELETE')
-        break
-      case 'cancel_reserve' : props.setItem(item,'DISABLE')
-        break
-
-      default : return
-    }
-  }
-
   const _handleFilterBtnClick = (e, { type }) => {
     setActiveServiceItem(type)
-  }
-  const _handleAddReservationBtnClick = () => {
-    props.setReserveItem({ service: activeServiceItem },'CREATE')
-    history.push({
-      pathname: `/pet/${petId}/book`,
-      state   : { option: 'Pet', clientid: client }
-    })
   }
 
   return (
     <Container className='c-booking' fluid>
       <Grid className='petkennect-profile-body-header'>
         <Grid.Column
-          className='pl0'
+          className='pl0 tab-style service-tabs'
           mobile={16} verticalAlign='middle'>
           <Header as='h2'>Services</Header>
+          <div className='div-booking-button'>
+            <Button
+              basic={activeServiceItem !== 'D'} className='m0'
+              color='teal' content='Day Services'
+              onClick={_handleFilterBtnClick} type='D'/>
+            <Button
+              basic={activeServiceItem !== 'B'} className='m0'
+              color='teal' content='Boarding'
+              onClick={_handleFilterBtnClick} type='B'/>
+            <Button
+              basic={activeServiceItem !== 'T'}
+              className='m0' color='teal'
+              content='Training' onClick={_handleFilterBtnClick}
+              type='T'/>
+            <Button
+              basic={activeServiceItem !== 'G'} className='m0'
+              color='teal' content='Grooming'
+              onClick={_handleFilterBtnClick} type='G'/>
+          </div>
         </Grid.Column>
       </Grid>
-      <div className='mh16 mv32 div-booking-button'>
-        <Button
-          basic={activeServiceItem !== 'T'} color='teal'
-          content='Training' onClick={_handleFilterBtnClick}
-          type='T'/>
-        <Button
-          basic={activeServiceItem !== 'F'} color='teal'
-          content='Day Services' onClick={_handleFilterBtnClick}
-          type='F'/>
-        <Button
-          basic={activeServiceItem !== 'D'} color='teal'
-          content='Day Camp' onClick={_handleFilterBtnClick}
-          type='D'/>
-        <Button
-          basic={activeServiceItem !== 'B'} color='teal'
-          content='Boarding' onClick={_handleFilterBtnClick}
-          type='B'/>
-        <Button
-          basic={activeServiceItem !== 'G'} color='teal'
-          content='Grooming' onClick={_handleFilterBtnClick}
-          type='G'/>
-      </div>
+      <br></br>
       {activeServiceItem === 'T' && <Training/>}
       {activeServiceItem === 'D' && <DayCamp/>}
-      {activeServiceItem === 'F' && <DayCamp/>}
-      {
-        (activeServiceItem === 'G' ||  activeServiceItem === 'B') && (
-          <>  <Grid className='segment-content-header' columns={2}>
-            <Grid.Column computer={4} mobile={10} tablet={4}>
-              <Header as='h2' className='child_header'>Reservations</Header>
-            </Grid.Column >
-            <Grid.Column
-              className='ui-grid-align'
-              computer={12} mobile={10} tablet={12}>
-              <Button
-                color='teal'
-                content='New Reservation'
-                onClick={_handleAddReservationBtnClick}/>
-            </Grid.Column>
-          </Grid>
-          <div className='ui-table-overflow'>
-            <Table
-              config={activeServiceItem === 'G' ? groomingReservationListConfig : boardingReservationListConfig}
-              duck={activeServiceItem === 'G' ? petReservationGroomingDuck : petReservationBoardingDuck}
-              onOptionDropdownChange={_handleOptionDropdownChange}
-              onRowButtonClick={_handleRowButtonClick}
-              onRowClick={_handleRowClick}/>
-          </div>
-          <ViewReport/>
-          <CancelReserve/>
-          <PetNotes/>
-          <Absent/>
-          </>
-        )
-      }
+      {activeServiceItem === 'G' && <Grooming/>}
+      {activeServiceItem === 'B' && <Boarding/>}
     </Container>
   )
 }

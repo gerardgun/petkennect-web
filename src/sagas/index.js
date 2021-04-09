@@ -94,11 +94,14 @@ import petReservation from './pet/reservation'
 import petReservationDetail from './pet/reservation/detail'
 import petReservationDaycampQuestion from './pet/reservation/daycamp-question'
 import petReservationDaycampQuestionDetail from './pet/reservation/daycamp-question/detail'
+import petReservationDayServicePackage from './pet/reservation/day-service-package'
 import petReservationCheckInDetail from './pet/reservation/express-check-in/detail'
 import petReservationTrainingPackage from './pet/reservation/training/package'
+import petReservationGroomingPackage from './pet/reservation/grooming/package'
 import petReservationTrainingReservationGroupClass from './pet/reservation/training/reservation/group-class'
 import petReservationTrainingReservation from './pet/reservation/training/reservation'
 import petReservationBoarding from './pet/reservation/boarding'
+import petReservationBoardingPackage from './pet/reservation/boarding/package'
 import petReservationBoardingAddon from './pet/reservation/boarding/addon'
 import petReservationBoardingAddonFeeding from './pet/reservation/boarding/addon/feeding-addon'
 import petReservationGrooming from './pet/reservation/grooming'
@@ -263,15 +266,18 @@ export default function* rootSaga() {
     ...petNoteDetail,
     ...petRetireReason,
     ...petRetireReasonDetail,
+    ...petReservationGroomingPackage,
     ...petReservation,
     ...petReservationDetail,
     ...petReservationCheckInDetail,
     ...petReservationDaycampQuestion,
     ...petReservationDaycampQuestionDetail,
+    ...petReservationDayServicePackage,
     ...petReservationTrainingPackage,
     ...petReservationTrainingReservation,
     ...petReservationTrainingReservationGroupClass,
     ...petReservationBoarding,
+    ...petReservationBoardingPackage,
     ...petReservationBoardingAddon,
     ...petReservationBoardingAddonFeeding,
     ...petReservationGrooming,

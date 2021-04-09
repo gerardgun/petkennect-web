@@ -1,33 +1,11 @@
 
 export default {
-  options: {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    multiple: [
-      {
-        display_name: 'Delete Price',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Rating key',
       name        : 'rating_key',
-      type        : 'number',
-      align       : 'left',
+      type        : 'string',
+      align       : 'center',
       sort        : true
     },
     {
@@ -43,6 +21,25 @@ export default {
       type        : 'string',
       align       : 'left',
       sort        : true
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      width       : null,
+      options     : [
+        {
+          display_name: 'Edit Record',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Record',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        }
+      ]
     }
   ]
 }

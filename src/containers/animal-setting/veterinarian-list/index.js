@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import VeterinarianListForm from  './Form'
@@ -12,9 +12,10 @@ import veterinarianListConfig from '@lib/constants/list-configs/pet/veterinarian
 
 import veterinarianDuck from '@reducers/pet/veterinarian-list'
 import veterinarianDetailDuck from '@reducers/pet/veterinarian-list/detail'
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 
-const VeterinarianList = ({ veterinarian, veterinarianDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+const VeterinarianList = ({ veterinarianDetail, ...props }) => {
+  const [ open, {  _handleClose } ] = useModal()
   useChangeStatusEffect(props.getVeterinarians, veterinarianDetail.status)
 
   useEffect(() => {
@@ -25,14 +26,11 @@ const VeterinarianList = ({ veterinarian, veterinarianDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(veterinarian.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
 
@@ -44,8 +42,7 @@ const VeterinarianList = ({ veterinarian, veterinarianDetail, ...props }) => {
           <Table
             config={veterinarianListConfig}
             duck={veterinarianDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+            onRowButtonClick={_handleButtonClick}/>
         </Grid.Column>
         <Grid.Column
           computer={4} mobile={4} tablet={4}>

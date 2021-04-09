@@ -41,3 +41,18 @@
     background-color: #f8ffff !important;
   }
 }
+
+.ui-table-overflow {
+  .segment.ui.segment.dimmable{
+ 
+    overflow-y: auto !important;
+  }
+}
+
+.div-table-width {
+  width: 98% !important;
+  overflow-y: auto !important;
+  .ui.table {
+    width: max-content !important;
+  }
+}

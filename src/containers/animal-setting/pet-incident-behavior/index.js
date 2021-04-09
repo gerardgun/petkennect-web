@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import PetIncidentBehaviorForm from  './Form'
 import { useChangeStatusEffect } from '@hooks/Shared'
@@ -11,8 +11,8 @@ import petIncidentBehaviorListConfig from '@lib/constants/list-configs/pet/anima
 
 import petIncidentBehaviorDuck from '@reducers/pet/incident-behavior'
 import petIncidentBehaviorDetailDuck from '@reducers/pet/incident-behavior/detail'
-
-const PetIncidentBehaviorList = ({ petIncidentBehavior, petIncidentBehaviorDetail, ...props }) => {
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const PetIncidentBehaviorList = ({ petIncidentBehaviorDetail, ...props }) => {
   useChangeStatusEffect(props.getPetIncidentBehaviors, petIncidentBehaviorDetail.status)
 
   useEffect(() => {
@@ -23,13 +23,12 @@ const PetIncidentBehaviorList = ({ petIncidentBehavior, petIncidentBehaviorDetai
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete')
-      props.setItem(petIncidentBehavior.selector.selected_items[0], 'DELETE')
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
+    }
   }
 
   return (
@@ -40,8 +39,7 @@ const PetIncidentBehaviorList = ({ petIncidentBehavior, petIncidentBehaviorDetai
           <Table
             config={petIncidentBehaviorListConfig}
             duck={petIncidentBehaviorDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+            onRowButtonClick={_handleButtonClick}/>
         </Grid.Column>
         <Grid.Column
           computer={4} mobile={4} tablet={4}>

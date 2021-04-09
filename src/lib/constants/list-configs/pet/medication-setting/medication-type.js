@@ -2,34 +2,12 @@ import React from 'react'
 import Switch from 'react-switch'
 
 export default {
-  options: {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Medication Types',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
   columns: [
     {
       display_name: 'Medication Types',
       name        : 'name',
       type        : 'string',
-      width       : 6,
+      width       : null,
       align       : 'left',
       sort        : false
     },
@@ -37,7 +15,7 @@ export default {
       display_name: 'Charge Applies',
       name        : 'charges',
       type        : 'string',
-      width       : 6,
+      width       : null,
       align       : 'left',
       sort        : false,
       formatter   : (cell) => {
@@ -49,15 +27,14 @@ export default {
           checked = false
 
         return (
-          <>
+          <div  style={{ 'margin-left': '30px' }}>
             <Switch
               checked={checked}
               className='react-switch'
-              height={30}
+              height={21}
               onColor='#00aa9f'
-              width={60}/>
-
-          </>
+              width={40}/>
+          </div>
         )
       }
     },
@@ -65,8 +42,26 @@ export default {
       display_name: 'Price',
       name        : 'price',
       type        : 'string',
+      width       : 3,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Edit',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete',
+          name        : 'delete',
+          icon        : 'trash alternate outline'
+        }
+      ]
     }
   ]
 }
