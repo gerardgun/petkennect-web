@@ -12,6 +12,7 @@ import trainingReasonDuck from '@reducers/training-reason'
 import trainingReasonDetailDuck from '@reducers/training-reason/detail'
 import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
+import '../styles.scss'
 const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const TrainingReason = ({ trainingReasonDetail, ...props }) => {
   const [ open, {  _handleClose } ] = useModal()
@@ -38,15 +39,19 @@ const TrainingReason = ({ trainingReasonDetail, ...props }) => {
 
       <Grid  columns={2}>
         <Grid.Column computer={10} mobile={14} tablet={8}>
-          <Table
-            config={trainingReasonListConfig}
-            duck={trainingReasonDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={trainingReasonListConfig}
+              duck={trainingReasonDuck}
+              onRowButtonClick={_handleButtonClick}/>
+          </div>
         </Grid.Column>
+
         <Grid.Column
           computer={5} mobile={13} tablet={8}>
           <Button
             basic
+
             color='teal'
             content='Add Reason'
             icon='Add'

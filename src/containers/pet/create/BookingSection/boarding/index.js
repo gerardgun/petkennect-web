@@ -2,7 +2,7 @@
 import React,{ useEffect,useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header, Button, Grid, Container, Label, Icon, Dropdown  } from 'semantic-ui-react'
+import { Header, Button, Grid, Container, Label, Icon } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 import boardingReservationListConfig from '@lib/constants/list-configs/pet/boarding-reservation'
@@ -14,6 +14,10 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import boardingPackageDuck from '@reducers/pet/reservation/boarding/package'
 import boardingPackageDetailDuck from '@reducers/pet/reservation/boarding/package/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
+import boardingReservationUsageDuck from '@reducers/pet/reservation/usage/boarding/reservation'
+import boardingPrepaidUsageDuck from '@reducers/pet/reservation/usage/boarding/prepaid'
+import boardingPrepaidConfig from '@lib/constants/list-configs/reservation/usage/boarding/boarding-prepaid-usage'
+import boardingReservationConfig from '@lib/constants/list-configs/reservation/usage/boarding/boarding-reservation-usage'
 
 import  './styles.scss'
 
@@ -29,6 +33,8 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
   useEffect(() => {
     props.getboardingReservation()
     props.getGroomingPackage()
+    props.getBoardingPrepaid()
+    props.getBoardingReservation()
   }, [])
   const history = useHistory()
 
@@ -62,7 +68,7 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
         break
       case 'edit_note' : props.setNoteItem(item,'READ')
         break
-      case 'delete_reservation' : props.setGroomingReserve(item,'DELETE')
+      case 'delete_reservation' : props.setBoardingReserve(item,'DELETE')
         break
       case 'add_note' : props. setNoteItem(null,'CREATE')
         break
@@ -81,36 +87,48 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column computer={11}>
+        <Grid.Column computer={4}>
           <Header as='h3' className='mt4 service-heading' color='teal'>Service Tags:</Header>
+        </Grid.Column>
+        <Grid.Column className='tag-display' computer={8} textAlign='center'>
           <Label
             as='a'
-            className='mr12 ml20'
-            size='large' style={{ height: '2.6rem', padding: '.78571429em 1.5em .78571429em' }}>
-              Kennel Reactive
-              &nbsp;&nbsp;<Icon name='delete'/>
+            className='label-style'
+            size='medium'>
+              Reactive
+            <Icon name='delete'/>
           </Label>
           <Label
             as='a'
-            className='ml0'
-            size='large' style={{ height: '2.6rem', padding: '.78571429em 1.5em .78571429em' }}>
+            className='label-style'
+            size='medium'>
               No Blanket
-              &nbsp;&nbsp;<Icon name='delete'/>
-          </Label>
+            <Icon name='delete'/></Label>
+        </Grid.Column>
+
+        <Grid.Column
+          computer={4} mobile={3} tablet={4}>
+          <Button
+            basic className='w120' color='teal'
+            onClick={()=>props.setBoardingReserve(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
+        </Grid.Column>
+      </Grid>
+      <Grid className='mh0'>
+        <Grid.Column computer={12}>
+          <Header as='h3' className='mt4 mr32 service-heading' color='teal'>Most Frequently Used Service:</Header>
+          <Header as='h3' className='mt4'> Day Camp</Header>
         </Grid.Column>
         <Grid.Column
           computer={4} mobile={4} tablet={4}>
           <Button
-            basic
-            className='w120'
-            color='teal' content='Add' icon='add'
-            onClick={()=>props.setGroomingReserve(null,'CREATE')}/>
+            basic className='w120' color='teal'
+            content='Rebook' icon='redo alternate' onClick={()=>setRebookAlert(true)}/>
         </Grid.Column>
       </Grid>
       <Grid className='mh0'>
 
-        <Grid.Column computer={11}>
-          <Header as='h3' className='mt4 pr8 mr20 service-heading' color='teal'>Last Service:</Header>
+        <Grid.Column computer={12}>
+          <Header as='h3' className='mt4 pr8 mr32 service-heading' color='teal'>Last Service:</Header>
           <Header as='h3' className='mt4'>Boarding + Day Camp</Header>
         </Grid.Column>
 
@@ -125,117 +143,64 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
       </Grid>
       <Grid className='mh0'>
         <Grid.Column computer={11}>
-          <Header as='h3' className='mt4 mr20 pr8 service-heading' color='teal'>Day Activity Package:</Header>
+          <Header as='h3' className='mt4 mr32 pr8 service-heading' color='teal'>Day Activity Package:</Header>
           <Header as='h3' className='mt4'></Header>
         </Grid.Column>
       </Grid>
 
       <Grid className='mh0'>
         <Grid.Column computer={11}>
-          <Header as='h3' className='mt4 mr20 pr8 service-heading' color='teal'>Add On Services:</Header>
+          <Header as='h3' className='mt4 mr32 pr8 service-heading' color='teal'>Add On Services:</Header>
           <Header as='h3' className='mt4'>Grooming, Treat</Header>
         </Grid.Column>
       </Grid>
-      <Grid className='segment-content-header mt32'>
-        <Grid.Column className='pr0' computer={4}>
-          <Header as='h3' color='teal'>Total Boarding:</Header>
+      <Grid>
+        <Grid.Column computer={16}>
+          <Header as='h3' className='t-header total-use' color='teal'>Total Boarding</Header>
         </Grid.Column>
-        <Grid.Column computer={12}>
-          <Grid width={16}>
-            <Grid.Column className='text-center' computer={8}><Header  content='Prepaids'/></Grid.Column>
-            <Grid.Column className='petkennect-profile-body text-center' computer={8}><Header  content='Reservations'/></Grid.Column>
-            <Grid.Column className='divider-margin' computer={16}><hr></hr></Grid.Column>
-            <Grid.Column  className='pl16 pr4'computer={8}>
-              <Grid.Row >
-                <Grid.Column
-                  className='text-center-daycamp'
-                  computer={4} mobile={16} tablet={8}>
-                  <b>Prepaids</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='25'/>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp mh20' computer={6} mobile={16}
-                  tablet={8}>
-                  <b># Remaining</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='10'/>
+        <Grid.Column className='pr0 flex-container pb0' computer={16}>
 
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={5} mobile={16}
-                  tablet={8}>
-                  <b> $ Remaining</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='$50.00'/>
+          <div>
+            <div className='h-container l-header'>
 
-                </Grid.Column>
-              </Grid.Row>
-            </Grid.Column>
-            <Grid.Column className='petkennect-profile-body pr0' computer={8}>
-              <Grid.Row >
-                <Grid.Column
-                  className='text-center-daycamp ml12'
-                  computer={4} mobile={16} tablet={8}>
-                  <b>Past</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='15'/>
+              <Header as='h4'className='mb12' >Prepaids</Header>
+            </div>
 
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp mh12' computer={4} mobile={16}
-                  tablet={8}>
-                  <b>Upcoming</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='7'/>
+            <div className='table-left'>
+              <Table
+                config={boardingPrepaidConfig}
+                duck={boardingPrepaidUsageDuck}/>
+            </div>
 
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={5} mobile={16}
-                  tablet={8}>
-                  <b>Canceled</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='0'/>
+          </div>
+          <div>
+            <div className='l-header'>
+              <Header as='h4' className='mb12' >Reservations</Header>
+            </div>
 
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp ml12' computer={3} mobile={16}
-                  tablet={8}>
-                  <b>Action</b><br/>
-                  {/* <p className='mt8'><Button basic className='action-button' icon='ellipsis vertical'/></p> */}
-                  <Dropdown
-                    direction='left'
-                    icon={null}
-                    options={[ { key: 1, icon: 'file alternate outline' , value: 'recon_report', text: 'Recon Report' },
-                      { key: 2, icon: 'eye' ,value: 'view_details', text: 'View Details' } ]}
-                    selectOnBlur={false}
-                    trigger={(
-                      <Button basic className='action-button mt8' icon='ellipsis vertical'/>
-                    )}
-                    value={null}/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid.Column>
-          </Grid>
+            <div className='table-right'>
+              <Table
+                config={boardingReservationConfig}
+                duck={boardingReservationUsageDuck}/>
+            </div>
+          </div>
+
+          {/* </div> */}
+
         </Grid.Column>
+
       </Grid>
+
       <Grid className='segment-content-header mb0' columns={2}>
 
         <Grid.Column
-          className='mt32'
           computer={6}
           mobile={10} style={{ 'padding-top': '1.4rem' }}
           tablet={4}>
           <Header as='h3'  color='teal' >Boarding Packages</Header>
         </Grid.Column >
         <Grid.Column
-          className='ui-grid-align mt32'
+          className='ui-grid-align'
           computer={10} mobile={10} tablet={12}>
           <Button
             basic
@@ -297,9 +262,12 @@ export default compose(
       setNoteItem           : petNoteDetailDuck.creators.setItem,
       getboardingReservation: petReservationBoardingDuck.creators.get,
       getGroomingPackage    : boardingPackageDuck.creators.get,
-      setGroomingReserve    : petReservationBoardingDetailDuck.creators.setItem,
+      setBoardingReserve    : petReservationBoardingDetailDuck.creators.setItem,
       setItemReservation    : petReservationDetailDuck.creators.setItem,
-      setItemPackage        : boardingPackageDetailDuck.creators.setItem
+      setItemPackage        : boardingPackageDetailDuck.creators.setItem,
+      getBoardingPrepaid    : boardingPrepaidUsageDuck.creators.get,
+      getBoardingReservation: boardingReservationUsageDuck.creators.get
+
     })
 )(BoardingServiceSection)
 

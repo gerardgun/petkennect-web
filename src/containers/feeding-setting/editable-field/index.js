@@ -33,15 +33,13 @@ const EditableField = ()=>{
           <span className='quick-link-font' color='teal'><b>Feeding Charges Setup</b></span>
         </Grid.Column>
         <Grid.Column computer={6} style={{ 'padding-top': '0.9rem' }}>
-          <span className='ml16'>Do you charge for bagging owner supplied food?</span>
+          <span className='ml16'><b>Do you charge for bagging owner supplied food?</b></span>
         </Grid.Column>
 
         <Grid.Column  computer={9} style={{ 'padding-top': '0.1rem' , 'padding-left': '1.2rem' }}>
-
           <Form.Group  >
             <Field
               autoFocus
-
               component={FormField}
               control={Select}
               name='med_adminstration_charges'
@@ -49,16 +47,12 @@ const EditableField = ()=>{
               options={
                 [ {
                   key: 1, value: 'noCharge', text: 'No Charges Apply'
-
                 },{
                   key: 2, value: 'perDay', text: 'Yes, Per Day, Per Dog'
-
                 },{
                   key: 3, value: 'perMeal', text: 'Yes, Per Meal, Per Dog'
-
                 },{
                   key: 4, value: 'perBag', text: 'Yes, Per Bag (requires count)'
-
                 } ]
               }
               placeholder='Select Charges'
@@ -69,9 +63,7 @@ const EditableField = ()=>{
         </Grid.Column>
         { chargesType === 'perDay' && <>
           <Grid.Column className='ml16 pt0' computer={6}>
-
             <span ><b>Enter the Charge Per Day, Per Dog</b></span>
-
           </Grid.Column>
           <Grid.Column className='pt0 pl0' computer={5}>
             <Form.Group>
@@ -81,18 +73,14 @@ const EditableField = ()=>{
                 name='fed_charges_per_day'
                 type='number'/>
             </Form.Group>
-
           </Grid.Column></>
-
         }
 
         {
           chargesType === 'perMeal'
           && <>
             <Grid.Column className='ml16 pt0' computer={6}  >
-
               <span ><b>Enter the Charge Per Meal, Per Dog</b></span>
-
             </Grid.Column>
             <Grid.Column className='pt0 pl0' computer={5}>
               <Form.Group>
@@ -102,20 +90,15 @@ const EditableField = ()=>{
                   name='fed_charges_per_meal'
                   type='number'/>
               </Form.Group>
-
             </Grid.Column>
-
           </>
         }
 
         {
-
           chargesType === 'perBag'
           && <>
             <Grid.Column className='ml16 pt0' computer={6}  >
-
               <span ><b>Enter the Charge Per Bag</b></span>
-
             </Grid.Column>
             <Grid.Column className='pt0 pl0'  computer={5}>
               <Form.Group>
@@ -125,7 +108,6 @@ const EditableField = ()=>{
                   name='fed_charges_per_bag'
                   type='number'/>
               </Form.Group>
-
             </Grid.Column>
           </>
         }
@@ -133,9 +115,8 @@ const EditableField = ()=>{
       </Grid>
       <Grid>
         <Grid.Column
-          className='adjust-heading'
-          computer={16}
-          mobile={16} tablet={16}>
+          className='ml16'
+          computer={16} mobile={16} tablet={16}>
           <span className='quick-link-font' color='teal'><b>Adjust Editable Field Values</b></span>
         </Grid.Column>
         <span className='ml16'>Edit field values regarding all things feeding related here.</span>
@@ -143,7 +124,7 @@ const EditableField = ()=>{
       <Grid>
         <Grid.Column
           className='ml16'
-          computer={12} mobile={16} tablet={16}>
+          computer={16} mobile={16} tablet={16}>
           {activeMenuItem === 'feedingTimes' && <span>Use the feeding schedules based on your facilities operations. If you
             charge for a feeding, ensure {'"Charge Applies"'} is enabled.</span>}
           {activeMenuItem === 'foodTypes' && <span>You can add food types here. You can also select if a charge applies for each type.</span> }
@@ -155,7 +136,7 @@ const EditableField = ()=>{
       </Grid>
       <Grid className='mh0 menu-item-padding' columns={2}>
         <Grid.Column
-          className='mt56 grid-step'
+          className='grid-step'
           computer={3} mobile={16} tablet={4}>
           <Step.Group fluid vertical>
             <Step

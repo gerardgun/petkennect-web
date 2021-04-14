@@ -12,6 +12,7 @@ import feedingMeasurementListConfig from '@lib/constants/list-configs/pet/feedin
 
 import feedingMeasurementDuck from '@reducers/pet/feeding-setting/feeding-measurement'
 import feedingMeasurementDetailDuck from '@reducers/pet/feeding-setting/feeding-measurement/detail'
+import '../styles.scss'
 const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const FeedingMeasurement = ({  feedingMeasurementDetail, ...props }) => {
   const [ open, {  _handleClose } ] = useModal()
@@ -37,14 +38,15 @@ const FeedingMeasurement = ({  feedingMeasurementDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={feedingMeasurementListConfig}
-            duck={feedingMeasurementDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={feedingMeasurementListConfig}
+              duck={feedingMeasurementDuck}
+              onRowButtonClick={_handleButtonClick}/></div>
         </Grid.Column>
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Measurement</Button>
+          computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Measurement</Button>
         </Grid.Column>
       </Grid>
 

@@ -12,6 +12,7 @@ import feedingTimeListConfig from '@lib/constants/list-configs/pet/feeding-setti
 
 import feedingTimeDuck from '@reducers/pet/feeding-setting/feeding-time'
 import feedingTimeDetailDuck from '@reducers/pet/feeding-setting/feeding-time/detail'
+import '../styles.scss'
 const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const FeedingTimes = ({ feedingTimeDetail, ...props }) => {
   const [ open, { _handleClose } ] = useModal()
@@ -36,13 +37,14 @@ const FeedingTimes = ({ feedingTimeDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={feedingTimeListConfig}
-            duck={feedingTimeDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={feedingTimeListConfig}
+              duck={feedingTimeDuck}
+              onRowButtonClick={_handleButtonClick}/></div>
         </Grid.Column>
-        <Grid.Column computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Meal Time</Button>
+        <Grid.Column computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Meal Time</Button>
         </Grid.Column>
       </Grid>
 

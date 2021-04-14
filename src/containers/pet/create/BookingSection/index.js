@@ -42,7 +42,7 @@ function BookingSection({  ...props }) {
           className='pl0 tab-style service-tabs'
           mobile={16} verticalAlign='middle'>
           <Header as='h2'>Services</Header>
-          <div className='div-booking-button'>
+          <div className='div-booking-button flex'>
             <Button
               basic={activeServiceItem !== 'D'} className='m0'
               color='teal' content='Day Services'

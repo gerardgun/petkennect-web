@@ -36,7 +36,7 @@ const RatingKey = ({ ratingKeyDetail, ...props }) => {
 
     <Grid>
       <Grid.Column
-        className='pl0' computer={11} mobile={16}
+        className='pl0' computer={12} mobile={16}
         tablet={8}>
         <Table
           config={ratingKeyListConfig}
@@ -49,11 +49,11 @@ const RatingKey = ({ ratingKeyDetail, ...props }) => {
           open={open}/>
       </Grid.Column>
       <Grid.Column
-        computer={5} mobile={14} tablet={8}>
+        computer={4} mobile={14} tablet={8}>
         <Button
           basic
           color='teal'
-          content='New Rating'
+          content='Add Rating'
           icon='Add'
           onClick={_handleAddBtnClick}/>
       </Grid.Column>

@@ -2,12 +2,13 @@ import React from 'react'
 import Switch from 'react-switch'
 
 export default {
-  columns: [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Administration Status',
       name        : 'name',
       type        : 'string',
-      width       : 7,
+      width       : 6,
       align       : 'left',
       sort        : false
     },
@@ -15,27 +16,33 @@ export default {
       display_name: 'Charge Applies',
       name        : 'charges',
       type        : 'string',
-      width       : 6,
+      width       : 3,
       align       : 'left',
       sort        : false,
       formatter   : (cell) => {
-        let checked
-
-        if(cell === 'true')
-          checked = true
-        else if(cell === 'false')
-          checked = false
-
         return (
           <div  style={{ 'margin-left': '30px' }}>
             <Switch
-              checked={checked}
+              checked={cell}
               className='react-switch'
               height={21}
               onColor='#00aa9f'
               width={40}/>
           </div>
 
+        )
+      }
+    },
+    {
+      display_name: 'Price',
+      name        : 'price',
+      type        : 'string',
+      width       : 3,
+      align       : 'left',
+      sort        : false,
+      formatter   : (cell) => {
+        return (
+          <span>${cell}</span>
         )
       }
     },

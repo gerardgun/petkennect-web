@@ -1,8 +1,9 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Input, Modal, Checkbox } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Grid } from 'semantic-ui-react'
+import Switch from 'react-switch'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -20,9 +21,13 @@ const MedicationForm = (props) => {
     submitting // redux-form
   } = props
 
+  const [ checked, setChecked ] = useState(false)
+
   useEffect(() => {
-    if(medicationDetail.item.id)
+    if(medicationDetail.item.id) {
       props.get(medicationDetail.item.id)
+      setChecked(medicationDetail.item.charges)
+    }
   }, [ medicationDetail.item.id ])
 
   const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
@@ -30,6 +35,10 @@ const MedicationForm = (props) => {
   const _handleClose = () => {
     props.reset()
     props.resetItem()
+  }
+
+  const _handleSwitchChange = (value) => {
+    setChecked(value)
   }
 
   const _handleSubmit = (values) => {
@@ -90,23 +99,30 @@ const MedicationForm = (props) => {
               placeholder='Enter type'
               required/>
           </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Price'
-              name='price'
-              placeholder='Enter Price'
-              required/>
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Checkbox}
-              label='Charges Applies'
-              name='charges'
-              type='checkbox'/>
-          </Form.Group>
+          <Grid>
+            <Grid.Column className='mt24' computer={5}>
+              <Switch
+                checked={checked}
+                className='react-switch'
+                height={21}
+                onChange={_handleSwitchChange}
+                onColor='#00aa9f'
+                width={40}/>
+              <span className='ml16 save-button-align'>Charges Applies</span></Grid.Column>
+            <Grid.Column computer={4}>
+              <Form.Group widths='equal'>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  label='Price'
+                  min={0}
+                  name='price'
+                  placeholder='Enter Price'
+                  required
+                  type='number'/>
+              </Form.Group>
+            </Grid.Column>
+          </Grid>
 
           {error && (
             <Form.Group widths='equal'>
@@ -125,7 +141,7 @@ const MedicationForm = (props) => {
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save'}
+                content='Save'
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>
@@ -140,10 +156,15 @@ export default compose(
   connect(
     (state) => {
       const medicationDetail = medicationDetailDuck.selectors.detail(state)
+      let price
+      if(medicationDetail.item.id)
+        price = medicationDetail.item.price
+      else
+        price = 0
 
       return {
         medicationDetail,
-        initialValues: { ...medicationDetail.item }
+        initialValues: { ...medicationDetail.item, price: price }
       }
     },
     {

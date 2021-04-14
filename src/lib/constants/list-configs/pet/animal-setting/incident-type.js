@@ -1,5 +1,6 @@
 export default {
-  columns: [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Incident Type',
       name        : 'name',

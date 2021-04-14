@@ -16,7 +16,7 @@
     padding: 1.1em 1em !important;
   }
   .ui.steps .step.active {
-    background: #00b5ad0a !important;
+    background: #00AA9F18 !important;
     color: #00aa9f;
     .icon{
       color: #00aa9f !important;
@@ -58,5 +58,18 @@
   margin-left: 16px !important;
   padding-top: 0 !important;
   margin-top: -0.5rem !important;
+}
+.menu-item-table {
+  margin-left: -16px !important;
+  margin-right: -16px !important;
+}
+
+
+.quick-link{
+  display: flex !important;
+}
+
+.link-tab{
+  min-width: 14%;
 }
 

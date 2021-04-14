@@ -1,7 +1,7 @@
 import React,{ useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header, Icon, Label, Dropdown, Button, Grid, Container } from 'semantic-ui-react'
+import { Header, Icon, Label, Button, Grid, Container } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 
@@ -15,7 +15,11 @@ import dayCampReservationDetailDuck from '@reducers/pet/reservation/daycamp-rese
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import dayServicePackageDuck from '@reducers/pet/reservation/day-service-package'
 import dayServicePackageDetailDuck from '@reducers/pet/reservation/day-service-package/detail'
-
+import daycampReservationUsageDuck from '@reducers/pet/reservation/usage/daycamp/reservation'
+import daycampPrepaidUsageDuck from '@reducers/pet/reservation/usage/daycamp/prepaid'
+import daycampPrepaidConfig from '@lib/constants/list-configs/reservation/usage/daycamp/daycamp-prepaid-usage'
+import daycampReservationConfig from '@lib/constants/list-configs/reservation/usage/daycamp/daycamp-reservation-usage'
+import './styles.scss'
 const Table = loadable(() => import('@components/Table'))
 const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const PetNotes = loadable(() => import('../Notes'))
@@ -28,6 +32,8 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
   useEffect(() => {
     props.getDayCampReservation()
     props.getDayServicePackage()
+    props.getExampleOne()
+    props.getExampleTwo()
   }, [])
   const history = useHistory()
 
@@ -112,34 +118,36 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column computer={11}>
+        <Grid.Column computer={4}>
           <Header as='h3' className='mt4 service-heading' color='teal'>Service Tags:</Header>
-          <Label
-            as='a'
-            className='ml0 mr12 ml20'
-            size='large' style={{ height: '2.6em', padding: '.78571429em 1.5em .78571429em' }}>
-              Leash
-              &nbsp;&nbsp;<Icon name='delete'/>
-          </Label>
-          <Label
-            as='a'
-            className='ml0'
-            size='large' style={{ height: '2.6rem', padding: '.78571429em 1.5em .78571429em' }}>
-              Kennel Reactive
-              &nbsp;&nbsp;<Icon name='delete'/>
-          </Label>
         </Grid.Column>
+        <Grid.Column className='tag-display' computer={8} textAlign='center'>
+          <Label
+            as='a'
+            className='label-style'
+            size='medium'>
+              Leash
+            <Icon name='delete'/>
+          </Label>
+          <Label
+            as='a'
+            className='label-style'
+            size='medium'>
+              Kennel Reactive
+            <Icon name='delete'/></Label>
+        </Grid.Column>
+
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
+          computer={4} mobile={3} tablet={4}>
           <Button
             basic className='w120' color='teal'
             onClick={()=>props.setItem(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
         </Grid.Column>
       </Grid>
       <Grid className='mh0'>
-        <Grid.Column computer={11}>
-          <Header as='h3' className='mt4 mr20 service-heading' color='teal'>Most Frequently Used Service:</Header>
-          <Header as='h3' className='mt4'> Day Camp</Header>
+        <Grid.Column computer={12}>
+          <Header as='h3' className='mt4 mr32 service-heading' color='teal'>Most Frequently Used Service:</Header>
+          <Header as='h3' className='mt4 my-class'> Day Camp</Header>
         </Grid.Column>
         <Grid.Column
           computer={4} mobile={4} tablet={4}>
@@ -148,121 +156,40 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
             content='Rebook' icon='redo alternate' onClick={()=>setRebookAlert(true)}/>
         </Grid.Column>
       </Grid>
-      <Grid className='segment-content-header'>
-        <Grid.Column computer={3}>
-          <Header as='h3' color='teal'>Total Usage:</Header>
-          <p className='heading-style heading-margin' color='teal'>Daycamp</p>
-          <p className='heading-style column-data'>Fitness</p>
-          <p className='heading-style column-data'>Dog Walk</p>
+      <Grid>
+        <Grid.Column className='pr0 scroll-container pb0' computer={16}>
+          <div className='flex-container'>
+            <div>
+              <div className='h-container'>
+                <Header as='h3' className='t-header total-use' color='teal'>Total Usage : </Header>
+                <Header as='h4'className='t-header mt0' >Prepaids</Header>
+              </div>
+
+              <div className='table-left'>
+                <Table
+                  config={daycampPrepaidConfig}
+                  duck={daycampPrepaidUsageDuck}/>
+              </div>
+
+            </div>
+            <div>
+              <div className='l-header'>
+                <Header as='h4' className='m-b' >Reservations</Header>
+              </div>
+
+              <div className='table-right'>
+                <Table
+                  config={daycampReservationConfig}
+                  duck={daycampReservationUsageDuck}/>
+              </div>
+            </div>
+
+          </div>
+
         </Grid.Column>
-        <Grid.Column computer={13}>
-          <Grid width={16}>
-            <Grid.Column className='text-center' computer={8}><b>Prepaids</b></Grid.Column>
-            <Grid.Column className='petkennect-profile-body text-center' computer={8}><b>Reservations</b></Grid.Column>
-            <Grid.Column className='divider-margin' computer={16}><hr></hr></Grid.Column>
-            <Grid.Column computer={8}>
-              <Grid.Row >
-                <Grid.Column
-                  className='text-center-daycamp ml8'
-                  computer={4} mobile={16} tablet={8}>
-                  <b>Prepaids</b><br/>
-                  <p className='mt8'>100</p>
-                  <p className='column-data'>100</p>
-                  <p className='column-data'>100</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp mh32' computer={6} mobile={16}
-                  tablet={8}>
-                  <b># Remaining</b><br/>
-                  <p className='mt8'>5</p>
-                  <p className='column-data'>4</p>
-                  <p className='column-data'>3</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={5} mobile={16}
-                  tablet={8}>
-                  <b>$ Remaining</b><br/>
-                  <p className='mt8'>$50.00</p>
-                  <p className='column-data'>$50.00</p>
-                  <p className='column-data'>$50.00</p>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid.Column>
-            <Grid.Column className='petkennect-profile-body' computer={8}>
-              <Grid.Row >
-                <Grid.Column
-                  className='text-center-daycamp ml20'
-                  computer={4} mobile={16} tablet={8}>
-                  <b>Past</b><br/>
-                  <p className='mt8'>96</p>
-                  <p className='column-data'>90</p>
-                  <p className='column-data'>67</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp mh12' computer={4} mobile={16}
-                  tablet={8}>
-                  <b>Upcoming</b><br/>
-                  <p className='mt8'>5</p>
-                  <p className='column-data'>4</p>
-                  <p className='column-data'>8</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={5} mobile={16}
-                  tablet={8}>
-                  <b>Canceled</b><br/>
-                  <p className='mt8'>0</p>
-                  <p className='column-data'>0</p>
-                  <p className='column-data'>0</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp ml12' computer={3} mobile={16}
-                  tablet={8}>
-                  <b>Action</b><br/>
-                  <p>
-                    <Dropdown
-                      className='action-button'
-                      direction='left'
-                      icon={null}
-                      onChange={_handleOptionDropdownChange}
-                      options={[ { key: 1, icon: 'file alternate outline' , value: 'recon_report', text: 'Recon Report' },
-                        { key: 2, icon: 'eye' ,value: 'view_details', text: 'View Details' } ]}
-                      selectOnBlur={false}
-                      trigger={(
-                        <Button basic icon='ellipsis vertical'/>
-                      )}
-                      value={null}/></p>
-                  <p>
-                    <Dropdown
-                      className='action-button'
-                      direction='left'
-                      icon={null}
-                      onChange={_handleOptionDropdownChange}
-                      options={[ { key: 1, icon: 'file alternate outline' , value: 'recon_report', text: 'Recon Report' },
-                        { key: 2, icon: 'eye' ,value: 'view_details', text: 'View Details' } ]}
-                      selectOnBlur={false}
-                      trigger={(
-                        <Button basic icon='ellipsis vertical'/>
-                      )}
-                      value={null}/></p>
-                  <p>
-                    <Dropdown
-                      className='action-button'
-                      direction='left'
-                      icon={null}
-                      onChange={_handleOptionDropdownChange}
-                      options={[ { key: 1, icon: 'file alternate outline' , value: 'recon_report', text: 'Recon Report' },
-                        { key: 2, icon: 'eye' ,value: 'view_details', text: 'View Details' } ]}
-                      selectOnBlur={false}
-                      trigger={(
-                        <Button basic icon='ellipsis vertical'/>
-                      )}
-                      value={null}/></p>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid.Column>
-          </Grid>
-        </Grid.Column>
+
       </Grid>
+
       <Grid className='segment-content-header mb0' columns={2}>
 
         <Grid.Column
@@ -342,7 +269,9 @@ export default compose(
       getDayServicePackage : dayServicePackageDuck.creators.get,
       setItem              : dayCampReservationDetailDuck.creators.setItem,
       setItemReservation   : petReservationDetailDuck.creators.setItem,
-      setItemPackage       : dayServicePackageDetailDuck.creators.setItem
+      setItemPackage       : dayServicePackageDetailDuck.creators.setItem,
+      getExampleOne        : daycampPrepaidUsageDuck.creators.get,
+      getExampleTwo        : daycampReservationUsageDuck.creators.get
     })
 )(DaycampServiceSection)
 

@@ -2,7 +2,8 @@ import React from 'react'
 import Switch from 'react-switch'
 
 export default {
-  columns: [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Medication Name',
       name        : 'name',
@@ -35,17 +36,10 @@ export default {
       align       : 'center',
       sort        : false,
       formatter   : (cell) => {
-        let checked
-
-        if(cell === 'true')
-          checked = true
-        else if(cell === 'false')
-          checked = false
-
         return (
           <>
             <Switch
-              checked={checked}
+              checked={cell}
               className='react-switch'
               height={21}
               onColor='#00aa9f'
@@ -61,7 +55,12 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : (cell) => {
+        return (
+          <span>${cell}</span>
+        )
+      }
     },
     {
       display_name: 'Actions',

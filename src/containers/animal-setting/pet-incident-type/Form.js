@@ -130,7 +130,7 @@ const PetIncidentTypeForm = (props) => {
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save'}
+                content='Save'
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>

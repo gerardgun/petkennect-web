@@ -14,10 +14,10 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [ { id: 0, name: 'House-Dry', charges: 'true', charge_type: 'No Charge',price: '$2.00' },
-          { id: 1, name: 'House-Wet', charges: 'false', charge_type: 'Per Meal',price: '$0.00' },
-          { id: 2, name: 'House-Grain Free', charges: 'true', charge_type: 'Per Day', price: '$3.00' },
-          { id: 3, name: 'Owner Supplied', charges: 'true', charge_type: 'No Charge',price: '$2.50' }
+        items: [ { id: 1, name: 'House-Dry', charges: true, charge_type: 'No Charge',price: '2.00' },
+          { id: 2, name: 'House-Wet', charges: false, charge_type: 'Per Meal',price: '0.00' },
+          { id: 3, name: 'House-Grain Free', charges: true, charge_type: 'Per Day', price: '3.00' },
+          { id: 4, name: 'Owner Supplied', charges: true, charge_type: 'No Charge',price: '2.50' }
         ]
       }
     })

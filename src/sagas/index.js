@@ -5,6 +5,8 @@ import agreementDetail from './agreement/detail'
 import auth from './auth'
 import application from './application'
 import breedManagerSetting from './pet/breed-manager-setting'
+import boardingPrepaidUsage from './pet/reservation/usage/boarding/prepaid'
+import boardingReservationUsage from './pet/reservation/usage/boarding/reservation'
 import category from './category'
 import categoryDetail from './category/detail'
 import client from './client'
@@ -40,6 +42,8 @@ import daycampCardDetail from './pet/reservation/daycamp-card/detail'
 import daycampCardQuestion from './pet/reservation/daycamp-card/daycamp-card-question'
 import daycampCardQuestionDetail from './pet/reservation/daycamp-card/daycamp-card-question/detail'
 import daycampCardAnswerDetail from './pet/reservation/daycamp-card/daycamp-card-answer/detail'
+import daycampPrepaidUsage from './pet/reservation/usage/daycamp/prepaid'
+import daycampReservationUsage from './pet/reservation/usage/daycamp/reservation'
 import employee from './employee'
 import employeeDetail from './employee/detail'
 import employeeTitle from './employee/title'
@@ -66,6 +70,8 @@ import medicationType from './pet/medication-setting/medication-type'
 import notification from './notification'
 import organization from './organization'
 import organizationDetail from './organization/detail'
+import groomingPrepaidUsage from './pet/reservation/usage/grooming/prepaid'
+import groomingReservationUsage from './pet/reservation/usage/grooming/reservation'
 import packagePricing from './package-pricing'
 import paymentMethod from './payment-method'
 import pet from './pet'
@@ -180,6 +186,8 @@ export default function* rootSaga() {
     ...application,
     ...auth,
     ...breedManagerSetting,
+    ...boardingPrepaidUsage,
+    ...boardingReservationUsage,
     ...category,
     ...categoryDetail,
     ...client,
@@ -218,6 +226,8 @@ export default function* rootSaga() {
     ...daycampCardQuestion,
     ...daycampCardQuestionDetail,
     ...daycampCardAnswerDetail,
+    ...daycampPrepaidUsage,
+    ...daycampReservationUsage,
     ...emailMessage,
     ...emailTemplate,
     ...emailLog,
@@ -242,6 +252,8 @@ export default function* rootSaga() {
     ...notification,
     ...organization,
     ...organizationDetail,
+    ...groomingPrepaidUsage,
+    ...groomingReservationUsage,
     ...packagePricing,
     ...paymentMethod,
     ...pet,

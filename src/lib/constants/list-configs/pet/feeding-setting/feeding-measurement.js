@@ -1,11 +1,11 @@
 export default {
-
-  columns: [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Feeding Measurements',
       name        : 'name',
       type        : 'string',
-      width       : 13,
+      width       : 12,
       align       : 'left',
       sort        : false
     },

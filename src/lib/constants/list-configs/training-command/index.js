@@ -1,10 +1,13 @@
 export default {
+  search_enabled: false,
+  options       : {
+  },
   columns: [
     {
       display_name: 'Name',
       name        : 'name',
       type        : 'string',
-      width       : 12,
+      width       : 10,
       align       : 'left',
       sort        : false
     },
@@ -25,6 +28,7 @@ export default {
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
+
       ]
     }
   ]

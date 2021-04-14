@@ -11,12 +11,12 @@ const EditableFieldTab = ()=>{
   return (
 
     <Segment className='segment-content-no-border'>
-      <Header as='h4' color='teal'>Adjust Editable Field Values</Header>
+      <Header as='h4' className='mb20' color='teal'>Adjust Editable Field Values</Header>
       <Grid>
-        <Grid.Column computer={15}>
+        <Grid.Column computer={16}>
           <Grid>
-            <Grid.Column  className='pr0 mt56 grid-step' computer={3}>
-              <Step.Group fluid vertical>
+            <Grid.Column  className='grid-step' computer={4}>
+              <Step.Group vertical>
                 <Step
                   active={activeTab === 'reason'}
                   link name='reason'
@@ -44,10 +44,7 @@ const EditableFieldTab = ()=>{
 
               </Step.Group>
             </Grid.Column>
-            <Grid.Column className='ml4' computer={1}>
-
-            </Grid.Column>
-            <Grid.Column computer={11}>
+            <Grid.Column className='pl0'computer={12}>
               {activeTab === 'reason' &&  <TrainingReasonTable/> }
               {activeTab === 'method' && <TrainingMethodTable/>}
               {activeTab === 'command' && <TrainingCommandTable/>

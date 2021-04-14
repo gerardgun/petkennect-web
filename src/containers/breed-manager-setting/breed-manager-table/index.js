@@ -57,7 +57,9 @@ const BreedManagementTable = ({ BreedManagementDetail, ...props }) => {
   return (
 
     <Grid>
-      <Grid.Column computer={13} mobile={16} tablet={8}>
+      <Grid.Column
+        className='pr0' computer={13} mobile={16}
+        tablet={8}>
         <Table
           config={breedManagementListConfig}
           duck={BreedManagementDuck}
@@ -74,6 +76,7 @@ const BreedManagementTable = ({ BreedManagementDetail, ...props }) => {
       <ReservationDateByBreed/>
       <DayCareReservationBreed/>
       <Grid.Column
+        className='pr0'
         computer={3} mobile={14} tablet={8}>
         <Button
           basic

@@ -1,6 +1,6 @@
 export default {
-  search_placeholder: 'Search',
-  columns           : [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Name',
       name        : 'name',

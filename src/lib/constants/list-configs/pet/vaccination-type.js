@@ -2,8 +2,10 @@ import React from 'react'
 import { Checkbox } from 'semantic-ui-react'
 
 export default {
-  search_placeholder: 'Search by species, vaccine',
-  columns           : [
+  search_placeholder         : 'Search by species, vaccine',
+  search_placeholder_position: 'left', // only work when there is no  button has added to top bar
+
+  columns: [
     {
       display_name: 'Species',
       name        : 'pet_class_name',

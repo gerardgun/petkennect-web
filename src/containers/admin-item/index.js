@@ -35,7 +35,7 @@ const AdminItem = ()=>{
   ] },
   { option: 'Application Settings' , subOption: [  { name: 'Calendar',path: '/setup/calendar' },{ name: 'Locations', path: '/setup/location' },{ name: 'Notifications', path: '/setup/notifications' },{ name: 'Run Cards', path: '' },{ name: 'Report Cards', path: '/custom-report' },{ name: 'System Icons and Codes', path: '/setup/color-codes' } ] },
   { option: 'Employee Management' , subOption: [ { name: 'Payroll', path: '' },{ name: 'Schedule', path: '' },{ name: 'Tasklists', path: '' },{ name: 'Users/Roles', path: '/employee' } ] },
-  { option: 'Other' , subOption: [ { name: 'Payment Method', path: '/setup/payment-method' },{ name: 'Payment Instruction', path: '/setup/payment-instruction' },{ name: 'Price Master', path: '/setup/price-master' } ] },
+  { option: 'Other' , subOption: [ { name: 'Payment Method', path: '/setup/payment-method' },{ name: 'Payment Instruction', path: '/setup/payment-instruction' },{ name: 'Price Master', path: '/setup/price-master' },{ name: 'Application System Settings', path: '/setup/system-setting' } ] },
   { option: 'Forms and Templates' , subOption: [ { name: 'Client Agreements',path: '/setup/agreement' },{ name: 'Email Template',path: '/setup/email-template' } ] }
   ]
 

@@ -16,6 +16,7 @@ const Layout = loadable(() => import('@components/Common/Layout'))
 
 const ColourCodeList = () => {
   const [ ActiveInfoItem, setActiveInfoItem ] = useState('system')
+  const [ icon,setIcon ] = useState(true)
   const _handleInfoItemClick = (e, { name }) => setActiveInfoItem(name)
 
   const [ activeMenuItem, setActiveMenuItem ] = useState('client')
@@ -40,18 +41,23 @@ const ColourCodeList = () => {
           <Grid.Column computer={16} mobile={16} tablet={16}>
             <Header as='h2'>System Icons/Codes</Header>
           </Grid.Column>
-          <Grid.Column  computer={4}>
-            <Header as='h3' className='mt4' color='teal'>Enable Icons for Application</Header>
-          </Grid.Column>
-          <Grid.Column className='pl0' computer={1}>
-            <Form.Field>
-              <Switch
-                checked={true}
-                className='react-switch'
-                height={30}
-                onColor='#00aa9f'
-                width={60}/>
-            </Form.Field>
+          <Grid.Column computer={16}>
+            <div className='container-color'>
+              <Header as='h3' className='mt4 mr16' color='teal'>Enable Icons for Application</Header>
+              {/* </Grid.Column> */}
+              {/* <Grid.Column className='pl0' computer={1}> */}
+              <Form.Field>
+                <Switch
+                  checked={icon}
+                  className='react-switch'
+                  height={30}
+                  onChange={()=>setIcon(!icon)}
+                  onColor='#00aa9f'
+                  width={60}/>
+              </Form.Field>
+
+            </div>
+
           </Grid.Column>
         </Grid>
         <Grid className='segment-content-header' columns={2}>
@@ -212,7 +218,7 @@ const ColourCodeList = () => {
                   {activeMenuItem === 'client'  && (
                     <>
                       <Table
-                        basic='very' className='table-primary table-width mh12' selectable
+                        basic='very' className='table-primary mh12' selectable
                         sortable unstackable>
                         <Table.Header>
                           <Table.Row>
@@ -331,7 +337,7 @@ const ColourCodeList = () => {
                   {activeMenuItem === 'pet'  && (
                     <>
                       <Table
-                        basic='very' className='table-primary table-width mh12' selectable
+                        basic='very' className='table-primary mh12' selectable
                         sortable unstackable>
                         <Table.Header>
                           <Table.Row>
@@ -443,7 +449,7 @@ const ColourCodeList = () => {
                   {activeMenuItem === 'miscellaneous'  && (
                     <>
                       <Table
-                        basic='very' className='table-primary table-width mh12' selectable
+                        basic='very' className='table-primary mh12' selectable
                         sortable unstackable>
                         <Table.Header>
                           <Table.Row>

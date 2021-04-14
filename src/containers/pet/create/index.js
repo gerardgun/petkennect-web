@@ -19,7 +19,7 @@ import petNoteDuck from '@reducers/pet/note'
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
 import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
-
+import '../styles.scss'
 const Layout = loadable(() => import('@components/Common/Layout'))
 const InformationSection = loadable(() => import('./InformationSection'))
 const IncidentSection = loadable(() => import('./IncidentSection'))
@@ -134,7 +134,7 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
 
   return (
     <Layout>
-      <Segment className='segment-content petkennect-profile'>
+      <Segment className='pet-segment-content petkennect-profile'>
         <Grid>
           <Grid.Column
             className='petkennect-profile-sidebar p32'
@@ -223,8 +223,8 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
 
             </div>
 
-            <Grid>
-              <Grid.Row verticalAlign='middle'>
+            <Grid >
+              <Grid.Row className='ml0' verticalAlign='middle'>
                 <Grid.Column computer={16} mobile={16} tablet={10}>
                   <PetProfileProperty name='Breed' value={petDetail.item.breed_name ? petDetail.item.breed_name :  '-'}/>
                 </Grid.Column>

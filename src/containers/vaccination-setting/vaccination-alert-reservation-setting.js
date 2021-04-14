@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import  { connect } from 'react-redux'
 
 import { compose } from 'redux'
@@ -14,6 +14,12 @@ const VaccinationReservSetting = (props)=>{
   const _handleEmailBtnClick = () => {
     props.setItem(null, 'CREATE')
   }
+
+  const [ vaccineEmail, setVaccineEmail ] = useState(true)
+  const [ dayService, setDayService ] = useState(true)
+  const [ boarding, setBoarding ] = useState(true)
+  const [ training, setTraining ] = useState(false)
+  const [ grooming,setGrooming ] = useState(true)
 
   return (<>
     {/* eslint-disable-next-line react/jsx-handler-names */}
@@ -37,9 +43,10 @@ const VaccinationReservSetting = (props)=>{
             <Grid.Column className='pl0' computer={1}>
               <Form.Field>
                 <Switch
-                  checked={true}
+                  checked={vaccineEmail}
                   className='react-switch'
                   height={30}
+                  onChange={()=>{ setVaccineEmail(!vaccineEmail)}}
                   onColor='#00aa9f'
                   width={60}/>
               </Form.Field>
@@ -63,42 +70,46 @@ const VaccinationReservSetting = (props)=>{
           </Grid>
           <Grid>
 
-            <Grid.Column  computer={9}>
-              <Header as='h5' className='mt8'>Day Services</Header>
-              <Header as='h5' className='mt32'>Boarding</Header>
-              <Header as='h5'  className='mt32'>Training</Header>
-              <Header as='h5' className='mt32'>Grooming</Header>
+            <Grid.Column computer={9}>
+              <Header as='h5' className='mt8 day-service-margin'>Day Services</Header>
+              <Header as='h5' className='mt24 boarding-margin'>Boarding</Header>
+              <Header as='h5' className='mt24 training-margin'>Training</Header>
+              <Header as='h5' className='mt24 grooming-margin'>Grooming</Header>
             </Grid.Column>
-            <Grid.Column className='pl0' computer={1}>
-              <Form.Field className='mb20'>
+            <Grid.Column className='pl0' computer={3}>
+              <Form.Field className='mb12'>
                 <Switch
-                  checked={true}
+                  checked={dayService}
                   className='react-switch'
                   height={30}
+                  onChange={()=>{ setDayService(!dayService)}}
                   onColor='#00aa9f'
                   width={60}/>
               </Form.Field>
-              <Form.Field className='mb20'>
+              <Form.Field className='mb12'>
                 <Switch
-                  checked={true}
+                  checked={boarding}
                   className='react-switch'
                   height={30}
+                  onChange={()=>{ setBoarding(!boarding)}}
                   onColor='#00aa9f'
                   width={60}/>
               </Form.Field>
-              <Form.Field className='mb20'>
+              <Form.Field className='mb12'>
                 <Switch
-                  checked={false}
+                  checked={training}
                   className='react-switch'
                   height={30}
+                  onChange={()=>{ setTraining(!training)}}
                   onColor='#00aa9f'
                   width={60}/>
               </Form.Field>
-              <Form.Field className='mb20'>
+              <Form.Field className='mb12'>
                 <Switch
-                  checked={true}
+                  checked={grooming}
                   className='react-switch'
                   height={30}
+                  onChange={()=>{ setGrooming(!grooming)}}
                   onColor='#00aa9f'
                   width={60}/>
               </Form.Field>

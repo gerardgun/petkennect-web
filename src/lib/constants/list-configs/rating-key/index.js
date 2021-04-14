@@ -1,5 +1,7 @@
 
 export default {
+  search_enabled: false,
+
   columns: [
     {
       display_name: 'Rating key',
@@ -39,6 +41,7 @@ export default {
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
+
       ]
     }
   ]

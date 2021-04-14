@@ -1,10 +1,11 @@
 export default {
-  columns: [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Interaction Type',
       name        : 'name',
       type        : 'string', // image, boolean, date, datetime, money, label
-      width       : 13,
+      width       : 12,
       align       : 'left',
       sort        : false
     },

@@ -15,7 +15,7 @@
     padding: 1.1em 1em !important;
   }
   .ui.steps .step.active {
-    background: #00b5ad0a !important;
+    background: #00AA9F18 !important;
     color: #00aa9f;
     .icon{
       color: #00aa9f !important;
@@ -40,3 +40,21 @@
     background-color: #f8ffff !important;
   }
 }
+
+.training-heading{
+  display: flex !important;
+  justify-content: space-between;
+  padding-right: 0 !important;
+}
+
+.training-head-m{
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+}
+
+.menu-item-table {
+  margin-left: -16px !important;
+ 
+}
+
+
