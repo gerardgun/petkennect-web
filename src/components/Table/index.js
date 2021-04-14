@@ -30,6 +30,7 @@ const TableList = ({ childProps, config, duck, ...props }) => {
           <TopBar
             config={finalConfig}
             duck={duck}
+            onActionClick={props.onActionClick}
             onOptionClick={props.onOptionClick}/>
         )
       }
@@ -75,6 +76,7 @@ TableList.defaultProps = {
   childProps   : commonDefaultProps,
   duck         : null,
   // Event handlers
+  onActionClick: () => {},
   onOptionClick: () => {},
   ...commonDefaultProps
 }

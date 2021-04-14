@@ -12,6 +12,7 @@ export const getConfig = config => {
     search_placeholder: 'Search',
     search_enabled    : true,
     selector_enabled  : false,
+    actions           : [],
     options           : [],
     columns           : []
   }, config, configCustomizer)

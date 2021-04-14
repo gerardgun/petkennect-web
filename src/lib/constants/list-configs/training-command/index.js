@@ -1,34 +1,37 @@
 export default {
-  options: {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Delete Command',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
+  actions: [
+    {
+      display_name: 'Create New Command',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Name',
       name        : 'name',
       type        : 'string',
-      width       : 15,
+      width       : 12,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Edit Reason',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Reason',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        }
+      ]
     }
   ]
 }

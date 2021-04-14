@@ -1,37 +1,21 @@
 import React from 'react'
-import Switch from 'react-switch'
+import { Checkbox } from 'semantic-ui-react'
 
 export default {
-  options: {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Medication Time',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
+  actions: [
+    {
+      display_name: 'Add Time',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Medication Schedule',
       name        : 'name',
       type        : 'string',
       width       : 6,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Charge Applies',
@@ -39,33 +23,36 @@ export default {
       type        : 'string',
       width       : 6,
       align       : 'left',
-      sort        : false,
-      formatter   : (cell) => {
-        let checked
-
-        if(cell === 'true')
-          checked = true
-        else if(cell === 'false')
-          checked = false
-
-        return (
-          <>
-            <Switch
-              checked={checked}
-              className='react-switch'
-              height={30}
-              onColor='#00aa9f'
-              width={60}/>
-          </>
-        )
-      }
+      formatter   : cell => (
+        <Checkbox
+          checked={JSON.parse(cell)}
+          disabled/>
+      )
     },
     {
       display_name: 'Price',
       name        : 'price',
       type        : 'string',
-      align       : 'left',
-      sort        : false
+      align       : 'left'
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      width       : 2,
+      options     : [
+        {
+          display_name: 'Edit Reason',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Reason',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        }
+      ]
     }
   ]
 }

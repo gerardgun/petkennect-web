@@ -3,68 +3,68 @@ import { Checkbox } from 'semantic-ui-react'
 
 export default {
   search_placeholder: 'Search by species, vaccine',
-  options           : {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Delete Vaccination',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
+  actions           : [
+    {
+      display_name: 'New vaccine',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Species',
       name        : 'pet_class_name',
       type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Vaccine',
       name        : 'name',
-      type        : 'string', // image, boolean, date, datetime, money, label
-      align       : 'left',
-      sort        : false
+      type        : 'string',
+      align       : 'left'
     },
     {
       display_name: 'Required',
-      name        : 'required',
-      type        : 'boolean',
+      name        : 'is_required',
+      type        : null,
       align       : 'left',
-      sort        : false,
-      formatter   : (cell,row) => {
+      formatter   : cell => {
         return (
           <Checkbox
-            checked={row.is_required ? true : false}/>)
+            checked={cell}
+            disabled/>)
       }
     },
     {
       display_name: 'Active',
-      name        : 'is_active',
-      type        : 'boolean', // image, boolean, date, datetime, money, label
+      name        : 'id',
+      type        : null,
       align       : 'left',
-      sort        : false,
       formatter   : (cell,row) => {
         return (
           <Checkbox
-            checked={row.id % 2 === 0 ? true : false}/>)
+            checked={row.id % 2 === 0 ? true : false}
+            disabled/>)
       }
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      width       : 2,
+      options     : [
+        {
+          display_name: 'Edit Reason',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Reason',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        }
+      ]
     }
-
   ]
 }

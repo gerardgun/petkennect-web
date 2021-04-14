@@ -1,89 +1,69 @@
 import React from 'react'
-import Switch from 'react-switch'
+import { Checkbox } from 'semantic-ui-react'
 
 export default {
-  options: {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Medication',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
+  actions: [
+    {
+      display_name: 'New Medication',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Medication Name',
       name        : 'name',
       type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Purpose',
       name        : 'purpose',
       type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Type',
       name        : 'type',
       type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Charge Applies',
       name        : 'charges',
       type        : 'string',
-      width       : null,
       align       : 'left',
-      sort        : false,
-      formatter   : (cell) => {
-        let checked
-
-        if(cell === 'true')
-          checked = true
-        else if(cell === 'false')
-          checked = false
-
-        return (
-          <>
-            <Switch
-              checked={checked}
-              className='react-switch'
-              height={30}
-              onColor='#00aa9f'
-              width={60}/>
-          </>
-        )
-      }
-
+      formatter   : cell => (
+        <Checkbox
+          checked={JSON.parse(cell)}
+          disabled/>
+      )
     },
     {
       display_name: 'Price',
       name        : 'price',
       type        : 'string',
-      width       : null,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      width       : 2,
+      options     : [
+        {
+          display_name: 'Edit Reason',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Reason',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        }
+      ]
     }
   ]
 }

@@ -48,7 +48,7 @@ const TableHeader = ({ config, duck }) => {
 
         {/* Row data header */}
         {
-          config.columns.map(({ display_name, name, sort, sort_name }, index) => {
+          config.columns.map(({ align, display_name, name, sort, sort_name }, index) => {
             const finalSortName = sort_name || name
             let sorted = sort ? 'sorted' : ''
 
@@ -59,8 +59,9 @@ const TableHeader = ({ config, duck }) => {
 
             return (
               <Table.HeaderCell
-                className={sorted} data-column-name={name} key={index}
-                onClick={_handleHeaderToggleSortClick}>
+                className={sorted}
+                data-column-name={name} key={index} onClick={_handleHeaderToggleSortClick}
+                textAlign={align}>
                 {display_name}
               </Table.HeaderCell>
             )

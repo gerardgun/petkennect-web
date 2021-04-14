@@ -1,34 +1,37 @@
 export default {
-  options: {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Feeding Units',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
+  actions: [
+    {
+      display_name: 'Add Feeding Unit',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Feeding Units',
       name        : 'name',
       type        : 'string',
-      width       : 15,
       align       : 'left',
       sort        : false
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      width       : 2,
+      options     : [
+        {
+          display_name: 'Edit Reason',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Reason',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        }
+      ]
     }
   ]
 }

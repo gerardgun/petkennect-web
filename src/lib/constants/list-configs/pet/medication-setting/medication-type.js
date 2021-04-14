@@ -1,5 +1,5 @@
 import React from 'react'
-import Switch from 'react-switch'
+import { Checkbox } from 'semantic-ui-react'
 
 export default {
   options: {
@@ -40,26 +40,11 @@ export default {
       width       : 6,
       align       : 'left',
       sort        : false,
-      formatter   : (cell) => {
-        let checked
-
-        if(cell === 'true')
-          checked = true
-        else if(cell === 'false')
-          checked = false
-
-        return (
-          <>
-            <Switch
-              checked={checked}
-              className='react-switch'
-              height={30}
-              onColor='#00aa9f'
-              width={60}/>
-
-          </>
-        )
-      }
+      formatter   : cell => (
+        <Checkbox
+          checked={JSON.parse(cell)}
+          disabled/>
+      )
     },
     {
       display_name: 'Price',

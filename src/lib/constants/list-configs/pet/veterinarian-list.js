@@ -1,34 +1,36 @@
 export default {
-  options: [
+  actions: [
     {
-      display_name: 'Download',
-      name        : 'download',
-      icon        : 'download'
-    },
-    {
-      display_name: 'Print',
-      name        : 'print',
-      icon        : 'print'
-    },
-    {
-      display_name: 'Delete Type',
-      name        : 'delete',
-      icon        : 'trash alternate outline',
-      is_multiple : false,
-      color       : 'red'
+      display_name: 'New Veterinary',
+      name        : 'create',
+      color       : 'teal'
     }
   ],
-  row: {
-    options: []
-  },
   columns: [
     {
       display_name: 'Veterinarian Name',
       name        : 'name',
-      type        : 'string', // image, boolean, date, datetime, money, label
-      width       : 15,
-      align       : 'left',
-      sort        : false
+      type        : 'string',
+      align       : 'left'
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      width       : 2,
+      options     : [
+        {
+          display_name: 'Edit Reason',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Reason',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        }
+      ]
     }
   ]
 }
