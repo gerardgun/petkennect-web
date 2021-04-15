@@ -65,10 +65,10 @@ const TableList = ({ childProps, config, duck, ...props }) => {
 const commonDefaultProps = {
   config             : null,
   // Event handlers
-  onCellClick        : () => {},
+  onCellClick        : () => {},
   onRowButtonClick   : () => {},
-  onRowCheckboxChange: () => {},
-  onRowClick         : () => {},
+  onRowCheckboxChange: () => {},
+  onRowClick         : () => {},
   onRowDropdownChange: () => {}
 }
 
@@ -76,7 +76,7 @@ TableList.defaultProps = {
   childProps   : commonDefaultProps,
   duck         : null,
   // Event handlers
-  onActionClick: () => {},
+  onActionClick: () => {},
   onOptionClick: () => {},
   ...commonDefaultProps
 }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -16,7 +16,6 @@ import trainingReasonDuck from '@reducers/training-reason'
 const TrainingMethodForm = props => {
   const {
     trainingMethodDetail,
-    trainingReason,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
@@ -61,7 +60,7 @@ const TrainingMethodForm = props => {
               name='name'
               placeholder='Enter name'
               required/>
-            <Field
+            {/* <Field
               component={FormField}
               control={Select}
               label='Reason'
@@ -72,9 +71,8 @@ const TrainingMethodForm = props => {
                 text : `${_trainingReason.name}`
               }))}
               placeholder='Select reason'
-              required
               search
-              selectOnBlur={false}/>
+              selectOnBlur={false}/> */}
           </Form.Group>
 
           {
@@ -97,7 +95,7 @@ const TrainingMethodForm = props => {
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save'}
+                content='Save'
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>
@@ -133,8 +131,8 @@ export default compose(
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        name  : Yup.string().required('Name is required'),
-        reason: Yup.string().required('Reason is required')
+        name: Yup.string().required('Name is required')
+        // reason: Yup.string().required('Reason is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

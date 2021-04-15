@@ -1,61 +1,99 @@
 .description-field-width {
-    width: 25rem !important;
+  width: 25rem !important;
 
-    @media screen and (max-width:768px) {
-        width: 20rem !important;
-    }
+  @media screen and (max-width:768px) {
+      width: 20rem !important;
+  }
 
-    @media screen and (min-width:1024px) and (max-width:1366px) {
-        width: 20rem !important;
-    }
+  @media screen and (min-width:1024px) and (max-width:1366px) {
+      width: 20rem !important;
+  }
 }
 
 .description-width {
-    .ui.input {
-        width: 100% !important;
-    }
+  .ui.input {
+      width: 100% !important;
+  }
 }
 
 .dropdown-width {
-    width: 16rem !important;
+  width: 16rem !important;
 
-    @media screen and (max-width:768px) {
-        width: 10rem !important;
-    }
+  @media screen and (max-width:768px) {
+      width: 10rem !important;
+  }
 
-    @media screen and (min-width:1024px) and (max-width:1366px) {
-        width: 12rem !important;
-    }
+  @media screen and (min-width:1024px) and (max-width:1366px) {
+      width: 12rem !important;
+  }
 }
 
 .menuItem-margin {
-    margin-left: -1rem;
-    margin-right: 1rem;
+  margin-left: -1rem;
+  margin-right: 1rem;
 }
 
 .save-button-align {
-    text-align: right;
-    @media screen and (max-width:768px) {
-        text-align: left;
-        margin-left: -8px;
-    }
+  text-align: right;
+  @media screen and (max-width:768px) {
+      text-align: left;
+      margin-left: -8px;
+  }
 }
 
 .table-scroll {
-    @media screen and (max-width:1366px) {
-        width: 95% !important;
-        overflow-y: hidden;
-    }
-    
+  @media screen and (max-width:1366px) {
+      width: 95% !important;
+      overflow-y: hidden;
+  }
+
 }
 
 .table-width {
-    width: max-content !important;
+  width: max-content !important;
 }
 
 .system-description-width {
-    @media screen and (min-width:768px) and (max-width:1024px) {
-        width: 12rem !important;
-    }
+  @media screen and (min-width:768px) and (max-width:1024px) {
+      width: 12rem !important;
+  }
 
+}
+
+.margin-icon {
+  margin-left: 112px !important;
+}
+
+.box-style {
+  border-radius: .28571429rem;
+  padding: .3em 0em .3em 1em !important;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.green-color {
+  i.inverted.bordered.icon, i.inverted.circular.icon {
+    background-color: #188B07 !important;
+  }
+}
+.orange-color {
+  i.inverted.bordered.icon, i.inverted.circular.icon {
+    background-color: #F88C05 !important;
+  }
+}
+
+.red-color {
+  i.inverted.bordered.icon, i.inverted.circular.icon {
+    background-color: #E90E0E !important;
+  }
+}
+
+.yellow-color {
+  i.inverted.bordered.icon, i.inverted.circular.icon {
+    background-color: #EFF30A !important;
+  }
+}
+
+.container-color{
+  display: flex;
+  padding-left: 0 !important;
 }

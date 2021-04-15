@@ -34,13 +34,13 @@ export default {
           color       : 'blue'
         },
         {
-          display_name: 'Edit Reason',
+          display_name: 'Edit Species',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Reason',
+          display_name: 'Delete Species',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'

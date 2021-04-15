@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid  } from 'semantic-ui-react'
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 
 import Table from '@components/Table'
 
@@ -21,8 +21,9 @@ import clientPetBreedDetailDuck from '@reducers/pet/breed-manager-setting/client
 import reservationByDateBreedDetailDuck from '@reducers/pet/breed-manager-setting/reservation-by-date-breed/detail'
 import dayCareReservationDetailDuck from '@reducers/pet/breed-manager-setting/day-care-reservation-breed/detail'
 
-const BreedManagementTable = ({  BreedManagement, BreedManagementDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const BreedManagementTable = ({ BreedManagementDetail, ...props }) => {
+  const [ open, { _handleClose } ] = useModal()
 
   useChangeStatusEffect(props.getBreedManagement, BreedManagementDetail.status)
 
@@ -33,21 +34,13 @@ const BreedManagementTable = ({  BreedManagement, BreedManagementDetail, ...prop
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
   }
-
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(BreedManagement.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
-
-  // const _handleActionButtonClicked = (item) =>{
-  //   props.setItem(item, 'READ')
-  // }
 
   const _handleDropdownOptionClick = (option,item)=>{
     // console.log(BreedManagement.selector.selected_items)
@@ -64,13 +57,15 @@ const BreedManagementTable = ({  BreedManagement, BreedManagementDetail, ...prop
   return (
 
     <Grid>
-      <Grid.Column computer={13} mobile={16} tablet={8}>
+      <Grid.Column
+        className='pr0' computer={13} mobile={16}
+        tablet={8}>
         <Table
           config={breedManagementListConfig}
           duck={BreedManagementDuck}
-          onOptionClick={_handleOptionClick}
           onOptionDropdownChange={_handleDropdownOptionClick}
-          onRowClick={_handleRowClick}/>
+          onRowButtonClick={_handleButtonClick}/>
+
         <ModalDelete
           duckDetail={BreedManagementDetailDuck}
           onClose={_handleClose}
@@ -81,6 +76,7 @@ const BreedManagementTable = ({  BreedManagement, BreedManagementDetail, ...prop
       <ReservationDateByBreed/>
       <DayCareReservationBreed/>
       <Grid.Column
+        className='pr0'
         computer={3} mobile={14} tablet={8}>
         <Button
           basic

@@ -20,13 +20,13 @@ export default {
       type        : 'button',
       options     : [
         {
-          display_name: 'Edit Reason',
+          display_name: 'Edit Command',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Reason',
+          display_name: 'Delete Command',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'

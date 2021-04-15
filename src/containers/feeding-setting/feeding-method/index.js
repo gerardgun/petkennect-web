@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import FeedingMethodForm from  './form'
@@ -12,9 +12,11 @@ import feedingMethodListConfig from '@lib/constants/list-configs/pet/feeding-set
 
 import feedingMethodDuck from '@reducers/pet/feeding-setting/feeding-method'
 import feedingMethodDetailDuck from '@reducers/pet/feeding-setting/feeding-method/detail'
+import '../styles.scss'
 
-const FeedingMethod = ({ feedingMethod, feedingMethodDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const FeedingMethod = ({ feedingMethodDetail, ...props }) => {
+  const [ open, {  _handleClose } ] = useModal()
   useChangeStatusEffect(props.getfeedingMethods, feedingMethodDetail.status)
 
   useEffect(() => {
@@ -25,14 +27,11 @@ const FeedingMethod = ({ feedingMethod, feedingMethodDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(feedingMethod.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
 
@@ -40,15 +39,15 @@ const FeedingMethod = ({ feedingMethod, feedingMethodDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={feedingMethodListConfig}
-            duck={feedingMethodDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={feedingMethodListConfig}
+              duck={feedingMethodDuck}
+              onRowButtonClick={_handleButtonClick}/></div>
         </Grid.Column>
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Feeding Method</Button>
+          computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Feeding Method</Button>
         </Grid.Column>
       </Grid>
 

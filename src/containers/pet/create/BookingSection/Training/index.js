@@ -1,30 +1,31 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header, Button, Grid, Container } from 'semantic-ui-react'
+import { Header, Button, Grid, Container, Label, Icon } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
-
-import config from '@lib/constants/list-configs/pet/training-package'
-import trainingReservationListConfig from '@lib/constants/list-configs/pet/training-reservation'
-
+import config from '@lib/constants/list-configs/pet/training-reservation'
+import trainingPackageConfig from '@lib/constants/list-configs/pet/training-package'
 import petDetailDuck from '@reducers/pet/detail'
 import petTrainingPackageDuck from '@reducers/pet/reservation/training/package'
 import petTrainingReservationDuck from '@reducers/pet/reservation/training/reservation'
+import petTrainingReservationDetailDuck from '@reducers/pet/reservation/training/reservation/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
-import petReservationTrainingPackageDetail from '@reducers/pet/reservation/training/package/detail'
+import petReservationTrainingPackageDetailDuck from '@reducers/pet/reservation/training/package/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
-
+import './styles.scss'
 const Table = loadable(() => import('@components/Table'))
 const PackageCreateForm = loadable(() => import('./package-create'))
-const TrainingPackageEmailForm = loadable(() => import('./email-form'))
 const PetNotes = loadable(() => import('../Notes'))
+const AddServiceTag = loadable(() => import('../common-section/add-service-tag'))
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 
 function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
   const history = useHistory()
 
   const { pet: petId } = useParams()
   const { client: client_id } = useParams()
+
   useEffect(()=> {
     props.getPet(petId)
     props.getPetReservationTraining({ service_type_what_ever_name: 'T' })
@@ -51,16 +52,12 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
   }
 
   // eslint-disable-next-line no-unused-vars
-  const _handleOptionClick = option => {
-    if(option === 'email')
-    {props.setItem(null,'SEND')}
-    else if(option === 'reservation') {
-      props.setReserveItem({ service_type: 'T' },'UPDATE')
-      history.replace(`/client/${petDetail.item.client}/book`)
-    }
-    else if(option === 'view_performance' || option === 'view_report_card') {
-      props.setItem(null,'READ')
-    }
+  const _handleOptionClick = (option,item)=> {
+    if(option === 'delete')
+      props.setItem(item, 'DELETE')
+
+    else if(option === 'edit_program')
+      props.setItem(item,'UPDATE')
   }
 
   const _handleOptionDropdownChange = (optionName, item) => {
@@ -71,43 +68,100 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
 
       case 'edit_note' : props.setNoteItem(item,'READ')
         break
+
+      case 'delete_reservation' : props.setTrainingReserve(item,'DELETE')
+        break
+
+      case 'add_note' : props. setNoteItem(null,'CREATE')
+        break
     }
   }
 
   return (
-    <Container className='c-booking' fluid>
-      <Grid className='segment-content-header' columns={2}>
-        <Grid.Column computer={4} mobile={10} tablet={4}>
-          <Header as='h2' className='child_header'>Packages</Header>
+    <Container className='c-booking-daycamp' fluid>
+      <Grid className='mh0 mt4'>
+        <Grid.Column computer={4}>
+          <Header as='h3' className='mt4 service-heading' color='teal'>Service Tags:</Header>
+        </Grid.Column>
+        <Grid.Column className='tag-display' computer={8} textAlign='center'>
+          <Label
+            as='a'
+            className='label-style'
+            size='medium'>
+              Remote Collar
+            <Icon name='delete'/>
+          </Label>
+          <Label
+            as='a'
+            className='label-style'
+            size='medium'>
+             Aggressive
+            <Icon name='delete'/></Label>
+        </Grid.Column>
+
+        <Grid.Column
+          computer={4} mobile={3} tablet={4}>
+          <Button
+            basic className='w120' color='teal'
+            onClick={()=>props.setTrainingReserve(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
+        </Grid.Column>
+      </Grid>
+      <Grid className='segment-content-header mb0' columns={2}>
+
+        <Grid.Column
+          className='mt32'
+          computer={6}
+          mobile={10} style={{ 'padding-top': '1.4rem' }}
+          tablet={4}>
+          <Header as='h3'  color='teal' >Training Programs</Header>
         </Grid.Column >
         <Grid.Column
-          className='ui-grid-align'
-          computer={12} mobile={10} tablet={12}>
+          className='ui-grid-align mt32'
+          computer={10} mobile={10} tablet={12}>
+          <Button
+            basic
+            color='teal'
+            content='View All'/>
           <Button
             color='teal'
-            content='New Package'
+            content='Add Program'
+            icon='add'
             onClick={_handleAddPackageBtnClick}/>
         </Grid.Column>
       </Grid>
-      <Table config={config} duck={petTrainingPackageDuck} onOptionDropdownChange={_handleOptionClick}/>
+      <div className='mb40 div-table-width'>
+        <Table
+          config={trainingPackageConfig}
+          duck={petTrainingPackageDuck} onRowDropdownChange={_handleOptionClick}/>
+      </div>
 
-      <Grid className='segment-content-header' columns={2}>
-        <Grid.Column computer={4} mobile={10} tablet={4}>
-          <Header as='h2' className='child_header'>Reservations</Header>
+      <Grid className='segment-content-header mb0' columns={2}>
+        <Grid.Column
+          computer={10} mobile={10} style={{ 'padding-top': '15px' }}
+          tablet={4}>
+          <Header as='h3' color='teal'>Reservation History</Header>
         </Grid.Column >
         <Grid.Column
           className='ui-grid-align'
-          computer={12} mobile={10} tablet={12}>
+          computer={6} mobile={10} tablet={12}>
           <Button
             color='teal'
-            content='New Reservation'
+            content='Add Reservation'
+            icon='add'
             onClick={_handleAddReservationBtnClick}/>
         </Grid.Column>
       </Grid>
-      <Table config={trainingReservationListConfig} duck={petTrainingReservationDuck} onOptionDropdownChange={_handleOptionDropdownChange}/>
+      <div className='div-table-width'>
+        <Table
+          config={config}
+          duck={petTrainingReservationDuck}
+          onRowDropdownChange={_handleOptionDropdownChange}/>
+      </div>
       <PackageCreateForm/>
-      <TrainingPackageEmailForm/>
       <PetNotes/>
+      <AddServiceTag detailDuck={petTrainingReservationDetailDuck}/>
+      <ModalDelete duckDetail={petReservationTrainingPackageDetailDuck}/>
+      <ModalDelete duckDetail={petTrainingReservationDetailDuck}/>
     </Container>
   )
 }
@@ -123,13 +177,15 @@ export default compose(
 
       petReservation       : petTrainingPackageDuck.selectors.list(state),
       petDetail            : petDetailDuck.selectors.detail(state),
-      trainingPackageDetail: petReservationTrainingPackageDetail.selectors.detail(state)
+      trainingPackageDetail: petReservationTrainingPackageDetailDuck.selectors.detail(state)
     }),{
-      setItem                  : petReservationTrainingPackageDetail.creators.setItem,
-      setReserveItem           : petReservationDetailDuck.creators.setItem,
-      getPet                   : petDetailDuck.creators.get,
-      getPetReservationTraining: petTrainingReservationDuck.creators.get,
-      setNoteItem              : petNoteDetailDuck.creators.setItem
+      setItem                    : petReservationTrainingPackageDetailDuck.creators.setItem,
+      setReserveItem             : petReservationDetailDuck.creators.setItem,
+      setTrainingReserve         : petTrainingReservationDetailDuck.creators.setItem,
+      getPet                     : petDetailDuck.creators.get,
+      getPetReservationTraining  : petTrainingReservationDuck.creators.get,
+      setNoteItem                : petNoteDetailDuck.creators.setItem,
+      resetPetReservationTraining: petTrainingReservationDetailDuck.creators.setItem
 
     })
 )(TrainingServiceSection)

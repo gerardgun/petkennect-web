@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -24,7 +24,7 @@ const VaccinationEmailCustomization = (props) => {
     submitting // redux-form
 
   } = props
-
+  const [ result, setResult ] = useState([])
   const _handleClose = () => {
     props.reset()
     props.resetItem()
@@ -40,6 +40,25 @@ const VaccinationEmailCustomization = (props) => {
   const getIsOpened = mode => (mode === 'CREATE' || mode === 'UPDATE')
 
   const isOpened = useMemo(() => getIsOpened(emailTemplateDetail.mode), [ emailTemplateDetail.mode ])
+
+  const SearchDataSet = [ { id: 1 ,title: 'First Name' }, { id: 2, title: 'Last Name' },
+    { id: 3, title: 'Animal Name' }, { id: 4, title: 'Location Name' },
+    { id: 5, title: 'Location Address 1' }, { id: 6, title: 'Location Address 2' },
+    { id: 7, title: 'Location City' }, { id: 8, title: 'Location State' },
+    { id: 9, title: 'Location Zip' }, { id: 10, title: 'Location Phone' },
+    { id: 11, title: 'Location Fax' }, { id: 12, title: 'Location Email' },
+    { id: 13, title: 'Location Hours' }
+  ]
+
+  const _handleSearchInputChange = (e,{ value }) => {
+    const result_array = SearchDataSet.filter((_value) =>{
+      if(value == '')
+        return _value
+      else if(_value.title.toLowerCase().includes(value.toLowerCase()))
+        return value
+    })
+    setResult(result_array)
+  }
 
   return (
     <Modal
@@ -73,7 +92,18 @@ const VaccinationEmailCustomization = (props) => {
           </Form.Group>
           <label>Variables</label>
           <br></br>
+          <label>You can use the following variables to customize this template</label>
           <Form.Group widths='equal'>
+            <div className='search-dropdown pt0 pb0 search-margin'>
+              <Search
+                fluid
+                input={{ icon: 'search', iconPosition: 'right' }}
+                onSearchChange={_handleSearchInputChange}
+                placeholder='Search for a variable'
+                results={result}/>
+            </div>
+          </Form.Group>
+          {/* <Form.Group widths='equal'>
 
             <Field
               component={FormField}
@@ -81,15 +111,15 @@ const VaccinationEmailCustomization = (props) => {
               label='You can use the following variables to customize this template'
               name='variable'
               onChange=''
-
               placeholder='search for a variable'
               selectOnBlur={false}/>
 
-          </Form.Group>
-          <p>{'{first_name},{last_name},{animal_name},{location_name},'}</p>
-          <p>{'{location_address_1},{location_address_2},{location_city},{location_state},'}</p>
-          <p>{'{location_zip},{location_phone},{location_fax,{location_email},'}</p>
-          <p>{'{location_hours}'}</p>
+          </Form.Group> */}
+          <p>{'{First Name},{Last Name},{Animal Name},{Location Name},'}</p>
+          <p>{'{Location Address 1},{Location Address 2},{Location City},{Location State},'}</p>
+          <p>{'{Location Zip},{Location Phone},{Location Fax,{Location Email},'}</p>
+          <p>{'{Location Hours}'}</p>
+
           <Form.Group className='ph8' widths='equal'>
             <Form.Group widths='equal'>
               <Field

@@ -19,13 +19,13 @@ export default {
       width       : 2,
       options     : [
         {
-          display_name: 'Edit Reason',
+          display_name: 'Edit Action',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Reason',
+          display_name: 'Delete Action',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'

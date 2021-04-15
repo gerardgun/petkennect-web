@@ -1,8 +1,9 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Input, Modal, Checkbox, Select } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Select, Grid } from 'semantic-ui-react'
+import Switch from 'react-switch'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -20,12 +21,20 @@ const FoodTypeForm = (props) => {
     submitting // redux-form
   } = props
 
+  const [ checked, setChecked ] = useState(false)
+
   useEffect(() => {
-    if(foodTypeDetail.item.id)
+    if(foodTypeDetail.item.id) {
       props.get(foodTypeDetail.item.id)
+      setChecked(foodTypeDetail.item.charges)
+    }
   }, [ foodTypeDetail.item.id ])
 
   const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
+
+  const _handleSwitchChange = (value) => {
+    setChecked(value)
+  }
 
   const _handleClose = () => {
     props.reset()
@@ -72,36 +81,43 @@ const FoodTypeForm = (props) => {
               placeholder='Enter type'
               required/>
           </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Charges Type'
-              name='charge_type'
-              options={
-                [ { key: 1, value: 'No Charge' , text: 'No Charge' },
-                  { key: 1, value: 'Per Day' , text: 'Per Day' },
-                  { key: 1, value: 'Per Meal', text: 'Per Meal' },
-                  { key: 1, value: 'Per Bag' , text: 'Per Bag' } ]
-              }
-              placeholder='Select Charges'
-              required/>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Price'
-              name='price'
-              placeholder='Enter Price'
-              required/>
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Checkbox}
-              label='Charges Applies'
-              name='charges'
-              type='checkbox'/>
-          </Form.Group>
+          <Grid>
+            <Grid.Column className='mt24' computer={5}>
+              <Switch
+                checked={checked}
+                className='react-switch'
+                height={21}
+                onChange={_handleSwitchChange}
+                onColor='#00aa9f'
+                width={40}/>
+              <span className='ml16 save-button-align'>Charges Applies</span></Grid.Column>
+            <Grid.Column computer={11}>
+              <Form.Group widths='equal'>
+                <Field
+                  component={FormField}
+                  control={Select}
+                  label='Charges Type'
+                  name='charge_type'
+                  options={
+                    [ { key: 1, value: 'No Charge' , text: 'No Charge' },
+                      { key: 1, value: 'Per Day' , text: 'Per Day' },
+                      { key: 1, value: 'Per Meal', text: 'Per Meal' },
+                      { key: 1, value: 'Per Bag' , text: 'Per Bag' } ]
+                  }
+                  placeholder='Select Charges'
+                  required/>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  label='Price'
+                  min={0}
+                  name='price'
+                  placeholder='Enter Price'
+                  required
+                  type='number'/>
+              </Form.Group>
+            </Grid.Column>
+          </Grid>
 
           {error && (
             <Form.Group widths='equal'>
@@ -120,7 +136,7 @@ const FoodTypeForm = (props) => {
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save'}
+                content='Save'
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>
@@ -135,10 +151,15 @@ export default compose(
   connect(
     (state) => {
       const foodTypeDetail = foodTypeDetailDuck.selectors.detail(state)
+      let price
+      if(foodTypeDetail.item.id)
+        price = foodTypeDetail.item.price
+      else
+        price = 0
 
       return {
         foodTypeDetail,
-        initialValues: { ...foodTypeDetail.item }
+        initialValues: { ...foodTypeDetail.item, price: price }
       }
     },
     {

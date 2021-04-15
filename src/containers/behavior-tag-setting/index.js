@@ -17,16 +17,16 @@ const BehaviorTagSetting = ()=>{
             <Header as='h2' className='cls-MainHeader'>Behavior Tag Settings</Header>
             <hr></hr>
             <Breadcrumb className='p0'>
-              <Breadcrumb.Section>
-                <Link to=''><Icon name='setting'/>Setting</Link>
+              <Breadcrumb.Section active>
+                <Link to='/setup/admin-item'><Icon name='setting'/>Settings</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider className='mh12' icon='right chevron'/>
               <Breadcrumb.Section active>
-                <Link to=''>Animal Settings</Link>
+                <Link to='/setup/animal-setting'>Animal Settings</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
               <Breadcrumb.Section active>
-                <Link to=''>Behavior Tags</Link>
+                <Link to='/setup/animal-setting/behavior-tag'>Behavior Tags</Link>
               </Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>

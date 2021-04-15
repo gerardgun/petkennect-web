@@ -1,3 +1,6 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 export default {
   columns: [
     {
@@ -6,31 +9,39 @@ export default {
       type        : 'date', // image, boolean, date, datetime, money, label
       width       : null,
       align       : 'left',
-      sort        : false,
+      sort        : true,
       filter      : {
         type: 'range_date',
         name: [ 'created_at__gt', 'created_at__lt' ]
       }
     },
     {
-      display_name: 'Location',
-      name        : 'location_code',
+      display_name: 'Service',
+      name        : 'service',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
-      display_name: 'Type',
-      name        : 'daycamp.type',
+      display_name: 'Location',
+      name        : 'location',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false,
+      sort        : true
+    },
+    {
+      display_name: 'Res. Type',
+      name        : 'type',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true,
       filter      : {
         type        : 'dropdown',
         name        : 'type',
-        options: [
+        source_store: [
           {
             value: 'type1',
             text : 'type1'
@@ -43,36 +54,66 @@ export default {
       }
     },
     {
-      display_name: 'In',
-      name        : 'reserved_at_time',
+      display_name: 'Yard',
+      name        : 'yard_type',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
-      display_name: 'Out',
+      display_name: 'Run',
+      name        : 'run',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true
+    },
+    {
+      display_name: 'Addons',
+      name        : 'addons',
+      type        : 'string',
+      width       : null,
+      align       : 'center',
+      sort        : true,
+      formatter   : (cell) => {
+        return (
+          <span>
+            <Link>
+              {cell}
+            </Link>
+
+          </span>)
+      }
+    },
+    {
+      display_name: 'Time In',
+      name        : 'checkin_time',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true
+    },
+    {
+      display_name: 'Time Out',
       name        : 'checkout_at',
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
-      display_name: 'Lunch',
-      name        : 'lunch',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
-    {
-      display_name: 'Yard',
-      name        : 'daycamp.yard_type',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      display_name: '',
+      name        : 'custom_name',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Check In',
+          name        : 'check_in',
+          icon        : 'arrow right',
+          color       : 'green'
+        }
+      ]
     },
     {
       display_name: 'Actions',
@@ -80,68 +121,39 @@ export default {
       type        : 'dropdown',
       options     : [
         {
-          display_name: 'Edit Reserve',
-          name        : 'edit_reserve',
-          icon        : 'edit'
+          icon        : 'edit',
+          display_name: 'Edit Reservation',
+          name        : 'edit_reserve'
         },
         {
-          display_name: 'View Notes',
-          name        : 'view_notes',
-          icon        : 'sticky note'
+          icon        : 'sticky note',
+          display_name: 'Add Notes',
+          name        : 'add_notes'
         },
         {
-          display_name: 'Edit Note',
-          name        : 'edit_note',
-          icon        : 'edit outline'
+          icon        : 'plus',
+          display_name: 'Add Interaction',
+          name        : 'add_interaction'
         },
         {
-          display_name: 'Report Cards',
-          name        : 'add_report_card',
-          icon        : 'file pdf'
+          icon        : 'file pdf',
+          display_name: 'Add/Edit Report Card',
+          name        : 'add_edit_report_card'
         },
         {
-          display_name: 'Add Grooming',
-          name        : 'add_grooming',
-          icon        : 'plus circle'
-        },
-        {
+          icon        : 'clipboard list icon',
           display_name: 'Add-On Services',
-          name        : 'add_on',
-          icon        : 'clipboard list icon'
+          name        : 'add_on'
         },
         {
-          display_name: 'Add Incident',
-          name        : 'add_incident',
-          icon        : 'blind'
+          icon        : 'print',
+          display_name: 'Print Run Card',
+          name        : 'print_run_card'
         },
         {
-          display_name: 'Convert to Boarding',
-          name        : 'convert_to_boarding',
-          icon        : 'fast forward icon'
-        },
-        {
-          display_name: 'Cancel Reservation',
-          name        : 'cancel_reservation',
-          icon        : 'close'
-        }
-      ]
-    },
-    {
-      display_name: 'Actions',
-      name        : 'custom_name',
-      type        : 'button',
-      options     : [
-        {
-          display_name: 'Check In',
-          name        : 'check_in',
-          disable     : item => item.isCheckOut,
-          icon        : 'arrow right'
-        },
-        {
-          display_name: 'Check Out',
-          name        : 'check_out',
-          disable     : item => !item.isCheckOut,
-          icon        : 'check'
+          icon        : 'trash alternate outline',
+          display_name: 'Delete Reservation',
+          name        : 'delete_reservation'
         }
       ]
     }

@@ -9,13 +9,13 @@ import loadable from '@loadable/component'
 import FormField from '@components/Common/FormField'
 import { parseResponseError } from '@lib/utils/functions'
 
-import dayCampReservationDetailDuck from '@reducers/pet/reservation/daycamp-reservation/detail'
+import dayServicePackageDetailDuck from '@reducers/pet/reservation/day-service-package/detail'
 
 const FormError = loadable(() => import('@components/Common/FormError'))
 
 const DaycampPackageForm = props => {
   const {
-    dayCampPackageDetail,
+    dayServicePackageDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
@@ -28,7 +28,7 @@ const DaycampPackageForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ id: dayCampPackageDetail.item.id, ...values })
+      return props.put({ id: dayServicePackageDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -37,9 +37,10 @@ const DaycampPackageForm = props => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(dayCampPackageDetail.mode), [ dayCampPackageDetail.mode ])
-  const isUpdating = Boolean(dayCampPackageDetail.item.id)
+  const isOpened = useMemo(() => getIsOpened(dayServicePackageDetail.mode), [ dayServicePackageDetail.mode ])
+  const isUpdating = Boolean(dayServicePackageDetail.item.id)
 
+  // change duck to package duck
   return (
     <div className='package-create-form'>
       <Modal
@@ -58,7 +59,6 @@ const DaycampPackageForm = props => {
                 component={FormField}
                 control={Select}
                 label='Package Type'
-
                 name='program'
                 options={[
                   { key: 1, value: 1, text: 'Package 1' },
@@ -162,17 +162,17 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const dayCampPackageDetail = dayCampReservationDetailDuck.selectors.detail(state)
+      const dayServicePackageDetail = dayServicePackageDetailDuck.selectors.detail(state)
 
       return {
-        dayCampPackageDetail,
-        initialValues: dayCampPackageDetail.item
+        dayServicePackageDetail,
+        initialValues: dayServicePackageDetail.item
       }
     },
     {
-      post     : dayCampReservationDetailDuck.creators.post,
-      put      : dayCampReservationDetailDuck.creators.put,
-      resetItem: dayCampReservationDetailDuck.creators.resetItem
+      post     : dayServicePackageDetailDuck.creators.post,
+      put      : dayServicePackageDetailDuck.creators.put,
+      resetItem: dayServicePackageDetailDuck.creators.resetItem
     }
   ),
   reduxForm({

@@ -41,13 +41,13 @@ export default {
       width       : 2,
       options     : [
         {
-          display_name: 'Edit Reason',
+          display_name: 'Edit Time',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Reason',
+          display_name: 'Delete Time',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'

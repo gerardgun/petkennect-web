@@ -13,10 +13,10 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [ { id: 0, name: 'Quadritrop', purpose: 'Skin Irritation', type: 'Cream', charges: 'true', price: '$2.00' },
-          { id: 1, name: 'Benedryl', purpose: 'Allergies', type: 'Pill', charges: 'true', price: '$3.00' },
-          { id: 2, name: 'Amoxicillin', purpose: 'Antibiotic', type: 'Liquid', charges: 'false', price: '$0.00' },
-          { id: 3, name: 'Valium', purpose: 'Seizures', type: 'Injectable', charges: 'true', price: '$3.50' }
+        items: [ { id: 1, name: 'Quadritrop', purpose: 'Skin Irritation', type: 'Cream', charges: true, price: '2.00' },
+          { id: 2, name: 'Benedryl', purpose: 'Allergies', type: 'Pill', charges: true, price: '3.00' },
+          { id: 3, name: 'Amoxicillin', purpose: 'Antibiotic', type: 'Liquid', charges: false, price: '0.00' },
+          { id: 4, name: 'Valium', purpose: 'Seizures', type: 'Injectable', charges: true, price: '3.50' }
         ]
       }
     })

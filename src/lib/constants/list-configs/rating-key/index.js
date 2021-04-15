@@ -34,13 +34,13 @@ export default {
       type        : 'button',
       options     : [
         {
-          display_name: 'Edit Reason',
+          display_name: 'Edit Rating',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Reason',
+          display_name: 'Delete Rating',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import PetRetireReasonForm from  './Form'
 import { useChangeStatusEffect } from '@hooks/Shared'
@@ -12,7 +12,8 @@ import petRetireReasonListConfig from '@lib/constants/list-configs/pet/animal-se
 import petRetireReasonDuck from '@reducers/pet/retire-reason'
 import petRetireReasonDetailDuck from '@reducers/pet/retire-reason/detail'
 
-const PetRetireReasonList = ({ petRetireReason, petRetireReasonDetail, ...props }) => {
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const PetRetireReasonList = ({  petRetireReasonDetail, ...props }) => {
   useChangeStatusEffect(props.getPetRetireReason, petRetireReasonDetail.status)
 
   useEffect(() => {
@@ -22,14 +23,12 @@ const PetRetireReasonList = ({ petRetireReason, petRetireReasonDetail, ...props 
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
   }
-
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete')
-      props.setItem(petRetireReason.selector.selected_items[0], 'DELETE')
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
+    }
   }
 
   return (
@@ -37,15 +36,16 @@ const PetRetireReasonList = ({ petRetireReason, petRetireReasonDetail, ...props 
       <Grid columns={2}>
         <Grid.Column
           computer={10} mobile={12} tablet={8}>
-          <Table
-            config={petRetireReasonListConfig}
-            duck={petRetireReasonDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={petRetireReasonListConfig}
+              duck={petRetireReasonDuck}
+              onRowButtonClick={_handleButtonClick}/>
+          </div>
         </Grid.Column>
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>New Reason</Button>
+          computer={6} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Add Reason</Button>
         </Grid.Column>
       </Grid>
 

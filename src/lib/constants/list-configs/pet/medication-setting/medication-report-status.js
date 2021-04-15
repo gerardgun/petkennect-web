@@ -33,13 +33,13 @@ export default {
       width       : 2,
       options     : [
         {
-          display_name: 'Edit Reason',
+          display_name: 'Edit Report Status',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Reason',
+          display_name: 'Delete Report Status',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'

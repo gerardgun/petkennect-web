@@ -184,7 +184,7 @@ const categories = [
     label        : 'Old Setup',
     subcategories: [
       { href: '/setup/admin-item', label: 'Admin Items' },
-      { href: '/setup/system-setting', label: 'Application System Settings' },
+      // { href: '/setup/system-setting', label: 'Application System Settings' },
       { href: '/setup/animal-setting', label: 'Animal Setting' },
       { href: '/setup/service-setting', label: 'Services Settings' },
       { href: '/setup/color-codes', label: 'System Icons/Codes' },

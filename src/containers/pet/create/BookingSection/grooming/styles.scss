@@ -1,0 +1,47 @@
+.label-style{
+    min-width: 45%;
+    margin-right: 8px !important;
+    margin-bottom: 8px !important;
+    height: 2.6rem !important;
+    margin-left: 0 !important;
+    padding-top: .8rem !important;
+}
+
+
+.tag-display{
+
+    display: flex !important;
+    flex-wrap: wrap !important;
+}
+.flex-container{
+  display : flex !important;
+ 
+}
+
+.table-left{
+    margin-right: 0 !important;
+    border-right: solid 1px rgba(34, 36, 38, 0.15);
+  }
+  
+  .table-right{
+  margin-left: 0 !important;
+  margin-right: -16px !important;
+  }
+  
+  .t-header{
+    display: inline-block !important;
+  }
+  .l-header{
+    display: flex;
+    justify-content: center;
+  }
+  
+  .total-use{
+    margin-left: 1.1rem !important;
+    margin-right: 5rem !important;
+  }
+  .h-container{
+    border-right: solid 1px rgba(34, 36, 38, 0.15) !important;
+  }
+  
+  

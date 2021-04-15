@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import FeedingTimeForm from  './form'
@@ -12,9 +12,10 @@ import feedingTimeListConfig from '@lib/constants/list-configs/pet/feeding-setti
 
 import feedingTimeDuck from '@reducers/pet/feeding-setting/feeding-time'
 import feedingTimeDetailDuck from '@reducers/pet/feeding-setting/feeding-time/detail'
-
-const FeedingTimes = ({ feedingTime, feedingTimeDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+import '../styles.scss'
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const FeedingTimes = ({ feedingTimeDetail, ...props }) => {
+  const [ open, { _handleClose } ] = useModal()
   useChangeStatusEffect(props.getfeedingTimes, feedingTimeDetail.status)
 
   useEffect(() => {
@@ -24,15 +25,11 @@ const FeedingTimes = ({ feedingTime, feedingTimeDetail, ...props }) => {
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
   }
-
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(feedingTime.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
 
@@ -40,14 +37,14 @@ const FeedingTimes = ({ feedingTime, feedingTimeDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={feedingTimeListConfig}
-            duck={feedingTimeDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={feedingTimeListConfig}
+              duck={feedingTimeDuck}
+              onRowButtonClick={_handleButtonClick}/></div>
         </Grid.Column>
-        <Grid.Column computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Meal Time</Button>
+        <Grid.Column computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Meal Time</Button>
         </Grid.Column>
       </Grid>
 

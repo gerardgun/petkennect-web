@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Grid, Header } from 'semantic-ui-react'
+import { Button, Grid } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import TrainingMethodCreate from './create'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
@@ -12,9 +12,10 @@ import trainingMethodListConfig from '@lib/constants/list-configs/training-metho
 import trainingMethodDuck from '@reducers/training-method'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 import useModal from '@components/Modal/useModal'
-
-const TrainingMethod = ({ trainingMethod, trainingMethodDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+import '../styles.scss'
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const TrainingMethod = ({ trainingMethodDetail, ...props }) => {
+  const [ open, { _handleClose } ] = useModal()
   useChangeStatusEffect(props.getTrainingMethod, trainingMethodDetail.status)
 
   useEffect(() => {
@@ -25,14 +26,11 @@ const TrainingMethod = ({ trainingMethod, trainingMethodDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(trainingMethod.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
 
@@ -40,17 +38,18 @@ const TrainingMethod = ({ trainingMethod, trainingMethodDetail, ...props }) => {
     <>
       <Grid  columns={2}>
         <Grid.Column computer={10} mobile={14} tablet={8}>
-          <Table
-            config={trainingMethodListConfig}
-            duck={trainingMethodDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={trainingMethodListConfig}
+              duck={trainingMethodDuck}
+              onRowButtonClick={_handleButtonClick}/>
+          </div>
         </Grid.Column>
         <Grid.Column
-
           computer={5} mobile={13} tablet={8}>
           <Button
             basic
+
             color='teal'
             content='Add Method'
             icon='Add'

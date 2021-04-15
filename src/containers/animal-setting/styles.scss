@@ -7,16 +7,14 @@
   margin-right: -8px !important;
 }
 
-.mt55 {
-  margin-top: 55px !important;
-}
-
 .grid-step{
   .step{
     padding: 1.1em 1em !important;
   }
   .ui.steps .step.active {
-    background: #00b5ad0a !important;
+    background: #00AA9F18 !important;
+    background: transparent !important;
+    // background-color: #fafcff !important;
     color: #00aa9f;
     .icon{
       color: #00aa9f !important;
@@ -40,4 +38,28 @@
   .ui.info.message{
     background-color: #f8ffff !important;
   }
+}
+
+.ui-table-overflow {
+  .segment.ui.segment.dimmable{
+ 
+    overflow-y: auto !important;
+  }
+}
+
+.div-table-width {
+  width: 98% !important;
+  overflow-y: auto !important;
+  .ui.table {
+    width: max-content !important;
+  }
+}
+
+
+.quick-link{
+  display: flex !important;
+}
+
+.link-tab{
+  min-width: 14%;
 }

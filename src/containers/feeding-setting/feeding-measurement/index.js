@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import MeasurementForm from  './form'
@@ -12,9 +12,10 @@ import feedingMeasurementListConfig from '@lib/constants/list-configs/pet/feedin
 
 import feedingMeasurementDuck from '@reducers/pet/feeding-setting/feeding-measurement'
 import feedingMeasurementDetailDuck from '@reducers/pet/feeding-setting/feeding-measurement/detail'
-
-const FeedingMeasurement = ({ feedingMeasurement, feedingMeasurementDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+import '../styles.scss'
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const FeedingMeasurement = ({  feedingMeasurementDetail, ...props }) => {
+  const [ open, {  _handleClose } ] = useModal()
   useChangeStatusEffect(props.getfeedingMeasurements, feedingMeasurementDetail.status)
 
   useEffect(() => {
@@ -25,14 +26,11 @@ const FeedingMeasurement = ({ feedingMeasurement, feedingMeasurementDetail, ...p
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(feedingMeasurement.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
 
@@ -40,15 +38,15 @@ const FeedingMeasurement = ({ feedingMeasurement, feedingMeasurementDetail, ...p
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={feedingMeasurementListConfig}
-            duck={feedingMeasurementDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={feedingMeasurementListConfig}
+              duck={feedingMeasurementDuck}
+              onRowButtonClick={_handleButtonClick}/></div>
         </Grid.Column>
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Measurement</Button>
+          computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Measurement</Button>
         </Grid.Column>
       </Grid>
 

@@ -13,9 +13,9 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [ { id: 0, name: 'Taken', charges: 'true' },
-          { id: 1, name: 'Partially Taken', charges: 'false' },
-          { id: 2, name: 'Refused', charges: 'true' }
+        items: [ { id: 1, name: 'Taken', charges: true, price: '2.00' },
+          { id: 2, name: 'Partially Taken', charges: false, price: '3.50' },
+          { id: 3, name: 'Refused', charges: true, price: '1.00' }
         ]
       }
     })

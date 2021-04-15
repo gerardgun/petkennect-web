@@ -1,7 +1,10 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 export default {
   columns: [
     {
-      display_name: 'RESERVATION DATE',
+      display_name: 'DATE',
       name        : 'reserved',
       type        : 'date', // image, boolean, date, datetime, money, label
       width       : null,
@@ -16,14 +19,6 @@ export default {
       align       : 'left',
       sort        : true,
       sort_name   : 'location__code'
-    },
-    {
-      display_name: 'Kennel',
-      name        : 'kennel',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
     },
     {
       display_name: 'Check In',
@@ -42,9 +37,9 @@ export default {
       sort        : true
     },
     {
-      display_name: 'Night',
+      display_name: 'Nights',
       name        : 'night',
-      type        : 'number',
+      type        : 'string',
       width       : null,
       align       : 'left',
       sort        : true
@@ -58,60 +53,97 @@ export default {
       sort        : true
     },
     {
-      display_name: 'Actions',
-      name        : 'custom_name',
-      type        : 'dropdown',
-      options     : [
-        {
-          display_name: 'Edit Reserve',
-          name        : 'edit_reserve',
-          icon        : 'edit'
-        },
-        {
-          display_name: 'View Report',
-          name        : 'view_report',
-          icon        : 'eye'
-        },
-        {
-          display_name: 'Edit Note',
-          name        : 'edit_note',
-          icon        : 'edit outline'
-        },
-        {
-          display_name: 'Cancel CheckIn',
-          name        : 'cancel_checkIn',
-          disable     : item => !item.is_pending,
-          icon        : 'window close outline'
-        },
-        {
-          display_name: 'Absent',
-          name        : 'absent',
-          disable     : item => item.is_pending,
-          icon        : 'trash alternate outline'
-        },
-        {
-          display_name: 'Cancel Reserve',
-          name        : 'cancel_reserve',
-          icon        : 'close'
-        }
-      ]
+      display_name: 'Service',
+      name        : 'service',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true
     },
     {
-      display_name: 'Actions',
+      display_name: 'Run',
+      name        : 'run',
+      type        : 'string',
+      width       : null,
+      align       : 'left',
+      sort        : true
+    },
+    {
+      display_name: 'Addons',
+      name        : 'addons',
+      type        : 'string',
+      width       : null,
+      align       : 'center',
+      sort        : true,
+      formatter   : (cell) => {
+        return (
+          <span>
+            <Link>
+              {cell}
+            </Link>
+
+          </span>)
+      }
+
+    },
+    {
+      display_name: '',
       name        : 'custom_name',
       type        : 'button',
       options     : [
         {
           display_name: 'Check In',
           name        : 'check_in',
-          disable     : item => !item.is_pending,
+          color       : 'green',
           icon        : 'arrow right'
+        }
+
+      ]
+    },
+    {
+      display_name: 'Actions',
+      name        : 'custom_name',
+      type        : 'dropdown',
+      options     : [
+        {
+          icon        : 'edit',
+          display_name: 'Edit Reserve',
+          name        : 'edit_reserve'
         },
         {
-          display_name: 'Check Out',
-          name        : 'check_out',
-          disable     : item => item.is_pending,
-          icon        : 'check'
+          icon        : 'sticky note outline',
+          display_name: 'Add Note',
+          name        : 'add_note'
+        },
+        {
+          icon        : 'add',
+          display_name: 'Add Interaction',
+          name        : 'add_interaction'
+        },
+        {
+          icon        : 'server',
+          display_name: 'Add-on Services',
+          name        : 'add_on'
+        },
+        {
+          icon        : 'file text',
+          display_name: 'Add/Edit Logs',
+          name        : 'edit_logs'
+        },
+        {
+          icon        : 'file pdf',
+          display_name: 'Add/Edit Report Card',
+          name        : 'report_cards'
+        },
+        {
+          icon        : 'print',
+          display_name: 'Print Run Card',
+          name        : 'print_run_card'
+        },
+        {
+          icon        : 'trash alternate outline',
+          display_name: 'Delete Reservation',
+          name        : 'delete_reservation'
         }
       ]
     }

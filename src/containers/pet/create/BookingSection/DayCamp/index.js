@@ -1,35 +1,51 @@
-import React,{ useEffect } from 'react'
+import React,{ useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header, Segment, Dropdown, Button, Grid, Container } from 'semantic-ui-react'
+import { Header, Icon, Label, Button, Grid, Container } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 
 import config from '@lib/constants/list-configs/pet/daycamp-reservation'
+import configPackage from '@lib/constants/list-configs/pet/day-service-package'
 
 import petDetailDuck from '@reducers/pet/detail'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import dayCampReservationDuck from '@reducers/pet/reservation/daycamp-reservation'
 import dayCampReservationDetailDuck from '@reducers/pet/reservation/daycamp-reservation/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
-
+import dayServicePackageDuck from '@reducers/pet/reservation/day-service-package'
+import dayServicePackageDetailDuck from '@reducers/pet/reservation/day-service-package/detail'
+import daycampReservationUsageDuck from '@reducers/pet/reservation/usage/daycamp/reservation'
+import daycampPrepaidUsageDuck from '@reducers/pet/reservation/usage/daycamp/prepaid'
+import daycampPrepaidConfig from '@lib/constants/list-configs/reservation/usage/daycamp/daycamp-prepaid-usage'
+import daycampReservationConfig from '@lib/constants/list-configs/reservation/usage/daycamp/daycamp-reservation-usage'
+import './styles.scss'
 const Table = loadable(() => import('@components/Table'))
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const PetNotes = loadable(() => import('../Notes'))
 const PackageCreateForm = loadable(() => import('./package-create'))
+const CheckOutAlert = loadable(() => import('../common-section/check-out-alert'))
+const RebookAlert = loadable(() => import('../common-section/rebook-alert'))
+const AddServiceTag = loadable(() => import('../common-section/add-service-tag'))
 
 function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
   useEffect(() => {
     props.getDayCampReservation()
+    props.getDayServicePackage()
+    props.getExampleOne()
+    props.getExampleTwo()
   }, [])
   const history = useHistory()
+
+  const [ data,setData ] = useState([])
+  const [ checkedOut, setCheckedOut ] = useState([])
+  const [ checkOutAlert,setCheckOutAlert ] = useState({ status: false, id: '' })
+  const [ rebookAlert,setRebookAlert ] = useState(false)
 
   const { pet: petId } = useParams()
   const { client: client_id } = useParams()
   const clientId = `${petDetail.item.client}`
   const client = petDetail.item &&  petDetail.item.client
-  const _handleAddPackageBtnClick = () =>{
-    props.setItem(null, 'CREATE')
-  }
 
   const _handleAddReservationBtnClick = () => {
     if(comesFromScreen == 'from pet') {
@@ -57,116 +73,152 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
         history.replace(`/client/${clientId}/book`)
         break
 
-      case 'edit_note' : props.setNoteItem(item,'READ')
+      case 'add_notes' : props.setNoteItem(item,'READ')
+        break
+
+      case 'delete_reservation' : props.setItem(item,'DELETE')
         break
     }
   }
 
+  const _handleAddPackageBtnClick = () =>{
+    props.setItemPackage(null, 'CREATE')
+  }
+
+  const _handlePackageOptionClick = (option,item) => {
+    if(option === 'delete')
+      props.setItemPackage(item, 'DELETE')
+    else if(option === 'edit_package')
+      props.setItemPackage(item, 'UPDATE')
+  }
+
+  // const _handleReservation = (value)=>{
+  //   if(value.status === 'incomplete')
+  //     setData([ ...data,value.id ])
+
+  //   else if(value.status === 'checkIn')
+  //     setCheckOutAlert({ status: true, id: value.id })
+  // }
+
+  const _onHandleCheckOutClose = (message,id) =>{
+    if(message === 'checkout') {
+      const filterArray = data.filter(item=>item != id)
+      setData(filterArray)
+      setCheckedOut([ ...checkedOut,id ])
+      setCheckOutAlert({ status: false, id: '' })
+    }
+
+    else {
+      setCheckOutAlert({ status: false, id: '' })
+    }
+  }
+
+  const _onHandleRebookAlertClose = ()=>{setRebookAlert(false)}
+
   return (
     <Container className='c-booking-daycamp' fluid>
-      <Grid className='segment-content-header' columns={2}>
-        <Grid.Column computer={16}>
-          <Header as='h2' className='child_header'>Day Camp Purchase History</Header>
+      <Grid className='mh0 mt4'>
+        <Grid.Column computer={4}>
+          <Header as='h3' className='mt4 service-heading' color='teal'>Service Tags:</Header>
         </Grid.Column>
-        <Grid.Column
-          className='ipad_full_width' computer={13} mobile={16}
-          tablet={16}>
-          <Segment>
-            <Header as='h4' className='text-underline'>
-      Current Package
-            </Header>
-            <Grid columns={16}>
-              <Grid.Row>
-                <Grid.Column computer={4} mobile={16} tablet={8}>
-                  <b>Package Type</b><br/>
-                  <p>5 Day</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={3} mobile={16}
-                  tablet={8}>
-                  <b>Used</b><br/>
-                  <p>3</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={3} mobile={16}
-                  tablet={8}>
-                  <b>Remaining</b><br/>
-                  <p>2</p>
-                </Grid.Column>
-                <Grid.Column computer={4} mobile={12} tablet={6}>
-                  <b>Status</b><br/>
-                  <p>PIF/Refunded</p>
-                </Grid.Column>
-                <Grid.Column computer={2} mobile={4} tablet={2}>
-                  <Dropdown
-                    className='dropdown_icon_hamburger_menu'
-                    direction='left'
-                    icon={null}
-                    onChange={_handleOptionDropdownChange}
-                    options={[
-                      { key: 1, icon: 'edit', value: 'edit', text: 'Edit' },
-                      { key: 2, icon: 'share icon', value: 'transfer_package', text: 'Transfer Package' },
-                      { key: 3, icon: 'paper plane outline', value: 'refund', text: 'Refund' },
-                      { key: 4, icon: 'trash', value: 'delete', text: 'Delete' }
-                    ]}
-                    selectOnBlur={false}
-                    trigger={(
-                      <Button basic icon='ellipsis vertical'/>
-                    )}
-                    value={null}/>
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={16}>
-                  <b>Comment: </b> Test comment
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-            <Header as='h4' className='text-underline'>
-      Total Usage
-            </Header>
-            <Grid columns={16}>
-              <Grid.Row>
-                <Grid.Column computer={4} mobile={16} tablet={16}>
-                  <b>Days Allowed</b><br/>
-                  <p>100</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={3} mobile={16}
-                  tablet={8}>
-                  <b>Used</b><br/>
-                  <p>97</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={3} mobile={16}
-                  tablet={8}>
-                  <b>Remaining</b><br/>
-                  <p>2</p>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={4} mobile={16}
-                  tablet={8}>
-                  <b>Reservations</b><br/>
-                  <p>2</p>
-                </Grid.Column>
-                <Grid.Column computer={2} mobile={16} tablet={16}>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+        <Grid.Column className='tag-display' computer={8} textAlign='center'>
+          <Label
+            as='a'
+            className='label-style'
+            size='medium'>
+              Leash
+            <Icon name='delete'/>
+          </Label>
+          <Label
+            as='a'
+            className='label-style'
+            size='medium'>
+              Kennel Reactive
+            <Icon name='delete'/></Label>
+        </Grid.Column>
 
-          </Segment>
+        <Grid.Column
+          computer={4} mobile={3} tablet={4}>
+          <Button
+            basic className='w120' color='teal'
+            onClick={()=>props.setItem(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
+        </Grid.Column>
+      </Grid>
+      <Grid className='mh0'>
+        <Grid.Column computer={12}>
+          <Header as='h3' className='mt4 mr32 service-heading' color='teal'>Most Frequently Used Service:</Header>
+          <Header as='h3' className='mt4 my-class'> Day Camp</Header>
         </Grid.Column>
         <Grid.Column
-          className='ipad_full_width' computer={3} mobile={16}
-          tablet={16}>
+          computer={4} mobile={4} tablet={4}>
           <Button
-            className='mv8  w100' color='teal' content='Add Package'
-            onClick={_handleAddPackageBtnClick}/>
-          <Button className='mv8 w100' color='teal' content='Past Purchases'/>
-          <Button className='mv8 w100' color='teal' content='Reservation Recon'/>
+            basic className='w120' color='teal'
+            content='Rebook' icon='redo alternate' onClick={()=>setRebookAlert(true)}/>
+        </Grid.Column>
+      </Grid>
+      <Grid>
+        <Grid.Column className='pr0 scroll-container pb0' computer={16}>
+          <div className='flex-container'>
+            <div>
+              <div className='h-container'>
+                <Header as='h3' className='t-header total-use' color='teal'>Total Usage : </Header>
+                <Header as='h4'className='t-header mt0' >Prepaids</Header>
+              </div>
+
+              <div className='table-left'>
+                <Table
+                  config={daycampPrepaidConfig}
+                  duck={daycampPrepaidUsageDuck}/>
+              </div>
+
+            </div>
+            <div>
+              <div className='l-header'>
+                <Header as='h4' className='m-b' >Reservations</Header>
+              </div>
+
+              <div className='table-right'>
+                <Table
+                  config={daycampReservationConfig}
+                  duck={daycampReservationUsageDuck}/>
+              </div>
+            </div>
+
+          </div>
+
         </Grid.Column>
 
       </Grid>
+
+      <Grid className='segment-content-header mb0' columns={2}>
+
+        <Grid.Column
+          className='mt32'
+          computer={6}
+          mobile={10} style={{ 'padding-top': '1.4rem' }}
+          tablet={4}>
+          <Header as='h3'  color='teal' >Recent Package Detail</Header>
+        </Grid.Column >
+        <Grid.Column
+          className='ui-grid-align mt32'
+          computer={10} mobile={10} tablet={12}>
+          <Button
+            basic
+            color='teal'
+            content='View All'/>
+          <Button
+            color='teal'
+            content='Add Package'
+            icon='add'
+            onClick={_handleAddPackageBtnClick}/>
+        </Grid.Column>
+      </Grid>
+      <div className='training-table'>
+        <Table
+          config={configPackage}
+          duck={dayServicePackageDuck}
+          onRowDropdownChange={_handlePackageOptionClick}/>
+      </div>
 
       <Grid className='segment-content-header' columns={2}>
         <Grid.Column computer={4} mobile={10} tablet={4}>
@@ -178,17 +230,26 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
           <Button
             color='teal'
             content='New Reservation'
+            icon='add'
             onClick={_handleAddReservationBtnClick}/>
         </Grid.Column>
       </Grid>
-      <Table
-        config={config}
-        duck={dayCampReservationDuck}
-        onOptionDropdownChange={_handleOptionDropdownChange}
-        onRowButtonClick={_handleRowButtonClick}
-        onRowClick={_handleRowClick}/>
+      <div className='div-table-width'>
+        <Table
+          config={config}
+          duck={dayCampReservationDuck}
+          // onOptionDropdownChange={_handleOptionDropdownChange}
+          onRowButtonClick={_handleRowButtonClick}
+          onRowClick={_handleRowClick}
+          onRowDropdownChange={_handleOptionDropdownChange}/>
+      </div>
       <PackageCreateForm/>
+      <CheckOutAlert alertStatus={checkOutAlert} handleClose={_onHandleCheckOutClose}/>
+      <RebookAlert alertStatus={rebookAlert} handleClose={_onHandleRebookAlertClose}/>
+      <AddServiceTag detailDuck={dayCampReservationDetailDuck}/>
       <PetNotes/>
+      <ModalDelete duckDetail={dayServicePackageDetailDuck}/>
+      <ModalDelete duckDetail={dayCampReservationDetailDuck}/>
     </Container>
   )
 }
@@ -200,12 +261,17 @@ export default compose(
   connect(
     (state) => ({
       petDetail         : petDetailDuck.selectors.detail(state),
-      daycampReservation: dayCampReservationDuck.selectors.list(state)
+      daycampReservation: dayCampReservationDuck.selectors.list(state),
+      dayServicePackage : dayServicePackageDuck.selectors.list(state)
     }),{
       setNoteItem          : petNoteDetailDuck.creators.setItem,
       getDayCampReservation: dayCampReservationDuck.creators.get,
+      getDayServicePackage : dayServicePackageDuck.creators.get,
       setItem              : dayCampReservationDetailDuck.creators.setItem,
-      setItemReservation   : petReservationDetailDuck.creators.setItem
+      setItemReservation   : petReservationDetailDuck.creators.setItem,
+      setItemPackage       : dayServicePackageDetailDuck.creators.setItem,
+      getExampleOne        : daycampPrepaidUsageDuck.creators.get,
+      getExampleTwo        : daycampReservationUsageDuck.creators.get
     })
 )(DaycampServiceSection)
 

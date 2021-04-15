@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import { useChangeStatusEffect } from '@hooks/Shared'
@@ -12,9 +12,9 @@ import medicationTypeListConfig from '@lib/constants/list-configs/pet/medication
 
 import medicationTypeDuck from '@reducers/pet/medication-setting/medication-type'
 import medicationTypeDetailDuck from '@reducers/pet/medication-setting/medication-type/detail'
-
-const MedicationType = ({ medicationType, medicationTypeDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const MedicationType = ({  medicationTypeDetail, ...props }) => {
+  const [ open, {  _handleClose } ] = useModal()
   useChangeStatusEffect(props.getmedicationTypes, medicationTypeDetail.status)
 
   useEffect(() => {
@@ -24,15 +24,11 @@ const MedicationType = ({ medicationType, medicationTypeDetail, ...props }) => {
   const _handleAddBtnClick = () => {
     props.setItem(null, 'CREATE')
   }
-
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(medicationType.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
 
@@ -40,14 +36,15 @@ const MedicationType = ({ medicationType, medicationTypeDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={medicationTypeListConfig}
-            duck={medicationTypeDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={medicationTypeListConfig}
+              duck={medicationTypeDuck}
+              onRowButtonClick={_handleButtonClick}/>
+          </div>
         </Grid.Column>
-        <Grid.Column computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Type</Button>
+        <Grid.Column computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Type</Button>
         </Grid.Column>
       </Grid>
 

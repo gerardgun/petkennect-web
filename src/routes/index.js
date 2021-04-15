@@ -18,7 +18,6 @@ import VaccinationSetting from '@containers/vaccination-setting'
 import AuthMe from '@containers/auth/me'
 import Category from '@containers/category'
 import ColorCode from '@containers/color-code'
-import Dashboard from '@containers/dashboard'
 import BehaviorTagSetting from '@containers/behavior-tag-setting'
 import BookingSheetSetting from '@containers/booking-sheet-setting'
 import BreedManagerSetting from '@containers/breed-manager-setting'
@@ -249,7 +248,7 @@ const privateRoutes = [
   },
   {
     path     : '/dashboard',
-    component: Dashboard
+    component: Client
   },
   {
     path     : '/setup/payment-method',

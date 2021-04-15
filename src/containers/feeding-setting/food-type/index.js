@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 
-import ModalDelete from '@components/Modal/Delete'
+import loadable from '@loadable/component'
 import Table from '@components/Table'
 import useModal from '@components/Modal/useModal'
 import FoodTypeForm from  './form'
@@ -12,9 +12,9 @@ import foodTypeListConfig from '@lib/constants/list-configs/pet/feeding-setting/
 
 import foodTypeDuck from '@reducers/pet/feeding-setting/food-type'
 import foodTypeDetailDuck from '@reducers/pet/feeding-setting/food-type/detail'
-
-const FoodType = ({ foodType, foodTypeDetail, ...props }) => {
-  const [ open, { _handleOpen, _handleClose } ] = useModal()
+const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
+const FoodType = ({  foodTypeDetail, ...props }) => {
+  const [ open, {  _handleClose } ] = useModal()
   useChangeStatusEffect(props.getfoodTypes, foodTypeDetail.status)
 
   useEffect(() => {
@@ -25,14 +25,11 @@ const FoodType = ({ foodType, foodTypeDetail, ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
-  }
-
-  const _handleOptionClick = option => {
-    if(option === 'delete') {
-      props.setItem(foodType.selector.selected_items[0], 'DELETE')
-      _handleOpen()
+  const _handleButtonClick = (button,item) =>{
+    switch (button) {
+      case 'edit': props.setItem(item,'UPDATE')
+        break
+      case 'delete' : props.setItem(item,'DELETE')
     }
   }
 
@@ -40,14 +37,14 @@ const FoodType = ({ foodType, foodTypeDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={foodTypeListConfig}
-            duck={foodTypeDuck}
-            onOptionClick={_handleOptionClick}
-            onRowClick={_handleRowClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={foodTypeListConfig}
+              duck={foodTypeDuck}
+              onRowButtonClick={_handleButtonClick}/></div>
         </Grid.Column>
-        <Grid.Column computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Food Type</Button>
+        <Grid.Column computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Food Type</Button>
         </Grid.Column>
       </Grid>
 
