@@ -14,10 +14,10 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [ { id: 0, name: 'Seperate to Feed' },
-          { id: 1, name: 'Feed Alone' },
-          { id: 2, name: 'Use Slow Feeder' },
-          { id: 3, name: 'Monitor Feeding' }
+        items: [ { id: 1, name: 'Seperate to Feed' },
+          { id: 2, name: 'Feed Alone' },
+          { id: 3, name: 'Use Slow Feeder' },
+          { id: 4, name: 'Monitor Feeding' }
         ]
       }
     })

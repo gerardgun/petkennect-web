@@ -37,13 +37,14 @@ const FoodType = ({  foodTypeDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={foodTypeListConfig}
-            duck={foodTypeDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={foodTypeListConfig}
+              duck={foodTypeDuck}
+              onRowButtonClick={_handleButtonClick}/></div>
         </Grid.Column>
-        <Grid.Column computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Food Type</Button>
+        <Grid.Column computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Food Type</Button>
         </Grid.Column>
       </Grid>
 

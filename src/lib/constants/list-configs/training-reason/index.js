@@ -1,4 +1,11 @@
 export default {
+  actions: [
+    {
+      display_name: 'Create New Reason',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Name',
@@ -11,16 +18,15 @@ export default {
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : null,
       options     : [
         {
-          display_name: 'Edit Record',
+          display_name: 'Edit Reason',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
+          display_name: 'Delete Reason',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'

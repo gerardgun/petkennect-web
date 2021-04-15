@@ -28,23 +28,22 @@ const QuickLinks = ()=>{
   return (
     <>
       <Grid>
-        <Grid.Column>
+        <Grid.Column className='quick-link pr0'>
           <span className='quick-link-font ml16' color='teal'><b>Quick Links:</b> &nbsp;</span>
           <Button
-            className='mh12 w160' color='teal'
+            className='mh12 link-tab' color='teal'
             content='Vaccination' name='vaccination' onClick={_handleVaccinationBtnClick}/>
           <Button
-            className='mr12 w160' color='teal'
+            className='mr12 link-tab' color='teal'
             content='Animal Settings' name='animalSettings' onClick={_handleAnimalSettingsBtnClick}/>
           <Button
-            className='mr12 w160' color='teal'
+            className='mr12 link-tab' color='teal'
             content='Feeding' name='feeding' onClick={_handleFeedingBtnClick}/>
           <Button
-            className='mr12 w160' color='teal'
+            className='mr12 link-tab' color='teal'
             content='Medication' name='medication' onClick={_handleMedicationBtnClick}/>
           <Button
-            className='w160'
-            color='teal'
+            color='teal link-tab'
             content='Breed Manager' name='breedManager' onClick={_handleBreedManagerBtnClick}/>
         </Grid.Column>
       </Grid>

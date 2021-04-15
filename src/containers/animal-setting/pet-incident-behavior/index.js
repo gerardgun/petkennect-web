@@ -36,14 +36,16 @@ const PetIncidentBehaviorList = ({ petIncidentBehaviorDetail, ...props }) => {
       <Grid columns={2}>
         <Grid.Column
           computer={10} mobile={12} tablet={8}>
-          <Table
-            config={petIncidentBehaviorListConfig}
-            duck={petIncidentBehaviorDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={petIncidentBehaviorListConfig}
+              duck={petIncidentBehaviorDuck}
+              onRowButtonClick={_handleButtonClick}/>
+          </div>
         </Grid.Column>
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>New Behavior</Button>
+          computer={6} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Add Behavior</Button>
         </Grid.Column>
       </Grid>
 

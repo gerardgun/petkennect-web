@@ -12,6 +12,7 @@ import mealStatusListConfig from '@lib/constants/list-configs/pet/feeding-settin
 
 import mealStatusDuck from '@reducers/pet/feeding-setting/meal-status'
 import mealStatusDetailDuck from '@reducers/pet/feeding-setting/meal-status/detail'
+import '../styles.scss'
 const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const MealStatus = ({  mealStatusDetail, ...props }) => {
   const [ open, {  _handleClose } ] = useModal()
@@ -37,13 +38,14 @@ const MealStatus = ({  mealStatusDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={mealStatusListConfig}
-            duck={mealStatusDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={mealStatusListConfig}
+              duck={mealStatusDuck}
+              onRowButtonClick={_handleButtonClick}/></div>
         </Grid.Column>
-        <Grid.Column computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Meal Status</Button>
+        <Grid.Column computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Meal Status</Button>
         </Grid.Column>
       </Grid>
 

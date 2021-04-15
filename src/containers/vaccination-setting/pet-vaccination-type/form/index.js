@@ -94,13 +94,13 @@ const PetVaccinationTypeForm = (props) => {
             <Field
               component={FormField}
               control={Checkbox}
-              label='Active ?'
+              label='Active?'
               name='is_active'
               type='checkbox'/>
-               <Field
+            <Field
               component={FormField}
               control={Checkbox}
-              label='Required ?'
+              label='Required?'
               name='is_required'
               type='checkbox'/>
           </Form.Group>
@@ -122,8 +122,9 @@ const PetVaccinationTypeForm = (props) => {
                 onClick={_handleClose}
                 type='button'/>
               <Button
+                className='w120'
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Add Vaccination'}
+                content='Save'
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>

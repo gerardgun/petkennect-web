@@ -26,7 +26,7 @@ const EditableField = ()=>{
       </Grid>
       <Grid className='mh0 menu-item-padding' columns={2}>
         <Grid.Column
-          className='mt55 grid-step'
+          className='grid-step'
           computer={3} mobile={16} tablet={4}>
           <Step.Group fluid vertical>
             <Step

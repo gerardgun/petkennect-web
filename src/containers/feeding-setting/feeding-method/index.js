@@ -12,6 +12,7 @@ import feedingMethodListConfig from '@lib/constants/list-configs/pet/feeding-set
 
 import feedingMethodDuck from '@reducers/pet/feeding-setting/feeding-method'
 import feedingMethodDetailDuck from '@reducers/pet/feeding-setting/feeding-method/detail'
+import '../styles.scss'
 
 const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const FeedingMethod = ({ feedingMethodDetail, ...props }) => {
@@ -38,14 +39,15 @@ const FeedingMethod = ({ feedingMethodDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={feedingMethodListConfig}
-            duck={feedingMethodDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={feedingMethodListConfig}
+              duck={feedingMethodDuck}
+              onRowButtonClick={_handleButtonClick}/></div>
         </Grid.Column>
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Feeding Method</Button>
+          computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Feeding Method</Button>
         </Grid.Column>
       </Grid>
 

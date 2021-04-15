@@ -36,14 +36,16 @@ const MedicationTime = ({  medicationTimeDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
-          <Table
-            config={medicationTimeListConfig}
-            duck={medicationTimeDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={medicationTimeListConfig}
+              duck={medicationTimeDuck}
+              onRowButtonClick={_handleButtonClick}/>
+          </div>
         </Grid.Column>
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Time</Button>
+          computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Time</Button>
         </Grid.Column>
       </Grid>
 

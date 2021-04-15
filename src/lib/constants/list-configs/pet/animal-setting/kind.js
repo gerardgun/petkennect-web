@@ -1,11 +1,17 @@
+
 export default {
-  search_placeholder: 'Search',
-  columns           : [
+  actions: [
+    {
+      display_name: 'New Species',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
+  columns: [
     {
       display_name: 'Name',
       name        : 'name',
       type        : 'string',
-      width       : 4,
       align       : 'left',
       sort        : true,
       sort_name   : 'pet__name'
@@ -14,36 +20,32 @@ export default {
       display_name: 'Applies To Location',
       name        : 'location',
       type        : 'string',
-      width       : 7,
-      align       : 'left',
-      sort        : true
+      align       : 'left'
     },
     {
       display_name: 'Actions',
       type        : 'button',
+      width       : 4,
       options     : [
-
         {
-          display_name: 'Vaccine List',
-          name        : 'vaccine_list',
+          display_name: 'View Vaccination List',
+          name        : 'view',
           icon        : 'eye',
-          color       : 'teal'
+          color       : 'blue'
         },
         {
-          display_name: 'Edit Record',
+          display_name: 'Edit Species',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
+          display_name: 'Delete Species',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
-
   ]
 }

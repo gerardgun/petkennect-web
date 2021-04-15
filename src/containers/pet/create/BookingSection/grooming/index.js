@@ -2,7 +2,7 @@
 import React,{ useEffect,useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header, Button, Grid, Container, Label, Icon, Dropdown  } from 'semantic-ui-react'
+import { Header, Button, Grid, Container, Label, Icon } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 import groomingReservationConfig from '@lib/constants/list-configs/pet/grooming-reservation'
@@ -14,6 +14,12 @@ import groomingReservationDetailDuck from '@reducers/pet/reservation/grooming/de
 import groomingPackageDuck from '@reducers/pet/reservation/grooming/package'
 import groomingPackageDetailDuck from '@reducers/pet/reservation/grooming/package/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
+import groomingReservationUsageDuck from '@reducers/pet/reservation/usage/grooming/reservation'
+import groomingPrepaidUsageDuck from '@reducers/pet/reservation/usage/grooming/prepaid'
+import groomingPrepaidConfig from '@lib/constants/list-configs/reservation/usage/grooming/grooming-prepaid-usage'
+import groomingReservationUsageConfig from '@lib/constants/list-configs/reservation/usage/grooming/grooming-reservation-usage'
+
+import './styles.scss'
 
 const Table = loadable(() => import('@components/Table'))
 const PetNotes = loadable(() => import('../Notes'))
@@ -25,8 +31,10 @@ const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
   const [ rebookAlert,setRebookAlert ] = useState(false)
   useEffect(() => {
-    props.getDayCampReservation()
+    props.getgroomingReservation()
     props.getGroomingPackage()
+    props.getGroomingPrepaid()
+    props.getGroomingReservationUsage()
   }, [])
   const history = useHistory()
 
@@ -79,25 +87,27 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column computer={11}>
+        <Grid.Column computer={4}>
           <Header as='h3' className='mt4 service-heading' color='teal'>Service Tags:</Header>
-          <Label
-            as='a'
-            className='mr12 ml20'
-            size='large' style={{ height: '2.6rem', padding: '.78571429em 1.5em .78571429em' }}>
-              No Nails
-              &nbsp;&nbsp;<Icon name='delete'/>
-          </Label>
-          <Label
-            as='a'
-            className='ml0'
-            size='large' style={{ height: '2.6rem', padding: '.78571429em 1.5em .78571429em' }}>
-              Muzzle
-              &nbsp;&nbsp;<Icon name='delete'/>
-          </Label>
         </Grid.Column>
+        <Grid.Column className='tag-display' computer={8} textAlign='center'>
+          <Label
+            as='a'
+            className='label-style'
+            size='medium'>
+              No Nails
+            <Icon name='delete'/>
+          </Label>
+          <Label
+            as='a'
+            className='label-style'
+            size='medium'>
+             Muzzle
+            <Icon name='delete'/></Label>
+        </Grid.Column>
+
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
+          computer={4} mobile={3} tablet={4}>
           <Button
             basic className='w120' color='teal'
             onClick={()=>props.setGroomingReserve(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
@@ -105,8 +115,8 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
       </Grid>
       <Grid className='mh0'>
 
-        <Grid.Column computer={11}>
-          <Header as='h3' className='mt4 pr8 mr20 service-heading' color='teal'>Last Service:</Header>
+        <Grid.Column computer={12}>
+          <Header as='h3' className='mt4 pr8 mr32 service-heading' color='teal'>Last Service:</Header>
           <Header as='h3' className='mt4'>Bath Brush Large Dog</Header>
         </Grid.Column>
 
@@ -120,111 +130,55 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
         </Grid.Column>
       </Grid>
       <Grid className='mh0'>
-        <Grid.Column computer={11}>
-          <Header as='h3' className='mt4 mr20 pr8 service-heading' color='teal'>Preferred Groomer:</Header>
+        <Grid.Column computer={12}>
+          <Header as='h3' className='mt4 mr32 pr8 service-heading' color='teal'>Preferred Groomer:</Header>
           <Header as='h3' className='mt4'>James Hack</Header>
         </Grid.Column>
       </Grid>
-      <Grid className='segment-content-header mt32'>
-        <Grid.Column computer={3}>
-          <Header as='h3' color='teal'>Total Usage:</Header>
+      <Grid>
+        <Grid.Column computer={16}>
+          <Header as='h3' className='t-header total-use' color='teal'>Total Grooming</Header>
         </Grid.Column>
-        <Grid.Column computer={13}>
-          <Grid width={16}>
-            <Grid.Column className='text-center' computer={8}><Header  content='Prepaids'/></Grid.Column>
-            <Grid.Column className='petkennect-profile-body text-center' computer={8}><Header  content='Reservations'/></Grid.Column>
-            <Grid.Column className='divider-margin' computer={16}><hr></hr></Grid.Column>
-            <Grid.Column computer={8}>
-              <Grid.Row >
-                <Grid.Column
-                  className='text-center-daycamp'
-                  computer={4} mobile={16} tablet={8}>
-                  <b>Prepaids</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='20'/>
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp mh32' computer={6} mobile={16}
-                  tablet={8}>
-                  <b># Remaining</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='10'/>
+        <Grid.Column className='pr0 flex-container pb0' computer={16}>
 
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={5} mobile={16}
-                  tablet={8}>
-                  <b> $ Remaining</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='$10.00'/>
+          <div>
+            <div className='h-container l-header'>
 
-                </Grid.Column>
-              </Grid.Row>
-            </Grid.Column>
-            <Grid.Column className='petkennect-profile-body' computer={8}>
-              <Grid.Row >
-                <Grid.Column
-                  className='text-center-daycamp ml20'
-                  computer={4} mobile={16} tablet={8}>
-                  <b>Completed</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='16'/>
+              <Header as='h4'className='mb12' >Prepaids</Header>
+            </div>
 
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp mh12' computer={4} mobile={16}
-                  tablet={8}>
-                  <b>Upcoming</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='5'/>
+            <div className='table-left'>
+              <Table
+                config={groomingPrepaidConfig}
+                duck={groomingPrepaidUsageDuck}/>
+            </div>
 
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp' computer={5} mobile={16}
-                  tablet={8}>
-                  <b>Canceled</b><br/>
-                  <Header
-                    as='h4' className='mt8' color='teal'
-                    content='0'/>
+          </div>
+          <div>
+            <div className='l-header'>
+              <Header as='h4' className='mb12' >Reservations</Header>
+            </div>
 
-                </Grid.Column>
-                <Grid.Column
-                  className='text-center-daycamp ml12' computer={3} mobile={16}
-                  tablet={8}>
-                  <b>Action</b><br/>
-                  {/* <p className='mt8'><Button basic className='action-button' icon='ellipsis vertical'/></p> */}
-                  <Dropdown
-                    direction='left'
-                    icon={null}
-                    options={[ { key: 1, icon: 'file alternate outline' , value: 'recon_report', text: 'Recon Report' },
-                      { key: 2, icon: 'eye' ,value: 'view_details', text: 'View Details' } ]}
-                    selectOnBlur={false}
-                    trigger={(
-                      <Button basic className='action-button mt8' icon='ellipsis vertical'/>
-                    )}
-                    value={null}/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid.Column>
-          </Grid>
+            <div className='table-right'>
+              <Table
+                config={groomingReservationUsageConfig}
+                duck={groomingReservationUsageDuck}/>
+            </div>
+          </div>
+
         </Grid.Column>
+
       </Grid>
       <Grid className='segment-content-header mb0' columns={2}>
 
         <Grid.Column
-          className='mt32'
           computer={6}
           mobile={10} style={{ 'padding-top': '1.4rem' }}
           tablet={4}>
           <Header as='h3'  color='teal' >Grooming Packages</Header>
         </Grid.Column >
         <Grid.Column
-          className='ui-grid-align mt32'
+          className='ui-grid-align'
           computer={10} mobile={10} tablet={12}>
           <Button
             basic
@@ -280,15 +234,17 @@ GroomingServiceSection.defaultProps = {
 export default compose(
   connect(
     (state) => ({
-      petDetail         : petDetailDuck.selectors.detail(state),
-      daycampReservation: groomingReservationDuck.selectors.list(state)
+      petDetail          : petDetailDuck.selectors.detail(state),
+      groomingReservation: groomingReservationDuck.selectors.list(state)
     }),{
-      setNoteItem          : petNoteDetailDuck.creators.setItem,
-      getDayCampReservation: groomingReservationDuck.creators.get,
-      getGroomingPackage   : groomingPackageDuck.creators.get,
-      setGroomingReserve   : groomingReservationDetailDuck.creators.setItem,
-      setItemReservation   : petReservationDetailDuck.creators.setItem,
-      setItemPackage       : groomingPackageDetailDuck.creators.setItem
+      setNoteItem                : petNoteDetailDuck.creators.setItem,
+      getgroomingReservation     : groomingReservationDuck.creators.get,
+      getGroomingPackage         : groomingPackageDuck.creators.get,
+      setGroomingReserve         : groomingReservationDetailDuck.creators.setItem,
+      setItemReservation         : petReservationDetailDuck.creators.setItem,
+      setItemPackage             : groomingPackageDetailDuck.creators.setItem,
+      getGroomingPrepaid         : groomingPrepaidUsageDuck.creators.get,
+      getGroomingReservationUsage: groomingReservationUsageDuck.creators.get
     })
 )(GroomingServiceSection)
 

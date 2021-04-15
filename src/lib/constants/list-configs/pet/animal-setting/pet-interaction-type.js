@@ -1,32 +1,36 @@
 export default {
+  actions: [
+    {
+      display_name: 'New Interaction Type',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Interaction Type',
       name        : 'name',
-      type        : 'string', // image, boolean, date, datetime, money, label
-      width       : 13,
-      align       : 'left',
-      sort        : false
+      type        : 'string',
+      align       : 'left'
     },
     {
       display_name: 'Actions',
       type        : 'button',
+      width       : 2,
       options     : [
         {
-          display_name: 'Edit Record',
+          display_name: 'Edit Interaction Type',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
+          display_name: 'Delete Interaction Type',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
-
   ]
 }

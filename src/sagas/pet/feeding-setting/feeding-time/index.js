@@ -14,11 +14,11 @@ function* get() {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [ { id: 0, name: 'AM', charges: 'true', price: '$2.00' },
-          { id: 1, name: 'PM', charges: 'true',  price: '$2.50' },
-          { id: 2, name: 'Lunch', charges: 'true', price: '$2.00' },
-          { id: 3, name: 'Daycare Dinner', charges: 'true', price: '$3.00' },
-          { id: 4, name: 'Additional Feeding', charges: 'false', price: '$0.00' }
+        items: [ { id: 1, name: 'AM', charges: true, price: '2.00' },
+          { id: 2, name: 'PM', charges: true, price: '2.50' },
+          { id: 3, name: 'Lunch', charges: true, price: '2.00' },
+          { id: 4, name: 'Daycare Dinner', charges: true, price: '3.00' },
+          { id: 5, name: 'Additional Feeding', charges: false, price: '0.00' }
         ]
       }
     })

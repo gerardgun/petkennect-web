@@ -1,33 +1,36 @@
 export default {
+  actions: [
+    {
+      display_name: 'New Action',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Incident Action',
       name        : 'name',
       type        : 'string',
-      width       : 13,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Actions',
       type        : 'button',
+      width       : 2,
       options     : [
-
         {
-          display_name: 'Edit Record',
+          display_name: 'Edit Action',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
+          display_name: 'Delete Action',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
-
   ]
 }

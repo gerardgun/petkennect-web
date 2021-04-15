@@ -38,15 +38,17 @@ const VeterinarianList = ({ veterinarianDetail, ...props }) => {
     <>
       <Grid columns={2}>
         <Grid.Column
-          computer={11} mobile={12} tablet={8}>
-          <Table
-            config={veterinarianListConfig}
-            duck={veterinarianDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          computer={10} mobile={12} tablet={8}>
+          <div className='menu-item-table'>
+            <Table
+              config={veterinarianListConfig}
+              duck={veterinarianDuck}
+              onRowButtonClick={_handleButtonClick}/>
+          </div>
         </Grid.Column>
         <Grid.Column
-          computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Veterinarian</Button>
+          computer={6} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Veterinarian</Button>
         </Grid.Column>
       </Grid>
 

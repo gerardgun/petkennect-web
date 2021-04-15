@@ -12,6 +12,7 @@ import trainingMethodListConfig from '@lib/constants/list-configs/training-metho
 import trainingMethodDuck from '@reducers/training-method'
 import trainingMethodDetailDuck from '@reducers/training-method/detail'
 import useModal from '@components/Modal/useModal'
+import '../styles.scss'
 const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const TrainingMethod = ({ trainingMethodDetail, ...props }) => {
   const [ open, { _handleClose } ] = useModal()
@@ -37,16 +38,18 @@ const TrainingMethod = ({ trainingMethodDetail, ...props }) => {
     <>
       <Grid  columns={2}>
         <Grid.Column computer={10} mobile={14} tablet={8}>
-          <Table
-            config={trainingMethodListConfig}
-            duck={trainingMethodDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={trainingMethodListConfig}
+              duck={trainingMethodDuck}
+              onRowButtonClick={_handleButtonClick}/>
+          </div>
         </Grid.Column>
         <Grid.Column
-
           computer={5} mobile={13} tablet={8}>
           <Button
             basic
+
             color='teal'
             content='Add Method'
             icon='Add'

@@ -26,16 +26,16 @@ const VaccinationSetting = (props)=>
             <Header as='h2' className='cls-MainHeader'>Vaccination Settings</Header>
             <hr></hr>
             <Breadcrumb className='p0'>
-              <Breadcrumb.Section>
-                <Link to=''><Icon name='setting'/>Setting</Link>
+              <Breadcrumb.Section active>
+                <Link to='/setup/admin-item'><Icon name='setting'/>Settings</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider className='mh12' icon='right chevron'/>
               <Breadcrumb.Section active>
-                <Link to=''>Animal Settings</Link>
+                <Link to='/setup/animal-setting'>Animal Settings</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
               <Breadcrumb.Section active>
-                <Link to=''>Vaccinations</Link>
+                <Link to='/setup/animal-setting/vaccination'>Vaccinations</Link>
               </Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>

@@ -12,6 +12,7 @@ import trainingCommandListConfig from '@lib/constants/list-configs/training-comm
 import trainingCommandDuck from '@reducers/training-command'
 import trainingCommandDetailDuck from '@reducers/training-command/detail'
 import useModal from '@components/Modal/useModal'
+import '../styles.scss'
 const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
 const TrainingCommand = ({  trainingCommandDetail, ...props }) => {
   const [ open, { _handleClose } ] = useModal()
@@ -37,11 +38,14 @@ const TrainingCommand = ({  trainingCommandDetail, ...props }) => {
     <>
       <Grid  columns={2}>
         <Grid.Column computer={10} mobile={16} tablet={8}>
-          <Table
-            config={trainingCommandListConfig}
-            duck={trainingCommandDuck}
-            onRowButtonClick={_handleButtonClick}/>
+          <div className='menu-item-table'>
+            <Table
+              config={trainingCommandListConfig}
+              duck={trainingCommandDuck}
+              onRowButtonClick={_handleButtonClick}/>
+          </div>
         </Grid.Column>
+
         <Grid.Column
           computer={5} mobile={14} tablet={8}>
           <Button

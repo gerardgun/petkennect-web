@@ -53,6 +53,7 @@ const PetKindList = ({ petKindDetail, ...props }) => {
       </Grid>
       <Grid columns={2}>
         <Grid.Column
+          className='pr0'
           computer={8} mobile={12} tablet={10}>
           <Table
             config={petKindListConfig}
@@ -61,7 +62,7 @@ const PetKindList = ({ petKindDetail, ...props }) => {
         </Grid.Column>
         <Grid.Column
           computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>New Species</Button>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Add Species</Button>
         </Grid.Column>
       </Grid>
 

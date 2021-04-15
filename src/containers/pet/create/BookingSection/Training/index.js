@@ -13,7 +13,7 @@ import petTrainingReservationDetailDuck from '@reducers/pet/reservation/training
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import petReservationTrainingPackageDetailDuck from '@reducers/pet/reservation/training/package/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
-
+import './styles.scss'
 const Table = loadable(() => import('@components/Table'))
 const PackageCreateForm = loadable(() => import('./package-create'))
 const PetNotes = loadable(() => import('../Notes'))
@@ -80,37 +80,31 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column computer={11}>
+        <Grid.Column computer={4}>
           <Header as='h3' className='mt4 service-heading' color='teal'>Service Tags:</Header>
+        </Grid.Column>
+        <Grid.Column className='tag-display' computer={8} textAlign='center'>
           <Label
             as='a'
-            className='ml20 mr12 '
-            size='large'
-            style={{ height: '2.6rem', padding: '.78571429em 1.5em .78571429em' }}>
+            className='label-style'
+            size='medium'>
               Remote Collar
-              &nbsp;&nbsp;<Icon name='delete'/>
+            <Icon name='delete'/>
           </Label>
           <Label
             as='a'
-            className='ml0'
-            size='large'
-            style={{ height: '2.6rem', padding: '.78571429em 1.5em .78571429em' }}>
-              Aggressive
-              &nbsp;&nbsp;<Icon name='delete'/>
-          </Label>
+            className='label-style'
+            size='medium'>
+             Aggressive
+            <Icon name='delete'/></Label>
         </Grid.Column>
 
         <Grid.Column
-          className='pr20'
-          computer={3} mobile={6} tablet={4}>
+          computer={4} mobile={3} tablet={4}>
           <Button
-            basic
-            className='w120'
-            color='teal'
-            content='Add' floated='left' icon='add'
-            onClick={()=>props.setTrainingReserve(null,'CREATE')}/>
+            basic className='w120' color='teal'
+            onClick={()=>props.setTrainingReserve(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
         </Grid.Column>
-
       </Grid>
       <Grid className='segment-content-header mb0' columns={2}>
 
@@ -135,12 +129,10 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
             onClick={_handleAddPackageBtnClick}/>
         </Grid.Column>
       </Grid>
-      <div className='training-table'>
-
+      <div className='mb40 div-table-width'>
         <Table
           config={trainingPackageConfig}
           duck={petTrainingPackageDuck} onRowDropdownChange={_handleOptionClick}/>
-
       </div>
 
       <Grid className='segment-content-header mb0' columns={2}>
