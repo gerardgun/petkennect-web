@@ -78,9 +78,12 @@ import OrganizationEdit from '@containers/organization/edit'
 import OrganizationShow from '@containers/organization/show'
 import SetupIndex from '@containers/setup'
 import SetupPetBreedIndex from '@containers/setup/pet/breed'
+
+// Settings / Animal / Feeding
 import SetupPetFeedingMealStatusIndex from '@containers/setup/pet/feeding/meal-status-section'
 import SetupPetFeedingMeasurementIndex from '@containers/setup/pet/feeding/measurement-section'
 import SetupPetFeedingMethodIndex from '@containers/setup/pet/feeding/method-section'
+import SetupPetFeedingSettingIndex from '@containers/setup/pet/feeding/setting-section'
 import SetupPetFeedingTimeIndex from '@containers/setup/pet/feeding/time-section'
 import SetupPetFeedingTypeIndex from '@containers/setup/pet/feeding/type-section'
 import SetupPetFeedingUnitIndex from '@containers/setup/pet/feeding/unit-section'
@@ -100,7 +103,9 @@ import SetupPetKindIndex from '@containers/setup/pet/kind'
 import SetupPetMedicationIndex from '@containers/setup/pet/medication'
 import SetupPetMedicationMeasurementIndex from '@containers/setup/pet/medication/measurement-section'
 import SetupPetMedicationReportStatusIndex from '@containers/setup/pet/medication/report-status-section'
+import SetupPetMedicationSettingIndex from '@containers/setup/pet/medication/setting-section'
 import SetupPetMedicationTimeIndex from '@containers/setup/pet/medication/time-section'
+import SetupPetMedicationTypeIndex from '@containers/setup/pet/medication/type-section'
 import SetupPetMedicationUnitIndex from '@containers/setup/pet/medication/unit-section'
 
 // Settings / Animal / Vaccinations
@@ -363,6 +368,10 @@ const privateRoutes = [
     component: SetupPetFeedingMethodIndex
   },
   {
+    path     : '/setup/pet/feeding/setting',
+    component: SetupPetFeedingSettingIndex
+  },
+  {
     path     : '/setup/pet/feeding/time',
     component: SetupPetFeedingTimeIndex
   },
@@ -415,8 +424,16 @@ const privateRoutes = [
     component: SetupPetMedicationReportStatusIndex
   },
   {
+    path     : '/setup/pet/medication/setting',
+    component: SetupPetMedicationSettingIndex
+  },
+  {
     path     : '/setup/pet/medication/time',
     component: SetupPetMedicationTimeIndex
+  },
+  {
+    path     : '/setup/pet/medication/type',
+    component: SetupPetMedicationTypeIndex
   },
   {
     path     : '/setup/pet/medication/unit',

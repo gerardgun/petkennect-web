@@ -4,6 +4,10 @@ import { Grid, Header, Menu } from 'semantic-ui-react'
 
 const items = [
   {
+    label: 'Settings',
+    to   : '/setup/pet/feeding/setting'
+  },
+  {
     label: 'Feeding Times',
     to   : '/setup/pet/feeding/time'
   },

@@ -32,6 +32,12 @@ export default {
       )
     },
     {
+      display_name: 'Price',
+      name        : 'price',
+      type        : 'string',
+      align       : 'left'
+    },
+    {
       display_name: 'Actions',
       type        : 'button',
       width       : 2,

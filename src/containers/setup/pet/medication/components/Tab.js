@@ -4,8 +4,16 @@ import { Grid, Header, Menu } from 'semantic-ui-react'
 
 const items = [
   {
+    label: 'Settings',
+    to   : '/setup/pet/medication/setting'
+  },
+  {
     label: 'Medication Times',
     to   : '/setup/pet/medication/time'
+  },
+  {
+    label: 'Medication Types',
+    to   : '/setup/pet/medication/type'
   },
   {
     label: 'Medications',
