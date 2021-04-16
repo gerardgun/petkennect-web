@@ -2,6 +2,15 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 export default {
+  actions: [
+    {
+      display_name: 'Add Reservation',
+      name        : 'add_reservation',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
+
   columns: [
     {
       display_name: 'DATE',

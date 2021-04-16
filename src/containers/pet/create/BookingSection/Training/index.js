@@ -33,9 +33,6 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
 
   const clientId = `${petDetail.item.client}`
   const client = petDetail.item &&  petDetail.item.client
-  const _handleAddPackageBtnClick = () =>{
-    props.setItem(null, 'CREATE')
-  }
 
   const _handleAddReservationBtnClick = () => {
     if(comesFromScreen == 'from pet') {
@@ -60,6 +57,11 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
       props.setItem(item,'UPDATE')
   }
 
+  const _handleActionClick = action=>{
+    if(action === 'add_program')
+      props.setItem(null, 'CREATE')
+  }
+
   const _handleOptionDropdownChange = (optionName, item) => {
     switch (optionName) {
       case 'edit_reserve' :  props.setReserveItem(item ,'UPDATE')
@@ -80,81 +82,65 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column computer={4}>
-          <Header as='h3' className='mt4 service-heading' color='teal'>Service Tags:</Header>
-        </Grid.Column>
-        <Grid.Column className='tag-display' computer={8} textAlign='center'>
+        <Grid.Column className='pl0' computer={12}>
+          <Header as='h4' className='mr32 mb0 d-inline'>Service Tags:</Header>
+
           <Label
             as='a'
             className='label-style'
             size='medium'>
-              Remote Collar
+            <b>   Remote Collar</b>
             <Icon name='delete'/>
           </Label>
           <Label
             as='a'
             className='label-style'
             size='medium'>
-             Aggressive
+            <b> Aggressive</b>
             <Icon name='delete'/></Label>
         </Grid.Column>
 
         <Grid.Column
+          className='pr0 pl0'
           computer={4} mobile={3} tablet={4}>
           <Button
-            basic className='w120' color='teal'
+            basic
+            className='w120' color='teal' floated='right'
             onClick={()=>props.setTrainingReserve(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
         </Grid.Column>
       </Grid>
-      <Grid className='segment-content-header mb0' columns={2}>
+
+      <Grid className='segment-content-header mb0' columns={16}>
 
         <Grid.Column
-          className='mt32'
+          className='mt20 pl0'
           computer={6}
           mobile={10} style={{ 'padding-top': '1.4rem' }}
           tablet={4}>
           <Header as='h3'  color='teal' >Training Programs</Header>
         </Grid.Column >
-        <Grid.Column
-          className='ui-grid-align mt32'
-          computer={10} mobile={10} tablet={12}>
-          <Button
-            basic
-            color='teal'
-            content='View All'/>
-          <Button
-            color='teal'
-            content='Add Program'
-            icon='add'
-            onClick={_handleAddPackageBtnClick}/>
-        </Grid.Column>
+
       </Grid>
       <div className='mb40 div-table-width'>
         <Table
           config={trainingPackageConfig}
-          duck={petTrainingPackageDuck} onRowDropdownChange={_handleOptionClick}/>
+          duck={petTrainingPackageDuck}
+          onActionClick={_handleActionClick} onRowDropdownChange={_handleOptionClick}/>
       </div>
 
-      <Grid className='segment-content-header mb0' columns={2}>
+      <Grid className='segment-content-header mb0'>
         <Grid.Column
-          computer={10} mobile={10} style={{ 'padding-top': '15px' }}
+          className='pl0' computer={16} mobile={10}
+          style={{ 'padding-top': '15px' }}
           tablet={4}>
           <Header as='h3' color='teal'>Reservation History</Header>
         </Grid.Column >
-        <Grid.Column
-          className='ui-grid-align'
-          computer={6} mobile={10} tablet={12}>
-          <Button
-            color='teal'
-            content='Add Reservation'
-            icon='add'
-            onClick={_handleAddReservationBtnClick}/>
-        </Grid.Column>
       </Grid>
       <div className='div-table-width'>
         <Table
           config={config}
           duck={petTrainingReservationDuck}
+          onActionClick={_handleAddReservationBtnClick}
           onRowDropdownChange={_handleOptionDropdownChange}/>
       </div>
       <PackageCreateForm/>
