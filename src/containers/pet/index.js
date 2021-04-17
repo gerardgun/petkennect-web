@@ -53,7 +53,7 @@ const PetList = ({ petDetail, ...props }) => {
   return (
     <Layout>
       <Segment className='segment-content pet' padded='very'>
-        <Grid className='segment-content-header' columns={2}>
+        <Grid columns={2} style={{ 'margin-bottom': '1.2rem' }}>
           <Grid.Column computer={4} mobile={10} tablet={4}>
             <Header as='h2'>Pets</Header>
           </Grid.Column >

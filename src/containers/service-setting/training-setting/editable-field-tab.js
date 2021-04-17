@@ -15,8 +15,8 @@ const EditableFieldTab = ()=>{
       <Grid>
         <Grid.Column computer={16}>
           <Grid>
-            <Grid.Column  className='grid-step' computer={4}>
-              <Step.Group vertical>
+            <Grid.Column  className='grid-step pr0 mr32' computer={3}>
+              <Step.Group fluid vertical>
                 <Step
                   active={activeTab === 'reason'}
                   link name='reason'
@@ -44,7 +44,7 @@ const EditableFieldTab = ()=>{
 
               </Step.Group>
             </Grid.Column>
-            <Grid.Column className='pl0'computer={12}>
+            <Grid.Column computer={12}>
               {activeTab === 'reason' &&  <TrainingReasonTable/> }
               {activeTab === 'method' && <TrainingMethodTable/>}
               {activeTab === 'command' && <TrainingCommandTable/>

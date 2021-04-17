@@ -1,5 +1,5 @@
 .flex {
-  display: flex;
+  display: flex !important;
 }
 .flex-column {
   flex-direction: column;
@@ -21,4 +21,7 @@
 }
 .justify-end {
   justify-content: flex-end;
+}
+.display-inline-block{
+  display: inline-block !important;
 }

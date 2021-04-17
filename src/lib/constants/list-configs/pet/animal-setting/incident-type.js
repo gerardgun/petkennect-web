@@ -1,50 +1,49 @@
 export default {
-  search_enabled: false,
-  columns       : [
+  actions: [
+    {
+      display_name: 'Add Incident Type',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
+  columns: [
     {
       display_name: 'Incident Type',
       name        : 'name',
       type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Group Play Removal Limit',
       name        : 'groupLimit',
       type        : 'string',
-      width       : null,
-      align       : 'center',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'All Service Removal Limit',
       name        : 'allLimit',
       type        : 'string',
-      width       : null,
-      align       : 'center',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : null,
+      width       : 4,
       options     : [
         {
-          display_name: 'Edit Record',
+          display_name: 'Edit Incident Type',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
+          display_name: 'Delete Incident Type',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
-
   ]
 }

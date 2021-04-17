@@ -120,7 +120,7 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
         <Grid.Column className='pb0 pl0' computer={12}>
-          <Header as='h4' className='mr32 mb0 d-inline pl0'>Service Tags:</Header>
+          <Header as='h4' className='mr32 mb0 display-inline-block pl0'>Service Tags:</Header>
 
           <Label
             as='a'
@@ -148,8 +148,8 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
       </Grid>
       <Grid className='mh0 pl0'>
         <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 mb0 d-inline pt7r'>Most Frequently Used Service:</Header>
-          <label className='d-inline'> Day Camp</label>
+          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Most Frequently Used Service:</Header>
+          <label className='display-inline-block'> Day Camp</label>
 
           <Button
             basic
@@ -165,8 +165,8 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
           <Grid>
             <Grid.Column className='pr0 mb5'>
               <Header
-                as='h4' className='total-use d-inline mb0' color='teal'>Total Usage:</Header>
-              <Header as='h4'className='d-inline mt0'>Prepaids</Header>
+                as='h4' className='total-use display-inline-block mb0' color='teal'>Total Usage:</Header>
+              <Header as='h4'className='display-inline-block mt0'>Prepaids</Header>
             </Grid.Column>
           </Grid>
 

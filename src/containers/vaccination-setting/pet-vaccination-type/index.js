@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Grid, Header } from 'semantic-ui-react'
+import { Grid, Header } from 'semantic-ui-react'
 import { reduxForm } from 'redux-form'
 
 import loadable from '@loadable/component'
@@ -37,26 +37,18 @@ const PetVaccinationTypeList = ({  petVaccinationTypeDetail, ...props }) => {
   return (
     <>
       <Grid>
-        <Grid.Column className='ml16' computer={8}>
+        <Grid.Column computer={8}>
           <Header as='h4' color='teal'>Vaccination by Species </Header>
         </Grid.Column>
       </Grid>
-      <Grid columns={2}>
+      <Grid>
         <Grid.Column
-          className='ml4'
           computer={10} mobile={15} tablet={8}>
           <Table
             config={petVaccinationTypeListConfig}
             duck={petVaccinationTypeDuck}
+            onActionClick={_handleAddBtnClick}
             onRowButtonClick={_handleButtonClick}/>
-        </Grid.Column>
-        <Grid.Column computer={4} mobile={12} tablet={8}>
-          <Button
-            basic
-            color='teal'
-            content='Add Vaccination'
-            floated='left' icon='Add'
-            onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>
 

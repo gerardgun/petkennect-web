@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Grid, Icon } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
 import loadable from '@loadable/component'
 
@@ -46,23 +46,18 @@ const PetKindList = ({ petKindDetail, ...props }) => {
     <>
       <Grid>
         <Grid.Column
-          className='ml16'
           computer={16} mobile={16} tablet={16}>
           <span className='quick-link-font' color='teal'><b>Animal Species Accepted</b></span>
         </Grid.Column>
       </Grid>
-      <Grid columns={2}>
+      <Grid>
         <Grid.Column
-          className='pr0'
-          computer={8} mobile={12} tablet={10}>
+          computer={10} mobile={12} tablet={10}>
           <Table
             config={petKindListConfig}
             duck={petKindDuck}
+            onActionClick={_handleAddBtnClick}
             onRowButtonClick={_handleButtonClick}/>
-        </Grid.Column>
-        <Grid.Column
-          computer={4} mobile={4} tablet={4}>
-          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon>Add Species</Button>
         </Grid.Column>
       </Grid>
 

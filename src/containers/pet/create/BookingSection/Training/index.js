@@ -83,7 +83,7 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
         <Grid.Column className='pl0' computer={12}>
-          <Header as='h4' className='mr32 mb0 d-inline'>Service Tags:</Header>
+          <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags:</Header>
 
           <Label
             as='a'

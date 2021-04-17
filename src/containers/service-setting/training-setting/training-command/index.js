@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Grid } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 
 import loadable from '@loadable/component'
 import Table from '@components/Table'
@@ -36,24 +36,15 @@ const TrainingCommand = ({  trainingCommandDetail, ...props }) => {
 
   return (
     <>
-      <Grid  columns={2}>
+      <Grid>
         <Grid.Column computer={10} mobile={16} tablet={8}>
           <div className='menu-item-table'>
             <Table
               config={trainingCommandListConfig}
               duck={trainingCommandDuck}
+              onActionClick={_handleAddBtnClick}
               onRowButtonClick={_handleButtonClick}/>
           </div>
-        </Grid.Column>
-
-        <Grid.Column
-          computer={5} mobile={14} tablet={8}>
-          <Button
-            basic
-            color='teal'
-            content='Add Command'
-            icon='Add'
-            onClick={_handleAddBtnClick}/>
         </Grid.Column>
       </Grid>
 

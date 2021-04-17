@@ -1,34 +1,37 @@
 export default {
-  search_enabled: false,
-  options       : {
-  },
+  actions: [
+    {
+      display_name: 'Add Command',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
   columns: [
     {
       display_name: 'Name',
       name        : 'name',
       type        : 'string',
-      width       : 10,
+      width       : 12,
       align       : 'left',
       sort        : false
     },
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : null,
       options     : [
         {
-          display_name: 'Edit Record',
+          display_name: 'Edit Command',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
+          display_name: 'Delete Command',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
   ]

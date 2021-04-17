@@ -1,28 +1,35 @@
 export default {
-  search_enabled: false,
-  columns       : [
+  actions: [
+    {
+      display_name: 'Add Measurement',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
+  columns: [
     {
       display_name: 'Feeding Measurements',
       name        : 'name',
       type        : 'string',
-      width       : 12,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Actions',
       type        : 'button',
+      width       : 4,
       options     : [
         {
-          display_name: 'Edit',
+          display_name: 'Edit Measurement',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete',
+          display_name: 'Delete Measurement',
           name        : 'delete',
-          icon        : 'trash alternate outline'
+          icon        : 'trash alternate outline',
+          color       : 'grey'
         }
       ]
     }

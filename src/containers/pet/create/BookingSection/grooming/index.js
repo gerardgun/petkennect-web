@@ -88,7 +88,7 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
         <Grid.Column className='pl0 pb0' computer={12}>
-          <Header as='h4' className='mr32 mb0 d-inline'>Service Tags:</Header>
+          <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags:</Header>
 
           <Label
             as='a'
@@ -117,8 +117,8 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       <Grid className='mh0'>
         <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 mb0 d-inline pt7r'>Last Service:</Header>
-          <label className='d-inline'> Bath Brush Large Dog</label>
+          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Last Service:</Header>
+          <label className='display-inline-block'> Bath Brush Large Dog</label>
 
           <Button
             basic
@@ -130,9 +130,9 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
       </Grid>
       <Grid className='mh0 pb0'>
         <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
-          <Header as='h4'  className='mr32 mb0 d-inline pt7r'>Preferred Groomer:</Header>
+          <Header as='h4'  className='mr32 mb0 display-inline-block pt7r'>Preferred Groomer:</Header>
 
-          <label className='d-inline'>James Hack</label>
+          <label className='display-inline-block'>James Hack</label>
         </Grid.Column>
       </Grid>
 

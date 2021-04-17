@@ -1,6 +1,8 @@
 
 export default {
+
   options: {
+
     basic: [
       {
         display_name: 'Download',
@@ -42,6 +44,14 @@ export default {
       }
     ]
   },
+  actions: [
+    {
+      display_name: 'Add Breed',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
   columns: [
     {
       display_name: 'Species',

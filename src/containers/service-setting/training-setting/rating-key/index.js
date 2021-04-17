@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Grid } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import Table from '@components/Table'
 import { useChangeStatusEffect } from 'src/hooks/Shared'
@@ -36,26 +36,18 @@ const RatingKey = ({ ratingKeyDetail, ...props }) => {
 
     <Grid>
       <Grid.Column
-        className='pl0' computer={12} mobile={16}
+        computer={12} mobile={16}
         tablet={8}>
         <Table
           config={ratingKeyListConfig}
           duck={ratingKeyDuck}
+          onActionClick={_handleAddBtnClick}
           onRowButtonClick={_handleButtonClick}/>
         <RatingkeyForm/>
         <ModalDelete
           duckDetail={ratingKeyDetailDuck}
           onClose={_handleClose}
           open={open}/>
-      </Grid.Column>
-      <Grid.Column
-        computer={4} mobile={14} tablet={8}>
-        <Button
-          basic
-          color='teal'
-          content='Add Rating'
-          icon='Add'
-          onClick={_handleAddBtnClick}/>
       </Grid.Column>
     </Grid>
   )

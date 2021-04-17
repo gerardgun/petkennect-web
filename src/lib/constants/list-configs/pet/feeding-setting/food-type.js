@@ -1,11 +1,18 @@
 import React from 'react'
-import Switch from 'react-switch'
+import { Checkbox } from 'semantic-ui-react'
 
 export default {
-  search_enabled: false,
-  columns       : [
+  actions: [
     {
-      display_name: 'Food Types',
+      display_name: 'Add Food Type',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
+  columns: [
+    {
+      display_name: 'Food Type',
       name        : 'name',
       type        : 'string',
       align       : 'left',
@@ -15,54 +22,36 @@ export default {
       display_name: 'Charge Applies',
       name        : 'charges',
       type        : 'string',
-      align       : 'center',
-      sort        : false,
-      formatter   : (cell) => {
-        return (
-          <>
-            <Switch
-              checked={cell}
-              className='react-switch'
-              height={21}
-              onColor='#00aa9f'
-              width={40}/>
-          </>
-        )
-      }
-    },
-    {
-      display_name: 'Charge Type',
-      name        : 'charge_type',
-      type        : 'string',
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : cell => (
+        <Checkbox
+          checked={JSON.parse(cell)}
+          disabled/>
+      )
     },
     {
       display_name: 'Price',
       name        : 'price',
       type        : 'string',
-      align       : 'left',
-      sort        : false,
-      formatter   : (cell) => {
-        return (
-          <span>${cell}</span>
-        )
-      }
+      align       : 'left'
     },
     {
       display_name: 'Actions',
       type        : 'button',
+      width       : 4,
       options     : [
         {
-          display_name: 'Edit',
+          display_name: 'Edit Food Type',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete',
+          display_name: 'Delete Food Type',
           name        : 'delete',
-          icon        : 'trash alternate outline'
+          icon        : 'trash alternate outline',
+          color       : 'grey'
         }
       ]
     }

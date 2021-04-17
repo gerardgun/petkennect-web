@@ -4,7 +4,14 @@ export default {
   search_placeholder: 'Search',
   search_enabled    : true,
   selector_enabled  : false,
-  options           : {
+  actions           : [
+    {
+      display_name: 'Create New Reason',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
+  options: {
     basic: [
       {
         display_name: 'Download',
