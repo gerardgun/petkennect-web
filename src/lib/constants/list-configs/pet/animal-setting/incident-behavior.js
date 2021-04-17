@@ -1,32 +1,36 @@
 export default {
-  search_enabled: false,
-  columns       : [
+  actions: [
+    {
+      display_name: 'New Behavior',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
+  columns: [
     {
       display_name: 'Incident Behavior',
       name        : 'name',
       type        : 'string',
-      width       : 12,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Actions',
       type        : 'button',
+      width       : 2,
       options     : [
         {
-          display_name: 'Edit Record',
+          display_name: 'Edit Behavior',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
+          display_name: 'Delete Behavior',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
       ]
     }
-
   ]
 }

@@ -2,73 +2,69 @@ import React from 'react'
 import { Checkbox } from 'semantic-ui-react'
 
 export default {
-  search_placeholder         : 'Search by species, vaccine',
-  search_placeholder_position: 'left', // only work when there is no  button has added to top bar
-
+  search_placeholder: 'Search by species, vaccine',
+  actions           : [
+    {
+      display_name: 'New vaccine',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Species',
       name        : 'pet_class_name',
       type        : 'string',
-      width       : 3,
-      align       : 'left',
-      sort        : false
+      align       : 'left'
     },
     {
       display_name: 'Vaccine',
       name        : 'name',
-      type        : 'string', // image, boolean, date, datetime, money, label
-      align       : 'left',
-      width       : 4,
-      sort        : false
+      type        : 'string',
+      align       : 'left'
     },
     {
       display_name: 'Required',
       name        : 'is_required',
-      type        : 'boolean',
-      width       : 3,
-      align       : 'center',
-      sort        : false,
-      formatter   : (cell,row) => {
+      type        : null,
+      align       : 'left',
+      formatter   : cell => {
         return (
-          <div  style={{ 'margin-right': '60px' }}>
-            <Checkbox
-              checked={row.is_required ? true : false}/></div>)
+          <Checkbox
+            checked={cell}
+            disabled/>)
       }
     },
     {
       display_name: 'Active',
-      name        : 'is_required',
-      type        : 'boolean', // image, boolean, date, datetime, money, label
-      align       : 'center',
-      width       : 3,
-      sort        : false,
+      name        : 'id',
+      type        : null,
+      align       : 'left',
       formatter   : (cell,row) => {
-        return (<div style={{ 'margin-right': '78px' }}>
+        return (
           <Checkbox
-            checked={row.id % 2 === 0 ? true : false}/></div>)
+            checked={row.id % 2 === 0 ? true : false}
+            disabled/>)
       }
     },
     {
       display_name: 'Actions',
       type        : 'button',
+      width       : 2,
       options     : [
-
         {
-          display_name: 'Edit Record',
+          display_name: 'Edit Type',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
+          display_name: 'Delete Type',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
-
   ]
 }

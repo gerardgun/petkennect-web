@@ -1,13 +1,18 @@
 
 export default {
-  search_enabled: false,
-
+  actions: [
+    {
+      display_name: 'Create New Rating',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
   columns: [
     {
       display_name: 'Rating key',
       name        : 'rating_key',
-      type        : 'string',
-      align       : 'center',
+      type        : 'number',
+      align       : 'left',
       sort        : true
     },
     {
@@ -27,21 +32,19 @@ export default {
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : null,
       options     : [
         {
-          display_name: 'Edit Record',
+          display_name: 'Edit Rating',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Record',
+          display_name: 'Delete Rating',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
-
       ]
     }
   ]

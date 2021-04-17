@@ -1,14 +1,20 @@
 import React from 'react'
-import Switch from 'react-switch'
+import { Checkbox } from 'semantic-ui-react'
 
 export default {
-  search_enabled: false,
-  columns       : [
+  actions: [
+    {
+      display_name: 'Add Type',
+      name        : 'create',
+      color       : 'teal'
+    }
+  ],
+  columns: [
     {
       display_name: 'Medication Types',
       name        : 'name',
       type        : 'string',
-      width       : null,
+      width       : 6,
       align       : 'left',
       sort        : false
     },
@@ -16,49 +22,37 @@ export default {
       display_name: 'Charge Applies',
       name        : 'charges',
       type        : 'string',
-      width       : null,
+      width       : 6,
       align       : 'left',
       sort        : false,
-      formatter   : (cell) => {
-        return (
-          <div  style={{ 'margin-left': '30px' }}>
-            <Switch
-              checked={cell}
-              className='react-switch'
-              height={21}
-              onColor='#00aa9f'
-              width={40}/>
-          </div>
-        )
-      }
+      formatter   : cell => (
+        <Checkbox
+          checked={JSON.parse(cell)}
+          disabled/>
+      )
     },
     {
       display_name: 'Price',
       name        : 'price',
       type        : 'string',
-      width       : 3,
-      align       : 'left',
-      sort        : false,
-      formatter   : (cell) => {
-        return (
-          <span>${cell}</span>
-        )
-      }
+      align       : 'left'
     },
     {
       display_name: 'Actions',
       type        : 'button',
+      width       : 2,
       options     : [
         {
-          display_name: 'Edit',
+          display_name: 'Edit Type',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete',
+          display_name: 'Delete Type',
           name        : 'delete',
-          icon        : 'trash alternate outline'
+          icon        : 'trash alternate outline',
+          color       : 'grey'
         }
       ]
     }

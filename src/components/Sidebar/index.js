@@ -169,15 +169,19 @@ const categories = [
     icon         : 'book',
     label        : 'Report Center',
     subcategories: [
-      { href: '/custom-report', label: '  Run Custom Reports' },
+      { href: '/custom-report', label: 'Run Custom Reports' },
       { href: '/custom-report', label: 'Dashboards' }
-
     ]
+  },
+  {
+    href : '/setup',
+    icon : 'cogs',
+    label: 'Setup'
   },
   {
     href         : null,
     icon         : 'cogs',
-    label        : 'Setup',
+    label        : 'Old Setup',
     subcategories: [
       { href: '/setup/admin-item', label: 'Admin Items' },
       // { href: '/setup/system-setting', label: 'Application System Settings' },
@@ -185,24 +189,15 @@ const categories = [
       { href: '/setup/service-setting', label: 'Services Settings' },
       { href: '/setup/color-codes', label: 'System Icons/Codes' },
       // { href: '/setup/booking-sheet-setting', label: 'Booking Sheet Setting' },
-      { href: '/setup/location', label: 'Locations' },
       // { href: '/setup/document-type', label: 'Document Types' },
       // { href: '/setup/day-camp-form', label: 'Day Camp Form' },
-      { href: '/setup/agreement', label: 'Agreements' },
       { href: '/setup/notifications', label: 'Notifications' },
       // { href: '/setup/payment-method', label: 'Payment Method' },
       // { href: '/setup/payment-instruction', label: 'Payment Instruction' },
       // { href: '/setup/price-master', label: 'Price Master' },
       { href: '/setup/package-pricing', label: 'Pricing Table' },
-      { href: '/setup/pet-kennel', label: 'Kennels' },
-      { href: '/setup/pet-kennel-type', label: 'Kennel Types' },
-      { href: '/setup/pet-kennel-area', label: 'Kennel Areas' },
-      { href: '/setup/pet-yard-type', label: 'Yard Types' },
-      { href: '/setup/customized-field', label: 'Customized Field' },
-      { href: '/setup/calendar', label: 'Calendar' },
-      { href: '/setup/email-template', label: 'Email Template' }
+      { href: '/setup/customized-field', label: 'Customized Field' }
       // { href: '/setup/system-setting', label: 'System Setting' }
-
       // { href: '/not-defined', label: 'Enable Decline Portal Client' },
       // { href: '/not-defined', label: 'Notifications' },
       // { href: '/not-defined', label: 'Overview' },

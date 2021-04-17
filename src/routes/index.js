@@ -75,10 +75,52 @@ import CompanyShow from '@containers/company/show'
 import Organization from '@containers/organization'
 import OrganizationEdit from '@containers/organization/edit'
 import OrganizationShow from '@containers/organization/show'
+import SetupIndex from '@containers/setup'
+import SetupPetBreedIndex from '@containers/setup/pet/breed'
+
+// Settings / Animal / Feeding
+import SetupPetFeedingMealStatusIndex from '@containers/setup/pet/feeding/meal-status-section'
+import SetupPetFeedingMeasurementIndex from '@containers/setup/pet/feeding/measurement-section'
+import SetupPetFeedingMethodIndex from '@containers/setup/pet/feeding/method-section'
+import SetupPetFeedingSettingIndex from '@containers/setup/pet/feeding/setting-section'
+import SetupPetFeedingTimeIndex from '@containers/setup/pet/feeding/time-section'
+import SetupPetFeedingTypeIndex from '@containers/setup/pet/feeding/type-section'
+import SetupPetFeedingUnitIndex from '@containers/setup/pet/feeding/unit-section'
+
+// Settings / Animal / General
+import SetupPetGeneralIncidentActionIndex from '@containers/setup/pet/general/incident/action-section'
+import SetupPetGeneralIncidentBehaviorIndex from '@containers/setup/pet/general/incident/behavior-section'
+import SetupPetGeneralIncidentTypeIndex from '@containers/setup/pet/general/incident/type-section'
+import SetupPetGeneralInteractionTypeIndex from '@containers/setup/pet/general/interaction-type-section'
+import SetupPetGeneralRetireReasonIndex from '@containers/setup/pet/general/retire-reason-section'
+import SetupPetGeneralVeterinaryIndex from '@containers/setup/pet/general/veterinary-section'
+
+// Settings / Animal / Species
+import SetupPetKindIndex from '@containers/setup/pet/kind'
+
+// Settings / Animal / Medication
+import SetupPetMedicationIndex from '@containers/setup/pet/medication'
+import SetupPetMedicationMeasurementIndex from '@containers/setup/pet/medication/measurement-section'
+import SetupPetMedicationReportStatusIndex from '@containers/setup/pet/medication/report-status-section'
+import SetupPetMedicationSettingIndex from '@containers/setup/pet/medication/setting-section'
+import SetupPetMedicationTimeIndex from '@containers/setup/pet/medication/time-section'
+import SetupPetMedicationTypeIndex from '@containers/setup/pet/medication/type-section'
+import SetupPetMedicationUnitIndex from '@containers/setup/pet/medication/unit-section'
+
+// Settings / Animal / Vaccinations
+import SetupPetVaccinationBookingSettingIndex from '@containers/setup/pet/vaccination/booking-setting-section'
+import SetupPetVaccinationSettingIndex from '@containers/setup/pet/vaccination/setting-section'
+import SetupPetVaccinationTypeIndex from '@containers/setup/pet/vaccination/type-section'
+
+import SetupTrainingIndex from '@containers/setup/training'
+import SetupTrainingCommandIndex from '@containers/setup/training/command'
+import SetupTrainingMethodIndex from '@containers/setup/training/method'
+import SetupTrainingRatingKeyIndex from '@containers/setup/training/rating-key'
+import SetupTrainingReasonIndex from '@containers/setup/training/reason'
 import TrainingCommand from '@containers/training-command'
 import TrainingMethod from '@containers/training-method'
 import TrainingReason from '@containers/training-reason'
-import TrainingQuestionnaire from '@containers/training-questionnaire'
+// import TrainingQuestionnaire from '@containers/training-questionnaire'
 import Transaction from '@containers/transaction'
 import User from '@containers/user'
 
@@ -305,6 +347,130 @@ const privateRoutes = [
     component: ServiceAttributeValue
   },
   {
+    path     : '/setup',
+    component: SetupIndex
+  },
+  {
+    path     : '/setup/pet/breed',
+    component: SetupPetBreedIndex
+  },
+  {
+    path     : '/setup/pet/feeding/meal-status',
+    component: SetupPetFeedingMealStatusIndex
+  },
+  {
+    path     : '/setup/pet/feeding/measurement',
+    component: SetupPetFeedingMeasurementIndex
+  },
+  {
+    path     : '/setup/pet/feeding/method',
+    component: SetupPetFeedingMethodIndex
+  },
+  {
+    path     : '/setup/pet/feeding/setting',
+    component: SetupPetFeedingSettingIndex
+  },
+  {
+    path     : '/setup/pet/feeding/time',
+    component: SetupPetFeedingTimeIndex
+  },
+  {
+    path     : '/setup/pet/feeding/type',
+    component: SetupPetFeedingTypeIndex
+  },
+  {
+    path     : '/setup/pet/feeding/unit',
+    component: SetupPetFeedingUnitIndex
+  },
+  {
+    path     : '/setup/pet/general/incident/action',
+    component: SetupPetGeneralIncidentActionIndex
+  },
+  {
+    path     : '/setup/pet/general/incident/behavior',
+    component: SetupPetGeneralIncidentBehaviorIndex
+  },
+  {
+    path     : '/setup/pet/general/incident/type',
+    component: SetupPetGeneralIncidentTypeIndex
+  },
+  {
+    path     : '/setup/pet/general/interaction-type',
+    component: SetupPetGeneralInteractionTypeIndex
+  },
+  {
+    path     : '/setup/pet/general/retire-reason',
+    component: SetupPetGeneralRetireReasonIndex
+  },
+  {
+    path     : '/setup/pet/general/veterinary',
+    component: SetupPetGeneralVeterinaryIndex
+  },
+  {
+    path     : '/setup/pet/kind',
+    component: SetupPetKindIndex
+  },
+  {
+    path     : '/setup/pet/medication',
+    component: SetupPetMedicationIndex
+  },
+  {
+    path     : '/setup/pet/medication/measurement',
+    component: SetupPetMedicationMeasurementIndex
+  },
+  {
+    path     : '/setup/pet/medication/report-status',
+    component: SetupPetMedicationReportStatusIndex
+  },
+  {
+    path     : '/setup/pet/medication/setting',
+    component: SetupPetMedicationSettingIndex
+  },
+  {
+    path     : '/setup/pet/medication/time',
+    component: SetupPetMedicationTimeIndex
+  },
+  {
+    path     : '/setup/pet/medication/type',
+    component: SetupPetMedicationTypeIndex
+  },
+  {
+    path     : '/setup/pet/medication/unit',
+    component: SetupPetMedicationUnitIndex
+  },
+  {
+    path     : '/setup/pet/vaccination/booking-setting',
+    component: SetupPetVaccinationBookingSettingIndex
+  },
+  {
+    path     : '/setup/pet/vaccination/setting',
+    component: SetupPetVaccinationSettingIndex
+  },
+  {
+    path     : '/setup/pet/vaccination/type',
+    component: SetupPetVaccinationTypeIndex
+  },
+  {
+    path     : '/setup/training',
+    component: SetupTrainingIndex
+  },
+  {
+    path     : '/setup/training/command',
+    component: SetupTrainingCommandIndex
+  },
+  {
+    path     : '/setup/training/method',
+    component: SetupTrainingMethodIndex
+  },
+  {
+    path     : '/setup/training/rating-key',
+    component: SetupTrainingRatingKeyIndex
+  },
+  {
+    path     : '/setup/training/reason',
+    component: SetupTrainingReasonIndex
+  },
+  {
     path     : '/setup/service-setting',
     component: ServiceSetting
   },
@@ -401,10 +567,10 @@ const privateRoutes = [
     path     : '/setup/training-method',
     component: TrainingMethod
   },
-  {
-    path     : '/training-questionnaire/client/:clientId/pet/:petId',
-    component: TrainingQuestionnaire
-  },
+  // {
+  //   path     : '/training-questionnaire/client/:clientId/pet/:petId',
+  //   component: TrainingQuestionnaire
+  // },
   {
     path     : '/setup/training-reason',
     component: TrainingReason
