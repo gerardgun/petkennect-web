@@ -19,13 +19,14 @@ const EditableField = ()=>{
     <>
       <Grid>
         <Grid.Column
+          className='ml16'
           computer={16} mobile={16} tablet={16}>
           <span className='quick-link-font' color='teal'><b>Adjust Editable Field Values</b></span>
         </Grid.Column>
       </Grid>
       <Grid className='mh0 menu-item-padding' columns={2}>
         <Grid.Column
-          className='grid-step pl0'
+          className='grid-step'
           computer={3} mobile={16} tablet={4}>
           <Step.Group fluid vertical>
             <Step

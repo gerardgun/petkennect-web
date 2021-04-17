@@ -1,42 +1,40 @@
 export default {
-  actions: [
-    {
-      display_name: 'New Breed',
-      name        : 'create',
-      color       : 'teal'
-    }
-  ],
+  options: {
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      }
+    ],
+    single: [
+      {
+        display_name: 'Delete Breed',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
+  },
   columns: [
     {
-      display_name: 'Species',
-      name        : 'pet_class_name',
-      type        : 'string',
-      align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'Breed',
+      display_name: 'Name',
       name        : 'name',
       type        : 'string',
+      width       : 4,
       align       : 'left',
       sort        : true
-    },
-    {
-      display_name: 'Coloring',
-      name        : 'name',
-      type        : 'string',
-      align       : 'left'
-    },
-    {
-      display_name: 'Weight Range',
-      name        : 'weight',
-      type        : 'string',
-      align       : 'left'
     },
     {
       display_name: 'Size',
       name        : 'size',
       type        : null,
+      width       : 3,
       align       : 'left',
       sort        : true,
       formatter   : cell => {
@@ -51,29 +49,12 @@ export default {
       }
     },
     {
-      display_name: 'Actions',
-      type        : 'button',
-      width       : 3,
-      options     : [
-        {
-          display_name: 'View',
-          name        : 'view',
-          icon        : 'eye',
-          color       : 'blue'
-        },
-        {
-          display_name: 'Edit Reason',
-          name        : 'edit',
-          icon        : 'edit outline',
-          color       : 'teal'
-        },
-        {
-          display_name: 'Delete Reason',
-          name        : 'delete',
-          icon        : 'trash alternate outline',
-          color       : 'grey'
-        }
-      ]
+      display_name: 'Pet species',
+      name        : 'pet_class_name',
+      type        : 'string',
+      width       : 8,
+      align       : 'left',
+      sort        : true
     }
   ]
 }

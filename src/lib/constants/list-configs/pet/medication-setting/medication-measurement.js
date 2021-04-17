@@ -1,35 +1,28 @@
 export default {
-  actions: [
-    {
-      display_name: 'Add Measurement',
-      name        : 'create',
-      color       : 'teal',
-      icon        : 'add'
-    }
-  ],
-  columns: [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Medication Measurements',
       name        : 'name',
       type        : 'string',
-      align       : 'left'
+      width       : 12,
+      align       : 'left',
+      sort        : false
     },
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 4,
       options     : [
         {
-          display_name: 'Edit Measurement',
+          display_name: 'Edit',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Measurement',
+          display_name: 'Delete',
           name        : 'delete',
-          icon        : 'trash alternate outline',
-          color       : 'grey'
+          icon        : 'trash alternate outline'
         }
       ]
     }

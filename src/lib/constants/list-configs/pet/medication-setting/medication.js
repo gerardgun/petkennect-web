@@ -1,68 +1,81 @@
 import React from 'react'
-import { Checkbox } from 'semantic-ui-react'
+import Switch from 'react-switch'
 
 export default {
-  actions: [
-    {
-      display_name: 'Add Medication',
-      name        : 'create',
-      color       : 'teal',
-      icon        : 'add'
-    }
-  ],
-  columns: [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Medication Name',
       name        : 'name',
       type        : 'string',
-      align       : 'left'
+      width       : null,
+      align       : 'left',
+      sort        : false
     },
     {
       display_name: 'Purpose',
       name        : 'purpose',
       type        : 'string',
-      align       : 'left'
+      width       : null,
+      align       : 'left',
+      sort        : false
     },
     {
       display_name: 'Type',
       name        : 'type',
       type        : 'string',
-      align       : 'left'
+      width       : null,
+      align       : 'left',
+      sort        : false
     },
     {
       display_name: 'Charge Applies',
       name        : 'charges',
       type        : 'string',
-      align       : 'left',
-      formatter   : cell => (
-        <Checkbox
-          checked={JSON.parse(cell)}
-          disabled/>
-      )
+      width       : null,
+      align       : 'center',
+      sort        : false,
+      formatter   : (cell) => {
+        return (
+          <>
+            <Switch
+              checked={cell}
+              className='react-switch'
+              height={21}
+              onColor='#00aa9f'
+              width={40}/>
+          </>
+        )
+      }
+
     },
     {
       display_name: 'Price',
       name        : 'price',
       type        : 'string',
+      width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : (cell) => {
+        return (
+          <span>${cell}</span>
+        )
+      }
     },
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 4,
       options     : [
         {
-          display_name: 'Edit Medication',
+          display_name: 'Edit',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Medication',
+          display_name: 'Delete',
           name        : 'delete',
-          icon        : 'trash alternate outline',
-          color       : 'grey'
+          icon        : 'trash alternate outline'
         }
       ]
     }

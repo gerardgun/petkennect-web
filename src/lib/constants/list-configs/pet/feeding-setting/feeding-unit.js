@@ -1,36 +1,28 @@
 export default {
-  actions: [
-    {
-      display_name: 'Add Feeding Unit',
-      name        : 'create',
-      color       : 'teal',
-      icon        : 'add'
-    }
-  ],
-  columns: [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Feeding Units',
       name        : 'name',
       type        : 'string',
+      width       : 12,
       align       : 'left',
       sort        : false
     },
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 4,
       options     : [
         {
-          display_name: 'Edit Feeding Unit',
+          display_name: 'Edit',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Feeding Unit',
+          display_name: 'Delete',
           name        : 'delete',
-          icon        : 'trash alternate outline',
-          color       : 'grey'
+          icon        : 'trash alternate outline'
         }
       ]
     }

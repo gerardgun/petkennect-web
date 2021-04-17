@@ -30,7 +30,7 @@ const QuickLinks = ()=>{
     <>
       <Grid>
         <Grid.Column className='quick-link pr0'>
-          <span className='quick-link-font' color='teal'><b>Quick Links:</b> &nbsp;</span>
+          <span className='quick-link-font ml16' color='teal'><b>Quick Links:</b> &nbsp;</span>
           <Button
             className='mh12 link-tab' color='teal'
             content='Vaccination' name='vaccination' onClick={_handleVaccinationBtnClick}/>

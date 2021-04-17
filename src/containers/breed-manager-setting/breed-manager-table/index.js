@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Grid  } from 'semantic-ui-react'
+import { Button, Grid  } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 
 import Table from '@components/Table'
@@ -58,12 +58,11 @@ const BreedManagementTable = ({ BreedManagementDetail, ...props }) => {
 
     <Grid>
       <Grid.Column
-        className='pr0' computer={16} mobile={16}
+        className='pr0' computer={13} mobile={16}
         tablet={8}>
         <Table
           config={breedManagementListConfig}
           duck={BreedManagementDuck}
-          onActionClick={_handleAddBtnClick}
           onOptionDropdownChange={_handleDropdownOptionClick}
           onRowButtonClick={_handleButtonClick}/>
 
@@ -71,10 +70,20 @@ const BreedManagementTable = ({ BreedManagementDetail, ...props }) => {
           duckDetail={BreedManagementDetailDuck}
           onClose={_handleClose}
           open={open}/>
-        <AddBreedForm/>
-        <AnimalDetail/>
-        <ReservationDateByBreed/>
-        <DayCareReservationBreed/>
+      </Grid.Column>
+      <AddBreedForm/>
+      <AnimalDetail/>
+      <ReservationDateByBreed/>
+      <DayCareReservationBreed/>
+      <Grid.Column
+        className='pr0'
+        computer={3} mobile={14} tablet={8}>
+        <Button
+          basic
+          color='teal'
+          content='Add Breed'
+          icon='Add'
+          onClick={_handleAddBtnClick}/>
       </Grid.Column>
     </Grid>
   )

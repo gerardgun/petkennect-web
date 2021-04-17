@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Dropdown, Input, Popup } from 'semantic-ui-react'
+import { Button, Dropdown, Grid, Input, Popup } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import FilterForm from './Filter/Form'
@@ -16,10 +16,6 @@ const TopBar = ({ config, duck, ...props }) => {
   const [ open, { _handleOpen, _handleClose } ] = useModal() // For Filter Popup
 
   // Handlers
-  const _handleActionBtnClick = e => {
-    props.onActionClick(e.currentTarget.dataset.actionName)
-  }
-
   const _handleOptionBtnClick = e => {
     const optionName = e.currentTarget.dataset.optionName
 
@@ -51,114 +47,99 @@ const TopBar = ({ config, duck, ...props }) => {
   const selectedFilterColumns = useMemo(() => getSelectedFilterColumns(config, filters), [])
 
   return (
-    <div className='table-primary-header'>
-      <div className='section'>
-        <div className='left'>
-          {
-            basicOptions.length > 0 && (
-              <Dropdown
-                disabled={basicOptions.length === 0}
-                icon={null}
-                onChange={_handleOptionDropdownChange}
-                options={
-                  basicOptions.map(item => ({
-                    key  : item.name,
-                    icon : item.icon,
-                    value: item.name,
-                    text : item.display_name
-                  }))
-                }
-                selectOnBlur={false}
-                trigger={(
-                  <Button basic icon='ellipsis vertical' style={{ paddingBottom: '1.01rem' }}/>
-                )}
-                value={null}/>
-            )
-          }
-          {
-            optionsForMultiple.map(({ disable, display_name, icon, name,...rest }) => {
-              const disabled = optionsForSingleEnabled && typeof disable === 'function' && disable(list.selector.selected_items)
+    <Grid className='table-primary-header'>
+      <Grid.Column computer={16} mobile={16} tablet={16}>
+        {
+          basicOptions.length > 0 && (
+            <Dropdown
+              disabled={basicOptions.length === 0}
+              icon={null}
+              onChange={_handleOptionDropdownChange}
+              options={
+                basicOptions.map(item => ({
+                  key  : item.name,
+                  icon : item.icon,
+                  value: item.name,
+                  text : item.display_name
+                }))
+              }
+              selectOnBlur={false}
+              trigger={(
+                <Button basic icon='ellipsis vertical' style={{ paddingBottom: '1.1rem' }}/>
+              )}
+              value={null}/>
+          )
+        }
+        {
+          optionsForMultiple.map(({ disable, display_name, icon, name,...rest }) => {
+            const disabled = optionsForSingleEnabled && typeof disable === 'function' && disable(list.selector.selected_items)
 
-              return (
-                <Popup
-                  content={display_name} inverted key={name}
-                  position='bottom center'
-                  trigger={
-                    <Button
-                      basic
-                      data-option-name={name}
-                      disabled={disabled || !optionsForMultipleEnabled} icon={icon}
-                      onClick={_handleOptionBtnClick}
-                      {...rest}/>
-                  }/>
-              )
-            })
-          }
-          {
-            optionsForSingle.map(({ disable, display_name, icon, name,...rest }) => {
-              const disabled = optionsForSingleEnabled && typeof disable === 'function' && disable(list.selector.selected_items[0])
-
-              return (
-                <Popup
-                  content={display_name} inverted key={name}
-                  position='bottom center'
-                  trigger={
-                    <Button
-                      basic
-                      data-option-name={name}
-                      disabled={disabled || !optionsForSingleEnabled} icon={icon}
-                      onClick={_handleOptionBtnClick}
-                      {...rest}/>
-                  }/>
-              )
-            })
-          }
-
-          {/* Search */}
-          {
-            config.search_enabled && (
-              <Input
-                icon='search' iconPosition='left' onChange={_handleSearchInputChange}
-                placeholder={config.search_placeholder} style={{ marginRight: '0.3rem' }} type='search'/>
-            )
-          }
-          {
-            filterColumns.length > 0 && (
+            return (
               <Popup
-                basic
-                on='click' onClose={_handleClose} onOpen={_handleOpen}
-                open={open} position='bottom right'
-                trigger={<Button basic={!open} color={open ? 'teal' : null} content='Filters'/>}>
-                <Popup.Content style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
-                  <FilterForm config={config} duck={duck}/>
-                </Popup.Content>
-              </Popup>
+                content={display_name} inverted key={name}
+                position='bottom center'
+                trigger={
+                  <Button
+                    basic
+                    data-option-name={name}
+                    disabled={disabled || !optionsForMultipleEnabled} icon={icon}
+                    onClick={_handleOptionBtnClick}
+                    {...rest}/>
+                }/>
             )
-          }
-        </div>
+          })
+        }
+        {
+          optionsForSingle.map(({ disable, display_name, icon, name,...rest }) => {
+            const disabled = optionsForSingleEnabled && typeof disable === 'function' && disable(list.selector.selected_items[0])
 
-        <div className='right'>
-          {
-            config.actions.map(({ display_name, name, ...rest }, index) => (
-              <Button
-                content={display_name}
-                data-action-name={name}
-                key={index}
-                onClick={_handleActionBtnClick}
-                {...rest}/>
-            ))
-          }
-        </div>
-      </div>
+            return (
+              <Popup
+                content={display_name} inverted key={name}
+                position='bottom center'
+                trigger={
+                  <Button
+                    basic
+                    data-option-name={name}
+                    disabled={disabled || !optionsForSingleEnabled} icon={icon}
+                    onClick={_handleOptionBtnClick}
+                    {...rest}/>
+                }/>
+            )
+          })
+        }
+
+        {/* Search */}
+        {
+          config.search_enabled && (
+            <Input
+              icon='search' iconPosition='left' onChange={_handleSearchInputChange}
+              placeholder={config.search_placeholder} style={{ marginRight: '0.3rem' }} type='search'/>
+          )
+        }
+        {
+          filterColumns.length > 0 && (
+            <Popup
+              basic
+              on='click' onClose={_handleClose} onOpen={_handleOpen}
+              open={open} position='bottom right'
+              trigger={<Button basic={!open} color={open ? 'teal' : null} content='Filters'/>}>
+              <Popup.Content style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
+                <FilterForm config={config} duck={duck}/>
+              </Popup.Content>
+            </Popup>
+          )
+        }
+      </Grid.Column>
 
       {
         selectedFilterColumns.length > 0 && (
-          <div className='section'>
+          <Grid.Column style={{ paddingTop: 0 }} width={16}>
             <FilterTagManager config={config} duck={duck}/>
-          </div>
+          </Grid.Column>
         )
       }
-    </div>
+    </Grid>
   )
 }
 

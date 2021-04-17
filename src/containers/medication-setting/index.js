@@ -12,7 +12,7 @@ const MedicationSetting = ()=>{
   return (
     <Layout>
       <Segment className='segment-content'>
-        <Grid>
+        <Grid className='segment-content-header'>
           <Grid.Column computer={16} mobile={16} tablet={16}>
             <Header as='h2' className='cls-MainHeader'>Medication Settings</Header>
             <hr></hr>

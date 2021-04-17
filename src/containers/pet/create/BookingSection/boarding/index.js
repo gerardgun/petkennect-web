@@ -88,7 +88,7 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
         <Grid.Column className='pl0 pb0' computer={12}>
-          <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags:</Header>
+          <Header as='h4' className='mr32 mb0 d-inline'>Service Tags:</Header>
 
           <Label
             as='a'
@@ -117,8 +117,8 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       <Grid className='mh0'>
         <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Most Frequently Used Service:</Header>
-          <label className='display-inline-block'> Day Camp</label>
+          <Header as='h4' className='mr32 mb0 d-inline pt7r'>Most Frequently Used Service:</Header>
+          <label className='d-inline'> Day Camp</label>
 
           <Button
             basic
@@ -132,8 +132,8 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
       <Grid className='mh0'>
 
         <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Last Service:</Header>
-          <label className='display-inline-block'>Boarding + Day Camp</label>
+          <Header as='h4' className='mr32 mb0 d-inline pt7r'>Last Service:</Header>
+          <label className='d-inline'>Boarding + Day Camp</label>
 
           <Button
             basic
@@ -145,7 +145,7 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       </Grid>
       <Grid className='mh0'>
-        <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
+        <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
           <Header as='h4' className='mr32 pr8 pt7r'>Day Activity Package:</Header>
 
         </Grid.Column>
@@ -153,9 +153,9 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       <Grid className='mh0'>
         <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
-          <Header as='h4'  className='mr32 mb0 display-inline-block pt7r'>Add On Services:</Header>
+          <Header as='h4'  className='mr32 mb0 d-inline pt7r'>Add On Services:</Header>
 
-          <label className='display-inline-block'>Grooming, Treat</label>
+          <label className='d-inline'>Grooming, Treat</label>
         </Grid.Column>
       </Grid>
 

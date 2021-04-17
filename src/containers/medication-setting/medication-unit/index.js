@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Grid } from 'semantic-ui-react'
+import { Button, Grid, Icon } from 'semantic-ui-react'
 
 import loadable from '@loadable/component'
 import Table from '@components/Table'
@@ -34,15 +34,18 @@ const MedicationUnit = ({ medicationUnitDetail, ...props }) => {
 
   return (
     <>
-      <Grid>
+      <Grid columns={2}>
         <Grid.Column computer={11} mobile={12} tablet={8}>
           <div className='menu-item-table'>
             <Table
               config={medicationUnitListConfig}
               duck={medicationUnitDuck}
-              onActionClick={_handleAddBtnClick}
               onRowButtonClick={_handleButtonClick}/>
           </div>
+        </Grid.Column>
+        <Grid.Column
+          computer={5} mobile={4} tablet={4}>
+          <Button basic color='teal' onClick={_handleAddBtnClick}><Icon name='plus'></Icon> Add Unit</Button>
         </Grid.Column>
       </Grid>
 

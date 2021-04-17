@@ -5,9 +5,36 @@
     margin-left: 0 !important;
     padding-top: .8rem !important;
 }
+
+
+
 .flex-container{
     display : flex !important;
    
+}
+
+.scroll-container{
+    overflow-y: auto !important;
+}
+
+
+
+.table-left{
+    margin-right: 0 !important;
+    border-right: solid 1px rgba(34, 36, 38, 0.15);
+}
+
+.table-right{
+  margin-left: 0 !important;
+  margin-right: -16px !important;
+}
+
+.t-header{
+    display: inline-block !important;
+}
+.l-header{
+    display: flex;
+    justify-content: center;
 }
 
 .total-use{
@@ -15,12 +42,19 @@
     margin-right: 23% !important;
 }
 
+
+
 .m-b{
-    margin-bottom: 1.5rem !important;
+margin-bottom: 1.5rem !important;
 }
+
 
 .h-container{
     border-right: solid 1px rgba(34, 36, 38, 0.15) !important;
+}
+
+.d-inline{
+    display: inline-block;
 }
 
 .pt7r{
@@ -28,7 +62,7 @@
 }
 
 .mb5{
-     margin-bottom: 7px !important;   
+ margin-bottom: 7px !important;   
 }
 
 .mt02{

@@ -1,37 +1,33 @@
 export default {
-  actions: [
-    {
-      display_name: 'Add Veterinary',
-      name        : 'create',
-      color       : 'teal',
-      icon        : 'Add'
-    }
-  ],
-  columns: [
+  search_enabled: false,
+  columns       : [
     {
       display_name: 'Veterinarian Name',
       name        : 'name',
-      type        : 'string',
-      align       : 'left'
+      type        : 'string', // image, boolean, date, datetime, money, label
+      width       : 12,
+      align       : 'left',
+      sort        : false
     },
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 4,
       options     : [
         {
-          display_name: 'Edit Veterinary',
+          display_name: 'Edit Record',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Veterinary',
+          display_name: 'Delete Record',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
+
       ]
     }
+
   ]
 }

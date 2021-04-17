@@ -14,7 +14,8 @@
         font-weight: 600;
         padding-top: 0.8rem;
         padding-bottom: 0.8rem;
-        border-radius: 0rem !important;
+        border-top-color: #EEEEEF !important; // for removing the blue line from table top
+
   
         &:hover {
           background-color: transparent;
@@ -120,15 +121,11 @@
     }
   }
 
-  &-header {
-    .section {
-      display: flex;
-      margin-bottom: 0.5em;
-      justify-content: space-between;
+  &-header.ui.grid {
+    margin-bottom: 0.3em;
 
-      .left {
-        display: flex;
-      }
+    .column {
+      display: flex;
     }
 
     input[type="search"] {

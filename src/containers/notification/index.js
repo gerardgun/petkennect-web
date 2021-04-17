@@ -47,7 +47,7 @@ const NotificationList = ({ clientDocument, notification, notificationDetail ,..
   return (
     <Layout>
       <Segment className='segment-content' padded='very'>
-        <Grid columns={2} style={{ 'margin-bottom': '1.2rem' }}>
+        <Grid className='segment-content-header' columns={2}>
           <Grid.Column computer={8} mobile={14} tablet={8}>
             <Header as='h2'>Notifications </Header>
           </Grid.Column >

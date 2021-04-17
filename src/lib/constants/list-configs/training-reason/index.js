@@ -1,37 +1,34 @@
 export default {
-  actions: [
-    {
-      display_name: 'Add Reason',
-      name        : 'create',
-      color       : 'teal',
-      icon        : 'add'
-    }
-  ],
+  search_enabled: false,
+  options       : {
+  },
   columns: [
     {
       display_name: 'Name',
       name        : 'name',
       type        : 'string',
-      width       : 12,
+      width       : 10,
       align       : 'left',
       sort        : false
     },
     {
       display_name: 'Actions',
       type        : 'button',
+      width       : null,
       options     : [
         {
-          display_name: 'Edit Reason',
+          display_name: 'Edit Record',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Reason',
+          display_name: 'Delete Record',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'
         }
+
       ]
     }
   ]

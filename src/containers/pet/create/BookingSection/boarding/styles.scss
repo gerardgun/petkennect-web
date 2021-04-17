@@ -6,7 +6,7 @@
     }
   }
 
-.label-style{
+  .label-style{
     margin-right: 8px !important;
     margin-bottom: 8px !important;
     height: 2.6rem !important;
@@ -14,9 +14,34 @@
     padding-top: .8rem !important;
 }
 
+
 .flex-container{
   display : flex !important;
  
+}
+
+.table-left{
+  margin-right: 0 !important;
+  border-right: solid 1px rgba(34, 36, 38, 0.15);
+}
+
+.table-right{
+margin-left: 0 !important;
+margin-right: -16px !important;
+}
+
+
+.l-header{
+  display: flex;
+  justify-content: center;
+}
+
+.h-container{
+  border-right: solid 1px rgba(34, 36, 38, 0.15) !important;
+}
+
+.d-inline{
+  display: inline-block;
 }
 
 .pt7r{
@@ -27,7 +52,8 @@
   margin-bottom: 7px !important;   
  }
 
-.mt02{
+
+ .mt02{
   margin-top: 0.02rem !important;
 }
  

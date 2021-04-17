@@ -31,7 +31,7 @@ const EmailMessage = ({ ...props }) => {
   return (
     <Layout>
       <Segment className='segment-content'>
-        <Grid  columns={2} style={{ 'margin-bottom': '1.2rem' }}>
+        <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
             <Header as='h2'>Email Messages</Header>
           </Grid.Column >
