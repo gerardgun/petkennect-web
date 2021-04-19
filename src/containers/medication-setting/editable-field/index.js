@@ -24,12 +24,12 @@ const EditableField = ()=>{
     <>
       <Grid>
         <Grid.Column
-          className='ml16 pb0'
+          className='pb0'
           computer={16} mobile={16} tablet={16}>
           <span className='quick-link-font' color='teal'><b>Medication Charges Setup</b></span>
         </Grid.Column>
         <Grid.Column computer={6} style={{ 'padding-top': '0.9rem' }}>
-          <span className='ml16'><b>Do you charge for Medication Adminstration?</b></span>
+          <span><b>Do you charge for Medication Adminstration?</b></span>
         </Grid.Column>
 
         <Grid.Column computer={9} style={{ 'padding-top': '0.1rem' , 'padding-left': '1.2rem' }}>
@@ -54,13 +54,13 @@ const EditableField = ()=>{
               placeholder='Select Charges'
               required
               selectOnBlur={false}
-              style={{ width: '60%' }}/>
+              style={{ width: '67%' }}/>
           </Form.Group>
         </Grid.Column>
-        <Grid.Column className='ml16 pt0 mt8' computer={6}>
+        <Grid.Column className='pt0 mt8' computer={6}>
           <span ><b>Enter the daily charges for medication adminstration:</b></span>
         </Grid.Column>
-        <Grid.Column className='pt0 pl0' computer={5}>
+        <Grid.Column className='pt0' computer={5}>
           <Form.Group>
             <Form.Field
               className='charges-input'
@@ -75,16 +75,15 @@ const EditableField = ()=>{
 
       <Grid>
         <Grid.Column
-          className='adjust-heading'
+          className='adjust-m-heading'
           computer={16} mobile={16} tablet={16}>
           <span className='quick-link-font' color='teal'><b>Adjust Editable Field Values</b></span>
         </Grid.Column>
-        <span className='ml16'>Edit field values regarding all things Medication related here.</span>
+        <span>Edit field values regarding all things Medication related here.</span>
       </Grid>
       <Grid>
         <Grid.Column
-          className='ml16'
-          computer={16} mobile={16} tablet={16}>
+          computer={12} mobile={16} tablet={16}>
           {activeMenuItem === 'medicationTimes' && <span>Use the medication schedules based on your facilities operations.
             If you charge for medication, ensure {'"Charge Applies"'} is enabled.</span>}
           {activeMenuItem === 'medications' && <span>Medications added here will populate in the medication type list.</span> }
@@ -96,7 +95,7 @@ const EditableField = ()=>{
       </Grid>
       <Grid className='mh0 menu-item-padding' columns={2}>
         <Grid.Column
-          className='grid-step'
+          className='grid-step pl0'
           computer={3} mobile={16} tablet={4}>
           <Step.Group fluid vertical>
             <Step

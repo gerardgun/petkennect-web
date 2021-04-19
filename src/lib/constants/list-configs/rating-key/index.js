@@ -2,17 +2,18 @@
 export default {
   actions: [
     {
-      display_name: 'Create New Rating',
+      display_name: 'Add Rating',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [
     {
       display_name: 'Rating key',
       name        : 'rating_key',
-      type        : 'number',
-      align       : 'left',
+      type        : 'string',
+      align       : 'center',
       sort        : true
     },
     {

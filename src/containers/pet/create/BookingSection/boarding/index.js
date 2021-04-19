@@ -88,7 +88,7 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
         <Grid.Column className='pl0 pb0' computer={12}>
-          <Header as='h4' className='mr32 mb0 d-inline'>Service Tags:</Header>
+          <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags</Header>
 
           <Label
             as='a'
@@ -117,8 +117,8 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       <Grid className='mh0'>
         <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 mb0 d-inline pt7r'>Most Frequently Used Service:</Header>
-          <label className='d-inline'> Day Camp</label>
+          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Most Frequently Used Service</Header>
+          <label className='display-inline-block'> Day Camp</label>
 
           <Button
             basic
@@ -132,8 +132,8 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
       <Grid className='mh0'>
 
         <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 mb0 d-inline pt7r'>Last Service:</Header>
-          <label className='d-inline'>Boarding + Day Camp</label>
+          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Last Service</Header>
+          <label className='display-inline-block'>Boarding + Day Camp</label>
 
           <Button
             basic
@@ -145,23 +145,23 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       </Grid>
       <Grid className='mh0'>
-        <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 pr8 pt7r'>Day Activity Package:</Header>
+        <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
+          <Header as='h4' className='mr32 pr8 pt7r'>Day Activity Package</Header>
 
         </Grid.Column>
       </Grid>
 
       <Grid className='mh0'>
         <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
-          <Header as='h4'  className='mr32 mb0 d-inline pt7r'>Add On Services:</Header>
+          <Header as='h4'  className='mr32 mb0 display-inline-block pt7r'>Add On Services</Header>
 
-          <label className='d-inline'>Grooming, Treat</label>
+          <label className='display-inline-block'>Grooming, Treat</label>
         </Grid.Column>
       </Grid>
 
       <Grid>
-        <Grid.Column computer={16}>
-          <Header as='h3' className='pl0' color='teal'>Total Boarding</Header>
+        <Grid.Column className='pb0' computer={16}>
+          <Header as='h4' className='pl0' color='teal'>Total Boarding</Header>
         </Grid.Column>
         <Grid.Column className='pr0 h-container' computer={8}>
 
@@ -192,17 +192,18 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
         </Grid.Column>
       </Grid>
 
-      <Grid className='segment-content-header mb0 mt24' columns={2}>
+      <Grid className='mb0 mt24' columns={2}>
 
         <Grid.Column
-          className='pl0'
+          className='pb8'
           computer={6}
-          mobile={10} style={{ 'padding-top': '1.4rem' }}
-          tablet={4}>
-          <Header as='h3'  color='teal' >Boarding Packages</Header>
+          mobile={10}
+          style={{ 'padding-top': '1.4rem' }} tablet={4}
+          verticalAlign='middle'>
+          <Header as='h4'  color='teal' >Boarding Packages</Header>
         </Grid.Column >
         <Grid.Column
-          className='ui-grid-align pl0'
+          className='ui-grid-align pb8'
           computer={10} mobile={10} tablet={12}>
           <Button
             basic
@@ -225,7 +226,7 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
           className='pl0'
           computer={16} mobile={10} style={{ 'padding-top': '15px' }}
           tablet={4}>
-          <Header as='h3' color='teal'>Reservation History</Header>
+          <Header as='h4' color='teal'>Reservation History</Header>
         </Grid.Column >
 
       </Grid>

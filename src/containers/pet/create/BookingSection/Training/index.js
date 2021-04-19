@@ -83,7 +83,7 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
         <Grid.Column className='pl0' computer={12}>
-          <Header as='h4' className='mr32 mb0 d-inline'>Service Tags:</Header>
+          <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags</Header>
 
           <Label
             as='a'
@@ -110,14 +110,13 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
         </Grid.Column>
       </Grid>
 
-      <Grid className='segment-content-header mb0' columns={16}>
+      <Grid className='mb0' columns={16}>
 
         <Grid.Column
-          className='mt20 pl0'
           computer={6}
           mobile={10} style={{ 'padding-top': '1.4rem' }}
           tablet={4}>
-          <Header as='h3'  color='teal' >Training Programs</Header>
+          <Header as='h4'  color='teal' >Training Programs</Header>
         </Grid.Column >
 
       </Grid>
@@ -133,7 +132,7 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
           className='pl0' computer={16} mobile={10}
           style={{ 'padding-top': '15px' }}
           tablet={4}>
-          <Header as='h3' color='teal'>Reservation History</Header>
+          <Header as='h4' color='teal'>Reservation History</Header>
         </Grid.Column >
       </Grid>
       <div className='div-table-width'>

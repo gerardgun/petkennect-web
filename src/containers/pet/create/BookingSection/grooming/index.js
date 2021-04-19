@@ -88,7 +88,7 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
         <Grid.Column className='pl0 pb0' computer={12}>
-          <Header as='h4' className='mr32 mb0 d-inline'>Service Tags:</Header>
+          <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags</Header>
 
           <Label
             as='a'
@@ -117,8 +117,8 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       <Grid className='mh0'>
         <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 mb0 d-inline pt7r'>Last Service:</Header>
-          <label className='d-inline'> Bath Brush Large Dog</label>
+          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Last Service</Header>
+          <label className='display-inline-block'> Bath Brush Large Dog</label>
 
           <Button
             basic
@@ -130,15 +130,15 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
       </Grid>
       <Grid className='mh0 pb0'>
         <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
-          <Header as='h4'  className='mr32 mb0 d-inline pt7r'>Preferred Groomer:</Header>
+          <Header as='h4'  className='mr32 mb0 display-inline-block pt7r'>Preferred Groomer</Header>
 
-          <label className='d-inline'>James Hack</label>
+          <label className='display-inline-block'>James Hack</label>
         </Grid.Column>
       </Grid>
 
       <Grid>
-        <Grid.Column computer={16}>
-          <Header as='h3' className='pl0' color='teal'>Total Grooming</Header>
+        <Grid.Column className='pb0' computer={16}>
+          <Header as='h4' className='pl0' color='teal'>Total Grooming</Header>
         </Grid.Column>
         <Grid.Column className='pr0 h-container' computer={8}>
 
@@ -172,14 +172,15 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
       <Grid className='segment-content-header mb0 mt32' columns={2}>
 
         <Grid.Column
-          className='pl0'
+          className='pl0 pb8'
           computer={6}
-          mobile={10} style={{ 'padding-top': '1.4rem' }}
-          tablet={4}>
-          <Header as='h3'  color='teal' >Grooming Packages</Header>
+          mobile={10}
+          style={{ 'padding-top': '1.4rem' }} tablet={4}
+          verticalAlign='middle'>
+          <Header as='h4'  color='teal' >Grooming Packages</Header>
         </Grid.Column >
         <Grid.Column
-          className='ui-grid-align pr0'
+          className='ui-grid-align pr0 pb8'
           computer={10} mobile={10} tablet={12}>
           <Button
             basic
@@ -202,7 +203,7 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
           className='pl0'
           computer={16} mobile={10} style={{ 'padding-top': '15px' }}
           tablet={4}>
-          <Header as='h3' color='teal'>Reservation History</Header>
+          <Header as='h4' color='teal'>Reservation History</Header>
         </Grid.Column >
 
       </Grid>

@@ -2,9 +2,10 @@
 export default {
   actions: [
     {
-      display_name: 'New Species',
+      display_name: 'Add Species',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [

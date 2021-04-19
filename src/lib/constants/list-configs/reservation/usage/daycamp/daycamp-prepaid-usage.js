@@ -9,7 +9,7 @@ export default {
       name        : 'service_name',
       type        : 'string',
       formatter   : (cell, row) => {
-        return <Header as='h5' color='teal'style={{ 'padding-top': '12%', 'padding-bottom': '12%' ,'padding-right': '0' }}> {row.service_name}</Header>
+        return <Header as='h5' color='teal'style={{ 'padding-top': '11%', 'padding-bottom': '11%' ,'padding-right': '0' }}> {row.service_name}</Header>
       }
     },
     {

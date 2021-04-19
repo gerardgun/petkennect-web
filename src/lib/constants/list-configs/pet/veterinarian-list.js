@@ -1,9 +1,10 @@
 export default {
   actions: [
     {
-      display_name: 'New Veterinary',
+      display_name: 'Add Veterinary',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'Add'
     }
   ],
   columns: [
@@ -16,7 +17,7 @@ export default {
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 2,
+      width       : 4,
       options     : [
         {
           display_name: 'Edit Veterinary',
