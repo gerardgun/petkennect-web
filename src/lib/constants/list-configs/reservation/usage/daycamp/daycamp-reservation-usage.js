@@ -1,3 +1,4 @@
+import React from 'react'
 export default {
   search_enabled: false,
   columns       : [
@@ -5,7 +6,10 @@ export default {
       display_name: 'Past',
       name        : 'past',
       align       : 'center',
-      type        : 'string'
+      type        : 'string',
+      formatter   : (cell, row) => {
+        return <label> {row.past}</label>
+      }
     },
     {
       display_name: 'Upcoming',

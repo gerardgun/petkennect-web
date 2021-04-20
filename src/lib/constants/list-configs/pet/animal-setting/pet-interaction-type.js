@@ -1,9 +1,10 @@
 export default {
   actions: [
     {
-      display_name: 'New Interaction Type',
+      display_name: 'Add Interaction Type',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [
@@ -16,7 +17,7 @@ export default {
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 2,
+      width       : 4,
       options     : [
         {
           display_name: 'Edit Interaction Type',

@@ -25,7 +25,7 @@ const VaccinationReservSetting = (props)=>{
     {/* eslint-disable-next-line react/jsx-handler-names */}
     <Form>
 
-      <Grid className='segment-content-header'>
+      <Grid>
         <Grid.Column>
           <Grid>
             <Grid.Column computer={8}>

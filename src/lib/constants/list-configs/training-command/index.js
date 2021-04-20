@@ -1,9 +1,10 @@
 export default {
   actions: [
     {
-      display_name: 'Create New Command',
+      display_name: 'Add Command',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [

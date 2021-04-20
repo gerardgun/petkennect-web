@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header , Grid, Button, Container } from 'semantic-ui-react'
+import { Header , Grid, Button, Divider, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 import loadable from '@loadable/component'
 
@@ -37,30 +37,40 @@ function BookingSection({  ...props }) {
 
   return (
     <Container className='c-booking' fluid>
-      <Grid className='petkennect-profile-body-header'>
+      <Grid>
         <Grid.Column
-          className='pl0 tab-style service-tabs'
+          className='pb0'
           mobile={16} verticalAlign='middle'>
           <Header as='h2'>Services</Header>
-          <div className='div-booking-button flex'>
+          <Divider/>
+          <div className='flex'>
             <Button
-              basic={activeServiceItem !== 'D'} className='m0'
-              color='teal' content='Day Services'
-              onClick={_handleFilterBtnClick} type='D'/>
+              className='tab-header'
+              color={activeServiceItem === 'D' ? 'teal' : null}
+              content='Day Services'
+              onClick={_handleFilterBtnClick}
+              type='D'/>
             <Button
-              basic={activeServiceItem !== 'B'} className='m0'
-              color='teal' content='Boarding'
-              onClick={_handleFilterBtnClick} type='B'/>
+              className='tab-header'
+              color={activeServiceItem === 'B' ? 'teal' : null}
+              content='Boarding'
+              onClick={_handleFilterBtnClick}
+              type='B'/>
             <Button
-              basic={activeServiceItem !== 'T'}
-              className='m0' color='teal'
-              content='Training' onClick={_handleFilterBtnClick}
+              className='tab-header'
+              color={activeServiceItem === 'T' ? 'teal' : null}
+              content='Training'
+              onClick={_handleFilterBtnClick}
               type='T'/>
             <Button
-              basic={activeServiceItem !== 'G'} className='m0'
-              color='teal' content='Grooming'
-              onClick={_handleFilterBtnClick} type='G'/>
+              className='tab-header'
+              color={activeServiceItem === 'G' ? 'teal' : null}
+              content='Grooming'
+              onClick={_handleFilterBtnClick}
+              type='G'/>
+
           </div>
+          <Divider/>
         </Grid.Column>
       </Grid>
       <br></br>

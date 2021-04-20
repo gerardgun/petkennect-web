@@ -1,9 +1,10 @@
 export default {
   actions: [
     {
-      display_name: 'Create New Reason',
+      display_name: 'Add Reason',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [

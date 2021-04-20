@@ -9,14 +9,17 @@ export default {
       name        : 'service_name',
       type        : 'string',
       formatter   : (cell, row) => {
-        return <Header as='h4' color='teal'style={{ 'padding-top': '11%', 'padding-bottom': '11%' }}> {row.service_name}</Header>
+        return <Header as='h5' color='teal'style={{ 'padding-top': '11%', 'padding-bottom': '11%' ,'padding-right': '0' }}> {row.service_name}</Header>
       }
     },
     {
       display_name: 'Prepaid',
       name        : 'prepaid',
       align       : 'center',
-      type        : 'string'
+      type        : 'string',
+      formatter   : (cell, row) => {
+        return <label> {row.prepaid}</label>
+      }
     },
     {
       display_name: '# Remaining',

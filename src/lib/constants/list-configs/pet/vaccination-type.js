@@ -5,9 +5,10 @@ export default {
   search_placeholder: 'Search by species, vaccine',
   actions           : [
     {
-      display_name: 'New vaccine',
+      display_name: 'Add Vaccine',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [
@@ -32,7 +33,8 @@ export default {
         return (
           <Checkbox
             checked={cell}
-            disabled/>)
+            disabled
+            style={{ 'margin-left': '20px' }}/>)
       }
     },
     {
@@ -44,13 +46,14 @@ export default {
         return (
           <Checkbox
             checked={row.id % 2 === 0 ? true : false}
-            disabled/>)
+            disabled
+            style={{ 'margin-left': '11px' }}/>)
       }
     },
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 2,
+      width       : 4,
       options     : [
         {
           display_name: 'Edit Type',

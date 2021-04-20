@@ -3,7 +3,8 @@ export default {
     {
       display_name: 'Add Feeding Method',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [
@@ -16,7 +17,7 @@ export default {
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 2,
+      width       : 4,
       options     : [
         {
           display_name: 'Edit Method',

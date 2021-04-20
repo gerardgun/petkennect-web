@@ -9,7 +9,7 @@ export default {
       align       : 'center',
       type        : 'string',
       formatter   : (cell, row) => {
-        return <Header as='h4' color='teal'style={{ 'padding-top': '11%', 'padding-bottom': '11%' }}>{row.past}</Header>
+        return <Header as='h4' color='teal'style={{ 'padding-top': '14%', 'padding-bottom': '14%' }}>{row.past}</Header>
       }
     },
     {
@@ -18,7 +18,7 @@ export default {
       align       : 'center',
       type        : 'string',
       formatter   : (cell, row) => {
-        return <Header as='h4' color='teal'style={{ 'padding-top': '11%', 'padding-bottom': '11%' }}>{row.upcoming}</Header>
+        return <Header as='h4' color='teal'style={{ 'padding-top': '14%', 'padding-bottom': '14%' }}>{row.upcoming}</Header>
       }
     },
     {
@@ -27,7 +27,7 @@ export default {
       align       : 'center',
       type        : 'string',
       formatter   : (cell, row) => {
-        return <Header as='h4' color='teal'style={{ 'padding-top': '11%', 'padding-bottom': '11%' }}>{row.canceled}</Header>
+        return <Header as='h4' color='teal'style={{ 'padding-top': '14%', 'padding-bottom': '14%' }}>{row.canceled}</Header>
       }
     },
     {

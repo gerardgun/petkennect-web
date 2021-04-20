@@ -12,45 +12,36 @@ const EditBreed = ()=>{
   return (
 
     <>
-      <Grid className='segment-content-header'>
+      <Grid>
         <Grid.Column computer={16}>
-          <Header as='h3' color='teal' >Edit Breeds in your facilities:</Header>
+          <Header as='h4' color='teal' >Edit Breeds in your facilities:</Header>
         </Grid.Column>
         <Grid.Column computer={16}>
           <Header as='h4'>AKC Standard breeds are loaded. Any breed that is mixed is noted with {'"-X"'}. you can add breeds or edit them here. </Header>
         </Grid.Column>
 
       </Grid>
-      <Grid className='segment-content-header'>
-
-        <Grid.Row>
-          <Grid.Column className='pr0' style={{ width: '60px' }} >
-
-          </Grid.Column>
-
+      <Grid>
+        <Grid.Column computer={16} textAlign='center'>
           {
             filter_alphabets &&  filter_alphabets.map((item,index)=>{
               return (
 
-                <Grid.Column key={index} style={{ width: '2px' }}>
-                  <Header
-                    as='h3'
-                    className='m0'
-                    color='teal' disabled={!(item === alphaFilter)}
-                    onClick={()=>{setAlphaFilter(item)}}>{item}</Header>
-
-                </Grid.Column>
+                <Header
+                  as='h3'
+                  color='teal'
+                  disabled={!(item === alphaFilter)}
+                  key={index} onClick={()=>{setAlphaFilter(item)}}
+                  style={{ display: 'inline-block', marginRight: '1rem' }}>{item}
+                </Header>
 
               )
             })
           }
-
-          <Grid.Column computer={2}>
-            <Header as='h3' color='blue' onClick={()=>{setAlphaFilter('view_all')}} >View All</Header>
-          </Grid.Column>
-
-        </Grid.Row>
-
+          <Header
+            as='h3'  color='blue' onClick={()=>{setAlphaFilter('view_all')}}
+            style={{ display: 'inline-block', marginRight: '1rem' }} >View All</Header>
+        </Grid.Column>
       </Grid>
 
       <Grid>

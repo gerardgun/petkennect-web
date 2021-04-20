@@ -28,12 +28,12 @@ const EditableField = ()=>{
     <>
       <Grid>
         <Grid.Column
-          className='ml16 pb0'
+          className='pb0'
           computer={16} mobile={16} tablet={16}>
           <span className='quick-link-font' color='teal'><b>Feeding Charges Setup</b></span>
         </Grid.Column>
         <Grid.Column computer={6} style={{ 'padding-top': '0.9rem' }}>
-          <span className='ml16'><b>Do you charge for bagging owner supplied food?</b></span>
+          <span><b>Do you charge for bagging owner supplied food?</b></span>
         </Grid.Column>
 
         <Grid.Column  computer={9} style={{ 'padding-top': '0.1rem' , 'padding-left': '1.2rem' }}>
@@ -58,7 +58,7 @@ const EditableField = ()=>{
               placeholder='Select Charges'
               required
               selectOnBlur={false}
-              style={{ width: '60%' }}/>
+              style={{ width: '67%' }}/>
           </Form.Group>
         </Grid.Column>
         { chargesType === 'perDay' && <>
@@ -79,7 +79,7 @@ const EditableField = ()=>{
         {
           chargesType === 'perMeal'
           && <>
-            <Grid.Column className='ml16 pt0' computer={6}  >
+            <Grid.Column className='pt0' computer={6}  >
               <span ><b>Enter the Charge Per Meal, Per Dog</b></span>
             </Grid.Column>
             <Grid.Column className='pt0 pl0' computer={5}>
@@ -97,7 +97,7 @@ const EditableField = ()=>{
         {
           chargesType === 'perBag'
           && <>
-            <Grid.Column className='ml16 pt0' computer={6}  >
+            <Grid.Column className='pt0' computer={6}  >
               <span ><b>Enter the Charge Per Bag</b></span>
             </Grid.Column>
             <Grid.Column className='pt0 pl0'  computer={5}>
@@ -115,16 +115,14 @@ const EditableField = ()=>{
       </Grid>
       <Grid>
         <Grid.Column
-          className='ml16'
           computer={16} mobile={16} tablet={16}>
           <span className='quick-link-font' color='teal'><b>Adjust Editable Field Values</b></span>
         </Grid.Column>
-        <span className='ml16'>Edit field values regarding all things feeding related here.</span>
+        <span>Edit field values regarding all things feeding related here.</span>
       </Grid>
       <Grid>
         <Grid.Column
-          className='ml16'
-          computer={16} mobile={16} tablet={16}>
+          computer={12} mobile={16} tablet={16}>
           {activeMenuItem === 'feedingTimes' && <span>Use the feeding schedules based on your facilities operations. If you
             charge for a feeding, ensure {'"Charge Applies"'} is enabled.</span>}
           {activeMenuItem === 'foodTypes' && <span>You can add food types here. You can also select if a charge applies for each type.</span> }
@@ -134,9 +132,9 @@ const EditableField = ()=>{
           {activeMenuItem === 'measurements' && <span>List the measurements for feeding:</span> }
         </Grid.Column>
       </Grid>
-      <Grid className='mh0 menu-item-padding' columns={2}>
+      <Grid className='mh0 menu-item-padding ' columns={2}>
         <Grid.Column
-          className='grid-step'
+          className='grid-step pl0'
           computer={3} mobile={16} tablet={4}>
           <Step.Group fluid vertical>
             <Step

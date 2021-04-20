@@ -49,14 +49,14 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
   const _handleAddReservationBtnClick = () => {
     if(comesFromScreen == 'from pet') {
-      props.setItemReservation({ service: 'D' },'CREATE')
+      props.setItemReservation({ service: 'G' },'CREATE')
       history.push({
         pathname: `/pet/${petId}/book`,
         state   : { option: 'Pet', clientid: client }
       })
     }
     else {
-      props.setItemReservation({ service: 'D' },'CREATE')
+      props.setItemReservation({ service: 'G' },'CREATE')
       history.replace(`/client/${client_id}/book`)
     }
   }
@@ -87,98 +87,100 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column computer={4}>
-          <Header as='h3' className='mt4 service-heading' color='teal'>Service Tags:</Header>
-        </Grid.Column>
-        <Grid.Column className='tag-display' computer={8} textAlign='center'>
+        <Grid.Column className='pl0 pb0' computer={12}>
+          <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags</Header>
+
           <Label
             as='a'
             className='label-style'
             size='medium'>
-              No Nails
+            <b> No Nails</b>
             <Icon name='delete'/>
           </Label>
           <Label
             as='a'
             className='label-style'
             size='medium'>
-             Muzzle
+            <b> Muzzle</b>
             <Icon name='delete'/></Label>
         </Grid.Column>
 
         <Grid.Column
+          className='pr0 pb0'
           computer={4} mobile={3} tablet={4}>
           <Button
-            basic className='w120' color='teal'
+            basic
+            className='w120' color='teal' floated='right'
             onClick={()=>props.setGroomingReserve(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
         </Grid.Column>
       </Grid>
+
       <Grid className='mh0'>
+        <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
+          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Last Service</Header>
+          <label className='display-inline-block'> Bath Brush Large Dog</label>
 
-        <Grid.Column computer={12}>
-          <Header as='h3' className='mt4 pr8 mr32 service-heading' color='teal'>Last Service:</Header>
-          <Header as='h3' className='mt4'>Bath Brush Large Dog</Header>
-        </Grid.Column>
-
-        <Grid.Column
-          computer={4} mobile={4} tablet={4}>
           <Button
             basic
             className='w120'
-            color='teal' content='Rebook' icon='redo alternate'
-            onClick={()=>setRebookAlert(true)}/>
+            color='teal' content='Rebook' floated='right'
+
+            icon='redo alternate' onClick={()=>setRebookAlert(true)}/>
         </Grid.Column>
       </Grid>
-      <Grid className='mh0'>
-        <Grid.Column computer={12}>
-          <Header as='h3' className='mt4 mr32 pr8 service-heading' color='teal'>Preferred Groomer:</Header>
-          <Header as='h3' className='mt4'>James Hack</Header>
+      <Grid className='mh0 pb0'>
+        <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
+          <Header as='h4'  className='mr32 mb0 display-inline-block pt7r'>Preferred Groomer</Header>
+
+          <label className='display-inline-block'>James Hack</label>
         </Grid.Column>
       </Grid>
+
       <Grid>
-        <Grid.Column computer={16}>
-          <Header as='h3' className='t-header total-use' color='teal'>Total Grooming</Header>
+        <Grid.Column className='pb0' computer={16}>
+          <Header as='h4' className='pl0' color='teal'>Total Grooming</Header>
         </Grid.Column>
-        <Grid.Column className='pr0 flex-container pb0' computer={16}>
+        <Grid.Column className='pr0 h-container' computer={8}>
 
-          <div>
-            <div className='h-container l-header'>
+          <Grid>
+            <Grid.Column className='mb5' textAlign='center'>
+              <Header as='h4' className='mt02' >Prepaids</Header>
+            </Grid.Column>
+          </Grid>
 
-              <Header as='h4'className='mb12' >Prepaids</Header>
-            </div>
-
-            <div className='table-left'>
-              <Table
-                config={groomingPrepaidConfig}
-                duck={groomingPrepaidUsageDuck}/>
-            </div>
-
-          </div>
-          <div>
-            <div className='l-header'>
-              <Header as='h4' className='mb12' >Reservations</Header>
-            </div>
-
-            <div className='table-right'>
-              <Table
-                config={groomingReservationUsageConfig}
-                duck={groomingReservationUsageDuck}/>
-            </div>
-          </div>
+          <Table
+            config={groomingPrepaidConfig}
+            duck={groomingPrepaidUsageDuck}/>
 
         </Grid.Column>
 
+        <Grid.Column  className='pl0' computer={8}>
+
+          <Grid>
+            <Grid.Column className='mb5' textAlign='center'>
+              <Header as='h4' className='mt02' >Reservations</Header>
+            </Grid.Column>
+          </Grid>
+
+          <Table
+            config={groomingReservationUsageConfig}
+            duck={groomingReservationUsageDuck}/>
+
+        </Grid.Column>
       </Grid>
-      <Grid className='segment-content-header mb0' columns={2}>
+
+      <Grid className='segment-content-header mb0 mt32' columns={2}>
 
         <Grid.Column
+          className='pl0 pb8'
           computer={6}
-          mobile={10} style={{ 'padding-top': '1.4rem' }}
-          tablet={4}>
-          <Header as='h3'  color='teal' >Grooming Packages</Header>
+          mobile={10}
+          style={{ 'padding-top': '1.4rem' }} tablet={4}
+          verticalAlign='middle'>
+          <Header as='h4'  color='teal' >Grooming Packages</Header>
         </Grid.Column >
         <Grid.Column
-          className='ui-grid-align'
+          className='ui-grid-align pr0 pb8'
           computer={10} mobile={10} tablet={12}>
           <Button
             basic
@@ -198,24 +200,18 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       <Grid className='segment-content-header mb0' columns={2}>
         <Grid.Column
-          computer={10} mobile={10} style={{ 'padding-top': '15px' }}
+          className='pl0'
+          computer={16} mobile={10} style={{ 'padding-top': '15px' }}
           tablet={4}>
-          <Header as='h3' color='teal'>Reservation History</Header>
+          <Header as='h4' color='teal'>Reservation History</Header>
         </Grid.Column >
-        <Grid.Column
-          className='ui-grid-align'
-          computer={6} mobile={10} tablet={12}>
-          <Button
-            color='teal'
-            content='Add Reservation'
-            icon='add'
-            onClick={_handleAddReservationBtnClick}/>
-        </Grid.Column>
+
       </Grid>
       <div className='div-table-width'>
         <Table
           config={groomingReservationConfig}
           duck={groomingReservationDuck}
+          onActionClick={_handleAddReservationBtnClick}
           onRowDropdownChange={_handleOptionDropdownChange}/>
       </div>
       <PackageCreateForm/>

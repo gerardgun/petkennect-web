@@ -4,9 +4,10 @@ import { Checkbox } from 'semantic-ui-react'
 export default {
   actions: [
     {
-      display_name: 'Add Status',
+      display_name: 'Add Report Status',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [
@@ -24,13 +25,14 @@ export default {
       formatter   : cell => (
         <Checkbox
           checked={JSON.parse(cell)}
-          disabled/>
+          disabled
+          style={{ 'margin-left': '40px' }}/>
       )
     },
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 2,
+      width       : 4,
       options     : [
         {
           display_name: 'Edit Report Status',

@@ -130,9 +130,6 @@ and (-webkit-min-device-pixel-ratio: 2) {
 }
 
 
-.service-heading {
-  float: left !important;
-}
 
 .divider-margin {
   margin-top: -28px !important;
@@ -160,9 +157,14 @@ and (-webkit-min-device-pixel-ratio: 2) {
 }
 
 .div-table-width {
-  width: 98% !important;
+  width: 100% !important;
   overflow-y: hidden;
   .ui.table {
     width: max-content !important;
   }
 }
+
+
+.tab-header{
+ min-width: 20% !important;
+  }

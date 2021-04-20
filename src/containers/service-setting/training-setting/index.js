@@ -11,7 +11,7 @@ const TrainingSetting = ()=>{
   return (
     <Segment className='segment-content-no-border'>
       <Grid>
-        <Grid.Column className='training-heading'computer={11}>
+        <Grid.Column   className='training-heading' computer={11}>
           <Header as='h4' className='training-head-m' color='teal'>Enable Client Training Questionnaire</Header>
 
           {/* <Checkbox toggle/> */}
@@ -35,8 +35,8 @@ const TrainingSetting = ()=>{
 
       </Grid>
       <Grid>
-        <Grid.Column  className='training-heading pb0' computer={11}>
-          <Header as='h4' className='training-head-m' color='teal'>Enable Training Rating System</Header>
+        <Grid.Column  className='training-heading pb0 pt0' computer={11}>
+          <Header as='h4' className='mb0' color='teal'>Enable Training Rating System</Header>
 
           {/* <Checkbox toggle/> */}
           <Switch

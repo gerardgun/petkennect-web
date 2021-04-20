@@ -1,4 +1,20 @@
 export default {
+
+  actions: [
+    {
+      display_name: 'View All',
+      name        : 'view_all',
+      color       : 'teal',
+      basic       : true
+    },
+    {
+      display_name: 'Add Program',
+      name        : 'add_program',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
+
   columns: [
     {
       display_name: 'Description',

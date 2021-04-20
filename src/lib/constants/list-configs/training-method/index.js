@@ -1,9 +1,10 @@
 export default {
   actions: [
     {
-      display_name: 'Create New Method',
+      display_name: 'Add Method',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [

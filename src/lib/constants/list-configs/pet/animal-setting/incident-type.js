@@ -1,9 +1,10 @@
 export default {
   actions: [
     {
-      display_name: 'New Incident Type',
+      display_name: 'Add Incident Type',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [
@@ -11,7 +12,6 @@ export default {
       display_name: 'Incident Type',
       name        : 'name',
       type        : 'string',
-      width       : 3,
       align       : 'left'
     },
     {
@@ -29,7 +29,7 @@ export default {
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 2,
+      width       : 4,
       options     : [
         {
           display_name: 'Edit Incident Type',

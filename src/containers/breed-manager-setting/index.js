@@ -11,7 +11,7 @@ const BreedManagement = ()=>{
   return (
     <Layout>
       <Segment className='segment-content'>
-        <Grid className='segment-content-header'>
+        <Grid>
           <Grid.Column computer={16} mobile={16} tablet={16}>
             <Header as='h2' className='cls-MainHeader'>Breed Manager</Header>
             <hr></hr>

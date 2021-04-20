@@ -47,18 +47,19 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
   const clientId = `${petDetail.item.client}`
   const client = petDetail.item &&  petDetail.item.client
 
-  const _handleAddReservationBtnClick = () => {
-    if(comesFromScreen == 'from pet') {
-      props.setItemReservation({ service: 'D' },'CREATE')
-      history.push({
-        pathname: `/pet/${petId}/book`,
-        state   : { option: 'Pet', clientid: client }
-      })
-    }
-    else {
-      props.setItemReservation({ service: 'D' },'CREATE')
-      history.replace(`/client/${client_id}/book`)
-    }
+  const _handleActionClick = action => {
+    if(action === 'new_reservation')
+      if(comesFromScreen == 'from pet') {
+        props.setItemReservation({ service: 'D' },'CREATE')
+        history.push({
+          pathname: `/pet/${petId}/book`,
+          state   : { option: 'Pet', clientid: client }
+        })
+      }
+      else {
+        props.setItemReservation({ service: 'D' },'CREATE')
+        history.replace(`/client/${client_id}/book`)
+      }
   }
 
   const _handleRowClick = () => {
@@ -118,89 +119,90 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column computer={4}>
-          <Header as='h3' className='mt4 service-heading' color='teal'>Service Tags:</Header>
-        </Grid.Column>
-        <Grid.Column className='tag-display' computer={8} textAlign='center'>
+        <Grid.Column className='pb0 pl0' computer={12}>
+          <Header as='h4' className='mr32 mb0 display-inline-block pl0'>Service Tags</Header>
+
           <Label
             as='a'
             className='label-style'
             size='medium'>
-              Leash
+            <b>Leash</b>
             <Icon name='delete'/>
           </Label>
           <Label
             as='a'
             className='label-style'
             size='medium'>
-              Kennel Reactive
+            <b> Kennel Reactive</b>
             <Icon name='delete'/></Label>
         </Grid.Column>
 
         <Grid.Column
+          className='pr0 pl0 pb0'
           computer={4} mobile={3} tablet={4}>
           <Button
-            basic className='w120' color='teal'
+            basic
+            className='w120' color='teal' floated='right'
             onClick={()=>props.setItem(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
         </Grid.Column>
       </Grid>
-      <Grid className='mh0'>
-        <Grid.Column computer={12}>
-          <Header as='h3' className='mt4 mr32 service-heading' color='teal'>Most Frequently Used Service:</Header>
-          <Header as='h3' className='mt4 my-class'> Day Camp</Header>
-        </Grid.Column>
-        <Grid.Column
-          computer={4} mobile={4} tablet={4}>
+      <Grid className='mh0 pl0'>
+        <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
+          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Most Frequently Used Service</Header>
+          <label className='display-inline-block'> Day Camp</label>
+
           <Button
-            basic className='w120' color='teal'
-            content='Rebook' icon='redo alternate' onClick={()=>setRebookAlert(true)}/>
+            basic
+            className='w120'
+            color='teal' content='Rebook' floated='right'
+
+            icon='redo alternate' onClick={()=>setRebookAlert(true)}/>
         </Grid.Column>
       </Grid>
       <Grid>
-        <Grid.Column className='pr0 scroll-container pb0' computer={16}>
-          <div className='flex-container'>
-            <div>
-              <div className='h-container'>
-                <Header as='h3' className='t-header total-use' color='teal'>Total Usage : </Header>
-                <Header as='h4'className='t-header mt0' >Prepaids</Header>
-              </div>
 
-              <div className='table-left'>
-                <Table
-                  config={daycampPrepaidConfig}
-                  duck={daycampPrepaidUsageDuck}/>
-              </div>
+        <Grid.Column className='pr0 h-container' computer={9}>
+          <Grid>
+            <Grid.Column className='pr0 mb5'>
+              <Header
+                as='h4' className='total-use display-inline-block mb0' color='teal'>Total Usage</Header>
+              <Header as='h4'className='display-inline-block mt0'>Prepaids</Header>
+            </Grid.Column>
+          </Grid>
 
-            </div>
-            <div>
-              <div className='l-header'>
-                <Header as='h4' className='m-b' >Reservations</Header>
-              </div>
-
-              <div className='table-right'>
-                <Table
-                  config={daycampReservationConfig}
-                  duck={daycampReservationUsageDuck}/>
-              </div>
-            </div>
-
-          </div>
+          <Table
+            config={daycampPrepaidConfig}
+            duck={daycampPrepaidUsageDuck}/>
 
         </Grid.Column>
 
+        <Grid.Column  className='pl0' computer={7}>
+
+          <Grid>
+            <Grid.Column className='mb5' textAlign='center'>
+              <Header as='h4' className='mt02' >Reservations</Header>
+            </Grid.Column>
+          </Grid>
+
+          <Table
+            config={daycampReservationConfig}
+            duck={daycampReservationUsageDuck}/>
+
+        </Grid.Column>
       </Grid>
 
       <Grid className='segment-content-header mb0' columns={2}>
 
         <Grid.Column
-          className='mt32'
+          className='mt32 pl0 pb8'
           computer={6}
-          mobile={10} style={{ 'padding-top': '1.4rem' }}
-          tablet={4}>
-          <Header as='h3'  color='teal' >Recent Package Detail</Header>
+          mobile={10}
+          style={{ 'padding-top': '1.4rem' }} tablet={4}
+          verticalAlign='middle'>
+          <Header as='h4'  color='teal' >Recent Package Detail</Header>
         </Grid.Column >
         <Grid.Column
-          className='ui-grid-align mt32'
+          className='ui-grid-align mt32 pr0 pb8'
           computer={10} mobile={10} tablet={12}>
           <Button
             basic
@@ -220,25 +222,19 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
           onRowDropdownChange={_handlePackageOptionClick}/>
       </div>
 
-      <Grid className='segment-content-header' columns={2}>
-        <Grid.Column computer={4} mobile={10} tablet={4}>
-          <Header as='h2' className='child_header'>Reservations</Header>
-        </Grid.Column >
+      <Grid className='segment-content-header'>
         <Grid.Column
-          className='ui-grid-align'
-          computer={12} mobile={10} tablet={12}>
-          <Button
-            color='teal'
-            content='New Reservation'
-            icon='add'
-            onClick={_handleAddReservationBtnClick}/>
-        </Grid.Column>
+          className='pl0 pb0' computer={16} mobile={10}
+          tablet={4}>
+          <Header as='h4' color='teal'>Reservation History</Header>
+        </Grid.Column >
       </Grid>
       <div className='div-table-width'>
         <Table
           config={config}
           duck={dayCampReservationDuck}
           // onOptionDropdownChange={_handleOptionDropdownChange}
+          onActionClick={_handleActionClick}
           onRowButtonClick={_handleRowButtonClick}
           onRowClick={_handleRowClick}
           onRowDropdownChange={_handleOptionDropdownChange}/>
