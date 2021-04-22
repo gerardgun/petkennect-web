@@ -10,7 +10,6 @@ function* get() {
     yield put({ type: types.GET_PENDING })
 
     const list = yield select(selectors.list)
-    let id  = 1
     const meta = {
       current_page: 1,
       from        : 1,
@@ -26,14 +25,14 @@ function* get() {
       type   : types.GET_FULFILLED,
       payload: {
         items: Array.from({ length: 3 }, index => ({
-          id           : id++,
+          id           : index + 1,
           description  : faker.random.arrayElement([ 'Puppy Preschool', 'Agility 1', '4 Week Day Train' ]),
           trainer      : faker.name.firstName(),
           starting_date: faker.date.future(),
           type         : faker.random.arrayElement([ 'Obedience', 'Sport', 'Behaviorial' ]),
           purchased    : faker.date.future(),
-          contract     : faker.random.arrayElement([ 'Paid In Full', 'Refunded', 'Canceled' ]),
-          status       : faker.random.arrayElement([ 'Signed', 'N/A', 'Unsigned' ])
+          status       : faker.random.arrayElement([ 'Completed', 'Refunded', 'Canceled' ]),
+          contract     : faker.random.arrayElement([ 'Signed', 'N/A', 'Unsigned' ])
         })),
         pagination: {
           ...list.pagination,

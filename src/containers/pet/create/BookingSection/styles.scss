@@ -158,12 +158,11 @@ and (-webkit-min-device-pixel-ratio: 2) {
 
 .div-table-width {
   width: 100% !important;
-  overflow-y: hidden;
+  overflow-y: auto !important;
   .ui.table {
     width: max-content !important;
   }
 }
-
 
 .tab-header{
  min-width: 20% !important;

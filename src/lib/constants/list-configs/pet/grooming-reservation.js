@@ -1,3 +1,4 @@
+import React from 'react'
 export default {
 
   actions: [
@@ -82,34 +83,28 @@ export default {
       align       : 'left',
       sort        : true
     },
-
     {
-      display_name: 'Run',
-      name        : 'run',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'Time in',
+      display_name: 'Time In/Out',
       name        : 'time_in',
       type        : 'string',
+      width       : 1,
+      align       : 'center',
+      sort        : true,
+      formatter   : (cell,row) => {
+        return (
+          <>
+            <span>
+              {row.time_in}
+            </span>
+            <span style={{ display: 'block' }}>
+              {row.time_out}
+            </span>
+          </>)
+      }
 
-      align: 'left',
-      sort : true
     },
     {
-      display_name: 'Time Out',
-      name        : 'time_out',
-      type        : 'string',
-
-      align: 'left',
-      sort : true
-    },
-
-    {
-      display_name: 'Actions',
+      display_name: '',
       type        : 'button',
       options     : [
         {
@@ -121,7 +116,7 @@ export default {
       ]
     },
     {
-      display_name: 'Actions',
+      display_name: 'Action',
       name        : 'custom_name',
       type        : 'dropdown',
       options     : [

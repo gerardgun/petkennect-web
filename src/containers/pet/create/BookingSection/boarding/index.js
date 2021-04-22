@@ -2,7 +2,7 @@
 import React,{ useEffect,useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header, Button, Grid, Container, Label, Icon } from 'semantic-ui-react'
+import { Header, Button, Grid, Container, Label, Icon, Divider } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 import boardingReservationListConfig from '@lib/constants/list-configs/pet/boarding-reservation'
@@ -87,7 +87,7 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column className='pl0 pb0' computer={12}>
+        <Grid.Column className='pl0 pb0 pt0' computer={12}>
           <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags</Header>
 
           <Label
@@ -106,32 +106,20 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
         </Grid.Column>
 
         <Grid.Column
-          className='pr0 pb0'
+          className='pr0 pb0 pt0'
           computer={4} mobile={3} tablet={4}>
           <Button
             basic
-            className='w120' color='teal' floated='right'
-            onClick={()=>props.setBoardingReserve(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
-        </Grid.Column>
-      </Grid>
-
-      <Grid className='mh0'>
-        <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Most Frequently Used Service</Header>
-          <label className='display-inline-block'> Day Camp</label>
-
-          <Button
-            basic
             className='w120'
-            color='teal' content='Rebook' floated='right'
-
-            icon='redo alternate' onClick={()=>setRebookAlert(true)}/>
+            color='teal'
+            content='Tags' floated='right' icon='add'
+            onClick={()=>props.setBoardingReserve(null,'CREATE')}/>
         </Grid.Column>
       </Grid>
 
       <Grid className='mh0'>
 
-        <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
+        <Grid.Column className='pl0 pr0 pb3 pt8' computer={16} verticalAlign='middle'>
           <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Last Service</Header>
           <label className='display-inline-block'>Boarding + Day Camp</label>
 
@@ -145,25 +133,25 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       </Grid>
       <Grid className='mh0'>
-        <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
-          <Header as='h4' className='mr32 pr8 pt7r'>Day Activity Package</Header>
+        <Grid.Column className='pl0 pr0 pb3 pt12' computer={16} verticalAlign='middle'>
+          <Header as='h4' className='mr32 pr8'>Day Activity Package</Header>
 
         </Grid.Column>
       </Grid>
 
       <Grid className='mh0'>
-        <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
+        <Grid.Column className='pl0 pr0 pt12 pb24' computer={16} verticalAlign='middle'>
           <Header as='h4'  className='mr32 mb0 display-inline-block pt7r'>Add On Services</Header>
 
           <label className='display-inline-block'>Grooming, Treat</label>
         </Grid.Column>
       </Grid>
-
+      <Divider className='mb24'/>
       <Grid>
         <Grid.Column className='pb0' computer={16}>
           <Header as='h4' className='pl0' color='teal'>Total Boarding</Header>
         </Grid.Column>
-        <Grid.Column className='pr0 h-container' computer={8}>
+        <Grid.Column className='pr0 h-container boarding-table' computer={8}>
 
           <Grid>
             <Grid.Column className='mb5' textAlign='center'>
@@ -177,7 +165,7 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
         </Grid.Column>
 
-        <Grid.Column  className='pl0' computer={8}>
+        <Grid.Column  className='pl0 boarding-table' computer={8}>
 
           <Grid>
             <Grid.Column className='mb5' textAlign='center'>
@@ -192,7 +180,7 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
         </Grid.Column>
       </Grid>
 
-      <Grid className='mb0 mt24' columns={2}>
+      <Grid className='mb0 mt32' columns={2}>
 
         <Grid.Column
           className='pb8'
@@ -223,20 +211,23 @@ const  BoardingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
       <Grid className='segment-content-header mb0' columns={2}>
         <Grid.Column
-          className='pl0'
+          className='pl0 pb0'
           computer={16} mobile={10} style={{ 'padding-top': '15px' }}
           tablet={4}>
           <Header as='h4' color='teal'>Reservation History</Header>
         </Grid.Column >
 
       </Grid>
-      <div className='div-table-width'>
-        <Table
-          config={boardingReservationListConfig}
-          duck={petReservationBoardingDuck}
-          onActionClick={_handleAddReservationBtnClick}
-          onRowDropdownChange={_handleOptionDropdownChange}/>
-      </div>
+      <Grid>
+        <Grid.Column className='pt0' computer={16}>
+          <Table
+            config={boardingReservationListConfig}
+            duck={petReservationBoardingDuck}
+            onActionClick={_handleAddReservationBtnClick}
+            onRowDropdownChange={_handleOptionDropdownChange}/>
+        </Grid.Column>
+      </Grid>
+
       {/* <PackageCreateForm/> */}
       <PetNotes/>
       <AddServiceTag detailDuck={petReservationBoardingDetailDuck}/>

@@ -41,14 +41,6 @@ export default {
       sort        : true
     },
     {
-      display_name: 'Type',
-      name        : 'type',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
       display_name: 'Purchased',
       name        : 'purchased',
       type        : 'date', // image, boolean, date, datetime, money, label
@@ -73,7 +65,7 @@ export default {
       sort        : true
     },
     {
-      display_name: 'Actions',
+      display_name: 'Action',
       name        : 'custom_name',
       type        : 'dropdown',
       options     : [

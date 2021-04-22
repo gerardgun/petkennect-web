@@ -70,7 +70,7 @@ function BookingSection({  ...props }) {
               type='G'/>
 
           </div>
-          <Divider/>
+          <Divider className='mb8'/>
         </Grid.Column>
       </Grid>
       <br></br>

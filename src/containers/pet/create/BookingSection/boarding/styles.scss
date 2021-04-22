@@ -1,22 +1,19 @@
 .div-table-width {
-    width: 100% !important;
-    overflow-y: hidden;
-    .ui.table {
-      width: max-content !important;
-    }
+  width: 100% !important;
+  overflow-y: auto;
+  .ui.table {
+    width: max-content !important;
   }
+}
 
 .label-style{
-    margin-right: 8px !important;
-    margin-bottom: 8px !important;
-    height: 2.6rem !important;
-    margin-left: 0 !important;
-    padding-top: .8rem !important;
+  margin-right: 8px !important;
+  margin-top: 6px !important;
+  margin-left: 0 !important;
 }
 
 .flex-container{
   display : flex !important;
- 
 }
 
 .pt7r{
@@ -24,13 +21,27 @@
 }
 
 .mb5{
-  margin-bottom: 7px !important;   
- }
+  margin-bottom: 7px !important;
+}
 
 .mt02{
   margin-top: 0.02rem !important;
 }
- 
+
+.pt10{
+  padding-top: 10px !important;
+}
+
+.pb3{
+  padding-bottom: 3px !important;
+}
+
+.boarding-table{
+  padding-top: 0 !important;
+  height: 135px !important;
+}
+
+
 
 
 

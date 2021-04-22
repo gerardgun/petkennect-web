@@ -36,6 +36,7 @@ import clientDocumentType from '@reducers/client/document/type'
 import clientDocumentTypeDetail from '@reducers/client/document/type/detail'
 import clientPet from '@reducers/client/pet'
 import clientEmailMessage from '@reducers/client/email-message'
+import clientEmailMessageDetail from '@reducers/client/email-message/detail'
 import company from '@reducers/company'
 import companyDetail from '@reducers/company/detail'
 import customReport from '@reducers/custom-report'
@@ -268,6 +269,7 @@ const createRootReducer = history => combineReducers({
   [clientCommentDetail.store]            : clientCommentDetail.reducer,
   [clientPet.store]                      : clientPet.reducer,
   [clientEmailMessage.store]             : clientEmailMessage.reducer,
+  [clientEmailMessageDetail.store]       : clientEmailMessageDetail.reducer,
   [company.store]                        : company.reducer,
   [companyDetail.store]                  : companyDetail.reducer,
   [customReport.store]                   : customReport.reducer,

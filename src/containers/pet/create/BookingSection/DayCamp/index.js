@@ -1,7 +1,7 @@
 import React,{ useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header, Icon, Label, Button, Grid, Container } from 'semantic-ui-react'
+import { Header, Icon, Label, Button, Grid, Container, Divider } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 
@@ -119,7 +119,7 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column className='pb0 pl0' computer={12}>
+        <Grid.Column className='pb0 pl0 pt0' computer={12}>
           <Header as='h4' className='mr32 mb0 display-inline-block pl0'>Service Tags</Header>
 
           <Label
@@ -138,16 +138,19 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
         </Grid.Column>
 
         <Grid.Column
-          className='pr0 pl0 pb0'
-          computer={4} mobile={3} tablet={4}>
+          className='pr0 pl0 pb0 pt0'
+          computer={4}
+          mobile={3} tablet={4} verticalAlign='middle'>
           <Button
             basic
-            className='w120' color='teal' floated='right'
-            onClick={()=>props.setItem(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
+            className='w120'
+            color='teal'
+            content='Tags' floated='right' icon='add'
+            onClick={()=>props.setItem(null,'CREATE')}/>
         </Grid.Column>
       </Grid>
       <Grid className='mh0 pl0'>
-        <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
+        <Grid.Column className='pl0 pr0 pt8' computer={16} verticalAlign='middle'>
           <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Most Frequently Used Service</Header>
           <label className='display-inline-block'> Day Camp</label>
 
@@ -159,9 +162,11 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
             icon='redo alternate' onClick={()=>setRebookAlert(true)}/>
         </Grid.Column>
       </Grid>
+      <Divider className='mb24'/>
+      <br/>
       <Grid>
 
-        <Grid.Column className='pr0 h-container' computer={9}>
+        <Grid.Column className='pr0 h-container table-height pt0' computer={9}>
           <Grid>
             <Grid.Column className='pr0 mb5'>
               <Header
@@ -169,32 +174,34 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
               <Header as='h4'className='display-inline-block mt0'>Prepaids</Header>
             </Grid.Column>
           </Grid>
-
-          <Table
-            config={daycampPrepaidConfig}
-            duck={daycampPrepaidUsageDuck}/>
+          <div className='mr8'>
+            <Table
+              config={daycampPrepaidConfig}
+              duck={daycampPrepaidUsageDuck}/>
+          </div>
 
         </Grid.Column>
 
-        <Grid.Column  className='pl0' computer={7}>
+        <Grid.Column  className='pl0 pt0' computer={7}>
 
           <Grid>
             <Grid.Column className='mb5' textAlign='center'>
               <Header as='h4' className='mt02' >Reservations</Header>
             </Grid.Column>
           </Grid>
-
-          <Table
-            config={daycampReservationConfig}
-            duck={daycampReservationUsageDuck}/>
+          <div className='ml8'>
+            <Table
+              config={daycampReservationConfig}
+              duck={daycampReservationUsageDuck}/>
+          </div>
 
         </Grid.Column>
       </Grid>
 
-      <Grid className='segment-content-header mb0' columns={2}>
+      <Grid className='segment-content-header mb0 mt0' columns={2}>
 
         <Grid.Column
-          className='mt32 pl0 pb8'
+          className='pl0 pb8'
           computer={6}
           mobile={10}
           style={{ 'padding-top': '1.4rem' }} tablet={4}
@@ -202,7 +209,7 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
           <Header as='h4'  color='teal' >Recent Package Detail</Header>
         </Grid.Column >
         <Grid.Column
-          className='ui-grid-align mt32 pr0 pb8'
+          className='ui-grid-align pr0 pb8'
           computer={10} mobile={10} tablet={12}>
           <Button
             basic
@@ -229,16 +236,16 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
           <Header as='h4' color='teal'>Reservation History</Header>
         </Grid.Column >
       </Grid>
-      <div className='div-table-width'>
-        <Table
-          config={config}
-          duck={dayCampReservationDuck}
-          // onOptionDropdownChange={_handleOptionDropdownChange}
-          onActionClick={_handleActionClick}
-          onRowButtonClick={_handleRowButtonClick}
-          onRowClick={_handleRowClick}
-          onRowDropdownChange={_handleOptionDropdownChange}/>
-      </div>
+      {/* <div className='div-table-width'> */}
+      <Table
+        config={config}
+        duck={dayCampReservationDuck}
+        // onOptionDropdownChange={_handleOptionDropdownChange}
+        onActionClick={_handleActionClick}
+        onRowButtonClick={_handleRowButtonClick}
+        onRowClick={_handleRowClick}
+        onRowDropdownChange={_handleOptionDropdownChange}/>
+      {/* </div> */}
       <PackageCreateForm/>
       <CheckOutAlert alertStatus={checkOutAlert} handleClose={_onHandleCheckOutClose}/>
       <RebookAlert alertStatus={rebookAlert} handleClose={_onHandleRebookAlertClose}/>

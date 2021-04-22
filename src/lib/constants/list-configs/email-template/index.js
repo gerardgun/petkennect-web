@@ -29,8 +29,8 @@ export default {
       width       : null,
       align       : 'left',
       filter      : {
-        type        : 'dropdown',
-        name        : 'category',
+        type   : 'dropdown',
+        name   : 'category',
         options: [
           {
             value: 'Client',
@@ -77,8 +77,8 @@ export default {
       sort        : true,
       sort_name   : 'is_active',
       filter      : {
-        type        : 'dropdown',
-        name        : 'is_active',
+        type   : 'dropdown',
+        name   : 'is_active',
         options: [
           {
             value: true,
