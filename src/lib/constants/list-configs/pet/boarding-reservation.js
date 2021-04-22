@@ -30,48 +30,36 @@ export default {
       sort_name   : 'location__code'
     },
     {
-      display_name: 'Check In',
+      display_name: 'Check In/Out',
       name        : 'check_in_date',
       type        : 'date',
-      width       : null,
-      align       : 'left',
-      sort        : true
+      width       : 1,
+      align       : 'center',
+      sort        : true,
+      formatter   : (cell,row) => {
+        return (
+          <>
+            <span>
+              {row.check_in_date}
+            </span>
+            <span style={{ display: 'block' }}>
+              {row.checkout_at}
+            </span>
+          </>)
+      }
     },
-    {
-      display_name: 'Check Out',
-      name        : 'checkout_at',
-      type        : 'date',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
+
     {
       display_name: 'Nights',
       name        : 'night',
       type        : 'string',
       width       : null,
-      align       : 'left',
+      align       : 'center',
       sort        : true
     },
     {
       display_name: 'Type',
       name        : 'type',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'Service',
-      name        : 'service',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'Run',
-      name        : 'run',
       type        : 'string',
       width       : null,
       align       : 'left',
@@ -110,7 +98,7 @@ export default {
       ]
     },
     {
-      display_name: 'Actions',
+      display_name: 'Action',
       name        : 'custom_name',
       type        : 'dropdown',
       options     : [

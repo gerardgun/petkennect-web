@@ -31,7 +31,7 @@ export default {
       }
     },
     {
-      display_name: 'Actions',
+      display_name: 'Action',
       type        : 'dropdown',
       options     : [
         {

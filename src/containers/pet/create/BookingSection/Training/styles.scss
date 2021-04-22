@@ -1,24 +1,35 @@
 .label-style{
-   
-    margin-right: 8px !important;
-    margin-bottom: 8px !important;
-    height: 2.6rem !important;
-    margin-left: 0 !important;
-    padding-top: .8rem !important;
+  margin-right: 8px !important;
+  margin-top: 6px !important;
+  margin-left: 0 !important;
 }
-
 .tag-display{
 
-    display: flex !important;
-    flex-wrap: wrap !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
 }
 .pt7r{
-    padding-top: 0.7rem !important;
-} 
-.mb5{
-    margin-bottom: 7px !important;   
-}  
-.mt02{
-    margin-top: 0.02rem !important;
+  padding-top: 0.7rem !important;
 }
-   
+.mb5{
+  margin-bottom: 7px !important;
+}
+.mt02{
+  margin-top: 0.02rem !important;
+}
+
+.pb18{
+padding-bottom: 18px !important;
+}
+
+.mb18{
+margin-bottom: 18px !important;
+}
+
+.div-table-width-training{
+  width: 100% !important;
+  overflow-y: auto;
+  .ui.table {
+    width: max-content !important;
+  }
+}

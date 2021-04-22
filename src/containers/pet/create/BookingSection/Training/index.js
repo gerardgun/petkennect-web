@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header, Button, Grid, Container, Label, Icon } from 'semantic-ui-react'
+import { Header, Button, Grid, Container, Label, Icon, Divider } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 import config from '@lib/constants/list-configs/pet/training-reservation'
@@ -15,7 +15,6 @@ import petReservationTrainingPackageDetailDuck from '@reducers/pet/reservation/t
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import './styles.scss'
 const Table = loadable(() => import('@components/Table'))
-const PackageCreateForm = loadable(() => import('./package-create'))
 const PetNotes = loadable(() => import('../Notes'))
 const AddServiceTag = loadable(() => import('../common-section/add-service-tag'))
 const ModalDelete = loadable(()=> import('@components/Modal/Delete'))
@@ -57,9 +56,18 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
       props.setItem(item,'UPDATE')
   }
 
-  const _handleActionClick = action=>{
-    if(action === 'add_program')
-      props.setItem(null, 'CREATE')
+  const _handleActionClick = ()=>{
+    if(comesFromScreen == 'from pet') {
+      props.setReserveItem({ service: 'T' },'CREATE')
+      history.push({
+        pathname: `/pet/${petId}/book`,
+        state   : { option: 'Pet', clientid: client }
+      })
+    }
+    else {
+      props.setReserveItem({ service: 'T' },'CREATE')
+      history.replace(`/client/${client_id}/book`)
+    }
   }
 
   const _handleOptionDropdownChange = (optionName, item) => {
@@ -82,7 +90,7 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column className='pl0' computer={12}>
+        <Grid.Column className='pl0 pt0 pb18' computer={12}>
           <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags</Header>
 
           <Label
@@ -101,15 +109,17 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
         </Grid.Column>
 
         <Grid.Column
-          className='pr0 pl0'
+          className='pr0 pl0 pt0 pb18'
           computer={4} mobile={3} tablet={4}>
           <Button
             basic
-            className='w120' color='teal' floated='right'
-            onClick={()=>props.setTrainingReserve(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
+            className='w120'
+            color='teal'
+            content='Tags' floated='right' icon='add'
+            onClick={()=>props.setTrainingReserve(null,'CREATE')}/>
         </Grid.Column>
       </Grid>
-
+      <Divider className='mb18'/>
       <Grid className='mb0' columns={16}>
 
         <Grid.Column
@@ -120,7 +130,8 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
         </Grid.Column >
 
       </Grid>
-      <div className='mb40 div-table-width'>
+
+      <div className='mb40'>
         <Table
           config={trainingPackageConfig}
           duck={petTrainingPackageDuck}
@@ -135,14 +146,11 @@ function TrainingServiceSection({ comesFromScreen,petDetail, ...props }) {
           <Header as='h4' color='teal'>Reservation History</Header>
         </Grid.Column >
       </Grid>
-      <div className='div-table-width'>
-        <Table
-          config={config}
-          duck={petTrainingReservationDuck}
-          onActionClick={_handleAddReservationBtnClick}
-          onRowDropdownChange={_handleOptionDropdownChange}/>
-      </div>
-      <PackageCreateForm/>
+      <Table
+        config={config}
+        duck={petTrainingReservationDuck}
+        onActionClick={_handleAddReservationBtnClick}
+        onRowDropdownChange={_handleOptionDropdownChange}/>
       <PetNotes/>
       <AddServiceTag detailDuck={petTrainingReservationDetailDuck}/>
       <ModalDelete duckDetail={petReservationTrainingPackageDetailDuck}/>

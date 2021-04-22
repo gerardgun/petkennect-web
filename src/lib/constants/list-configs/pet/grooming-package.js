@@ -50,7 +50,7 @@ export default {
       sort        : true
     },
     {
-      display_name: 'Actions',
+      display_name: 'Action',
       name        : 'custom_name',
       type        : 'dropdown',
       options     : [

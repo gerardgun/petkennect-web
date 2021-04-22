@@ -2,7 +2,7 @@
 import React,{ useEffect,useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { Header, Button, Grid, Container, Label, Icon } from 'semantic-ui-react'
+import { Header, Button, Grid, Container, Label, Icon, Divider } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import { compose } from 'redux'
 import groomingReservationConfig from '@lib/constants/list-configs/pet/grooming-reservation'
@@ -87,7 +87,7 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
   return (
     <Container className='c-booking-daycamp' fluid>
       <Grid className='mh0 mt4'>
-        <Grid.Column className='pl0 pb0' computer={12}>
+        <Grid.Column className='pl0 pb0 pt0' computer={12}>
           <Header as='h4' className='mr32 mb0 display-inline-block'>Service Tags</Header>
 
           <Label
@@ -106,17 +106,19 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
         </Grid.Column>
 
         <Grid.Column
-          className='pr0 pb0'
+          className='pr0 pb0 pt0'
           computer={4} mobile={3} tablet={4}>
           <Button
             basic
-            className='w120' color='teal' floated='right'
-            onClick={()=>props.setGroomingReserve(null,'CREATE')}><Icon name='plus'></Icon>Add</Button>
+            className='w120'
+            color='teal'
+            content='Tags' floated='right' icon='add'
+            onClick={()=>props.setGroomingReserve(null,'CREATE')}/>
         </Grid.Column>
       </Grid>
 
       <Grid className='mh0'>
-        <Grid.Column className='pl0 pr0 pb0' computer={16} verticalAlign='middle'>
+        <Grid.Column className='pl0 pr0 pb0 pt8' computer={16} verticalAlign='middle'>
           <Header as='h4' className='mr32 mb0 display-inline-block pt7r'>Last Service</Header>
           <label className='display-inline-block'> Bath Brush Large Dog</label>
 
@@ -129,18 +131,18 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
         </Grid.Column>
       </Grid>
       <Grid className='mh0 pb0'>
-        <Grid.Column className='pl0 pr0' computer={16} verticalAlign='middle'>
+        <Grid.Column className='pl0 pr0 pt8 pb24' computer={16} verticalAlign='middle'>
           <Header as='h4'  className='mr32 mb0 display-inline-block pt7r'>Preferred Groomer</Header>
 
           <label className='display-inline-block'>James Hack</label>
         </Grid.Column>
       </Grid>
-
+      <Divider className='mb24'/>
       <Grid>
         <Grid.Column className='pb0' computer={16}>
           <Header as='h4' className='pl0' color='teal'>Total Grooming</Header>
         </Grid.Column>
-        <Grid.Column className='pr0 h-container' computer={8}>
+        <Grid.Column className='pr0 h-container grooming-table' computer={8}>
 
           <Grid>
             <Grid.Column className='mb5' textAlign='center'>
@@ -154,7 +156,7 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
 
         </Grid.Column>
 
-        <Grid.Column  className='pl0' computer={8}>
+        <Grid.Column  className='pl0 grooming-table' computer={8}>
 
           <Grid>
             <Grid.Column className='mb5' textAlign='center'>
@@ -169,8 +171,7 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
         </Grid.Column>
       </Grid>
 
-      <Grid className='segment-content-header mb0 mt32' columns={2}>
-
+      <Grid className='segment-content-header mb0' columns={2}>
         <Grid.Column
           className='pl0 pb8'
           computer={6}
@@ -207,13 +208,12 @@ const  GroomingServiceSection = ({ comesFromScreen, petDetail,  ...props }) => {
         </Grid.Column >
 
       </Grid>
-      <div className='div-table-width'>
-        <Table
-          config={groomingReservationConfig}
-          duck={groomingReservationDuck}
-          onActionClick={_handleAddReservationBtnClick}
-          onRowDropdownChange={_handleOptionDropdownChange}/>
-      </div>
+
+      <Table
+        config={groomingReservationConfig}
+        duck={groomingReservationDuck}
+        onActionClick={_handleAddReservationBtnClick}
+        onRowDropdownChange={_handleOptionDropdownChange}/>
       <PackageCreateForm/>
       <PetNotes/>
       <AddServiceTag detailDuck={groomingReservationDetailDuck}/>

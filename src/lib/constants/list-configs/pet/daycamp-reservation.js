@@ -72,15 +72,7 @@ export default {
       sort        : true
     },
     {
-      display_name: 'Run',
-      name        : 'run',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'Addons',
+      display_name: 'Addon',
       name        : 'addons',
       type        : 'string',
       width       : null,
@@ -97,20 +89,24 @@ export default {
       }
     },
     {
-      display_name: 'Time In',
+      display_name: 'In/Out',
       name        : 'checkin_time',
       type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
-    },
-    {
-      display_name: 'Time Out',
-      name        : 'checkout_at',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : true
+      width       : 1,
+      align       : 'center',
+      sort        : true,
+      formatter   : (cell,row) => {
+        return (
+          <>
+            <span>
+
+              {row.checkin_time}
+            </span>
+            <span style={{ display: 'block' }}>
+              {row.checkout_at}
+            </span>
+          </>)
+      }
     },
     {
       display_name: '',
@@ -126,34 +122,39 @@ export default {
       ]
     },
     {
-      display_name: 'Actions',
+      display_name: 'Action',
       name        : 'custom_name',
       type        : 'dropdown',
       options     : [
         {
           icon        : 'edit',
-          display_name: 'Edit Reservation',
+          display_name: 'Edit Reserve',
           name        : 'edit_reserve'
         },
         {
-          icon        : 'sticky note',
-          display_name: 'Add Notes',
-          name        : 'add_notes'
+          icon        : 'sticky note outline',
+          display_name: 'Add Note',
+          name        : 'add_note'
         },
         {
-          icon        : 'plus',
+          icon        : 'add',
           display_name: 'Add Interaction',
           name        : 'add_interaction'
         },
         {
-          icon        : 'file pdf',
-          display_name: 'Add/Edit Report Card',
-          name        : 'add_edit_report_card'
+          icon        : 'server',
+          display_name: 'Add-on Services',
+          name        : 'add_on'
         },
         {
-          icon        : 'clipboard list icon',
-          display_name: 'Add-On Services',
-          name        : 'add_on'
+          icon        : 'file text',
+          display_name: 'Add/Edit Logs',
+          name        : 'edit_logs'
+        },
+        {
+          icon        : 'file pdf',
+          display_name: 'Add/Edit Report Card',
+          name        : 'report_cards'
         },
         {
           icon        : 'print',

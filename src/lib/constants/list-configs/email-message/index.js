@@ -1,4 +1,16 @@
+import React from 'react'
+
 export default {
+
+  actions: [
+    {
+      display_name: 'Compose',
+      name        : 'compose',
+      color       : 'teal',
+      icon        : 'edit'
+    }
+  ],
+
   options: {
     basic: [
       {
@@ -12,16 +24,16 @@ export default {
         icon        : 'print'
       }
     ],
-    single: [
+    multiple: [
       {
         display_name: 'Mark as read',
-        name        : 'delete',
+        name        : 'read',
         icon        : 'envelope open outline icon',
         color       : 'teal'
       },
       {
         display_name: 'Mark as unread',
-        name        : 'delete',
+        name        : 'unread',
         icon        : 'envelope outline icon',
         color       : 'teal'
       },
@@ -40,7 +52,19 @@ export default {
       type        : 'string',
       width       : 20,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : (cell, row) => {
+        let fontWeight = ''
+        if(row.email === 'unread')
+          fontWeight = 'bold'
+        else
+          fontWeight = 'normal'
+
+        return (
+          <span
+            style={{ fontWeight: fontWeight }}>{cell}</span>
+        )
+      }
     },
     {
       display_name: 'Subject',
@@ -48,7 +72,19 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : (cell, row) => {
+        let fontWeight = ''
+        if(row.email === 'unread')
+          fontWeight = 'bold'
+        else
+          fontWeight = 'normal'
+
+        return (
+          <span
+            style={{ fontWeight: fontWeight }}>{cell}</span>
+        )
+      }
     },
     {
       display_name: 'Sent',
@@ -56,7 +92,19 @@ export default {
       type        : 'string',
       width       : null,
       align       : 'left',
-      sort        : false
+      sort        : false,
+      formatter   : (cell, row) => {
+        let fontWeight = ''
+        if(row.email === 'unread')
+          fontWeight = 'bold'
+        else
+          fontWeight = 'normal'
+
+        return (
+          <span
+            style={{ fontWeight: fontWeight }}>{cell}</span>
+        )
+      }
     }
   ]
 }

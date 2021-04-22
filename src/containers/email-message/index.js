@@ -1,7 +1,8 @@
 import React, { useEffect , useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Button, Icon, Grid, Header, Message, Step, Segment } from 'semantic-ui-react'
+import { Icon, Grid, Header, Message, Step, Segment } from 'semantic-ui-react'
+import loadable from '@loadable/component'
 
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
@@ -10,10 +11,13 @@ import emailLogListConfig from '@lib/constants/list-configs/email-log'
 
 import EmailMessageCreate from './create'
 import emailLogDuck from '@reducers/email-log'
+import emailLogDetailDuck from '@reducers/email-log/detail'
 import emailMessageDuck from '@reducers/email-message'
 import emailMessageDetailDuck from '@reducers/email-message/detail'
 
 import './styles.scss'
+
+const ModalDelete = loadable(() => import('@components/Modal/Delete'))
 
 const EmailMessage = ({ ...props }) => {
   const [ activeMenuItem, setActiveMenuItem ] = useState('inbox')
@@ -26,6 +30,15 @@ const EmailMessage = ({ ...props }) => {
     props.setItem(null, 'CREATE')
   }
 
+  const _handleOptionClick = option => {
+    if(option === 'delete')
+      props.setItem(null, 'DELETE')
+  }
+  const _handleLogOptionClick = option => {
+    if(option === 'delete')
+      props.setLogItem(null, 'DELETE')
+  }
+
   const _handleMenuItemClick = (e, { name }) => setActiveMenuItem(name)
 
   return (
@@ -35,13 +48,6 @@ const EmailMessage = ({ ...props }) => {
           <Grid.Column>
             <Header as='h2'>Email Messages</Header>
           </Grid.Column >
-          <Grid.Column
-            className='ui-grid-align'
-            computer={8} mobile={12} tablet={8}>
-            <Button
-              color='teal' content='Compose' icon='edit'
-              onClick={_handleAddBtnClick}/>
-          </Grid.Column>
         </Grid>
 
         <Grid className='grid-email-message' columns={2}>
@@ -95,7 +101,9 @@ const EmailMessage = ({ ...props }) => {
               && (
                 <Table
                   config={emailListConfig}
-                  duck={emailMessageDuck}/>
+                  duck={emailMessageDuck}
+                  onActionClick={_handleAddBtnClick}
+                  onOptionClick={_handleOptionClick}/>
               )
             }
 
@@ -109,7 +117,8 @@ const EmailMessage = ({ ...props }) => {
               </Message>
               <Table
                 config={emailLogListConfig}
-                duck={emailLogDuck}/>
+                duck={emailLogDuck}
+                onOptionClick={_handleLogOptionClick}/>
             </>
             }
 
@@ -118,6 +127,8 @@ const EmailMessage = ({ ...props }) => {
       </Segment>
 
       <EmailMessageCreate/>
+      <ModalDelete duckDetail={emailMessageDetailDuck}/>
+      <ModalDelete duckDetail={emailLogDetailDuck}/>
     </Layout>
   )
 }
@@ -126,6 +137,7 @@ export default compose(
     () => ({}), {
       getEmailMessage: emailMessageDuck.creators.get,
       getEmailLog    : emailLogDuck.creators.get,
-      setItem        : emailMessageDetailDuck.creators.setItem
+      setItem        : emailMessageDetailDuck.creators.setItem,
+      setLogItem     : emailLogDetailDuck.creators.setItem
     })
 )(EmailMessage)

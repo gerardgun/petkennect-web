@@ -23,7 +23,6 @@ const EmailMessageForm = (props) => {
     handleSubmit,
     reset,
     submitting // redux-form
-
   } = props
 
   const _handleClose = () => {

@@ -1,9 +1,8 @@
 import React from 'react'
-import { Label } from 'semantic-ui-react'
 
 export default {
   options: {
-    single: [
+    multiple: [
       {
         display_name: 'Delete Message',
         name        : 'delete',
@@ -49,14 +48,15 @@ export default {
         if(cell == 'Bounced')
           color = 'red'
         else if(cell == 'Clicked')
+          color = 'orange'
+        else if(cell == 'Delivered')
           color = 'blue'
         else
           color = 'green'
 
         return (
-          <Label
-            circular color={color} horizontal
-            style={{ minWidth: '6rem' }}>{cell}</Label>
+          <span
+            style={{ minWidth: '6rem', color: color }}><b>{cell}</b></span>
         )
       }
     },
@@ -66,17 +66,12 @@ export default {
       type        : 'dropdown',
       options     : [
         {
-          display_name: 'Email Logs view',
-          name        : 'email_logs_view',
-          icon        : 'mail'
-        },
-        {
           display_name: 'Resend',
           name        : 'resend',
           icon        : 'redo'
         },
         {
-          display_name: 'forward',
+          display_name: 'Forward',
           name        : 'forward',
           icon        : 'send'
         }
