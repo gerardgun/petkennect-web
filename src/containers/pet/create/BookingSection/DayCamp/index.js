@@ -162,16 +162,20 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
             icon='redo alternate' onClick={()=>setRebookAlert(true)}/>
         </Grid.Column>
       </Grid>
-      <Divider className='mb24'/>
+      <Divider className='mb4'/>
       <br/>
       <Grid>
 
+        <Grid.Column className='pb0' computer={16}>
+          <Header as='h4' className='pl0' color='teal'>Total Usage</Header>
+        </Grid.Column>
+
         <Grid.Column className='pr0 h-container table-height pt0' computer={9}>
           <Grid>
-            <Grid.Column className='pr0 mb5'>
-              <Header
-                as='h4' className='total-use display-inline-block mb0' color='teal'>Total Usage</Header>
-              <Header as='h4'className='display-inline-block mt0'>Prepaids</Header>
+
+            <Grid.Column className='pr0 mb5 'textAlign='center'>
+
+              <Header as='h4'className='mt0'>Prepaids</Header>
             </Grid.Column>
           </Grid>
           <div className='mr8'>
@@ -222,30 +226,27 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
             onClick={_handleAddPackageBtnClick}/>
         </Grid.Column>
       </Grid>
-      <div className='training-table'>
-        <Table
-          config={configPackage}
-          duck={dayServicePackageDuck}
-          onRowDropdownChange={_handlePackageOptionClick}/>
-      </div>
-
+      <Table
+        config={configPackage}
+        duck={dayServicePackageDuck}
+        onRowDropdownChange={_handlePackageOptionClick}/>
       <Grid className='segment-content-header'>
         <Grid.Column
-          className='pl0 pb0' computer={16} mobile={10}
+          className='pl0 pb0 mt8' computer={16} mobile={10}
           tablet={4}>
           <Header as='h4' color='teal'>Reservation History</Header>
         </Grid.Column >
       </Grid>
-      {/* <div className='div-table-width'> */}
-      <Table
-        config={config}
-        duck={dayCampReservationDuck}
-        // onOptionDropdownChange={_handleOptionDropdownChange}
-        onActionClick={_handleActionClick}
-        onRowButtonClick={_handleRowButtonClick}
-        onRowClick={_handleRowClick}
-        onRowDropdownChange={_handleOptionDropdownChange}/>
-      {/* </div> */}
+      <div className='padding-table-header'>
+        <Table
+          config={config}
+          duck={dayCampReservationDuck}
+          // onOptionDropdownChange={_handleOptionDropdownChange}
+          onActionClick={_handleActionClick}
+          onRowButtonClick={_handleRowButtonClick}
+          onRowClick={_handleRowClick}
+          onRowDropdownChange={_handleOptionDropdownChange}/>
+      </div>
       <PackageCreateForm/>
       <CheckOutAlert alertStatus={checkOutAlert} handleClose={_onHandleCheckOutClose}/>
       <RebookAlert alertStatus={rebookAlert} handleClose={_onHandleRebookAlertClose}/>

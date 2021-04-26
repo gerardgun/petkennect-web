@@ -29,7 +29,7 @@ export default {
       display_name: 'Service',
       name        : 'service',
       type        : 'string',
-      width       : null,
+      width       : 1,
       align       : 'left',
       sort        : true
     },
@@ -37,7 +37,7 @@ export default {
       display_name: 'Location',
       name        : 'location',
       type        : 'string',
-      width       : null,
+      width       : 1,
       align       : 'left',
       sort        : true
     },
@@ -109,7 +109,7 @@ export default {
       }
     },
     {
-      display_name: '',
+      display_name: 'Action',
       name        : 'custom_name',
       type        : 'button',
       options     : [
@@ -122,13 +122,13 @@ export default {
       ]
     },
     {
-      display_name: 'Action',
+      display_name: '',
       name        : 'custom_name',
       type        : 'dropdown',
       options     : [
         {
           icon        : 'edit',
-          display_name: 'Edit Reserve',
+          display_name: 'Edit Reservation',
           name        : 'edit_reserve'
         },
         {
