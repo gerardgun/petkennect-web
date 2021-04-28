@@ -1,10 +1,10 @@
 import React from 'react'
-import { Form } from 'semantic-ui-react'
+import { Form, Icon, Popup } from 'semantic-ui-react'
 
 import FormError from '@components/Common/FormError'
-
 const FormField = props => {
   const {
+    help : helpText,                   // for help icon on fields
     control: WrappedComponent,
     input: {
       onBlur,
@@ -20,7 +20,6 @@ const FormField = props => {
     children,
     ...rest
   } = props
-
   const getComputedInput = () => {
     let { ...computed } = input
 
@@ -52,9 +51,11 @@ const FormField = props => {
   const hasError = meta.touched && meta.error
 
   return (
-    <Form.Field className={className} error={hasError} required={required}>
+    <Form.Field className={className} error={hasError} required={required}>    {/* update for help icon with label    */}
       {
-        [ 'checkbox', 'radio' ].includes(props.type) ? <label>&nbsp;</label> : <label>{label}</label>
+        [ 'checkbox', 'radio' ].includes(props.type) ? <label>&nbsp;</label> : helpText != undefined ? <label>{label}<Popup
+          content={helpText} inverted position='bottom center'
+          trigger={<Icon name='info circle'  size='large' style={{ 'padding-left': '.5rem', 'margin-bottom': '.3rem' }}/>}/></label> : <label>{label}</label>
       }
       <WrappedComponent
         onBlur={_handleBlur}
