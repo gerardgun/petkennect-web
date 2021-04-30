@@ -68,6 +68,35 @@ export default [
     ]
   },
   {
+    name : 'Boarding',
+    icon : 'paw',
+    items: [
+      {
+        name: 'Pricing Settings',
+        to  : '/setup/boarding/pricing'
+      }
+    ]
+  },
+  {
+    name : 'Day Services',
+    icon : 'paw',
+    items: [
+      {
+        name: 'General Settings',
+        to  : '/setup/day-service/general/setting'
+      },
+      {
+        name: 'Yard Types',
+        to  : '/setup/pet-yard-type'
+      },
+      {
+        name    : 'Temperament Test Form',
+        to      : '/setup',
+        disabled: true
+      }
+    ]
+  },
+  {
     name : 'Application Settings',
     icon : 'paw',
     items: [
@@ -158,22 +187,7 @@ export default [
     ]
   },
   {
-    name : 'Day Services',
-    icon : 'paw',
-    items: [
-      {
-        name: 'Yard Types',
-        to  : '/setup/pet-yard-type'
-      },
-      {
-        name    : 'Temperament Test Form',
-        to      : '/setup',
-        disabled: true
-      }
-    ]
-  },
-  {
-    name : 'Capacity Managment',
+    name : 'Capacity Management',
     icon : 'paw',
     items: [
       {
@@ -187,6 +201,18 @@ export default [
       {
         name: 'Kennel Areas',
         to  : '/setup/pet-kennel-area'
+      },
+      {
+        name: 'Appointment Capacity',
+        to  : '/setup/capacity/appointment/setting'
+      },
+      {
+        name: 'Services Capacity',
+        to  : '/setup/capacity/service/setting'
+      },
+      {
+        name: 'Lodging Area Management',
+        to  : '/setup/capacity/boarding/setting'
       }
     ]
   },
