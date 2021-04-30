@@ -104,7 +104,7 @@ export default {
 
     },
     {
-      display_name: '',
+      display_name: 'Action',
       type        : 'button',
       options     : [
         {
@@ -116,13 +116,13 @@ export default {
       ]
     },
     {
-      display_name: 'Action',
+      display_name: '',
       name        : 'custom_name',
       type        : 'dropdown',
       options     : [
         {
           icon        : 'edit',
-          display_name: 'Edit Reserve',
+          display_name: 'Edit Reservation',
           name        : 'edit_reserve'
         },
         {

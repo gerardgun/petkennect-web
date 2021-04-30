@@ -40,6 +40,7 @@ import PaymentInstruction from '@containers/payment-instruction'
 import Pet from '@containers/pet'
 import PetCreate from '@containers/pet/create'
 import PetSetting from '@containers/pet-setting'
+import DynamicForm from '@containers/dynamic-form-builder'
 import PetVaccinationType from '@containers/pet-vaccination-type'
 import PetKennel from '@containers/pet-kennel'
 import PetKennelType from '@containers/pet-kennel-type'
@@ -183,6 +184,10 @@ const privateRoutes = [
   {
     path     : '/auth/sso',
     component: AuthSSO
+  },
+  {
+    path     : '/setup/questionnaire-form',
+    component: DynamicForm
   },
   {
     path     : '/setup/animal-setting',

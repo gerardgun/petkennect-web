@@ -3,6 +3,7 @@ import { Checkbox } from 'semantic-ui-react'
 
 const CheckboxGroup = props => {
   const {
+    inline,
     options,
     ...rest
   } = props
@@ -29,7 +30,7 @@ const CheckboxGroup = props => {
             key={index}
             label={option.text}
             onChange={_handleChange}
-            style={{ marginRight: '1.5rem' }}
+            style={inline == false ? { marginTop: '.5rem' ,marginBottom: '.6rem' , display: 'block' } : { marginRight: '1.5rem' }}
             value={option.value}/>
         ))
       }
