@@ -9,7 +9,7 @@ const { selectors, types } = petKindDuck
 function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
+
     const filters = yield select(selectors.filters)
     const petKinds = yield call(Get, '/pet-classes/', filters)
 
@@ -18,7 +18,9 @@ function* get(/* { payload } */) {
       payload: {
         items: petKinds.map(({  ...rest }) => ({
           ...rest,
-          location: faker.random.arrayElement([ 'All', 'Loc1, Loc2' ])
+          // Fake data to mockup service capacity section
+          location            : faker.random.arrayElement([ 'All', 'Loc1, Loc2' ]),
+          max_capacity_per_day: faker.random.arrayElement([ 30, 50, 70, 100 ])
         }))
       }
     })

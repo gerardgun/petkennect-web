@@ -28,7 +28,7 @@ function* get(/* { payload } */) {
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [ { id: 0, reserved_at: '03/16/2021', service: 'Day Camp', location: 'S Stadium', type: 'Full Day', yard_type: 'Small', run: 'A5', addons: '$ 40.00', checkin_time: '9:00 AM', checkout_at: '5:00 PM' },
+        items: [ { id: 0, reserved_at: '03/16/2021', service: 'Day Camp', location: 'S Stadium', type: 'Full Day', yard_type: 'Medium', run: 'A5', addons: '$ 999.00', checkin_time: '9:00 AM', checkout_at: '5:00 PM' },
           { id: 1, reserved_at: '03/18/2021', service: 'Fitness', location: 'S Stadium', type: 'Half Day', yard_type: 'Small', run: '', addons: 'Add', checkin_time: '9:00 AM', checkout_at: '5:00 PM' },
           { id: 2, reserved_at: '03/21/2021', service: 'Dog Walking', location: 'R University', type: 'Appointment', yard_type: 'Large', run: '', addons: '$ 80.00', checkin_time: '12:00 AM', checkout_at: '6:00 PM' },
           { id: 3, reserved_at: '03/25/2021', service: 'Day Camp', location: 'R University', type: 'Half Day', yard_type: 'Large', run: 'A5', addons: 'Add', checkin_time: '12:00 AM', checkout_at: '6:00 PM' },

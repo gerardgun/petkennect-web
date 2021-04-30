@@ -196,7 +196,8 @@ const categories = [
       // { href: '/setup/payment-instruction', label: 'Payment Instruction' },
       // { href: '/setup/price-master', label: 'Price Master' },
       { href: '/setup/package-pricing', label: 'Pricing Table' },
-      { href: '/setup/customized-field', label: 'Customized Field' }
+      { href: '/setup/customized-field', label: 'Customized Field' },
+      { href: '/setup/questionnaire-form', label: 'Questionnaire Form' }
       // { href: '/setup/system-setting', label: 'System Setting' }
       // { href: '/not-defined', label: 'Enable Decline Portal Client' },
       // { href: '/not-defined', label: 'Notifications' },

@@ -137,7 +137,7 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
       <Segment className='pet-segment-content petkennect-profile'>
         <Grid>
           <Grid.Column
-            className='petkennect-profile-sidebar p32'
+            className='petkennect-profile-sidebar p28'
             computer={5} mobile={16} tablet={16}>
             <Breadcrumb>
               {

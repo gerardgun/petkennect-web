@@ -3,6 +3,7 @@ import { Radio } from 'semantic-ui-react'
 
 const RadioGroup = props => {
   const {
+    inline,
     options,
     label,
     ...rest
@@ -21,7 +22,7 @@ const RadioGroup = props => {
             {...rest}
             checked={option.value === rest.value} key={option.key}
             label={option.text}
-            style={{ marginRight: '1.5rem' }}
+            style={inline == false ? { marginTop: '.5rem' ,marginBottom: '.6rem' , display: 'block' } : { marginRight: '1.5rem' }}
             value={option.value}/>
         ))
       }
