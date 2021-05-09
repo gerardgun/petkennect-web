@@ -60,14 +60,14 @@ export default {
       }
     },
     {
-      display_name: 'Class',
-      name        : 'family',
+      display_name: 'Family',
+      name        : 'product_family',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false,
       formatter   : (cell, row) => {
-        return cell == null ? '' : row.product_family.name
+        return cell === null ? '-' : row.family.name
       }
     },
     {
@@ -97,14 +97,14 @@ export default {
     {
       display_name: 'Outstanding',
       name        : 'is_outstanding',
-      type        : 'boolean',
+      type        : 'boolean_active',
       width       : null,
       align       : 'left',
       sort        : false
     },
     {
       display_name: 'Active',
-      name        : 'is_activve',
+      name        : 'is_active',
       type        : 'boolean_active',
       width       : null,
       align       : 'left',

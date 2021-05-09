@@ -1,21 +1,26 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
 import productAttributeDuck from '@reducers/product/product-attribute'
 
-const { types } = productAttributeDuck
+const { selectors, types } = productAttributeDuck
 
-function* get() {
+export function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const productAttributes = yield call(Get, '/product-attributes/')
+    const filters = yield select(selectors.filters)
+
+    const { results } = yield call(Get, '/product-attributes/', {
+      ...filters,
+      page_size: 100
+    })
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: productAttributes
+        items: results
       }
     })
   } catch (e) {

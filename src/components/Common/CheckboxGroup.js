@@ -21,18 +21,22 @@ const CheckboxGroup = props => {
   }
 
   return (
-    <div>
+    <div className='pt12'>
       {
-        options.map((option, index) => (
-          <Checkbox
-            {...rest}
-            checked={rest.value?.includes(option.value)}
-            key={index}
-            label={option.text}
-            onChange={_handleChange}
-            style={inline == false ? { marginTop: '.5rem' ,marginBottom: '.6rem' , display: 'block' } : { marginRight: '1.5rem' }}
-            value={option.value}/>
-        ))
+        options.length > 0 ? (
+          options.map((option, index) => (
+            <Checkbox
+              {...rest}
+              checked={rest.value?.includes(option.value)}
+              key={index}
+              label={option.text}
+              onChange={_handleChange}
+              style={inline == false ? { marginTop: '.5rem' ,marginBottom: '.6rem' , display: 'block' } : { marginRight: '1.5rem' }}
+              value={option.value}/>
+          ))
+        ) : (
+          <div className='text-gray'>The are not available options.</div>
+        )
       }
     </div>
   )

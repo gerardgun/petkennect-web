@@ -336,47 +336,47 @@ const privateRoutes = [
     component: PackagePricing
   },
   {
-    path     : '/product',
+    path     : '/products',
     component: Product
   },
   {
-    path     : '/product/:id(\\d+)',
+    path     : '/products/:id(\\d+)',
     component: ProductShow
   },
   {
-    path     : '/product-attribute',
+    path     : '/products/attributes',
     component: ProductAttribute
   },
   {
-    path     : '/product-attribute-value/:id',
+    path     : '/products/attributes/:id/values',
     component: ProductAttributeValue
   },
   {
-    path     : '/product/family',
-    component: ProductFamily
-  },
-  {
-    path     : '/category',
+    path     : '/products/categories',
     component: Category
   },
   {
-    path     : '/service',
+    path     : '/products/families',
+    component: ProductFamily
+  },
+  {
+    path     : '/services',
     component: Service
   },
   {
-    path     : '/service/create',
+    path     : '/services/create',
     component: ServiceCreate
   },
   {
-    path     : '/service/:id',
+    path     : '/services/:id',
     component: ServiceCreate
   },
   {
-    path     : '/service-attribute',
+    path     : '/services/attributes',
     component: ServiceAttribute
   },
   {
-    path     : '/service-attribute-value/:id',
+    path     : '/services/attributes/values/:id',
     component: ServiceAttributeValue
   },
   {

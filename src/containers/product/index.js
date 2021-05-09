@@ -42,7 +42,7 @@ const ProductList = ({ product, productDetail, productVariationsDetail, ...props
     if(e.currentTarget.dataset.itemExpand === 'true')
       props.setProductVariations(item, 'UPDATE')
     else
-      history.replace(`/product/${item.id}`)
+      history.replace(`/products/${item.id}`)
   }
 
   const _handleCreateClick = () => {
@@ -76,8 +76,10 @@ const ProductList = ({ product, productDetail, productVariationsDetail, ...props
           onRowClick={_handleRowClick}/>
 
       </Segment>
+
       <ProductFamilyFormModal/>
       <ProductVariationsFormModal/>
+
       <ModalDelete duckDetail={productFamilyDetailDuck}/>
 
     </Layout>

@@ -2,17 +2,17 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
-import ProductFamilyCreateForm from './index'
+import CategoryCreateForm from './'
 
-import productFamilyDetailDuck from '@reducers/product/family/detail'
+import productCategoryDetailDuck from '@reducers/category/detail'
 
-const ProductFamilyCreateFormModal = () => {
+const CategoryCreateFormModal = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(productFamilyDetailDuck.selectors.detail)
+  const detail = useSelector(productCategoryDetailDuck.selectors.detail)
 
   const _handleClose = () => {
     dispatch(
-      productFamilyDetailDuck.creators.resetItem()
+      productCategoryDetailDuck.creators.resetItem()
     )
   }
 
@@ -27,9 +27,9 @@ const ProductFamilyCreateFormModal = () => {
       open={open}
       size='small'>
       <Modal.Content>
-        <Header as='h2'>{editing ? 'Update' : 'New'} Family</Header>
+        <Header as='h2'>{editing ? 'Update' : 'New'} Category</Header>
 
-        <ProductFamilyCreateForm/>
+        <CategoryCreateForm/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
@@ -43,11 +43,10 @@ const ProductFamilyCreateFormModal = () => {
               type='button'/>
             <Button
               color='teal'
-              content={editing ? 'Save changes' : 'Create Family'}
+              content={editing ? 'Save changes' : 'Create Category'}
               disabled={saving}
-              form='product-family'
+              form='category'
               loading={saving}
-              saving={saving}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -56,4 +55,4 @@ const ProductFamilyCreateFormModal = () => {
   )
 }
 
-export default ProductFamilyCreateFormModal
+export default CategoryCreateFormModal

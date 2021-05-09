@@ -2,17 +2,17 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
-import ProductFamilyCreateForm from './index'
+import ProductAttributeValueCreateForm from './index'
 
-import productFamilyDetailDuck from '@reducers/product/family/detail'
+import productAttributeValueDetailDuck from '@reducers/product/product-attribute-value/detail'
 
-const ProductFamilyCreateFormModal = () => {
+const ProductAttributeValueCreateFormModal = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(productFamilyDetailDuck.selectors.detail)
+  const detail = useSelector(productAttributeValueDetailDuck.selectors.detail)
 
   const _handleClose = () => {
     dispatch(
-      productFamilyDetailDuck.creators.resetItem()
+      productAttributeValueDetailDuck.creators.resetItem()
     )
   }
 
@@ -27,9 +27,9 @@ const ProductFamilyCreateFormModal = () => {
       open={open}
       size='small'>
       <Modal.Content>
-        <Header as='h2'>{editing ? 'Update' : 'New'} Family</Header>
+        <Header as='h2'>{editing ? 'Update' : 'New'} Value</Header>
 
-        <ProductFamilyCreateForm/>
+        <ProductAttributeValueCreateForm/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
@@ -43,9 +43,9 @@ const ProductFamilyCreateFormModal = () => {
               type='button'/>
             <Button
               color='teal'
-              content={editing ? 'Save changes' : 'Create Family'}
+              content={editing ? 'Save changes' : 'Create Value'}
               disabled={saving}
-              form='product-family'
+              form='product-attribute-value'
               loading={saving}
               saving={saving}
               type='submit'/>
@@ -56,4 +56,4 @@ const ProductFamilyCreateFormModal = () => {
   )
 }
 
-export default ProductFamilyCreateFormModal
+export default ProductAttributeValueCreateFormModal

@@ -47,7 +47,7 @@ const getContentColor = cell => {
   return (
     <Label
       horizontal
-      style={{ minWidth: '4rem', height: '2rem', background: cell }}/>
+      style={{ minWidth: '4rem', height: '1.5rem', border: 'solid 1px black', background: cell }}/>
   )
 }
 

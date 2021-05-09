@@ -1,8 +1,8 @@
 export default {
-  search_placeholder: 'Search by value',
+  search_placeholder: 'Search by name or slug',
   actions           : [
     {
-      display_name: 'Add Value',
+      display_name: 'Add Category',
       name        : 'create',
       color       : 'teal',
       icon        : 'add'
@@ -10,29 +10,33 @@ export default {
   ],
   columns: [
     {
-      display_name: 'Id',
-      name        : 'id',
-      width       : 2,
+      display_name: 'Name',
+      name        : 'name',
       type        : 'string'
     },
     {
-      display_name: 'Value',
-      name        : 'value_display',
+      display_name: 'Slug',
+      name        : 'slug',
       type        : 'string'
+    },
+    {
+      display_name: 'Total Products',
+      name        : 'count_products',
+      type        : 'string',
+      formatter   : cell => `${cell} products`
     },
     {
       display_name: 'Actions',
       type        : 'button',
-      width       : 2,
       options     : [
         {
-          display_name: 'Edit Value',
+          display_name: 'Edit Category',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Value',
+          display_name: 'Delete Category',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'

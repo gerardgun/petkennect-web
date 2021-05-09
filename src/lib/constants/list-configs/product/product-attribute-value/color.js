@@ -21,6 +21,11 @@ export default {
       type        : 'string'
     },
     {
+      display_name: 'Color',
+      name        : 'value',
+      type        : 'color'
+    },
+    {
       display_name: 'Actions',
       type        : 'button',
       width       : 2,

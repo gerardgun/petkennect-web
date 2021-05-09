@@ -1,8 +1,9 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects'
+import { all, call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { ProtectedProductFamilyType } from '@lib/constants/product'
-import { Delete, Get, Patch, Post } from '@lib/utils/http-client'
+import { Delete, Patch, Post } from '@lib/utils/http-client'
 
+import productFamilyDuck from '@reducers/product/family'
 import productFamilyDetailDuck from '@reducers/product/family/detail'
 
 const { types } = productFamilyDetailDuck
@@ -31,10 +32,9 @@ function* post({ payload }) {
     })
 
     yield all(
-      payload.attributes.map(attrId => {
-        return call(Post, 'product-family-attributes/', {
-          product_family   : result.id,
-          product_attribute: attrId
+      payload.attributes.map(id => {
+        return call(Post, `/product-families/${result.id}/attributes/`, {
+          product_attribute: id
         })
       })
     )
@@ -54,36 +54,39 @@ function* _put({ payload }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    const result = yield call(Get, `/product-families/${payload.id}/`)
-    const isProtected = Object.keys(ProtectedProductFamilyType).includes(result.type)
+    const list = yield select(productFamilyDuck.selectors.list)
+
+    const family = list.items.find(({ id }) => id === payload.id)
+    const isProtected = Object.keys(ProtectedProductFamilyType).includes(family.type)
 
     if(!isProtected)
       yield call(Patch, `/product-families/${payload.id}/`, payload)
 
     // Add new product attribute ids to the product family
     const productAttributeIdsToAdd = payload.attributes.filter(attrId => {
-      return !result.attributes.includes(attrId)
+      return !family.attributes
+        .map(item => item.product_attribute)
+        .includes(attrId)
     })
 
     yield all(
       productAttributeIdsToAdd.map(attrId => {
-        return call(Post, 'product-family-attributes/', {
-          product_family   : payload.id,
+        return call(Post, `/product-families/${payload.id}/attributes/`, {
           product_attribute: attrId
         })
       })
     )
 
     // Delete product attribute ids from the product family
-    const productFamilyAttrIdsToDelete = result.family_attributes
+    const productFamilyAttrIdsToDelete = family.attributes
       .filter(item => {
-        return !payload.attributes.includes(item.attribute.id)
+        return !payload.attributes.includes(item.product_attribute)
       })
       .map(item => item.id)
 
     yield all(
       productFamilyAttrIdsToDelete.map(attrId => {
-        return call(Delete, `product-family-attributes/${attrId}/`)
+        return call(Delete, `/product-families/${payload.id}/attributes/${attrId}/`)
       })
     )
 

@@ -1,38 +1,39 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { put, select, takeEvery } from 'redux-saga/effects'
 
-import { Get } from '@lib/utils/http-client'
+import * as productAttributeSaga from '@sagas/product/product-attribute'
 
+import productAttributeDuck from '@reducers/product/product-attribute'
 import productAttributeValueDuck from '@reducers/product/product-attribute-value'
 
-const { types } = productAttributeValueDuck
+const { selectors, types } = productAttributeValueDuck
 
-function* get({ payload }) {
+function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const productAttributes = yield call(Get, '/product-attributes/')
+    yield* productAttributeSaga.get()
 
-    let ProductAttributesValues = []
+    const productAttributeList = yield select(productAttributeDuck.selectors.list)
 
-    productAttributes.filter(_ => _.id == payload)
-      .forEach(_attributeValue => {
-        _attributeValue.values.forEach(_values => {
-          let attributeValue = {
-            display_value    : _values.display_value,
-            id               : _values.id,
-            product_attribute: _values.product_attribute,
-            value            : _values.value,
-            type             : _attributeValue.type,
-            isColorVisible   : _attributeValue.type === 'C' ? true : false
-          }
-          ProductAttributesValues.push(attributeValue)
+    const filters = yield select(selectors.filters)
+
+    const productAttribute = productAttributeList.items.find(({ id }) => id === filters.product_attribute_id)
+
+    let values = productAttribute.values
+
+    if(filters.search) {
+      const rgx = new RegExp(filters.search, 'i')
+
+      values = values
+        .filter(({ value_display }) => {
+          return rgx.test(value_display)
         })
-      })
+    }
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: ProductAttributesValues
+        items: values
       }
     })
   } catch (e) {

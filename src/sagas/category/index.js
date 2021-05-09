@@ -6,18 +6,27 @@ import categoryDuck from '@reducers/category'
 
 const { selectors, types } = categoryDuck
 
-function* get(/* { payload } */) {
+function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
     const filters = yield select(selectors.filters)
 
-    const  results = yield call(Get, 'categories/', filters)
+    let categories = yield call(Get, 'product-categories/')
+
+    if(filters.search) {
+      const rgx = new RegExp(filters.search, 'i')
+
+      categories = categories
+        .filter(({ name }) => {
+          return rgx.test(name)
+        })
+    }
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: results.map((item,index) => ({ index: index,...item }))
+        items: categories
       }
     })
   } catch (e) {

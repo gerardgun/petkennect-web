@@ -1,88 +1,77 @@
 import React from 'react'
-import { span } from 'semantic-ui-react'
+import { ProductAttributeType, ProductAttributeTypeOptions } from '@lib/constants/product'
 
 export default {
-  options: {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Delete Product',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
-  columns: [
+  search_placeholder: 'Search by name',
+  actions           : [
     {
-      display_name: 'Id',
-      name        : 'id',
-      type        : 'number',
-      width       : null,
-      align       : 'left',
-      sort        : false
-    },
+      display_name: 'Create Attribute',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
+  columns: [
     {
       display_name: 'Name',
       name        : 'name',
       type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Type',
       name        : 'type',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false,
-      formatter   : cell => {
-        let type_str = ''
-
-        if(cell === 'D')
-          type_str = 'Dropdown'
-        else if(cell === 'R')
-          type_str = 'Radio'
-        else if(cell === 'C')
-          type_str = 'Color'
-
-        return type_str
+      formatter   : cell => ProductAttributeType[cell],
+      filter      : {
+        type   : 'dropdown',
+        name   : 'type',
+        options: ProductAttributeTypeOptions
       }
     },
     {
-      display_name: 'Num. Values',
-      name        : 'name',
-      type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false,
-      formatter   : (cell, row) => {
-        return (
-          <span>{row.values.length}</span>
-        )
+      display_name: 'Values',
+      name        : 'values',
+      formatter   : cell => {
+        let valueNames = <span className='text-gray'>The are not values</span>
+
+        if(cell.length > 0) {
+          const firstFour = cell.slice(0, 4)
+
+          valueNames = firstFour
+            .map(({ value_display }) => value_display)
+            .join(', ')
+
+          const rest = cell.slice(4)
+
+          if(rest.length > 0)
+            valueNames = `${valueNames}, +${rest.length} more`
+        }
+
+        return valueNames
       }
     },
     {
       display_name: 'Actions',
-      name        : 'custom_name',
       type        : 'button',
+      width       : 3,
       options     : [
         {
-          display_name: 'Add Attribute Value',
+          display_name: 'Edit Attribute',
           name        : 'edit',
-          icon        : 'bars'
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Attribute',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        },
+        {
+          display_name: 'List Values',
+          name        : 'list_values',
+          icon        : 'list ul',
+          color       : 'grey'
         }
       ]
     }
