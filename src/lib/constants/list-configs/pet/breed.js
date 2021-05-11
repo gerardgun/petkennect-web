@@ -1,9 +1,55 @@
+
 export default {
+
+  options: {
+
+    basic: [
+      {
+        display_name: 'Download',
+        name        : 'download',
+        icon        : 'download'
+      },
+      {
+        display_name: 'Print',
+        name        : 'print',
+        icon        : 'print'
+      },
+      {
+        display_name: 'View Clients and Pets',
+        name        : 'view_client_pet',
+        icon        : 'eye'
+      },
+      {
+        display_name: 'View Reservation by Dates',
+        name        : 'reservation_by_dates',
+        icon        : 'calendar alternate outline'
+      },
+      {
+        display_name: 'View Clients with Standing Day Care Reservations',
+        name        : 'day_care_reservations',
+        icon        : 'qrcode'
+      },
+      {
+        display_name: 'Email Client List',
+        name        : 'email_client_list',
+        icon        : 'mail'
+      }
+    ],
+    multiple: [
+      {
+        display_name: 'Delete Client',
+        name        : 'delete',
+        icon        : 'trash alternate outline',
+        color       : 'red'
+      }
+    ]
+  },
   actions: [
     {
-      display_name: 'New Breed',
+      display_name: 'Add Breed',
       name        : 'create',
-      color       : 'teal'
+      color       : 'teal',
+      icon        : 'add'
     }
   ],
   columns: [
@@ -76,4 +122,5 @@ export default {
       ]
     }
   ]
+
 }

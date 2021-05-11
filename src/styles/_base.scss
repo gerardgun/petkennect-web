@@ -378,3 +378,14 @@ textarea {
 label {
   margin-bottom: 0rem !important;
 }
+
+.menu-item-style {
+  .ui.vertical.menu .active.item {
+    background: #00AA9F18 !important;
+    color: teal !important;
+  }
+}
+
+.text-align-justify {
+  text-align: justify !important;
+}

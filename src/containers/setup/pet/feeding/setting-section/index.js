@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea } from 'semantic-ui-react'
+import { Field, reduxForm } from 'redux-form'
+import { Form, Grid, Header, Input, Select, Segment } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -9,14 +8,13 @@ import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/pet/components/Menu'
 import Tab from '@containers/setup/pet/feeding/components/Tab'
-import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import { syncValidate } from '@lib/utils/functions'
 
 const SetupPetFeedingSettingIndex = props => {
   const {
     error, handleSubmit // redux-form
   } = props
 
-  const dispatch = useDispatch()
   const [ chargesType, setChargesType ] = useState('noCharge')
 
   const _handleItemSelect = (value)=>{
@@ -39,13 +37,14 @@ const SetupPetFeedingSettingIndex = props => {
               <Grid.Row>
                 <Grid.Column width='5'>
                   <Header as='h4'>
-                    <p>Do you charge for bagging owner supplied food?</p>
-                    <Header.Subheader>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam mi, eros vitae, elementum luctus elit.
+                    <p className='mb0'>Do you charge for bagging owner supplied food?</p>
+                    <Header.Subheader className='ml8'>
+                      Select the appropriate setting for food bagging charges.
                     </Header.Subheader>
                   </Header>
                 </Grid.Column>
-                <Grid.Column textAlign='center' width='7'>
+                <Grid.Column width='1'/>
+                <Grid.Column width='7'>
                   <Field
                     autoFocus
                     component={FormField}
@@ -72,26 +71,25 @@ const SetupPetFeedingSettingIndex = props => {
             {
               chargesType !== 'noCharge' && (
                 <React.Fragment>
-                  <Divider/>
-
                   <Grid style={{ padding: '1rem' }}>
                     <Grid.Row>
                       <Grid.Column width='5'>
                         <Header as='h4'>
-                          <p>
+                          <p className='mb0'>
                             {
                               chargesType === 'perDay' ? 'Enter the Charge Per Day, Per Dog'
                                 : chargesType === 'perMeal' ? 'Enter the Charge Per Meal, Per Dog' : 'Enter the Charge Per Bag'
                             }
                           </p>
-                          <Header.Subheader>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam mi, eros vitae, elementum luctus elit.
+                          <Header.Subheader className='ml8'>
+                            Enter the value to charge.
                           </Header.Subheader>
                         </Header>
                       </Grid.Column>
-                      <Grid.Column className='flex justify-center' width='4'>
+                      <Grid.Column width='1'/>
+                      <Grid.Column width='4'>
                         <Field
-                          className='mt20 w50'
+                          className='w50'
                           component={FormField}
                           control={Input}
                           name='daily_charge'
@@ -104,7 +102,7 @@ const SetupPetFeedingSettingIndex = props => {
               )
             }
 
-            <Divider className='mt20'/>
+            {/* <Divider className='mt20'/> */}
 
             {
               error && (
