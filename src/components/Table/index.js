@@ -12,8 +12,8 @@ const TableList = ({ childProps, config, duck, ...props }) => {
   const list = useSelector(duck.selectors.list)
 
   const loading = list.status === 'GETTING'
-  const finalConfig = useMemo(() => getConfig(config), [])
-  const hasTopBar = finalConfig.options.length > 0 || finalConfig.search_enabled
+  const finalConfig = useMemo(() => getConfig(config), [ config ])
+  const hasTopBar = finalConfig.options.length > 0 || finalConfig.search_enabled || finalConfig.actions.length > 0
 
   return (
     <Dimmer.Dimmable

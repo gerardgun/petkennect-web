@@ -191,6 +191,8 @@ import productImage from '@reducers/product/image'
 import productImageDetail from '@reducers/product/image/detail'
 import productFamily from '@reducers/product/family'
 import productFamilyDetail from '@reducers/product/family/detail'
+import productOption from '@reducers/product/option'
+import productOptionDetail from '@reducers/product/option/detail'
 import productVariations from '@reducers/product/product-variations'
 import productVariationsDetail from '@reducers/product/product-variations/detail'
 import productVariationsImageDetail from '@reducers/product/product-variations/image/detail'
@@ -215,6 +217,7 @@ import serviceAttributeValue from '@reducers/service/service-attribute-value'
 import serviceAttributeValueDetail from '@reducers/service/service-attribute-value/detail'
 import serviceGroupPetKind from '@reducers/service/group/pet/kind'
 import servicePetKind from '@reducers/service/pet/kind'
+import tenantDetail from '@reducers/tenant/detail'
 import onlineRequestsClientSubmission from '@reducers/online-request/client-submission'
 import onlineRequestsClientSubmissionDetail from '@reducers/online-request/client-submission/detail'
 import onlineRequestsConfirmReservation from '@reducers/online-request/confirm-reservation'
@@ -437,6 +440,8 @@ const createRootReducer = history => combineReducers({
   [productFamilyDetail.store]                              : productFamilyDetail.reducer,
   [productPackage.store]                                   : productPackage.reducer,
   [productPackageDetail.store]                             : productPackageDetail.reducer,
+  [productOption.store]                                    : productOption.reducer,
+  [productOptionDetail.store]                              : productOptionDetail.reducer,
   [productVariations.store]                                : productVariations.reducer,
   [productVariationsDetail.store]                          : productVariationsDetail.reducer,
   [productVariationsImageDetail.store]                     : productVariationsImageDetail.reducer,
@@ -460,6 +465,7 @@ const createRootReducer = history => combineReducers({
   [serviceAttributeValueDetail.store]                      : serviceAttributeValueDetail.reducer,
   [serviceGroupPetKind.store]                              : serviceGroupPetKind.reducer,
   [servicePetKind.store]                                   : servicePetKind.reducer,
+  [tenantDetail.store]                                     : tenantDetail.reducer,
   [onlineRequestsClientSubmission.store]                   : onlineRequestsClientSubmission.reducer,
   [onlineRequestsClientSubmissionDetail.store]             : onlineRequestsClientSubmissionDetail.reducer,
   [onlineRequestsConfirmReservation.store]                 : onlineRequestsConfirmReservation.reducer,

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Segment } from 'semantic-ui-react'
+import { Segment, Header } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/pet/components/Menu'
@@ -51,12 +51,8 @@ const SetupTrainingCommandIndex = () => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Menu/>
-
-        <p>
-          Animal Species Accepted
-        </p>
-
-        <div style={{ width: '70%' }}>
+        <Header as='h4' content=' Animal Species Accepted'/>
+        <div style={{ width: '100%' }}>
           <Table
             config={petKindListConfig}
             duck={petKindDuck}

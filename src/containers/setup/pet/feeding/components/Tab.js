@@ -4,7 +4,7 @@ import { Grid, Header, Menu } from 'semantic-ui-react'
 
 const items = [
   {
-    label: 'Settings',
+    label: 'Food Bagging',
     to   : '/setup/pet/feeding/setting'
   },
   {
@@ -40,12 +40,12 @@ const Tab = ({ children }) => {
     <>
       <Header as='h4' color='teal'>Adjust Editable Field Values</Header>
       <p>
-          Edit field values regarding all things feeding related here.
+        <b>Edit field values regarding all things feeding related here.</b>
       </p>
 
       <Grid className='mt20'>
         <Grid.Row>
-          <Grid.Column width={3}>
+          <Grid.Column className='menu-item-style' width={3}>
             <Menu fluid pointing vertical>
               {
                 items.map(({ label, to }, index) => (

@@ -1,90 +1,88 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
-import { compose } from 'redux'
-import { Button, Grid, Header, Segment } from 'semantic-ui-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { Header, Segment } from 'semantic-ui-react'
 
+import CreateFormModal from './create/form/modal'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import ProductAttributeValueCreate from './create'
-import { useChangeStatusEffect } from 'src/hooks/Shared'
 import productAttributeValueListConfig from '@lib/constants/list-configs/product/product-attribute-value'
+import productAttributeValueColorListConfig from '@lib/constants/list-configs/product/product-attribute-value/color'
 
+import productAttributeDuck from '@reducers/product/product-attribute'
 import productAttributeDetailDuck from '@reducers/product/product-attribute/detail'
 import productAttributeValueDuck from '@reducers/product/product-attribute-value'
 import productAttributeValueDetailDuck from '@reducers/product/product-attribute-value/detail'
 
-const ProductAttributeList = ({ productAttributeDetail, productAttributeValue, productAttributeValueDetail, ...props }) => {
-  const { id: productAttributeId } = useParams()
-
-  useChangeStatusEffect(() => props.getProductAttributesValue(productAttributeId), productAttributeValueDetail.status, [ 'POSTED', 'PUT' ])
-
-  useEffect(() => {
-    if(productAttributeValueDetail.status === 'DELETED') props.getProductAttributesValue(productAttributeId)
-  }, [ productAttributeValueDetail.status ])
+const ProductAttributeValueIndex = () => {
+  const params = useParams()
+  const dispatch = useDispatch()
+  const detail = useSelector(productAttributeValueDetailDuck.selectors.detail)
+  const productAttributeDetail = useSelector(productAttributeDetailDuck.selectors.detail)
+  const productAttributeList = useSelector(productAttributeDuck.selectors.list)
 
   useEffect(() => {
-    props.getProductAttributesValue(productAttributeId)
+    dispatch(
+      productAttributeValueDuck.creators.get({
+        product_attribute_id: parseInt(params.id, 10)
+      })
+    )
   }, [])
 
-  const _handleOptionClick = option => {
-    if(option === 'delete')
-      props.setItem(productAttributeValue.selector.selected_items[0], 'DELETE')
+  useEffect(() => {
+    if(productAttributeList.status === 'GOT' && productAttributeList.items.length > 0) {
+      const productAttribute = productAttributeList.items.find(({ id }) => id === parseInt(params.id, 10))
+
+      dispatch(
+        productAttributeDetailDuck.creators.setItem(productAttribute)
+      )
+    }
+  }, [ productAttributeList.status ])
+
+  useEffect(() => {
+    if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
+      dispatch(
+        productAttributeValueDuck.creators.get({
+          product_attribute_id: parseInt(params.id, 10)
+        })
+      )
+  }, [ detail.status ])
+
+  const _handleActionClick = action => {
+    if(action === 'create')
+      dispatch(
+        productAttributeValueDetailDuck.creators.setItem(null, 'CREATE')
+      )
   }
 
-  const _handleCreateClick = ()=> {
-    props.setItem(null, 'CREATE')
-  }
-
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
+  const _handleRowButtonClick = (button, item) => {
+    if(button === 'delete')
+      dispatch(
+        productAttributeValueDetailDuck.creators.setItem(item, 'DELETE')
+      )
+    else if(button === 'edit')
+      dispatch(
+        productAttributeValueDetailDuck.creators.setItem(item, 'UPDATE')
+      )
   }
 
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
-        <Grid className='segment-content-header' columns={2}>
-          <Grid.Column computer={8} mobile={16} tablet={12}>
-            <Header as='h2'>Products Attributes / {productAttributeDetail.item.type == 'C' ? 'Color' : 'Dimension'}</Header>
-          </Grid.Column>
-          <Grid.Column
-            className='ui-grid-align'
-            computer={8} mobile={10} tablet={4}>
-            <Button
-              as={Link} color='teal'
-              content='New Value'
-              onClick={_handleCreateClick}/>
-          </Grid.Column>
-        </Grid>
+      <Segment className='segment-content'>
+        <Header as='h2'>Product Attributes / {productAttributeDetail.item.name}</Header>
+
         <Table
-          config={productAttributeValueListConfig}
+          config={productAttributeDetail.item.type === 'C' ? productAttributeValueColorListConfig : productAttributeValueListConfig}
           duck={productAttributeValueDuck}
-          onOptionClick={_handleOptionClick}
-          onRowClick={_handleRowClick}/>
-
+          onActionClick={_handleActionClick}
+          onRowButtonClick={_handleRowButtonClick}/>
       </Segment>
-      <ProductAttributeValueCreate/>
-      <ModalDelete duckDetail={productAttributeValueDetailDuck}/>
 
+      <CreateFormModal/>
+      <ModalDelete duckDetail={productAttributeValueDetailDuck}/>
     </Layout>
   )
 }
 
-export default compose(
-  connect(
-    state => {
-      const productAttributeDetail = productAttributeDetailDuck.selectors.detail(state)
-
-      return {
-        productAttributeDetail,
-        productAttributeValue      : productAttributeValueDuck.selectors.list(state),
-        productAttributeValueDetail: productAttributeValueDetailDuck.selectors.detail(state)
-      }
-    },
-    {
-      getProductAttributesValue: productAttributeValueDuck.creators.get,
-      setItem                  : productAttributeValueDetailDuck.creators.setItem
-    }
-  )
-)(ProductAttributeList)
+export default ProductAttributeValueIndex

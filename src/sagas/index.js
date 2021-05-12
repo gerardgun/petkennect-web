@@ -147,6 +147,8 @@ import productImage from './product/image'
 import productImageDetail from './product/image/detail'
 import productFamily from './product/family'
 import productFamilyDetail from './product/family/detail'
+import productOption from './product/option'
+import productOptionDetail from './product/option/detail'
 import productPackage from './product/package'
 import productPackageDetail from './product/package/detail'
 import productVariations from './product/product-variations'
@@ -170,6 +172,7 @@ import serviceAttributeValue from './service/service-attribute-value'
 import serviceAttributeValueDetail from './service/service-attribute-value/detail'
 import serviceGroupPetKind from './service/group/pet/kind'
 import servicePetKind from './service/pet/kind'
+import tenantDetail from './tenant/detail'
 import onlineRequestClientSubmission from './online-request/client-submission'
 import onlineRequestClientSubmissionDetail from './online-request/client-submission/detail'
 import onlineRequestConfirmReservation from './online-request/confirm-reservation'
@@ -340,6 +343,8 @@ export default function* rootSaga() {
     ...productImageDetail,
     ...productFamily,
     ...productFamilyDetail,
+    ...productOption,
+    ...productOptionDetail,
     ...productPackage,
     ...productPackageDetail,
     ...productVariations,
@@ -363,6 +368,7 @@ export default function* rootSaga() {
     ...serviceAttributeValueDetail,
     ...serviceGroupPetKind,
     ...servicePetKind,
+    ...tenantDetail,
     ...onlineRequestClientSubmission,
     ...onlineRequestClientSubmissionDetail,
     ...onlineRequestConfirmReservation,

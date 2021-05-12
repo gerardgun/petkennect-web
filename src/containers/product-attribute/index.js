@@ -1,91 +1,71 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
-import { compose } from 'redux'
-import { Button, Grid, Header, Segment } from 'semantic-ui-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { Header, Segment } from 'semantic-ui-react'
 
+import CreateFormModal from './create/form/modal'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import ProductAttributeCreate from './create'
-import { useChangeStatusEffect } from 'src/hooks/Shared'
 import productAttributeListConfig from '@lib/constants/list-configs/product/product-attribute'
 
 import productAttributeDuck from '@reducers/product/product-attribute'
 import productAttributeDetailDuck from '@reducers/product/product-attribute/detail'
 
-const ProductAttributeList = ({ productAttribute, productAttributeDetail, ...props }) => {
+const ProductAttributeIndex = () => {
+  const dispatch = useDispatch()
+  const detail = useSelector(productAttributeDetailDuck.selectors.detail)
   const history = useHistory()
 
-  useChangeStatusEffect(props.getProductAttributes, productAttributeDetail.status)
-
   useEffect(() => {
-    if(productAttributeDetail.status === 'DELETED') props.getProductAttributes()
-  }, [ productAttributeDetail.status ])
-
-  useEffect(() => {
-    props.getProductAttributes()
+    dispatch(
+      productAttributeDuck.creators.get()
+    )
   }, [])
 
-  const _handleOptionClick = option => {
-    if(option === 'delete')
-      props.setItem(productAttribute.selector.selected_items[0], 'DELETE')
+  useEffect(() => {
+    if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
+      dispatch(
+        productAttributeDuck.creators.get()
+      )
+  }, [ detail.status ])
+
+  const _handleActionClick = action => {
+    if(action === 'create')
+      dispatch(
+        productAttributeDetailDuck.creators.setItem(null, 'CREATE')
+      )
   }
 
-  const _handleRowButtonClick = (option, item) => {
-    props.setItem(item)
-    history.push(`/product-attribute-value/${item.id}`)
-  }
-
-  const _handleCreateClick = ()=> {
-    props.setItem(null, 'CREATE')
-  }
-
-  const _handleRowClick = (e, item) => {
-    props.setItem(item, 'UPDATE')
+  const _handleRowButtonClick = (button, item) => {
+    if(button === 'delete')
+      dispatch(
+        productAttributeDetailDuck.creators.setItem(item, 'DELETE')
+      )
+    else if(button === 'edit')
+      dispatch(
+        productAttributeDetailDuck.creators.setItem(item, 'UPDATE')
+      )
+    else if(button === 'list_values')
+      history.push(`/products/attributes/${item.id}/values`)
   }
 
   return (
     <Layout>
       <Segment className='segment-content'>
-        <Grid className='segment-content-header' columns={2}>
-          <Grid.Column computer={8} mobile={16} tablet={8}>
-            <Header as='h2'>Products Attributes</Header>
-          </Grid.Column>
-          <Grid.Column
-            className='ui-grid-align'
-            computer={8} mobile={12} tablet={8}>
-            <Button
-              as={Link} color='teal'
-              content='New Attribute'
-              onClick={_handleCreateClick}/>
-          </Grid.Column>
-        </Grid>
+        <Header as='h2'>Product Attributes</Header>
+
         <Table
           config={productAttributeListConfig}
           duck={productAttributeDuck}
-          onOptionClick={_handleOptionClick}
-          onRowButtonClick={_handleRowButtonClick}
-          onRowClick={_handleRowClick}/>
-
+          onActionClick={_handleActionClick}
+          onRowButtonClick={_handleRowButtonClick}/>
       </Segment>
-      <ProductAttributeCreate/>
-      <ModalDelete duckDetail={productAttributeDetailDuck}/>
 
+      <CreateFormModal/>
+      <ModalDelete duckDetail={productAttributeDetailDuck}/>
     </Layout>
   )
 }
 
-export default compose(
-  connect(
-    (state) => ({
-      productAttribute      : productAttributeDuck.selectors.list(state),
-      productAttributeDetail: productAttributeDetailDuck.selectors.detail(state)
-
-    }),
-    {
-      getProductAttributes: productAttributeDuck.creators.get,
-      setItem             : productAttributeDetailDuck.creators.setItem
-    }
-  )
-)(ProductAttributeList)
+export default ProductAttributeIndex

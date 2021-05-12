@@ -1,69 +1,102 @@
 export default [
   {
-    name : 'Animals',
-    icon : 'paw',
+    name : 'Application Settings',
+    icon : 'settings',
     items: [
+      {
+        name: 'System Icons & Codes',
+        to  : '/setup/color-codes'
+      },
+      {
+        name: 'Run Cards',
+        to  : '/setup'
+      },
+      {
+        name: 'Report Cards',
+        to  : '/custom-report'
+      }
+    ]
+  },
+
+  {
+    name : 'Animals',
+    image: '/images/admin-item/Colored_Animals.png',
+
+    items: [
+      {
+        name: 'Breed Manager',
+        to  : '/setup/pet/breed'
+      },
+      {
+        name: 'Behavior Tags',
+        to  : '/setup/pet/behavior-tags'
+      },
+
+      {
+        name: 'Feeding Settings',
+        to  : '/setup/pet/feeding/time'
+      },
+
+      {
+        name: 'Medication Settings',
+        to  : '/setup/pet/medication'
+      },
+      {
+        name: 'Incident Managment',
+        to  : '/setup/pet/general/incident/action'
+      },
+      {
+        name: 'Retire Reason',
+        to  : '/setup/pet/general/retire-reason'
+      },
       {
         name: 'Species',
         to  : '/setup/pet/kind'
       },
       {
-        name: 'Breeds',
-        to  : '/setup/pet/breed'
-      },
-      {
         name: 'Vaccinations',
         to  : '/setup/pet/vaccination/type'
-      },
-      {
-        name: 'Feeding',
-        to  : '/setup/pet/feeding/time'
-      },
-      {
-        name: 'Medication',
-        to  : '/setup/pet/medication'
-      },
-      {
-        name: 'Retire Reasons',
-        to  : '/setup/pet/general/retire-reason'
-      },
-      {
-        name: 'Incident Actions',
-        to  : '/setup/pet/general/incident/action'
-      },
-      {
-        name: 'Incident Behavior Tags',
-        to  : '/setup/pet/general/incident/behavior'
-      },
-      {
-        name: 'Incident Types',
-        to  : '/setup/pet/general/incident/type'
       }
+
     ]
   },
   {
-    name : 'Training',
-    icon : 'paw',
+    name : 'Company',
+    image: '/images/admin-item/coloredCompany.png' ,
     items: [
       {
-        name: 'General',
-        to  : '/setup/training'
+        name: 'Billing',
+        to  : ''
+
       },
       {
-        name: 'Reasons',
-        to  : '/setup/training/reason'
+        name: 'Branding',
+        to  : ''
+
       },
       {
-        name: 'Methods',
-        to  : '/setup/training/method'
+        name: 'Email Signature',
+        to  : '/setup/system-setting'
+
+      },
+
+      {
+        name: 'Locations',
+        to  : '/setup/location'
       },
       {
-        name: 'Commands',
-        to  : '/setup/training/command'
+        name: 'Calendar',
+        to  : '/setup/calendar'
       },
       {
-        name: 'Rating Keys',
-        to  : '/setup/training/rating-key'
+        name: 'System Formats',
+        to  : ''
+
+      },
+      {
+        name: 'Accounting Settings',
+        to  : ''
+
       }
     ]
   },
@@ -97,58 +130,88 @@ export default [
     ]
   },
   {
-    name : 'Application Settings',
-    icon : 'paw',
+    name : 'Services & Reservations',
+    image: '/images/admin-item/ColoredServices.png',
     items: [
       {
-        name: 'General',
-        to  : '/setup/system-setting'
+        name: 'Boarding',
+        to  : '/setup'
+
       },
       {
-        name: 'System Icons and Codes',
-        to  : '/setup/color-codes'
+        name: 'Day Services',
+        to  : '/setup'
+
       },
       {
-        name    : 'Run Cards',
-        to      : '/setup',
-        disabled: true
+        name: 'Grooming',
+        to  : '/setup'
+
       },
       {
-        name: 'Report Cards',
-        to  : '/custom-report'
+        name: 'Training',
+        to  : '/setup/training'
+
       },
       {
-        name: 'Customized Fields',
-        to  : '/setup/customized-field'
+        name: 'Add-on Services',
+        to  : '/setup'
+
+      },
+      {
+        name: 'Packages',
+        to  : '/setup'
+
+      },
+      {
+        name: 'Transport',
+        to  : '/setup'
+
+      },
+      {
+        name: 'Retail',
+        to  : '/setup'
+
       }
+
     ]
   },
   {
-    name : 'Company',
-    icon : 'paw',
+    name : 'Employee Management',
+    icon : 'users',
     items: [
       {
-        name    : 'Profile',
-        to      : '/setup',
-        disabled: true
+        name: 'Users & Roles',
+        to  : '/employee'
+
       },
       {
-        name: 'Locations',
-        to  : '/setup/location'
+        name: 'Permissions',
+        to  : '/setup'
+
       },
       {
-        name: 'Calendar',
-        to  : '/setup/calendar'
+        name: 'Task Lists',
+        to  : '/setup'
+
       },
       {
-        name: 'Pricing Table',
-        to  : '/setup/package-pricing'
+        name: 'Schedule',
+        to  : '/setup'
+
+      },
+
+      {
+        name: 'Payroll',
+        to  : '/setup'
+
       }
     ]
   },
+
   {
-    name : 'Forms and Templates',
-    icon : 'paw',
+    name : 'Forms & Templates',
+    image: '/images/admin-item/ColoredTemplates.png' ,
     items: [
       {
         name: 'Client Agreements',
@@ -157,49 +220,62 @@ export default [
       {
         name: 'Email Templates',
         to  : '/setup/email-template'
+      },
+      {
+        name: 'Training Questionnaire',
+        to  : 'setup/questionnaire-form'
+      },
+      {
+        name: 'Temperament Test Form',
+        to  : '/setup'
+      },
+      {
+        name: 'Custom Form Builder',
+        to  : '/setup/customized-field'
       }
     ]
   },
+
   {
-    name : 'Employee Management',
-    icon : 'paw',
+    name : 'Financial Settings',
+    image: '/images/admin-item/coloredFinance.png' ,
     items: [
       {
-        name    : 'Schedule',
-        to      : '/setup',
-        disabled: true
+        name: 'Pricing',
+        to  : '//setup/package-pricing'
       },
       {
-        name    : 'Users & Roles',
-        to      : '/setup',
-        disabled: true
+        name: 'POS Settings',
+        to  : '/setup'
       },
       {
-        name    : 'Task Lists',
-        to      : '/setup',
-        disabled: true
+        name: 'Invoice Settings',
+        to  : '/setup'
       },
       {
-        name    : 'Payroll',
-        to      : '/setup',
-        disabled: true
+        name: 'Merchant Account',
+        to  : '/setup'
+      },
+      {
+        name: 'Payments Accepted',
+        to  : '/setup'
       }
     ]
   },
   {
     name : 'Capacity Management',
-    icon : 'paw',
+    image: '/images/admin-item/CapacityRecolored.png',
     items: [
       {
-        name: 'Kennels',
-        to  : '/setup/pet-kennel'
+        name: 'Service Capacity',
+        to  : '/setup'
       },
       {
-        name: 'Kennel Types',
-        to  : '/setup/pet-kennel-type'
+        name: 'Appointment Capacity',
+        to  : '/setup'
       },
       {
-        name: 'Kennel Areas',
+        name: 'Lodging Areas',
         to  : '/setup/pet-kennel-area'
       },
       {
@@ -218,11 +294,29 @@ export default [
   },
   {
     name : 'Client Portal',
-    icon : 'paw',
+    image: '/images/admin-item/coloredPortal.png'  ,
     items: [
+      {
+        name: 'Portal Settings',
+        to  : '/client'
+      },
       {
         name: 'Notifications',
         to  : '/setup/notifications'
+      }
+    ]
+  },
+  {
+    name : 'Miscellaneous',
+    image: '/images/admin-item/ColoredMisc.png' ,
+    items: [
+      {
+        name: 'Merge Owners',
+        to  : '/setup/'
+      },
+      {
+        name: 'Transfer Pets',
+        to  : '/setup'
       }
     ]
   }

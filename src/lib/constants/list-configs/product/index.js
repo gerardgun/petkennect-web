@@ -3,9 +3,19 @@ import { Image } from 'semantic-ui-react'
 
 import { defaultImageUrl } from '@lib/constants'
 
+import productFamilyDuck from '@reducers/product/family'
+
 export default {
   search_placeholder: 'Search by product name',
-  options           : {
+  actions           : [
+    {
+      display_name: 'Create Product',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
+  options: {
     basic: [
       {
         display_name: 'Download',
@@ -17,14 +27,6 @@ export default {
         name        : 'print',
         icon        : 'print'
       }
-    ],
-    single: [
-      {
-        display_name: 'Delete Product',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
     ]
   },
   columns: [
@@ -32,8 +34,6 @@ export default {
       display_name: 'Product Name',
       name        : 'name',
       type        : 'string',
-      width       : null,
-      align       : 'left',
       sort        : true,
       formatter   : (cell, row) => {
         return (
@@ -50,9 +50,6 @@ export default {
       display_name: 'Slug',
       name        : 'slug',
       type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false,
       formatter   : cell => {
         const auth_tenant = localStorage.getItem('@auth_tenant')
 
@@ -60,55 +57,93 @@ export default {
       }
     },
     {
-      display_name: 'Class',
-      name        : 'family',
+      display_name: 'Family',
+      name        : 'product_family',
       type        : 'string',
-      width       : null,
-      align       : 'left',
-      sort        : false,
+      sort        : true,
+      sort_name   : 'product_family__name',
       formatter   : (cell, row) => {
-        return cell == null ? '' : row.product_family.name
+        return cell === null ? '-' : row.family.name
+      },
+      filter: {
+        type   : 'dropdown',
+        name   : 'product_family',
+        options: productFamilyDuck.store
       }
     },
     {
       display_name: 'Base Price',
       name        : 'price',
-      type        : 'money',
-      width       : null,
-      align       : 'left',
-      sort        : true,
-      filter      : {
-        type: 'range',
-        name: [ 'price__gt', 'price__lt' ]
-      }
+      type        : 'money'
+      // filter      : {
+      //   type: 'range',
+      //   name: [ 'price__gt', 'price__lt' ]
+      // }
     },
     {
       display_name: 'Stock',
       name        : 'stock',
-      type        : 'number',
-      width       : null,
-      align       : 'left',
-      sort        : true,
-      filter      : {
-        type: 'range',
-        name: [ 'stock__gt', 'stock__lt' ]
-      }
+      type        : 'string'
+      // filter      : {
+      //   type: 'range',
+      //   name: [ 'stock__gt', 'stock__lt' ]
+      // }
     },
     {
       display_name: 'Outstanding',
       name        : 'is_outstanding',
-      type        : 'boolean',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      type        : 'boolean_active',
+      filter      : {
+        type   : 'dropdown',
+        name   : 'is_outstanding',
+        options: [
+          {
+            value: true,
+            text : 'True'
+          },
+          {
+            value: false,
+            text : 'False'
+          }
+        ]
+      }
     },
     {
       display_name: 'Active',
-      name        : 'is_activve',
+      name        : 'is_active',
       type        : 'boolean_active',
-      width       : null,
-      align       : 'left',
-      sort        : false
+      filter      : {
+        type   : 'dropdown',
+        name   : 'is_active',
+        options: [
+          {
+            value: true,
+            text : 'True'
+          },
+          {
+            value: false,
+            text : 'False'
+          }
+        ]
+      }
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      options     : [
+        {
+          display_name: 'Edit Product',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Product',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        }
+      ]
     }
   ]
 }

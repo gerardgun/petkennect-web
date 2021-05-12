@@ -3,22 +3,18 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Input, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Input, Modal, Checkbox } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import InputColor from '@components/Common/InputColor'
-
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import productAttributeDetailDuck from '@reducers/product/product-attribute/detail'
-import productAttributeValueDetailDuck from '@reducers/product/product-attribute-value/detail'
+import ratingKeyDetailDuck from '@reducers/rating-key/detail'
 
-const ProductAttributeValueCreateForm = props => {
+const BehaviorTagForm = props => {
   const {
-    productAttributeValueDetail,
-    productAttributeDetail,
+    ratingKeyDetail,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
@@ -31,7 +27,7 @@ const ProductAttributeValueCreateForm = props => {
 
   const _handleSubmit = values => {
     if(isUpdating)
-      return props.put({ id: productAttributeValueDetail.item.id, ...values })
+      return props.put({ id: ratingKeyDetail.item.id, ...values })
         .then(_handleClose)
         .catch(parseResponseError)
     else
@@ -40,42 +36,67 @@ const ProductAttributeValueCreateForm = props => {
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(productAttributeValueDetail.mode), [ productAttributeValueDetail.mode ])
-  const isUpdating = Boolean(productAttributeValueDetail.item.id)
+  const isOpened = useMemo(() => getIsOpened(ratingKeyDetail.mode), [ ratingKeyDetail.mode ])
+  const isUpdating = Boolean(ratingKeyDetail.item.id)
 
   return (
     <Modal
       className='form-modal'
       onClose={_handleClose}
       open={isOpened}
-      size='small'>
+      size='medium'>
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'Add'} Value</Header>
+          <Header as='h2' className='segment-content-header cls-MainHeader'>{isUpdating ? 'Update' : 'Add'} Behavior Tags</Header>
           <Field component='input' name='id' type='hidden'/>
-          <Field component='input' name='product_attribute' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
-              autoFocus
               component={FormField}
               control={Input}
-              label='Value'
-              name='display_value'
-              placeholder='Enter Value'
-              required/>
+              label='Enter Tag'
+              name='behavior_tag'
+              placeholder='Enter Tag'
+              selectOnBlur={false}/>
           </Form.Group>
-          {productAttributeDetail.item.type == 'C'
-          && <Form.Group widths='equal'>
+          <br/>
+          <label>Applies To</label>
+          <br/>
+          <Form.Group>
             <Field
-              autoComplete='off'
-              component={FormField}
-              control={InputColor}
-              label='Color'
-              name='value'
-              required/>
+              component={FormField} control={Checkbox}
+              name='all'
+              type='checkbox'/>
+            <label className='mt20'>All</label>
           </Form.Group>
-          }
+          <Form.Group>
+            <Field
+              component={FormField} control={Checkbox}
+              name='general'
+              type='checkbox'/>
+            <label className='mt20 mr40'>General</label>
+            <Field
+              component={FormField} control={Checkbox}
+              name='day_services'
+              type='checkbox'/>
+            <label className='mt20 mr40'>Day Services</label>
+            <Field
+              component={FormField} control={Checkbox}
+              name='boarding'
+              type='checkbox'/>
+            <label className='mt20 mr40'>Boarding</label>
+            <Field
+              component={FormField} control={Checkbox}
+              name='training'
+              type='checkbox'/>
+            <label className='mt20 mr40'>Training</label>
+            <Field
+              component={FormField} control={Checkbox}
+              name='grooming'
+              type='checkbox'/>
+            <label className='mt20'>Grooming</label>
+          </Form.Group>
+
           {
             error && (
               <Form.Group widths='equal'>
@@ -89,6 +110,9 @@ const ProductAttributeValueCreateForm = props => {
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
               <Button
+                basic
+                className='cls-cancelButton'
+                color='teal'
                 content='Cancel'
                 disabled={submitting}
                 onClick={_handleClose}
@@ -110,32 +134,29 @@ export default compose(
   withRouter,
   connect(
     state => {
-      const productAttributeValueDetail = productAttributeValueDetailDuck.selectors.detail(state)
-      const productAttributeDetail = productAttributeDetailDuck.selectors.detail(state)
+      const ratingKeyDetail = ratingKeyDetailDuck.selectors.detail(state)
 
       return {
-        productAttributeValueDetail,
-        productAttributeDetail,
-        initialValues: { ...productAttributeValueDetail.item, product_attribute: productAttributeDetail.item.id }
+        ratingKeyDetail,
+        initialValues: ratingKeyDetail.item
       }
     },
     {
-      post     : productAttributeValueDetailDuck.creators.post,
-      put      : productAttributeValueDetailDuck.creators.put,
-      resetItem: productAttributeValueDetailDuck.creators.resetItem
+      post     : ratingKeyDetailDuck.creators.post,
+      put      : ratingKeyDetailDuck.creators.put,
+      resetItem: ratingKeyDetailDuck.creators.resetItem
     }
   ),
   reduxForm({
-    form              : 'product-attribute-value-create-form',
+    form              : 'behavior-tag-form',
     destroyOnUnmount  : false,
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        display_value: Yup.string().required('Value is required'),
-        value        : Yup.string().required('Color is reqired')
+        behavior_tag: Yup.string().required('Tag is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)
     }
   })
-)(ProductAttributeValueCreateForm)
+)(BehaviorTagForm)

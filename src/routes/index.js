@@ -21,10 +21,12 @@ import ColorCode from '@containers/color-code'
 import BehaviorTagSetting from '@containers/behavior-tag-setting'
 import BookingSheetSetting from '@containers/booking-sheet-setting'
 import BreedManagerSetting from '@containers/breed-manager-setting'
+// import Dashboard from '@containers/dashboard'
 import DayCampForm from '@containers/day-camp-form'
 import Client from '@containers/client'
 import ClientShow from '@containers/client/show'
 import ClientBook from '@containers/client/reservation'
+import CoupanInvoiceSetup from '@containers/coupan-setup/invoice-setting'
 import PetBook from '@containers/client/reservation'
 import CustomizedField from '@containers/customized-field'
 import Calendar from '@containers/calendar'
@@ -53,8 +55,12 @@ import ProductAttribute from '@containers/product-attribute'
 import ProductAttributeValue from '@containers/product-attribute-value'
 import ProductFamily from '@containers/product/family'
 import Product from '@containers/product'
-import ProductShow from '@containers/product/show'
+import ProductEdit from '@containers/product/edit'
 import RatingKey from '@containers/rating-key'
+import DayServiceReportCardSetup from '@containers/report-card-setup/day-service'
+import BoardingReportCardSetup from '@containers/report-card-setup/boarding'
+import GroomingReportCardSetup from '@containers/report-card-setup/grooming'
+import TrainingReportCardSetup from '@containers/report-card-setup/training'
 import CustomReport from '@containers/custom-report'
 import EmployeeTitle from '@containers/employee-title'
 import Employee from '@containers/employee'
@@ -78,6 +84,7 @@ import OrganizationEdit from '@containers/organization/edit'
 import OrganizationShow from '@containers/organization/show'
 import SetupIndex from '@containers/setup'
 import SetupPetBreedIndex from '@containers/setup/pet/breed'
+import SetupPetBehaviorTagsIndex from '@containers/setup/pet/behavior-tag'
 
 // Settings / Animal / Feeding
 import SetupPetFeedingMealStatusIndex from '@containers/setup/pet/feeding/meal-status-section'
@@ -109,7 +116,6 @@ import SetupPetMedicationTypeIndex from '@containers/setup/pet/medication/type-s
 import SetupPetMedicationUnitIndex from '@containers/setup/pet/medication/unit-section'
 
 // Settings / Animal / Vaccinations
-import SetupPetVaccinationBookingSettingIndex from '@containers/setup/pet/vaccination/booking-setting-section'
 import SetupPetVaccinationSettingIndex from '@containers/setup/pet/vaccination/setting-section'
 import SetupPetVaccinationTypeIndex from '@containers/setup/pet/vaccination/type-section'
 
@@ -226,6 +232,10 @@ const privateRoutes = [
     component: ColorCode
   },
   {
+    path     : '/setup/coupan-setup/invoice-setting',
+    component: CoupanInvoiceSetup
+  },
+  {
     path     : '/setup/booking-sheet-setting',
     component: BookingSheetSetting
   },
@@ -279,6 +289,10 @@ const privateRoutes = [
     path     : '/setup/customized-field',
     component: CustomizedField
   },
+  // {
+  //   path     : '/dashboard',
+  //   component: Dashboard
+  // },
   {
     path     : '/dashboard',
     component: Client
@@ -336,47 +350,47 @@ const privateRoutes = [
     component: PackagePricing
   },
   {
-    path     : '/product',
+    path     : '/products',
     component: Product
   },
   {
-    path     : '/product/:id(\\d+)',
-    component: ProductShow
+    path     : '/products/:id(\\d+)',
+    component: ProductEdit
   },
   {
-    path     : '/product-attribute',
+    path     : '/products/attributes',
     component: ProductAttribute
   },
   {
-    path     : '/product-attribute-value/:id',
+    path     : '/products/attributes/:id/values',
     component: ProductAttributeValue
   },
   {
-    path     : '/product/family',
-    component: ProductFamily
-  },
-  {
-    path     : '/category',
+    path     : '/products/categories',
     component: Category
   },
   {
-    path     : '/service',
+    path     : '/products/families',
+    component: ProductFamily
+  },
+  {
+    path     : '/services',
     component: Service
   },
   {
-    path     : '/service/create',
+    path     : '/services/create',
     component: ServiceCreate
   },
   {
-    path     : '/service/:id',
+    path     : '/services/:id',
     component: ServiceCreate
   },
   {
-    path     : '/service-attribute',
+    path     : '/services/attributes',
     component: ServiceAttribute
   },
   {
-    path     : '/service-attribute-value/:id',
+    path     : '/services/attributes/values/:id',
     component: ServiceAttributeValue
   },
   {
@@ -386,6 +400,10 @@ const privateRoutes = [
   {
     path     : '/setup/pet/breed',
     component: SetupPetBreedIndex
+  },
+  {
+    path     : '/setup/pet/behavior-tags',
+    component: SetupPetBehaviorTagsIndex
   },
   {
     path     : '/setup/pet/feeding/meal-status',
@@ -456,6 +474,23 @@ const privateRoutes = [
     component: SetupPetMedicationReportStatusIndex
   },
   {
+    path     : '/setup/report-card-setup/day-service',
+    component: DayServiceReportCardSetup
+  },
+
+  {
+    path     : '/setup/report-card-setup/boarding',
+    component: BoardingReportCardSetup
+  },
+  {
+    path     : '/setup/report-card-setup/training',
+    component: TrainingReportCardSetup
+  },
+  {
+    path     : '/setup/report-card-setup/grooming',
+    component: GroomingReportCardSetup
+  },
+  {
     path     : '/setup/pet/medication/setting',
     component: SetupPetMedicationSettingIndex
   },
@@ -470,10 +505,6 @@ const privateRoutes = [
   {
     path     : '/setup/pet/medication/unit',
     component: SetupPetMedicationUnitIndex
-  },
-  {
-    path     : '/setup/pet/vaccination/booking-setting',
-    component: SetupPetVaccinationBookingSettingIndex
   },
   {
     path     : '/setup/pet/vaccination/setting',
