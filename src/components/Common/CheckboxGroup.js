@@ -14,6 +14,8 @@ const CheckboxGroup = props => {
     if(data.checked) currentValue.push(data.value)
     else currentValue.splice(currentValue.findIndex(value => value === data.value), 1)
 
+    delete data.type
+
     props.onChange(e, {
       ...data,
       value: currentValue

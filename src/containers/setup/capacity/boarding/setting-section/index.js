@@ -11,16 +11,21 @@ import Menu from '@containers/setup/capacity/components/Menu'
 import Tab from '@containers/setup/capacity/boarding/components/Tab'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
+import tenantDetailDuck from '@reducers/tenant/detail'
+
 const SetupCapacityBoardingSettingIndex = props => {
   const {
-    error, handleSubmit // redux-form
+    error, handleSubmit, reset, initialize // redux-form
   } = props
 
   const dispatch = useDispatch()
+  const detail = useSelector(tenantDetailDuck.selectors.detail)
 
   const _handleSubmit = values => {
     console.log(values)
   }
+
+  const saving = [ 'POSTING', 'PUTTING' ].includes(detail.status)
 
   return (
     <Layout>
@@ -29,7 +34,7 @@ const SetupCapacityBoardingSettingIndex = props => {
 
         <Tab>
           {/* eslint-disable-next-line react/jsx-handler-names */}
-          <Form onSubmit={handleSubmit(_handleSubmit)}>
+          <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='8'>
@@ -103,9 +108,25 @@ const SetupCapacityBoardingSettingIndex = props => {
 
             {
               error && (
-                <FormError message={error}/>
+                <Form.Group widths='equal'>
+                  <Form.Field>
+                    <FormError message={error}/>
+                  </Form.Field>
+                </Form.Group>
               )
             }
+
+            <Form.Group className='form-modal-actions' widths='equal'>
+              <Form.Field>
+                <Button
+                  color='teal'
+                  content='Save changes'
+                  disabled={saving}
+                  loading={saving}
+                  saving={saving}
+                  type='submit'/>
+              </Form.Field>
+            </Form.Group>
 
           </Form>
         </Tab>
@@ -115,11 +136,5 @@ const SetupCapacityBoardingSettingIndex = props => {
 }
 
 export default reduxForm({
-  form              : 'setup-capacity-service-setting',
-  enableReinitialize: true,
-  validate          : values => {
-    const schema = {}
-
-    return syncValidate(Yup.object().shape(schema), values)
-  }
+  form: 'setup-boarding-setting'
 })(SetupCapacityBoardingSettingIndex)

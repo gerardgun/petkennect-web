@@ -53,7 +53,7 @@ import ProductAttribute from '@containers/product-attribute'
 import ProductAttributeValue from '@containers/product-attribute-value'
 import ProductFamily from '@containers/product/family'
 import Product from '@containers/product'
-import ProductShow from '@containers/product/show'
+import ProductEdit from '@containers/product/edit'
 import RatingKey from '@containers/rating-key'
 import CustomReport from '@containers/custom-report'
 import EmployeeTitle from '@containers/employee-title'
@@ -341,7 +341,7 @@ const privateRoutes = [
   },
   {
     path     : '/products/:id(\\d+)',
-    component: ProductShow
+    component: ProductEdit
   },
   {
     path     : '/products/attributes',

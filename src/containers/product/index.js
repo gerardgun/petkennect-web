@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
-import { compose } from 'redux'
-import { Button, Grid, Header, Segment } from 'semantic-ui-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { Header, Segment } from 'semantic-ui-react'
 
+import CreateFormModal from './create/form/modal'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
-import ProductFamilyFormModal from './create'
-import ProductVariationsFormModal from './../product-variations/create'
 import Table from '@components/Table'
 import productListConfig from '@lib/constants/list-configs/product'
 import productChildListConfig from '@lib/constants/list-configs/product/child'
@@ -15,56 +13,51 @@ import productChildListConfig from '@lib/constants/list-configs/product/child'
 import productDuck from '@reducers/product'
 import productDetailDuck from '@reducers/product/detail'
 import productFamilyDuck from '@reducers/product/family'
-import productFamilyDetailDuck from '@reducers/product/family/detail'
-import productVariationsDetailDuck from '@reducers/product/product-variations/detail'
 
-const ProductList = ({ product, productDetail, productVariationsDetail, ...props }) => {
+const ProductIndex = () => {
+  const dispatch = useDispatch()
+  const detail = useSelector(productDetailDuck.selectors.detail)
+  const productFamilyList = useSelector(productFamilyDuck.selectors.list)
   const history = useHistory()
 
   useEffect(() => {
-    if([ 'DELETED', 'POSTED', 'PUT' ].includes(productDetail.status)) props.getProducts()
-  }, [ productDetail.status ])
+    dispatch(
+      productDuck.creators.get()
+    )
 
-  useEffect(() => {
-    if(productVariationsDetail.status === 'PUT') props.getProducts()
-  }, [ productVariationsDetail.status ])
-
-  useEffect(() => {
-    props.getProducts()
+    if(productFamilyList.items.length === 0)
+      dispatch(
+        productFamilyDuck.creators.get()
+      )
   }, [])
 
-  const _handleOptionClick = option => {
-    if(option === 'delete')
-      props.setProduct(product.selector.selected_items[0], 'DELETE')
+  useEffect(() => {
+    if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
+      dispatch(
+        productDuck.creators.get()
+      )
+  }, [ detail.status ])
+
+  const _handleActionClick = action => {
+    if(action === 'create')
+      dispatch(
+        productDetailDuck.creators.setItem(null, 'CREATE')
+      )
   }
 
-  const _handleRowClick = (e, item) => {
-    if(e.currentTarget.dataset.itemExpand === 'true')
-      props.setProductVariations(item, 'UPDATE')
-    else
+  const _handleRowButtonClick = (button, item) => {
+    if(button === 'delete')
+      dispatch(
+        productDetailDuck.creators.setItem(item, 'DELETE')
+      )
+    else if(button === 'edit')
       history.replace(`/products/${item.id}`)
-  }
-
-  const _handleCreateClick = () => {
-    props.setProduct(null, 'CREATE')
   }
 
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
-        <Grid className='segment-content-header' columns={2}>
-          <Grid.Column computer={4} mobile={12} tablet={4}>
-            <Header as='h2'>Products</Header>
-          </Grid.Column>
-          <Grid.Column
-            className='ui-grid-align'
-            computer={12} mobile={10} tablet={12}>
-            <Button
-              as={Link} color='teal'
-              content='New Product'
-              onClick={_handleCreateClick}/>
-          </Grid.Column>
-        </Grid>
+      <Segment className='segment-content'>
+        <Header as='h2'>Products</Header>
 
         <Table
           childProps={{
@@ -72,31 +65,16 @@ const ProductList = ({ product, productDetail, productVariationsDetail, ...props
           }}
           config={productListConfig}
           duck={productDuck}
-          onOptionClick={_handleOptionClick}
-          onRowClick={_handleRowClick}/>
-
+          onActionClick={_handleActionClick}
+          onRowButtonClick={_handleRowButtonClick}/>
       </Segment>
 
-      <ProductFamilyFormModal/>
-      <ProductVariationsFormModal/>
+      <CreateFormModal/>
 
-      <ModalDelete duckDetail={productFamilyDetailDuck}/>
+      <ModalDelete duckDetail={productDetailDuck}/>
 
     </Layout>
   )
 }
 
-export default compose(
-  connect(
-    state => ({
-      product                : productFamilyDuck.selectors.list(state),
-      productDetail          : productFamilyDetailDuck.selectors.detail(state),
-      productVariationsDetail: productVariationsDetailDuck.selectors.detail(state)
-    }),
-    {
-      getProducts         : productDuck.creators.get,
-      setProduct          : productDetailDuck.creators.setItem,
-      setProductVariations: productVariationsDetailDuck.creators.setItem
-    }
-  )
-)(ProductList)
+export default ProductIndex

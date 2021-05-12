@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { Form, Input } from 'semantic-ui-react'
+import { Form, Icon, Input } from 'semantic-ui-react'
 import * as yup from 'yup'
 import _kebabCase from 'lodash/kebabCase'
 
@@ -84,7 +84,13 @@ const CategoryCreateForm = props => {
         <Field
           component={FormField}
           control={Input}
+          icon={
+            <Icon
+              circular inverted link
+              name='linkify'/>
+          }
           label='Slug'
+          labelPosition='left'
           name='slug'
           placeholder='Enter slug'
           readOnly/>

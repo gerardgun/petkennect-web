@@ -7,7 +7,7 @@ import { defaultImageUrl } from '@lib/constants'
 const getContent = (item, column) => {
   const cell = _get(item, column.name, null)
 
-  if(cell === null || cell === undefined)
+  if(cell === null || cell === undefined || cell === '')
     return <span style={{ color: 'grey' }}>-</span>
   else if(typeof column.formatter === 'function')
     return column.formatter(cell, item)
@@ -37,9 +37,11 @@ const getContentBoolean = cell => {
 
 const getContentBooleanActive = cell => {
   return (
-    <Label
-      circular color={cell ? 'green' : 'red'} horizontal
-      style={{ minWidth: '6rem' }}>{cell ? 'Active' : 'Inactive'}</Label>
+    <div style={{ alignContent: 'center' }}>
+      <Label
+        circular color={cell ? 'green' : 'red'} empty/>
+      <span style={{ marginLeft: '0.2rem' }}>{cell ? 'Active' : 'Inactive'}</span>
+    </div>
   )
 }
 
