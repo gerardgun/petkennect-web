@@ -197,7 +197,9 @@ const categories = [
       // { href: '/setup/price-master', label: 'Price Master' },
       { href: '/setup/package-pricing', label: 'Pricing Table' },
       { href: '/setup/customized-field', label: 'Customized Field' },
-      { href: '/setup/questionnaire-form', label: 'Questionnaire Form' }
+      { href: '/setup/questionnaire-form', label: 'Questionnaire Form' },
+      { href: '/setup/report-card-setup/day-service', label: 'Report Card Setup' },
+      { href: '/setup/coupan-setup/invoice-setting', label: 'Coupon Setup' }
       // { href: '/setup/system-setting', label: 'System Setting' }
       // { href: '/not-defined', label: 'Enable Decline Portal Client' },
       // { href: '/not-defined', label: 'Notifications' },
