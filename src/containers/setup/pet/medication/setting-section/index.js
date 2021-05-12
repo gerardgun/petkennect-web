@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Field, reduxForm } from 'redux-form'
+import { Form, Grid, Header, Input, Select, Segment } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -9,14 +8,18 @@ import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/pet/components/Menu'
 import Tab from '@containers/setup/pet/medication/components/Tab'
-import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import { syncValidate } from '@lib/utils/functions'
 
 const SetupPetMedicationSettingIndex = props => {
   const {
     error, handleSubmit // redux-form
   } = props
 
-  const dispatch = useDispatch()
+  const [ chargesType, setChargesType ] = useState('noCharge')
+
+  const _handleItemSelect = (value)=>{
+    setChargesType(value)
+  }
 
   const _handleSubmit = values => {
     console.log(values)
@@ -34,30 +37,32 @@ const SetupPetMedicationSettingIndex = props => {
               <Grid.Row>
                 <Grid.Column width='5'>
                   <Header as='h4'>
-                    <p>Do you charge for Medication Administration?</p>
-                    <Header.Subheader>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam mi, eros vitae, elementum luctus elit.
+                    <p className='mb0'>Do you charge for Medication Administration?</p>
+                    <Header.Subheader className='ml8'>
+                      Select the appropriate setting for food bagging charges.
                     </Header.Subheader>
                   </Header>
                 </Grid.Column>
-                <Grid.Column textAlign='center' width='7'>
+                <Grid.Column width='1'/>
+                <Grid.Column width='7'>
                   <Field
                     autoFocus
                     component={FormField}
                     control={Select}
                     name='charge_type'
+                    onChange={_handleItemSelect}
                     options={[
                       {
-                        key: 1, value: 1, text: 'No Charges Apply'
+                        key: 1, value: 'noCharge', text: 'No Charges Apply'
                       },
                       {
-                        key: 2, value: 2, text: 'Yes, Per Day '
+                        key: 2, value: 'perDay', text: 'Yes, Per Day '
                       },
                       {
-                        key: 3, value: 3, text: 'Yes, Per Administration Time'
+                        key: 3, value: 'perTime', text: 'Yes, Per Administration Time'
                       },
                       {
-                        key: 4, value: 4, text: 'Yes, Per Administration For Each Medication'
+                        key: 4, value: 'perEachMedication', text: 'Yes, Per Administration For Each Medication'
                       }
                     ]}
                     placeholder='Select Charges'
@@ -65,30 +70,39 @@ const SetupPetMedicationSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='5'>
-                  <Header as='h4'>
-                    <p>Enter the daily charges for medication adminstration</p>
-                    <Header.Subheader>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam mi, eros vitae, elementum luctus elit.
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column className='flex justify-center' width='4'>
-                  <Field
-                    className='mt20 w50'
-                    component={FormField}
-                    control={Input}
-                    name='daily_charge'
-                    placeholder='$0'
-                    type='number'/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
 
-            <Divider className='mt20'/>
+            {/* <Divider/> */}
+
+            {    chargesType !== 'noCharge' && (
+              <React.Fragment>
+                <Grid style={{ padding: '1rem' }}>
+                  <Grid.Row>
+                    <Grid.Column width='5'>
+                      <Header as='h4'>
+                        <p className='mb0'>Enter the amount to charge for medication adminstration</p>
+                        <Header.Subheader className='ml8'>
+                          Enter the value to charge.
+                        </Header.Subheader>
+                      </Header>
+                    </Grid.Column>
+                    <Grid.Column width='1'/>
+                    <Grid.Column width='4'>
+                      <Field
+                        className='w50'
+                        component={FormField}
+                        control={Input}
+                        name='daily_charge'
+                        placeholder='$0'
+                        type='number'/>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+
+              </React.Fragment>
+            )
+            }
+
+            {/* <Divider className='mt20'/> */}
 
             {
               error && (
