@@ -10,6 +10,8 @@ import boardingReservationUsage from './pet/reservation/usage/boarding/reservati
 import category from './category'
 import categoryDetail from './category/detail'
 import client from './client'
+import coupanSetup from './coupan-setup/coupan'
+import couponUsage from './coupan-setup/coupan/coupon-usage'
 import clientDetail from './client/detail'
 import clientAgreement from './client/agreement'
 import clientAgreementDetail from './client/agreement/detail'
@@ -206,6 +208,8 @@ export default function* rootSaga() {
     ...category,
     ...categoryDetail,
     ...client,
+    ...coupanSetup,
+    ...couponUsage,
     ...clientDetail,
     ...clientComment,
     ...clientAgreement,

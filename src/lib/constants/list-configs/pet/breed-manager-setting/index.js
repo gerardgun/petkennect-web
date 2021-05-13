@@ -89,7 +89,7 @@ export default {
       align       : 'left'
     },
     {
-      display_name: '',
+      display_name: 'Actions',
       type        : 'button',
       options     : [
         {
