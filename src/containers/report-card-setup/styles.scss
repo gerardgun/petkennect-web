@@ -1,0 +1,135 @@
+.report-setting-tab{
+  min-width: 14% !important;
+  margin-right: 10px !important;
+}
+
+.service-div{
+
+    display: inline-table !important;
+}
+
+.h-margin{
+margin-bottom: .5rem !important;
+margin-top: .5rem !important;
+}
+
+
+.dayservice-img-card{
+    .ui.card, .ui.cards > .card  {
+        box-shadow: none !important;
+        height: 100% !important;
+
+    }
+}
+
+.dog-img-width{
+
+    width: 70% !important;
+    height: 100% !important;
+}
+.daycmp-Silohoutee-pic{
+    width: 70%;
+    margin: auto;
+}
+
+.padding-0{
+padding-top: 0 !important;
+}
+
+.c-image-profile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 14rem;
+    height: 14rem;
+    margin-bottom: 2.5rem;
+
+    .ui.image {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .c-image-profile__overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(97, 100, 104, 0.9);
+      cursor: pointer;
+    }
+
+  }
+
+  .c-image-profile__menu {
+    top: 70px !important;
+    right: -60px !important;
+    left: auto !important;
+  }
+ 
+  .ui.dropdown:not(.active) {
+    &:hover .c-image-profile__overlay {
+      display: flex;
+    }
+}
+
+.div-dropdown-img-h{
+    .ui.dropdown{
+        height: 200px !important;
+    }
+   
+}
+
+.c-option{
+    width: 195px !important;
+    margin-right: 10px !important;
+    margin-bottom: 0 !important;
+
+}
+
+.mb30{
+  margin-bottom: 30px;
+}
+
+.div-img-text-hd{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.add-header{
+  display: flex  !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.mt6rm{
+  margin-top: .6rem !important;
+}
+
+.mr15p{
+  margin-right: 15%;
+}
+    
+.w180{
+  width: 180px;
+}
+
+.hide-ph-toggle{
+
+  margin-right : 60px;
+   .field > label {
+    color: #1c1d1e;
+    font-weight: 400;
+    display: none !important;
+  }
+  
+}
+
+
+

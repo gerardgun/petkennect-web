@@ -12,13 +12,18 @@ import breedManagerSettingDetail from '@reducers/pet/breed-manager-setting/detai
 
 import clientPetBreed from '@reducers/pet/breed-manager-setting/client-pet-breed'
 import clientPetBreedDetail from '@reducers/pet/breed-manager-setting/client-pet-breed/detail'
+import couponUsage from '@reducers/coupan-setup/coupan/coupon-usage'
+import couponUsageDetail from '@reducers/coupan-setup/coupan/coupon-usage/detail'
+import coupanInvoice from '@reducers/coupan-setup/coupan'
+import coupanInvoiceDetail from '@reducers/coupan-setup/coupan/detail'
 
 import reservationByDateBreed  from '@reducers/pet/breed-manager-setting/reservation-by-date-breed'
 import reservationByDateBreedDetail from '@reducers/pet/breed-manager-setting/reservation-by-date-breed/detail'
 
 import DaycareReservationBreed from '@reducers/pet/breed-manager-setting/day-care-reservation-breed'
 import DaycareReservationBreedDetail from '@reducers/pet/breed-manager-setting/day-care-reservation-breed/detail'
-
+import DayServiceReportCardSetup from '@reducers/report-card-setup/day-service-report-card'
+import DayServiceReportCardSetupDetail from '@reducers/report-card-setup/day-service-report-card/detail'
 import calendarDetail from '@reducers/calendar/detail'
 import category from '@reducers/category'
 import categoryDetail from '@reducers/category/detail'
@@ -265,6 +270,8 @@ const createRootReducer = history => combineReducers({
   [reservationByDateBreedDetail.store]                     : reservationByDateBreedDetail.reducer,
   [DaycareReservationBreed.store]                          : DaycareReservationBreed .reducer,
   [DaycareReservationBreedDetail.store]                    : DaycareReservationBreedDetail.reducer,
+  [DayServiceReportCardSetupDetail.store]                  : DayServiceReportCardSetupDetail.reducer,
+  [DayServiceReportCardSetup.store]                        : DayServiceReportCardSetup.reducer,
   [clientPetBreed.store]                                   : clientPetBreed.reducer,
   [clientPetBreedDetail.store]                             : clientPetBreedDetail.reducer,
   [calendarDetail.store]                                   : calendarDetail.reducer,
@@ -287,6 +294,10 @@ const createRootReducer = history => combineReducers({
   [clientEmailMessageDetail.store]                         : clientEmailMessageDetail.reducer,
   [company.store]                                          : company.reducer,
   [companyDetail.store]                                    : companyDetail.reducer,
+  [coupanInvoice.store]                                    : coupanInvoice.reducer,
+  [coupanInvoiceDetail.store]                              : coupanInvoiceDetail.reducer,
+  [couponUsage.store]                                      : couponUsage.reducer,
+  [couponUsageDetail.store]                                : couponUsageDetail.reducer,
   [customReport.store]                                     : customReport.reducer,
   [customReportDetail.store]                               : customReportDetail.reducer                ,
   [customized.store]                                       : customized.reducer,

@@ -31,7 +31,7 @@ export default {
         {
           display_name: 'View Vaccination List',
           name        : 'view',
-          icon        : 'eye',
+          icon        : 'medkit',
           color       : 'blue'
         },
         {
