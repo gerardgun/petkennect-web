@@ -101,6 +101,35 @@ export default [
     ]
   },
   {
+    name : 'Boarding',
+    icon : 'paw',
+    items: [
+      {
+        name: 'Pricing Settings',
+        to  : '/setup/boarding/pricing'
+      }
+    ]
+  },
+  {
+    name : 'Day Services',
+    icon : 'paw',
+    items: [
+      {
+        name: 'General Settings',
+        to  : '/setup/day-service/general/setting'
+      },
+      {
+        name: 'Yard Types',
+        to  : '/setup/pet-yard-type'
+      },
+      {
+        name    : 'Temperament Test Form',
+        to      : '/setup',
+        disabled: true
+      }
+    ]
+  },
+  {
     name : 'Services & Reservations',
     image: '/images/admin-item/ColoredServices.png',
     items: [
@@ -234,7 +263,7 @@ export default [
     ]
   },
   {
-    name : 'Capacity Managment',
+    name : 'Capacity Management',
     image: '/images/admin-item/CapacityRecolored.png',
     items: [
       {
@@ -248,6 +277,18 @@ export default [
       {
         name: 'Lodging Areas',
         to  : '/setup/pet-kennel-area'
+      },
+      {
+        name: 'Appointment Capacity',
+        to  : '/setup/capacity/appointment/setting'
+      },
+      {
+        name: 'Services Capacity',
+        to  : '/setup/capacity/service/setting'
+      },
+      {
+        name: 'Lodging Area Management',
+        to  : '/setup/capacity/boarding/setting'
       }
     ]
   },

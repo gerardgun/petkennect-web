@@ -51,14 +51,22 @@ const categories = [
   {
     href         : null,
     icon         : 'book',
-    label        : 'Catalogue',
+    label        : 'Products',
     subcategories: [
-      { href: '/product', label: 'Products' },
-      { href: '/category', label: 'Categories' },
-      { href: '/service', label: 'Services' },
-      { href: '/product-attribute', label: 'Product Attributes' },
-      { href: '/product/family', label: 'Product Families' },
-      { href: '/service-attribute', label: 'Service Attributes' }
+      { href: '/products', label: 'Products' },
+      { href: '/products/categories', label: 'Categories' },
+      { href: '/products/families', label: 'Families' },
+      { href: '/products/attributes', label: 'Attributes' }
+    ]
+  },
+  {
+    href         : null,
+    icon         : 'book',
+    label        : 'Services',
+    subcategories: [
+      { href: '/services', label: 'Services' },
+      { href: '/services/groups', label: 'Groups' },
+      { href: '/services/attributes', label: 'Attributes' }
     ]
   },
   {

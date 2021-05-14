@@ -12,18 +12,13 @@ import breedManagerSettingDetail from '@reducers/pet/breed-manager-setting/detai
 
 import clientPetBreed from '@reducers/pet/breed-manager-setting/client-pet-breed'
 import clientPetBreedDetail from '@reducers/pet/breed-manager-setting/client-pet-breed/detail'
-import couponUsage from '@reducers/coupan-setup/coupan/coupon-usage'
-import couponUsageDetail from '@reducers/coupan-setup/coupan/coupon-usage/detail'
-import coupanInvoice from '@reducers/coupan-setup/coupan'
-import coupanInvoiceDetail from '@reducers/coupan-setup/coupan/detail'
 
 import reservationByDateBreed  from '@reducers/pet/breed-manager-setting/reservation-by-date-breed'
 import reservationByDateBreedDetail from '@reducers/pet/breed-manager-setting/reservation-by-date-breed/detail'
 
 import DaycareReservationBreed from '@reducers/pet/breed-manager-setting/day-care-reservation-breed'
 import DaycareReservationBreedDetail from '@reducers/pet/breed-manager-setting/day-care-reservation-breed/detail'
-import DayServiceReportCardSetup from '@reducers/report-card-setup/day-service-report-card'
-import DayServiceReportCardSetupDetail from '@reducers/report-card-setup/day-service-report-card/detail'
+
 import calendarDetail from '@reducers/calendar/detail'
 import category from '@reducers/category'
 import categoryDetail from '@reducers/category/detail'
@@ -92,6 +87,8 @@ import emailTemplate from '@reducers/email-template'
 import emailTemplateDetail from '@reducers/email-template/detail'
 import employee from '@reducers/employee'
 import employeeDetail from '@reducers/employee/detail'
+import employeeRole from '@reducers/employee/role'
+import employeeRoleDetail from '@reducers/employee/role/detail'
 import employeeTitle from '@reducers/employee/title'
 import employeeTitleDetail from '@reducers/employee/title/detail'
 import feedingTime from '@reducers/pet/feeding-setting/feeding-time'   // feeding setting start
@@ -136,6 +133,8 @@ import petBreedDetail from '@reducers/pet/breed/detail'
 import petReservationExpressCheckInDetail from '@reducers/pet/reservation/express-check-in/detail'
 import petKind from '@reducers/pet/kind'
 import petKindDetail from '@reducers/pet/kind/detail'
+import petKindSize from '@reducers/pet/kind/size'
+import petKindSizeDetail from '@reducers/pet/kind/size/detail'
 import petImage from '@reducers/pet/image'
 import petImageDetail from '@reducers/pet/image/detail'
 import petIncidentType from '@reducers/pet/incident-type'
@@ -192,6 +191,8 @@ import productImage from '@reducers/product/image'
 import productImageDetail from '@reducers/product/image/detail'
 import productFamily from '@reducers/product/family'
 import productFamilyDetail from '@reducers/product/family/detail'
+import productOption from '@reducers/product/option'
+import productOptionDetail from '@reducers/product/option/detail'
 import productVariations from '@reducers/product/product-variations'
 import productVariationsDetail from '@reducers/product/product-variations/detail'
 import productVariationsImageDetail from '@reducers/product/product-variations/image/detail'
@@ -214,6 +215,9 @@ import serviceAttribute from '@reducers/service/service-attribute'
 import serviceAttributeDetail from '@reducers/service/service-attribute/detail'
 import serviceAttributeValue from '@reducers/service/service-attribute-value'
 import serviceAttributeValueDetail from '@reducers/service/service-attribute-value/detail'
+import serviceGroupPetKind from '@reducers/service/group/pet/kind'
+import servicePetKind from '@reducers/service/pet/kind'
+import tenantDetail from '@reducers/tenant/detail'
 import onlineRequestsClientSubmission from '@reducers/online-request/client-submission'
 import onlineRequestsClientSubmissionDetail from '@reducers/online-request/client-submission/detail'
 import onlineRequestsConfirmReservation from '@reducers/online-request/confirm-reservation'
@@ -228,6 +232,12 @@ import onlineRequestsCancellationLogs from '@reducers/online-request/cancellatio
 import onlineRequestsCancellationLogsDetail from '@reducers/online-request/cancellation-log/detail'
 import onlineRequestNote from '@reducers/online-request/note'
 import onlineRequestNoteDetail from '@reducers/online-request/note/detail'
+import orderServiceBoardingKennel from '@reducers/order/service/boarding/kennel'
+import orderServiceBoardingKennelDetail from '@reducers/order/service/boarding/kennel/detail'
+import orderServiceBoardingKennelArea from '@reducers/order/service/boarding/kennel/area'
+import orderServiceBoardingKennelAreaDetail from '@reducers/order/service/boarding/kennel/area/detail'
+import orderServiceBoardingKennelType from '@reducers/order/service/boarding/kennel/type'
+import orderServiceBoardingKennelTypeDetail from '@reducers/order/service/boarding/kennel/type/detail'
 import trainingCommand from '@reducers/training-command'
 import trainingCommandDetail from '@reducers/training-command/detail'
 import trainingMethod from '@reducers/training-method'
@@ -242,67 +252,60 @@ import userDetail from '@reducers/user/detail'
 import zip from '@reducers/zip'
 import zipDetail from '@reducers/zip/detail'
 const createRootReducer = history => combineReducers({
-  form                                   : formReducer,
-  router                                 : connectRouter(history),
-  [agreement.store]                      : agreement.reducer,
-  [agreementDetail.store]                : agreementDetail.reducer,
-  [auth.store]                           : auth.reducer,
-  [application.store]                    : application.reducer,
-  [bookingSheetSetting.store]            : bookingSheetSetting.reducer,
-  [breedManagerSetting.store]            : breedManagerSetting.reducer,
-  [breedManagerSettingDetail.store]      : breedManagerSettingDetail.reducer,
-  [reservationByDateBreed.store]         : reservationByDateBreed.reducer,
-  [reservationByDateBreedDetail.store]   : reservationByDateBreedDetail.reducer,
-  [DaycareReservationBreed.store]        : DaycareReservationBreed .reducer,
-  [DaycareReservationBreedDetail.store]  : DaycareReservationBreedDetail.reducer,
-  [DayServiceReportCardSetupDetail.store]: DayServiceReportCardSetupDetail.reducer,
-  [DayServiceReportCardSetup.store]      : DayServiceReportCardSetup.reducer,
-  [clientPetBreed.store]                 : clientPetBreed.reducer,
-  [clientPetBreedDetail.store]           : clientPetBreedDetail.reducer,
-  [calendarDetail.store]                 : calendarDetail.reducer,
-  [category.store]                       : category.reducer,
-  [categoryDetail.store]                 : categoryDetail.reducer,
-  [client.store]                         : client.reducer,
-  [clientDetail.store]                   : clientDetail.reducer,
-  [clientDocument.store]                 : clientDocument.reducer,
-  [clientDocumentDetail.store]           : clientDocumentDetail.reducer,
-  [clientDocumentType.store]             : clientDocumentType.reducer,
-  [clientDocumentTypeDetail.store]       : clientDocumentTypeDetail.reducer,
-  [clientAgreement.store]                : clientAgreement.reducer,
-  [clientAgreementSignedDuck.store]      : clientAgreementSignedDuck.reducer,
-  [clientAgreementUnsignedDuck.store]    : clientAgreementUnsignedDuck.reducer,
-  [clientAgreementDetail.store]          : clientAgreementDetail.reducer,
-  [clientComment.store]                  : clientComment.reducer,
-  [clientCommentDetail.store]            : clientCommentDetail.reducer,
-  [clientPet.store]                      : clientPet.reducer,
-  [clientEmailMessage.store]             : clientEmailMessage.reducer,
-  [clientEmailMessageDetail.store]       : clientEmailMessageDetail.reducer,
-  [company.store]                        : company.reducer,
-  [companyDetail.store]                  : companyDetail.reducer,
-  [customReport.store]                   : customReport.reducer,
-  [customReportDetail.store]             : customReportDetail.reducer                ,
-  [customized.store]                     : customized.reducer,
-  [customizedField.store]                : customizedField.reducer,
-  [customizedFieldDetail.store]          : customizedFieldDetail.reducer,
-  [customizedFieldGroup.store]           : customizedFieldGroup.reducer,
-  [customizedFieldGroupDetail.store]     : customizedFieldGroupDetail.reducer,
-  [coupanInvoice.store]                  : coupanInvoice.reducer,
-  [coupanInvoiceDetail.store]            : coupanInvoiceDetail.reducer,
-  [couponUsage.store]                    : couponUsage.reducer,
-  [couponUsageDetail.store]              : couponUsageDetail.reducer,
-  [daycampCard.store]                    : daycampCard.reducer,
-  [daycampCardDetail.store]              : daycampCardDetail.reducer,
-  [daycampPrepaidUsage.store]            : daycampPrepaidUsage.reducer,
-  [daycampReservationUsage.store]        : daycampReservationUsage.reducer,
-  [boardingReservation.store]            : boardingReservation.reducer,
-  [boardingReservationDetail.store]      : boardingReservationDetail.reducer,
-  [boardingPackage.store]                : boardingPackage.reducer,
-  [boardingPackageDetail.store]          : boardingPackageDetail.reducer,
-  [boardingReservationAddon.store]       : boardingReservationAddon.reducer,
-  [boardingReservationAddonFeeding.store]: boardingReservationAddonFeeding.reducer,
-  [boardingPrepaidUsage.store]           : boardingPrepaidUsage.reducer,
-  [boardingReservationUsage.store]       : boardingReservationUsage.reducer,
-
+  form                                                     : formReducer,
+  router                                                   : connectRouter(history),
+  [agreement.store]                                        : agreement.reducer,
+  [agreementDetail.store]                                  : agreementDetail.reducer,
+  [auth.store]                                             : auth.reducer,
+  [application.store]                                      : application.reducer,
+  [bookingSheetSetting.store]                              : bookingSheetSetting.reducer,
+  [breedManagerSetting.store]                              : breedManagerSetting.reducer,
+  [breedManagerSettingDetail.store]                        : breedManagerSettingDetail.reducer,
+  [reservationByDateBreed.store]                           : reservationByDateBreed.reducer,
+  [reservationByDateBreedDetail.store]                     : reservationByDateBreedDetail.reducer,
+  [DaycareReservationBreed.store]                          : DaycareReservationBreed .reducer,
+  [DaycareReservationBreedDetail.store]                    : DaycareReservationBreedDetail.reducer,
+  [clientPetBreed.store]                                   : clientPetBreed.reducer,
+  [clientPetBreedDetail.store]                             : clientPetBreedDetail.reducer,
+  [calendarDetail.store]                                   : calendarDetail.reducer,
+  [category.store]                                         : category.reducer,
+  [categoryDetail.store]                                   : categoryDetail.reducer,
+  [client.store]                                           : client.reducer,
+  [clientDetail.store]                                     : clientDetail.reducer,
+  [clientDocument.store]                                   : clientDocument.reducer,
+  [clientDocumentDetail.store]                             : clientDocumentDetail.reducer,
+  [clientDocumentType.store]                               : clientDocumentType.reducer,
+  [clientDocumentTypeDetail.store]                         : clientDocumentTypeDetail.reducer,
+  [clientAgreement.store]                                  : clientAgreement.reducer,
+  [clientAgreementSignedDuck.store]                        : clientAgreementSignedDuck.reducer,
+  [clientAgreementUnsignedDuck.store]                      : clientAgreementUnsignedDuck.reducer,
+  [clientAgreementDetail.store]                            : clientAgreementDetail.reducer,
+  [clientComment.store]                                    : clientComment.reducer,
+  [clientCommentDetail.store]                              : clientCommentDetail.reducer,
+  [clientPet.store]                                        : clientPet.reducer,
+  [clientEmailMessage.store]                               : clientEmailMessage.reducer,
+  [clientEmailMessageDetail.store]                         : clientEmailMessageDetail.reducer,
+  [company.store]                                          : company.reducer,
+  [companyDetail.store]                                    : companyDetail.reducer,
+  [customReport.store]                                     : customReport.reducer,
+  [customReportDetail.store]                               : customReportDetail.reducer                ,
+  [customized.store]                                       : customized.reducer,
+  [customizedField.store]                                  : customizedField.reducer,
+  [customizedFieldDetail.store]                            : customizedFieldDetail.reducer,
+  [customizedFieldGroup.store]                             : customizedFieldGroup.reducer,
+  [customizedFieldGroupDetail.store]                       : customizedFieldGroupDetail.reducer,
+  [daycampCard.store]                                      : daycampCard.reducer,
+  [daycampCardDetail.store]                                : daycampCardDetail.reducer,
+  [daycampPrepaidUsage.store]                              : daycampPrepaidUsage.reducer,
+  [daycampReservationUsage.store]                          : daycampReservationUsage.reducer,
+  [boardingReservation.store]                              : boardingReservation.reducer,
+  [boardingReservationDetail.store]                        : boardingReservationDetail.reducer,
+  [boardingPackage.store]                                  : boardingPackage.reducer,
+  [boardingPackageDetail.store]                            : boardingPackageDetail.reducer,
+  [boardingReservationAddon.store]                         : boardingReservationAddon.reducer,
+  [boardingReservationAddonFeeding.store]                  : boardingReservationAddonFeeding.reducer,
+  [boardingPrepaidUsage.store]                             : boardingPrepaidUsage.reducer,
+  [boardingReservationUsage.store]                         : boardingReservationUsage.reducer,
   [dashboardDaycamp.store]                                 : dashboardDaycamp.reducer,    // dashboard
   [dashboardDaycampCheckedIn.store]                        : dashboardDaycampCheckedIn.reducer,
   [dashboardDaycampCheckedOut.store]                       : dashboardDaycampCheckedOut.reducer,
@@ -331,6 +334,8 @@ const createRootReducer = history => combineReducers({
   [emailLogDetail.store]                                   : emailLogDetail.reducer,
   [employee.store]                                         : employee.reducer,
   [employeeDetail.store]                                   : employeeDetail.reducer,
+  [employeeRole.store]                                     : employeeRole.reducer,
+  [employeeRoleDetail.store]                               : employeeRoleDetail.reducer,
   [employeeTitle.store]                                    : employeeTitle.reducer,
   [employeeTitleDetail.store]                              : employeeTitleDetail.reducer,
   [feedingTime.store]                                      : feedingTime.reducer,
@@ -375,6 +380,8 @@ const createRootReducer = history => combineReducers({
   [petBreedDetail.store]                                   : petBreedDetail.reducer,
   [petKind.store]                                          : petKind.reducer,
   [petKindDetail.store]                                    : petKindDetail.reducer,
+  [petKindSize.store]                                      : petKindSize.reducer,
+  [petKindSizeDetail.store]                                : petKindSizeDetail.reducer,
   [petImage.store]                                         : petImage.reducer,
   [petImageDetail.store]                                   : petImageDetail.reducer,
   [petIncidentType.store]                                  : petIncidentType.reducer,
@@ -433,6 +440,8 @@ const createRootReducer = history => combineReducers({
   [productFamilyDetail.store]                              : productFamilyDetail.reducer,
   [productPackage.store]                                   : productPackage.reducer,
   [productPackageDetail.store]                             : productPackageDetail.reducer,
+  [productOption.store]                                    : productOption.reducer,
+  [productOptionDetail.store]                              : productOptionDetail.reducer,
   [productVariations.store]                                : productVariations.reducer,
   [productVariationsDetail.store]                          : productVariationsDetail.reducer,
   [productVariationsImageDetail.store]                     : productVariationsImageDetail.reducer,
@@ -454,6 +463,9 @@ const createRootReducer = history => combineReducers({
   [serviceAttributeDetail.store]                           : serviceAttributeDetail.reducer,
   [serviceAttributeValue.store]                            : serviceAttributeValue.reducer,
   [serviceAttributeValueDetail.store]                      : serviceAttributeValueDetail.reducer,
+  [serviceGroupPetKind.store]                              : serviceGroupPetKind.reducer,
+  [servicePetKind.store]                                   : servicePetKind.reducer,
+  [tenantDetail.store]                                     : tenantDetail.reducer,
   [onlineRequestsClientSubmission.store]                   : onlineRequestsClientSubmission.reducer,
   [onlineRequestsClientSubmissionDetail.store]             : onlineRequestsClientSubmissionDetail.reducer,
   [onlineRequestsConfirmReservation.store]                 : onlineRequestsConfirmReservation.reducer,
@@ -468,6 +480,12 @@ const createRootReducer = history => combineReducers({
   [onlineRequestsCancellationLogsDetail.store]             : onlineRequestsCancellationLogsDetail.reducer,
   [onlineRequestNote.store]                                : onlineRequestNote.reducer,
   [onlineRequestNoteDetail.store]                          : onlineRequestNoteDetail.reducer,
+  [orderServiceBoardingKennel.store]                       : orderServiceBoardingKennel.reducer,
+  [orderServiceBoardingKennelDetail.store]                 : orderServiceBoardingKennelDetail.reducer,
+  [orderServiceBoardingKennelArea.store]                   : orderServiceBoardingKennelArea.reducer,
+  [orderServiceBoardingKennelAreaDetail.store]             : orderServiceBoardingKennelAreaDetail.reducer,
+  [orderServiceBoardingKennelType.store]                   : orderServiceBoardingKennelType.reducer,
+  [orderServiceBoardingKennelTypeDetail.store]             : orderServiceBoardingKennelTypeDetail.reducer,
   [trainingCommand.store]                                  : trainingCommand.reducer,
   [trainingCommandDetail.store]                            : trainingCommandDetail.reducer,
   [trainingMethod.store]                                   : trainingMethod.reducer,

@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { Form, Input } from 'semantic-ui-react'
-import * as Yup from 'yup'
+import * as yup from 'yup'
 
 import CheckboxGroup from '@components/Common/CheckboxGroup'
 import FormError from '@components/Common/FormError'
@@ -14,36 +13,51 @@ import { ProtectedProductFamilyType } from '@lib/constants/product'
 import productAttributeDuck from '@reducers/product/product-attribute'
 import productFamilyDetailDuck from '@reducers/product/family/detail'
 
-export const formId = 'product-family'
-
 const ProductFamilyCreateForm = props => {
   const {
-    productAttribute,
-    productFamilyDetail,
-    error, handleSubmit, reset // redux-form
+    error, handleSubmit, reset, initialize // redux-form
   } = props
 
+  const dispatch = useDispatch()
+  const productAttributeList = useSelector(productAttributeDuck.selectors.list)
+  const detail = useSelector(productFamilyDetailDuck.selectors.detail)
+
   useEffect(() => {
-    props.getProductAttributes()
+    if(editing)
+      initialize({
+        ...detail.item,
+        attributes: detail.item.attributes.map(({ product_attribute }) => product_attribute)
+      })
+
+    if(productAttributeList.items.length === 0)
+      dispatch(
+        productAttributeDuck.creators.get()
+      )
   }, [])
 
+  const _handleClose = () => {
+    dispatch(
+      productFamilyDetailDuck.creators.resetItem()
+    )
+  }
+
   const _handleSubmit = values => {
-    if(isUpdating)
-      return props.put(values)
-        .then(props.resetProductFamily)
+    if(editing)
+      return dispatch(productFamilyDetailDuck.creators.put({ id: detail.item.id, ...values }))
+        .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props.post(values)
-        .then(props.resetProductFamily)
+      return dispatch(productFamilyDetailDuck.creators.post(values))
+        .then(_handleClose)
         .catch(parseResponseError)
   }
 
-  const isUpdating = Boolean(productFamilyDetail.item.id)
-  const isProtected = Object.keys(ProtectedProductFamilyType).includes(productFamilyDetail.item.type)
+  const editing = Boolean(detail.item.id)
+  const isProtected = Object.keys(ProtectedProductFamilyType).includes(detail.item.type)
 
   return (
     // eslint-disable-next-line react/jsx-handler-names
-    <Form id={formId} onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+    <Form id='product-family' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
       <Form.Group widths='equal'>
         <Field
           autoFocus
@@ -62,7 +76,7 @@ const ProductFamilyCreateForm = props => {
           label='Which attributes will be variants?'
           name='attributes'
           options={
-            productAttribute.items
+            productAttributeList.items
               .map(item => ({ text: item.name, value: item.id }))
           }
           required/>
@@ -77,39 +91,18 @@ const ProductFamilyCreateForm = props => {
           </Form.Group>
         )
       }
-
-      <Field component='input' name='id' type='hidden'/>
     </Form>
   )
 }
 
-export default compose(
-  connect(
-    state => {
-      const productFamilyDetail = productFamilyDetailDuck.selectors.detail(state)
-
-      return {
-        productAttribute: productAttributeDuck.selectors.list(state),
-        productFamilyDetail,
-        initialValues   : productFamilyDetail.item
-      }
-    },
-    {
-      getProductAttributes: productAttributeDuck.creators.get,
-      post                : productFamilyDetailDuck.creators.post,
-      put                 : productFamilyDetailDuck.creators.put,
-      resetProductFamily  : productFamilyDetailDuck.creators.resetItem
+export default reduxForm({
+  form    : 'product-family',
+  validate: values => {
+    const schema = {
+      name      : yup.string().required('Name is required'),
+      attributes: yup.array().required('Choose at least one attribute')
     }
-  ),
-  reduxForm({
-    form    : formId,
-    validate: values => {
-      const schema = {
-        name      : Yup.string().required('Name is required'),
-        attributes: Yup.array().required('Choose at least one attribute')
-      }
 
-      return syncValidate(Yup.object().shape(schema), values)
-    }
-  })
-)(ProductFamilyCreateForm)
+    return syncValidate(yup.object().shape(schema), values)
+  }
+})(ProductFamilyCreateForm)

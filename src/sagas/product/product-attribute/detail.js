@@ -1,4 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
+
 import { Delete, Post, Patch } from '@lib/utils/http-client'
 
 import productAttributeDetailDuck from '@reducers/product/product-attribute/detail'
@@ -8,7 +9,9 @@ const { types } = productAttributeDetailDuck
 function* deleteItem({ ids: [ id ] }) {
   try {
     yield put({ type: types.DELETE_PENDING })
+
     yield call(Delete, `product-attributes/${id}`)
+
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
     yield put({
@@ -21,11 +24,11 @@ function* deleteItem({ ids: [ id ] }) {
 function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
-    const result = yield call(Post, 'product-attributes/', payload)
+
+    yield call(Post, 'product-attributes/', payload)
 
     yield put({
-      type   : types.POST_FULFILLED,
-      payload: result
+      type: types.POST_FULFILLED
     })
   } catch (e) {
     yield put({

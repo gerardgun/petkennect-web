@@ -1,21 +1,24 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
-import ProductFamilyCreateForm, { formId } from './index'
+import ProductFamilyCreateForm from './index'
 
 import productFamilyDetailDuck from '@reducers/product/family/detail'
 
-const ProductFamilyCreateFormModal = props => {
-  const {
-    productFamilyDetail
-  } = props
+const ProductFamilyCreateFormModal = () => {
+  const dispatch = useDispatch()
+  const detail = useSelector(productFamilyDetailDuck.selectors.detail)
 
-  const _handleClose = props.resetProductFamily
+  const _handleClose = () => {
+    dispatch(
+      productFamilyDetailDuck.creators.resetItem()
+    )
+  }
 
-  const loading = [ 'POSTING', 'PUTTING' ].includes(productFamilyDetail.status)
-  const open = [ 'CREATE', 'UPDATE' ].includes(productFamilyDetail.mode)
+  const editing = Boolean(detail.item.id)
+  const saving = [ 'POSTING', 'PUTTING' ].includes(detail.status)
+  const open = [ 'CREATE', 'UPDATE' ].includes(detail.mode)
 
   return (
     <Modal
@@ -24,7 +27,7 @@ const ProductFamilyCreateFormModal = props => {
       open={open}
       size='small'>
       <Modal.Content>
-        <Header as='h2'>{productFamilyDetail.mode === 'CREATE' ? 'New' : 'Update'} Product Family</Header>
+        <Header as='h2'>{editing ? 'Update' : 'New'} Family</Header>
 
         <ProductFamilyCreateForm/>
 
@@ -35,16 +38,16 @@ const ProductFamilyCreateFormModal = props => {
               className='w120'
               color='teal'
               content='Cancel'
-              disabled={loading}
+              disabled={saving}
               onClick={_handleClose}
               type='button'/>
             <Button
-              className='w120'
               color='teal'
-              content='Done'
-              disabled={loading}
-              form={formId}
-              loading={loading}
+              content={editing ? 'Save changes' : 'Create Family'}
+              disabled={saving}
+              form='product-family'
+              loading={saving}
+              saving={saving}
               type='submit'/>
           </Form.Field>
         </Form.Group>
@@ -53,13 +56,4 @@ const ProductFamilyCreateFormModal = props => {
   )
 }
 
-export default compose(
-  connect(
-    state => ({
-      productFamilyDetail: productFamilyDetailDuck.selectors.detail(state)
-    }),
-    {
-      resetProductFamily: productFamilyDetailDuck.creators.resetItem
-    }
-  )
-)(ProductFamilyCreateFormModal)
+export default ProductFamilyCreateFormModal

@@ -1,6 +1,16 @@
+import React from 'react'
 import { ProductFamilyType } from '@lib/constants/product'
 
 export default {
+  search_placeholder: 'Search by name',
+  actions           : [
+    {
+      display_name: 'Add Family',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
   columns: [
     {
       display_name: 'Name',
@@ -21,32 +31,43 @@ export default {
     },
     {
       display_name: 'Attributes',
-      name        : 'family_attributes',
+      name        : 'attributes',
       type        : 'string',
       width       : null,
       align       : 'left',
       sort        : false,
       formatter   : cell => {
-        let attributeNames = '-'
+        let attributeNames = <span className='text-gray'>No related attributes</span>
 
         if(cell.length > 0)
           attributeNames = cell
-            .map(({ attribute }) => attribute.name)
+            .map(({ name }) => name)
             .join(', ')
 
         return attributeNames
       }
     },
     {
+      display_name: 'Total Products',
+      name        : 'count_products',
+      type        : 'string',
+      formatter   : cell => `${cell} products`
+    },
+    {
       display_name: 'Actions',
-      name        : 'custom_name',
       type        : 'button',
       options     : [
         {
-          display_name: 'Delete Product',
+          display_name: 'Edit Family',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Family',
           name        : 'delete',
           icon        : 'trash alternate outline',
-          color       : 'red'
+          color       : 'grey'
         }
       ]
     }

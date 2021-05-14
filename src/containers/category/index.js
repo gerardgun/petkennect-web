@@ -1,74 +1,68 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { compose } from 'redux'
-import { Button, Grid, Header, Segment } from 'semantic-ui-react'
-import loadable from '@loadable/component'
+import { useDispatch, useSelector } from 'react-redux'
+import { Header, Segment } from 'semantic-ui-react'
 
-import categoryDuck from '@reducers/category'
-import categoryDetailDuck from '@reducers/category/detail'
-import { useChangeStatusEffect } from '@hooks/Shared'
+import CreateFormModal from './create/form/modal'
+import Layout from '@components/Common/Layout'
+import ModalDelete from '@components/Modal/Delete'
+import Table from '@components/Table'
+import productCategoryListConfig from '@lib/constants/list-configs/product/category'
 
-const Layout = loadable(() => import('@components/Common/Layout'))
-const ModalDelete = loadable(() => import('@components/Modal/Delete'))
-const CategoryForm = loadable(() => import('./Form'))
-const SortableList = loadable(() => import('./SortableList'))
+import productCategoryDuck from '@reducers/category'
+import productCategoryDetailDuck from '@reducers/category/detail'
 
-const CategoryList = ({ ...props }) => {
-  const { categoryDetail : { status } = {}, category } = props
+const CategoryIndex = () => {
+  const dispatch = useDispatch()
+  const detail = useSelector(productCategoryDetailDuck.selectors.detail)
 
   useEffect(() => {
-    props.getCategories()
+    dispatch(
+      productCategoryDuck.creators.get()
+    )
   }, [])
 
-  useChangeStatusEffect(props.getCategories, status)
+  useEffect(() => {
+    if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
+      dispatch(
+        productCategoryDuck.creators.get()
+      )
+  }, [ detail.status ])
 
-  const _handleAddBtnClick = () => {
-    props.setItem(null, 'CREATE')
+  const _handleActionClick = action => {
+    if(action === 'create')
+      dispatch(
+        productCategoryDetailDuck.creators.setItem(null, 'CREATE')
+      )
   }
 
-  const _handleUpdateClick = (id) => {
-    props.setItem({ id }, 'UPDATE')
-  }
-
-  const _handleDeleteClick = (id) => {
-    props.setItem({ id }, 'DELETE')
+  const _handleRowButtonClick = (button, item) => {
+    if(button === 'delete')
+      dispatch(
+        productCategoryDetailDuck.creators.setItem(item, 'DELETE')
+      )
+    else if(button === 'edit')
+      dispatch(
+        productCategoryDetailDuck.creators.setItem(item, 'UPDATE')
+      )
   }
 
   return (
     <Layout>
       <Segment className='segment-content' padded='very'>
-        <Grid className='segment-content-header' columns={2}>
-          <Grid.Column computer={4} mobile={10} tablet={4}>
-            <Header as='h2'>Categories</Header>
-          </Grid.Column>
-          <Grid.Column
-            className='ui-grid-align'
-            computer={12} mobile={16} tablet={12}>
-            <Button content='Download' disabled/>
-            <Button
-              as={Link} color='teal'
-              content='New Category'
-              onClick={_handleAddBtnClick}/>
-          </Grid.Column>
-        </Grid>
-        <SortableList items={category.items} onDelete={_handleDeleteClick} onUpdate={_handleUpdateClick}/>
+        <Header as='h2'>Product Categories</Header>
 
+        <Table
+          config={productCategoryListConfig}
+          duck={productCategoryDuck}
+          onActionClick={_handleActionClick}
+          onRowButtonClick={_handleRowButtonClick}/>
       </Segment>
 
-      <CategoryForm/>
-      <ModalDelete duckDetail={categoryDetailDuck}/>
+      <CreateFormModal/>
+      <ModalDelete duckDetail={productCategoryDetailDuck}/>
+
     </Layout>
   )
 }
 
-export default compose(
-  connect(
-    state => ({
-      categoryDetail: categoryDetailDuck.selectors.detail(state),
-      category      : categoryDuck.selectors.list(state)
-    }), {
-      getCategories: categoryDuck.creators.get,
-      setItem      : categoryDetailDuck.creators.setItem
-    })
-)(CategoryList)
+export default CategoryIndex

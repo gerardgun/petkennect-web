@@ -43,8 +43,11 @@ const FormField = props => {
     return onBlur(value)
   }
 
-  const _handleChange = (e, { checked, value }) => {
-    return onChange(typeof value !== 'undefined' ? value : checked)
+  const _handleChange = (e, { type, checked, value }) => {
+    if(type === 'checkbox')
+      return onChange(checked)
+    else
+      return onChange(value)
   }
 
   const computedInput = getComputedInput()

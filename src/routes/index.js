@@ -21,7 +21,7 @@ import ColorCode from '@containers/color-code'
 import BehaviorTagSetting from '@containers/behavior-tag-setting'
 import BookingSheetSetting from '@containers/booking-sheet-setting'
 import BreedManagerSetting from '@containers/breed-manager-setting'
-import Dashboard from '@containers/dashboard'
+// import Dashboard from '@containers/dashboard'
 import DayCampForm from '@containers/day-camp-form'
 import Client from '@containers/client'
 import ClientShow from '@containers/client/show'
@@ -55,7 +55,7 @@ import ProductAttribute from '@containers/product-attribute'
 import ProductAttributeValue from '@containers/product-attribute-value'
 import ProductFamily from '@containers/product/family'
 import Product from '@containers/product'
-import ProductShow from '@containers/product/show'
+import ProductEdit from '@containers/product/edit'
 import RatingKey from '@containers/rating-key'
 import DayServiceReportCardSetup from '@containers/report-card-setup/day-service'
 import BoardingReportCardSetup from '@containers/report-card-setup/boarding'
@@ -119,6 +119,34 @@ import SetupPetMedicationUnitIndex from '@containers/setup/pet/medication/unit-s
 import SetupPetVaccinationSettingIndex from '@containers/setup/pet/vaccination/setting-section'
 import SetupPetVaccinationTypeIndex from '@containers/setup/pet/vaccination/type-section'
 
+// Settings / Boarding
+import SetupBoardingPricingIndex from '@containers/setup/boarding/pricing'
+
+// Settings / Capacity / Lodging Area Managment
+import SetupCapacityBoardingAreaIndex from '@containers/setup/capacity/boarding/area-section'
+import SetupCapacityBoardingKennelIndex from '@containers/setup/capacity/boarding/kennel-section'
+import SetupCapacityBoardingSettingIndex from '@containers/setup/capacity/boarding/setting-section'
+import SetupCapacityBoardingTypeIndex from '@containers/setup/capacity/boarding/type-section'
+
+// Settings / Capacity / Appointment Capacity
+import SetupCapacityAppointmentRoleIndex from '@containers/setup/capacity/appointment/role-section'
+import SetupCapacityAppointmentSettingIndex from '@containers/setup/capacity/appointment/setting-section'
+import SetupCapacityAppointmentSpecialistIndex from '@containers/setup/capacity/appointment/specialist-section'
+
+// Settings / Services Capacity
+import SetupCapacityServiceReservationIndex from '@containers/setup/capacity/service/reservation-section'
+import SetupCapacityServiceServiceGroupIndex from '@containers/setup/capacity/service/service-group-section'
+import SetupCapacityServiceSettingIndex from '@containers/setup/capacity/service/setting-section'
+import SetupCapacityServiceServiceTypeIndex from '@containers/setup/capacity/service/service-type-section'
+import SetupCapacityServiceTotalFacilityIndex from '@containers/setup/capacity/service/total-facility-section'
+import SetupCapacityServiceYardCapacityIndex from '@containers/setup/capacity/service/yard-capacity-section'
+
+// Settings / Day Services / General Settings
+import SetupDayServiceGeneralReservationIndex from '@containers/setup/day-service/general/reservation-section'
+import SetupDayServiceGeneralServiceTypeIndex from '@containers/setup/day-service/general/service-type-section'
+import SetupDayServiceGeneralSettingIndex from '@containers/setup/day-service/general/setting-section'
+
+// Settings / Training
 import SetupTrainingIndex from '@containers/setup/training'
 import SetupTrainingCommandIndex from '@containers/setup/training/command'
 import SetupTrainingMethodIndex from '@containers/setup/training/method'
@@ -322,47 +350,47 @@ const privateRoutes = [
     component: PackagePricing
   },
   {
-    path     : '/product',
+    path     : '/products',
     component: Product
   },
   {
-    path     : '/product/:id(\\d+)',
-    component: ProductShow
+    path     : '/products/:id(\\d+)',
+    component: ProductEdit
   },
   {
-    path     : '/product-attribute',
+    path     : '/products/attributes',
     component: ProductAttribute
   },
   {
-    path     : '/product-attribute-value/:id',
+    path     : '/products/attributes/:id/values',
     component: ProductAttributeValue
   },
   {
-    path     : '/product/family',
-    component: ProductFamily
-  },
-  {
-    path     : '/category',
+    path     : '/products/categories',
     component: Category
   },
   {
-    path     : '/service',
+    path     : '/products/families',
+    component: ProductFamily
+  },
+  {
+    path     : '/services',
     component: Service
   },
   {
-    path     : '/service/create',
+    path     : '/services/create',
     component: ServiceCreate
   },
   {
-    path     : '/service/:id',
+    path     : '/services/:id',
     component: ServiceCreate
   },
   {
-    path     : '/service-attribute',
+    path     : '/services/attributes',
     component: ServiceAttribute
   },
   {
-    path     : '/service-attribute-value/:id',
+    path     : '/services/attributes/values/:id',
     component: ServiceAttributeValue
   },
   {
@@ -485,6 +513,74 @@ const privateRoutes = [
   {
     path     : '/setup/pet/vaccination/type',
     component: SetupPetVaccinationTypeIndex
+  },
+  {
+    path     : '/setup/boarding/pricing',
+    component: SetupBoardingPricingIndex
+  },
+  {
+    path     : '/setup/capacity/boarding/area',
+    component: SetupCapacityBoardingAreaIndex
+  },
+  {
+    path     : '/setup/capacity/boarding/kennel',
+    component: SetupCapacityBoardingKennelIndex
+  },
+  {
+    path     : '/setup/capacity/boarding/setting',
+    component: SetupCapacityBoardingSettingIndex
+  },
+  {
+    path     : '/setup/capacity/boarding/type',
+    component: SetupCapacityBoardingTypeIndex
+  },
+  {
+    path     : '/setup/capacity/appointment/role',
+    component: SetupCapacityAppointmentRoleIndex
+  },
+  {
+    path     : '/setup/capacity/appointment/setting',
+    component: SetupCapacityAppointmentSettingIndex
+  },
+  {
+    path     : '/setup/capacity/appointment/specialist',
+    component: SetupCapacityAppointmentSpecialistIndex
+  },
+  {
+    path     : '/setup/capacity/service/reservation',
+    component: SetupCapacityServiceReservationIndex
+  },
+  {
+    path     : '/setup/capacity/service/service-group',
+    component: SetupCapacityServiceServiceGroupIndex
+  },
+  {
+    path     : '/setup/capacity/service/service-type',
+    component: SetupCapacityServiceServiceTypeIndex
+  },
+  {
+    path     : '/setup/capacity/service/setting',
+    component: SetupCapacityServiceSettingIndex
+  },
+  {
+    path     : '/setup/capacity/service/total-facility',
+    component: SetupCapacityServiceTotalFacilityIndex
+  },
+  {
+    path     : '/setup/capacity/service/yard-capacity',
+    component: SetupCapacityServiceYardCapacityIndex
+  },
+  {
+    path     : '/setup/day-service/general/reservation',
+    component: SetupDayServiceGeneralReservationIndex
+  },
+  {
+    path     : '/setup/day-service/general/service-type',
+    component: SetupDayServiceGeneralServiceTypeIndex
+  },
+  {
+    path     : '/setup/day-service/general/setting',
+    component: SetupDayServiceGeneralSettingIndex
   },
   {
     path     : '/setup/training',

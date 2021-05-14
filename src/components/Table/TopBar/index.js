@@ -48,7 +48,7 @@ const TopBar = ({ config, duck, ...props }) => {
   const optionsForMultipleEnabled = list.selector && list.selector.selected_items.length > 0
 
   const filterColumns = useMemo(() => getFilterColumns(config), [])
-  const selectedFilterColumns = useMemo(() => getSelectedFilterColumns(config, filters), [])
+  const selectedFilterColumns = useMemo(() => getSelectedFilterColumns(config, filters), [ filters ])
 
   return (
     <div className='table-primary-header'>
@@ -127,7 +127,7 @@ const TopBar = ({ config, duck, ...props }) => {
               <Popup
                 basic
                 on='click' onClose={_handleClose} onOpen={_handleOpen}
-                open={open} position='bottom right'
+                open={open} position='right center'
                 trigger={<Button basic={!open} color={open ? 'teal' : null} content='Filters'/>}>
                 <Popup.Content style={{ minWidth: '22rem', padding: '1rem 1rem 0.5rem' }}>
                   <FilterForm config={config} duck={duck}/>

@@ -1,3 +1,4 @@
+import faker from 'faker'
 import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
@@ -21,7 +22,12 @@ function* get(/* { payload } */) {
       payload: {
         items: results.map(item => ({
           ...item,
-          thumbnail_path: item.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${item.thumbnail_path}` : null
+          thumbnail_path       : item.thumbnail_path ? `https://petkennect-collection.s3.us-east-2.amazonaws.com/${item.thumbnail_path}` : null,
+          // For mockup appointment capacity module
+          role_name            : faker.random.arrayElement([ 'Groomer', 'Trainer', 'Bather', 'Dog Walker' ]),
+          service_name         : faker.random.arrayElement([ 'Grooming', 'Bathing', 'Training', 'Dog Walking' ]),
+          applies              : faker.random.arrayElement([ 'All', 'Bath and Brush Large, Bath Brush Small', 'Bathing', 'Training', 'Dog Walking' ]),
+          max_scheduled_per_day: faker.random.arrayElement([ 3, 4, 5, 6, 4, 5, 7 ])
         })),
         pagination: {
           ...list.pagination,

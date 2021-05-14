@@ -48,6 +48,8 @@ import daycampPrepaidUsage from './pet/reservation/usage/daycamp/prepaid'
 import daycampReservationUsage from './pet/reservation/usage/daycamp/reservation'
 import employee from './employee'
 import employeeDetail from './employee/detail'
+import employeeRole from './employee/role'
+import employeeRoleDetail from './employee/role/detail'
 import employeeTitle from './employee/title'
 import employeeTitleDetail from './employee/title/detail'
 import emailMessage from './email-message'
@@ -74,6 +76,12 @@ import organization from './organization'
 import organizationDetail from './organization/detail'
 import groomingPrepaidUsage from './pet/reservation/usage/grooming/prepaid'
 import groomingReservationUsage from './pet/reservation/usage/grooming/reservation'
+import orderServiceBoardingKennel from './order/service/boarding/kennel'
+import orderServiceBoardingKennelDetail from './order/service/boarding/kennel/detail'
+import orderServiceBoardingKennelArea from './order/service/boarding/kennel/area'
+import orderServiceBoardingKennelAreaDetail from './order/service/boarding/kennel/area/detail'
+import orderServiceBoardingKennelType from './order/service/boarding/kennel/type'
+import orderServiceBoardingKennelTypeDetail from './order/service/boarding/kennel/type/detail'
 import packagePricing from './package-pricing'
 import paymentMethod from './payment-method'
 import pet from './pet'
@@ -82,6 +90,8 @@ import petBreed from './pet/breed'
 import petBreedDetail from './pet/breed/detail'
 import petKind from './pet/kind'
 import petKindDetail from './pet/kind/detail'
+import petKindSize from './pet/kind/size'
+import petKindSizeDetail from './pet/kind/size/detail'
 import petImage from './pet/image'
 import petImageDetail from './pet/image/detail'
 import petIncidentType from './pet/incident-type'
@@ -139,6 +149,8 @@ import productImage from './product/image'
 import productImageDetail from './product/image/detail'
 import productFamily from './product/family'
 import productFamilyDetail from './product/family/detail'
+import productOption from './product/option'
+import productOptionDetail from './product/option/detail'
 import productPackage from './product/package'
 import productPackageDetail from './product/package/detail'
 import productVariations from './product/product-variations'
@@ -160,6 +172,9 @@ import serviceAttribute from './service/service-attribute'
 import serviceAttributeDetail from './service/service-attribute/detail'
 import serviceAttributeValue from './service/service-attribute-value'
 import serviceAttributeValueDetail from './service/service-attribute-value/detail'
+import serviceGroupPetKind from './service/group/pet/kind'
+import servicePetKind from './service/pet/kind'
+import tenantDetail from './tenant/detail'
 import onlineRequestClientSubmission from './online-request/client-submission'
 import onlineRequestClientSubmissionDetail from './online-request/client-submission/detail'
 import onlineRequestConfirmReservation from './online-request/confirm-reservation'
@@ -237,6 +252,8 @@ export default function* rootSaga() {
     ...emailLog,
     ...employee,
     ...employeeDetail,
+    ...employeeRole,
+    ...employeeRoleDetail,
     ...employeeTitle,
     ...employeeTitleDetail,
     ...feedingMeasurement,
@@ -258,6 +275,12 @@ export default function* rootSaga() {
     ...organizationDetail,
     ...groomingPrepaidUsage,
     ...groomingReservationUsage,
+    ...orderServiceBoardingKennel,
+    ...orderServiceBoardingKennelDetail,
+    ...orderServiceBoardingKennelArea,
+    ...orderServiceBoardingKennelAreaDetail,
+    ...orderServiceBoardingKennelType,
+    ...orderServiceBoardingKennelTypeDetail,
     ...packagePricing,
     ...paymentMethod,
     ...pet,
@@ -266,6 +289,8 @@ export default function* rootSaga() {
     ...petBreedDetail,
     ...petKind,
     ...petKindDetail,
+    ...petKindSize,
+    ...petKindSizeDetail,
     ...petImage,
     ...petImageDetail,
     ...petIncidentType,
@@ -322,6 +347,8 @@ export default function* rootSaga() {
     ...productImageDetail,
     ...productFamily,
     ...productFamilyDetail,
+    ...productOption,
+    ...productOptionDetail,
     ...productPackage,
     ...productPackageDetail,
     ...productVariations,
@@ -343,6 +370,9 @@ export default function* rootSaga() {
     ...serviceAttributeDetail,
     ...serviceAttributeValue,
     ...serviceAttributeValueDetail,
+    ...serviceGroupPetKind,
+    ...servicePetKind,
+    ...tenantDetail,
     ...onlineRequestClientSubmission,
     ...onlineRequestClientSubmissionDetail,
     ...onlineRequestConfirmReservation,

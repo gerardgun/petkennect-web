@@ -146,7 +146,12 @@ export default base({
         [ERROR_ACTION]   : REHYDRATE_TENANT_FAILURE
       })
     }),
-    selectors: () => ({
+    selectors: ({ store }) => ({
+      currentTenant: state => {
+        const auth = state[store]
+
+        return auth.item.companies.find(item => item.subdomain_prefix === auth.tenant)
+      },
       getCurrentTenant: authState => {
         return authState.item.companies.find(item => item.subdomain_prefix === authState.tenant)
       }

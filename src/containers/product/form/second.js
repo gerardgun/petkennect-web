@@ -15,10 +15,7 @@ import productAttributeValueDetailDuck from '@reducers/product/product-attribute
 import productVariationDuck from '@reducers/product/product-variations'
 
 import { defaultImageUrl } from '@lib/constants'
-import { formId } from '../form/first'
 import DeleteConfirmationForm from './deleteConfirmation'
-
-import './styles.scss'
 
 const ProductFormSecond = props => {
   const {
@@ -303,7 +300,7 @@ export default compose(
     }
   ),
   reduxForm({
-    form                    : formId,
+    form                    : 'product',
     destroyOnUnmount        : false,
     forceUnregisterOnUnmount: true
   })

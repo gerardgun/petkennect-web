@@ -55,7 +55,7 @@ const SetupTrainingCommandIndex = () => {
 
         <Header as='h4' color='teal'>Edit Breeds in your facilities</Header>
         <Header as='h4'>
-          AKC standard breeds are loaded. Any breed that is mixed is noted with a "-X". You can add breeds or edit them here.
+          AKC standard breeds are loaded. Any breed that is mixed is noted with a {'"-X"'}. You can add breeds or edit them here.
         </Header>
 
         <div className='mv20' style={{ textAlign: 'center' }}>

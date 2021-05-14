@@ -10,11 +10,10 @@ const FilterTagManager = ({ config, duck }) => {
   const dispatch = useDispatch()
   const store = useStore()
   const filters = useSelector(duck.selectors.filters)
-  const list = useSelector(duck.selectors.list)
 
   const _handleClick = e => {
     const columnName = e.currentTarget.dataset.columnName
-    const column = list.config.columns.find(item => item.name === columnName)
+    const column = config.columns.find(item => item.name === columnName)
     const filterNames = [].concat(column.filter.name) // get a flat array of filter names
 
     dispatch(
