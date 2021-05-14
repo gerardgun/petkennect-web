@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import {  Grid, Header,Icon, Image, Dropdown, Checkbox, Input } from 'semantic-ui-react'
+import {  Grid, Header,Icon, Image, Dropdown, Checkbox, Input, Button } from 'semantic-ui-react'
 import { Field } from 'redux-form'
 import FormField from '@components/Common/FormField'
 import { defaultImageUrl } from '@lib/constants'
@@ -29,8 +30,18 @@ const ReportMidSection = (props)=>{
 
   return (
     <>
-      <Header
-        as='h3' color='blue' content={`Editing ${reportName} Report Card`}/>
+      <div className='flex align-center justify-between mt20'>
+        <Header
+          as='h3' className='mb0' color='blue'
+          content={`Editing ${reportName} Report Card`}/>
+        <Button
+          as={Link}
+          basic
+          className='mr0' color='teal' content='Preview'
+          style={{ width: '200px' }}
+          to='/setup/report-sheet-setting'/>
+      </div>
+
       <Grid  className='pt32'style={{ paddingLeft: '1.3rem' }}>
         <Grid.Row>
           <Grid.Column computer={8}>

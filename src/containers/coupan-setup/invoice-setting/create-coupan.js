@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-handler-names */
-import React, { useMemo } from 'react'
+import React, { useMemo,useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {  useDispatch } from 'react-redux'
@@ -10,15 +10,22 @@ import { syncValidate } from '@lib/utils/functions'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import coupanDetailDuck from '@reducers/coupan-setup/coupan/detail'
-
+import locatioDuck from '@reducers/location'
+import serviceDuck from '@reducers/service'
 const CreateCouponForm = (props)=>{
   const {
+    locationList,
+    serviceList,
     error,
     handleSubmit,
     reset,
     couponDetail,
     submitting // redux-form
   } = props
+
+  useEffect(()=>{
+    if(serviceList.items.length === 0) props.getServices()
+  },[])
 
   const dispatch = useDispatch()
   const _handleClose = () =>{
@@ -129,7 +136,12 @@ const CreateCouponForm = (props)=>{
                   label='Locations'
                   multiple
                   name='location'
-                  options={[ { key: 1, value: 'all_locations' , text: 'All' } ]}
+                  options={
+                    locationList.items.map(({ id, name }) => ({
+                      value: id,
+                      text : name
+                    }))
+                  }
                   placeholder='Select Locations'
                   required={true}/>
               </Form.Group>
@@ -140,7 +152,12 @@ const CreateCouponForm = (props)=>{
                   label='Service Types'
                   multiple
                   name='service_type'
-                  options={[ { key: 1, value: 'all_service_type' , text: 'All' } ]}
+                  options={
+                    serviceList.items.map(({ id, name }) => ({
+                      value: id,
+                      text : name
+                    }))
+                  }
                   placeholder='Select Services'
                   required={true}/>
               </Form.Group>
@@ -151,7 +168,14 @@ const CreateCouponForm = (props)=>{
                   label='Reservation Types'
                   multiple
                   name='reservation_type'
-                  options={[ { key: 1, value: 'all_reservation_type' , text: 'All' } ]}
+                  options={[
+                    { text: 'All', value: 'all' },
+                    { text: 'Day Services', value: 'Day Services' },
+                    { text: 'Boarding', value: 'Boarding' },
+                    { text: 'Training', value: 'Training' },
+                    { text: 'Grooming', value: 'Grooming' }
+
+                  ]}
                   placeholder='Select Reservation Types'
                   required={true}/>
               </Form.Group>
@@ -269,8 +293,13 @@ export default compose(
 
       return {
         couponDetail,
+        locationList : locatioDuck.selectors.list(state),
+        serviceList  : serviceDuck.selectors.list(state),
         initialValues: { ...couponDetail.item }
       }
+    },
+    {
+      getServices: serviceDuck.creators.get
     }
 
   ),
