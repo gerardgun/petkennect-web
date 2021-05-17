@@ -82,6 +82,7 @@ import CompanyShow from '@containers/company/show'
 import Organization from '@containers/organization'
 import OrganizationEdit from '@containers/organization/edit'
 import OrganizationShow from '@containers/organization/show'
+import ReportSheetSetting from '@containers/report-sheet-setting'
 import SetupIndex from '@containers/setup'
 import SetupPetBreedIndex from '@containers/setup/pet/breed'
 import SetupPetBehaviorTagsIndex from '@containers/setup/pet/behavior-tag'
@@ -601,6 +602,10 @@ const privateRoutes = [
   {
     path     : '/setup/training/reason',
     component: SetupTrainingReasonIndex
+  },
+  {
+    path     : '/setup/report-sheet-setting',
+    component: ReportSheetSetting
   },
   {
     path     : '/setup/service-setting',

@@ -14,76 +14,12 @@ margin-top: .5rem !important;
 }
 
 
-.dayservice-img-card{
-    .ui.card, .ui.cards > .card  {
-        box-shadow: none !important;
-        height: 100% !important;
-
-    }
-}
-
-.dog-img-width{
-
-    width: 70% !important;
-    height: 100% !important;
-}
-.daycmp-Silohoutee-pic{
-    width: 70%;
-    margin: auto;
-}
 
 .padding-0{
 padding-top: 0 !important;
 }
 
-.c-image-profile {
-    position: relative;
-    overflow: hidden;
-    border-radius: 50%;
-    width: 14rem;
-    height: 14rem;
-    margin-bottom: 2.5rem;
 
-    .ui.image {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
-
-    .c-image-profile__overlay {
-      display: none;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: rgba(97, 100, 104, 0.9);
-      cursor: pointer;
-    }
-
-  }
-
-  .c-image-profile__menu {
-    top: 70px !important;
-    right: -60px !important;
-    left: auto !important;
-  }
- 
-  .ui.dropdown:not(.active) {
-    &:hover .c-image-profile__overlay {
-      display: flex;
-    }
-}
-
-.div-dropdown-img-h{
-    .ui.dropdown{
-        height: 200px !important;
-    }
-   
-}
 
 .c-option{
     width: 195px !important;
@@ -131,5 +67,52 @@ padding-top: 0 !important;
   
 }
 
+
+.card-img-mid{
+  width: 25%;
+  margin-right: 20Px !important;
+}
+
+
+.mid-deafult-image-1{
+  .ui.image {
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+.mid-deafult-image-2{
+  .ui.image {
+    height: 130px;
+    width: 100%;
+    object-fit: contain;
+  }
+}
+
+.mid-deafult-training{
+  .ui.image {
+    height: 150px;
+    width: 100%;
+    object-fit: contain;
+  }
+}
+
+.selected-pic{
+  outline: solid !important;
+  outline-color:#3399FF!important;
+}
+
+
+.selected-h{
+  color: #45b345 !important;
+}
+.unselected-h{
+  color: white !important;
+}
+
+
+.box-shadow-pic{
+  box-shadow: none !important;
+}
 
 

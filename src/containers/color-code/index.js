@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Grid, Header, Segment, Input, Button, Form, Icon, Table, Menu, Dropdown } from 'semantic-ui-react'
-import Switch from 'react-switch'
+import { Grid, Header, Segment, Input, Button, Icon, Table, Menu, Dropdown, Breadcrumb, Divider, Checkbox } from 'semantic-ui-react'
 import { BiTennisBall } from 'react-icons/bi'
 import { GiJumpingDog, GiDamagedHouse, GiDogBowl, GiSittingDog } from 'react-icons/gi'
 
@@ -16,7 +16,6 @@ const Layout = loadable(() => import('@components/Common/Layout'))
 
 const ColourCodeList = () => {
   const [ ActiveInfoItem, setActiveInfoItem ] = useState('system')
-  const [ icon,setIcon ] = useState(true)
   const _handleInfoItemClick = (e, { name }) => setActiveInfoItem(name)
 
   const [ activeMenuItem, setActiveMenuItem ] = useState('client')
@@ -38,23 +37,39 @@ const ColourCodeList = () => {
     <Layout>
       <Segment className='segment-content petkennect-profile pb32'>
         <Grid className='segment-content-header'>
-          <Grid.Column computer={16} mobile={16} tablet={16}>
+          <Grid.Column
+            className='pb0' computer={16} mobile={16}
+            tablet={16}>
             <Header as='h2'>System Icons/Codes</Header>
+            <Breadcrumb className='p0'>
+              <Breadcrumb.Section active>
+                <Link to='/setup'><Icon name='setting'/>Settings</Link>
+              </Breadcrumb.Section>
+              <Breadcrumb.Divider className='mh12' icon='right chevron'/>
+              <Breadcrumb.Section active>
+                <Link to='/setup'>Application Settings</Link>
+              </Breadcrumb.Section>
+              <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
+              <Breadcrumb.Section active>
+                <Link to='/setup/color-codes'>System Icons {'&'} codes</Link>
+              </Breadcrumb.Section>
+            </Breadcrumb>
+            <Divider/>
           </Grid.Column>
           <Grid.Column computer={16}>
             <div className='container-color'>
-              <Header as='h3' className='mt4 mr16' color='teal'>Enable Icons for Application</Header>
+              <Header as='h3' className='mr20 mb0' color='teal'>Enable Icons for Application</Header>
               {/* </Grid.Column> */}
               {/* <Grid.Column className='pl0' computer={1}> */}
-              <Form.Field>
-                <Switch
-                  checked={icon}
-                  className='react-switch'
-                  height={30}
-                  onChange={()=>setIcon(!icon)}
-                  onColor='#00aa9f'
-                  width={60}/>
-              </Form.Field>
+              <div  className='sytem-icon-toggle-div'>
+                <Field
+                  component={FormField}
+                  control={Checkbox}
+                  format={Boolean}
+                  name='system_icon'
+                  toggle
+                  type='checkbox'/>
+              </div>
 
             </div>
 
