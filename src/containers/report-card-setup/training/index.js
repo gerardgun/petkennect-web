@@ -63,7 +63,8 @@ const TrainingReportSetUp = (props)=>{
             <ReportMidSection
               duck={petImageDuck}
               duckDetail={petImageDetailDuck}
-              imagePath='/images/DogTraining_2.png'
+              imagePathOne='/images/DogTraining_2.png'
+              imagePathTwo='/images/dog-training_Silohutee.jpg'
               reportName='Day Training'/>
 
             <Divider className='mt32 mb28'/>
