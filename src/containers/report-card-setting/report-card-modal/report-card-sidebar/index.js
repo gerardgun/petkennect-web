@@ -27,9 +27,12 @@ const Sidebar = (props) => {
         style={{ backgroundColor: props.themeColor }}>
         <Grid>
           <Grid.Column width={16}>
-            <Image
-              circular className='mt20' height='175px'
-              src='/images/dogboarding.png'/>
+            <div className='div-image-report'>
+              <Image
+                circular className='mt20' height='175px'
+                src='/images/dogboarding.png'/>
+            </div>
+
           </Grid.Column>
         </Grid>
         <Grid className='sidebar-grid-display' style={{ marginTop: sidebarCategoryMargin }}>

@@ -136,3 +136,17 @@
 .text-align-justify {
   text-align: justify !important;
 }
+
+
+
+.div-image-report{ 
+  .ui.image {
+      width: 100%;
+      object-fit: cover;
+  }
+}
+
+.div-image-report-slide{
+   
+    object-fit: cover !important;   
+}
