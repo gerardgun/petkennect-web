@@ -7,7 +7,7 @@ import ImageEditor from '@components/Common/ImageEditor'
 import Layout from '@components/Common/Layout'
 import ReportSidebar from './report-sidebar'
 import ReportContent from './report-content'
-import ReportCardModal from './report-card-modal'
+import ReportCardModalPrint from './report-card-modal-print'
 
 import reportCardSettingDetailDuck from '@reducers/pet/report-card-setting/detail'
 import petDetailDuck from '@reducers/pet/detail'
@@ -66,7 +66,8 @@ const ReservationReportTemplate = (props) => {
                   </Grid.Column >
                   <Grid.Column width={12}>
                     <ReportContent
-                      imageSlider={props.imageSlider} textColor={props.textColor} themeColor={props.themeColor}/>
+                      imageSlider={props.imageSlider} reportName={props.reportName}
+                      textColor={props.textColor} themeColor={props.themeColor}/>
                   </Grid.Column >
                 </Grid>
               </Grid>
@@ -79,7 +80,9 @@ const ReservationReportTemplate = (props) => {
             </Grid.Column >
           </>
         </Grid>
-        <ReportCardModal imageSlider={props.imageSlider} textColor={props.textColor} themeColor={props.themeColor}/>
+        <ReportCardModalPrint
+          imageSlider={props.imageSlider} reportName={props.reportName} textColor={props.textColor}
+          themeColor={props.themeColor}/>
       </Layout>
     </div>
   )
