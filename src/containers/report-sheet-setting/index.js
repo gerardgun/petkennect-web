@@ -5,22 +5,24 @@ import ReportTemplate from '@containers/report-card-setting'
 
 const ReportSheetSetting = () => {
   const history = useHistory()
-  console.log(history)
+
   const [ themeColor, setThemeColor ] = useState('#00AA9F18')
   const [ textColor, setTextColor ] = useState('#00b5ad')
+  const [ reportName, setReportName ] = useState()
   useEffect(()=>{
     if(history.location.state) {
-      console.log('conditioned run')
       const data = history.location.state
       setThemeColor(data.themeColor)
       setTextColor(data.textColor)
+      setReportName(data.reportName)
     }
   },[ history.location ])
 
   return (
 
     <ReportTemplate
-      imageSlider={false} textColor={textColor} themeColor={themeColor}/>
+      imageSlider={false} reportName={reportName} textColor={textColor}
+      themeColor={themeColor}/>
 
   )
 }

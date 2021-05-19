@@ -11,6 +11,9 @@ import '../styles.scss'
 const ReportMidSection = (props)=>{
   const { duckDetail, duck, imagePathOne,imagePathTwo,reportName,themeColor, textColor } = props
 
+  console.log('reportName')
+  console.log(reportName)
+
   const [ selectedImage, setSelectedImage ] = useState('first')
   const dispatch = useDispatch()
   const inputFileRef = useRef()
@@ -41,7 +44,7 @@ const ReportMidSection = (props)=>{
           basic
           className='mr0' color='teal' content='Preview'
           style={{ width: '200px' }}
-          to={{ pathname: '/setup/report-sheet-setting', state: { themeColor: themeColor , textColor: textColor } }}/>
+          to={{ pathname: '/setup/report-sheet-setting', state: { themeColor: themeColor , textColor: textColor, reportName: reportName } }}/>
       </div>
 
       <Grid  className='pt32'style={{ paddingLeft: '1.3rem' }}>
