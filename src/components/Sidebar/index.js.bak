@@ -312,7 +312,6 @@ export default compose(
     },
     {
       signOut        : authDuck.creators.signOut,
-      rehydrateTenant: authDuck.creators.rehydrateTenant,
       set            : authDuck.creators.set
     }
   )

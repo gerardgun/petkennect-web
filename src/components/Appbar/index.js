@@ -92,7 +92,7 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
                     selection
                     value={searchConditionType}/>
                   <Search
-                    fluid='true' input={{ icon: 'search', iconPosition: 'left' }}
+                    input={{ icon: 'search', iconPosition: 'left' }}
                     onResultSelect={_handleResultSelect} onSearchChange={_handleSearchInputChange} results={searchResult}/>
                 </div>
               </>
