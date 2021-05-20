@@ -116,17 +116,17 @@ export default [
       },
       {
         name: 'Grooming',
-        to  : '/setup'
+        to  : '/setup/grooming/general/setting'
 
       },
       {
         name: 'Training',
-        to  : '/setup/training'
+        to  : '/setup/training/general/setting'
 
       },
       {
         name: 'Add-on Services',
-        to  : '/setup'
+        to  : '/setup/add-on/general/setting'
 
       },
       {

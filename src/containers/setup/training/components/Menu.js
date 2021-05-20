@@ -4,8 +4,8 @@ import { Button, Divider, Header } from 'semantic-ui-react'
 
 const items = [
   {
-    label: 'General',
-    to   : '/setup/training'
+    label: 'General Settings',
+    to   : '/setup/training/general/setting'
   },
   {
     label: 'Reasons',
@@ -34,14 +34,23 @@ const Menu = () => {
       <Divider/>
 
       {
-        items.map(({ label, to }, index) => (
-          <Button
-            as={Link}
-            color={location.pathname === to ? 'teal' : null}
-            content={label}
-            key={index}
-            to={to}/>
-        ))
+        items.map(({ label, to }, index) => {
+          let prefix = to
+
+          if(prefix === '/setup/training/general/setting')
+            prefix = '/setup/training/general'
+
+          const rgx = new RegExp(`^${prefix}.*`)
+
+          return (
+            <Button
+              as={Link}
+              color={rgx.test(location.pathname) ? 'teal' : null}
+              content={label}
+              key={index}
+              to={to}/>
+          )
+        })
       }
 
       <Divider/>

@@ -1,5 +1,7 @@
 import React from 'react'
-import { Checkbox } from 'semantic-ui-react'
+import { Checkbox, Select } from 'semantic-ui-react'
+
+import petKindDuck from '@reducers/pet/kind'
 
 export default {
   actions: [
@@ -14,12 +16,18 @@ export default {
     {
       display_name: 'Area Name',
       name        : 'name',
-      type        : 'string'
+      type        : 'string',
+      sort        : true
     },
     {
       display_name: 'Species',
-      name        : 'species_name',
-      type        : 'string'
+      name        : 'pet_class.name',
+      type        : 'string',
+      filter      : {
+        type   : 'dropdown',
+        name   : 'pet_class_id',
+        options: petKindDuck.store
+      }
     },
     {
       display_name: 'Applies to Service Groups',
@@ -30,13 +38,26 @@ export default {
       display_name: 'Surcharge',
       name        : 'surcharge',
       formatter   : cell => (
-        <Checkbox checked={cell} disabled/>
+        <Checkbox checked={cell} disabled toggle/>
       )
     },
     {
       display_name: 'Charge Type',
       name        : 'charge_type',
-      type        : 'string'
+      type        : 'string',
+      formatter   : cell => (
+        <Select
+          label='Location'
+          name='location'
+          options={[
+            { text: 'No Charge', value: 1 },
+            { text: 'Per Stay', value: 2 },
+            { text: 'Per Night', value: 3 }
+          ]}
+          placeholder='Select Location'
+          selectOnBlur={false}
+          value={cell}/>
+      )
     },
     {
       display_name: 'Price',
