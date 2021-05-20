@@ -1,6 +1,8 @@
 import React from 'react'
 import { Checkbox, Select } from 'semantic-ui-react'
 
+import { ChargeTypeOptions } from '@lib/constants/service'
+
 import petKindDuck from '@reducers/pet/kind'
 
 export default {
@@ -31,12 +33,21 @@ export default {
     },
     {
       display_name: 'Applies to Service Groups',
-      name        : 'applies',
-      type        : 'string'
+      name        : 'service_groups',
+      formatter   : cell => {
+        let names = <span className='text-gray'>No related Group Services</span>
+
+        if(cell.length > 0)
+          names = cell
+            .map(({ name }) => name)
+            .join(', ')
+
+        return names
+      }
     },
     {
       display_name: 'Surcharge',
-      name        : 'surcharge',
+      name        : 'is_surcharge',
       formatter   : cell => (
         <Checkbox checked={cell} disabled toggle/>
       )
@@ -47,15 +58,8 @@ export default {
       type        : 'string',
       formatter   : cell => (
         <Select
-          label='Location'
-          name='location'
-          options={[
-            { text: 'No Charge', value: 1 },
-            { text: 'Per Stay', value: 2 },
-            { text: 'Per Night', value: 3 }
-          ]}
-          placeholder='Select Location'
-          selectOnBlur={false}
+          disabled
+          options={ChargeTypeOptions}
           value={cell}/>
       )
     },
