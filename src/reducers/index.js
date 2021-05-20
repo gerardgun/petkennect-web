@@ -222,6 +222,7 @@ import serviceAttribute from '@reducers/service/service-attribute'
 import serviceAttributeDetail from '@reducers/service/service-attribute/detail'
 import serviceAttributeValue from '@reducers/service/service-attribute-value'
 import serviceAttributeValueDetail from '@reducers/service/service-attribute-value/detail'
+import serviceGroup from '@reducers/service/group'
 import serviceGroupPetKind from '@reducers/service/group/pet/kind'
 import servicePetKind from '@reducers/service/pet/kind'
 import setupCapacityServiceCustom from '@reducers/setup/capacity/service/custom'
@@ -484,6 +485,7 @@ const createRootReducer = history => combineReducers({
   [serviceAttributeDetail.store]                           : serviceAttributeDetail.reducer,
   [serviceAttributeValue.store]                            : serviceAttributeValue.reducer,
   [serviceAttributeValueDetail.store]                      : serviceAttributeValueDetail.reducer,
+  [serviceGroup.store]                                     : serviceGroup.reducer,
   [serviceGroupPetKind.store]                              : serviceGroupPetKind.reducer,
   [servicePetKind.store]                                   : servicePetKind.reducer,
   [setupCapacityServiceCustom.store]                       : setupCapacityServiceCustom.reducer,
