@@ -34,18 +34,8 @@ const SetupCapacityBoardingSettingIndex = props => {
   }
 
   useEffect(() => {
-    if(!detail.item.id)
-      dispatch(
-        tenantDetailDuck.creators.get()
-      )
-    else
-      initialize(detail.item.service_config.boarding)
-  }, [])
-
-  useEffect(() => {
-    if(detail.status === 'GOT')
-      initialize(detail.item.service_config.boarding)
-  }, [ detail.status ])
+    if(detail.item.id) initialize(detail.item.service_config.boarding)
+  }, [ detail.item.id ])
 
   const saving = [ 'POSTING', 'PUTTING' ].includes(detail.status)
 

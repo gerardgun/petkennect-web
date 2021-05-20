@@ -12,7 +12,8 @@ const parseTenant = tenant => {
   return {
     ...tenant,
     service_config: {
-      boarding: _merge({
+      kennel_areas: _get(tenant, 'service_config.kennel_areas', {}),
+      boarding    : _merge({
         show_kennel_as_occupied       : false,
         show_kennel_id                : false,
         enable_client_kennel_selection: false
@@ -21,7 +22,7 @@ const parseTenant = tenant => {
   }
 }
 
-function* get() {
+export function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
@@ -41,7 +42,7 @@ function* get() {
   }
 }
 
-function* _put({ payload }) {
+export function* _put({ payload }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
