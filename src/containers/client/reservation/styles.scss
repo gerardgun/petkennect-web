@@ -125,25 +125,41 @@
   .btn-service-type{
     display: flex;
     .button-service{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background-color: #E0E0E0;
+      color: #989898;
       border: 1px solid #E5EAEE;
+      padding: 2px;
       box-sizing: border-box;
       box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
       border-radius: 3px;
-      width: 187px;
-      padding: 1rem;
+      width: max-content;
       cursor: pointer;
       margin-right: 3rem;
       &.selected {
-        background: #005987;
+        background: #34b9b6;
         color: white;
       }
       span{
+        padding: 10px;
+        font-size: 14px;
+        font-weight: bold;
         letter-spacing: 0.04em;
         margin-left: 0.4em;
       }
+      .image_container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        width: 80px;
+        height: 70px;
+      }
       img{
-        width: 40px;
-        height: 40px;
+        width: 70px;
+        height: 60px;
       }
     }
   }
@@ -534,4 +550,124 @@
  background-color:rgb(200, 236, 236) !important;
  width: 178px !important;
 
+}
+
+.boarding-container{
+  display: flex;
+  flex-direction: column;
+  padding: 2% 5%;
+
+  .boarding-section{
+    padding-bottom: 60px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #E8E8E8;
+  }
+
+  h1{
+    color: #3d8ba0;
+  }
+
+  .required-indicator{
+    font-size: 16px;
+    font-style: oblique;
+    color: #fe5b62;
+  }
+
+  .section-body{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 40px;
+    gap: 15px;
+  }
+
+  .container-row{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    select{
+      width: min-content !important;
+    }
+    div{
+      display: flex;
+      align-items: center;
+
+      p{
+        margin: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #58779b ;
+      }
+    }
+  }
+
+  .info-pets{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .pet-cards{
+    flex-grow: 1;
+  }
+
+  .boarding-reservation{
+    display: flex;
+    width: 20%;
+    padding: 0px 20px;
+    flex-direction: column;
+    h3{
+      text-decoration: underline;
+      font-weight: bold;
+      color: #4f6a97;
+    }
+    p{
+      margin-left: 10px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+
+  .section-inputs{
+    display: flex;
+    flex-direction: row;
+    gap: 15px; 
+  }
+
+  .petcard-select{
+    display: flex;
+    flex-direction: row;
+    padding: 20px 0px;
+    border-bottom: 1px solid #E8E8E8;
+    gap: 20px;
+  }
+
+  .select-container1{
+    display:flex; 
+    flex-direction: column;
+    gap: 20px;
+    select{
+      width: min-content !important;
+    }
+  }
+
+  .select-container2{
+    display:flex; 
+    flex-direction: row;
+    gap: 20px;
+    select{
+      width: min-content !important;
+    }
+  }
+
+  .boarding-buttons-section{
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E8E8E8;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 25px;
+  }
 }
