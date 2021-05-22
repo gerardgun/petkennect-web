@@ -5,7 +5,7 @@ function InputLabel({ type, label, color }) {
   return (
     <label className={`label label-${color ? color : 'gray'}`}>
       {label}
-      <input className='label-input' type={type}/>
+      <input className='label-input' type={type} />  
     </label>
   )
 }

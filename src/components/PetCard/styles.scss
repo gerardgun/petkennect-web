@@ -39,6 +39,22 @@
             margin: 0;
         }
     }
+
+    .icons-container{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+
+        .pet-card-icon{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0px;
+            color: teal; 
+            font-size: 15px;
+        }
+    }
 }
 
 .pet-card-buttons{
@@ -63,6 +79,9 @@
         font-weight: bold;
         border: 1px solid #d35357;
         color: #d35357;
+    }
+    .select{
+        font-size: 16px !important;
     }
 }
 
@@ -98,5 +117,28 @@
             font-size: 16px;
             margin: 0;
         }
+        .icons-container{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
+
+            .pet-card-icon{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0px;
+                color: teal; 
+                font-size: 15px;
+            }
+        }
+
+        .service-tag{
+            font-size: 16px;
+            font-weight: bold;
+            font-style: oblique;
+            color: #C8C8C8;
+        }
+        
     }
 }

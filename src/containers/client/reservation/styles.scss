@@ -581,6 +581,27 @@
     gap: 15px;
   }
 
+  .container-row{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    select{
+      width: min-content !important;
+    }
+    div{
+      display: flex;
+      align-items: center;
+
+      p{
+        margin: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #58779b ;
+      }
+    }
+  }
+
   .info-pets{
     display: flex;
     flex-direction: row;
@@ -638,5 +659,15 @@
     select{
       width: min-content !important;
     }
+  }
+
+  .boarding-buttons-section{
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E8E8E8;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 25px;
   }
 }
