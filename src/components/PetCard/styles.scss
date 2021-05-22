@@ -1,4 +1,4 @@
-.pet-card{
+.pet-card-button{
     border: 1px solid #E8E8E8;
     display: flex;
     flex-direction: row;
@@ -14,6 +14,11 @@
     flex-direction: row;
     gap: 16px;
 
+    .image-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .pet-avatar{
         width: 80px;
         height: 80px;
@@ -58,5 +63,40 @@
         font-weight: bold;
         border: 1px solid #d35357;
         color: #d35357;
+    }
+}
+
+.pet-card{
+    /*border: 1px solid #E8E8E8;*/
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+
+    .image-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pet-avatar{
+        width: 80px;
+        height: 80px;
+    }
+    .pet-info-icons{
+        /*border: 1px solid #E8E8E8;*/
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .pet-name{
+            font-size: 18px;
+            font-weight: bolder;
+            margin: 0;
+        }
+        .pet-breed{
+            font-size: 16px;
+            margin: 0;
+        }
     }
 }

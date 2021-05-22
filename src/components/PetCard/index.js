@@ -2,11 +2,11 @@ import React from 'react'
 import { Image } from 'semantic-ui-react'
 import './styles.scss'
 
-function PetCard({ name, image_url }) {
+function PetCardButtons({ name, image_url }) {
   return (
-    <div className='pet-card'>
+    <div className='pet-card-button'>
       <div className='pet-info-container'>
-        <div>
+        <div className='image-container'>
           <Image
             centered circular className='pet-avatar'
             src={image_url}/>
@@ -30,4 +30,26 @@ function PetCard({ name, image_url }) {
   )
 }
 
-export default PetCard
+function PetCard({ name, image_url }) {
+  return (
+    <div className='pet-card'>
+      <div className='image-container'>
+        <Image
+          centered circular className='pet-avatar'
+          src={image_url}/>
+      </div>
+      <div className='pet-info-icons'>
+        <p className='pet-name'>{name}</p>
+        <p className='pet-breed'>Mixed Breed</p>
+        <div>
+          <img/>
+          <img/>
+          <img/>
+          <img/>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export { PetCardButtons, PetCard }

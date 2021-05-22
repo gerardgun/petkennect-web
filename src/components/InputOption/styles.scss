@@ -1,0 +1,32 @@
+.label{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    gap: 15px;
+}
+.check{
+    gap: 5px !important;
+}
+.label-input{
+    border-radius: 5px;
+    padding: 2px 5px;
+    border: 1px solid #97989d;
+    color: #97989d;
+    background-color: #ededed;
+}
+.checkDisplay{
+    display: flex !important;
+    border-radius: 2px;
+}
+
+.label-gray{
+    color: #9ba1aa ;
+}
+.label-blue{
+    color: #58779b ;
+}
+.label-red{
+    color: #d14b4d ;
+}

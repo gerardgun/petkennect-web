@@ -564,17 +564,20 @@
   }
 
   h1{
-    color: #69a6b4;
+    color: #3d8ba0;
+  }
+
+  .required-indicator{
+    font-size: 16px;
+    font-style: oblique;
+    color: #fe5b62;
   }
 
   .section-body{
-    padding-left: 40px;
-  }
-
-  .select-petcards{
     width: 100%;
     display: flex;
     flex-direction: column;
+    padding-left: 40px;
     gap: 15px;
   }
 
@@ -602,6 +605,38 @@
       margin-left: 10px;
       font-size: 16px;
       font-weight: bold;
+    }
+  }
+
+  .section-inputs{
+    display: flex;
+    flex-direction: row;
+    gap: 15px; 
+  }
+
+  .petcard-select{
+    display: flex;
+    flex-direction: row;
+    padding: 20px 0px;
+    border-bottom: 1px solid #E8E8E8;
+    gap: 20px;
+  }
+
+  .select-container1{
+    display:flex; 
+    flex-direction: column;
+    gap: 20px;
+    select{
+      width: min-content !important;
+    }
+  }
+
+  .select-container2{
+    display:flex; 
+    flex-direction: row;
+    gap: 20px;
+    select{
+      width: min-content !important;
     }
   }
 }
