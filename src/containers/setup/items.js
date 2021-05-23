@@ -250,7 +250,7 @@ export default [
       },
       {
         name: 'Invoice Settings',
-        to  : '/setup'
+        to  : '/setup/financial/invoice/services-activities'
       },
       {
         name: 'Merchant Account',

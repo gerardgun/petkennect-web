@@ -222,6 +222,8 @@ import serviceAttributeValue from '@reducers/service/service-attribute-value'
 import serviceAttributeValueDetail from '@reducers/service/service-attribute-value/detail'
 import serviceGroupPetKind from '@reducers/service/group/pet/kind'
 import servicePetKind from '@reducers/service/pet/kind'
+import servicePrice from '@reducers/service-price'
+import servicePriceDetail from '@reducers/service-price/detail'
 import tenantDetail from '@reducers/tenant/detail'
 import onlineRequestsClientSubmission from '@reducers/online-request/client-submission'
 import onlineRequestsClientSubmissionDetail from '@reducers/online-request/client-submission/detail'
@@ -476,6 +478,8 @@ const createRootReducer = history => combineReducers({
   [serviceAttributeValueDetail.store]                      : serviceAttributeValueDetail.reducer,
   [serviceGroupPetKind.store]                              : serviceGroupPetKind.reducer,
   [servicePetKind.store]                                   : servicePetKind.reducer,
+  [servicePrice.store]                                     : servicePrice.reducer,
+  [servicePriceDetail.store]                               : servicePriceDetail.reducer,
   [tenantDetail.store]                                     : tenantDetail.reducer,
   [onlineRequestsClientSubmission.store]                   : onlineRequestsClientSubmission.reducer,
   [onlineRequestsClientSubmissionDetail.store]             : onlineRequestsClientSubmissionDetail.reducer,
