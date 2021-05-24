@@ -23,7 +23,7 @@ function* get() {
         description: faker.lorem.sentence(6),
         size       : faker.random.arrayElement([ '2x2', '3x3', '4x4', '5x5', '8x4' ]),
         surcharge  : faker.random.boolean(),
-        charge_type: faker.random.arrayElement([ 'No Charge', 'Per Stay', 'Per Night' ]),
+        charge_type: faker.random.arrayElement([ 1, 2, 3 ]),
         price      : faker.random.number(30),
         image_url  : faker.image.animals(400, 400)
       }

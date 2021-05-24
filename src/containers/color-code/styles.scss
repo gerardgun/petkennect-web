@@ -10,6 +10,12 @@
   }
 }
 
+.sytem-icon-toggle-div{
+  .field > label {
+    display: none !important;
+  }
+}
+
 .description-width {
   .ui.input {
       width: 100% !important;
@@ -61,13 +67,15 @@
 }
 
 .margin-icon {
-  margin-left: 112px !important;
+  margin-right: 5px !important;
 }
 
 .box-style {
   border-radius: .28571429rem;
   padding: .3em 0em .3em 1em !important;
   border: 1px solid rgba(34, 36, 38, 0.15);
+  display: flex;
+  justify-content: space-between;
 }
 
 .green-color {
@@ -96,4 +104,5 @@
 .container-color{
   display: flex;
   padding-left: 0 !important;
+  align-items: center;
 }

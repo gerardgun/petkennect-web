@@ -7,7 +7,7 @@ import locationDuck from '@reducers/location'
 
 const { types } = locationDuck
 
-function* get(/* { payload } */) {
+export function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 

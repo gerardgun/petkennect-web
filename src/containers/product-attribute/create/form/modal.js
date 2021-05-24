@@ -47,7 +47,6 @@ const ProductAttributeCreateFormModal = () => {
               disabled={saving}
               form='product-attribute'
               loading={saving}
-              saving={saving}
               type='submit'/>
           </Form.Field>
         </Form.Group>

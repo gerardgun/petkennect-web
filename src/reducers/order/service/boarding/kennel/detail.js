@@ -6,3 +6,8 @@ export default base({
   store    : 'order/service/boarding/kennel/detail'
 })
   .extend(detail)
+  .extend({
+    consts: {
+      modes: [ 'CREATE_BULK' ]
+    }
+  })

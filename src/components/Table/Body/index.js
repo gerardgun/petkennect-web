@@ -27,10 +27,9 @@ const TableBody = ({ childProps, config, duck, ...props }) => {
             const hasChildItems = 'items' in parent && finalChildConfig
 
             return (
-              <>
+              <React.Fragment key={`row-${parentIndex}`}>
                 <TableRow
                   config={config} data={parent} duck={duck}
-                  key={`row-${parentIndex}`}
                   onButtonClick={props.onRowButtonClick}
                   onCellClick={props.onCellClick}
                   onCheckboxChange={props.onRowCheckboxChange}
@@ -50,7 +49,7 @@ const TableBody = ({ childProps, config, duck, ...props }) => {
                     )
                   })
                 }
-              </>
+              </React.Fragment>
             )
           })
         ) : (

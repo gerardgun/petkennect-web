@@ -6,7 +6,7 @@ import petKindDuck from '@reducers/pet/kind'
 
 const { selectors, types } = petKindDuck
 
-function* get(/* { payload } */) {
+export function* get(/* { payload } */) {
   try {
     yield put({ type: types.GET_PENDING })
 
