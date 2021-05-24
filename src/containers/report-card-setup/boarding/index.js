@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-handler-names */
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Header, Form, Divider, Segment } from 'semantic-ui-react'
@@ -24,14 +24,11 @@ const BoardingReportSetUp = (props)=>{
     // redux-form
   } = props
 
-  const [ activeReport, setActiveReport ] = useState()
   const _handleSubmit = values => {
     values = parseFormValues(values)
     console.log(values)
     console.log('submit runs')
   }
-
-  console.log(activeReport)
 
   return (
     <>
@@ -52,7 +49,6 @@ const BoardingReportSetUp = (props)=>{
                       content='Boarding'/>
                     <Button
                       basic color='teal' icon='edit outline'
-                      onClick={()=>{setActiveReport('Boarding')}}
                       type='button'/>
                   </div>
 
@@ -70,7 +66,8 @@ const BoardingReportSetUp = (props)=>{
             <ReportMidSection
               duck={petImageDuck}
               duckDetail={petImageDetailDuck}
-              imagePath='/images/dogboarding.png'
+              imagePathOne='/images/dogboarding.png'
+              imagePathTwo='/images/BoardingSilohoutee.png'
               reportName='Boarding'/>
 
             <Divider className='mt32 mb28'/>

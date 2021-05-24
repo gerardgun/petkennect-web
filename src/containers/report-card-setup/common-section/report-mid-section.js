@@ -1,14 +1,16 @@
-import React, { useRef } from 'react'
+import React, { useState,useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import {  Grid, Header,Icon, Image, Dropdown, Checkbox, Input } from 'semantic-ui-react'
+import {  Grid, Header, Image, Checkbox, Input, Button, Card } from 'semantic-ui-react'
 import { Field } from 'redux-form'
 import FormField from '@components/Common/FormField'
-import { defaultImageUrl } from '@lib/constants'
 import ImageEditor from '@components/Common/ImageEditor'
 
 import '../styles.scss'
 const ReportMidSection = (props)=>{
-  const { duckDetail, duck, imagePath,reportName } = props
+  const { duckDetail, duck, imagePathOne,imagePathTwo,reportName } = props
+
+  const [ selectedImage, setSelectedImage ] = useState('first')
   const dispatch = useDispatch()
   const inputFileRef = useRef()
   const _handleUploadImage = () => {
@@ -29,8 +31,18 @@ const ReportMidSection = (props)=>{
 
   return (
     <>
-      <Header
-        as='h3' color='blue' content={`Editing ${reportName} Report Card`}/>
+      <div className='flex align-center justify-between mt20'>
+        <Header
+          as='h3' className='mb0' color='blue'
+          content={`Editing ${reportName} Report Card`}/>
+        <Button
+          as={Link}
+          basic
+          className='mr0' color='teal' content='Preview'
+          style={{ width: '200px' }}
+          to='/setup/report-sheet-setting'/>
+      </div>
+
       <Grid  className='pt32'style={{ paddingLeft: '1.3rem' }}>
         <Grid.Row>
           <Grid.Column computer={8}>
@@ -85,7 +97,7 @@ const ReportMidSection = (props)=>{
       </Grid>
       <Grid style={{ paddingLeft: '1.3rem' }}>
         <Grid.Row>
-          <Grid.Column computer={8}>
+          <Grid.Column computer={6}>
             <Header as='h3' style={{ marginTop: '1.5rem' }} textAlign='justified'>
                 Pet Profile Photo
               <Header.Subheader  style={{ marginTop: '.5rem' }}>
@@ -95,44 +107,54 @@ const ReportMidSection = (props)=>{
               </Header.Subheader>
             </Header>
           </Grid.Column>
-
           <Grid.Column
-            computer={4}
+            computer={10}
+            mobile={16} tablet={16}>
+            <div className='flex align-center justify-end' style={{ marginTop: '1.5rem' }}>
 
-            floated='right' mobile={4} tablet={4}>
-
-            <div  className='div-img-text-hd div-dropdown-img-h'>
-              <Dropdown
-                direction='left'
-                icon={null}
-                onChange=''
-                selectOnBlur={false}
-                trigger={(
-                  <div className='c-image-profile'>
-                    <Image circular src={imagePath || defaultImageUrl}/>
-                    <div className='c-image-profile__overlay'>
-                      <Icon className='text-white mb8' name='camera' size='big'/>
-                      <span className='text-white text-center'>{ 'UPLOAD'} <br/>PHOTO</span>
+              <div className='card-img-mid'>
+                <div>
+                  <Card
+                    className={selectedImage == 'first' ? 'selected-pic box-shadow-pic' : 'box-shadow-pic'}
+                    onClick={()=>{setSelectedImage('first')}}
+                    style={{ height: '150px' }}>
+                    <div className={reportName === 'Day Training' ? 'mid-deafult-training' : 'mid-deafult-image-1'}>
+                      <Image src={imagePathOne}/>
                     </div>
+                  </Card>
+                  <Header
+                    as='h3'
+                    className={selectedImage == 'first' ? 'selected-h mt0' : 'unselected-h mt0'}
+                    content='SELECTED' textAlign='center'/>
+
+                </div>
+              </div>
+              <div className='card-img-mid'>
+                <Card
+                  className={selectedImage === 'second'
+                    ? 'flex justify-center selected-pic box-shadow-pic' : 'flex justify-center box-shadow-pic'}
+                  onClick={()=>{setSelectedImage('second')}}
+                  style={{ height: '150px' }}>
+                  <div className='mid-deafult-image-2'>
+                    <Image src={imagePathTwo}/>
                   </div>
-                )}
-                value={null}>
-                <Dropdown.Menu className='c-image-profile__menu'>
-                  {
-
-                    <Dropdown.Item  onClick={_handleUploadImage}value='upload'>Upload</Dropdown.Item>
-
-                  }
-                </Dropdown.Menu>
-              </Dropdown>
-              <div>
+                </Card>
                 <Header
                   as='h3'
-                  className='mt0'
-                  color='green' content='Selected' style={{ marginRight: '60px' }}
+                  className={selectedImage == 'second'
+                    ? 'selected-h mt0' : 'unselected-h mt0'}
+                  content='SELECTED'
                   textAlign='center'/>
               </div>
+              <Button
+                basic color='teal' content='Upload'
+                icon='add'
+                onClick={_handleUploadImage}
+                style={{ width: '200px', marginLeft: '8%', marginBottom: '6%' }}
+                type='button'/>
+
             </div>
+
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -140,10 +162,8 @@ const ReportMidSection = (props)=>{
         accept='image/*'
         hidden onChange={_handleFileChange} ref={inputFileRef}
         type='file'/>
-
       <div className='mh24 mv32'>
         <ImageEditor
-          circularCropper
           duck={duck}
           duckDetail={duckDetail}/>
       </div>

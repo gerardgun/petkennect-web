@@ -75,7 +75,8 @@ const DayServiceReportSetUp = (props)=>{
             <ReportMidSection
               duck={petImageDuck}
               duckDetail={petImageDetailDuck}
-              imagePath='/images/DogDaycare_Color.png'
+              imagePathOne='/images/DogDaycare_Color.png'
+              imagePathTwo='/images/DayService_Silohutee.jpg'
               reportName='Day Camp'/>
 
             <Divider className='mt32 mb28'/>

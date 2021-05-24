@@ -101,61 +101,32 @@ export default [
     ]
   },
   {
-    name : 'Boarding',
-    icon : 'paw',
-    items: [
-      {
-        name: 'Pricing Settings',
-        to  : '/setup/boarding/pricing'
-      }
-    ]
-  },
-  {
-    name : 'Day Services',
-    icon : 'paw',
-    items: [
-      {
-        name: 'General Settings',
-        to  : '/setup/day-service/general/setting'
-      },
-      {
-        name: 'Yard Types',
-        to  : '/setup/pet-yard-type'
-      },
-      {
-        name    : 'Temperament Test Form',
-        to      : '/setup',
-        disabled: true
-      }
-    ]
-  },
-  {
     name : 'Services & Reservations',
     image: '/images/admin-item/ColoredServices.png',
     items: [
       {
         name: 'Boarding',
-        to  : '/setup'
+        to  : '/setup/boarding/pricing'
 
       },
       {
         name: 'Day Services',
-        to  : '/setup'
+        to  : '/setup/day-service/general/setting'
 
       },
       {
         name: 'Grooming',
-        to  : '/setup'
+        to  : '/setup/grooming/general/setting'
 
       },
       {
         name: 'Training',
-        to  : '/setup/training'
+        to  : '/setup/training/general/setting'
 
       },
       {
         name: 'Add-on Services',
-        to  : '/setup'
+        to  : '/setup/add-on/general/setting'
 
       },
       {
@@ -250,7 +221,7 @@ export default [
       },
       {
         name: 'Invoice Settings',
-        to  : '/setup'
+        to  : '/setup/coupan-setup/invoice-setting'
       },
       {
         name: 'Merchant Account',
@@ -268,10 +239,6 @@ export default [
     items: [
       {
         name: 'Service Capacity',
-        to  : '/setup'
-      },
-      {
-        name: 'Appointment Capacity',
         to  : '/setup'
       },
       {

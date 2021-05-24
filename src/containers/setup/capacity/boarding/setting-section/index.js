@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Button, Checkbox, Divider, Form, Grid, Header, Input, Segment, TextArea } from 'semantic-ui-react'
-import * as Yup from 'yup'
+import { Field, reduxForm } from 'redux-form'
+import { Button, Checkbox, Divider, Form, Grid, Header, Segment } from 'semantic-ui-react'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/capacity/components/Menu'
 import Tab from '@containers/setup/capacity/boarding/components/Tab'
-import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import { parseResponseError } from '@lib/utils/functions'
 
 import tenantDetailDuck from '@reducers/tenant/detail'
 
@@ -22,8 +21,21 @@ const SetupCapacityBoardingSettingIndex = props => {
   const detail = useSelector(tenantDetailDuck.selectors.detail)
 
   const _handleSubmit = values => {
-    console.log(values)
+    return dispatch(tenantDetailDuck.creators.put({
+      service_config: {
+        ...detail.item.service_config,
+        boarding: {
+          ...detail.item.service_config.boarding,
+          ...values
+        }
+      }
+    }))
+      .catch(parseResponseError)
   }
+
+  useEffect(() => {
+    if(detail.item.id) initialize(detail.item.service_config.boarding)
+  }, [ detail.item.id ])
 
   const saving = [ 'POSTING', 'PUTTING' ].includes(detail.status)
 
@@ -50,7 +62,7 @@ const SetupCapacityBoardingSettingIndex = props => {
                     component={FormField}
                     control={Checkbox}
                     format={Boolean}
-                    name='enable_booking_override'
+                    name='show_kennel_as_occupied'
                     toggle
                     type='checkbox'/>
                 </Grid.Column>
@@ -74,7 +86,7 @@ const SetupCapacityBoardingSettingIndex = props => {
                     component={FormField}
                     control={Checkbox}
                     format={Boolean}
-                    name='enable_booking_override'
+                    name='show_kennel_id'
                     toggle
                     type='checkbox'/>
                 </Grid.Column>
@@ -98,7 +110,7 @@ const SetupCapacityBoardingSettingIndex = props => {
                     component={FormField}
                     control={Checkbox}
                     format={Boolean}
-                    name='enable_booking_override'
+                    name='enable_client_kennel_selection'
                     toggle
                     type='checkbox'/>
                 </Grid.Column>
@@ -123,7 +135,6 @@ const SetupCapacityBoardingSettingIndex = props => {
                   content='Save changes'
                   disabled={saving}
                   loading={saving}
-                  saving={saving}
                   type='submit'/>
               </Form.Field>
             </Form.Group>
@@ -136,5 +147,5 @@ const SetupCapacityBoardingSettingIndex = props => {
 }
 
 export default reduxForm({
-  form: 'setup-boarding-setting'
+  form: 'setup-capacity-boarding-setting'
 })(SetupCapacityBoardingSettingIndex)

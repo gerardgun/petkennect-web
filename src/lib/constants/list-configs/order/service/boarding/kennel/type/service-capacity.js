@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox } from 'semantic-ui-react'
+import { Checkbox, Select } from 'semantic-ui-react'
 
 export default {
   actions: [
@@ -35,13 +35,26 @@ export default {
       display_name: 'Surcharge',
       name        : 'surcharge',
       formatter   : cell => (
-        <Checkbox checked={cell} disabled/>
+        <Checkbox checked={cell} disabled toggle/>
       )
     },
     {
       display_name: 'Charge Type',
       name        : 'charge_type',
-      type        : 'string'
+      type        : 'string',
+      formatter   : cell => (
+        <Select
+          label='Location'
+          name='location'
+          options={[
+            { text: 'No Charge', value: 1 },
+            { text: 'Per Stay', value: 2 },
+            { text: 'Per Night', value: 3 }
+          ]}
+          placeholder='Select Location'
+          selectOnBlur={false}
+          value={cell}/>
+      )
     },
     {
       display_name: 'Price',

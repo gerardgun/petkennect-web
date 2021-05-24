@@ -10,7 +10,7 @@ function* deleteItem({ ids: [ id ] }) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
-    yield call(Delete, `pet-kind/sizes/${id}/`)
+    yield call(Delete, `pet-classes/${id}/`)
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -25,7 +25,7 @@ function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const petKind = yield call(Get, `pet-kind/sizes/${id}`)
+    const petKind = yield call(Get, `pet-classes/${id}`)
 
     yield put({
       type   : types.GET_FULFILLED,
@@ -45,7 +45,7 @@ function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const result = yield call(Post, 'pet-kind/sizes/', payload)
+    const result = yield call(Post, 'pet-classes/', payload)
 
     yield put({
       type   : types.POST_FULFILLED,
@@ -63,7 +63,7 @@ function* _put({ payload }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `pet-kind/sizes/${payload.id}/`, payload)
+    yield call(Patch, `pet-classes/${payload.id}/`, payload)
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {

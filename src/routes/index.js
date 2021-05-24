@@ -82,9 +82,16 @@ import CompanyShow from '@containers/company/show'
 import Organization from '@containers/organization'
 import OrganizationEdit from '@containers/organization/edit'
 import OrganizationShow from '@containers/organization/show'
+import ReportSheetSetting from '@containers/report-sheet-setting'
 import SetupIndex from '@containers/setup'
 import SetupPetBreedIndex from '@containers/setup/pet/breed'
 import SetupPetBehaviorTagsIndex from '@containers/setup/pet/behavior-tag'
+
+// Settings / Add-on / General Settings
+import SetupAddOnGeneralAddOnIndex from '@containers/setup/add-on/general/add-on-section'
+import SetupAddOnGeneralOpenLineIndex from '@containers/setup/add-on/general/open-line-section'
+import SetupAddOnGeneralSettingIndex from '@containers/setup/add-on/general/setting-section'
+import SetupAddOnGeneralTransportIndex from '@containers/setup/add-on/general/transport-section'
 
 // Settings / Animal / Feeding
 import SetupPetFeedingMealStatusIndex from '@containers/setup/pet/feeding/meal-status-section'
@@ -122,6 +129,13 @@ import SetupPetVaccinationTypeIndex from '@containers/setup/pet/vaccination/type
 // Settings / Boarding
 import SetupBoardingPricingIndex from '@containers/setup/boarding/pricing'
 
+// Settings / Boarding / General Settings
+import SetupBoardingGeneralActivityIndex from '@containers/setup/boarding/general/activity-section'
+import SetupBoardingGeneralBelongingIndex from '@containers/setup/boarding/general/belonging-section'
+import SetupBoardingGeneralReservationIndex from '@containers/setup/boarding/general/reservation-section'
+import SetupBoardingGeneralServiceTypeIndex from '@containers/setup/boarding/general/service-type-section'
+import SetupBoardingGeneralSettingIndex from '@containers/setup/boarding/general/setting-section'
+
 // Settings / Capacity / Lodging Area Managment
 import SetupCapacityBoardingAreaIndex from '@containers/setup/capacity/boarding/area-section'
 import SetupCapacityBoardingKennelIndex from '@containers/setup/capacity/boarding/kennel-section'
@@ -134,6 +148,7 @@ import SetupCapacityAppointmentSettingIndex from '@containers/setup/capacity/app
 import SetupCapacityAppointmentSpecialistIndex from '@containers/setup/capacity/appointment/specialist-section'
 
 // Settings / Services Capacity
+import SetupCapacityCustomCapacityIndex from '@containers/setup/capacity/service/custom-capacity-section'
 import SetupCapacityServiceReservationIndex from '@containers/setup/capacity/service/reservation-section'
 import SetupCapacityServiceServiceGroupIndex from '@containers/setup/capacity/service/service-group-section'
 import SetupCapacityServiceSettingIndex from '@containers/setup/capacity/service/setting-section'
@@ -146,8 +161,13 @@ import SetupDayServiceGeneralReservationIndex from '@containers/setup/day-servic
 import SetupDayServiceGeneralServiceTypeIndex from '@containers/setup/day-service/general/service-type-section'
 import SetupDayServiceGeneralSettingIndex from '@containers/setup/day-service/general/setting-section'
 
+// Settings / Grooming / General Settings
+import SetupGroomingGeneralReservationIndex from '@containers/setup/grooming/general/reservation-section'
+import SetupGroomingGeneralServiceOptionIndex from '@containers/setup/grooming/general/service-option-section'
+import SetupGroomingGeneralServiceTypeIndex from '@containers/setup/grooming/general/service-type-section'
+import SetupGroomingGeneralSettingIndex from '@containers/setup/grooming/general/setting-section'
+
 // Settings / Training
-import SetupTrainingIndex from '@containers/setup/training'
 import SetupTrainingCommandIndex from '@containers/setup/training/command'
 import SetupTrainingMethodIndex from '@containers/setup/training/method'
 import SetupTrainingRatingKeyIndex from '@containers/setup/training/rating-key'
@@ -156,6 +176,14 @@ import TrainingCommand from '@containers/training-command'
 import TrainingMethod from '@containers/training-method'
 import TrainingReason from '@containers/training-reason'
 // import TrainingQuestionnaire from '@containers/training-questionnaire'
+
+// Settings / Training / General Settings
+import SetupTrainingGeneralGroupClassIndex from '@containers/setup/training/general/group-class-section'
+import SetupTrainingGeneralGroupClassSessionIndex from '@containers/setup/training/general/group-class-session-section'
+import SetupTrainingGeneralReservationIndex from '@containers/setup/training/general/reservation-section'
+import SetupTrainingGeneralServiceTypeIndex from '@containers/setup/training/general/service-type-section'
+import SetupTrainingGeneralSettingIndex from '@containers/setup/training/general/setting-section'
+
 import Transaction from '@containers/transaction'
 import User from '@containers/user'
 
@@ -406,6 +434,22 @@ const privateRoutes = [
     component: SetupPetBehaviorTagsIndex
   },
   {
+    path     : '/setup/add-on/general/add-on',
+    component: SetupAddOnGeneralAddOnIndex
+  },
+  {
+    path     : '/setup/add-on/general/open-line',
+    component: SetupAddOnGeneralOpenLineIndex
+  },
+  {
+    path     : '/setup/add-on/general/setting',
+    component: SetupAddOnGeneralSettingIndex
+  },
+  {
+    path     : '/setup/add-on/general/transport',
+    component: SetupAddOnGeneralTransportIndex
+  },
+  {
     path     : '/setup/pet/feeding/meal-status',
     component: SetupPetFeedingMealStatusIndex
   },
@@ -519,6 +563,26 @@ const privateRoutes = [
     component: SetupBoardingPricingIndex
   },
   {
+    path     : '/setup/boarding/general/activity',
+    component: SetupBoardingGeneralActivityIndex
+  },
+  {
+    path     : '/setup/boarding/general/belonging',
+    component: SetupBoardingGeneralBelongingIndex
+  },
+  {
+    path     : '/setup/boarding/general/reservation',
+    component: SetupBoardingGeneralReservationIndex
+  },
+  {
+    path     : '/setup/boarding/general/service-type',
+    component: SetupBoardingGeneralServiceTypeIndex
+  },
+  {
+    path     : '/setup/boarding/general/setting',
+    component: SetupBoardingGeneralSettingIndex
+  },
+  {
     path     : '/setup/capacity/boarding/area',
     component: SetupCapacityBoardingAreaIndex
   },
@@ -545,6 +609,10 @@ const privateRoutes = [
   {
     path     : '/setup/capacity/appointment/specialist',
     component: SetupCapacityAppointmentSpecialistIndex
+  },
+  {
+    path     : '/setup/capacity/service/custom',
+    component: SetupCapacityCustomCapacityIndex
   },
   {
     path     : '/setup/capacity/service/reservation',
@@ -583,12 +651,44 @@ const privateRoutes = [
     component: SetupDayServiceGeneralSettingIndex
   },
   {
-    path     : '/setup/training',
-    component: SetupTrainingIndex
+    path     : '/setup/grooming/general/reservation',
+    component: SetupGroomingGeneralReservationIndex
+  },
+  {
+    path     : '/setup/grooming/general/service-option',
+    component: SetupGroomingGeneralServiceOptionIndex
+  },
+  {
+    path     : '/setup/grooming/general/service-type',
+    component: SetupGroomingGeneralServiceTypeIndex
+  },
+  {
+    path     : '/setup/grooming/general/setting',
+    component: SetupGroomingGeneralSettingIndex
   },
   {
     path     : '/setup/training/command',
     component: SetupTrainingCommandIndex
+  },
+  {
+    path     : '/setup/training/general/group-class',
+    component: SetupTrainingGeneralGroupClassIndex
+  },
+  {
+    path     : '/setup/training/general/group-class/session',
+    component: SetupTrainingGeneralGroupClassSessionIndex
+  },
+  {
+    path     : '/setup/training/general/reservation',
+    component: SetupTrainingGeneralReservationIndex
+  },
+  {
+    path     : '/setup/training/general/service-type',
+    component: SetupTrainingGeneralServiceTypeIndex
+  },
+  {
+    path     : '/setup/training/general/setting',
+    component: SetupTrainingGeneralSettingIndex
   },
   {
     path     : '/setup/training/method',
@@ -601,6 +701,10 @@ const privateRoutes = [
   {
     path     : '/setup/training/reason',
     component: SetupTrainingReasonIndex
+  },
+  {
+    path     : '/setup/report-sheet-setting',
+    component: ReportSheetSetting
   },
   {
     path     : '/setup/service-setting',

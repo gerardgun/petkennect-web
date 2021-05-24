@@ -172,8 +172,11 @@ import serviceAttribute from './service/service-attribute'
 import serviceAttributeDetail from './service/service-attribute/detail'
 import serviceAttributeValue from './service/service-attribute-value'
 import serviceAttributeValueDetail from './service/service-attribute-value/detail'
+import serviceGroup from './service/group'
 import serviceGroupPetKind from './service/group/pet/kind'
 import servicePetKind from './service/pet/kind'
+import setupCapacityServiceCustom from './setup/capacity/service/custom'
+import setupCapacityServiceCustomDetail from './setup/capacity/service/custom/detail'
 import tenantDetail from './tenant/detail'
 import onlineRequestClientSubmission from './online-request/client-submission'
 import onlineRequestClientSubmissionDetail from './online-request/client-submission/detail'
@@ -370,8 +373,11 @@ export default function* rootSaga() {
     ...serviceAttributeDetail,
     ...serviceAttributeValue,
     ...serviceAttributeValueDetail,
+    ...serviceGroup,
     ...serviceGroupPetKind,
     ...servicePetKind,
+    ...setupCapacityServiceCustom,
+    ...setupCapacityServiceCustomDetail,
     ...tenantDetail,
     ...onlineRequestClientSubmission,
     ...onlineRequestClientSubmissionDetail,

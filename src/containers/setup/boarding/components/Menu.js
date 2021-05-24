@@ -6,6 +6,10 @@ const items = [
   {
     label: 'Pricing Settings',
     to   : '/setup/boarding/pricing'
+  },
+  {
+    label: 'General Settings',
+    to   : '/setup/boarding/general/setting'
   }
 ]
 
@@ -18,14 +22,23 @@ const Menu = () => {
       <Divider/>
 
       {
-        items.map(({ label, to }, index) => (
-          <Button
-            as={Link}
-            color={location.pathname === to ? 'teal' : null}
-            content={label}
-            key={index}
-            to={to}/>
-        ))
+        items.map(({ label, to }, index) => {
+          let prefix = to
+
+          if(prefix === '/setup/boarding/general/setting')
+            prefix = '/setup/boarding/general'
+
+          const rgx = new RegExp(`^${prefix}.*`)
+
+          return (
+            <Button
+              as={Link}
+              color={rgx.test(location.pathname) ? 'teal' : null}
+              content={label}
+              key={index}
+              to={to}/>
+          )
+        })
       }
 
       <Divider/>

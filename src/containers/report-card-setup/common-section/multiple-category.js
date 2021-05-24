@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { Field, FieldArray } from 'redux-form'
 import { Grid, Header, Form,Checkbox,  Input, Select, TextArea, Button } from 'semantic-ui-react'
 import loadable from '@loadable/component'
@@ -18,13 +18,20 @@ const MultipleCategory = ({ fields, meta: { error, submitFailed }, categoryData,
     optionList        : []
   }
 
+  const [ headerCount, setHeaderCount ] = useState(1)
+
   const  _handleAddBtnClick = () =>{
     fields.push({ ...optionInitialState })
+    if(max_char)
+      setHeaderCount((preValue)=>preValue + 1)
   }
 
   const _handleDeleteBtnClick = (e, { index }) =>{
     fields.remove(index)
+    if(max_char)
+      setHeaderCount((preValue)=>preValue - 1)
   }
+  console.log(headerCount)
 
   return (
     <>
@@ -53,6 +60,7 @@ const MultipleCategory = ({ fields, meta: { error, submitFailed }, categoryData,
                       className='mt6rm w180'
                       color='teal'
                       content='Add Category'
+                      disabled={max_char && (headerCount == 4)}
                       icon='add'
                       onClick={_handleAddBtnClick}/>
 
@@ -77,7 +85,7 @@ const MultipleCategory = ({ fields, meta: { error, submitFailed }, categoryData,
                         component={FormField}
                         control={Checkbox}
                         format={Boolean}
-                        name='category_hide'
+                        name={`${item}.category_hide`}
                         toggle
                         type='checkbox'/>
                     </div>

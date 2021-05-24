@@ -206,6 +206,8 @@ import productPackageDetail from '@reducers/product/package/detail'
 import ratingKey from '@reducers/rating-key'
 import ratingKeyDetail from '@reducers/rating-key/detail'
 import reservation from '@reducers/reservation'
+import reportCardSetting from '@reducers/pet/report-card-setting'
+import reportCardSettingDetail from '@reducers/pet/report-card-setting/detail'
 import reservationDetail from '@reducers/reservation/detail'
 import rol from '@reducers/rol'
 import rolDetail from '@reducers/rol/detail'
@@ -220,8 +222,11 @@ import serviceAttribute from '@reducers/service/service-attribute'
 import serviceAttributeDetail from '@reducers/service/service-attribute/detail'
 import serviceAttributeValue from '@reducers/service/service-attribute-value'
 import serviceAttributeValueDetail from '@reducers/service/service-attribute-value/detail'
+import serviceGroup from '@reducers/service/group'
 import serviceGroupPetKind from '@reducers/service/group/pet/kind'
 import servicePetKind from '@reducers/service/pet/kind'
+import setupCapacityServiceCustom from '@reducers/setup/capacity/service/custom'
+import setupCapacityServiceCustomDetail from '@reducers/setup/capacity/service/custom/detail'
 import tenantDetail from '@reducers/tenant/detail'
 import onlineRequestsClientSubmission from '@reducers/online-request/client-submission'
 import onlineRequestsClientSubmissionDetail from '@reducers/online-request/client-submission/detail'
@@ -305,6 +310,10 @@ const createRootReducer = history => combineReducers({
   [customizedFieldDetail.store]                            : customizedFieldDetail.reducer,
   [customizedFieldGroup.store]                             : customizedFieldGroup.reducer,
   [customizedFieldGroupDetail.store]                       : customizedFieldGroupDetail.reducer,
+  [coupanInvoice.store]                                    : coupanInvoice.reducer,
+  [coupanInvoiceDetail.store]                              : coupanInvoiceDetail.reducer,
+  [couponUsage.store]                                      : couponUsage.reducer,
+  [couponUsageDetail.store]                                : couponUsageDetail.reducer,
   [daycampCard.store]                                      : daycampCard.reducer,
   [daycampCardDetail.store]                                : daycampCardDetail.reducer,
   [daycampPrepaidUsage.store]                              : daycampPrepaidUsage.reducer,
@@ -458,6 +467,8 @@ const createRootReducer = history => combineReducers({
   [productVariationsImageDetail.store]                     : productVariationsImageDetail.reducer,
   [ratingKey.store]                                        : ratingKey.reducer,
   [ratingKeyDetail.store]                                  : ratingKeyDetail.reducer,
+  [reportCardSetting.store]                                : reportCardSetting.reducer,
+  [reportCardSettingDetail.store]                          : reportCardSettingDetail.reducer,
   [reservation.store]                                      : reservation.reducer,
   [reservationDetail.store]                                : reservationDetail.reducer,
   [rol.store]                                              : rol.reducer,
@@ -474,8 +485,11 @@ const createRootReducer = history => combineReducers({
   [serviceAttributeDetail.store]                           : serviceAttributeDetail.reducer,
   [serviceAttributeValue.store]                            : serviceAttributeValue.reducer,
   [serviceAttributeValueDetail.store]                      : serviceAttributeValueDetail.reducer,
+  [serviceGroup.store]                                     : serviceGroup.reducer,
   [serviceGroupPetKind.store]                              : serviceGroupPetKind.reducer,
   [servicePetKind.store]                                   : servicePetKind.reducer,
+  [setupCapacityServiceCustom.store]                       : setupCapacityServiceCustom.reducer,
+  [setupCapacityServiceCustomDetail.store]                 : setupCapacityServiceCustomDetail.reducer,
   [tenantDetail.store]                                     : tenantDetail.reducer,
   [onlineRequestsClientSubmission.store]                   : onlineRequestsClientSubmission.reducer,
   [onlineRequestsClientSubmissionDetail.store]             : onlineRequestsClientSubmissionDetail.reducer,

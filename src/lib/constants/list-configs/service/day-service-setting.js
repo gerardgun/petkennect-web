@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox } from 'semantic-ui-react'
+import { Checkbox, Select } from 'semantic-ui-react'
 
 export default {
   actions: [
@@ -22,34 +22,45 @@ export default {
       type        : 'string'
     },
     {
-      display_name: 'Applies to Locations',
+      display_name: 'Applies to\nLocations',
       name        : 'applies_locations',
       type        : 'string'
     },
     {
-      display_name: 'Applies to Species',
+      display_name: 'Applies to\nSpecies',
       name        : 'applies_species',
       type        : 'string'
     },
     {
-      display_name: 'Group Play Service',
+      display_name: 'Group Play\nService',
       name        : 'group_play_service_enabled',
       align       : 'center',
       formatter   : cell => (
-        <Checkbox checked={cell} disabled/>
+        <Checkbox checked={cell} disabled toggle/>
       )
     },
     {
       display_name: 'Type',
-      name        : 'type_name',
-      type        : 'string'
+      name        : 'type_id',
+      align       : 'center',
+      formatter   : cell => (
+        <Select
+          name='type'
+          options={[
+            { text: 'Reservation', value: 1 },
+            { text: 'Appointment', value: 2 }
+          ]}
+          placeholder='Select Type'
+          selectOnBlur={false}
+          value={cell}/>
+      )
     },
     {
-      display_name: 'Is scheduled',
+      display_name: 'Is\nscheduled',
       name        : 'is_scheduled',
       align       : 'center',
       formatter   : cell => (
-        <Checkbox checked={cell} disabled/>
+        <Checkbox checked={cell} disabled toggle/>
       )
     },
     {
