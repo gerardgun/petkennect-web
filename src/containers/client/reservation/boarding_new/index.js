@@ -22,8 +22,9 @@ function NewBoarding() {
       <div className='boarding-section'>
         <h1 className='title_test'>Select Location, Service Type, and Pets</h1>
         <div className='section-body'>
-          <SelectOption defaul_option='Select Location'/>
-          <SelectOption defaul_option='Select Service Type'/>
+          <p className='label-test'><span className='label-board'>Owner:</span><span className='label-name'>Devika Christie</span> | 314-7572054</p>
+          <SelectOption label='Location:' defaul_option='Select Location'/>
+          <SelectOption label='Service Type:' defaul_option='Select Service Type'/>
           <div className='info-pets'>
             <div className='pet-cards'>
               <PetCardButtons image_url='/images/pets_img/dog_1.jpg' name='Boots, 45lbs' state={petReservation} setState={setPetReservation}/>
@@ -97,7 +98,7 @@ function NewBoarding() {
           </div>
           <div className='container-row'>
             <InputFront color='blue' label='Assign First Available Of Kennel Type' type='checkbox'/>
-            <SelectOption defaul_option='Select Kennel Type'/>
+            <SelectOption className='select-kernel' defaul_option='Select Kennel Type'/>
           </div>
           <div className='container-row'>
             <button class="ui violet button">Use Kennel Picker</button>
