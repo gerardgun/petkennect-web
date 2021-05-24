@@ -175,6 +175,14 @@ import SetupTrainingReasonIndex from '@containers/setup/training/reason'
 import TrainingCommand from '@containers/training-command'
 import TrainingMethod from '@containers/training-method'
 import TrainingReason from '@containers/training-reason'
+
+// Settings / Financial / Invoice
+import SetupFinancialInvoiceServicesIndex from '@containers/setup/financial-setting/invoice/services-activities'
+import SetupFinancialInvoiceAddOnsIndex from '@containers/setup/financial-setting/invoice/add-ons'
+import SetupFinancialInvoicePackagesIndex from '@containers/setup/financial-setting/invoice/packages'
+import SetupFinancialInvoiceFeedingIndex from '@containers/setup/financial-setting/invoice/feeding-meds'
+import SetupFinancialInvoiceSurchargesIndex from '@containers/setup/financial-setting/invoice/surcharges'
+
 // import TrainingQuestionnaire from '@containers/training-questionnaire'
 
 // Settings / Training / General Settings
@@ -709,6 +717,26 @@ const privateRoutes = [
   {
     path     : '/setup/service-setting',
     component: ServiceSetting
+  },
+  {
+    path     : '/setup/financial/invoice/services-activities',
+    component: SetupFinancialInvoiceServicesIndex
+  },
+  {
+    path     : '/setup/financial/invoice/add-ons',
+    component: SetupFinancialInvoiceAddOnsIndex
+  },
+  {
+    path     : '/setup/financial/invoice/packages',
+    component: SetupFinancialInvoicePackagesIndex
+  },
+  {
+    path     : '/setup/financial/invoice/feeding-meds',
+    component: SetupFinancialInvoiceFeedingIndex
+  },
+  {
+    path     : '/setup/financial/invoice/surcharges',
+    component: SetupFinancialInvoiceSurchargesIndex
   },
   {
     path     : '/online-request',

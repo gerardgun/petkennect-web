@@ -220,7 +220,11 @@ export default [
         to  : '/setup'
       },
       {
-        name: 'Invoice Settings',
+        name: 'Invoice Settings (from Christian)',
+        to  : '/setup/financial/invoice/services-activities'
+      },
+      {
+        name: 'Invoice Settings (from Baans)',
         to  : '/setup/coupan-setup/invoice-setting'
       },
       {
