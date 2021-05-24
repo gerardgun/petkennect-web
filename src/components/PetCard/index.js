@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useState }from 'react'
 import { Image, Icon} from 'semantic-ui-react'
 import './styles.scss'
 
-function PetCardButtons({ name, image_url, status }) {
+function PetCardButtons({ name, image_url, state, setState}) {
+
+  const [statusButton, setStatusButton] = useState(false)
+  function Filtername(name_f, state_f){
+    const filter = state_f.filter(item => item !== name_f )
+    return filter;
+  }
+
   return (
-    <div className='pet-card-button'>
+    <div className='pet-card-button' key={name}>
       <div className='pet-info-container'>
         <div className='image-container'>
           <Image
@@ -23,13 +30,15 @@ function PetCardButtons({ name, image_url, status }) {
         </div>
       </div>
       <div className='pet-card-buttons'>
-        {status ? 
+      {console.log(state)}
+        {statusButton ? 
           <>
             <button className='button add'>ADDED</button>
-            <button className='button remove'>Remove</button>
+            <button className='button remove' onClick={() => {setStatusButton(false); setState(Filtername(name,state))}}>Remove</button>
           </>:
-            <button className='select' class="ui green button">SELECT</button>
+            <button className='select' class="ui green button" onClick={() => {setStatusButton(true); setState([...state, name])}}>SELECT</button>
           }
+        {console.log(state)}
       </div>
     </div>
   )

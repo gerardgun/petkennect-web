@@ -124,6 +124,7 @@
 
   .btn-service-type{
     display: flex;
+    justify-content: space-around ;
     .button-service{
       display: flex;
       flex-direction: row;
@@ -135,7 +136,7 @@
       box-sizing: border-box;
       box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
       border-radius: 3px;
-      width: max-content;
+      width: 500px;
       cursor: pointer;
       margin-right: 3rem;
       &.selected {
@@ -669,5 +670,19 @@
     align-items: center;
     justify-content: flex-end;
     gap: 25px;
+  }
+}
+.status-bar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  .status{
+    color: #97c267 !important;
+  }
+  .form-status{
+    margin: 0px;
+    color: #C8C8C8;
+    font-size: 18px;
   }
 }
