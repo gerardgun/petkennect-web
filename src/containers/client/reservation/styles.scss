@@ -124,6 +124,7 @@
 
   .btn-service-type{
     display: flex;
+    justify-content: space-around ;
     .button-service{
       display: flex;
       flex-direction: row;
@@ -135,7 +136,7 @@
       box-sizing: border-box;
       box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
       border-radius: 3px;
-      width: max-content;
+      width: 500px;
       cursor: pointer;
       margin-right: 3rem;
       &.selected {
@@ -558,6 +559,7 @@
   padding: 2% 5%;
 
   .boarding-section{
+    padding-top: 30px;
     padding-bottom: 60px;
     margin-bottom: 20px;
     border-bottom: 1px solid #E8E8E8;
@@ -615,7 +617,7 @@
   .boarding-reservation{
     display: flex;
     width: 20%;
-    padding: 0px 20px;
+    padding: 20px 20px;
     flex-direction: column;
     h3{
       text-decoration: underline;
@@ -670,4 +672,28 @@
     justify-content: flex-end;
     gap: 25px;
   }
+}
+.status-bar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  .status{
+    color: #97c267 !important;
+  }
+  .form-status{
+    margin: 0px;
+    color: #C8C8C8;
+    font-size: 18px;
+  }
+}
+.label-test{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #4f6a97;
+    font-size: 16px;
+    font-weight: bold;
+    gap: 15px;
+    margin: 0px;
 }

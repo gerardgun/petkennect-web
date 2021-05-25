@@ -1,29 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { InputLabel, InputFront } from '@components/InputOption'
+import { Icon } from 'semantic-ui-react'
+import { InputLabel, InputFront, } from '@components/InputOption'
 import { PetCardButtons, PetCard } from '@components/PetCard'
 import SelectOption from '@components/SelectOption'
+import { IconBase } from 'react-icons/lib'
 
 function NewBoarding() {
+  const [petReservation, setPetReservation] = useState([])
+
   return (
     <div className='boarding-container'>
+      <div className='status-bar'>
+        <p className='status form-status'><Icon name='check circle'/>Service Information</p>
+        <p className='form-status'>-----------------</p>
+        <p className='form-status'><Icon name='check circle'/>Additional Services</p>
+        <p className='form-status'>-----------------</p>
+        <p className='form-status'><Icon name='check circle'/>Summary</p>
+      </div>
       {/* First Section Location */}
       <div className='boarding-section'>
         <h1 className='title_test'>Select Location, Service Type, and Pets</h1>
         <div className='section-body'>
-          <SelectOption defaul_option='Select Location'/>
-          <SelectOption defaul_option='Select Service Type'/>
+          <p className='label-test'><span className='label-board'>Owner:</span><span className='label-name'>Devika Christie</span> | 314-7572054</p>
+          <SelectOption label='Location:' defaul_option='Select Location'/>
+          <SelectOption label='Service Type:' defaul_option='Select Service Type'/>
           <div className='info-pets'>
             <div className='pet-cards'>
-              <PetCardButtons image_url='/images/pets_img/dog_1.jpg' name='Boots, 45lbs' status={true}/>
-              <PetCardButtons image_url='/images/pets_img/dog_2.jpg' name='Fizz, 17lbs'/>
-              <PetCardButtons image_url='/images/pets_img/dog_3.jpg' name='Sylas, 60lbs' status={true}/>
-              <PetCardButtons image_url='/images/pets_img/dog_4.jpg' name='Jinx, 34lbs'/>
+              <PetCardButtons image_url='/images/pets_img/dog_1.jpg' name='Boots, 45lbs' state={petReservation} setState={setPetReservation}/>
+              <PetCardButtons image_url='/images/pets_img/dog_2.jpg' name='Fizz, 17lbs' state={petReservation} setState={setPetReservation}/>
+              <PetCardButtons image_url='/images/pets_img/dog_3.jpg' name='Sylas, 60lbs' state={petReservation} setState={setPetReservation}/>
+              <PetCardButtons image_url='/images/pets_img/dog_4.jpg' name='Jinx, 34lbs' state={petReservation} setState={setPetReservation}/>
             </div>
             <div className='boarding-reservation'>
               <h3>On Reservation</h3>
-              <p>Boots</p>
-              <p>Sylas</p>
+              {console.log(petReservation)}
+              {petReservation.length!==0 &&petReservation.map(pet =>{
+                return(
+                  <p>{pet}</p>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -82,7 +98,7 @@ function NewBoarding() {
           </div>
           <div className='container-row'>
             <InputFront color='blue' label='Assign First Available Of Kennel Type' type='checkbox'/>
-            <SelectOption defaul_option='Select Kennel Type'/>
+            <SelectOption className='select-kernel' defaul_option='Select Kennel Type'/>
           </div>
           <div className='container-row'>
             <button class="ui violet button">Use Kennel Picker</button>
