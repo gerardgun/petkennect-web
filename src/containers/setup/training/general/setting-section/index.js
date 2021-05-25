@@ -55,7 +55,7 @@ const SetupTrainingGeneralSettingIndex = props => {
               </Grid.Row>
             </Grid>
 
-            <Divider/>
+            {/*<Divider/>*/}
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -79,7 +79,7 @@ const SetupTrainingGeneralSettingIndex = props => {
               </Grid.Row>
             </Grid>
 
-            <Divider/>
+            {/*<Divider/>*/}
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -111,7 +111,7 @@ const SetupTrainingGeneralSettingIndex = props => {
               </Grid.Row>
             </Grid>
 
-            <Divider/>
+            {/*<Divider/>*/}
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -153,9 +153,9 @@ const SetupTrainingGeneralSettingIndex = props => {
               </Grid.Row>
             </Grid>
 
-            <Divider className='mt20'/>
-
             <Header as='h4' color='teal'>Multiple Location Setup</Header>
+
+            <Divider className='mt20'/>
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -179,7 +179,7 @@ const SetupTrainingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider className='mt20'/>
+            {/*<Divider className='mt20'/>*/}
 
             {
               error && (

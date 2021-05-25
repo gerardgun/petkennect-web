@@ -56,9 +56,11 @@ const SetupBoardingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider className='mt20'/>
+            
 
             <Header as='h4' color='teal'>Reservation Settings</Header>
+
+            <Divider className='mt20'/>
 
             {/* Check In questions */}
             <Grid style={{ padding: '1rem' }}>
@@ -77,7 +79,7 @@ const SetupBoardingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
+            {/*<Divider/>*/}
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='4'>
@@ -94,7 +96,7 @@ const SetupBoardingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
+            {/*<Divider/>*/}
 
             {/* Check Out questions */}
             <Grid style={{ padding: '1rem' }}>
@@ -113,7 +115,7 @@ const SetupBoardingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
+            {/*<Divider/>*/}
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='4'>
@@ -130,7 +132,7 @@ const SetupBoardingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
+            {/*<Divider/>*/}
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -150,7 +152,7 @@ const SetupBoardingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
+            {/*<Divider/>*/}
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='7'>
@@ -169,9 +171,10 @@ const SetupBoardingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider className='mt20'/>
 
             <Header as='h4' color='teal'>Multiple Location Setup</Header>
+
+            <Divider className='mt20'/>
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -195,7 +198,7 @@ const SetupBoardingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider className='mt20'/>
+            {/*<Divider className='mt20'/>*/}
 
             {
               error && (
