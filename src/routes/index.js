@@ -170,6 +170,7 @@ import SetupGroomingGeneralSettingIndex from '@containers/setup/grooming/general
 // Settings / Services
 import SetupServiceGroupIndex from '@containers/setup/service/group'
 import SetupServiceTypeIndex from '@containers/setup/service/type'
+import SettingsServiceIndex from '@containers/settings/type'
 import SetupServiceReservationIndex from '@containers/setup/service/reservation'
 import SetupServiceReservationBoardingActivityIndex from '@containers/setup/service/reservation/boarding-activity'
 import SetupServiceReservationGroupClassIndex from '@containers/setup/service/reservation/group-class'
@@ -575,27 +576,27 @@ const privateRoutes = [
     component: SetupPetVaccinationTypeIndex
   },
   {
-    path     : '/setup/boarding/pricing',
+    path     : '/setup/settings/booarding-pricing',
     component: SetupBoardingPricingIndex
   },
   {
-    path     : '/setup/boarding/general/activity',
+    path     : '/setup/settings/booarding-settings/activity',
     component: SetupBoardingGeneralActivityIndex
   },
   {
-    path     : '/setup/boarding/general/belonging',
+    path     : '/setup/settings/booarding-settings/belonging',
     component: SetupBoardingGeneralBelongingIndex
   },
   {
-    path     : '/setup/boarding/general/reservation',
+    path     : '/setup/settings/booarding-settings/reservation',
     component: SetupBoardingGeneralReservationIndex
   },
   {
-    path     : '/setup/boarding/general/service-type',
+    path     : '/setup/settings/booarding-settings/service-type',
     component: SetupBoardingGeneralServiceTypeIndex
   },
   {
-    path     : '/setup/boarding/general/setting',
+    path     : '/setup/settings/booarding-settings',
     component: SetupBoardingGeneralSettingIndex
   },
   {
@@ -655,31 +656,31 @@ const privateRoutes = [
     component: SetupCapacityServiceYardCapacityIndex
   },
   {
-    path     : '/setup/day-service/general/reservation',
+    path     : '/setup/settings/day-service/reservation',
     component: SetupDayServiceGeneralReservationIndex
   },
   {
-    path     : '/setup/day-service/general/service-type',
+    path     : '/setup/settings/day-service/service-type',
     component: SetupDayServiceGeneralServiceTypeIndex
   },
   {
-    path     : '/setup/day-service/general/setting',
+    path     : '/setup/settings/day-service',
     component: SetupDayServiceGeneralSettingIndex
   },
   {
-    path     : '/setup/grooming/general/reservation',
+    path     : '/setup/settings/grooming/reservation',
     component: SetupGroomingGeneralReservationIndex
   },
   {
-    path     : '/setup/grooming/general/service-option',
+    path     : '/setup/settings/grooming/service-option',
     component: SetupGroomingGeneralServiceOptionIndex
   },
   {
-    path     : '/setup/grooming/general/service-type',
+    path     : '/setup/settings/grooming/service-type',
     component: SetupGroomingGeneralServiceTypeIndex
   },
   {
-    path     : '/setup/grooming/general/setting',
+    path     : '/setup/settings/grooming',
     component: SetupGroomingGeneralSettingIndex
   },
   {
@@ -703,6 +704,10 @@ const privateRoutes = [
     component: SetupServiceTypeIndex
   },
   {
+    path     : '/setup/settings',
+    component: SettingsServiceIndex
+  },
+  {
     path     : '/setup/service/reservation',
     component: SetupServiceReservationIndex
   },
@@ -711,23 +716,23 @@ const privateRoutes = [
     component: SetupTrainingCommandIndex
   },
   {
-    path     : '/setup/training/general/group-class',
+    path     : '/setup/settings/training/group-class',
     component: SetupTrainingGeneralGroupClassIndex
   },
   {
-    path     : '/setup/training/general/group-class/session',
+    path     : '/setup/settings/training/session',
     component: SetupTrainingGeneralGroupClassSessionIndex
   },
   {
-    path     : '/setup/training/general/reservation',
+    path     : '/setup/settings/training/reservation',
     component: SetupTrainingGeneralReservationIndex
   },
   {
-    path     : '/setup/training/general/service-type',
+    path     : '/setup/settings/training/service-type',
     component: SetupTrainingGeneralServiceTypeIndex
   },
   {
-    path     : '/setup/training/general/setting',
+    path     : '/setup/settings/training',
     component: SetupTrainingGeneralSettingIndex
   },
   {

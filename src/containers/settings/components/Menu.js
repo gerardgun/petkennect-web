@@ -1,27 +1,28 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Button, Divider, Header } from 'semantic-ui-react'
+import '../styles.scss'
 
 const items = [
-  /*{
-    label: 'General Settings',
-    to   : '/setup/training/general/setting'
-  },*/
   {
-    label: 'Reasons',
-    to   : '/setup/training/reason'
+    label: 'Boarding Pricing',
+    to   : '/setup/settings/booarding-pricing'
   },
   {
-    label: 'Methods',
-    to   : '/setup/training/method'
+    label: 'Boarding Settings',
+    to   : '/setup/settings/booarding-settings'
   },
   {
-    label: 'Commands',
-    to   : '/setup/training/command'
+    label: 'Day Service Settings',
+    to   : '/setup/settings/day-service'
   },
   {
-    label: 'Rating Keys',
-    to   : '/setup/training/rating-key'
+    label: 'Training Settings',
+    to   : '/setup/settings/training'
+  },
+  {
+    label: 'Grooming Settings',
+    to   : '/setup/settings/grooming'
   }
 ]
 
@@ -30,21 +31,19 @@ const Menu = () => {
 
   return (
     <>
-      <Header>Training Settings</Header>
+      <Header>Service settings</Header>
       <Divider/>
 
       {
         items.map(({ label, to }, index) => {
           let prefix = to
 
-          if(prefix === '/setup/training/general/setting')
-            prefix = '/setup/training/general'
-
           const rgx = new RegExp(`^${prefix}.*`)
 
           return (
             <Button
               as={Link}
+              className='button-menu'
               color={rgx.test(location.pathname) ? 'teal' : null}
               content={label}
               key={index}

@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
-import Menu from '@containers/setup/boarding/components/Menu'
+import Menu from '@containers/settings/components/Menu'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 const SetupBoardingPricingIndex = props => {
@@ -60,7 +60,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -87,7 +87,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -108,7 +108,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -136,9 +136,10 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
 
           <Header as='h4' color='teal'>Pricing</Header>
+
+          <Divider/>
 
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
@@ -163,7 +164,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -186,7 +187,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -209,7 +210,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -240,9 +241,10 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
 
           <Header as='h4' color='teal'>Do other factors affect pricing?</Header>
+
+          <Divider/>
 
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
@@ -266,7 +268,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -284,7 +286,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -309,9 +311,11 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          
 
           <Header as='h4' color='teal'>Check-Out Day Charges</Header>
+
+          <Divider/>
 
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
@@ -330,7 +334,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -353,7 +357,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column width='6'>
@@ -378,7 +382,7 @@ const SetupBoardingPricingIndex = props => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Divider/>
+          {/*<Divider/>*/}
 
         </Form>
 

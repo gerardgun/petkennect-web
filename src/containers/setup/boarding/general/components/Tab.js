@@ -5,23 +5,23 @@ import { Grid, Menu } from 'semantic-ui-react'
 const items = [
   {
     label: 'Settings',
-    to   : '/setup/boarding/general/setting'
+    to   : '/setup/settings/booarding-settings'
   },
   {
     label: 'Service Types',
-    to   : '/setup/boarding/general/service-type'
+    to   : '/setup/settings/booarding-settings/service-type'
   },
   {
     label: 'Reservations',
-    to   : '/setup/boarding/general/reservation'
+    to   : '/setup/settings/booarding-settings/reservation'
   },
   {
     label: 'Activities/Check-Out',
-    to   : '/setup/boarding/general/activity'
+    to   : '/setup/settings/booarding-settings/activity'
   },
   {
     label: 'Belongings',
-    to   : '/setup/boarding/general/belonging'
+    to   : '/setup/settings/booarding-settings/belonging'
   }
 ]
 

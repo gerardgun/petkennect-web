@@ -109,6 +109,10 @@ export default [
         to  : '/setup/service/type'
       },
       {
+        name: 'Service Settings',
+        to  : '/setup/settings/booarding-pricing'
+      },
+      /*{
         name: 'Boarding',
         to  : '/setup/boarding/pricing'
       },
@@ -121,10 +125,10 @@ export default [
         name: 'Grooming',
         to  : '/setup/grooming/general/setting'
 
-      },
+      },*/
       {
         name: 'Training',
-        to  : '/setup/training/general/setting'
+        to  : '/setup/training/reason'
 
       },
       {

@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
-import Menu from '@containers/setup/grooming/components/Menu'
+import Menu from '@containers/settings/components/Menu'
 import Tab from '@containers/setup/grooming/general/components/Tab'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
@@ -56,9 +56,10 @@ const SetupGroomingGeneralSettingIndex = props => {
               </Grid.Row>
             </Grid>
 
-            <Divider className='mt20'/>
 
             <Header as='h4' color='teal'>Multiple Location Setup</Header>
+
+            <Divider className='mt20'/>
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -81,7 +82,7 @@ const SetupGroomingGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider className='mt20'/>
+            {/*<Divider className='mt20'/>*/}
 
             {
               error && (

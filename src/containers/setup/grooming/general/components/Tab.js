@@ -5,19 +5,19 @@ import { Grid, Menu } from 'semantic-ui-react'
 const items = [
   {
     label: 'Settings',
-    to   : '/setup/grooming/general/setting'
+    to   : '/setup/settings/grooming'
   },
   {
     label: 'Service Types',
-    to   : '/setup/grooming/general/service-type'
+    to   : '/setup/settings/grooming/service-type'
   },
   {
     label: 'Reservations',
-    to   : '/setup/grooming/general/reservation'
+    to   : '/setup/settings/grooming/reservation'
   },
   {
     label: 'Service Options',
-    to   : '/setup/grooming/general/service-option'
+    to   : '/setup/settings/grooming/service-option'
   }
 ]
 

@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
-import Menu from '@containers/setup/day-service/components/Menu'
+import Menu from '@containers/settings/components/Menu'
 import Tab from '@containers/setup/day-service/general/components/Tab'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
@@ -55,7 +55,7 @@ const SetupDayServiceGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
+            {/*<Divider/>*/}
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='7'>
@@ -78,10 +78,11 @@ const SetupDayServiceGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider className='mt20'/>
 
             <Header as='h4' color='teal'>Early Drop Off/Late Pick Up Charges</Header>
             <p>If enabled, clients that check in/out outside the hours will be automatically charged.</p>
+
+            <Divider className='mt20'/>
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -101,7 +102,7 @@ const SetupDayServiceGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
+            {/*<Divider/>*/}
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='4'>
@@ -132,7 +133,7 @@ const SetupDayServiceGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
+            {/*<Divider/>*/}
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='4'>
@@ -163,7 +164,7 @@ const SetupDayServiceGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
+            {/*<Divider/>*/}
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='4'>
@@ -194,9 +195,10 @@ const SetupDayServiceGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider/>
 
             <Header as='h4' color='teal'>Multiple Location Setup</Header>
+
+            <Divider/>
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -219,7 +221,7 @@ const SetupDayServiceGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Divider className='mt20'/>
+            {/*<Divider className='mt20'/>*/}
 
             {
               error && (
