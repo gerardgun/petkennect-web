@@ -7,7 +7,7 @@ import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/service/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import kennelAreaListConfig from '@lib/constants/list-configs/service'
+import serviceListConfig from '@lib/constants/list-configs/service'
 
 import serviceDuck from '@reducers/service'
 import serviceDetailDuck from '@reducers/service/detail'
@@ -56,7 +56,7 @@ const SetupCapacityBoardingAreaIndex = () => {
         <Menu/>
 
         <Table
-          config={kennelAreaListConfig}
+          config={serviceListConfig}
           duck={serviceDuck}
           onActionClick={_handleActionClick}
           onRowButtonClick={_handleRowButtonClick}/>

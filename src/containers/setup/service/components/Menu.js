@@ -39,14 +39,10 @@ const Menu = () => {
 
       {
         items.map(({ label, to }, index) => {
-          let prefix = to
-
-          const rgx = new RegExp(`^${prefix}.*`)
-
           return (
             <Button
               as={Link}
-              color={rgx.test(location.pathname) ? 'teal' : null}
+              color={to === location.pathname ? 'teal' : null}
               content={label}
               key={index}
               to={to}/>

@@ -59,6 +59,9 @@ const ServiceTypeCreateForm = props => {
   }
 
   const _handleSubmit = values => {
+    if(values.sku_id === detail.item.sku_id)
+      delete values.sku_id
+
     if(editing)
       return dispatch(serviceDetailDuck.creators.put({ id: detail.item.id, ...values }))
         .then(_handleClose)
