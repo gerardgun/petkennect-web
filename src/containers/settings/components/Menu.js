@@ -5,11 +5,11 @@ import { Button, Divider, Header } from 'semantic-ui-react'
 const items = [
   {
     label: 'Boarding Pricing',
-    to   : '/settings/boarding/pricing'
+    to   : '/setup/settings/booarding-pricing'
   },
   {
     label: 'Boarding Settings',
-    to   : '/setup/service/type'
+    to   : '/setup/settings/booarding-settings'
   },
   {
     label: 'Day Service Settings',
@@ -20,8 +20,8 @@ const items = [
     to   : '/setup/settings/training'
   },
   {
-    label: 'Groming Settings',
-    to   : '/setup/service/reservation/group-class'
+    label: 'Grooming Settings',
+    to   : '/setup/settings/grooming'
   }
 ]
 

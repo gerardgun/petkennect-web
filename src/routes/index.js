@@ -576,27 +576,27 @@ const privateRoutes = [
     component: SetupPetVaccinationTypeIndex
   },
   {
-    path     : '/setup/boarding/pricing',
+    path     : '/setup/settings/booarding-pricing',
     component: SetupBoardingPricingIndex
   },
   {
-    path     : '/setup/boarding/general/activity',
+    path     : '/setup/settings/booarding-settings/activity',
     component: SetupBoardingGeneralActivityIndex
   },
   {
-    path     : '/setup/boarding/general/belonging',
+    path     : '/setup/settings/booarding-settings/belonging',
     component: SetupBoardingGeneralBelongingIndex
   },
   {
-    path     : '/setup/boarding/general/reservation',
+    path     : '/setup/settings/booarding-settings/reservation',
     component: SetupBoardingGeneralReservationIndex
   },
   {
-    path     : '/setup/boarding/general/service-type',
+    path     : '/setup/settings/booarding-settings/service-type',
     component: SetupBoardingGeneralServiceTypeIndex
   },
   {
-    path     : '/setup/boarding/general/setting',
+    path     : '/setup/settings/booarding-settings',
     component: SetupBoardingGeneralSettingIndex
   },
   {
@@ -668,19 +668,19 @@ const privateRoutes = [
     component: SetupDayServiceGeneralSettingIndex
   },
   {
-    path     : '/setup/grooming/general/reservation',
+    path     : '/setup/settings/grooming/reservation',
     component: SetupGroomingGeneralReservationIndex
   },
   {
-    path     : '/setup/grooming/general/service-option',
+    path     : '/setup/settings/grooming/service-option',
     component: SetupGroomingGeneralServiceOptionIndex
   },
   {
-    path     : '/setup/grooming/general/service-type',
+    path     : '/setup/settings/grooming/service-type',
     component: SetupGroomingGeneralServiceTypeIndex
   },
   {
-    path     : '/setup/grooming/general/setting',
+    path     : '/setup/settings/grooming',
     component: SetupGroomingGeneralSettingIndex
   },
   {

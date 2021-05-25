@@ -3,10 +3,10 @@ import { Link, useLocation } from 'react-router-dom'
 import { Button, Divider, Header } from 'semantic-ui-react'
 
 const items = [
-  {
+  /*{
     label: 'General Settings',
     to   : '/setup/training/general/setting'
-  },
+  },*/
   {
     label: 'Reasons',
     to   : '/setup/training/reason'

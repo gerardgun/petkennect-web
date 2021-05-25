@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
-import Menu from '@containers/setup/grooming/components/Menu'
+import Menu from '@containers/settings/components/Menu'
 import Tab from '@containers/setup/grooming/general/components/Tab'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
