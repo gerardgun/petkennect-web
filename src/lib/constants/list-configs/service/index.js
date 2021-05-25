@@ -1,99 +1,80 @@
+import React from 'react'
+import { Checkbox } from 'semantic-ui-react'
+
+import { GroupType } from '@lib/constants/service'
+
 export default {
-  options: {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Delete Service',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ]
-  },
+  search_placeholder: 'Search by sku_id, name or description',
+  actions           : [
+    {
+      display_name: 'Add New',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
   columns: [
     {
-      display_name: 'Name',
+      display_name: 'Service Type',
       name        : 'name',
       type        : 'string',
-      width       : null,
-      align       : 'left',
       sort        : true
     },
     {
-      display_name: 'Type',
-      name        : 'type',
-      type        : null,
-      width       : null,
-      align       : 'left',
+      display_name: 'Service Group',
+      name        : 'group.type',
       sort        : true,
+      sort_name   : 'service_group__name',
       formatter   : cell => {
-        let type_str = 'Custom'
-
-        if(cell === 'B')
-          type_str = 'Boarding'
-        else if(cell === 'D')
-          type_str = 'DayCamp'
-        else if(cell === 'G')
-          type_str = 'Grooming'
-        else if(cell === 'D')
-          type_str = 'Training'
-
-        return type_str
+        return GroupType[cell]
       }
     },
     {
-      display_name: 'Plans',
-      name        : 'plans',
-      type        : 'number',
-      width       : null,
-      align       : 'left',
+      display_name: 'Locations',
+      name        : 'locations',
       formatter   : cell => {
-        let plans_str = 'No plans'
+        let locationNames = <span className='text-gray'>No related locations</span>
 
-        if(cell && cell.length > 0) {
-          const activePlans = cell.filter(item => item.is_active)
+        if(cell.length > 0)
+          locationNames = cell
+            .map(({ name }) => name)
+            .join(', ')
 
-          plans_str = `${activePlans.length}/${cell.length} active plans`
-        }
-
-        return plans_str
+        return locationNames
       }
     },
     {
-      display_name: 'Addons',
-      name        : 'addons.length',
-      type        : 'number',
-      width       : null,
-      align       : 'left',
-      formatter   : cell => {
-        let addons_str = 'No addons'
-
-        if(cell && cell.length > 0) {
-          const activeAddons = cell.filter(item => item.is_active)
-
-          addons_str = `${activeAddons.length}/${cell.length} active addons`
-        }
-
-        return addons_str
-      }
+      display_name: 'Custom Code',
+      name        : 'sku_id',
+      type        : 'string',
+      sort        : true
     },
     {
       display_name: 'Active',
       name        : 'is_active',
-      type        : 'boolean_active',
-      width       : null,
-      align       : 'left'
+      align       : 'center',
+      formatter   : cell => (
+        <Checkbox checked={cell} disabled toggle/>
+      )
+    },
+    {
+      display_name: 'Actions',
+      type        : 'button',
+      width       : 2,
+      options     : [
+        {
+          display_name: 'Edit Service Type',
+          name        : 'edit',
+          icon        : 'edit outline',
+          color       : 'teal'
+        },
+        {
+          display_name: 'Delete Service Type',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'grey'
+        }
+      ]
     }
   ]
 }

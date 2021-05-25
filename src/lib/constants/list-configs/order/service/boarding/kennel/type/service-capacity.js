@@ -1,6 +1,8 @@
 import React from 'react'
 import { Checkbox, Select } from 'semantic-ui-react'
 
+import { ChargeTypeOptions } from '@lib/constants/service'
+
 export default {
   actions: [
     {
@@ -18,22 +20,26 @@ export default {
     },
     {
       display_name: 'Applies to Areas',
-      name        : 'applies',
-      type        : 'string'
-    },
-    {
-      display_name: 'Description',
-      name        : 'description',
-      type        : 'string'
+      name        : 'kennel_areas',
+      formatter   : cell => {
+        let names = <span className='text-gray'>No related Kennel Areas</span>
+
+        if(cell.length > 0)
+          names = cell
+            .map(({ name }) => name)
+            .join(', ')
+
+        return names
+      }
     },
     {
       display_name: 'Size',
-      name        : 'size',
-      type        : 'string'
+      name        : 'size_width',
+      formatter   : (cell, row) => `${cell}x${row.size_height} cm`
     },
     {
       display_name: 'Surcharge',
-      name        : 'surcharge',
+      name        : 'is_surcharge',
       formatter   : cell => (
         <Checkbox checked={cell} disabled toggle/>
       )
@@ -44,15 +50,8 @@ export default {
       type        : 'string',
       formatter   : cell => (
         <Select
-          label='Location'
-          name='location'
-          options={[
-            { text: 'No Charge', value: 1 },
-            { text: 'Per Stay', value: 2 },
-            { text: 'Per Night', value: 3 }
-          ]}
-          placeholder='Select Location'
-          selectOnBlur={false}
+          disabled
+          options={ChargeTypeOptions}
           value={cell}/>
       )
     },

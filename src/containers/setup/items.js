@@ -105,9 +105,12 @@ export default [
     image: '/images/admin-item/ColoredServices.png',
     items: [
       {
+        name: 'Services & Reservations',
+        to  : '/setup/service/type'
+      },
+      {
         name: 'Boarding',
         to  : '/setup/boarding/pricing'
-
       },
       {
         name: 'Day Services',

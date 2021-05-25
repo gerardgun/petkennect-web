@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 
-import KennelTypeFormModal from './create'
+import CreateFormModal from './create/form/modal'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/capacity/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
@@ -50,7 +50,7 @@ const SetupCapacityBoardingTypeIndex = () => {
 
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
+      <Segment className='segment-content'>
         <Menu/>
 
         <Tab>
@@ -61,7 +61,7 @@ const SetupCapacityBoardingTypeIndex = () => {
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
-        <KennelTypeFormModal/>
+        <CreateFormModal/>
 
         <ModalDelete duckDetail={kennelTypeDetailDuck}/>
 

@@ -13,6 +13,7 @@ const parseTenant = tenant => {
     ...tenant,
     service_config: {
       kennel_areas: _get(tenant, 'service_config.kennel_areas', {}),
+      kennel_types: _get(tenant, 'service_config.kennel_types', {}),
       boarding    : _merge({
         show_kennel_as_occupied       : false,
         show_kennel_id                : false,
