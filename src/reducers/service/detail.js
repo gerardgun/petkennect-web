@@ -5,9 +5,10 @@ export default base({
   namespace   : '@@pet-kennect',
   store       : 'service/detail',
   initialState: {
-    item: {
-      is_active: false,
-      type     : 'C'
+    form: {
+      service_group_options: [],
+      location_options     : [],
+      pet_kind_options     : []
     }
   }
 })

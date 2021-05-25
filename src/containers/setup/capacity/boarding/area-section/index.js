@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 
-import KennelAreaFormModal from './create'
+import CreateFormModal from './create/form/modal'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/capacity/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
@@ -16,11 +16,13 @@ import kennelAreaDetailDuck from  '@reducers/order/service/boarding/kennel/area/
 const SetupCapacityBoardingAreaIndex = () => {
   const dispatch = useDispatch()
   const detail = useSelector(kennelAreaDetailDuck.selectors.detail)
+  const list = useSelector(kennelAreaDuck.selectors.list)
 
   useEffect(() => {
-    dispatch(
-      kennelAreaDuck.creators.get()
-    )
+    if(list.items.length === 0)
+      dispatch(
+        kennelAreaDuck.creators.get()
+      )
   }, [])
 
   useEffect(() => {
@@ -50,9 +52,9 @@ const SetupCapacityBoardingAreaIndex = () => {
 
   return (
     <Layout>
-      <Segment className='segment-content' padded='very'>
-        <Menu/>
+      <Segment className='segment-content'>
 
+        <Menu/>
         <Tab>
           <Table
             config={kennelAreaListConfig}
@@ -61,7 +63,7 @@ const SetupCapacityBoardingAreaIndex = () => {
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
-        <KennelAreaFormModal/>
+        <CreateFormModal/>
 
         <ModalDelete duckDetail={kennelAreaDetailDuck}/>
 

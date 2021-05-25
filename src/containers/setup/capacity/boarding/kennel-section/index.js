@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 
 import KennelFormModal from './create'
+import KennelBulkFormModal from './create-bulk'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/capacity/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
@@ -35,6 +36,10 @@ const SetupCapacityBoardingKennelIndex = () => {
       dispatch(
         kennelDetailDuck.creators.setItem(null, 'CREATE')
       )
+    else if(action === 'bulk')
+      dispatch(
+        kennelDetailDuck.creators.setItem(null, 'CREATE_BULK')
+      )
   }
 
   const _handleRowButtonClick = (button, reason) => {
@@ -62,6 +67,7 @@ const SetupCapacityBoardingKennelIndex = () => {
         </Tab>
 
         <KennelFormModal/>
+        <KennelBulkFormModal/>
 
         <ModalDelete duckDetail={kennelDetailDuck}/>
 

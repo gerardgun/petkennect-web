@@ -1,6 +1,13 @@
 export default {
   actions: [
     {
+      display_name: 'Bulk Upload',
+      name        : 'bulk',
+      color       : 'teal',
+      basic       : true,
+      icon        : 'upload'
+    },
+    {
       display_name: 'New Kennel',
       name        : 'create',
       color       : 'teal',

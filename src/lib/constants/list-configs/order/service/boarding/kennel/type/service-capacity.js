@@ -1,5 +1,7 @@
 import React from 'react'
-import { Checkbox } from 'semantic-ui-react'
+import { Checkbox, Select } from 'semantic-ui-react'
+
+import { ChargeTypeOptions } from '@lib/constants/service'
 
 export default {
   actions: [
@@ -18,30 +20,40 @@ export default {
     },
     {
       display_name: 'Applies to Areas',
-      name        : 'applies',
-      type        : 'string'
-    },
-    {
-      display_name: 'Description',
-      name        : 'description',
-      type        : 'string'
+      name        : 'kennel_areas',
+      formatter   : cell => {
+        let names = <span className='text-gray'>No related Kennel Areas</span>
+
+        if(cell.length > 0)
+          names = cell
+            .map(({ name }) => name)
+            .join(', ')
+
+        return names
+      }
     },
     {
       display_name: 'Size',
-      name        : 'size',
-      type        : 'string'
+      name        : 'size_width',
+      formatter   : (cell, row) => `${cell}x${row.size_height} cm`
     },
     {
       display_name: 'Surcharge',
-      name        : 'surcharge',
+      name        : 'is_surcharge',
       formatter   : cell => (
-        <Checkbox checked={cell} disabled/>
+        <Checkbox checked={cell} disabled toggle/>
       )
     },
     {
       display_name: 'Charge Type',
       name        : 'charge_type',
-      type        : 'string'
+      type        : 'string',
+      formatter   : cell => (
+        <Select
+          disabled
+          options={ChargeTypeOptions}
+          value={cell}/>
+      )
     },
     {
       display_name: 'Price',

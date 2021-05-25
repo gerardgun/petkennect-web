@@ -14,7 +14,7 @@ export default {
       type        : 'string'
     },
     {
-      display_name: 'Reservation Name',
+      display_name: 'Reservation\nName',
       name        : 'name',
       type        : 'string'
     },
@@ -24,7 +24,7 @@ export default {
       type        : 'string'
     },
     {
-      display_name: 'Applies to Species',
+      display_name: 'Applies\nto Species',
       name        : 'applies_species',
       type        : 'string'
     },
@@ -39,7 +39,7 @@ export default {
       type        : 'string'
     },
     {
-      display_name: 'Charge Type',
+      display_name: 'Charge\nType',
       name        : 'charge_type',
       type        : 'string'
     }

@@ -1,5 +1,9 @@
 import React from 'react'
-import { Checkbox } from 'semantic-ui-react'
+import { Checkbox, Select } from 'semantic-ui-react'
+
+import { ChargeTypeOptions } from '@lib/constants/service'
+
+import petKindDuck from '@reducers/pet/kind'
 
 export default {
   actions: [
@@ -14,29 +18,50 @@ export default {
     {
       display_name: 'Area Name',
       name        : 'name',
-      type        : 'string'
+      type        : 'string',
+      sort        : true
     },
     {
       display_name: 'Species',
-      name        : 'species_name',
-      type        : 'string'
+      name        : 'pet_class.name',
+      type        : 'string',
+      filter      : {
+        type   : 'dropdown',
+        name   : 'pet_class_id',
+        options: petKindDuck.store
+      }
     },
     {
       display_name: 'Applies to Service Groups',
-      name        : 'applies',
-      type        : 'string'
+      name        : 'service_groups',
+      formatter   : cell => {
+        let names = <span className='text-gray'>No related Group Services</span>
+
+        if(cell.length > 0)
+          names = cell
+            .map(({ name }) => name)
+            .join(', ')
+
+        return names
+      }
     },
     {
       display_name: 'Surcharge',
-      name        : 'surcharge',
+      name        : 'is_surcharge',
       formatter   : cell => (
-        <Checkbox checked={cell} disabled/>
+        <Checkbox checked={cell} disabled toggle/>
       )
     },
     {
       display_name: 'Charge Type',
       name        : 'charge_type',
-      type        : 'string'
+      type        : 'string',
+      formatter   : cell => (
+        <Select
+          disabled
+          options={ChargeTypeOptions}
+          value={cell}/>
+      )
     },
     {
       display_name: 'Price',

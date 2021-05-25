@@ -105,9 +105,12 @@ export default [
     image: '/images/admin-item/ColoredServices.png',
     items: [
       {
+        name: 'Services & Reservations',
+        to  : '/setup/service/type'
+      },
+      {
         name: 'Boarding',
         to  : '/setup/boarding/pricing'
-
       },
       {
         name: 'Day Services',
@@ -116,17 +119,17 @@ export default [
       },
       {
         name: 'Grooming',
-        to  : '/setup'
+        to  : '/setup/grooming/general/setting'
 
       },
       {
         name: 'Training',
-        to  : '/setup/training'
+        to  : '/setup/training/general/setting'
 
       },
       {
         name: 'Add-on Services',
-        to  : '/setup'
+        to  : '/setup/add-on/general/setting'
 
       },
       {
@@ -220,7 +223,11 @@ export default [
         to  : '/setup'
       },
       {
-        name: 'Invoice Settings',
+        name: 'Invoice Settings (from Christian)',
+        to  : '/setup/financial/invoice/services-activities'
+      },
+      {
+        name: 'Invoice Settings (from Baans)',
         to  : '/setup/coupan-setup/invoice-setting'
       },
       {

@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { Header, Image, Grid, Button, Icon, Segment, Breadcrumb } from 'semantic-ui-react'
+import { Header, Grid, Button, Icon, Segment, Breadcrumb } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
-import BoardingReservationFormWizard from './boarding'
+// import BoardingReservationFormWizard from './boarding'
+import NewBoarding from './boarding_new'
 import DaycampReservationFormWizard from './daycamp'
 import FitnessReservationFormWizard from './daycamp'
 import GroomingReservationFormWizard from './grooming'
@@ -127,27 +128,36 @@ function Reservation({ petReservationDetail, currentTenant, clientDetail,clientP
             <Header as='h3'>What is the Service?</Header>
             <div className='mv32 btn-service-type'>
               <div className={`button-service ${activeReservationItem === 'B' && 'selected'}`} onClick={_handleReservationTypeClick('B')}>
-                <Image avatar src='/images/boarding-icon.svg'/>
-                <span>Boarding</span>
-              </div>
-              <div className={`button-service ${activeReservationItem === 'T' && 'selected'}`} onClick={_handleReservationTypeClick('T')}>
-                <Image avatar src='/images/training-icon.svg'/>
-                <span>Training</span>
+                <div className='image_container'>
+                  <img src='/images/boarding.png'/>
+                </div>
+                <span>BOARDING</span>
               </div>
               <div className={`button-service ${activeReservationItem === 'F' && 'selected'}`} onClick={_handleReservationTypeClick('F')}>
-                <Image avatar src='/images/fitness-icon.svg'/>
-                <span>Day Services</span>
+                <div className='image_container'>
+                  <img src='/images/dayServices.png'/>
+                </div>
+                <span>DAY SERVICES</span>
               </div>
-              <div className={`button-service ${activeReservationItem === 'D' && 'selected'}`} onClick={_handleReservationTypeClick('D')}>
-                <Image avatar src='/images/daycamp-icon.svg'/>
-                <span>Daycamp</span>
+              <div className={`button-service ${activeReservationItem === 'T' && 'selected'}`} onClick={_handleReservationTypeClick('T')}>
+                <div className='image_container'>
+                  <img src='/images/DogTraining.jpg'/>
+                </div>
+                <span>TRAINING</span>
               </div>
               <div className={`button-service ${activeReservationItem === 'G' && 'selected'}`} onClick={_handleReservationTypeClick('G')}>
-                <Image avatar src='/images/grooming-icon.svg'/>
-                <span>Grooming</span>
+                <div className='image_container'>
+                  <img src='/images/grooming.png'/>
+                </div>
+                <span>GROOMING</span>
               </div>
             </div>
-            {activeReservationItem === 'B' &&  <BoardingReservationFormWizard serviceType={activeReservationItem}/>}
+            {activeReservationItem === 'B'
+            && <>
+              {/* <BoardingReservationFormWizard serviceType={activeReservationItem}/>*/}
+              <NewBoarding/>
+            </>
+            }
             {activeReservationItem === 'D' &&  <DaycampReservationFormWizard serviceType={activeReservationItem}/>}
             {activeReservationItem === 'F' &&  <FitnessReservationFormWizard serviceType={activeReservationItem}/>}
             {activeReservationItem === 'G' &&  <GroomingReservationFormWizard serviceType={activeReservationItem}/>}

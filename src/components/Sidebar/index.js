@@ -196,7 +196,7 @@ const categories = [
       { href: '/setup/animal-setting', label: 'Animal Setting' },
       { href: '/setup/service-setting', label: 'Services Settings' },
       { href: '/setup/color-codes', label: 'System Icons/Codes' },
-       { href: '/setup/report-sheet-setting', label: 'Report Sheet Setting' },
+      { href: '/setup/report-sheet-setting', label: 'Report Sheet Setting' },
       // { href: '/setup/booking-sheet-setting', label: 'Booking Sheet Setting' },
       // { href: '/setup/document-type', label: 'Document Types' },
       // { href: '/setup/day-camp-form', label: 'Day Camp Form' },
@@ -312,9 +312,8 @@ export default compose(
       }
     },
     {
-      signOut        : authDuck.creators.signOut,
-      rehydrateTenant: authDuck.creators.rehydrateTenant,
-      set            : authDuck.creators.set
+      signOut: authDuck.creators.signOut,
+      set    : authDuck.creators.set
     }
   )
 )(AppSidebar)

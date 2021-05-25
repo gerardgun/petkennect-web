@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Dropdown, Input, Popup } from 'semantic-ui-react'
+import { Button, Dropdown, Icon, Input, Popup } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import FilterForm from './Filter/Form'
@@ -118,8 +118,12 @@ const TopBar = ({ config, duck, ...props }) => {
           {
             config.search_enabled && (
               <Input
-                icon='search' iconPosition='left' onChange={_handleSearchInputChange}
-                placeholder={config.search_placeholder} style={{ marginRight: '0.3rem' }} type='search'/>
+                iconPosition='left' onChange={_handleSearchInputChange}
+                placeholder={config.search_placeholder}
+                style={{ marginRight: '0.3rem' }} type='search'>
+                <Icon name='search'/>
+                <input style={{ minWidth: `${config.search_placeholder.length * 0.7}rem` }}/>
+              </Input>
             )
           }
           {

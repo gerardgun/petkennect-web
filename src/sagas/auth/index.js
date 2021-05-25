@@ -2,8 +2,8 @@ import { getLocation } from 'connected-react-router'
 import { call, fork, put, select, take, takeEvery } from 'redux-saga/effects'
 
 import { Get, Patch, Post, Put, reHydrateToken, reHydrateTenant as _reHydrateTenant } from '@lib/utils/http-client'
-
-import { get as getPets } from '@sagas/pet'
+import * as tenantDetailSaga from '@sagas/tenant/detail'
+import * as petSaga from '@sagas/pet'
 
 import authDuck from '@reducers/auth'
 import locationDuck from '@reducers/location'
@@ -23,6 +23,7 @@ function* check() {
       _reHydrateTenant(tenant)
 
       yield* get()
+      yield* tenantDetailSaga.get()
     }
 
     // Get authenticated user data
@@ -244,6 +245,7 @@ function* rehydrateTenant({ payload: tenant }) {
     localStorage.setItem('@auth_tenant', tenant)
 
     _reHydrateTenant(tenant)
+    yield* tenantDetailSaga.get()
 
     yield put({
       type   : types.REHYDRATE_TENANT_FULFILLED,
@@ -279,7 +281,7 @@ function* nextLocationChange() {
 
     if(prevAuthDetail.location !== newAuthDetail.location)
       if(location.pathname === '/pet') {
-        yield fork(getPets)
+        yield fork(petSaga.get)
       }
   }
 }

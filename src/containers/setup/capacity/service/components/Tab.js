@@ -26,6 +26,10 @@ const items = [
   {
     label: 'Yard Capacity',
     to   : '/setup/capacity/service/yard-capacity'
+  },
+  {
+    label: 'Custom Capacity',
+    to   : '/setup/capacity/service/custom'
   }
 ]
 
