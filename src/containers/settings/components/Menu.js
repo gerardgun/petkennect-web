@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Button, Divider, Header } from 'semantic-ui-react'
+import '../styles.scss'
 
 const items = [
   {
@@ -42,6 +43,7 @@ const Menu = () => {
           return (
             <Button
               as={Link}
+              className='button-menu'
               color={rgx.test(location.pathname) ? 'teal' : null}
               content={label}
               key={index}
