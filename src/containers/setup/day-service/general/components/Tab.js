@@ -5,15 +5,15 @@ import { Grid, Menu } from 'semantic-ui-react'
 const items = [
   {
     label: 'Settings',
-    to   : '/setup/day-service/general/setting'
+    to   : '/setup/settings/day-service'
   },
   {
     label: 'Service Types',
-    to   : '/setup/day-service/general/service-type'
+    to   : '/setup/settings/day-service/service-type'
   },
   {
     label: 'Reservations',
-    to   : '/setup/day-service/general/reservation'
+    to   : '/setup/settings/day-service/reservation'
   }
 ]
 

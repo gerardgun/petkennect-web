@@ -656,15 +656,15 @@ const privateRoutes = [
     component: SetupCapacityServiceYardCapacityIndex
   },
   {
-    path     : '/setup/day-service/general/reservation',
+    path     : '/setup/settings/day-service/reservation',
     component: SetupDayServiceGeneralReservationIndex
   },
   {
-    path     : '/setup/day-service/general/service-type',
+    path     : '/setup/settings/day-service/service-type',
     component: SetupDayServiceGeneralServiceTypeIndex
   },
   {
-    path     : '/setup/day-service/general/setting',
+    path     : '/setup/settings/day-service',
     component: SetupDayServiceGeneralSettingIndex
   },
   {
