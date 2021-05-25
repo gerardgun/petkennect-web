@@ -15,13 +15,13 @@ import tenantDetailDuck from '@reducers/tenant/detail'
 
 const { selectors, types } = kennelAreaDuck
 
-function* get() {
+export function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
     const filters = yield select(selectors.filters)
 
-    const results = yield call(Get, '/orders-services-boardings-kennels-areas/', filters)
+    const results = yield call(Get, 'orders-services-boardings-kennels-areas/', filters)
 
     // Load Service Groups
     let serviceGroupList = yield select(serviceGroupDuck.selectors.list)

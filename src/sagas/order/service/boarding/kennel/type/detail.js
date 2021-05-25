@@ -1,10 +1,47 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects'
 
+import { booleanOptions } from '@lib/constants'
+import { ChargeTypeOptions } from '@lib/constants/service'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
+import * as kennelAreaSaga from '@sagas/order/service/boarding/kennel/area'
 
-import orderServiceBoardingKennelTypeDetailDuck from '@reducers/order/service/boarding/kennel/type/detail'
+import kennelAreaDuck from '@reducers/order/service/boarding/kennel/area'
+import kennelTypeDetailDuck from '@reducers/order/service/boarding/kennel/type/detail'
 
-const { types } = orderServiceBoardingKennelTypeDetailDuck
+const { types } = kennelTypeDetailDuck
+
+function* create() {
+  try {
+    yield put({ type: types.GET_PENDING })
+
+    let kennelAreaList = yield select(kennelAreaDuck.selectors.list)
+
+    if(kennelAreaList.items.length === 0) {
+      yield* kennelAreaSaga.get()
+
+      kennelAreaList = yield select(kennelAreaDuck.selectors.list)
+    }
+
+    yield put({
+      payload: {
+        form: {
+          kennel_area_options: kennelAreaList.items.map(({ id, name }) => ({
+            text : name,
+            value: id
+          })),
+          is_surcharge_options: booleanOptions,
+          charge_type_options : ChargeTypeOptions
+        }
+      },
+      type: types.GET_FULFILLED
+    })
+  } catch (e) {
+    yield put({
+      error: e,
+      type : types.GET_FAILURE
+    })
+  }
+}
 
 function* deleteItem({ ids: [ id ] }) {
   try {
@@ -75,6 +112,7 @@ function* _put({ payload }) {
 }
 
 export default [
+  takeEvery(types.CREATE, create),
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),

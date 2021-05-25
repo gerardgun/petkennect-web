@@ -167,6 +167,14 @@ import SetupGroomingGeneralServiceOptionIndex from '@containers/setup/grooming/g
 import SetupGroomingGeneralServiceTypeIndex from '@containers/setup/grooming/general/service-type-section'
 import SetupGroomingGeneralSettingIndex from '@containers/setup/grooming/general/setting-section'
 
+// Settings / Services
+import SetupServiceGroupIndex from '@containers/setup/service/group'
+import SetupServiceTypeIndex from '@containers/setup/service/type'
+import SetupServiceReservationIndex from '@containers/setup/service/reservation'
+import SetupServiceReservationBoardingActivityIndex from '@containers/setup/service/reservation/boarding-activity'
+import SetupServiceReservationGroupClassIndex from '@containers/setup/service/reservation/group-class'
+import SetupServiceReservationGroupClassSessionIndex from '@containers/setup/service/reservation/group-class/session'
+
 // Settings / Training
 import SetupTrainingCommandIndex from '@containers/setup/training/command'
 import SetupTrainingMethodIndex from '@containers/setup/training/method'
@@ -673,6 +681,30 @@ const privateRoutes = [
   {
     path     : '/setup/grooming/general/setting',
     component: SetupGroomingGeneralSettingIndex
+  },
+  {
+    path     : '/setup/service/reservation/boarding-activity',
+    component: SetupServiceReservationBoardingActivityIndex
+  },
+  {
+    path     : '/setup/service/reservation/group-class',
+    component: SetupServiceReservationGroupClassIndex
+  },
+  {
+    path     : '/setup/service/reservation/group-class/session',
+    component: SetupServiceReservationGroupClassSessionIndex
+  },
+  {
+    path     : '/setup/service/group',
+    component: SetupServiceGroupIndex
+  },
+  {
+    path     : '/setup/service/type',
+    component: SetupServiceTypeIndex
+  },
+  {
+    path     : '/setup/service/reservation',
+    component: SetupServiceReservationIndex
   },
   {
     path     : '/setup/training/command',
