@@ -15,7 +15,8 @@ const TableRow = ({ config, data, duck, ...props }) => {
     handlers // row event handlers
   ] = useBase(
     config, data,
-    props.onButtonClick, props.onCellClick, props.onCheckboxChange, props.onClick, props.onDropdownChange
+    props.onButtonClick, props.onCellClick, props.onCheckboxChange,
+    props.onClick, props.onDropdownChange,props.onTextFieldChange,props.onDropdownFieldChange
   )
 
   const _handleSelectorCheckboxChange = (e, { checked }) => {

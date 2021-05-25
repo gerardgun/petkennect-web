@@ -1,11 +1,11 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Label } from 'semantic-ui-react'
+import { Label, Popup } from 'semantic-ui-react'
 
 import { Link, withRouter } from 'react-router-dom'
 
-import {  Icon } from 'semantic-ui-react'
+// import {  Icon } from 'semantic-ui-react'
 import { useMediaQuery } from 'react-responsive'
 
 import Sidebar from '@components/Common/Sidebar'
@@ -35,7 +35,7 @@ const categoriesForSuperAdmin = [
 const categories = [
   {
     href : '/dashboard',
-    icon : 'chart bar outline',
+    icon : 'home',
     label: 'Dashboard'
   },
   {
@@ -251,16 +251,19 @@ const AppSidebar = ({ auth, ...props }) => {
     <>
       <div className='navbar'>
         <Link className='menu-bars' onClick={_handleShowSidebar} to='#'>
-          <Icon name='bars'/>
+          {/* <Icon name='bars'/> */}
         </Link>
       </div>
-
-      <div className={sidebar ? 'nav-menu active app-sidebar' : 'nav-menu app-sidebar'}>
-        <Sidebar>
-          {
-            categoriesToRender.map(({ subcategories = [], ...rest }, index) => {
-              const rgx = new RegExp(`^${rest.href}.*`)
-              const active = activeCategoryIndex === index
+      {/* <div className={sidebar ? 'nav-menu active app-sidebar' : 'nav-menu app-sidebar'}> */}
+      <div className={'nav-menu app-sidebar'}>
+        {
+          props.hideSidebar === true ? (
+            <>
+              <Sidebar>
+                {
+                  categoriesToRender.map(({ subcategories = [], ...rest }, index) => {
+                    const rgx = new RegExp(`^${rest.href}.*`)
+                    const active = activeCategoryIndex === index
               || rgx.test(props.match.path)
               || subcategories.some(item => {
                 const rgx = new RegExp(`^${item.href}.*`)
@@ -268,34 +271,81 @@ const AppSidebar = ({ auth, ...props }) => {
                 return rgx.test(props.match.path)
               })
 
-              return (
-                <Sidebar.Category
-                  active={active}
-                  data-index={index}
-                  key={index}
-                  onClick={_handleCategoryClick}
-                  {...rest}>
-                  {
-                    subcategories.length > 0 ? (
-                      subcategories.map(({ href: to, label, iconRight = null }, index) => {
-                        const active = props.match.path === to
+                    return (
+                      <>
+                        <Popup
+                          content={rest.label} inverted
+                          key={index} position='right center'
+                          trigger={
+                            <Sidebar.Category
+                              active={active}
+                              data-index={index}
+                              hideSidebar={props.hideSidebar}
+                              key={index}
+                              onClick={_handleCategoryClick}
+                              subCategories={subcategories}
+                              {...rest}>
+                            </Sidebar.Category>
+                          }/>
 
-                        return (
-                          <Link className={active ? 'active' : ''} key={index} to={to}>
-                            {label}
-                            {
-                              iconRight && <div className='icon-right'>{iconRight}</div>
-                            }
-                          </Link>
-                        )
-                      })
-                    ) : null
-                  }
-                </Sidebar.Category>
-              )
-            })
-          }
-        </Sidebar>
+                      </>
+                    )
+                  })
+                }
+              </Sidebar>
+            </>
+          ) : (
+            <>
+              <Sidebar>
+                {
+                  categoriesToRender.map(({ subcategories = [], ...rest }, index) => {
+                    const rgx = new RegExp(`^${rest.href}.*`)
+                    const active = activeCategoryIndex === index
+              || rgx.test(props.match.path)
+              || subcategories.some(item => {
+                const rgx = new RegExp(`^${item.href}.*`)
+
+                return rgx.test(props.match.path)
+              })
+
+                    return (
+                      <>
+
+                        <Sidebar.Category
+                          active={active}
+                          data-index={index}
+                          key={index}
+                          onClick={_handleCategoryClick}
+                          {...rest}>
+
+                          {
+                            subcategories.length > 0 ? (
+                              subcategories.map(({ href: to, label, iconRight = null }, index) => {
+                                const active = props.match.path === to
+
+                                return (
+                                  <>
+                                    <Link className={active ? 'active' : ''} key={index} to={to}>
+                                      {label}
+                                      {
+                                        iconRight && <div className='icon-right'>{iconRight}</div>
+                                      }
+                                    </Link>
+                                  </>
+                                )
+                              })
+                            ) : null
+                          }
+                        </Sidebar.Category>
+                      </>
+                    )
+                  })
+                }
+              </Sidebar>
+            </>
+          )
+        }
+
       </div>
       {/* </nav> */}
     </>

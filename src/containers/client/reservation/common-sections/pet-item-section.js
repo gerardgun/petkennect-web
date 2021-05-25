@@ -52,8 +52,8 @@ function ReservationCalenderList({ checkIn,checkOut, trainingDateArray }) {
                          { key: 4, value: 4, text: 'Area4' }
                        ]}
                        placeholder='Select Area'
-                       selection
-                       selectOnBlur={false}/></span></Table.Cell>
+                       selectOnBlur={false}
+                       selection/></span></Table.Cell>
                   }
                   {i == 0 && j > 0
                   && <Table.Cell><Button className='btn-reservation-calendar basic' style={{ width: '100%' }} type='button'>{dateItem}</Button></Table.Cell>

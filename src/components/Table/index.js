@@ -48,7 +48,9 @@ const TableList = ({ childProps, config, duck, ...props }) => {
           onRowButtonClick={props.onRowButtonClick}
           onRowCheckboxChange={props.onRowCheckboxChange}
           onRowClick={props.onRowClick}
-          onRowDropdownChange={props.onRowDropdownChange}/>
+          onRowDropdownChange={props.onRowDropdownChange}
+          onRowDropdownFieldChange={props.onRowDropdownFieldChange}
+          onRowTextFieldChange={props.onRowTextFieldChange}/>
 
         {
           list.pagination && list.pagination.meta.last_page && (
@@ -63,13 +65,15 @@ const TableList = ({ childProps, config, duck, ...props }) => {
 }
 
 const commonDefaultProps = {
-  config             : null,
+  config                  : null,
   // Event handlers
-  onCellClick        : () => {},
-  onRowButtonClick   : () => {},
-  onRowCheckboxChange: () => {},
-  onRowClick         : () => {},
-  onRowDropdownChange: () => {}
+  onCellClick             : () => {},
+  onRowButtonClick        : () => {},
+  onRowCheckboxChange     : () => {},
+  onRowClick              : () => {},
+  onRowDropdownChange     : () => {},
+  onRowTextFieldChange    : ()=> {},
+  onRowDropdownFieldChange: () => {}
 }
 
 TableList.defaultProps = {

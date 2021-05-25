@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Dropdown, Icon, Input, Popup } from 'semantic-ui-react'
+import { Button, Dropdown, Input, Popup, Icon } from 'semantic-ui-react'
 import _get from 'lodash/get'
 
 import FilterForm from './Filter/Form'
@@ -143,8 +143,9 @@ const TopBar = ({ config, duck, ...props }) => {
 
         <div className='right'>
           {
-            config.actions.map(({ display_name, name, ...rest }, index) => (
+            config.actions.map(({ display_name, name,basic, ...rest }, index) => (
               <Button
+                basic={basic}
                 content={display_name}
                 data-action-name={name}
                 key={index}

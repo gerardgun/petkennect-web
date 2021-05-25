@@ -12,7 +12,9 @@ const TableBody = ({ childProps, config, duck, ...props }) => {
     onRowCheckboxChange: _handleChildRowCheckboxChange,
     onRowClick: _handleChildRowClick,
     onRowDropdownChange: _handleChildRowDropdownChange,
-    onRowButtonClick: _handleChildRowButtonClick
+    onRowButtonClick: _handleChildRowButtonClick,
+    onRowTextFieldChange : _handleChildRowTextFieldChange,
+    onRowDropdownFieldChange : _handleChildRowDropdownFieldChange
   } = childProps
 
   const list = useSelector(duck.selectors.list)
@@ -34,7 +36,10 @@ const TableBody = ({ childProps, config, duck, ...props }) => {
                   onCellClick={props.onCellClick}
                   onCheckboxChange={props.onRowCheckboxChange}
                   onClick={props.onRowClick}
-                  onDropdownChange={props.onRowDropdownChange}/>
+                  onDropdownChange={props.onRowDropdownChange}
+                  onDropdownFieldChange={props.onRowDropdownFieldChange}
+                  onTextFieldChange={props.onRowTextFieldChange}/>
+
                 {
                   hasChildItems && parent.items.map((child, childIndex) => {
                     return (
@@ -45,7 +50,9 @@ const TableBody = ({ childProps, config, duck, ...props }) => {
                         onCellClick={_handleChildCellClick}
                         onCheckboxChange={_handleChildRowCheckboxChange}
                         onClick={_handleChildRowClick}
-                        onDropdownChange={_handleChildRowDropdownChange}/>
+                        onDropdownChange={_handleChildRowDropdownChange}
+                        onDropdownFieldChange={_handleChildRowDropdownFieldChange}
+                        onTextFieldChange={_handleChildRowTextFieldChange}/>
                     )
                   })
                 }
