@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
-import Menu from '@containers/setup/training/components/Menu'
+import Menu from '@containers/settings/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
 import ServiceFormModal from  './create'
 import Tab from '@containers/setup/training/general/components/Tab'

@@ -716,23 +716,23 @@ const privateRoutes = [
     component: SetupTrainingCommandIndex
   },
   {
-    path     : '/setup/training/general/group-class',
+    path     : '/setup/settings/training/group-class',
     component: SetupTrainingGeneralGroupClassIndex
   },
   {
-    path     : '/setup/training/general/group-class/session',
+    path     : '/setup/settings/training/session',
     component: SetupTrainingGeneralGroupClassSessionIndex
   },
   {
-    path     : '/setup/training/general/reservation',
+    path     : '/setup/settings/training/reservation',
     component: SetupTrainingGeneralReservationIndex
   },
   {
-    path     : '/setup/training/general/service-type',
+    path     : '/setup/settings/training/service-type',
     component: SetupTrainingGeneralServiceTypeIndex
   },
   {
-    path     : '/setup/training/general/setting',
+    path     : '/setup/settings/training',
     component: SetupTrainingGeneralSettingIndex
   },
   {

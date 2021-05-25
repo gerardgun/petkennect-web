@@ -5,23 +5,23 @@ import { Grid, Menu } from 'semantic-ui-react'
 const items = [
   {
     label: 'Settings',
-    to   : '/setup/training/general/setting'
+    to   : '/setup/settings/training'
   },
   {
     label: 'Service Types',
-    to   : '/setup/training/general/service-type'
+    to   : '/setup/settings/training/service-type'
   },
   {
     label: 'Reservations',
-    to   : '/setup/training/general/reservation'
+    to   : '/setup/settings/training/reservation'
   },
   {
     label: 'Group Classes',
-    to   : '/setup/training/general/group-class'
+    to   : '/setup/settings/training/group-class'
   },
   {
     label: 'Group Class Sessions',
-    to   : '/setup/training/general/group-class/session'
+    to   : '/setup/settings/training/session'
   }
 ]
 

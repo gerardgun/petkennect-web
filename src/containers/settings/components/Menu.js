@@ -17,7 +17,7 @@ const items = [
   },
   {
     label: 'Training Settings',
-    to   : '/setup/service/reservation/boarding-activity'
+    to   : '/setup/settings/training'
   },
   {
     label: 'Groming Settings',
