@@ -32,12 +32,16 @@ import customizedFieldDetail from './customized-field/field/detail'
 import customizedFieldGroup from './customized-field/group'
 import customizedFieldGroupDetail from './customized-field/group/detail'
 import clientPetBreed from    './pet/breed-manager-setting/client-pet-breed'
-import dashboardDaycampReservation from './dashboard/daycamp/daycamp'
-import dashboardDaycampCheckedOutReservation from './dashboard/daycamp/daycampCheckedOut'
-import dashboardDaycampCheckedInReservation from './dashboard/daycamp/daycampCheckedIn'
-import dashboardBoardingReservation from './dashboard/boarding/boarding'
-import dashboardBoardingCheckedOutReservation from './dashboard/boarding/boardingCheckedOut'
-import dashboardBoardingCheckedInReservation from './dashboard/boarding/boardingCheckedIn'
+import dashboard from './dashboard'
+import dashboardModal from './dashboard/dashboard-modal'
+import dashboardExpressCheckIn from './dashboard/express-check-in'
+import dashboardNotification from './dashboard/notification'
+import dashboardTasklist from './dashboard/tasklist'
+import dashboardCalendarFacility from './dashboard/calendar/facility'
+import dashboardCalendarStaffing from './dashboard/calendar/staffing'
+import dashboardCard from './dashboard/dashboard-card/index'
+import dashboardCardModal from './dashboard/dashboard-card/dashboard-card-modal'
+import dashboardVaccination from './dashboard/vaccination'
 import daycampCard from './pet/reservation/daycamp-card'
 import dayCareReservationBreed from    './pet/breed-manager-setting/day-care-reservation-breed'
 import daycampCardDetail from './pet/reservation/daycamp-card/detail'
@@ -236,12 +240,16 @@ export default function* rootSaga() {
     ...customizedFieldGroupDetail,
     ...dayCareReservationBreed,
     ...daycampCard,
-    ...dashboardDaycampReservation,
-    ... dashboardDaycampCheckedInReservation,
-    ...dashboardDaycampCheckedOutReservation,
-    ...dashboardBoardingReservation,
-    ... dashboardBoardingCheckedOutReservation,
-    ... dashboardBoardingCheckedInReservation,
+    ...dashboardVaccination,
+    ...dashboard,
+    ...dashboardModal,
+    ...dashboardExpressCheckIn,
+    ...dashboardNotification,
+    ...dashboardTasklist,
+    ...dashboardCalendarFacility,
+    ...dashboardCalendarStaffing,
+    ...dashboardCard,
+    ...dashboardCardModal,
     ...exampleOne,
     ...exampleTwo,
     ...petDaycampReservation,

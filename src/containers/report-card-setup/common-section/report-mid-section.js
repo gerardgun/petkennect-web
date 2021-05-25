@@ -3,12 +3,16 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import {  Grid, Header, Image, Checkbox, Input, Button, Card } from 'semantic-ui-react'
 import { Field } from 'redux-form'
+import InputColor from '@components/Common/InputColor'
 import FormField from '@components/Common/FormField'
 import ImageEditor from '@components/Common/ImageEditor'
 
 import '../styles.scss'
 const ReportMidSection = (props)=>{
-  const { duckDetail, duck, imagePathOne,imagePathTwo,reportName } = props
+  const { duckDetail, duck, imagePathOne,imagePathTwo,reportName,themeColor, textColor } = props
+
+  console.log('reportName')
+  console.log(reportName)
 
   const [ selectedImage, setSelectedImage ] = useState('first')
   const dispatch = useDispatch()
@@ -40,7 +44,7 @@ const ReportMidSection = (props)=>{
           basic
           className='mr0' color='teal' content='Preview'
           style={{ width: '200px' }}
-          to='/setup/report-sheet-setting'/>
+          to={{ pathname: '/setup/report-sheet-setting', state: { themeColor: themeColor , textColor: textColor, reportName: reportName } }}/>
       </div>
 
       <Grid  className='pt32'style={{ paddingLeft: '1.3rem' }}>
@@ -60,6 +64,48 @@ const ReportMidSection = (props)=>{
               control={Input}
               name='service_report_name'
               readOnly
+              style={{ width: '200px' }}/>
+          </Grid.Column >
+        </Grid.Row>
+
+      </Grid>
+
+      <Grid  className='pt0 mt20'style={{ paddingLeft: '1.3rem' }}>
+        <Grid.Row>
+          <Grid.Column computer={8}>
+            <Header as='h3' textAlign='justified'>
+                Theme Color
+              <Header.Subheader  style={{ marginTop: '.5rem' }}>
+              Select the theme color for the report card.
+              </Header.Subheader>
+            </Header>
+          </Grid.Column>
+          <Grid.Column computer={8} textAlign='right'>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={InputColor}
+              name='theme_color'
+              style={{ width: '200px' }}/>
+          </Grid.Column >
+        </Grid.Row>
+      </Grid>
+      <Grid  className='pt0 mt20'style={{ paddingLeft: '1.3rem' }}>
+        <Grid.Row>
+          <Grid.Column computer={8}>
+            <Header as='h3' textAlign='justified'>
+                Text Color
+              <Header.Subheader  style={{ marginTop: '.5rem' }}>
+              Select the text color for all headings of the report card.
+              </Header.Subheader>
+            </Header>
+          </Grid.Column>
+          <Grid.Column computer={8} textAlign='right'>
+            <Field
+              autoComplete='off'
+              component={FormField}
+              control={InputColor}
+              name='text_color'
               style={{ width: '200px' }}/>
           </Grid.Column >
         </Grid.Row>

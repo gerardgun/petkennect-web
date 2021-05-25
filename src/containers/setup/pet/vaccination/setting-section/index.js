@@ -32,7 +32,7 @@ const SetupPetVaccinationSettingIndex = props => {
                 <Grid.Column width='5'>
                   <Header as='h4'>
                     <p className='mb0'>Auto email notification to clients about missing/expired vaccines</p>
-                    <Header.Subheader className='ml8'>
+                    <Header.Subheader className='ml8 mt4'>
                       Enable to email vaccination reminders to clients
                     </Header.Subheader>
                   </Header>
@@ -58,7 +58,7 @@ const SetupPetVaccinationSettingIndex = props => {
                 <Grid.Column width='5'>
                   <Header as='h4'>
                     <p className='mb0'>Days prior to expiration when notification should be sent</p>
-                    <Header.Subheader className='ml8'>
+                    <Header.Subheader className='ml8 mt4'>
                       Sets the days before expiration that emails should be sent
                     </Header.Subheader>
                   </Header>
@@ -81,7 +81,7 @@ const SetupPetVaccinationSettingIndex = props => {
                 <Grid.Column width='5'>
                   <Header as='h4'>
                     <p className='mb0'>Allow clients to book online reservations with expired vaccines</p>
-                    <Header.Subheader className='ml8'>
+                    <Header.Subheader className='ml8 mt4'>
                       if enabled, clients can still book reservations online. They will be notified to
                       submit updated records and it will be documented in the system.
                     </Header.Subheader>
@@ -130,7 +130,7 @@ const SetupPetVaccinationSettingIndex = props => {
                 <Grid.Column width='5'>
                   <Header as='h4'>
                     <p className='mb0'>Customize the message to your clients when they book online with missing/expired vaccinations</p>
-                    <Header.Subheader className='ml8'>
+                    <Header.Subheader className='ml8 mt4'>
                       Enter the message for clients to receive when they submit reservations with expired or missing vaccinations.
                     </Header.Subheader>
                   </Header>

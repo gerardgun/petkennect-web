@@ -20,6 +20,8 @@ const GroomingReportSetUp = (props)=>{
   const {
     category,
     sideCategory,
+    themeColor,
+    textColor,
     handleSubmit
     // redux-form
   } = props
@@ -65,7 +67,9 @@ const GroomingReportSetUp = (props)=>{
               duckDetail={petImageDetailDuck}
               imagePathOne='/images/hydrobath.png'
               imagePathTwo='/images/Dogwash.png'
-              reportName='Grooming'/>
+              reportName='Grooming'
+              textColor={textColor}
+              themeColor={themeColor}/>
 
             <Divider className='mt32 mb28'/>
             {/* <ReportCardForm/> */}
@@ -107,12 +111,16 @@ export default compose(
       const category = formValueSelector('grooming-setup-redux-form')(state,'category')
       const sideCategory = formValueSelector('grooming-setup-redux-form')(state,'side_category')
       // const status  = formValueSelector('grooming-setup-redux-form')(state, 'option_list')
+      const themeColor  = formValueSelector('grooming-setup-redux-form')(state, 'theme_color')
+      const textColor  = formValueSelector('grooming-setup-redux-form')(state, 'text_color')
 
       return {
         DayServiceReportCardSetupDetail,
         category,
+        themeColor,
+        textColor,
         sideCategory,
-        initialValues: { service_report_name: 'Grooming' }
+        initialValues: { service_report_name: 'Grooming', theme_color: '#00AA9F18', text_color: '#000000' }
 
       }
     },

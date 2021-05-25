@@ -1,41 +1,70 @@
-import React from 'react'
-import { Container, Grid,Image } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Container, Grid, Icon } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 import Sidebar from '@components/Sidebar'
 import Appbar from '@components/Appbar'
 
-const Layout = ({ children }) => (
-  <Container fluid>
-    <Grid className='appbar-grid'>
-      <Grid.Column
-        computer={3} mobile={16} style={{ paddingBottom: 0, paddingRight: 0 }}
-        tablet={3} >
-        <Image className='logo-img' src='/images/logo.png' style={{ padding: '1.3rem' }}/>
-      </Grid.Column>
-      <Grid.Column
-        computer={13} mobile={16} style={{ paddingBottom: 0, paddingRight: 0 }}
-        tablet={13} >
-        <Appbar/>
-      </Grid.Column>
-    </Grid>
-    <Grid>
-      <Grid.Column
-        className='main-div-sidebar'
-        computer={3} mobile={16} style={{ paddingBottom: 0, paddingRight: 0,paddingTop: 0 }}
-        tablet={4}>
-        <Sidebar/>
-      </Grid.Column>
-      <Grid.Column
-        computer={13} mobile={16} style={{ paddingBottom: 0, paddingLeft: 0,paddingTop: 0 }}
-        tablet={12}>
-        <div className='app-content'>
-          {/* Content */}
-          {children}
-        </div>
+const Layout = ({ children }) => {
+  const [ hideSidebar, setHideSidebar ] = useState(true)
+  const _handleShowSidebar = () => {
+    setHideSidebar(!hideSidebar)
+  }
 
-      </Grid.Column>
-    </Grid>
-  </Container>
-)
+  return (
+    <Container fluid>
+      <Grid className='appbar-grid'>
+        <Grid.Column
+          className='p0' computer={16} mobile={16}
+          tablet={16} >
+          <Appbar/>
+        </Grid.Column>
+      </Grid>
+      <Grid>
+        {
+          hideSidebar === false ? (
+            <>
+              <Grid.Column
+                computer={16} mobile={16} style={{ paddingBottom: 0, paddingTop: 0 }}
+                tablet={16}>
+                <div style={{ 'float': 'left', width: '200px' }}>
+                  <Link className='menu-bars ml16' onClick={_handleShowSidebar} to='#'>
+                    <Icon
+                      className='mb4'
+                      name='list ul'
+                      style={{ color: '#00B5AD', fontSize: '30px', marginTop: '16px', marginBottom: '4px' }}>
+                    </Icon>
+                  </Link>
+                  <Sidebar hideSidebar={hideSidebar}/>
+                </div>
+                <div className='app-content'>
+                  {/* Content */}
+                  {children}
+                </div>
+              </Grid.Column>
+            </>
+          ) : (
+            <>
+              <Grid.Column
+                computer={16} mobile={16} style={{ paddingBottom: 0, paddingTop: 0 }}
+                tablet={16}>
+                <div style={{ 'float': 'left', width: '50px' }}>
+                  <Link className='menu-bars' onClick={_handleShowSidebar} to='#'>
+                    <Icon name='list ul' style={{ color: '#00B5AD', fontSize: '28px', marginTop: '16px', marginLeft: '8px', marginBottom: '4px' }}></Icon>
+                  </Link>
+                  <Sidebar hideSidebar={hideSidebar}/>
+                </div>
+                <div className='app-content'>
+                  {children}
+                </div>
+              </Grid.Column>
+            </>
+          )
+        }
+
+      </Grid>
+    </Container>
+  )
+}
 
 export default Layout

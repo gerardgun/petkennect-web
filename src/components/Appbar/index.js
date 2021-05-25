@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Button,Search,Container,Dropdown,Grid, Icon } from 'semantic-ui-react'
+import { Button,Search,Container,Dropdown,Grid, Icon, Image } from 'semantic-ui-react'
 
 import { getAbbreviature } from '@lib/utils/functions'
 
@@ -75,11 +75,16 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
     <Container className='appbar-items'>
       <Grid>
         <Grid.Column
-          className='appbar-searchbar' computer={12} mobile={16}
-          tablet={12}>
+          className='appbar-searchbar display-logo-search pl0' computer={8} mobile={16}
+          tablet={9}>
           {
             !auth.item.is_superadmin && (
               <>
+                <div style={{ 'float': 'left' }}>
+                  <Image
+                    className='mt4'
+                    height='65px' src='/images/petKennectTenantLogo.png'/>
+                </div>
                 <div className='search-dropdown'>
                   <Dropdown
                     onChange={_handleSearchConditionChange}
@@ -92,28 +97,57 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
                     selection
                     value={searchConditionType}/>
                   <Search
-                    input={{ icon: 'search', iconPosition: 'left' }}
+                    fluid='true' input={{ icon: 'search', iconPosition: 'left' }}
                     onResultSelect={_handleResultSelect} onSearchChange={_handleSearchInputChange} results={searchResult}/>
+                </div>
+                <div style={{ marginTop: '-12px' }}>
+                  <Image
+                    height='80px' src='/images/petKennectLogo.png'/>
                 </div>
               </>
             )
           }
         </Grid.Column>
         <Grid.Column
-          className='appbar-user-dropdown' computer={4} mobile={16}
+          computer={3} mobile={8} tablet={3}>
+          {
+            !auth.item.is_superadmin && (
+              <>
+                <div style={{ color: 'white', marginTop: '22px', display: 'flex', 'float': 'right', marginRight: '12px' }}>
+                  {/* <Icon name='clipboard list' style={{ fontSize: '20px' }}></Icon> */}
+                  <Image
+                    className='mt0'
+                    height='25px' src='/images/serviceReport.png' style={{ 'float': 'left' }}/>
+                  <span className='mt4 ml4'>Daily Service Reports</span>
+                </div>
+              </>
+            )
+          }
+        </Grid.Column>
+        <Grid.Column
+          className='appbar-user-dropdown pr0 pl0' computer={5} mobile={8}
           tablet={4}>
-          <div className='auth-session-dropdown'>
+          <div className='auth-session-dropdown' style={{ display: 'flex', 'float': 'right' }}>
             {
               !auth.item.is_superadmin && (
-                <>
+                <div className='mt8'>
+                  <Image
+                    className='mt0'
+                    height='30px' src='/images/location.png' style={{ 'float': 'left' }}/>
                   <Dropdown
+                    className='mt4 ml4'
                     onChange={_handleLocationChange}
                     options={locationItems}
+                    style={{ color: 'white' }}
                     value={auth.location}/>
-                  <Icon className='ml8' name='map marker alternate'/>
-                </>
+                </div>
               )
             }
+            <div style={{ textAlign: 'left' }}>
+              <span style={{ marginLeft: '20px', color: 'white' }}>Welcome!</span><br/>
+              <span style={{ marginLeft: '20px', color: 'white' }}>{userFullName}</span>
+            </div>
+
             <Dropdown
               className='avatar'
               icon={null}
@@ -126,7 +160,7 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
                     <div className='avatar-circle'>{userAbbrev}</div>
                   </div>
                   <div className='avatar-icon'>
-                    <Icon name={show ? 'caret up' : 'caret down'}/>
+                    <Icon name={show ? 'caret up' : 'caret down'}  style={{ color: 'white' }}/>
                   </div>
                 </div>
               )}>

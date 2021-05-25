@@ -165,3 +165,16 @@
   height: 60px !important;
 }
 
+
+.div-image-report{ 
+  .ui.image {
+      width: 100%;
+      object-fit: cover;
+  }
+}
+
+.div-image-report-slide{
+   
+    object-fit: cover !important;   
+}
+

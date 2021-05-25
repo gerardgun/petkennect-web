@@ -43,11 +43,11 @@ const ColourCodeList = () => {
             <Header as='h2'>System Icons/Codes</Header>
             <Breadcrumb className='p0'>
               <Breadcrumb.Section active>
-                <Link to='/setup'><Icon name='setting'/>Settings</Link>
+                <Link to='/setup/admin-item'><Icon name='setting'/>Settings</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider className='mh12' icon='right chevron'/>
               <Breadcrumb.Section active>
-                <Link to='/setup'>Application Settings</Link>
+                <Link to='/setup/admin-item'>Application Settings</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
               <Breadcrumb.Section active>
