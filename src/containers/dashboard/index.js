@@ -1,193 +1,192 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Grid, Header, Segment, Menu, Label, Button, Icon } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { Grid, Segment, Card, Button, Icon, Header, Input } from 'semantic-ui-react'
+import { useChangeStatusEffect } from '@hooks/Shared'
+
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
-import dashboardDaycampListConfig from '@lib/constants/list-configs/dashboard/daycamp/daycamp'
-import dashboardDaycampCheckedInListConfig from '@lib/constants/list-configs/dashboard/daycamp/daycampCheckedIn'
-import dashboardDaycampCheckedOutListConfig from '@lib/constants/list-configs/dashboard/daycamp/daycampCheckedOut'
-import dashboardBoardingListConfig from '@lib/constants/list-configs/dashboard/boarding/boarding'
-import dashboardBoardingCheckedOutListConfig from '@lib/constants/list-configs/dashboard/boarding/boardingCheckedOut'
-import dashboardBoardingCheckedInListConfig from '@lib/constants/list-configs/dashboard/boarding/boardingCheckedIn'
-import exampleOneListConfig from '@lib/constants/list-configs/example/one'
-import exampleTwoListConfig from '@lib/constants/list-configs/example/two'
+import DayCardTemplate from './day-card'
+import Second from './second'
+import VaccinationForm from './vaccination-modal'
+import ExpressCheckInForm from './express-check-in'
 
-import dayCampDashboardDuck from '@reducers/dashboard/daycamp'
-import daycampDashboardCheckedInDuck  from '@reducers/dashboard/daycamp/daycampCheckedIn'
-import daycampDashboardCheckedOutDuck  from '@reducers/dashboard/daycamp/daycampCheckedOut'
-import boardingDashboardDuck from '@reducers/dashboard/boarding'
-import boardingDashboardCheckedInDuck  from '@reducers/dashboard/boarding/boardingCheckedIn'
-import boardingDashboardCheckedOutDuck  from '@reducers/dashboard/boarding/boardingCheckedOut'
-import exampleOneDuck from '@reducers/example/one'
-import exampleTwoDuck from '@reducers/example/two'
+import dashboardListConfig from '@lib/constants/list-configs/dashboard'
+import dashboardDuck from '@reducers/dashboard'
+import dashboardModalDetailDuck from '@reducers/dashboard/dashboard-modal/detail'
+import clientDetailDuck from '@reducers/client/detail'
+
+import NewClientForm from '../client/form/modal'
+import DashboardModal from './modal'
 
 import './dashboard.scss'
 
-const Dashboard = ({ ...props }) => {
-  useEffect(() => {
-    props.getdayCampReservation()
-    props.getdayCampCheckedInReservation()
-    props.getdayCampCheckedOutReservation()
-    props.getBoardingReservation()
-    props.getBoardingCheckedOutReservation()
-    props.getBoardingCheckedInReservation()
+const Dashboard = (props) => {
+  useChangeStatusEffect(props.dashboardModalDetail.status)
+  useChangeStatusEffect(props.clientDetail.status)
+  const [ tbFilter,setTbFilter ] = useState('All')
+  const [ outerFilter, setOuterFilter ] = useState('expected')
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(dashboardDuck.creators.get())
+  },[])
 
-    props.getExampleOne()
-    props.getExampleTwo()
-  }, [])
+  useEffect(()=>{
+    dispatch(dashboardDuck.creators.get({ search: tbFilter }))
+  },[ tbFilter ])
 
-  const _handleExampleOneRowBtnClick = (button, item) => {
-    if(button === 'delete')
-      alert(`Delete record with id ${item.id}`)
-    else if(button === 'edit')
-      alert(`Edit record with id ${item.id}`)
-    else if(button === 'show')
-      alert(`Show record with id ${item.id}`)
+  const history = useHistory()
+
+  const _handleOpenModal = () => {
+    props.setItem(null,'READ')
   }
 
-  const _handleExampleTwoRowBtnClick = (button, item) => {
-    if(button === 'delete')
-      alert(`Delete record with id ${item.id}`)
-    else if(button === 'edit')
-      alert(`Edit record with id ${item.id}`)
+  const _handleButtonClick = (Button,item)=>{
+    console.log(Button)
+    console.log(item)
+  }
+  const _handleDropdownOptionClick = (option,item) => {
+    console.log(option)
+    console.log(item)
   }
 
-  let today = new Date()
-  const date = (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getFullYear()
+  const _handleNewClient = () => {
+    props.setNewClient(null,'CREATE')
+  }
+  const _handleNewBooking = () => {
+    history.push({
+      pathname: `/client/${14}`,
+      state   : { option: 'reserves' }
+    })
+  }
+  const _handleRetailSale = () => {
+    //
+  }
 
-  return (<>
-    <Layout>
-      <Segment className='segment-content segment-padding'>
-        <Grid>
-          <Grid.Column
-            computer={6} mobile={9} tablet={12}><h3><Icon className='chart bar outline'></Icon>Dashboard : {date}</h3></Grid.Column>
-          <Grid.Column
-            className='ui-grid-align'
-            computer={10} mobile={9} tablet={12}>
-            <Button color='teal' content='Filters'/>
-          </Grid.Column>
-        </Grid>
-
-        <Grid>
-          <Grid.Row columns={3}>
-            <Grid.Column className='table-column'>
-              <Segment className='table-segment table-heading-padding'>
-                <Menu.Item className='menu-info'>
-                  <Grid>
-                    <Grid.Row columns={2}>
-                      <Grid.Column>DayCamp/Fitness</Grid.Column>
-                      <Grid.Column className='count-label heading-align'>Booked Reservations<Label>{4}</Label></Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                </Menu.Item>
-                <Table config={dashboardDaycampListConfig} duck={dayCampDashboardDuck}/>
-              </Segment>
-            </Grid.Column>
-
-            <Grid.Column className='table-column'>
-              <Segment  className='table-segment table-heading-padding'>
-                <Menu.Item className='menu-info count-label'>Checked In<Label>{3}</Label></Menu.Item>
-                <Table config={dashboardDaycampCheckedInListConfig} duck={daycampDashboardCheckedInDuck}/>
-              </Segment>
-            </Grid.Column>
-
-            <Grid.Column>
-              <Segment className='table-segment table-heading-padding'>
-                <Menu.Item className='menu-info count-label'>Checked Out<Label>{2}</Label></Menu.Item>
-                <Table config={dashboardDaycampCheckedOutListConfig} duck={daycampDashboardCheckedOutDuck}/>
-              </Segment>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-
-        <Grid>
-          <Grid.Row columns={3}>
-            <Grid.Column className='table-column'>
-              <Segment className='table-segment table-heading-padding'>
-                <Menu.Item className='menu-info'>
-                  <Grid>
-                    <Grid.Row columns={2}>
-                      <Grid.Column>Boarding</Grid.Column>
-                      <Grid.Column className='count-label heading-align'>Check Ins<Label>{2}</Label></Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                </Menu.Item>
-                <div style={{ width: '100%', overflow: 'auto' }}>
-                  <Table config={dashboardBoardingListConfig} duck={boardingDashboardDuck}/>
+  return (
+    <>
+      <Layout>
+        <Segment className='segment-dashboard-content pt0 pb0'>
+          <Grid className='mt0'  style={{ 'margin-bottom': '2.2rem' }}>
+            <Grid.Column
+              className='pb8'
+              computer={16} mobile={16} tablet={16}>
+              <Header as='h2'>The Daily Dashboard</Header>
+            </Grid.Column >
+          </Grid>
+          <Button
+            className='mb4' color={outerFilter === 'expected' ? 'teal' : ''}
+            content='Expected : 45'
+            onClick={()=>setOuterFilter('expected')}/>
+          <Button
+            className='mb4' color={outerFilter === 'checkIn' ? 'teal' : ''}
+            content='Checked In : 30'
+            onClick={()=>setOuterFilter('checkIn')}/>
+          <Button
+            className='mb4' color={outerFilter === 'checkOut' ? 'teal' : ''}
+            content='Checked Out : 15'
+            onClick={()=>setOuterFilter('checkOut')}/>
+          <Grid>
+            <Grid.Column computer={10}>
+              <Card fluid  style={{ height: '620px' }}>
+                <div className='flex justify-between align-center dsb-table-hd'>
+                  <Input
+                    icon='search' iconPosition='left' onChange=''
+                    placeholder='Search by pet' style={{ width: '160px' }} type='search'/>
+                  <div className='flex align-center'>
+                    <Header className='filter-text dsb-selected-h' content='Filter By:'/>
+                    <Header
+                      as={Link} className={tbFilter === 'All' ? 'filter-text dsb-selected-h'
+                        : 'filter-text dsb-un-selected-h'} content='All'
+                      onClick={()=>{setTbFilter('All')}}/> |
+                    <Header
+                      as={Link} className={tbFilter === 'Boarding' ? 'filter-text dsb-selected-h ml4'
+                        : 'filter-text dsb-un-selected-h ml4'} content='Boarding: 10'
+                      onClick={()=>{setTbFilter('Boarding')}}/> |
+                    <Header
+                      as={Link} className={tbFilter === 'Day Care' ? 'filter-text dsb-selected-h ml4'
+                        : 'filter-text dsb-un-selected-h ml4'} content='Day Care: 25'
+                      onClick={()=>{setTbFilter('Day Care')}}/> |
+                    <Header
+                      as={Link} className={tbFilter === 'Training' ? 'filter-text dsb-selected-h ml4'
+                        : 'filter-text dsb-un-selected-h ml4'} content='Training: 5'
+                      onClick={()=>{setTbFilter('Training')}}/> |
+                    <Header
+                      as={Link} className={tbFilter === 'Grooming' ? 'filter-text dsb-selected-h ml4'
+                        : 'filter-text dsb-un-selected-h ml4'} content='Grooming: 5'
+                      onClick={()=>{setTbFilter('Grooming')}}/>
+                  </div>
+                  <div className='hide-button-shdow'>
+                    <Button
+                      basic color='blue' icon='expand arrows alternate'
+                      onClick={_handleOpenModal}/>
+                  </div>
                 </div>
-              </Segment>
+                <div className='dashboard-table mt8 ml8'>
+                  <Table
+                    config={dashboardListConfig} duck={dashboardDuck}
+                    onActionClick={_handleOpenModal}
+                    onRowButtonClick={_handleButtonClick}
+                    onRowDropdownChange={_handleDropdownOptionClick}/>
+                </div>
+              </Card>
             </Grid.Column>
-
-            <Grid.Column className='table-column'>
-              <Segment  className='table-segment table-heading-padding'>
-                <Menu.Item className='menu-info count-label'>Check Outs<Label>{1}</Label></Menu.Item>
-                <Table config={dashboardBoardingCheckedOutListConfig} duck={boardingDashboardCheckedOutDuck}/>
-              </Segment>
+            <Grid.Column className='pl0' computer={6}>
+              <DayCardTemplate/>
+              <ExpressCheckInForm/>
+              <div className='flex align-center justify-between pt8'>
+                <Button
+                  circular className='circle-ds' color='teal'
+                  onClick={_handleNewClient}>
+                  <Icon className='ml12' name='user' size='big'/>
+                  <label className='circle-label-ds'>
+                    <span>New</span><br/>
+                    <span>Client</span>
+                  </label>
+                </Button>
+                <Button
+                  circular className='circle-ds' color='teal'
+                  onClick={_handleNewBooking}>
+                  <Icon className='ml12' name='calendar alternate outline' size='big'/>
+                  <label className='circle-label-ds'>
+                    <span>New</span><br/>
+                    <span>Booking</span>
+                  </label>
+                </Button>
+                <Button
+                  circular className='circle-ds' color='teal'
+                  onClick={_handleRetailSale}>
+                  <Icon className='ml4' name='money bill alternate outline' size='big'/>
+                  <label className='circle-label-ds'>
+                    <span>Retail</span><br/>
+                    <span>Sale</span>
+                  </label>
+                </Button>
+              </div>
             </Grid.Column>
+          </Grid>
+          <Second/>
+        </Segment>
+      </Layout>
 
-            <Grid.Column>
-              <Segment className='table-segment table-heading-padding'>
-                <Menu.Item className='menu-info count-label'>In Boarding<Label>{2}</Label></Menu.Item>
-                <Table config={dashboardBoardingCheckedInListConfig} duck={boardingDashboardCheckedInDuck}/>
-              </Segment>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-
-        <br/>
-        <br/>
-
-        <Grid className='segment-content-header' columns={2}>
-          <Grid.Column computer={4} mobile={10} tablet={4}>
-            <Header as='h2'>Example One</Header>
-          </Grid.Column>
-          <Grid.Column
-            className='ui-grid-align'
-            computer={12} mobile={9} tablet={12}>
-            <Button color='teal' content='Add Breed'/>
-          </Grid.Column>
-        </Grid>
-
-        <Table config={exampleOneListConfig} duck={exampleOneDuck} onRowButtonClick={_handleExampleOneRowBtnClick}/>
-
-        <br/>
-        <br/>
-
-        <Grid className='segment-content-header' columns={2}>
-          <Grid.Column computer={4} mobile={10} tablet={4}>
-            <Header as='h2'>Example Two</Header>
-          </Grid.Column>
-          <Grid.Column
-            className='ui-grid-align'
-            computer={12} mobile={9} tablet={12}>
-            <Button color='teal' content='Add Rating'/>
-          </Grid.Column>
-        </Grid>
-
-        <Table config={exampleTwoListConfig} duck={exampleTwoDuck} onRowButtonClick={_handleExampleTwoRowBtnClick}/>
-
-      </Segment>
-    </Layout>
-  </>
-
+      <VaccinationForm/>
+      <DashboardModal/>
+      <NewClientForm/>
+    </>
   )
 }
 
 export default compose(
   connect(
-    (state) => ({
-      dayCampDashboard: dayCampDashboardDuck.selectors.list(state)
-    }),
-    {
-      getExampleOne                   : exampleOneDuck.creators.get,
-      getExampleTwo                   : exampleTwoDuck.creators.get,
-      getdayCampReservation           : dayCampDashboardDuck.creators.get,
-      getdayCampCheckedInReservation  : daycampDashboardCheckedInDuck.creators.get,
-      getdayCampCheckedOutReservation : daycampDashboardCheckedOutDuck.creators.get,
-      getBoardingReservation          : boardingDashboardDuck.creators.get,
-      getBoardingCheckedOutReservation: boardingDashboardCheckedOutDuck.creators.get,
-      getBoardingCheckedInReservation : boardingDashboardCheckedInDuck.creators.get
-    }
-  )
+    state => ({
+      clientDetail        : clientDetailDuck.selectors.detail(state),
+      dashboardModalDetail: dashboardModalDetailDuck.selectors.detail(state)
+    }), {
+      setItem     : dashboardModalDetailDuck.creators.setItem,
+      setNewClient: clientDetailDuck.creators.setItem
+    })
 )(Dashboard)
+

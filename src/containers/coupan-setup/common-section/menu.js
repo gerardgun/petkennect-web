@@ -28,15 +28,15 @@ const Menu = ()=>{
         {/* <hr></hr> */}
         <Breadcrumb className='p0'>
           <Breadcrumb.Section active>
-            <Link to='/setup'><Icon name='setting'/>Settings</Link>
+            <Link to='/setup/admin-item'><Icon name='setting'/>Settings</Link>
           </Breadcrumb.Section>
           <Breadcrumb.Divider className='mh12' icon='right chevron'/>
           <Breadcrumb.Section active>
-            <Link to='/setup'>Financial</Link>
+            <Link to='/setup/service-setting'>Financial</Link>
           </Breadcrumb.Section>
           <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
           <Breadcrumb.Section active>
-            <Link to='/setup/coupan-setup/invoice-setting'>Coupons</Link>
+            <Link to='/setup/service-setting'>Coupons</Link>
           </Breadcrumb.Section>
         </Breadcrumb>
 

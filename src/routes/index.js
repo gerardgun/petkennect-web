@@ -21,7 +21,7 @@ import ColorCode from '@containers/color-code'
 import BehaviorTagSetting from '@containers/behavior-tag-setting'
 import BookingSheetSetting from '@containers/booking-sheet-setting'
 import BreedManagerSetting from '@containers/breed-manager-setting'
-// import Dashboard from '@containers/dashboard'
+import Dashboard from '@containers/dashboard'
 import DayCampForm from '@containers/day-camp-form'
 import Client from '@containers/client'
 import ClientShow from '@containers/client/show'
@@ -177,6 +177,7 @@ import SetupServiceReservationGroupClassIndex from '@containers/setup/service/re
 import SetupServiceReservationGroupClassSessionIndex from '@containers/setup/service/reservation/group-class/session'
 
 // Settings / Training
+// import SetupTrainingIndex from '@containers/setup/training'
 import SetupTrainingCommandIndex from '@containers/setup/training/command'
 import SetupTrainingMethodIndex from '@containers/setup/training/method'
 import SetupTrainingRatingKeyIndex from '@containers/setup/training/rating-key'
@@ -334,13 +335,9 @@ const privateRoutes = [
     path     : '/setup/customized-field',
     component: CustomizedField
   },
-  // {
-  //   path     : '/dashboard',
-  //   component: Dashboard
-  // },
   {
     path     : '/dashboard',
-    component: Client
+    component: Dashboard
   },
   {
     path     : '/setup/payment-method',

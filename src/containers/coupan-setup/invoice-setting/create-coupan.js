@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-handler-names */
-import React, { useMemo,useEffect } from 'react'
+import React, { useState, useMemo,useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import {  useDispatch } from 'react-redux'
 import { Button, Modal ,Grid, Header, Form, Select, Input, Checkbox } from 'semantic-ui-react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, formValueSelector, reduxForm } from 'redux-form'
 import * as Yup from 'yup'
 import { syncValidate } from '@lib/utils/functions'
 import FormField from '@components/Common/FormField'
@@ -16,6 +16,7 @@ const CreateCouponForm = (props)=>{
   const {
     locationList,
     serviceList,
+    reusable,
     error,
     handleSubmit,
     reset,
@@ -27,6 +28,9 @@ const CreateCouponForm = (props)=>{
     if(serviceList.items.length === 0) props.getServices()
   },[])
 
+  const [ discountType,setDiscountType ] = useState('percent')
+  const [ reusableCoupon,setReusableCoupon ] = useState(false)
+  const [ onlyNewCustomerC,setOnlyNewCustomerC ] = useState(false)
   const dispatch = useDispatch()
   const _handleClose = () =>{
     props.reset()
@@ -37,6 +41,26 @@ const CreateCouponForm = (props)=>{
   const isUpdating = Boolean(couponDetail.item.id)
   const _handleSubmit = ()=> {
     _handleClose()
+  }
+
+  const _handleToggleChange = (type)=>{
+    if(type == 'reusable')
+      if(reusable == true) {
+        setReusableCoupon(!reusableCoupon)
+        setOnlyNewCustomerC(false)
+      }
+      else {
+        setReusableCoupon(!reusableCoupon)
+      }
+
+    else if(type == 'by_new_customer')
+      if(reusable == true) {
+        setOnlyNewCustomerC(!onlyNewCustomerC)
+        setReusableCoupon(false)
+      }
+      else {
+        setOnlyNewCustomerC(!onlyNewCustomerC)
+      }
   }
 
   return (
@@ -108,20 +132,28 @@ const CreateCouponForm = (props)=>{
           <Header as='h4' color='teal' content='Discount Type'/>
           <Grid>
             <Grid.Column className='type-div mb16'computer={8}>
-              <Button color='blue' content='PERCENT OFF' type='button'/>
+              <Button
+                color={discountType === 'percent' ? 'blue' : ''}
+                content='PERCENT OFF'
+                onClick={()=>{setDiscountType('percent')}} type='button'/>
               <Field
                 component={FormField}
                 control={Input}
-                name='discount_value'
-                placeholder='Enter Percent'/>
+                name='discount_value_percent'
+                placeholder='Enter Percent'
+                type='number'/>
             </Grid.Column>
             <Grid.Column  className='type-div' computer={8}>
-              <Button content='DOLLARS OFF' type='button'/>
+              <Button
+                color={discountType === 'dollar' ? 'blue' : ''}
+                content='DOLLARS OFF'
+                onClick={()=>{setDiscountType('dollar')}} type='button'/>
               <Field
                 component={FormField}
                 control={Input}
-                name='discount_value'
-                placeholder='Enter Dollars'/>
+                name='discount_value_dollar'
+                placeholder='Enter Dollars'
+                type='number'/>
             </Grid.Column>
           </Grid>
           <Header
@@ -199,10 +231,12 @@ const CreateCouponForm = (props)=>{
                 <div  className='check-toggle'>
 
                   <Field
+                    checked={reusableCoupon}
                     component={FormField}
                     control={Checkbox}
                     format={Boolean}
                     name='reusable'
+                    onChange={()=>{_handleToggleChange('reusable')}}
                     toggle
                     type='checkbox'/>
                 </div>
@@ -220,10 +254,12 @@ const CreateCouponForm = (props)=>{
                 <div  className='check-toggle'>
 
                   <Field
+                    checked={onlyNewCustomerC}
                     component={FormField}
                     control={Checkbox}
                     format={Boolean}
                     name='by_new_customer'
+                    onChange={()=>{_handleToggleChange('by_new_customer')}}
                     toggle
                     type='checkbox'/>
                 </div>
@@ -290,9 +326,13 @@ export default compose(
   connect(
     (state) => {
       const couponDetail = coupanDetailDuck .selectors.detail(state)
+      const reusable = formValueSelector('report-card-redux-form')(state,'reusable')
+      const byNewCustomer = formValueSelector('report-card-redux-form')(state,'by_new_customer')
 
       return {
         couponDetail,
+        reusable,
+        byNewCustomer,
         locationList : locatioDuck.selectors.list(state),
         serviceList  : serviceDuck.selectors.list(state),
         initialValues: { ...couponDetail.item }

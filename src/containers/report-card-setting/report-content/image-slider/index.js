@@ -31,20 +31,20 @@ const Slider = (props) => {
               showThumbs={false} swipeable={true}>
 
               <div className='pl0 pr12 pt20 pb20'>
-                <img height='220px' src='/images/dogboarding.png'/>
+                <img className='div-image-report-slide' height='220px'  src='/images/dogboarding.png'/>
               </div>
               <div className='pl12 pr8 pt20 pb20'>
                 {/* {props.pets.items.find((_) => _.id === 79) && props.pets.items.find((_) => _.id === 79).image_filepath} */}
-                <img height='220px' src='/images/DogDaycare_Color.png'/>
+                <img className='div-image-report-slide' height='220px' src='/images/DogDaycare_Color.png'/>
               </div>
               <div className='pl12 pr8 pt20 pb20'>
-                <img height='220px' src='/images/hydrobath.png'/>
+                <img className='div-image-report-slide' height='220px' src='/images/hydrobath.png'/>
               </div>
               <div className='pl12 pr8 pt20 pb20'>
                 <img height='220px' src={defaultImageUrl}/>
               </div>
               <div className='pl12 pr0 pt20 pb20 '>
-                <img height='220px' src={defaultImageUrl}/>
+                <img className='div-image-report-slide' height='220px' src={defaultImageUrl}/>
               </div>
             </Carousel>
           </div>

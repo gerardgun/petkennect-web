@@ -19,6 +19,8 @@ import '../styles.scss'
 const DayServiceReportSetUp = (props)=>{
   const {
     category,
+    themeColor,
+    textColor,
     sideCategory,
     handleSubmit
     // redux-form
@@ -77,7 +79,9 @@ const DayServiceReportSetUp = (props)=>{
               duckDetail={petImageDetailDuck}
               imagePathOne='/images/DogDaycare_Color.png'
               imagePathTwo='/images/DayService_Silohutee.jpg'
-              reportName='Day Camp'/>
+              reportName='Day Camp'
+              textColor={textColor}
+              themeColor={themeColor}/>
 
             <Divider className='mt32 mb28'/>
             {/* <ReportCardForm/> */}
@@ -118,13 +122,18 @@ export default compose(
       const DayServiceReportCardSetupDetail = DayServiceReportCardSetupDetailDuck.selectors.detail(state)
       const category = formValueSelector('day-setup-redux-form')(state,'category')
       const sideCategory = formValueSelector('day-setup-redux-form')(state,'side_category')
+      // const themeColor = formValueSelector('day-setup-redux-form')(state,'themeColor')
       // const status  = formValueSelector('day-setup-redux-form')(state, 'option_list')
+      const themeColor  = formValueSelector('day-setup-redux-form')(state, 'theme_color')
+      const textColor  = formValueSelector('day-setup-redux-form')(state, 'text_color')
 
       return {
         DayServiceReportCardSetupDetail,
         category,
+        themeColor,
+        textColor,
         sideCategory,
-        initialValues: { service_report_name: 'Day Camp' }
+        initialValues: { service_report_name: 'Day Camp', theme_color: '#00AA9F18', text_color: '#000000' }
 
       }
     },

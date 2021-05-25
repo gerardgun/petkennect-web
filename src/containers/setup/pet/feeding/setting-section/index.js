@@ -38,7 +38,7 @@ const SetupPetFeedingSettingIndex = props => {
                 <Grid.Column width='5'>
                   <Header as='h4'>
                     <p className='mb0'>Do you charge for bagging owner supplied food?</p>
-                    <Header.Subheader className='ml8'>
+                    <Header.Subheader className='ml8 mt4'>
                       Select the appropriate setting for food bagging charges.
                     </Header.Subheader>
                   </Header>
@@ -81,7 +81,7 @@ const SetupPetFeedingSettingIndex = props => {
                                 : chargesType === 'perMeal' ? 'Enter the Charge Per Meal, Per Dog' : 'Enter the Charge Per Bag'
                             }
                           </p>
-                          <Header.Subheader className='ml8'>
+                          <Header.Subheader className='ml8 mt4'>
                             Enter the value to charge.
                           </Header.Subheader>
                         </Header>

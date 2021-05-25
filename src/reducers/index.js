@@ -52,13 +52,28 @@ import customizedFieldDetail from '@reducers/customized-field/field/detail'
 import customizedFieldGroup from '@reducers/customized-field/group'
 import customizedFieldGroupDetail from '@reducers/customized-field/group/detail'
 
-import dashboardDaycamp from '@reducers/dashboard/daycamp'
-import dashboardDaycampCheckedIn from '@reducers/dashboard/daycamp/daycampCheckedIn'
-import dashboardDaycampCheckedOut from '@reducers/dashboard/daycamp/daycampCheckedOut'
-
-import dashboardBoarding from '@reducers/dashboard/boarding'
-import dashboardBoardingCheckedIn from '@reducers/dashboard/boarding/boardingCheckedIn'
-import dashboardBoardingCheckedOut from '@reducers/dashboard/boarding/boardingCheckedOut'
+import dashboard from '@reducers/dashboard'
+import dashboardDetail from '@reducers/dashboard/detail'
+import dashboardModal from '@reducers/dashboard/dashboard-modal'
+import dashboardModalDetail from '@reducers/dashboard/dashboard-modal/detail'
+import dashboardExpressCheckIn from '@reducers/dashboard/express-check-in'
+import dashboardExpressCheckInDetail from '@reducers/dashboard/express-check-in/detail'
+import dashboardNotification from '@reducers/dashboard/notification'
+import dashboardNotificationDetail from '@reducers/dashboard/notification/detail'
+import dashboardTasklist from '@reducers/dashboard/tasklist'
+import dashboardTasklistDetail from '@reducers/dashboard/tasklist/detail'
+import dashboardCalendar from '@reducers/dashboard/calendar'
+import dashboardCalendarDetail from '@reducers/dashboard/calendar/detail'
+import dashboardCalendarFacility from '@reducers/dashboard/calendar/facility'
+import dashboardCalendarFacilityDetail from '@reducers/dashboard/calendar/facility/detail'
+import dashboardCalendarStaffing from '@reducers/dashboard/calendar/staffing'
+import dashboardCalendarStaffingDetail from '@reducers/dashboard/calendar/staffing/detail'
+import dashboardVaccination from '@reducers/dashboard/vaccination'
+import dashboardVaccinationDetail from '@reducers/dashboard/vaccination/detail'
+import dashboardCard from '@reducers/dashboard-card'
+import dashboardCardDetail from '@reducers/dashboard-card/detail'
+import dashboardCardModal from '@reducers/dashboard-card/dashboard-card-modal'
+import dashboardCardModalDetail from '@reducers/dashboard-card/dashboard-card-modal/detail'
 
 import daycampCard from '@reducers/pet/reservation/daycamp-card'
 import daycampCardDetail from '@reducers/pet/reservation/daycamp-card/detail'
@@ -302,10 +317,6 @@ const createRootReducer = history => combineReducers({
   [clientEmailMessageDetail.store]                         : clientEmailMessageDetail.reducer,
   [company.store]                                          : company.reducer,
   [companyDetail.store]                                    : companyDetail.reducer,
-  [coupanInvoice.store]                                    : coupanInvoice.reducer,
-  [coupanInvoiceDetail.store]                              : coupanInvoiceDetail.reducer,
-  [couponUsage.store]                                      : couponUsage.reducer,
-  [couponUsageDetail.store]                                : couponUsageDetail.reducer,
   [customReport.store]                                     : customReport.reducer,
   [customReportDetail.store]                               : customReportDetail.reducer                ,
   [customized.store]                                       : customized.reducer,
@@ -329,12 +340,28 @@ const createRootReducer = history => combineReducers({
   [boardingReservationAddonFeeding.store]                  : boardingReservationAddonFeeding.reducer,
   [boardingPrepaidUsage.store]                             : boardingPrepaidUsage.reducer,
   [boardingReservationUsage.store]                         : boardingReservationUsage.reducer,
-  [dashboardDaycamp.store]                                 : dashboardDaycamp.reducer,    // dashboard
-  [dashboardDaycampCheckedIn.store]                        : dashboardDaycampCheckedIn.reducer,
-  [dashboardDaycampCheckedOut.store]                       : dashboardDaycampCheckedOut.reducer,
-  [dashboardBoarding.store]                                : dashboardBoarding.reducer,    // dashboard
-  [dashboardBoardingCheckedIn.store]                       : dashboardBoardingCheckedIn.reducer,
-  [dashboardBoardingCheckedOut.store]                      : dashboardBoardingCheckedOut.reducer,
+  [dashboard.store]                                        : dashboard.reducer,
+  [dashboardDetail.store]                                  : dashboardDetail.reducer,
+  [dashboardModal.store]                                   : dashboardModal.reducer,
+  [dashboardModalDetail.store]                             : dashboardModalDetail.reducer,
+  [dashboardExpressCheckIn.store]                          : dashboardExpressCheckIn.reducer,
+  [dashboardExpressCheckInDetail.store]                    : dashboardExpressCheckInDetail.reducer,
+  [dashboardNotification.store]                            : dashboardNotification.reducer,
+  [dashboardNotificationDetail.store]                      : dashboardNotificationDetail.reducer,
+  [dashboardTasklist.store]                                : dashboardTasklist.reducer,
+  [dashboardTasklistDetail.store]                          : dashboardTasklistDetail.reducer,
+  [dashboardCalendar.store]                                : dashboardCalendar.reducer,
+  [dashboardCalendarDetail.store]                          : dashboardCalendarDetail.reducer,
+  [dashboardCalendarFacility.store]                        : dashboardCalendarFacility.reducer,
+  [dashboardCalendarFacilityDetail.store]                  : dashboardCalendarFacilityDetail.reducer,
+  [dashboardCalendarStaffing.store]                        : dashboardCalendarStaffing.reducer,
+  [dashboardCalendarStaffingDetail.store]                  : dashboardCalendarStaffingDetail.reducer,
+  [dashboardVaccination.store]                             : dashboardVaccination.reducer,
+  [dashboardVaccinationDetail.store]                       : dashboardVaccinationDetail.reducer,
+  [dashboardCard.store]                                    : dashboardCard.reducer,
+  [dashboardCardDetail.store]                              : dashboardCardDetail.reducer,
+  [dashboardCardModal.store]                               : dashboardCardModal.reducer,
+  [dashboardCardModalDetail.store]                         : dashboardCardModalDetail.reducer,
   [groomingReservation.store]                              : groomingReservation.reducer,
   [groomingReservationDetail.store]                        : groomingReservationDetail.reducer,
   [groomingPackage.store]                                  : groomingPackage.reducer,

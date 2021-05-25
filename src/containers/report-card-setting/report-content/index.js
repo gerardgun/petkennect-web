@@ -36,7 +36,7 @@ const Content = (props) => {
         <Grid className='mb12'>
           <Grid.Column className='content-align content-header' style={{ color: props.textColor }} width={16}>
             <span style={{ fontSize: '40px' }}><b>LALA GLOVER</b></span>
-            <span style={{ fontSize: '18px', marginTop: '12px' }}><b>Day Camp Report Card</b></span>
+            <span style={{ fontSize: '18px', marginTop: '12px' }}><b>{props.reportName} Report Card</b></span>
             <span style={{ fontSize: '18px', marginTop: '10px' }}><b>04/20/2021</b></span>
           </Grid.Column>
         </Grid>
