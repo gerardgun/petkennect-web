@@ -170,6 +170,7 @@ import SetupGroomingGeneralSettingIndex from '@containers/setup/grooming/general
 // Settings / Services
 import SetupServiceGroupIndex from '@containers/setup/service/group'
 import SetupServiceTypeIndex from '@containers/setup/service/type'
+import SettingsServiceIndex from '@containers/settings/type'
 import SetupServiceReservationIndex from '@containers/setup/service/reservation'
 import SetupServiceReservationBoardingActivityIndex from '@containers/setup/service/reservation/boarding-activity'
 import SetupServiceReservationGroupClassIndex from '@containers/setup/service/reservation/group-class'
@@ -701,6 +702,10 @@ const privateRoutes = [
   {
     path     : '/setup/service/type',
     component: SetupServiceTypeIndex
+  },
+  {
+    path     : '/setup/settings',
+    component: SettingsServiceIndex
   },
   {
     path     : '/setup/service/reservation',

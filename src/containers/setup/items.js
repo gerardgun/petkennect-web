@@ -109,6 +109,10 @@ export default [
         to  : '/setup/service/type'
       },
       {
+        name: 'Service Settings',
+        to  : '/setup/settings'
+      },
+      {
         name: 'Boarding',
         to  : '/setup/boarding/pricing'
       },
