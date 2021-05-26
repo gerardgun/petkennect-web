@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
 import { Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea } from 'semantic-ui-react'
@@ -9,9 +9,11 @@ import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/settings/components/Menu'
 import Tab from '@containers/setup/boarding/general/components/Tab'
+import SetupBoardingGeneralBelongingIndex from '@containers/setup/boarding/general/belonging-section'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 const SetupBoardingGeneralSettingIndex = props => {
+  const[showTable, setShowTable]=useState(false)
   const {
     error, handleSubmit // redux-form
   } = props
@@ -26,41 +28,10 @@ const SetupBoardingGeneralSettingIndex = props => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Menu/>
-
-        <Tab>
           {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onSubmit={handleSubmit(_handleSubmit)}>
 
-            <Header as='h4' color='teal'>Boarding Types and Reservations Settings</Header>
-
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='7'>
-                  <Header as='h4'>
-                    <p>Enable Boarding Service Types Filter</p>
-                    <Header.Subheader>
-                      Tip: Types are not required but simplify reservations offered for ex: 3 boarding types.
-                      Could exist with 5 reservations each allowing for 15 possibilities. Filtering by type,
-                      the list is limited to only 5 options.
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column textAlign='center' width='4'>
-                  <Field
-                    component={FormField}
-                    control={Checkbox}
-                    format={Boolean}
-                    name='enable_service_type_filter'
-                    toggle
-                    type='checkbox'/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-            
-
             <Header as='h4' color='teal'>Reservation Settings</Header>
-
-            <Divider className='mt20'/>
 
             {/* Check In questions */}
             <Grid style={{ padding: '1rem' }}>
@@ -138,7 +109,7 @@ const SetupBoardingGeneralSettingIndex = props => {
               <Grid.Row>
                 <Grid.Column width='7'>
                   <Header as='h4'>
-                    <p>Enable Photo upload for belongigs?</p>
+                    <p>Enable Photo upload for belongings?</p>
                   </Header>
                 </Grid.Column>
                 <Grid.Column textAlign='center' width='4'>
@@ -157,7 +128,7 @@ const SetupBoardingGeneralSettingIndex = props => {
               <Grid.Row>
                 <Grid.Column width='7'>
                   <Header as='h4'>
-                    <p>Add Belongigs Areas to a drop down list.</p>
+                    <p>Add Belongings Areas to a drop down list.</p>
                   </Header>
                 </Grid.Column>
                 <Grid.Column textAlign='center' width='4'>
@@ -167,38 +138,12 @@ const SetupBoardingGeneralSettingIndex = props => {
                     format={Boolean}
                     name='add_belongig_areas_to_dropdown '
                     toggle
-                    type='checkbox'/>
+                    type='checkbox'
+                    onChange={(event)=> setShowTable(event)}/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-
-            <Header as='h4' color='teal'>Multiple Location Setup</Header>
-
-            <Divider className='mt20'/>
-
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='7'>
-                  <Header as='h4'>
-                    <p>Enable Multiple Location Setup</p>
-                    <Header.Subheader>
-                      If prices vary by location, enable this options.
-                      If all locations charge the same prices for services, do not enable this option.
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column textAlign='center' width='4'>
-                  <Field
-                    component={FormField}
-                    control={Checkbox}
-                    format={Boolean}
-                    name='multiple_location_setup_enabled'
-                    toggle
-                    type='checkbox'/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-            {/*<Divider className='mt20'/>*/}
+          {showTable && <SetupBoardingGeneralBelongingIndex/>}
 
             {
               error && (
@@ -207,7 +152,6 @@ const SetupBoardingGeneralSettingIndex = props => {
             }
 
           </Form>
-        </Tab>
       </Segment>
     </Layout>
   )
