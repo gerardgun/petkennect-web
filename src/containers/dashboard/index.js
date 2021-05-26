@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Grid, Segment, Card, Button, Icon, Header, Input } from 'semantic-ui-react'
 import { useChangeStatusEffect } from '@hooks/Shared'
+import { FaCashRegister } from 'react-icons/fa'
 
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
@@ -27,7 +28,7 @@ import './dashboard.scss'
 const Dashboard = (props) => {
   useChangeStatusEffect(props.dashboardModalDetail.status)
   useChangeStatusEffect(props.clientDetail.status)
-  const [ tbFilter,setTbFilter ] = useState('All')
+  const [ tbFilter, setTbFilter ] = useState('All')
   const [ outerFilter, setOuterFilter ] = useState('expected')
   const dispatch = useDispatch()
   useEffect(()=>{
@@ -45,8 +46,10 @@ const Dashboard = (props) => {
   }
 
   const _handleButtonClick = (Button,item)=>{
-    console.log(Button)
-    console.log(item)
+    dispatch(dashboardDuck.creators.get({
+      item  : Button,
+      search: item.id
+    }))
   }
   const _handleDropdownOptionClick = (option,item) => {
     console.log(option)
@@ -96,24 +99,24 @@ const Dashboard = (props) => {
                   <Input
                     icon='search' iconPosition='left' onChange=''
                     placeholder='Search by pet' style={{ width: '160px' }} type='search'/>
-                  <div className='flex align-center'>
+                  <div className='flex align-center ml8'>
                     <Header className='filter-text dsb-selected-h' content='Filter By:'/>
                     <Header
                       as={Link} className={tbFilter === 'All' ? 'filter-text dsb-selected-h'
                         : 'filter-text dsb-un-selected-h'} content='All'
-                      onClick={()=>{setTbFilter('All')}}/> |
+                      onClick={()=>{setTbFilter('All')}}/> <span className='filter-spacing'>|</span>
                     <Header
                       as={Link} className={tbFilter === 'Boarding' ? 'filter-text dsb-selected-h ml4'
                         : 'filter-text dsb-un-selected-h ml4'} content='Boarding: 10'
-                      onClick={()=>{setTbFilter('Boarding')}}/> |
+                      onClick={()=>{setTbFilter('Boarding')}}/> <span className='filter-spacing'>|</span>
                     <Header
                       as={Link} className={tbFilter === 'Day Care' ? 'filter-text dsb-selected-h ml4'
                         : 'filter-text dsb-un-selected-h ml4'} content='Day Care: 25'
-                      onClick={()=>{setTbFilter('Day Care')}}/> |
+                      onClick={()=>{setTbFilter('Day Care')}}/> <span className='filter-spacing'>|</span>
                     <Header
                       as={Link} className={tbFilter === 'Training' ? 'filter-text dsb-selected-h ml4'
                         : 'filter-text dsb-un-selected-h ml4'} content='Training: 5'
-                      onClick={()=>{setTbFilter('Training')}}/> |
+                      onClick={()=>{setTbFilter('Training')}}/> <span className='filter-spacing'>|</span>
                     <Header
                       as={Link} className={tbFilter === 'Grooming' ? 'filter-text dsb-selected-h ml4'
                         : 'filter-text dsb-un-selected-h ml4'} content='Grooming: 5'
@@ -159,7 +162,8 @@ const Dashboard = (props) => {
                 <Button
                   circular className='circle-ds' color='teal'
                   onClick={_handleRetailSale}>
-                  <Icon className='ml4' name='money bill alternate outline' size='big'/>
+                  {/* <Icon className='ml4' name='money bill alternate outline' size='big'/> */}
+                  <Icon  className='ml12' size='big'><FaCashRegister/></Icon>
                   <label className='circle-label-ds'>
                     <span>Retail</span><br/>
                     <span>Sale</span>
