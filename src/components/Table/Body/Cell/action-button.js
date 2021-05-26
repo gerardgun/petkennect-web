@@ -49,18 +49,19 @@ const TableCellActionButton = ({ config, data, ...props }) => {
       width={width}>
       {
         config.options
-          .map(({ display_name, name,type,dropdownOptions,size,icon, ...rest }, index) => {
+          .map(({ display_name, name, type, dropdownOptions, size, color, icon, ...rest }, index) => {
             const disabled = 'disable' in rest && rest.disable(data)
             // const icon = rest.icon
             // console.log(rest.icon(data))
             if(type === 'button')
               return (
                 <Popup
-                  content={display_name} inverted
+                  content={data.display_name ? data.display_name : display_name} inverted
                   key={index} position='bottom center'
                   trigger={
                     <Button
                       basic
+                      color={data.color ? data.color : color}
                       data-option-name={name}
                       disabled={disabled}
                       icon={data.icon ? data.icon : icon}
