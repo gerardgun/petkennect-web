@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Checkbox, Form, Header, Input, Select, TextArea } from 'semantic-ui-react'
 import * as yup from 'yup'
 
@@ -8,49 +8,79 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { ServiceDefaultConfig } from '@lib/constants/service'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
-import './styles.scss'
 
-import serviceDetailDuck from '@reducers/service/detail'
+import serviceVariationDetailDuck from '@reducers/service/variation/detail'
 
-// const selector = formValueSelector('service-reservation')
+const selector = formValueSelector('service-reservation')
 
 const ServiceReservationCreateForm = props => {
   const {
-    error, handleSubmit, reset, initialize // redux-form
+    change, error, handleSubmit, reset, initialize // redux-form
   } = props
 
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
+  const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
+  const {
+    service_group = null
+  } = useSelector(state => selector(state, 'service_group', 'service_type', 'is_additional_dog_price'))
 
   useEffect(() => {
-    // Get default data to create a new service type
-    dispatch(serviceDetailDuck.creators.create())
+    dispatch(serviceVariationDetailDuck.creators.create())
   }, [])
 
   useEffect(() => {
     if(editing)
       initialize(detail.item)
     else
-      // Set default data for new register
       initialize(ServiceDefaultConfig)
   }, [ detail.item.id ])
 
   const _handleClose = () => {
     dispatch(
-      serviceDetailDuck.creators.resetItem()
+      serviceVariationDetailDuck.creators.resetItem()
+    )
+  }
+
+  const _handleServiceGroupChange = () => {
+    change('service_type', null)
+
+    dispatch(
+      serviceVariationDetailDuck.creators.set({
+        ...detail,
+        form: {
+          ...detail.form,
+          service_type_options: []
+        }
+      })
+    )
+  }
+
+  const _handleServiceTypeChange = serviceId => {
+    dispatch(
+      serviceVariationDetailDuck.creators.createGetLocations({
+        service_id: serviceId
+      })
+    )
+
+    change('locations', [])
+  }
+
+  const _handleServiceTypeSearchChange = (e, { searchQuery }) => {
+    dispatch(
+      serviceVariationDetailDuck.creators.createGetServiceTypes({
+        search           : searchQuery,
+        service_group__id: service_group
+      })
     )
   }
 
   const _handleSubmit = values => {
-    if(values.sku_id === detail.item.sku_id)
-      delete values.sku_id
-
     if(editing)
-      return dispatch(serviceDetailDuck.creators.put({ id: detail.item.id, ...values }))
+      return dispatch(serviceVariationDetailDuck.creators.put({ id: detail.item.id, ...values }))
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return dispatch(serviceDetailDuck.creators.post(values))
+      return dispatch(serviceVariationDetailDuck.creators.post(values))
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -66,18 +96,23 @@ const ServiceReservationCreateForm = props => {
           control={Select}
           label='Service Group'
           name='service_group'
-          options={detail.form.location_options}
+          onChange={_handleServiceGroupChange}
+          options={detail.form.service_group_options}
           placeholder='Select Service Group'
           required
           selectOnBlur={false}/>
         <Field
           component={FormField}
           control={Select}
+          disabled={service_group === null}
           label='Service Type'
           name='service_type'
-          options={detail.form.location_options}
+          onChange={_handleServiceTypeChange}
+          onSearchChange={_handleServiceTypeSearchChange}
+          options={detail.form.service_type_options}
           placeholder='Select Service Type'
           required
+          search
           selectOnBlur={false}/>
       </Form.Group>
       <Form.Group widths='equal'>
@@ -105,7 +140,7 @@ const ServiceReservationCreateForm = props => {
           control={Select}
           label='Reservation Type'
           name='type'
-          options={detail.form.location_options}
+          options={detail.form.type_options}
           placeholder='Select Reservation Type'
           required
           selectOnBlur={false}/>
@@ -123,8 +158,8 @@ const ServiceReservationCreateForm = props => {
           component={FormField}
           control={Select}
           label='Time Offered'
-          name='type'
-          options={detail.form.location_options}
+          name='employee_schedule'
+          options={detail.form.employee_schedule_options}
           placeholder='Select Time Offered'
           required
           selectOnBlur={false}/>
@@ -150,7 +185,6 @@ const ServiceReservationCreateForm = props => {
           options={detail.form.location_options}
           placeholder='Select Locations'
           required
-          search
           selectOnBlur={false}/>
       </Form.Group>
 

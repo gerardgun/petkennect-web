@@ -23,6 +23,13 @@ export const ServiceDefaultConfig = {
   charge_type  : 'A'
 }
 
+export const VariationType = {
+  A: 'Appointment',
+  R: 'Reservation'
+}
+
+export const VariationTypeOptions = obj2options(VariationType)
+
 // Service Config Helpers
 export const KennelAreaDefaultConfig = {
   service_group_ids: [],

@@ -54,6 +54,8 @@ import employee from './employee'
 import employeeDetail from './employee/detail'
 import employeeRole from './employee/role'
 import employeeRoleDetail from './employee/role/detail'
+import employeeSchedule from './employee/schedule'
+import employeeScheduleDetail from './employee/schedule/detail'
 import employeeTitle from './employee/title'
 import employeeTitleDetail from './employee/title/detail'
 import emailMessage from './email-message'
@@ -180,6 +182,8 @@ import serviceGroup from './service/group'
 import serviceGroupDetail from './service/group/detail'
 import serviceGroupPetKind from './service/group/pet/kind'
 import servicePetKind from './service/pet/kind'
+import serviceVariation from './service/variation'
+import serviceVariationDetail from './service/variation/detail'
 import setupCapacityServiceCustom from './setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from './setup/capacity/service/custom/detail'
 import tenantDetail from './tenant/detail'
@@ -266,6 +270,8 @@ export default function* rootSaga() {
     ...employeeDetail,
     ...employeeRole,
     ...employeeRoleDetail,
+    ...employeeSchedule,
+    ...employeeScheduleDetail,
     ...employeeTitle,
     ...employeeTitleDetail,
     ...feedingMeasurement,
@@ -386,6 +392,8 @@ export default function* rootSaga() {
     ...serviceGroupDetail,
     ...serviceGroupPetKind,
     ...servicePetKind,
+    ...serviceVariation,
+    ...serviceVariationDetail,
     ...setupCapacityServiceCustom,
     ...setupCapacityServiceCustomDetail,
     ...tenantDetail,

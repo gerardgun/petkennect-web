@@ -24,12 +24,12 @@ export default {
     },
     {
       display_name: 'Service Group',
-      name        : 'service_group_name',
+      name        : 'service.service_group_name',
       type        : 'string'
     },
     {
-      display_name: 'Service Type',
-      name        : 'type_name',
+      display_name: 'Reservation',
+      name        : 'service.name',
       type        : 'string'
     },
     {
@@ -64,13 +64,13 @@ export default {
       width       : 2,
       options     : [
         {
-          display_name: 'Edit Service Type',
+          display_name: 'Edit Reservation',
           name        : 'edit',
           icon        : 'edit outline',
           color       : 'teal'
         },
         {
-          display_name: 'Delete Service Type',
+          display_name: 'Delete Reservation',
           name        : 'delete',
           icon        : 'trash alternate outline',
           color       : 'grey'

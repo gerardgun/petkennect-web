@@ -107,6 +107,8 @@ import emailTemplate from '@reducers/email-template'
 import emailTemplateDetail from '@reducers/email-template/detail'
 import employee from '@reducers/employee'
 import employeeDetail from '@reducers/employee/detail'
+import employeeSchedule from '@reducers/employee/schedule'
+import employeeScheduleDetail from '@reducers/employee/schedule/detail'
 import employeeRole from '@reducers/employee/role'
 import employeeRoleDetail from '@reducers/employee/role/detail'
 import employeeTitle from '@reducers/employee/title'
@@ -241,6 +243,8 @@ import serviceGroup from '@reducers/service/group'
 import serviceGroupDetail from '@reducers/service/group/detail'
 import serviceGroupPetKind from '@reducers/service/group/pet/kind'
 import servicePetKind from '@reducers/service/pet/kind'
+import serviceVariation from '@reducers/service/variation'
+import serviceVariationDetail from '@reducers/service/variation/detail'
 import setupCapacityServiceCustom from '@reducers/setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from '@reducers/setup/capacity/service/custom/detail'
 import servicePrice from '@reducers/service-price'
@@ -384,6 +388,8 @@ const createRootReducer = history => combineReducers({
   [emailLogDetail.store]                                   : emailLogDetail.reducer,
   [employee.store]                                         : employee.reducer,
   [employeeDetail.store]                                   : employeeDetail.reducer,
+  [employeeSchedule.store]                                 : employeeSchedule.reducer,
+  [employeeScheduleDetail.store]                           : employeeScheduleDetail.reducer,
   [employeeRole.store]                                     : employeeRole.reducer,
   [employeeRoleDetail.store]                               : employeeRoleDetail.reducer,
   [employeeTitle.store]                                    : employeeTitle.reducer,
@@ -519,6 +525,8 @@ const createRootReducer = history => combineReducers({
   [serviceGroupDetail.store]                               : serviceGroupDetail.reducer,
   [serviceGroupPetKind.store]                              : serviceGroupPetKind.reducer,
   [servicePetKind.store]                                   : servicePetKind.reducer,
+  [serviceVariation.store]                                 : serviceVariation.reducer,
+  [serviceVariationDetail.store]                           : serviceVariationDetail.reducer,
   [setupCapacityServiceCustom.store]                       : setupCapacityServiceCustom.reducer,
   [setupCapacityServiceCustomDetail.store]                 : setupCapacityServiceCustomDetail.reducer,
   [servicePrice.store]                                     : servicePrice.reducer,
