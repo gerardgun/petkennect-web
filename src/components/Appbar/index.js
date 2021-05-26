@@ -2,7 +2,7 @@ import React, { useMemo, useState,useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Link, useHistory } from 'react-router-dom'
-
+import { GoClippy } from 'react-icons/go'
 import { Button,Search,Container,Dropdown,Grid, Icon, Image } from 'semantic-ui-react'
 
 import { getAbbreviature } from '@lib/utils/functions'
@@ -80,10 +80,10 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
           {
             !auth.item.is_superadmin && (
               <>
-                <div style={{ 'float': 'left' }}>
+                <div style={{ 'float': 'left', marginTop: '-8px' }}>
                   <Image
                     className='mt4'
-                    height='65px' src='/images/petKennectTenantLogo.png'/>
+                    height='80px' src='/images/petKennectTenantLogo.png'/>
                 </div>
                 <div className='search-dropdown'>
                   <Dropdown
@@ -113,12 +113,9 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
           {
             !auth.item.is_superadmin && (
               <>
-                <div style={{ color: 'white', marginTop: '22px', display: 'flex', 'float': 'right', marginRight: '12px' }}>
-                  {/* <Icon name='clipboard list' style={{ fontSize: '20px' }}></Icon> */}
-                  <Image
-                    className='mt0'
-                    height='25px' src='/images/serviceReport.png' style={{ 'float': 'left' }}/>
-                  <span className='mt4 ml4'>Daily Service Reports</span>
+                <div style={{ color: 'white', marginTop: '20px', display: 'flex', 'float': 'right', marginRight: '12px' }}>
+                  <Icon style={{ fontSize: '30px', color: 'white' }}><GoClippy></GoClippy></Icon>
+                  <span className='mt4 ml4'><b>Daily Service Reports</b></span>
                 </div>
               </>
             )
@@ -138,13 +135,13 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
                     className='mt4 ml4'
                     onChange={_handleLocationChange}
                     options={locationItems}
-                    style={{ color: 'white' }}
+                    style={{ color: 'white', fontWeight: 'bold' }}
                     value={auth.location}/>
                 </div>
               )
             }
             <div style={{ textAlign: 'left' }}>
-              <span style={{ marginLeft: '20px', color: 'white' }}>Welcome!</span><br/>
+              <span style={{ marginLeft: '20px', color: 'white' }}><b>Welcome!</b></span><br/>
               <span style={{ marginLeft: '20px', color: 'white' }}>{userFullName}</span>
             </div>
 

@@ -49,10 +49,6 @@
   .table-primary.ui.basic.table thead {
     background-color: #fafcff !important;
   }
-  .ui.basic.blue.button,
-  .ui.basic.blue.buttons .button {
-    box-shadow: none !important;
-  }
   padding-bottom: 0px !important;
 }
 
@@ -175,32 +171,34 @@
 //Second
 
 // notification section
-.text-font {
-  font-size: 13px !important;
-}
-
-.label-style {
-  height: 35px !important;
-  color: white;
-}
-
-.icon-style {
-  .ui.label > .icon {
-    width: 15px !important;
-    margin: 0 0.75em 0 0;
-    margin-left: 5;
-    margin-top: 5;
-    margin-right: 5;
+.notification-section-style {
+  .text-font {
+    font-size: 13px !important;
   }
-}
 
-.view-all {
-  height: 310px !important;
-  overflow-x: hidden !important;
-}
+  .label-style {
+    height: 35px !important;
+    color: white;
+  }
 
-.table-margin {
-  margin-bottom: 0px !important;
+  .icon-style {
+    .ui.label > .icon {
+      width: 15px !important;
+      margin: 0 0.75em 0 0;
+      margin-left: 5;
+      margin-top: 5;
+      margin-right: 5;
+    }
+  }
+
+  .view-all {
+    height: 310px !important;
+    overflow-x: hidden !important;
+  }
+
+  .table-margin {
+    margin-bottom: 0px !important;
+  }
 }
 
 // tasklist section
@@ -350,5 +348,12 @@
   .icon {
     font-size: 20px;
     color: gray;
+  }
+}
+
+.filter-spacing {
+  @media (min-width: 1400px) {
+    margin-left: 8px !important; // changes
+    margin-right: 8px !important;
   }
 }

@@ -27,7 +27,7 @@ const Notification = (props) => {
 
   return (
     <>
-      <Card fluid  style={{ height: '400px' }}>
+      <Card className='notification-section-style' fluid  style={{ height: '400px' }}>
         <Grid className='ph8 mb8'>
           <Grid.Column className='pb4 pt24' width={16}>
             <Icon color='blue' name='bell outline'></Icon>
