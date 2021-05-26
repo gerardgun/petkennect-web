@@ -4,6 +4,10 @@ import detail from '@reducers/common/detail'
 export default base({
   namespace   : '@@pet-kennect',
   store       : 'pet/kind/detail',
-  initialState: {}
+  initialState: {
+    form: {
+      location_options: []
+    }
+  }
 })
   .extend(detail)

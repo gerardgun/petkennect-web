@@ -7,45 +7,45 @@ import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/service/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
-import kennelAreaListConfig from '@lib/constants/list-configs/order/service/boarding/kennel/area/service-capacity'
+import serviceVariationListConfig from '@lib/constants/list-configs/service/variation'
 
-import kennelAreaDuck from '@reducers/order/service/boarding/kennel/area'
-import kennelAreaDetailDuck from  '@reducers/order/service/boarding/kennel/area/detail'
+import serviceVariationDuck from '@reducers/service/variation'
+import serviceVariationDetailDuck from '@reducers/service/variation/detail'
 
-const SetupCapacityBoardingAreaIndex = () => {
+const SetupServiceReservationIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(kennelAreaDetailDuck.selectors.detail)
-  const list = useSelector(kennelAreaDuck.selectors.list)
+  const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
+  const list = useSelector(serviceVariationDuck.selectors.list)
 
   useEffect(() => {
     if(list.items.length === 0)
       dispatch(
-        kennelAreaDuck.creators.get()
+        serviceVariationDuck.creators.get()
       )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        kennelAreaDuck.creators.get()
+        serviceVariationDuck.creators.get()
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        kennelAreaDetailDuck.creators.setItem(null, 'CREATE')
+        serviceVariationDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
-        kennelAreaDetailDuck.creators.setItem(reason, 'DELETE')
+        serviceVariationDetailDuck.creators.setItem(reason, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        kennelAreaDetailDuck.creators.setItem(reason, 'UPDATE')
+        serviceVariationDetailDuck.creators.setItem(reason, 'UPDATE')
       )
   }
 
@@ -56,18 +56,18 @@ const SetupCapacityBoardingAreaIndex = () => {
         <Menu/>
 
         <Table
-          config={kennelAreaListConfig}
-          duck={kennelAreaDuck}
+          config={serviceVariationListConfig}
+          duck={serviceVariationDuck}
           onActionClick={_handleActionClick}
           onRowButtonClick={_handleRowButtonClick}/>
 
         <CreateFormModal/>
 
-        <ModalDelete duckDetail={kennelAreaDetailDuck}/>
+        <ModalDelete duckDetail={serviceVariationDetailDuck}/>
 
       </Segment>
     </Layout>
   )
 }
 
-export default SetupCapacityBoardingAreaIndex
+export default SetupServiceReservationIndex

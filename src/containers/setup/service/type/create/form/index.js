@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Button, Checkbox, Form, Header, Input, Select, TextArea } from 'semantic-ui-react'
+import _intersection from 'lodash/intersection'
 import * as yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { ServiceDefaultConfig } from '@lib/constants/service'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
-import './styles.scss'
 
+import petKindDuck from '@reducers/pet/kind'
 import serviceDetailDuck from '@reducers/service/detail'
+
+import './styles.scss'
 
 const selector = formValueSelector('service-type')
 
@@ -21,7 +24,12 @@ const ServiceTypeCreateForm = props => {
 
   const dispatch = useDispatch()
   const detail = useSelector(serviceDetailDuck.selectors.detail)
-  const service_group = useSelector(state => selector(state, 'service_group'))
+  const petKindList = useSelector(petKindDuck.selectors.list)
+  const {
+    pet_classes = [],
+    service_group = null,
+    locations = []
+  } = useSelector(state => selector(state, 'pet_classes', 'service_group', 'locations'))
 
   useEffect(() => {
     // Get default data to create a new service type
@@ -48,6 +56,28 @@ const ServiceTypeCreateForm = props => {
       initialize(ServiceDefaultConfig)
   }, [ detail.item.id ])
 
+  const getLocationOptions = petClassIds => {
+    // Get location ids related to every pet class
+    const locationGroupIds = petKindList.items
+      .filter(({ id }) => petClassIds.includes(id))
+      .map(({ locations }) => {
+        return locations.map(item => item.id)
+      })
+
+    const interesectedLocationIds = _intersection(...locationGroupIds)
+    const options = detail.form.location_options
+      .filter(({ value }) => interesectedLocationIds.includes(value))
+
+    // Validating if current selected locations are valid
+    const validSelectedLocationIds = locations.filter(locationId => {
+      return interesectedLocationIds.includes(locationId)
+    })
+
+    change('locations', validSelectedLocationIds)
+
+    return options
+  }
+
   const _handleClose = () => {
     dispatch(
       serviceDetailDuck.creators.resetItem()
@@ -59,6 +89,9 @@ const ServiceTypeCreateForm = props => {
   }
 
   const _handleSubmit = values => {
+    if(values.sku_id === detail.item.sku_id)
+      delete values.sku_id
+
     if(editing)
       return dispatch(serviceDetailDuck.creators.put({ id: detail.item.id, ...values }))
         .then(_handleClose)
@@ -69,6 +102,7 @@ const ServiceTypeCreateForm = props => {
         .catch(parseResponseError)
   }
 
+  const locationOptions = useMemo(() => getLocationOptions(pet_classes), [ pet_classes, detail.form.pet_kind_options ])
   const editing = Boolean(detail.item.id)
 
   return (
@@ -142,7 +176,7 @@ const ServiceTypeCreateForm = props => {
           label='Location'
           multiple
           name='locations'
-          options={detail.form.location_options}
+          options={locationOptions}
           placeholder='Select Locations'
           required
           search

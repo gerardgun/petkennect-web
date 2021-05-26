@@ -1,15 +1,14 @@
-import faker from 'faker'
-import { call, put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeLatest } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 import * as locationSaga from '@sagas/location'
 
 import locationDuck from '@reducers/location'
-import petKindDuck from '@reducers/pet/kind'
+import serviceVariationDuck from '@reducers/service/variation'
 
-const { selectors, types } = petKindDuck
+const { selectors, types } = serviceVariationDuck
 
-export function* get() {
+function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
@@ -24,23 +23,26 @@ export function* get() {
 
     // Load items
     const filters = yield select(selectors.filters)
+    const list = yield select(selectors.list)
 
-    const petKinds = yield call(Get, '/pet-classes/', filters)
+    const { results, ...meta } = yield call(Get, 'services-variations/', filters)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: petKinds.map(item => ({
+        items: results.map(item => ({
           ...item,
-          locations: item.locations.map(locationId => {
+          locations: [].map(locationId => {
             const location = locationList.items
               .find(({ id }) => id === locationId)
 
             return location
-          }),
-          // Fake data to mockup service capacity section
-          max_capacity_per_day: faker.random.arrayElement([ 30, 50, 70, 100 ])
-        }))
+          })
+        })),
+        pagination: {
+          ...list.pagination,
+          meta
+        }
       }
     })
   } catch (e) {
@@ -52,5 +54,5 @@ export function* get() {
 }
 
 export default [
-  takeEvery(types.GET, get)
+  takeLatest(types.GET, get)
 ]

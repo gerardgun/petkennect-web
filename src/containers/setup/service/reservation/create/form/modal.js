@@ -2,17 +2,17 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
-import KennelAreaCreateForm from './index'
+import ServiceReservationCreateForm from './index'
 
-import kennelAreaDetailDuck from  '@reducers/order/service/boarding/kennel/area/detail'
+import serviceVariationDetailDuck from '@reducers/service/variation/detail'
 
-const KennelAreaCreateFormModal = () => {
+const ServiceReservationCreateFormModal = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(kennelAreaDetailDuck.selectors.detail)
+  const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
 
   const _handleClose = () => {
     dispatch(
-      kennelAreaDetailDuck.creators.resetItem()
+      serviceVariationDetailDuck.creators.resetItem()
     )
   }
 
@@ -27,9 +27,9 @@ const KennelAreaCreateFormModal = () => {
       open={open}
       size='small'>
       <Modal.Content>
-        <Header as='h2'>{editing ? 'Update' : 'New'} Lodging Area</Header>
+        <Header as='h2'>{editing ? 'Update' : 'Add'} Reservation</Header>
 
-        <KennelAreaCreateForm/>
+        <ServiceReservationCreateForm/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
@@ -43,9 +43,9 @@ const KennelAreaCreateFormModal = () => {
               type='button'/>
             <Button
               color='teal'
-              content={editing ? 'Save changes' : 'Create Area'}
+              content={editing ? 'Save changes' : 'Create Reservation'}
               disabled={saving}
-              form='kennel-area'
+              form='service-reservation'
               loading={saving}
               type='submit'/>
           </Form.Field>
@@ -55,4 +55,4 @@ const KennelAreaCreateFormModal = () => {
   )
 }
 
-export default KennelAreaCreateFormModal
+export default ServiceReservationCreateFormModal

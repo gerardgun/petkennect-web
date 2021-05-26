@@ -2,17 +2,17 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
-import ServiceTypeCreateForm from './index'
+import PetKindCreateForm from './index'
 
-import serviceDetailDuck from '@reducers/service/detail'
+import petKindDetailDuck from '@reducers/pet/kind/detail'
 
-const ServiceTypeCreateFormModal = () => {
+const PetKindCreateFormModal = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
+  const detail = useSelector(petKindDetailDuck.selectors.detail)
 
   const _handleClose = () => {
     dispatch(
-      serviceDetailDuck.creators.resetItem()
+      petKindDetailDuck.creators.resetItem()
     )
   }
 
@@ -27,9 +27,9 @@ const ServiceTypeCreateFormModal = () => {
       open={open}
       size='small'>
       <Modal.Content>
-        <Header as='h2'>{editing ? 'Update' : 'New'} Reservation</Header>
+        <Header as='h2'>{editing ? 'Update' : 'Add'} Pet Species</Header>
 
-        <ServiceTypeCreateForm/>
+        <PetKindCreateForm/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
@@ -43,9 +43,9 @@ const ServiceTypeCreateFormModal = () => {
               type='button'/>
             <Button
               color='teal'
-              content={editing ? 'Save changes' : 'Create Service Type'}
+              content={editing ? 'Save changes' : 'Create Species'}
               disabled={saving}
-              form='service-type'
+              form='pet-kind'
               loading={saving}
               type='submit'/>
           </Form.Field>
@@ -55,4 +55,4 @@ const ServiceTypeCreateFormModal = () => {
   )
 }
 
-export default ServiceTypeCreateFormModal
+export default PetKindCreateFormModal

@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Segment, Header } from 'semantic-ui-react'
 
+import CreateFormModal from './create/form/modal'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/pet/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
-import PetKindForm from  './create'
 import Table from '@components/Table'
 import petKindListConfig from '@lib/constants/list-configs/pet/animal-setting/kind'
 
@@ -51,7 +51,9 @@ const SetupTrainingCommandIndex = () => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Menu/>
-        <Header as='h4' content=' Animal Species Accepted'/>
+
+        <Header as='h4' color='teal'>Animal Species Accepted</Header>
+
         <div style={{ width: '100%' }}>
           <Table
             config={petKindListConfig}
@@ -60,7 +62,7 @@ const SetupTrainingCommandIndex = () => {
             onRowButtonClick={_handleRowButtonClick}/>
         </div>
 
-        <PetKindForm/>
+        <CreateFormModal/>
 
         <ModalDelete duckDetail={petKindDetailDuck}/>
 
