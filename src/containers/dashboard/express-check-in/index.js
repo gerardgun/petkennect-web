@@ -1,21 +1,38 @@
 /* eslint-disable react/jsx-handler-names */
 import React,{ useState } from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 import {  Header, Form, Select, Card, Grid, Button, Dropdown } from 'semantic-ui-react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import ExpressCheckInModal from './express-check-in-modal'
+import ExpressCheckinSuccess from './checked-in-success'
 export const  formId = 'express-check-in-redux-form'
 const ExpressCheckInForm = (props)=>{
   const {
     error,
-    reset
+    reset,
+    selectedPets
   } = props
   const [ modalOpen,setModalOpen ] = useState(false)
+  const [ checkedInModal,setCheckedInModal ] = useState(false)
 
-  const _handleModalChange = ()=>{
-    setModalOpen(!modalOpen)
+  const _handleModalChange = (option)=>{
+    switch (option) {
+      case 'open':
+        if(selectedPets && selectedPets.length >= 2)
+        {setModalOpen(!modalOpen)}
+        else if(selectedPets && selectedPets.length === 1) {
+          props.reset()
+          setCheckedInModal(true)
+        }
+        break
+      case 'close':
+        setModalOpen(!modalOpen)
+        break
+    }
   }
 
   return (
@@ -67,7 +84,7 @@ const ExpressCheckInForm = (props)=>{
             <Grid.Column className='pl2 pt8' computer={2}>
               <Button
                 basic
-                color='green' icon='check' onClick={_handleModalChange}
+                color='green' icon='check' onClick={()=>{_handleModalChange('open')}}
                 type='button'/>
             </Grid.Column>
           </Grid>
@@ -84,13 +101,24 @@ const ExpressCheckInForm = (props)=>{
 
       </Card>
       <ExpressCheckInModal modalOpen={modalOpen} onModalChange={_handleModalChange}/>
+      <ExpressCheckinSuccess modalOpen={checkedInModal} onModalChange={()=>{setCheckedInModal(false)}}/>
     </>
   )
 }
+export default  compose(
+  connect(
+    state => {
+      const selectedPets = formValueSelector('express-check-in-redux-form')(state,'pets')
 
-export default  reduxForm({
-  form              : formId,
-  destroyOnUnmount  : false,
-  enableReinitialize: true
+      return {
+        selectedPets
+      }
+    }
+  ),
+  reduxForm({
+    form              : formId,
+    destroyOnUnmount  : false,
+    enableReinitialize: true
 
-})(ExpressCheckInForm)
+  })
+)(ExpressCheckInForm)

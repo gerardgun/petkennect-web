@@ -49,7 +49,8 @@ const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
                                       }<br/>
                                     </Link>
                                     {
-                                      rest.subCategories.length - 1 !== index && (<div className='horizontal-line'></div>)
+                                      rest.subCategories.length - 1 !== index ? (<div className='horizontal-line'></div>)
+                                        : (<div style={{ marginBottom: '2px' }}></div>)
                                     }
                                   </>
                                 )

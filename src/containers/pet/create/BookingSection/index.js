@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Header , Grid, Button, Divider, Container } from 'semantic-ui-react'
 import { compose } from 'redux'
 import loadable from '@loadable/component'
@@ -20,9 +20,7 @@ const Grooming = loadable(() => import('./grooming'))
 const Boarding = loadable(() => import('./boarding'))
 
 function BookingSection({  ...props }) {
-  const history = useHistory()
-
-  const [ activeServiceItem, setActiveServiceItem ] = useState(history.location.state != undefined ? history.location.state.type : 'D')
+  const [ activeServiceItem, setActiveServiceItem ] = useState('D')
   const { pet: petId } = useParams()
   useEffect(()=> {
     props.getPet(petId)

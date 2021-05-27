@@ -163,7 +163,9 @@ const Calendar = (props) => {
 
             </Grid.Column>
 
-            <Grid.Column className='calendar-margin-top pr0' style={{ display: 'flex', justifyContent: 'flex-end' }} width={8}>
+            <Grid.Column
+              className={props.hideSidebar === true ? 'calendar-margin-top calendar-spacing-sidebar pr0' : 'calendar-margin-top calendar-spacing pr0'}
+              style={{ display: 'flex', justifyContent: 'flex-end' }} width={8}>
               <DayPicker
                 fixedWeeks/>
             </Grid.Column>

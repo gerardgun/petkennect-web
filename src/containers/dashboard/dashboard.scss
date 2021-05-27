@@ -184,10 +184,9 @@
   .icon-style {
     .ui.label > .icon {
       width: 15px !important;
-      margin: 0 0.75em 0 0;
-      margin-left: 5;
-      margin-top: 5;
-      margin-right: 5;
+      margin-left: 5px !important;
+      margin-top: 5px !important;
+      margin-right: 5px !important;
     }
   }
 
@@ -351,9 +350,39 @@
   }
 }
 
-.filter-spacing {
+.dashboard-filter-spacing {
   @media (min-width: 1400px) {
     margin-left: 8px !important; // changes
     margin-right: 8px !important;
+  }
+}
+
+.dashboard-filter-spacing-sidebar {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+
+  @media (min-width: 1400px) {
+    margin-left: 20px !important; // changes
+    margin-right: 20px !important;
+  }
+}
+
+
+.calendar-spacing {
+  @media (min-width: 1400px) {
+    .DayPicker-Weekday {
+      padding: 0.8em !important;
+    }
+  }
+}
+
+.calendar-spacing-sidebar {
+  .DayPicker-Weekday {
+    padding: 0.8em !important;
+  }
+  @media (min-width: 1400px) {
+    .DayPicker-Weekday {
+      padding: 1em !important;
+    }
   }
 }

@@ -7,7 +7,6 @@ const { selectors, types } = dashboardExpressDuck
 function* get() {
   try {
     const filters = yield select(selectors.filters)
-    console.log(filters.search)
     yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
     yield put({ type: types.GET_PENDING })
 

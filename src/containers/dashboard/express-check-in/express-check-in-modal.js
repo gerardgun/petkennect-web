@@ -30,7 +30,7 @@ const TaskCreateForm = (props)=>{
 
   const _handleClose = () => {
     props.reset()
-    props.onModalChange()
+    props.onModalChange('close')
   }
   const _handleSubmit = () => {
     //
@@ -53,14 +53,14 @@ const TaskCreateForm = (props)=>{
                 component={FormField}
                 control={Select}
                 label='Select Service Type'
-                name='serive_name'
+                name='serive_name_check'
                 options={[
                   {
-                    key: 1, value: 'Full Day', text: 'Full Day'
+                    key: 1, value: 'boarding', text: 'Boarding'
                   },{
-                    key: 2, value: 'Day Care', text: 'Day Care'
+                    key: 2, value: 'dayService', text: 'Day Service'
                   },{
-                    key: 3, value: 'Fitness', text: 'Fitness'
+                    key: 3, value: 'training', text: 'Training'
                   } ]}
                 placeholder='Select Service'/>
               <Field
