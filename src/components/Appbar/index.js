@@ -113,9 +113,9 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
           {
             !auth.item.is_superadmin && (
               <>
-                <div style={{ color: 'white', marginTop: '20px', display: 'flex', 'float': 'right', marginRight: '12px' }}>
+                <div style={{ color: 'white', marginTop: '20px', display: 'flex', 'float': 'right' }}>
                   <Icon style={{ fontSize: '30px', color: 'white' }}><GoClippy></GoClippy></Icon>
-                  <span className='mt4 ml4'><b>Daily Service Reports</b></span>
+                  <span className='mt4'><b>Daily Service Reports</b></span>
                 </div>
               </>
             )
@@ -132,7 +132,7 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
                     className='mt0'
                     height='30px' src='/images/location.png' style={{ 'float': 'left' }}/>
                   <Dropdown
-                    className='mt4 ml4'
+                    className='mt4'
                     onChange={_handleLocationChange}
                     options={locationItems}
                     style={{ color: 'white', fontWeight: 'bold' }}
