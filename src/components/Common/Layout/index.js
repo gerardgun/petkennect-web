@@ -1,12 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Container, Grid, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 import Sidebar from '@components/Sidebar'
 import Appbar from '@components/Appbar'
 
-const Layout = ({ children }) => {
+const Layout = ({ children, sidebarHandle }) => {
   const [ hideSidebar, setHideSidebar ] = useState(true)
+
+  useEffect(()=>{
+    if(sidebarHandle)
+      sidebarHandle(hideSidebar)
+  },[ hideSidebar ])
+
   const _handleShowSidebar = () => {
     setHideSidebar(!hideSidebar)
   }

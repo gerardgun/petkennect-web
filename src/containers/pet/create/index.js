@@ -46,6 +46,18 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
         setActiveMenuItem('vaccinations'))
       history.location.state.option === 'services' && (
         setActiveMenuItem('bookings'))
+
+      switch (history.location.state.dashboard) {
+        case 'vaccination':
+          setActiveMenuItem('vaccinations')
+          break
+        case 'services':
+          setActiveMenuItem('bookings')
+          break
+        case 'incident':
+          setActiveMenuItem('incidents')
+          break
+      }
     }
 
     return () => {
@@ -68,11 +80,6 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
   }
 
   const clientId = petDetail.item &&  petDetail.item.client
-
-  // const _handleBookBtnClick = () => {
-  //   props.resetReserveItem()
-  //   history.replace(`/client/${clientId}/book`)
-  // }
 
   const _handleBookBtnClick = () => {
     props.resetReserveItem()
@@ -130,7 +137,7 @@ const PetShow = ({ petDetail, trainingPackageDetail, petImage, petNote, ...props
   }, [ petDetail.status ])
   const fullname = `${petDetail.item.name || ''}`
   const clientFullName = `${petDetail.item.client_first_name || ''} ${petDetail.item.client_last_name || ''}`
-  const comesfromClientShowScreen = useMemo(() => Boolean(history.location.state), [])
+  const comesfromClientShowScreen = useMemo(() => Boolean(history.location.state && history.location.state.option), [])
 
   return (
     <Layout>

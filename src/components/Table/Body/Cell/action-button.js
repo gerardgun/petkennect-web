@@ -36,7 +36,6 @@ const TableCellActionButton = ({ config, data, ...props }) => {
     props.onButtonClick(e.currentTarget.dataset.optionName, data)
   }
   const _handleDropdownChange = (e, { value: optionName }) => {
-    console.log('option clicked')
     e.stopPropagation()
 
     props.onDropdownChange(optionName, data)

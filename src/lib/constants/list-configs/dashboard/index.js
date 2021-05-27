@@ -200,6 +200,36 @@ export default {
               icon        : 'medkit',
               display_name: 'Vaccinations',
               name        : 'vaccinations'
+            },
+            {
+              icon        : 'edit',
+              display_name: 'Add Report Card',
+              name        : 'add_report_card'
+            },
+            {
+              icon        : 'baseball ball',
+              display_name: 'Add Interaction',
+              name        : 'add_intraction'
+            },
+            {
+              icon        : 'exclamation',
+              display_name: 'Add Incident',
+              name        : 'add_incident'
+            },
+            {
+              icon        : 'print',
+              display_name: 'Print Run Card',
+              name        : 'print_run_card'
+            },
+            {
+              icon        : 'edit',
+              display_name: 'Add Client Comments',
+              name        : 'add_client_comment'
+            },
+            {
+              icon        : 'trash alternate outline',
+              display_name: 'Delete Reservation',
+              name        : 'delete_reservation'
             }
 
           ]

@@ -10,6 +10,7 @@ import { FaCashRegister } from 'react-icons/fa'
 
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
+import ModalDelete from '@components/Modal/Delete'
 import DayCardTemplate from './day-card'
 import Second from './second'
 import VaccinationForm from './vaccination-modal'
@@ -17,6 +18,7 @@ import ExpressCheckInForm from './express-check-in'
 
 import dashboardListConfig from '@lib/constants/list-configs/dashboard'
 import dashboardDuck from '@reducers/dashboard'
+import dashboardDetailDuck from '@reducers/dashboard/detail'
 import dashboardModalDetailDuck from '@reducers/dashboard/dashboard-modal/detail'
 import clientDetailDuck from '@reducers/client/detail'
 
@@ -30,7 +32,9 @@ const Dashboard = (props) => {
   useChangeStatusEffect(props.clientDetail.status)
   const [ tbFilter, setTbFilter ] = useState('All')
   const [ outerFilter, setOuterFilter ] = useState('expected')
+  const [ hideSidebar, setHideSidebar ] = useState()
   const dispatch = useDispatch()
+
   useEffect(()=>{
     dispatch(dashboardDuck.creators.get())
   },[])
@@ -52,8 +56,54 @@ const Dashboard = (props) => {
     }))
   }
   const _handleDropdownOptionClick = (option,item) => {
-    console.log(option)
     console.log(item)
+    switch (option) {
+      case 'edit_pet':
+        history.push({
+          pathname: `/pet/${7}`
+        })
+        break
+        // case 'add_incident':
+        //   history.push({
+        //     pathname: `/pet/${7}`,
+        //     state   : { dashboard: 'incident' }
+        //   })
+        //   break
+
+      case 'vaccinations':
+        history.push({
+          pathname: `/pet/${7}`,
+          state   : { dashboard: 'vaccination' }
+        })
+        break
+      case 'edit_reservation':
+        history.push({
+          pathname: `/pet/${7}`,
+          state   : { dashboard: 'services' }
+        })
+        break
+
+      case 'edit_client':
+        history.push({
+          pathname: `/client/${14}`
+        })
+        break
+
+      case 'print_run_card':
+        history.push({
+          pathname: '/setup/report-card-setup/day-service'
+        })
+        break
+
+      case 'add_report_card':
+        history.push({
+          pathname: '/setup/report-card-setup/day-service'
+        })
+        break
+      case 'delete_reservation':
+        props.setDashboardItem(null, 'DELETE')
+        break
+    }
   }
 
   const _handleNewClient = () => {
@@ -69,9 +119,13 @@ const Dashboard = (props) => {
     //
   }
 
+  const _onHandleSideBar = (sidebar)=>{
+    setHideSidebar(sidebar)
+  }
+
   return (
     <>
-      <Layout>
+      <Layout sidebarHandle={_onHandleSideBar}>
         <Segment className='segment-dashboard-content pt0 pb0'>
           <Grid className='mt0'  style={{ 'margin-bottom': '2.2rem' }}>
             <Grid.Column
@@ -104,19 +158,23 @@ const Dashboard = (props) => {
                     <Header
                       as={Link} className={tbFilter === 'All' ? 'filter-text dsb-selected-h'
                         : 'filter-text dsb-un-selected-h'} content='All'
-                      onClick={()=>{setTbFilter('All')}}/> <span className='filter-spacing'>|</span>
+                      onClick={()=>{setTbFilter('All')}}/> <span className={
+                      hideSidebar === true ? 'dashboard-filter-spacing-sidebar' : 'dashboard-filter-spacing'}>|</span>
                     <Header
                       as={Link} className={tbFilter === 'Boarding' ? 'filter-text dsb-selected-h ml4'
                         : 'filter-text dsb-un-selected-h ml4'} content='Boarding: 10'
-                      onClick={()=>{setTbFilter('Boarding')}}/> <span className='filter-spacing'>|</span>
+                      onClick={()=>{setTbFilter('Boarding')}}/> <span className={
+                      hideSidebar === true ? 'dashboard-filter-spacing-sidebar' : 'dashboard-filter-spacing'}>|</span>
                     <Header
                       as={Link} className={tbFilter === 'Day Care' ? 'filter-text dsb-selected-h ml4'
                         : 'filter-text dsb-un-selected-h ml4'} content='Day Care: 25'
-                      onClick={()=>{setTbFilter('Day Care')}}/> <span className='filter-spacing'>|</span>
+                      onClick={()=>{setTbFilter('Day Care')}}/> <span className={
+                      hideSidebar === true ? 'dashboard-filter-spacing-sidebar' : 'dashboard-filter-spacing'}>|</span>
                     <Header
                       as={Link} className={tbFilter === 'Training' ? 'filter-text dsb-selected-h ml4'
                         : 'filter-text dsb-un-selected-h ml4'} content='Training: 5'
-                      onClick={()=>{setTbFilter('Training')}}/> <span className='filter-spacing'>|</span>
+                      onClick={()=>{setTbFilter('Training')}}/> <span className={
+                      hideSidebar === true ? 'dashboard-filter-spacing-sidebar' : 'dashboard-filter-spacing'}>|</span>
                     <Header
                       as={Link} className={tbFilter === 'Grooming' ? 'filter-text dsb-selected-h ml4'
                         : 'filter-text dsb-un-selected-h ml4'} content='Grooming: 5'
@@ -162,7 +220,6 @@ const Dashboard = (props) => {
                 <Button
                   circular className='circle-ds' color='teal'
                   onClick={_handleRetailSale}>
-                  {/* <Icon className='ml4' name='money bill alternate outline' size='big'/> */}
                   <Icon  className='ml12' size='big'><FaCashRegister/></Icon>
                   <label className='circle-label-ds'>
                     <span>Retail</span><br/>
@@ -172,13 +229,14 @@ const Dashboard = (props) => {
               </div>
             </Grid.Column>
           </Grid>
-          <Second/>
+          <Second hideSidebar={hideSidebar}/>
         </Segment>
       </Layout>
 
       <VaccinationForm/>
       <DashboardModal/>
       <NewClientForm/>
+      <ModalDelete duckDetail={dashboardDetailDuck}/>
     </>
   )
 }
@@ -189,8 +247,9 @@ export default compose(
       clientDetail        : clientDetailDuck.selectors.detail(state),
       dashboardModalDetail: dashboardModalDetailDuck.selectors.detail(state)
     }), {
-      setItem     : dashboardModalDetailDuck.creators.setItem,
-      setNewClient: clientDetailDuck.creators.setItem
+      setItem         : dashboardModalDetailDuck.creators.setItem,
+      setNewClient    : clientDetailDuck.creators.setItem,
+      setDashboardItem: dashboardDetailDuck.creators.setItem
     })
 )(Dashboard)
 
