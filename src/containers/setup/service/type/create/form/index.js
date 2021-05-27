@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Button, Checkbox, Form, Header, Input, Select, TextArea } from 'semantic-ui-react'
-import _intersection from 'lodash/intersection'
 import * as yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -10,7 +9,6 @@ import FormField from '@components/Common/FormField'
 import { ServiceDefaultConfig } from '@lib/constants/service'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import petKindDuck from '@reducers/pet/kind'
 import serviceDetailDuck from '@reducers/service/detail'
 
 import './styles.scss'
@@ -24,12 +22,10 @@ const ServiceTypeCreateForm = props => {
 
   const dispatch = useDispatch()
   const detail = useSelector(serviceDetailDuck.selectors.detail)
-  const petKindList = useSelector(petKindDuck.selectors.list)
   const {
-    pet_classes = [],
     service_group = null,
     locations = []
-  } = useSelector(state => selector(state, 'pet_classes', 'service_group', 'locations'))
+  } = useSelector(state => selector(state, 'service_group', 'locations'))
 
   useEffect(() => {
     // Get default data to create a new service type
@@ -45,43 +41,43 @@ const ServiceTypeCreateForm = props => {
   }, [ detail.status ])
 
   useEffect(() => {
-    if(editing)
+    if(editing) {
       initialize({
         ...detail.item,
         pet_classes: detail.item.pet_classes.map(({ id }) => id),
         locations  : detail.item.locations.map(({ id }) => id)
       })
-    else
+
+      dispatch(
+        serviceDetailDuck.creators.createGetLocations({
+          pet_class_ids: detail.item.pet_classes.map(({ id }) => id)
+        })
+      )
+    } else {
       // Set default data for new register
       initialize(ServiceDefaultConfig)
+    }
   }, [ detail.item.id ])
-
-  const getLocationOptions = petClassIds => {
-    // Get location ids related to every pet class
-    const locationGroupIds = petKindList.items
-      .filter(({ id }) => petClassIds.includes(id))
-      .map(({ locations }) => {
-        return locations.map(item => item.id)
-      })
-
-    const interesectedLocationIds = _intersection(...locationGroupIds)
-    const options = detail.form.location_options
-      .filter(({ value }) => interesectedLocationIds.includes(value))
-
-    // Validating if current selected locations are valid
-    const validSelectedLocationIds = locations.filter(locationId => {
-      return interesectedLocationIds.includes(locationId)
-    })
-
-    change('locations', validSelectedLocationIds)
-
-    return options
-  }
 
   const _handleClose = () => {
     dispatch(
       serviceDetailDuck.creators.resetItem()
     )
+  }
+
+  const _handlePetClassChange = petClassIds => {
+    dispatch(
+      serviceDetailDuck.creators.createGetLocations({
+        pet_class_ids: petClassIds
+      })
+    )
+
+    // Validating if current selected locations are valid
+    const validSelectedLocationIds = locations.filter(locationId => {
+      return detail.form.location_options.some(({ value }) => value === locationId)
+    })
+
+    change('locations', validSelectedLocationIds)
   }
 
   const _handleServiceGroupBtnClick = e => {
@@ -102,7 +98,6 @@ const ServiceTypeCreateForm = props => {
         .catch(parseResponseError)
   }
 
-  const locationOptions = useMemo(() => getLocationOptions(pet_classes), [ pet_classes, detail.form.pet_kind_options ])
   const editing = Boolean(detail.item.id)
 
   return (
@@ -163,6 +158,7 @@ const ServiceTypeCreateForm = props => {
           label='Species'
           multiple
           name='pet_classes'
+          onChange={_handlePetClassChange}
           options={detail.form.pet_kind_options}
           placeholder='Select Species'
           required
@@ -176,10 +172,9 @@ const ServiceTypeCreateForm = props => {
           label='Location'
           multiple
           name='locations'
-          options={locationOptions}
+          options={detail.form.location_options}
           placeholder='Select Locations'
           required
-          search
           selectOnBlur={false}/>
       </Form.Group>
 
