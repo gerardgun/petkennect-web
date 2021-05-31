@@ -6,7 +6,7 @@ import Calendar from './calendar'
 import Tasklist from './task-list'
 import './../dashboard.scss'
 
-const Second = () => {
+const Second = (props) => {
   return (
     <>
       <Grid className='mh0 mb20' width={16}>
@@ -14,7 +14,7 @@ const Second = () => {
           <Notification/>
         </Grid.Column>
         <Grid.Column className='pt0 pb0' style={{ width: '43%' }}>
-          <Calendar/>
+          <Calendar hideSidebar={props.hideSidebar}/>
         </Grid.Column>
         <Grid.Column className='p0' style={{ width: '28%' }}>
           <Tasklist/>

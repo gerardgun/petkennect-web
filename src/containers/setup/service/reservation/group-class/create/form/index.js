@@ -1,93 +1,137 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
-import { Form, Input, Select } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Header, Input, Select, TextArea } from 'semantic-ui-react'
 import * as yup from 'yup'
 
-import CheckboxGroup from '@components/Common/CheckboxGroup'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import { KennelAreaDefaultConfig } from '@lib/constants/service'
+import { ServiceDefaultConfig } from '@lib/constants/service'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import './styles.scss'
 
-import kennelAreaDetailDuck from '@reducers/order/service/boarding/kennel/area/detail'
+import serviceDetailDuck from '@reducers/service/detail'
 
-const selector = formValueSelector('kennel-area')
+const selector = formValueSelector('service-reservation')
 
-const KennelAreaCreateForm = props => {
+const ServiceReservationCreateForm = props => {
   const {
     change, error, handleSubmit, reset, initialize // redux-form
   } = props
 
   const dispatch = useDispatch()
-  const detail = useSelector(kennelAreaDetailDuck.selectors.detail)
-  const is_surcharge = useSelector(state => selector(state, 'is_surcharge'))
+  const detail = useSelector(serviceDetailDuck.selectors.detail)
+  const service_group = useSelector(state => selector(state, 'service_group'))
 
   useEffect(() => {
-    // Get default data to create a new kennel area
-    dispatch(kennelAreaDetailDuck.creators.create())
+    // Get default data to create a new service type
+    dispatch(serviceDetailDuck.creators.create())
   }, [])
+
+  useEffect(() => {
+    if(detail.status === 'GOT' && detail.form.service_group_options.length > 0)
+      if(editing)
+        change('service_group', detail.item.service_group)
+      else
+        change('service_group', detail.form.service_group_options[0].value)
+  }, [ detail.status ])
 
   useEffect(() => {
     if(editing)
       initialize({
         ...detail.item,
-        pet_class: detail.item.pet_class.id,
-        location : detail.item.location.id
+        pet_classes: detail.item.pet_classes.map(({ id }) => id),
+        locations  : detail.item.locations.map(({ id }) => id)
       })
     else
       // Set default data for new register
-      initialize(KennelAreaDefaultConfig)
+      initialize(ServiceDefaultConfig)
   }, [ detail.item.id ])
-
-  const getChargeTypeOptions = isSurcharge => {
-    return detail.form.charge_type_options
-      .filter(({ value }) => isSurcharge ? value !== 'no_charge' : value === 'no_charge')
-  }
 
   const _handleClose = () => {
     dispatch(
-      kennelAreaDetailDuck.creators.resetItem()
+      serviceDetailDuck.creators.resetItem()
     )
   }
 
-  const _handleIsSurchargeChange = isSurcharge => {
-    if(isSurcharge) change('charge_type', null)
-    else change('charge_type', 'no_charge')
+  const _handleServiceGroupBtnClick = e => {
+    change('service_group', parseInt(e.currentTarget.dataset.id))
   }
 
   const _handleSubmit = values => {
+    if(values.sku_id === detail.item.sku_id)
+      delete values.sku_id
+
     if(editing)
-      return dispatch(kennelAreaDetailDuck.creators.put({ id: detail.item.id, ...values }))
+      return dispatch(serviceDetailDuck.creators.put({ id: detail.item.id, ...values }))
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return dispatch(kennelAreaDetailDuck.creators.post(values))
+      return dispatch(serviceDetailDuck.creators.post(values))
         .then(_handleClose)
         .catch(parseResponseError)
   }
 
-  const chargeTypeOptions = useMemo(() => getChargeTypeOptions(is_surcharge), [ is_surcharge, detail.form.charge_type_options ])
   const editing = Boolean(detail.item.id)
 
   return (
     // eslint-disable-next-line react/jsx-handler-names
-    <Form id='kennel-area' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+    <Form id='service-reservation' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+
+      {
+        !editing && (
+          <Button.Group basic className='service-type-form-buttons' fluid>
+            {
+              detail.form.service_group_options.map(({ value, text }) => (
+                <Button
+                  color={value === service_group ? 'teal' : null}
+                  content={text}
+                  data-id={value}
+                  key={value}
+                  onClick={_handleServiceGroupBtnClick}
+                  type='button'/>
+              ))
+            }
+          </Button.Group>
+        )
+      }
+
+      <Form.Group widths={2}>
+        <Form.Input
+          label='Service Group'
+          readOnly
+          required
+          value={detail.form.service_group_options.find(({ value }) => value === service_group)?.text}/>
+      </Form.Group>
       <Form.Group widths='equal'>
         <Field
+          autoFocus
           component={FormField}
           control={Input}
-          label='Area Name'
+          label='Service Type'
           name='name'
-          placeholder='Enter area name'
+          placeholder='Enter Service Type Name'
           required/>
       </Form.Group>
       <Form.Group widths='equal'>
         <Field
           component={FormField}
+          control={TextArea}
+          label='Description'
+          name='description'
+          placeholder='Enter some description'
+          rows={5}/>
+      </Form.Group>
+
+      <Header as='h6' className='section-header' color='blue'>Applies to</Header>
+
+      <Form.Group widths='equal'>
+        <Field
+          component={FormField}
           control={Select}
           label='Species'
-          name='pet_class'
+          multiple
+          name='pet_classes'
           options={detail.form.pet_kind_options}
           placeholder='Select Species'
           required
@@ -99,57 +143,35 @@ const KennelAreaCreateForm = props => {
           component={FormField}
           control={Select}
           label='Location'
-          name='location'
+          multiple
+          name='locations'
           options={detail.form.location_options}
-          placeholder='Select Location'
+          placeholder='Select Locations'
           required
           search
           selectOnBlur={false}/>
       </Form.Group>
-      <Form.Group widths='equal'>
-        <Field
-          component={FormField}
-          control={CheckboxGroup}
-          label='Applies To Service Groups'
-          name='service_group_ids'
-          options={detail.form.service_group_options}
-          required/>
-      </Form.Group>
-      <Form.Group widths='equal'>
-        <Field
-          component={FormField}
-          control={Select}
-          label='Surcharge'
-          name='is_surcharge'
-          onChange={_handleIsSurchargeChange}
-          options={detail.form.is_surcharge_options}
-          placeholder='Surcharge'
-          required
-          search
-          selectOnBlur={false}/>
-      </Form.Group>
-      <Form.Group widths='equal'>
-        <Field
-          component={FormField}
-          control={Select}
-          disabled={!is_surcharge}
-          label='Charge Type'
-          name='charge_type'
-          options={chargeTypeOptions}
-          placeholder='Select charge type'
-          required
-          search
-          selectOnBlur={false}/>
-      </Form.Group>
-      <Form.Group widths='equal'>
+
+      <Header as='h6' className='section-header' color='blue'>Other settings</Header>
+
+      <Form.Group widths={2}>
         <Field
           component={FormField}
           control={Input}
-          label='Price'
-          name='price'
-          placeholder='0.00'
-          required
-          type='number'/>
+          label='Custom Acct Cd'
+          name='sku_id'
+          placeholder='Enter code'
+          required/>
+      </Form.Group>
+      <Form.Group widths={2}>
+        <Field
+          component={FormField}
+          control={Checkbox}
+          format={Boolean}
+          label='Active'
+          name='is_active'
+          toggle
+          type='checkbox'/>
       </Form.Group>
 
       {
@@ -166,16 +188,15 @@ const KennelAreaCreateForm = props => {
 }
 
 export default reduxForm({
-  form    : 'kennel-area',
+  form    : 'service-reservation',
   validate: values => {
     const schema = {
-      name             : yup.string().required('Name is required'),
-      pet_class        : yup.mixed().required('Pet species is required'),
-      location         : yup.mixed().required('Location is required'),
-      service_group_ids: yup.array().required('Choose at least one service group'),
-      price            : yup.number('Price is Required').min(0).typeError('Price must be a number').required('Price is Required')
+      name       : yup.string().required('Name is required'),
+      pet_classes: yup.array().required('Choose at least one service group'),
+      locations  : yup.array().required('Choose at least one service group'),
+      sku_id     : yup.string().required('Custom Acct Cd is required')
     }
 
     return syncValidate(yup.object().shape(schema), values)
   }
-})(KennelAreaCreateForm)
+})(ServiceReservationCreateForm)

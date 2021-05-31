@@ -1,0 +1,16 @@
+.service-type-form {
+  &-buttons.ui.basic.buttons {
+    border-left: 0;
+    border-right: 0;
+    margin-bottom: 2rem;
+    border-radius: 0;
+
+    .ui.button {
+      border-left: none;
+
+      &.teal {
+        color: #00aa9f !important;
+      }
+    }
+  }
+}

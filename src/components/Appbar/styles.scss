@@ -82,7 +82,7 @@
 
       &.ui.dropdown {
 
-         padding-left: 1rem;
+         padding-left: 0.5rem;
 
          @media (min-width: 900px) and (max-width:1200px) {
           padding-left: 0.5rem !important;
@@ -144,5 +144,6 @@
       }
     }
   }
+
 
 

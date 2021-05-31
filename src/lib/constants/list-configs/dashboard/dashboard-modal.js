@@ -6,6 +6,8 @@ import { BiTennisBall } from 'react-icons/bi'
 import { GiDogBowl } from 'react-icons/gi'
 
 export default {
+  search_enabled: false,
+
   columns: [
     {
       display_name: 'Pet',
@@ -14,11 +16,7 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
-      filter      : {
-        type: 'dropdown',
-        name: 'pet'
-      },
-      formatter: (cell, row) => {
+      formatter   : (cell, row) => {
         return (
 
           <div className='flex'>
@@ -88,11 +86,7 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
-      filter      : {
-        type: 'dropdown',
-        name: 'service'
-      },
-      formatter: (cell,row)=>{
+      formatter   : (cell,row)=>{
         return (<div>
           <label><b>{row.service.name}</b></label>
           <label style={{ display: 'block' }}>{row.service.checkin}</label>
@@ -108,11 +102,7 @@ export default {
       width       : null,
       align       : 'left',
       sort        : true,
-      filter      : {
-        type: 'dropdown',
-        name: 'client'
-      },
-      formatter: (cell,row)=>{
+      formatter   : (cell,row)=>{
         return (
           <div>
             <b>{row.client.name}</b>
@@ -226,6 +216,36 @@ export default {
               icon        : 'medkit',
               display_name: 'Vaccinations',
               name        : 'vaccinations'
+            },
+            {
+              icon        : 'edit',
+              display_name: 'Add Report Card',
+              name        : 'add_report_card'
+            },
+            {
+              icon        : 'baseball ball',
+              display_name: 'Add Interaction',
+              name        : 'add_intraction'
+            },
+            {
+              icon        : 'exclamation',
+              display_name: 'Add Incident',
+              name        : 'add_incident'
+            },
+            {
+              icon        : 'print',
+              display_name: 'Print Run Card',
+              name        : 'print_run_card'
+            },
+            {
+              icon        : 'edit',
+              display_name: 'Add Client Comments',
+              name        : 'add_client_comment'
+            },
+            {
+              icon        : 'trash alternate outline',
+              display_name: 'Delete Reservation',
+              name        : 'delete_reservation'
             }
 
           ]

@@ -1,3 +1,4 @@
+import React from 'react'
 
 export default {
   actions: [
@@ -18,10 +19,18 @@ export default {
       sort_name   : 'pet__name'
     },
     {
-      display_name: 'Applies To Location',
-      name        : 'location',
-      type        : 'string',
-      align       : 'left'
+      display_name: 'Locations',
+      name        : 'locations',
+      formatter   : cell => {
+        let locationNames = <span className='text-gray'>No related locations</span>
+
+        if(cell.length > 0)
+          locationNames = cell
+            .map(({ name }) => name)
+            .join(', ')
+
+        return locationNames
+      }
     },
     {
       display_name: 'Actions',
