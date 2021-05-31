@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
 import { Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea } from 'semantic-ui-react'
@@ -12,6 +12,7 @@ import Tab from '@containers/setup/day-service/general/components/Tab'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 const SetupDayServiceGeneralSettingIndex = props => {
+  const [dropStatus, setDropStatus] = useState(false)
   const {
     error, handleSubmit // redux-form
   } = props
@@ -26,8 +27,6 @@ const SetupDayServiceGeneralSettingIndex = props => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Menu/>
-
-        <Tab>
           {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onSubmit={handleSubmit(_handleSubmit)}>
 
@@ -98,107 +97,111 @@ const SetupDayServiceGeneralSettingIndex = props => {
                     format={Boolean}
                     name='special_pricing_enabled'
                     toggle
-                    type='checkbox'/>
+                    type='checkbox'
+                    onChange={(event) => setDropStatus(event)}/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            {/*<Divider/>*/}
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='4'>
-                  <Header as='h4'>
-                    <p>Early Drop Off</p>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column width='4'>
-                  <Field
-                    component={FormField}
-                    control={Input}
-                    name='early_drop_off'
-                    placeholder='0 minutes of'
-                    type='number'/>
-                </Grid.Column>
-                <Grid.Column width='5'>
-                  <Field
-                    component={FormField}
-                    control={Select}
-                    name='early_drop_off_option'
-                    options={[
-                      { value: 1, text: 'Custom Time' },
-                      { value: 2, text: 'Business Opening Hours' }
-                    ]}
-                    placeholder='Select option'
-                    search
-                    selectOnBlur={false}/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-            {/*<Divider/>*/}
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='4'>
-                  <Header as='h4'>
-                    <p>Late Pick up</p>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column width='4'>
-                  <Field
-                    component={FormField}
-                    control={Input}
-                    name='late_pickup_off'
-                    placeholder='0 minutes of'
-                    type='number'/>
-                </Grid.Column>
-                <Grid.Column width='5'>
-                  <Field
-                    component={FormField}
-                    control={Select}
-                    name='late_pickup_off_option'
-                    options={[
-                      { value: 1, text: 'Custom Time' },
-                      { value: 2, text: 'Business Closing Hours' }
-                    ]}
-                    placeholder='Select option'
-                    search
-                    selectOnBlur={false}/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-            {/*<Divider/>*/}
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='4'>
-                  <Header as='h4'>
-                    <p>Pricing</p>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column width='4'>
-                  <Field
-                    component={FormField}
-                    control={Input}
-                    name='pricing_amount'
-                    placeholder='$0.00'
-                    type='number'/>
-                </Grid.Column>
-                <Grid.Column width='5'>
-                  <Field
-                    component={FormField}
-                    control={Select}
-                    name='pricing_amount_option'
-                    options={[
-                      { value: 1, text: 'Per Dog' },
-                      { value: 2, text: 'Per Drop Off/Pick up' }
-                    ]}
-                    placeholder='Select option'
-                    search
-                    selectOnBlur={false}/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+            
+            {dropStatus &&
+              <>
+                <Grid style={{ padding: '1rem' }}>
+                  <Grid.Row>
+                    <Grid.Column width='4'>
+                      <Header as='h4'>
+                          <p>Early Drop Off</p>
+                      </Header>
+                      </Grid.Column>
+                      <Grid.Column width='4'>
+                        <Field
+                          component={FormField}
+                          control={Input}
+                          name='early_drop_off'
+                          placeholder='0 minutes of'
+                          type='number'/>
+                      </Grid.Column>
+                      <Grid.Column width='5'>
+                        <Field
+                          component={FormField}
+                          control={Select}
+                          name='early_drop_off_option'
+                          options={[
+                            { value: 1, text: 'Custom Time' },
+                            { value: 2, text: 'Business Opening Hours' }
+                          ]}
+                          placeholder='Select option'
+                          search
+                          selectOnBlur={false}/>
+                      </Grid.Column>
+                  </Grid.Row>
+                </Grid>
 
-            <Header as='h4' color='teal'>Multiple Location Setup</Header>
+                <Grid style={{ padding: '1rem' }}>
+                  <Grid.Row>
+                    <Grid.Column width='4'>
+                      <Header as='h4'>
+                        <p>Late Pick up</p>
+                      </Header>
+                    </Grid.Column>
+                    <Grid.Column width='4'>
+                      <Field
+                        component={FormField}
+                        control={Input}
+                        name='late_pickup_off'
+                        placeholder='0 minutes of'
+                        type='number'/>
+                    </Grid.Column>
+                    <Grid.Column width='5'>
+                      <Field
+                        component={FormField}
+                        control={Select}
+                        name='late_pickup_off_option'
+                        options={[
+                          { value: 1, text: 'Custom Time' },
+                          { value: 2, text: 'Business Closing Hours' }
+                        ]}
+                        placeholder='Select option'
+                        search
+                        selectOnBlur={false}/>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              
+                <Grid style={{ padding: '1rem' }}>
+                  <Grid.Row>
+                    <Grid.Column width='4'>
+                      <Header as='h4'>
+                        <p>Pricing</p>
+                      </Header>
+                    </Grid.Column>
+                    <Grid.Column width='4'>
+                      <Field
+                        component={FormField}
+                        control={Input}
+                        name='pricing_amount'
+                        placeholder='$0.00'
+                        type='number'/>
+                    </Grid.Column>
+                    <Grid.Column width='5'>
+                      <Field
+                        component={FormField}
+                        control={Select}
+                        name='pricing_amount_option'
+                        options={[
+                          { value: 1, text: 'Per Dog' },
+                          { value: 2, text: 'Per Drop Off/Pick up' }
+                        ]}
+                        placeholder='Select option'
+                        search
+                        selectOnBlur={false}/>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </>}
 
-            <Divider/>
+          {/*<Header as='h4' color='teal'>Multiple Location Setup</Header>
+
+          <Divider/>
 
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
@@ -221,7 +224,7 @@ const SetupDayServiceGeneralSettingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            {/*<Divider className='mt20'/>*/}
+            <Divider className='mt20'/>*/}
 
             {
               error && (
@@ -230,7 +233,6 @@ const SetupDayServiceGeneralSettingIndex = props => {
             }
 
           </Form>
-        </Tab>
       </Segment>
     </Layout>
   )
