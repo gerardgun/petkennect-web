@@ -88,7 +88,7 @@ const SetupDayServiceGeneralSettingIndex = props => {
               <Grid.Row>
                 <Grid.Column width='7'>
                   <Header as='h4'>
-                    <p>Enable special pricing for pick up/drop off times within X minutes of Bussines Hours?</p>
+                    <p>Enable special pricing for pick up/drop off times within X minutes of Business Hours?</p>
                   </Header>
                 </Grid.Column>
                 <Grid.Column textAlign='center' width='4'>
