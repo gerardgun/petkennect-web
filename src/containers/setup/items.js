@@ -97,6 +97,10 @@ export default [
         name: 'Accounting Settings',
         to  : ''
 
+      },
+      {
+        name: 'Comany Profile',
+        to  : ''
       }
     ]
   },
@@ -112,7 +116,7 @@ export default [
         name: 'Service Settings',
         to  : '/setup/settings/booarding-pricing'
       },
-      /*{
+      /* {
         name: 'Boarding',
         to  : '/setup/boarding/pricing'
       },

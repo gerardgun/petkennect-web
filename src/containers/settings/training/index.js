@@ -53,9 +53,6 @@ const SettingsTrainingIndex = props =>{
                 <Grid.Column width='5'>
                   <Header as='h4'>
                     <p>Enable Client Training Questionnaire</p>
-                    <Header.Subheader>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam mi, eros vitae, elementum luctus elit.
-                    </Header.Subheader>
                   </Header>
                 </Grid.Column>
                 <Grid.Column textAlign='center' width='4'>
@@ -80,9 +77,6 @@ const SettingsTrainingIndex = props =>{
                 <Grid.Column width='5'>
                   <Header as='h4'>
                     <p>Enable Training Rating System</p>
-                    <Header.Subheader>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam mi, eros vitae, elementum luctus elit.
-                    </Header.Subheader>
                   </Header>
                 </Grid.Column>
                 <Grid.Column textAlign='center' width='4'>
@@ -158,7 +152,7 @@ const SettingsTrainingIndex = props =>{
                       placeholder='Select option'
                       search
                       selectOnBlur={false}
-                      onChange={(event) => event === 1 ? setTextOption('a dollar value ($250)'):setTextOption('a percent (25%)')}/>
+                      onChange={(event) => event === 1 ? setTextOption('a dollar value ($250)'):setTextOption('a percent of (25%)')}/>
                   </Grid.Column>
                   <Grid.Column width='3'>
                     <Field

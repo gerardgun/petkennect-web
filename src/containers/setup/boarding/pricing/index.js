@@ -14,6 +14,7 @@ import { parseResponseError, syncValidate } from '@lib/utils/functions'
 const SetupBoardingPricingIndex = props => {
   const[ pricingModel, setPricingModel ] = useState(false);
   const[ calculatePricing, setCalculatePricing ] = useState(false);
+  const[ textDiscount, setTextDiscount] = useState('$0.00')
   const {
     error, handleSubmit // redux-form
   } = props
@@ -42,9 +43,6 @@ const SetupBoardingPricingIndex = props => {
               <Grid.Column width='6'>
                 <Header as='h4'>
                   <p>Select your pricing model</p>
-                  <Header.Subheader>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam mi, eros vitae, elementum luctus elit.
-                  </Header.Subheader>
                 </Header>
               </Grid.Column>
               <Grid.Column width='5'>
@@ -60,12 +58,12 @@ const SetupBoardingPricingIndex = props => {
                   placeholder='Select your pricing model'
                   search
                   selectOnBlur={false}
-                  onChange={(event)=> event===1 ? setPricingModel(true):setPricingModel(false)}/>
+                  onChange={(event)=> event===1 ? setPricingModel(1):setPricingModel(2)}/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
           {/*<Divider/>*/}
-          {pricingModel &&
+          {pricingModel === 1 &&
             <>
               <Grid style={{ padding: '1rem' }}>
                   <Grid.Row>
@@ -117,7 +115,7 @@ const SetupBoardingPricingIndex = props => {
             </>
           }
           {/*<Divider/>*/}
-          {!pricingModel &&
+          {pricingModel === 2 &&
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='6'>
@@ -223,7 +221,7 @@ const SetupBoardingPricingIndex = props => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            {/*<Divider/>*/}
+
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='6'>
@@ -242,14 +240,15 @@ const SetupBoardingPricingIndex = props => {
                     ]}
                     placeholder='Select option'
                     search
-                    selectOnBlur={false}/>
+                    selectOnBlur={false}
+                    onChange={(event) => event===2 ? setTextDiscount('%0.00'):setTextDiscount('$0.00')}/>
                 </Grid.Column>
                 <Grid.Column width='3'>
                   <Field
                     component={FormField}
                     control={Input}
                     name='discount_per_dog_price'
-                    placeholder='$0.00'
+                    placeholder={textDiscount}
                     type='number'/>
                 </Grid.Column>
               </Grid.Row>
@@ -316,7 +315,7 @@ const SetupBoardingPricingIndex = props => {
                   options={[
                     { value: 1, text: 'None' },
                     { value: 2, text: 'Let PetKennect do it By Breed (must be set in pet profile)' },
-                    { value: 3, text: 'Let PetKennect should do it By Weight (requires weight in pet profile)' },
+                    { value: 3, text: 'PetKennect should do it By Weight (requires weight in pet profile)' },
                     { value: 4, text: 'Create Reservation Type for each dog size and select manually' }
                   ]}
                   placeholder='Select option'
