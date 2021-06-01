@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/settings/components/Menu'
-import Tab from '@containers/setup/training/general/components/Tab'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import TrainingSetting from './training-setting'
+import EditableFieldTab from './training-setting/editable-field-tab'
 
-const SetupTrainingGeneralSettingIndex = props => {
+const SettingsTrainingIndex = props =>{
   const [includeDrop, setIncludeDrop] = useState(false)
   const [textOption, setTextOption] = useState('a percent (25%) or a dollar value ($250)')
   const {
@@ -27,8 +29,23 @@ const SetupTrainingGeneralSettingIndex = props => {
   return (
     <Layout>
       <Segment className='segment-content'>
-        <Menu/>
-
+        <Menu />
+        <Grid>
+          <Grid.Column computer={16} mobile={16} tablet={16}>
+            <Breadcrumb className='p0'>
+              <Breadcrumb.Section active>
+                <Link to='/setup'><Icon name='setting'/>Settings</Link>
+              </Breadcrumb.Section>
+              <Breadcrumb.Divider className='mh12' icon='right chevron'/>
+              <Breadcrumb.Section active>
+                <Link to='/setup'>Services</Link>
+              </Breadcrumb.Section>
+              <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
+              <Breadcrumb.Section active>
+                <Link>Training Settings</Link>
+              </Breadcrumb.Section>
+            </Breadcrumb>
+          </Grid.Column>
           {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onSubmit={handleSubmit(_handleSubmit)}>
             <Grid style={{ padding: '1rem' }}>
@@ -51,7 +68,7 @@ const SetupTrainingGeneralSettingIndex = props => {
                     type='checkbox'/>
                 </Grid.Column>
                 <Grid.Column width='7'>
-                  <Button className='mt12' color='teal' content='Customize Form'/>
+                  <Button className='mt12' color='teal' content='Customize Form' as={Link} to='/setup/questionnaire-form'/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -162,8 +179,16 @@ const SetupTrainingGeneralSettingIndex = props => {
             }
 
           </Form>
+          <Grid.Column
+            className='pl0'
+            computer={16} mobile={16} tablet={16}>
+            <EditableFieldTab/>
+          </Grid.Column>
+        </Grid>
+
       </Segment>
     </Layout>
+
   )
 }
 
@@ -175,4 +200,5 @@ export default reduxForm({
 
     return syncValidate(Yup.object().shape(schema), values)
   }
-})(SetupTrainingGeneralSettingIndex)
+})(SettingsTrainingIndex)
+

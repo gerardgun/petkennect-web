@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Checkbox, Divider, Form, Grid, Header, Segment } from 'semantic-ui-react'
+import { Breadcrumb, Icon, Checkbox, Divider, Form, Grid, Header, Segment } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -10,6 +11,7 @@ import Layout from '@components/Common/Layout'
 import Menu from '@containers/settings/components/Menu'
 import Tab from '@containers/setup/grooming/general/components/Tab'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import SetupGroomingGeneralServiceTypeIndex from '@containers/setup/grooming/general/service-option-section'
 
 const SetupGroomingGeneralSettingIndex = props => {
   const {
@@ -26,63 +28,17 @@ const SetupGroomingGeneralSettingIndex = props => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Menu/>
-
-        <Tab>
+        
           {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onSubmit={handleSubmit(_handleSubmit)}>
 
-            <Header as='h4' color='teal'>Grooming Service Types and Reservations</Header>
+            <Header as='h4' color='teal'>Grooming Settings</Header>
+            <Header.Subheader>
+              Add service options to grooming appointments and reservations.  
+              These options will show up as a list that can be added when making a reservation.
+            </Header.Subheader>
 
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='7'>
-                  <Header as='h4'>
-                    <p>Enable Grooming Types Filter</p>
-                    <Header.Subheader>
-                      Tip: Types are not required but simplify reservations offered by braking out the service:
-                      Full Grooming Service, Bath and Brush, Miscellanous Services
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column textAlign='center' width='4'>
-                  <Field
-                    component={FormField}
-                    control={Checkbox}
-                    format={Boolean}
-                    name='enable_service_type_filter'
-                    toggle
-                    type='checkbox'/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-
-
-            <Header as='h4' color='teal'>Multiple Location Setup</Header>
-
-            <Divider className='mt20'/>
-
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='7'>
-                  <Header as='h4'>
-                    <p>Enable Multiple Location Setup</p>
-                    <Header.Subheader>
-                      If prices vary by location, enable this options. If all locations charge the same prices for services, do not enable this option.
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column textAlign='center' width='4'>
-                  <Field
-                    component={FormField}
-                    control={Checkbox}
-                    format={Boolean}
-                    name='multiple_location_setup_enabled'
-                    toggle
-                    type='checkbox'/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-            {/*<Divider className='mt20'/>*/}
+            <SetupGroomingGeneralServiceTypeIndex/>
 
             {
               error && (
@@ -91,7 +47,6 @@ const SetupGroomingGeneralSettingIndex = props => {
             }
 
           </Form>
-        </Tab>
       </Segment>
     </Layout>
   )
