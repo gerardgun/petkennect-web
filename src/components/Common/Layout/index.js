@@ -21,7 +21,7 @@ const Layout = ({ children, sidebarHandle }) => {
     <Container fluid>
       <Grid className='appbar-grid'>
         <Grid.Column
-          className='p0' computer={16} mobile={16}
+          className='p0 appbar-freeze' computer={16} mobile={16}
           tablet={16} >
           <Appbar/>
         </Grid.Column>

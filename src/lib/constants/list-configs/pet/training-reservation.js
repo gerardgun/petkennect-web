@@ -100,64 +100,66 @@ export default {
           </>)
       }
     },
-
     {
-      display_name: 'Action',
-      type        : 'button',
-      options     : [
-        {
-          display_name: 'Check-In',
-          icon        : 'check',
-          name        : 'check_in',
-          color       : 'green'
-        }
-      ]
-    },
-    {
-      display_name: '',
+      display_name: 'Actions',
       name        : 'custom_name',
-      type        : 'dropdown',
+      type        : 'action-button',
       options     : [
         {
-          icon        : 'edit',
-          display_name: 'Edit Reservation',
-          name        : 'edit_reserve'
+          display_name: 'Check In',
+          name        : 'check_in',
+          icon        : 'arrow right',
+          color       : 'green',
+          type        : 'button'
         },
         {
-          icon        : 'sticky note outline',
-          display_name: 'Add Note',
-          name        : 'add_note'
-        },
-        {
-          icon        : 'add',
-          display_name: 'Add Interaction',
-          name        : 'add_interaction'
-        },
-        {
-          icon        : 'server',
-          display_name: 'Add-on Services',
-          name        : 'add_on'
-        },
-        {
-          icon        : 'file text',
-          display_name: 'Add/Edit Logs',
-          name        : 'edit_logs'
-        },
-        {
-          icon        : 'file pdf',
-          display_name: 'Add/Edit Report Card',
-          name        : 'report_cards'
-        },
-        {
-          icon        : 'print',
-          display_name: 'Print Run Card',
-          name        : 'print_run_card'
-        },
-        {
-          icon        : 'trash alternate outline',
-          display_name: 'Delete Reservation',
-          name        : 'delete_reservation'
+          display_name   : '',
+          name           : 'custom_name',
+          type           : 'dropdown',
+          dropdownOptions: [
+            {
+              icon        : 'edit',
+              display_name: 'Edit Reservation',
+              name        : 'edit_reserve'
+            },
+            {
+              icon        : 'sticky note outline',
+              display_name: 'Add Note',
+              name        : 'add_note'
+            },
+            {
+              icon        : 'add',
+              display_name: 'Add Interaction',
+              name        : 'add_interaction'
+            },
+            {
+              icon        : 'server',
+              display_name: 'Add-on Services',
+              name        : 'add_on'
+            },
+            {
+              icon        : 'file text',
+              display_name: 'Add/Edit Logs',
+              name        : 'edit_logs'
+            },
+            {
+              icon        : 'file pdf',
+              display_name: 'Add/Edit Report Card',
+              name        : 'report_cards'
+            },
+            {
+              icon        : 'print',
+              display_name: 'Print Run Card',
+              name        : 'print_run_card'
+            },
+            {
+              icon        : 'trash alternate outline',
+              display_name: 'Delete Reservation',
+              name        : 'delete_reservation'
+            }
+          ]
         }
+
       ]
     }
   ]
