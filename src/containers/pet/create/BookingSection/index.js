@@ -41,26 +41,34 @@ function BookingSection({  ...props }) {
           mobile={16} verticalAlign='middle'>
           <Header as='h2'>Services</Header>
           <Divider/>
-          <div className='flex'>
+          <div className='flex button-div'>
+
             <Button
+              active={activeServiceItem === 'D'}
               className='tab-header'
               color={activeServiceItem === 'D' ? 'teal' : null}
               content='Day Services'
               onClick={_handleFilterBtnClick}
               type='D'/>
+
             <Button
-              className='tab-header'
+              active={activeServiceItem === 'B'}
+              className='tab-header button-div'
               color={activeServiceItem === 'B' ? 'teal' : null}
               content='Boarding'
               onClick={_handleFilterBtnClick}
               type='B'/>
+
             <Button
+              active={activeServiceItem === 'T'}
               className='tab-header'
               color={activeServiceItem === 'T' ? 'teal' : null}
               content='Training'
               onClick={_handleFilterBtnClick}
               type='T'/>
+
             <Button
+              active={activeServiceItem === 'G'}
               className='tab-header'
               color={activeServiceItem === 'G' ? 'teal' : null}
               content='Grooming'
