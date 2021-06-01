@@ -1,19 +1,29 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { formValueSelector } from 'redux-form'
+import { Button, Dimmer, Form, Header, Loader, Modal } from 'semantic-ui-react'
 
-import ServiceTypeCreateForm from './index'
+import ServiceReservationCreateForm from './index'
 
-import serviceDetailDuck from '@reducers/service/detail'
+import serviceVariationDetailDuck from '@reducers/service/variation/detail'
 
-const ServiceTypeCreateFormModal = () => {
+const selector = formValueSelector('service-boarding-activity')
+
+const ServiceReservationCreateFormModal = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
+  const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
+  const price = useSelector(state => selector(state, 'price'))
 
   const _handleClose = () => {
     dispatch(
-      serviceDetailDuck.creators.resetItem()
+      serviceVariationDetailDuck.creators.resetItem()
     )
+  }
+
+  const _handleUpdatePricingBtnClick = () => {
+    return dispatch(serviceVariationDetailDuck.creators.postPrice({ service_variation_id: detail.item.id, ...price }))
+      .then(_handleClose)
+      // .catch(parseResponseError)
   }
 
   const editing = Boolean(detail.item.id)
@@ -27,12 +37,22 @@ const ServiceTypeCreateFormModal = () => {
       open={open}
       size='small'>
       <Modal.Content>
-        <Header as='h2'>{editing ? 'Update' : 'New'} Reservation</Header>
+        <Header as='h2'>{editing ? 'Update' : 'Add'} Boarding Activity</Header>
 
-        <ServiceTypeCreateForm/>
+        <ServiceReservationCreateForm/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
+            {
+              editing && detail.item.prices.length > 0 && (
+                <Button
+                  color='violet'
+                  content='Update Pricing'
+                  disabled={saving}
+                  onClick={_handleUpdatePricingBtnClick}
+                  type='button'/>
+              )
+            }
             <Button
               basic
               className='w120'
@@ -43,16 +63,20 @@ const ServiceTypeCreateFormModal = () => {
               type='button'/>
             <Button
               color='teal'
-              content={editing ? 'Save changes' : 'Create Service Type'}
+              content={editing ? 'Save changes' : 'Create Boarding Activity'}
               disabled={saving}
-              form='service-type'
+              form='service-boarding-activity'
               loading={saving}
               type='submit'/>
           </Form.Field>
         </Form.Group>
+
+        <Dimmer active={detail.status === 'GETTING'} inverted>
+          <Loader inverted/>
+        </Dimmer>
       </Modal.Content>
     </Modal>
   )
 }
 
-export default ServiceTypeCreateFormModal
+export default ServiceReservationCreateFormModal

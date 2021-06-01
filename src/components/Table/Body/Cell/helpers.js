@@ -76,4 +76,4 @@ const getContentMoney = cell => {
     .format(cell)
 }
 
-export { getContent }
+export { getContent, getContentMoney }

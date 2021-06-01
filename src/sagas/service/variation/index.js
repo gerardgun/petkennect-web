@@ -22,8 +22,27 @@ function* get() {
     }
 
     // Load items
-    const filters = yield select(selectors.filters)
+    let filters = yield select(selectors.filters)
     const list = yield select(selectors.list)
+
+    // BEGIN filter by service__type
+    if(filters.service__type && !('service' in filters)) {
+      const { results: services } = yield call(Get, 'services/', {
+        service_group__type: filters.service__type === 'B' ? 'B' : 'T'
+      })
+
+      const boardingActivityService = services.find(({ type }) => type === filters.service__type)
+
+      yield put({
+        type   : types.SET_FILTERS,
+        payload: {
+          service: boardingActivityService.id
+        }
+      })
+
+      filters = yield select(selectors.filters)
+    }
+    // END filter by service__type
 
     const { results, ...meta } = yield call(Get, 'services-variations/', filters)
 
@@ -32,7 +51,7 @@ function* get() {
       payload: {
         items: results.map(item => ({
           ...item,
-          locations: [].map(locationId => {
+          locations: item.locations.map(locationId => {
             const location = locationList.items
               .find(({ id }) => id === locationId)
 

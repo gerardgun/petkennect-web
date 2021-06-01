@@ -14,7 +14,7 @@ export default {
       'DISABLE', 'FORCE_PASSWORD' // Other modes
     ]
   },
-  types  : [ 'CREATE', 'RESET_ITEM', 'SET_ITEM' ],
+  types  : [ 'CREATE', 'EDIT', 'RESET_ITEM', 'SET_ITEM' ],
   reducer: (state, action, { types, modes, statuses, initialState }) =>
     produce(state, draft => {
       switch (action.type) {
@@ -42,6 +42,7 @@ export default {
       // Para redux-sagas
       CREATE,
       DELETE, DELETE_FULFILLED, DELETE_FAILURE,
+      EDIT,
       GET,
       PATCH, PATCH_FULFILLED, PATCH_FAILURE,
       POST, POST_FULFILLED, POST_FAILURE,
@@ -62,6 +63,7 @@ export default {
       [WAIT_FOR_ACTION]: DELETE_FULFILLED,
       [ERROR_ACTION]   : DELETE_FAILURE
     }),
+    edit : id => ({ type: EDIT, id }),
     get  : id => ({ type: GET, id }),
     patch: payload => ({
       type             : PATCH,

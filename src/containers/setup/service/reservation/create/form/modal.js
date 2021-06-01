@@ -1,19 +1,29 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { formValueSelector } from 'redux-form'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
 import ServiceReservationCreateForm from './index'
 
 import serviceVariationDetailDuck from '@reducers/service/variation/detail'
 
+const selector = formValueSelector('service-reservation')
+
 const ServiceReservationCreateFormModal = () => {
   const dispatch = useDispatch()
   const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
+  const price = useSelector(state => selector(state, 'price'))
 
   const _handleClose = () => {
     dispatch(
       serviceVariationDetailDuck.creators.resetItem()
     )
+  }
+
+  const _handleUpdatePricingBtnClick = () => {
+    return dispatch(serviceVariationDetailDuck.creators.postPrice({ service_variation_id: detail.item.id, ...price }))
+      .then(_handleClose)
+      // .catch(parseResponseError)
   }
 
   const editing = Boolean(detail.item.id)
@@ -33,6 +43,16 @@ const ServiceReservationCreateFormModal = () => {
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
+            {
+              editing && detail.item.prices.length > 0 && (
+                <Button
+                  color='violet'
+                  content='Update Pricing'
+                  disabled={saving}
+                  onClick={_handleUpdatePricingBtnClick}
+                  type='button'/>
+              )
+            }
             <Button
               basic
               className='w120'
