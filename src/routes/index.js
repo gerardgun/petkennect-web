@@ -200,7 +200,7 @@ import SetupTrainingGeneralGroupClassIndex from '@containers/setup/training/gene
 import SetupTrainingGeneralGroupClassSessionIndex from '@containers/setup/training/general/group-class-session-section'
 import SetupTrainingGeneralReservationIndex from '@containers/setup/training/general/reservation-section'
 import SetupTrainingGeneralServiceTypeIndex from '@containers/setup/training/general/service-type-section'
-import SetupTrainingGeneralSettingIndex from '@containers/setup/training/general/setting-section'
+import SettingsTrainingIndex from '@containers/settings/training'
 
 import Transaction from '@containers/transaction'
 import User from '@containers/user'
@@ -730,8 +730,9 @@ const privateRoutes = [
   },
   {
     path     : '/setup/settings/training',
-    component: SetupTrainingGeneralSettingIndex
+    component: SettingsTrainingIndex
   },
+  ///////////
   {
     path     : '/setup/training/method',
     component: SetupTrainingMethodIndex
