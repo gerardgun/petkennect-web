@@ -15,13 +15,17 @@ import serviceVariationDetailDuck from '@reducers/service/variation/detail'
 const SetupServiceReservationIndex = () => {
   const dispatch = useDispatch()
   const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
-  const list = useSelector(serviceVariationDuck.selectors.list)
 
   useEffect(() => {
-    if(list.items.length === 0)
+    dispatch(
+      serviceVariationDuck.creators.get()
+    )
+
+    return () => {
       dispatch(
-        serviceVariationDuck.creators.get()
+        serviceVariationDuck.creators.reset()
       )
+    }
   }, [])
 
   useEffect(() => {

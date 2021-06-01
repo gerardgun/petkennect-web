@@ -16,6 +16,16 @@ export const GroupType = {
   C: 'Custom'
 }
 
+export const ProtectedServiceType = {
+  B: 'Boarding Activity',
+  G: 'Group Class'
+}
+
+export const ServiceType = {
+  ...ProtectedServiceType,
+  C: 'Custom'
+}
+
 export const ServiceDefaultConfig = {
   service_group: null,
   is_active    : false,
@@ -23,12 +33,34 @@ export const ServiceDefaultConfig = {
   charge_type  : 'A'
 }
 
+export const VariationCheckoutChargeType = {
+  A: 'Before Checkout Time',
+  B: 'Applies After Checkout Time'
+}
+
+export const VariationCheckoutChargeTypeOptions = obj2options(VariationCheckoutChargeType)
+
 export const VariationType = {
   A: 'Appointment',
   R: 'Reservation'
 }
 
 export const VariationTypeOptions = obj2options(VariationType)
+
+export const ServiceReservationDefaultConfig = {
+  is_group_play_required: false,
+  is_bookable_by_client : false,
+  is_scheduled          : false,
+  is_active             : false,
+  price                 : {
+    is_set_additional_pet_price: false
+  },
+  // Defaults
+  duration_minutes: 60, // 1 hour
+  capacity        : 1,
+  is_main         : false,
+  is_bookable     : true
+}
 
 // Service Config Helpers
 export const KennelAreaDefaultConfig = {

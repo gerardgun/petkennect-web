@@ -1,12 +1,14 @@
+import moment from 'moment'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Checkbox, Form, Header, Input, Select, TextArea } from 'semantic-ui-react'
 import * as yup from 'yup'
+import _last from 'lodash/last'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import { ServiceDefaultConfig } from '@lib/constants/service'
+import { ServiceReservationDefaultConfig } from '@lib/constants/service'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import serviceVariationDetailDuck from '@reducers/service/variation/detail'
@@ -21,18 +23,37 @@ const ServiceReservationCreateForm = props => {
   const dispatch = useDispatch()
   const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
   const {
+    price = {},
+    service_id = null,
     service_group = null
-  } = useSelector(state => selector(state, 'service_group', 'service_type', 'is_additional_dog_price'))
+  } = useSelector(state => selector(state, 'service_group', 'service_id', 'price'))
 
   useEffect(() => {
-    dispatch(serviceVariationDetailDuck.creators.create())
+    if(editing)
+      dispatch(serviceVariationDetailDuck.creators.edit())
+    else
+      dispatch(serviceVariationDetailDuck.creators.create())
   }, [])
 
   useEffect(() => {
-    if(editing)
-      initialize(detail.item)
-    else
-      initialize(ServiceDefaultConfig)
+    if(editing) {
+      const lastPrice = _last(detail.item.prices)
+
+      initialize({
+        ...detail.item,
+        service_id: detail.item.service.id,
+        locations : detail.item.locations.map(({ id }) => id),
+        price     : lastPrice ? ({
+          ...lastPrice,
+          started_at: lastPrice.started_at.split('T')[0],
+          ended_at  : lastPrice.ended_at.split('T')[0]
+        }) : ({
+          ...ServiceReservationDefaultConfig.price
+        })
+      })
+    } else {
+      initialize(ServiceReservationDefaultConfig)
+    }
   }, [ detail.item.id ])
 
   const _handleClose = () => {
@@ -42,7 +63,7 @@ const ServiceReservationCreateForm = props => {
   }
 
   const _handleServiceGroupChange = () => {
-    change('service_type', null)
+    change('service_id', null)
 
     dispatch(
       serviceVariationDetailDuck.creators.set({
@@ -75,6 +96,9 @@ const ServiceReservationCreateForm = props => {
   }
 
   const _handleSubmit = values => {
+    if(values.sku_id === detail.item.sku_id)
+      delete values.sku_id
+
     if(editing)
       return dispatch(serviceVariationDetailDuck.creators.put({ id: detail.item.id, ...values }))
         .then(_handleClose)
@@ -90,31 +114,48 @@ const ServiceReservationCreateForm = props => {
   return (
     // eslint-disable-next-line react/jsx-handler-names
     <Form id='service-reservation' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-      <Form.Group widths='equal'>
-        <Field
-          component={FormField}
-          control={Select}
-          label='Service Group'
-          name='service_group'
-          onChange={_handleServiceGroupChange}
-          options={detail.form.service_group_options}
-          placeholder='Select Service Group'
-          required
-          selectOnBlur={false}/>
-        <Field
-          component={FormField}
-          control={Select}
-          disabled={service_group === null}
-          label='Service Type'
-          name='service_type'
-          onChange={_handleServiceTypeChange}
-          onSearchChange={_handleServiceTypeSearchChange}
-          options={detail.form.service_type_options}
-          placeholder='Select Service Type'
-          required
-          search
-          selectOnBlur={false}/>
-      </Form.Group>
+      {
+        editing ? (
+          <Form.Group widths='equal'>
+            <Form.Input
+              label='Service Group'
+              readOnly
+              required
+              value={detail.item.service.service_group_name}/>
+            <Form.Input
+              label='Service Type'
+              readOnly
+              required
+              value={detail.item.service.name}/>
+          </Form.Group>
+        ) : (
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Select}
+              label='Service Group'
+              name='service_group'
+              onChange={_handleServiceGroupChange}
+              options={detail.form.service_group_options}
+              placeholder='Select Service Group'
+              required
+              selectOnBlur={false}/>
+            <Field
+              component={FormField}
+              control={Select}
+              disabled={service_group === null}
+              label='Service Type'
+              name='service_id'
+              onChange={_handleServiceTypeChange}
+              onSearchChange={_handleServiceTypeSearchChange}
+              options={detail.form.service_type_options}
+              placeholder='Select Service Type'
+              required
+              search
+              selectOnBlur={false}/>
+          </Form.Group>
+        )
+      }
       <Form.Group widths='equal'>
         <Field
           autoFocus
@@ -161,7 +202,6 @@ const ServiceReservationCreateForm = props => {
           name='employee_schedule'
           options={detail.form.employee_schedule_options}
           placeholder='Select Time Offered'
-          required
           selectOnBlur={false}/>
         <Field
           component={FormField}
@@ -179,6 +219,7 @@ const ServiceReservationCreateForm = props => {
         <Field
           component={FormField}
           control={Select}
+          disabled={service_id === null && !editing}
           label='Location'
           multiple
           name='locations'
@@ -195,7 +236,8 @@ const ServiceReservationCreateForm = props => {
           component={FormField}
           control={Input}
           label='Price'
-          name='price'
+          name='price.price'
+          parse={parseFloat}
           placeholder='$0.00'
           required
           type='number'/>
@@ -204,16 +246,17 @@ const ServiceReservationCreateForm = props => {
           control={Checkbox}
           format={Boolean}
           label="Create Add'l Pet Reservation"
-          name='is_additional_dog_price'
+          name='price.is_set_additional_pet_price'
           toggle
           type='checkbox'/>
         <Field
           component={FormField}
           control={Input}
           label="Add'l Price"
-          name='price'
+          name='price.additional_pet_price'
+          parse={parseFloat}
           placeholder='$0.00'
-          required
+          required={price?.is_set_additional_pet_price === true}
           type='number'/>
       </Form.Group>
       <Form.Group widths={3}>
@@ -229,14 +272,14 @@ const ServiceReservationCreateForm = props => {
           component={FormField}
           control={Input}
           label='Start Date'
-          name='start_date'
+          name='price.started_at'
           required
           type='date'/>
         <Field
           component={FormField}
           control={Input}
           label='End Date'
-          name='end_date'
+          name='price.ended_at'
           required
           type='date'/>
       </Form.Group>
@@ -279,11 +322,26 @@ const ServiceReservationCreateForm = props => {
 export default reduxForm({
   form    : 'service-reservation',
   validate: values => {
+    let extra = {}
+
+    if(values?.price?.is_set_additional_pet_price === true)
+      extra = {
+        additional_pet_price: yup.number().typeError('Price must be a number').required('Price is required')
+      }
+
     const schema = {
-      name       : yup.string().required('Name is required'),
-      pet_classes: yup.array().required('Choose at least one service group'),
-      locations  : yup.array().required('Choose at least one service group'),
-      sku_id     : yup.string().required('Custom Acct Cd is required')
+      service_group: yup.mixed().required('Service Group is required'),
+      service_id   : yup.mixed().required('Service Type is required'),
+      name         : yup.string().required('Name is required'),
+      type         : yup.mixed().required('Reservation Type is required'),
+      locations    : yup.array().required('Choose at least one service group'),
+      sku_id       : yup.string().required('Custom Acct Cd is required'),
+      price        : yup.object().shape({
+        price     : yup.number().typeError('Price must be a number').required('Price is required'),
+        started_at: yup.date().min(moment().subtract(1, 'days').toString(), 'Start Date must be a valid date').required('Start Date is required'),
+        ended_at  : yup.date().min(moment().subtract(1, 'days').toString(), 'Start Date must be a valid date').required('End Date is required'),
+        ...extra
+      })
     }
 
     return syncValidate(yup.object().shape(schema), values)

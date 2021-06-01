@@ -1,6 +1,8 @@
 import React from 'react'
 import { Checkbox } from 'semantic-ui-react'
 
+import { getContentMoney } from '@components/Table/Body/Cell/helpers'
+
 export default {
   search_placeholder: 'Search by sku_id, name or description',
   actions           : [
@@ -24,12 +26,12 @@ export default {
     },
     {
       display_name: 'Service Group',
-      name        : 'service_group_name',
+      name        : 'service.service_group_name',
       type        : 'string'
     },
     {
       display_name: 'Service Type',
-      name        : 'type_name',
+      name        : 'service.name',
       type        : 'string'
     },
     {
@@ -48,8 +50,14 @@ export default {
     },
     {
       display_name: 'Price',
-      name        : 'price',
-      type        : 'money'
+      name        : 'prices',
+      formatter   : cell => {
+        let price = 0
+
+        if(cell.length > 0) price = cell[cell.length - 1].price
+
+        return getContentMoney(price)
+      }
     },
     {
       display_name: 'Active',

@@ -1,36 +1,37 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { Route, withRouter } from 'react-router-dom'
-import { compose } from 'redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Route, useHistory } from 'react-router-dom'
+import { Dimmer, Loader } from 'semantic-ui-react'
 
 import authDuck from '@reducers/auth'
 
-const PrivateRoute = ({ auth, check, component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const auth = useSelector(authDuck.selectors.detail)
+
   useEffect(() => {
-    if(!auth.session_status) check()
+    if(!auth.session_status)
+      dispatch(authDuck.creators.check())
   }, [])
 
   useEffect(() => {
     if(auth.session_status === 'NOT_EXISTS')
-      rest.history.replace('/auth/sign-in')
+      history.replace('/auth/sign-in')
   }, [ auth.session_status ])
 
   useEffect(() => {
     if(auth.status === 'SIGNED_OUT')
-      rest.history.replace('/auth/sign-in')
+      history.replace('/auth/sign-in')
   }, [ auth.status ])
 
-  return (
-    <Route {...rest} render={props => <Component {...props} key={rest.path + auth.tenant}/>}/>
+  return [ 'PRISTINE', 'CHECKING', 'GETTING' ].includes(auth.status) ? (
+    <Dimmer active inverted>
+      <Loader>Loading</Loader>
+    </Dimmer>
+  ) : (
+    <Route {...rest} render={props => <Component {...props} key={auth.tenant}/>}/>
   )
 }
 
-export default compose(
-  withRouter,
-  connect(
-    ({ auth }) => ({ auth }),
-    {
-      check: authDuck.creators.check
-    }
-  )
-)(PrivateRoute)
+export default PrivateRoute

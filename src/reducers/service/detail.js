@@ -13,3 +13,13 @@ export default base({
   }
 })
   .extend(detail)
+  .extend({
+    types   : [ 'CREATE_GET_LOCATIONS', 'CREATE_GET_SERVICE_TYPES' ],
+    creators: ({
+      types: {
+        CREATE_GET_LOCATIONS
+      }
+    }) => ({
+      createGetLocations: (payload = {}) => ({ type: CREATE_GET_LOCATIONS, payload })
+    })
+  })
