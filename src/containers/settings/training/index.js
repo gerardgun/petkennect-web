@@ -34,15 +34,15 @@ const SettingsTrainingIndex = props =>{
           <Grid.Column computer={16} mobile={16} tablet={16}>
             <Breadcrumb className='p0'>
               <Breadcrumb.Section active>
-                <Link to='/setup/admin-item'><Icon name='setting'/>Settings</Link>
+                <Link to='/setup'><Icon name='setting'/>Settings</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider className='mh12' icon='right chevron'/>
               <Breadcrumb.Section active>
-                <Link to='/setup/service-setting'>Services</Link>
+                <Link to='/setup'>Services</Link>
               </Breadcrumb.Section>
               <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
               <Breadcrumb.Section active>
-                <Link to='/setup/service-setting'>Training Settings</Link>
+                <Link>Training Settings</Link>
               </Breadcrumb.Section>
             </Breadcrumb>
           </Grid.Column>

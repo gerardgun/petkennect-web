@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea } from 'semantic-ui-react'
+import { Breadcrumb, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -28,19 +29,7 @@ const SetupBoardingGeneralSettingIndex = props => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Menu/>
-            <Breadcrumb className='p0'>
-              <Breadcrumb.Section active>
-                <Link to='/setup/admin-item'><Icon name='setting'/>Settings</Link>
-              </Breadcrumb.Section>
-              <Breadcrumb.Divider className='mh12' icon='right chevron'/>
-              <Breadcrumb.Section active>
-                <Link to='/setup/service-setting'>Services</Link>
-              </Breadcrumb.Section>
-              <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
-              <Breadcrumb.Section active>
-                <Link to='/setup/service-setting'>Boarding Settings</Link>
-              </Breadcrumb.Section>
-            </Breadcrumb>
+        
           {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onSubmit={handleSubmit(_handleSubmit)}>
 
