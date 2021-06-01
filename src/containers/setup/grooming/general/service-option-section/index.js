@@ -49,24 +49,18 @@ const SetupGroomingGeneralServiceOptionIndex = () => {
   }
 
   return (
-    <Layout>
       <Segment className='segment-content' padded='very'>
-        <Menu/>
-
-        <Tab>
           <Table
             config={serviceListConfig}
             duck={serviceDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
-        </Tab>
 
         <ServiceFormModal/>
 
         <ModalDelete duckDetail={serviceDetailDuck}/>
 
       </Segment>
-    </Layout>
   )
 }
 
