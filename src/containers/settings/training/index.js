@@ -45,7 +45,6 @@ const SettingsTrainingIndex = props =>{
                 <Link to='/setup/service-setting'>Training Settings</Link>
               </Breadcrumb.Section>
             </Breadcrumb>
-
           </Grid.Column>
           {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onSubmit={handleSubmit(_handleSubmit)}>

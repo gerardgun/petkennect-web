@@ -27,6 +27,19 @@ const SetupBoardingPricingIndex = props => {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Menu/>
+            <Breadcrumb className='p0'>
+              <Breadcrumb.Section active>
+                <Link to='/setup/admin-item'><Icon name='setting'/>Settings</Link>
+              </Breadcrumb.Section>
+              <Breadcrumb.Divider className='mh12' icon='right chevron'/>
+              <Breadcrumb.Section active>
+                <Link to='/setup/service-setting'>Services</Link>
+              </Breadcrumb.Section>
+              <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
+              <Breadcrumb.Section active>
+                <Link to='/setup/service-setting'>Boarding Pricing Settings</Link>
+              </Breadcrumb.Section>
+            </Breadcrumb>
 
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onSubmit={handleSubmit(_handleSubmit)}>
