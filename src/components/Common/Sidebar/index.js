@@ -41,7 +41,7 @@ const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
                             rest.subCategories.length > 0 ? (
                               rest.subCategories.map(({ href: to, label, iconRight = null }, index) => {
                                 return (
-                                  <>
+                                  <React.Fragment key={index}>
                                     <Link key={index} style={{ display: 'flex' }} to={to}>
                                       {label}
                                       {
@@ -52,7 +52,7 @@ const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
                                       rest.subCategories.length - 1 !== index ? (<div className='horizontal-line'></div>)
                                         : (<div style={{ marginBottom: '2px' }}></div>)
                                     }
-                                  </>
+                                  </React.Fragment>
                                 )
                               })
                             ) : null
