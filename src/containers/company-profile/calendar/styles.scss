@@ -1,0 +1,31 @@
+.fc-day-sun { background: #f5f3f3; }
+.fc-day-sat { background: #f5f3f3; }
+.fc-toolbar-chunk{
+    button{
+        background-color: teal !important;
+    }
+}
+
+.fc-event-main{
+    font-size: 1rem;
+    margin-left: 3px;
+    span{
+        float: right !important;
+    }
+}
+
+.calendar_Holiday{
+    background: none;
+    border: none;
+    .fc-event-main{
+        color: #660000;
+    }
+}
+
+.fc-daygrid-day-bg{
+opacity: inherit;
+}
+
+.color_training{
+    background: #A52A2A !important;
+}

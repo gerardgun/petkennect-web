@@ -79,7 +79,6 @@ export default [
         to  : '/setup/system-setting'
 
       },
-
       {
         name: 'Locations',
         to  : '/setup/location'
@@ -91,16 +90,14 @@ export default [
       {
         name: 'System Formats',
         to  : ''
-
       },
       {
         name: 'Accounting Settings',
         to  : ''
-
       },
       {
-        name: 'Comany Profile',
-        to  : ''
+        name: 'Company Profile',
+        to  : '/setup/company-profile/contact-billing'
       }
     ]
   },
