@@ -202,6 +202,15 @@ import SetupTrainingGeneralReservationIndex from '@containers/setup/training/gen
 import SetupTrainingGeneralServiceTypeIndex from '@containers/setup/training/general/service-type-section'
 import SettingsTrainingIndex from '@containers/settings/training'
 
+//Settings Company
+import SetupCompanyProfile from '@containers/company-profile'
+import SetupCompanyProfileContactBilling from '@containers/company-profile/contact-billing'
+import SetupCompanyProfileCalendar from '@containers/company-profile/calendar'
+import SetupCompanyProfileAccounting from '@containers/company-profile/accounting'
+import SetupCompanyProfileBranding from '@containers/company-profile/branding'
+import SetupCompanyProfileLocations from '@containers/company-profile/locations'
+import SetupCompanyProfileSystemSettings from '@containers/company-profile/system-settings'
+
 import Transaction from '@containers/transaction'
 import User from '@containers/user'
 
@@ -909,7 +918,35 @@ const privateRoutes = [
   {
     path     : '/user',
     component: User
-  }
+  },
+  {
+    path     : '/setup/company-profile',
+    component: SetupCompanyProfile
+  },
+  {
+    path     : '/setup/company-profile/contact-billing',
+    component: SetupCompanyProfileContactBilling
+  },
+  {
+    path     : '/setup/company-profile/calendar',
+    component: SetupCompanyProfileCalendar
+  },
+  {
+    path     : '/setup/comapny-profile/branding',
+    component: SetupCompanyProfileBranding
+  },
+  {
+    path     : '/setup/company-profile/locations',
+    component: SetupCompanyProfileLocations
+  },
+  {
+    path     : '/setup/company-profile/system-settings',
+    component: SetupCompanyProfileSystemSettings
+  },
+  {
+    path     : '/setup/company-profile/accounting',
+    component: SetupCompanyProfileAccounting
+  },
 ]
 
 const routes = [
