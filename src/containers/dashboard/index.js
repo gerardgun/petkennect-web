@@ -4,7 +4,15 @@ import { compose } from 'redux'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { Grid, Segment, Card, Button, Icon, Header, Input } from 'semantic-ui-react'
+import {
+  Grid,
+  Segment,
+  Card,
+  Button,
+  Icon,
+  Header,
+  Input
+} from 'semantic-ui-react'
 import { useChangeStatusEffect } from '@hooks/Shared'
 import { FaCashRegister } from 'react-icons/fa'
 
@@ -35,27 +43,29 @@ const Dashboard = (props) => {
   const [ hideSidebar, setHideSidebar ] = useState()
   const dispatch = useDispatch()
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(dashboardDuck.creators.get())
-  },[])
+  }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(dashboardDuck.creators.get({ search: tbFilter }))
-  },[ tbFilter ])
+  }, [ tbFilter ])
 
   const history = useHistory()
 
   const _handleOpenModal = () => {
-    props.setItem(null,'READ')
+    props.setItem(null, 'READ')
   }
 
-  const _handleButtonClick = (Button,item)=>{
-    dispatch(dashboardDuck.creators.get({
-      item  : Button,
-      search: item.id
-    }))
+  const _handleButtonClick = (Button, item) => {
+    dispatch(
+      dashboardDuck.creators.get({
+        item  : Button,
+        search: item.id
+      })
+    )
   }
-  const _handleDropdownOptionClick = (option,item) => {
+  const _handleDropdownOptionClick = (option, item) => {
     console.log(item)
     switch (option) {
       case 'edit_pet':
@@ -107,7 +117,7 @@ const Dashboard = (props) => {
   }
 
   const _handleNewClient = () => {
-    props.setNewClient(null,'CREATE')
+    props.setNewClient(null, 'CREATE')
   }
   const _handleNewBooking = () => {
     history.push({
@@ -119,7 +129,7 @@ const Dashboard = (props) => {
     //
   }
 
-  const _onHandleSideBar = (sidebar)=>{
+  const _onHandleSideBar = (sidebar) => {
     setHideSidebar(sidebar)
   }
 
@@ -127,68 +137,151 @@ const Dashboard = (props) => {
     <>
       <Layout sidebarHandle={_onHandleSideBar}>
         <Segment className='segment-dashboard-content pt0 pb0'>
-          <Grid className='mt0'  style={{ 'margin-bottom': '2.2rem' }}>
+          <Grid className='mt0' style={{ 'margin-bottom': '2.2rem' }}>
             <Grid.Column
-              className='pb8'
-              computer={16} mobile={16} tablet={16}>
+              className='pb8' computer={16} mobile={16}
+              tablet={16}>
               <Header as='h2'>The Daily Dashboard</Header>
-            </Grid.Column >
+            </Grid.Column>
           </Grid>
           <Button
-            className='mb4' color={outerFilter === 'expected' ? 'teal' : ''}
+            className='mb4'
+            color={outerFilter === 'expected' ? 'teal' : ''}
             content='Expected : 45'
-            onClick={()=>setOuterFilter('expected')}/>
+            // eslint-disable-next-line react/jsx-handler-names
+            onClick={() => setOuterFilter('expected')}/>
           <Button
-            className='mb4' color={outerFilter === 'checkIn' ? 'teal' : ''}
+            className='mb4'
+            color={outerFilter === 'checkIn' ? 'teal' : ''}
             content='Checked In : 30'
-            onClick={()=>setOuterFilter('checkIn')}/>
+            // eslint-disable-next-line react/jsx-handler-names
+            onClick={() => setOuterFilter('checkIn')}/>
           <Button
-            className='mb4' color={outerFilter === 'checkOut' ? 'teal' : ''}
+            className='mb4'
+            color={outerFilter === 'checkOut' ? 'teal' : ''}
             content='Checked Out : 15'
-            onClick={()=>setOuterFilter('checkOut')}/>
+            // eslint-disable-next-line react/jsx-handler-names
+            onClick={() => setOuterFilter('checkOut')}/>
           <Grid>
             <Grid.Column computer={10}>
-              <Card fluid  style={{ height: '620px' }}>
+              <Card fluid style={{ height: '620px' }}>
                 <div className='flex justify-between align-center dsb-table-hd'>
                   <Input
-                    icon='search' iconPosition='left' onChange=''
-                    placeholder='Search by pet' style={{ width: '160px' }} type='search'/>
+                    icon='search'
+                    iconPosition='left'
+                    onChange=''
+                    placeholder='Search by pet'
+                    style={{ width: '160px' }}
+                    type='search'/>
                   <div className='flex align-center ml8'>
-                    <Header className='filter-text dsb-selected-h' content='Filter By:'/>
                     <Header
-                      as={Link} className={tbFilter === 'All' ? 'filter-text dsb-selected-h'
-                        : 'filter-text dsb-un-selected-h'} content='All'
-                      onClick={()=>{setTbFilter('All')}}/> <span className={
-                      hideSidebar === true ? 'dashboard-filter-spacing-sidebar' : 'dashboard-filter-spacing'}>|</span>
+                      className='filter-text dsb-selected-h'
+                      content='Filter By:'/>
                     <Header
-                      as={Link} className={tbFilter === 'Boarding' ? 'filter-text dsb-selected-h ml4'
-                        : 'filter-text dsb-un-selected-h ml4'} content='Boarding: 10'
-                      onClick={()=>{setTbFilter('Boarding')}}/> <span className={
-                      hideSidebar === true ? 'dashboard-filter-spacing-sidebar' : 'dashboard-filter-spacing'}>|</span>
+                      as={Link}
+                      className={
+                        tbFilter === 'All'
+                          ? 'filter-text dsb-selected-h'
+                          : 'filter-text dsb-un-selected-h'
+                      }
+                      content='All'
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onClick={() => {
+                        setTbFilter('All')
+                      }}/>{' '}
+                    <span
+                      className={
+                        hideSidebar === true
+                          ? 'dashboard-filter-spacing-sidebar'
+                          : 'dashboard-filter-spacing'
+                      }>
+                      |
+                    </span>
                     <Header
-                      as={Link} className={tbFilter === 'Day Care' ? 'filter-text dsb-selected-h ml4'
-                        : 'filter-text dsb-un-selected-h ml4'} content='Day Care: 25'
-                      onClick={()=>{setTbFilter('Day Care')}}/> <span className={
-                      hideSidebar === true ? 'dashboard-filter-spacing-sidebar' : 'dashboard-filter-spacing'}>|</span>
+                      as={Link}
+                      className={
+                        tbFilter === 'Boarding'
+                          ? 'filter-text dsb-selected-h ml4'
+                          : 'filter-text dsb-un-selected-h ml4'
+                      }
+                      content='Boarding: 10'
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onClick={() => {
+                        setTbFilter('Boarding')
+                      }}/>{' '}
+                    <span
+                      className={
+                        hideSidebar === true
+                          ? 'dashboard-filter-spacing-sidebar'
+                          : 'dashboard-filter-spacing'
+                      }>
+                      |
+                    </span>
                     <Header
-                      as={Link} className={tbFilter === 'Training' ? 'filter-text dsb-selected-h ml4'
-                        : 'filter-text dsb-un-selected-h ml4'} content='Training: 5'
-                      onClick={()=>{setTbFilter('Training')}}/> <span className={
-                      hideSidebar === true ? 'dashboard-filter-spacing-sidebar' : 'dashboard-filter-spacing'}>|</span>
+                      as={Link}
+                      className={
+                        tbFilter === 'Day Care'
+                          ? 'filter-text dsb-selected-h ml4'
+                          : 'filter-text dsb-un-selected-h ml4'
+                      }
+                      content='Day Care: 25'
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onClick={() => {
+                        setTbFilter('Day Care')
+                      }}/>{' '}
+                    <span
+                      className={
+                        hideSidebar === true
+                          ? 'dashboard-filter-spacing-sidebar'
+                          : 'dashboard-filter-spacing'
+                      }>
+                      |
+                    </span>
                     <Header
-                      as={Link} className={tbFilter === 'Grooming' ? 'filter-text dsb-selected-h ml4'
-                        : 'filter-text dsb-un-selected-h ml4'} content='Grooming: 5'
-                      onClick={()=>{setTbFilter('Grooming')}}/>
+                      as={Link}
+                      className={
+                        tbFilter === 'Training'
+                          ? 'filter-text dsb-selected-h ml4'
+                          : 'filter-text dsb-un-selected-h ml4'
+                      }
+                      content='Training: 5'
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onClick={() => {
+                        setTbFilter('Training')
+                      }}/>{' '}
+                    <span
+                      className={
+                        hideSidebar === true
+                          ? 'dashboard-filter-spacing-sidebar'
+                          : 'dashboard-filter-spacing'
+                      }>
+                      |
+                    </span>
+                    <Header
+                      as={Link}
+                      className={
+                        tbFilter === 'Grooming'
+                          ? 'filter-text dsb-selected-h ml4'
+                          : 'filter-text dsb-un-selected-h ml4'
+                      }
+                      content='Grooming: 5'
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onClick={() => {
+                        setTbFilter('Grooming')
+                      }}/>
                   </div>
                   <div className='hide-button-shdow'>
                     <Button
-                      basic color='blue' icon='expand arrows alternate'
+                      basic
+                      color='blue'
+                      icon='expand arrows alternate'
                       onClick={_handleOpenModal}/>
                   </div>
                 </div>
                 <div className='dashboard-table mt8 ml8'>
                   <Table
-                    config={dashboardListConfig} duck={dashboardDuck}
+                    config={dashboardListConfig}
+                    duck={dashboardDuck}
                     onActionClick={_handleOpenModal}
                     onRowButtonClick={_handleButtonClick}
                     onRowDropdownChange={_handleDropdownOptionClick}/>
@@ -200,29 +293,43 @@ const Dashboard = (props) => {
               <ExpressCheckInForm/>
               <div className='flex align-center justify-between pt8'>
                 <Button
-                  circular className='circle-ds' color='teal'
+                  circular
+                  className='circle-ds'
+                  color='teal'
                   onClick={_handleNewClient}>
                   <Icon className='ml12' name='user' size='big'/>
                   <label className='circle-label-ds'>
-                    <span>New</span><br/>
+                    <span>New</span>
+                    <br/>
                     <span>Client</span>
                   </label>
                 </Button>
                 <Button
-                  circular className='circle-ds' color='teal'
+                  circular
+                  className='circle-ds'
+                  color='teal'
                   onClick={_handleNewBooking}>
-                  <Icon className='ml12' name='calendar alternate outline' size='big'/>
+                  <Icon
+                    className='ml12'
+                    name='calendar alternate outline'
+                    size='big'/>
                   <label className='circle-label-ds'>
-                    <span>New</span><br/>
+                    <span>New</span>
+                    <br/>
                     <span>Booking</span>
                   </label>
                 </Button>
                 <Button
-                  circular className='circle-ds' color='teal'
+                  circular
+                  className='circle-ds'
+                  color='teal'
                   onClick={_handleRetailSale}>
-                  <Icon  className='ml12' size='big'><FaCashRegister/></Icon>
+                  <Icon className='ml12' size='big'>
+                    <FaCashRegister/>
+                  </Icon>
                   <label className='circle-label-ds'>
-                    <span>Retail</span><br/>
+                    <span>Retail</span>
+                    <br/>
                     <span>Sale</span>
                   </label>
                 </Button>
@@ -243,13 +350,14 @@ const Dashboard = (props) => {
 
 export default compose(
   connect(
-    state => ({
+    (state) => ({
       clientDetail        : clientDetailDuck.selectors.detail(state),
       dashboardModalDetail: dashboardModalDetailDuck.selectors.detail(state)
-    }), {
+    }),
+    {
       setItem         : dashboardModalDetailDuck.creators.setItem,
       setNewClient    : clientDetailDuck.creators.setItem,
       setDashboardItem: dashboardDetailDuck.creators.setItem
-    })
+    }
+  )
 )(Dashboard)
-

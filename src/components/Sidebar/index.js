@@ -272,7 +272,7 @@ const AppSidebar = ({ auth, ...props }) => {
               })
 
                     return (
-                      <>
+                      <React.Fragment key={index}>
                         <Popup
                           content={rest.label} inverted
                           key={index} position='right center'
@@ -288,7 +288,7 @@ const AppSidebar = ({ auth, ...props }) => {
                             </Sidebar.Category>
                           }/>
 
-                      </>
+                      </React.Fragment>
                     )
                   })
                 }

@@ -112,7 +112,7 @@ export default [
         name: 'Service Settings',
         to  : '/setup/settings/booarding-pricing'
       },
-      /*{
+      /* {
         name: 'Boarding',
         to  : '/setup/boarding/pricing'
       },
@@ -138,7 +138,7 @@ export default [
       },
       {
         name: 'Packages',
-        to  : '/setup'
+        to  : '/setup/service/package/day-services'
 
       },
       {
