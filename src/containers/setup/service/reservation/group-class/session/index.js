@@ -9,43 +9,54 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import serviceVariationGroupClassSessionListConfig from '@lib/constants/list-configs/service/variation/group-class-session'
 
-import serviceDuck from '@reducers/service'
-import serviceDetailDuck from '@reducers/service/detail'
+import serviceVariationReleaseDuck from '@reducers/service/variation/release'
+import serviceVariationReleaseDetailDuck from '@reducers/service/variation/release/detail'
 
 const SetupServiceReservationGroupClassSessionIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
-  const list = useSelector(serviceDuck.selectors.list)
+  const detail = useSelector(serviceVariationReleaseDetailDuck.selectors.detail)
+  const list = useSelector(serviceVariationReleaseDuck.selectors.list)
 
   useEffect(() => {
     if(list.items.length === 0)
       dispatch(
-        serviceDuck.creators.get()
+        serviceVariationReleaseDuck.creators.get()
       )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        serviceDuck.creators.get()
+        serviceVariationReleaseDuck.creators.get()
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        serviceDetailDuck.creators.setItem(null, 'CREATE')
+        serviceVariationReleaseDetailDuck.creators.setItem(null, 'CREATE')
       )
+  }
+
+  const _handleDelete = () => {
+    dispatch(
+      // serviceVariationReleaseDetailDuck.creators.delete(detail.item.id, detail.item.service.id)
+    )
+      .then(() => {
+        dispatch(
+          serviceVariationReleaseDetailDuck.creators.resetItem()
+        )
+      })
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
-        serviceDetailDuck.creators.setItem(reason, 'DELETE')
+        serviceVariationReleaseDetailDuck.creators.setItem(reason, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        serviceDetailDuck.creators.setItem(reason, 'UPDATE')
+        serviceVariationReleaseDetailDuck.creators.setItem(reason, 'UPDATE')
       )
   }
 
@@ -57,13 +68,13 @@ const SetupServiceReservationGroupClassSessionIndex = () => {
 
         <Table
           config={serviceVariationGroupClassSessionListConfig}
-          duck={serviceDuck}
+          duck={serviceVariationReleaseDuck}
           onActionClick={_handleActionClick}
           onRowButtonClick={_handleRowButtonClick}/>
 
         <CreateFormModal/>
 
-        <ModalDelete duckDetail={serviceDetailDuck}/>
+        <ModalDelete duckDetail={serviceVariationReleaseDetailDuck} onDelete={_handleDelete}/>
 
       </Segment>
     </Layout>

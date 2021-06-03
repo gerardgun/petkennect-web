@@ -4,9 +4,9 @@ import { Get } from '@lib/utils/http-client'
 import * as locationSaga from '@sagas/location'
 
 import locationDuck from '@reducers/location'
-import serviceVariationDuck from '@reducers/service/variation'
+import serviceVariationReleaseDuck from '@reducers/service/variation/release'
 
-const { selectors, types } = serviceVariationDuck
+const { selectors, types } = serviceVariationReleaseDuck
 
 function* get() {
   try {
@@ -25,7 +25,7 @@ function* get() {
     const filters = yield select(selectors.filters)
     const list = yield select(selectors.list)
 
-    const { results, ...meta } = yield call(Get, 'services-variations/', filters)
+    const { results, ...meta } = yield call(Get, 'service-variations-releases/', filters)
 
     yield put({
       type   : types.GET_FULFILLED,

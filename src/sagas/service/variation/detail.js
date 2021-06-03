@@ -2,7 +2,12 @@ import moment from 'moment'
 import { all, call, put, select, takeEvery } from 'redux-saga/effects'
 import _uniq from 'lodash/uniq'
 
-import { ProtectedServiceType, VariationCheckoutChargeTypeOptions, VariationTypeOptions } from '@lib/constants/service'
+import {
+  ProtectedServiceType,
+  VariationCheckoutChargeTypeOptions,
+  VariationDurationTypeOptions,
+  VariationTypeOptions
+} from '@lib/constants/service'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 import * as employeeScheduleSaga from '@sagas/employee/schedule'
 import * as locationSaga from '@sagas/location'
@@ -224,11 +229,55 @@ function* createGetServiceTypes({ payload }) {
   }
 }
 
-function* deleteItem({ ids: [ id ] }) {
+function* createGroupClass() {
+  try {
+    yield put({ type: types.GET_PENDING })
+
+    // BEGIN get group class service
+    const { results: services } = yield call(Get, 'services/', {
+      service_group__type: 'T'
+    })
+
+    const groupClassService = services.find(({ type }) => type === 'G')
+    // END get group class service
+
+    let locationList = yield select(locationDuck.selectors.list)
+
+    if(locationList.items.length === 0) {
+      yield* locationSaga.get()
+
+      locationList = yield select(locationDuck.selectors.list)
+    }
+
+    yield put({
+      payload: {
+        form: {
+          duration_type_options: VariationDurationTypeOptions,
+          location_options     : locationList.items
+            .filter(({ id }) => groupClassService.locations.includes(id))
+            .map(({ id, name }) => ({
+              text : name,
+              value: id
+            })),
+          service_group_name: groupClassService.group.name,
+          service_name      : groupClassService.name
+        }
+      },
+      type: types.GET_FULFILLED
+    })
+  } catch (e) {
+    yield put({
+      error: e,
+      type : types.GET_FAILURE
+    })
+  }
+}
+
+function* deleteItem({ id, service_id }) {
   try {
     yield put({ type: types.DELETE_PENDING })
 
-    yield call(Delete, `services/${id}/`)
+    yield call(Delete, `services/${service_id}/variations/${id}/`)
 
     yield put({ type: types.DELETE_FULFILLED })
   } catch (e) {
@@ -339,26 +388,6 @@ function* editBoardingActivity() {
   }
 }
 
-function* get({ id }) {
-  try {
-    yield put({ type: types.GET_PENDING })
-
-    const service = yield call(Get, `services/${id}/`)
-
-    yield put({
-      type   : types.GET_FULFILLED,
-      payload: {
-        item: service
-      }
-    })
-  } catch (e) {
-    yield put({
-      type : types.GET_FAILURE,
-      error: e
-    })
-  }
-}
-
 function* post({ payload: { service_id, price, ...payload } }) {
   try {
     yield put({ type: types.POST_PENDING })
@@ -422,6 +451,31 @@ function* postBoardingActivity({ payload: { price, service_variation_ids, ...pay
         addon_service_variation: serviceVariationId
       })
     ))
+
+    yield put({
+      type: types.POST_FULFILLED
+    })
+  } catch (e) {
+    yield put({
+      type : types.POST_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* postGroupClass({ payload }) {
+  try {
+    yield put({ type: types.POST_PENDING })
+
+    // BEGIN get group class service
+    const { results: services } = yield call(Get, 'services/', {
+      service_group__type: 'T'
+    })
+
+    const groupClassService = services.find(({ type }) => type === 'G')
+    // END get group class service
+
+    yield call(Post, `services/${groupClassService.id}/variations/`, payload)
 
     yield put({
       type: types.POST_FULFILLED
@@ -534,19 +588,36 @@ function* _putBoardingActivity({ payload: { id, service, price, service_variatio
   }
 }
 
+function* _putGroupClass({ payload: { id, service, ...payload } }) {
+  try {
+    yield put({ type: types.PUT_PENDING })
+
+    yield call(Patch, `services/${service.id}/variations/${id}/`, payload)
+
+    yield put({ type: types.PUT_FULFILLED })
+  } catch (e) {
+    yield put({
+      type : types.PUT_FAILURE,
+      error: e
+    })
+  }
+}
+
 export default [
   takeEvery(types.CREATE, create),
   takeEvery(types.CREATE_BOARDING_ACTIVITY, createBoardingActivity),
   takeEvery(types.CREATE_BOARDING_ACTIVITY_GET_RESERVATIONS, createBoardingActivityGetReservations),
   takeEvery(types.CREATE_GET_LOCATIONS, createGetLocations),
   takeEvery(types.CREATE_GET_SERVICE_TYPES, createGetServiceTypes),
+  takeEvery(types.CREATE_GROUP_CLASS, createGroupClass),
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.EDIT, edit),
   takeEvery(types.EDIT_BOARDING_ACTIVITY, editBoardingActivity),
-  takeEvery(types.GET, get),
   takeEvery(types.POST, post),
   takeEvery(types.POST_BOARDING_ACTIVITY, postBoardingActivity),
+  takeEvery(types.POST_GROUP_CLASS, postGroupClass),
   takeEvery(types.POST_PRICE, postPrice),
   takeEvery(types.PUT, _put),
-  takeEvery(types.PUT_BOARDING_ACTIVITY, _putBoardingActivity)
+  takeEvery(types.PUT_BOARDING_ACTIVITY, _putBoardingActivity),
+  takeEvery(types.PUT_GROUP_CLASS, _putGroupClass)
 ]

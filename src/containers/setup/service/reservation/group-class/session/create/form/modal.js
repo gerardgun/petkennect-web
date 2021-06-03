@@ -2,17 +2,17 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
-import ServiceTypeCreateForm from './index'
+import ServiceVariationReleaseCreateForm from './index'
 
-import serviceDetailDuck from '@reducers/service/detail'
+import serviceVariationReleaseDetailDuck from '@reducers/service/variation/release/detail'
 
-const ServiceTypeCreateFormModal = () => {
+const ServiceVariationReleaseCreateFormModal = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
+  const detail = useSelector(serviceVariationReleaseDetailDuck.selectors.detail)
 
   const _handleClose = () => {
     dispatch(
-      serviceDetailDuck.creators.resetItem()
+      serviceVariationReleaseDetailDuck.creators.resetItem()
     )
   }
 
@@ -25,11 +25,11 @@ const ServiceTypeCreateFormModal = () => {
       className='form-modal'
       onClose={_handleClose}
       open={open}
-      size='small'>
+      size='large'>
       <Modal.Content>
-        <Header as='h2'>{editing ? 'Update' : 'New'} Reservation</Header>
+        <Header as='h2'>{editing ? 'Update' : 'Add'} Class Session</Header>
 
-        <ServiceTypeCreateForm/>
+        <ServiceVariationReleaseCreateForm/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
@@ -43,9 +43,9 @@ const ServiceTypeCreateFormModal = () => {
               type='button'/>
             <Button
               color='teal'
-              content={editing ? 'Save changes' : 'Create Service Type'}
+              content={editing ? 'Save changes' : 'Create Class Session'}
               disabled={saving}
-              form='service-type'
+              form='service-variation-release'
               loading={saving}
               type='submit'/>
           </Form.Field>
@@ -55,4 +55,4 @@ const ServiceTypeCreateFormModal = () => {
   )
 }
 
-export default ServiceTypeCreateFormModal
+export default ServiceVariationReleaseCreateFormModal

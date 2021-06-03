@@ -6,17 +6,14 @@ import petDuck from '@reducers/pet'
 
 const { types, selectors } = petDuck
 
-export function* get(/* { payload } */) {
+export function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
     const filters = yield select(selectors.filters)
     const list = yield select(selectors.list)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
 
-    const { results, ...meta } = yield call(Get, '/pets/', {
-      ...filters
-    })
+    const { results, ...meta } = yield call(Get, '/pets/', filters)
 
     yield put({
       type   : types.GET_FULFILLED,
