@@ -11,7 +11,7 @@ const items = [
   },
   {
     label: 'Branding',
-    to   : '/setup/comapny-profile/branding',
+    to   : '/setup/company-profile/branding',
     linklabel: 'Branding'
   },
   {
