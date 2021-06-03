@@ -14,7 +14,7 @@ export default {
   columns: [
     {
       display_name: 'Group Class Name',
-      name        : 'name',
+      name        : 'service_variation.name',
       type        : 'string'
     },
     {
@@ -33,27 +33,27 @@ export default {
     },
     {
       display_name: 'Start Date',
-      name        : 'created_at',
+      name        : 'started_at',
       type        : 'date'
     },
     {
       display_name: 'Session\nDates',
-      name        : 'created_at',
+      name        : 'started_at',
       formatter   : () => 'Multiselect Dates'
     },
     {
       display_name: 'Start Time',
-      name        : 'created_at',
-      formatter   : () => '7:00 PM'
+      name        : 'started_at',
+      formatter   : cell => cell.split('T')[1].substring(0, 5)
     },
     {
       display_name: 'Trainer',
-      name        : 'created_at',
-      formatter   : () => 'Select'
+      name        : 'trainer_employee',
+      formatter   : cell => `${cell.first_name} ${cell.last_name}`
     },
     {
       display_name: 'Online\nEnrollment',
-      name        : 'is_active',
+      name        : 'is_bookable_by_client',
       formatter   : cell => (
         <Checkbox checked={cell} disabled toggle/>
       )

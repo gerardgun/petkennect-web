@@ -38,6 +38,7 @@ function* get() {
 
             return location
           })
+            .filter(Boolean)
         })),
         pagination: {
           ...list.pagination,

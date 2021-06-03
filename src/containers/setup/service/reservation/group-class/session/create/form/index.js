@@ -44,17 +44,27 @@ const ServiceVariationReleaseCreateForm = props => {
   })
 
   useEffect(() => {
-    dispatch(serviceVariationReleaseDetailDuck.creators.create())
+    if(editing)
+      dispatch(serviceVariationReleaseDetailDuck.creators.edit())
+    else
+      dispatch(serviceVariationReleaseDetailDuck.creators.create())
   }, [])
 
   useEffect(() => {
-    if(editing)
+    if(editing) {
+      const rest = detail.item
+
       initialize({
-        ...detail.item,
-        locations: detail.item.locations.map(({ id }) => id)
+        ...rest,
+        locations           : rest.locations.map(({ id }) => id),
+        service_variation_id: rest.service_variation.id,
+        started_at          : rest.started_at.split('T')[0],
+        started_at_time     : rest.started_at.split('T')[1].substring(0, 5),
+        trainer_employee    : rest.trainer_employee.id
       })
-    else
+    } else {
       initialize(ServiceVariationGroupClassSessionDefaultConfig)
+    }
   }, [ detail.item.id ])
 
   useEffect(() => {
@@ -86,7 +96,7 @@ const ServiceVariationReleaseCreateForm = props => {
         ended_at
       }
 
-      const recurringWeekDays = config.recurring_week_days.sort()
+      const recurringWeekDays = [ ...config.recurring_week_days ].sort()
 
       const frequencies = recurringWeekDays.map(weekDay => ({
         ...frequency,
@@ -327,36 +337,36 @@ const ServiceVariationReleaseCreateForm = props => {
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at}
+              disabled={!started_at || editing}
               label='Every Week'
               name='config.recurring_type' type='radio' value='every_week'/>
           </div>
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at}
+              disabled={!started_at || editing}
               label='Every Other Week'
               name='config.recurring_type' type='radio' value='every_other_week'/>
           </div>
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at}
+              disabled={!started_at || editing}
               label='Every'
               name='config.recurring_type' type='radio' value='every_custom_week'/>
             <Field
               component={CommonInput}
-              disabled={!started_at}
+              disabled={!started_at || editing}
               name='config.recurring_value'
               parse={parseInt}
               placeholder='0'
               type='number'/>
-            <span className={!started_at ? 'disabled' : ''}> &nbsp;&nbsp;Week(s)</span>
+            <span className={!started_at || editing ? 'disabled' : ''}> &nbsp;&nbsp;Week(s)</span>
           </div>
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at}
+              disabled={!started_at || editing}
               label='Monthly'
               name='config.recurring_type' type='radio' value='monthly'/>
           </div>
@@ -366,36 +376,37 @@ const ServiceVariationReleaseCreateForm = props => {
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at}
+              disabled={!started_at || editing}
               label='End by'
               name='config.recurring_ended_type' type='radio' value='end_by'/>
             <Field
               className='input-date'
               component={CommonInput}
-              disabled={!started_at}
+              disabled={!started_at || editing}
               name='config.recurring_ended_at'
               type='date'/>
           </div>
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at}
+              disabled={!started_at || editing}
               label='End after'
               name='config.recurring_ended_type' type='radio' value='end_after'/>
             <Field
               component={CommonInput}
-              disabled={!started_at}
+              disabled={!started_at || editing}
               name='config.recurring_ended_value'
               parse={parseInt}
               placeholder='0'
               type='number'/>
-            <span className={!started_at ? 'disabled' : ''}> &nbsp;&nbsp;ocurrence(s)</span>
+            <span className={!started_at || editing ? 'disabled' : ''}> &nbsp;&nbsp;ocurrence(s)</span>
           </div>
         </Form.Field>
         <Form.Field width={3}>
           <Field
             component={FormField}
             control={CheckboxGroup}
+            disabled={!started_at || editing}
             inline={false}
             label='On days'
             name='config.recurring_week_days'
@@ -420,9 +431,9 @@ const ServiceVariationReleaseCreateForm = props => {
               start   : picker.selectedDayRanges.map(({ from }) => from),
               end     : picker.selectedDayRanges.map(({ to }) => to)
             }}
+            // onDayClick={_handleDayClick}
             month={picker.fromMonth}
-            numberOfMonths={2}
-            onDayClick={_handleDayClick}/>
+            numberOfMonths={2}/>
         </Form.Field>
       </Form.Group>
 

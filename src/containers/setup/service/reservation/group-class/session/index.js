@@ -40,7 +40,7 @@ const SetupServiceReservationGroupClassSessionIndex = () => {
 
   const _handleDelete = () => {
     dispatch(
-      // serviceVariationReleaseDetailDuck.creators.delete(detail.item.id, detail.item.service.id)
+      serviceVariationReleaseDetailDuck.creators.delete(detail.item.id, detail.item.service_variation.id)
     )
       .then(() => {
         dispatch(
