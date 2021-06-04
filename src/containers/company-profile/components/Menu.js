@@ -36,7 +36,7 @@ const items = [
   }
 ]
 
-const Menu = () => {
+function Menu () {
   const location = useLocation()
   const[ linkLabel, setLinkLabel ] = useState('')
   return (

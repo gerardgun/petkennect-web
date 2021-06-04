@@ -4,7 +4,7 @@ import { Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
 
-const SetupCompanyProfileSystemSettings = () => {
+function SetupCompanyProfileSystemSettings () {
   return (
     <Layout>
       <Segment className='segment-content'>

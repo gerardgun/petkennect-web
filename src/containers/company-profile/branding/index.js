@@ -35,7 +35,7 @@ const textColors = [
   {color:'black', label:'#FFFFFF'},
 ]
 
-const SetupCompanyProfileBranding = (props) => {
+function SetupCompanyProfileBranding (props) {
   const[navColor, setNavColor] = useState();
   const[headingColor, setHeadingColor] = useState();
   const[textColor, setTextColor] = useState();
@@ -54,7 +54,7 @@ return (
   <Layout>
     <Segment className='segment-content'>
       <Menu/>
-      <Header as='h4' content='Branding Options'/>
+      <Header as='h3' content='Branding Options'/>
       <Form onSubmit={handleSubmit(_handleSubmit)}>
         <Grid className='grid-branding'>
           <Grid.Row>
