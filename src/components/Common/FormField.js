@@ -22,7 +22,7 @@ const FormField = props => {
   } = props
   const getComputedInput = () => {
     let { ...computed } = input
-
+    if(props.type === 'checkbox') delete computed['value']
     if(props.type === 'checkbox' || props.type === 'radio')
       computed.label = label
 
@@ -54,11 +54,13 @@ const FormField = props => {
   const hasError = meta.touched && meta.error
 
   return (
-    <Form.Field className={className} error={hasError} required={required}>    {/* update for help icon with label    */}
+    <Form.Field className={className} error={!!hasError} required={required}>    {/* update for help icon with label    */}
       {
-        [ 'checkbox', 'radio' ].includes(props.type) ? <label>&nbsp;</label> : helpText != undefined ? <label>{label}<Popup
-          content={helpText} inverted position='bottom center'
-          trigger={<Icon name='info circle'  size='large' style={{ 'padding-left': '.5rem', 'margin-bottom': '.3rem' }}/>}/></label> : <label>{label}</label>
+        !!label && (
+          [ 'checkbox', 'radio' ].includes(props.type) ? <label>&nbsp;</label> : helpText != undefined ? <label>{label}<Popup
+            content={helpText} inverted position='bottom center'
+            trigger={<Icon name='info circle'  size='large' style={{ 'padding-left': '.5rem', 'margin-bottom': '.3rem' }}/>}/></label> : <label>{label}</label>
+        )
       }
       <WrappedComponent
         onBlur={_handleBlur}

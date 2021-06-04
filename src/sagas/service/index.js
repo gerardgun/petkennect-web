@@ -11,7 +11,7 @@ import serviceDuck from '@reducers/service'
 
 const { selectors, types } = serviceDuck
 
-function* get() {
+export function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 

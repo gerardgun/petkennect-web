@@ -3,6 +3,6 @@ import list from '@reducers/common/list'
 
 export default base({
   namespace: '@@pet-kennect',
-  store    : 'service/package/day-services'
+  store    : 'service/package'
 })
   .extend(list)

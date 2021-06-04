@@ -44,3 +44,12 @@ export const KennelTypeDefaultConfig = {
   charge_type    : 'no_charge',
   price          : 0.00
 }
+
+export const ServicePackageDefaultConfig = {
+  applied_locations        : [],
+  applied_reservation_types: [],
+  is_limited               : false,
+  is_hourly_credits        : false,
+  is_suscription           : false,
+  is_available_portal      : false
+}
