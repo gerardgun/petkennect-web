@@ -54,7 +54,7 @@ return (
   <Layout>
     <Segment className='segment-content'>
       <Menu/>
-      <Header as='h3' content='Branding Options'/>
+      <Header as='h3' content='Branding Options' color='teal'/>
       <Form onSubmit={handleSubmit(_handleSubmit)}>
         <Grid className='grid-branding'>
           <Grid.Row>

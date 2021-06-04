@@ -109,3 +109,25 @@
     margin: 0px !important;
     padding: 0px !important;
 }
+.day-hours{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    p{
+        display: flex;
+        font-weight: 500;
+        margin: 0px;
+    }
+    input{
+        max-height: 20px !important;
+    }
+}
+.input-hours{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}

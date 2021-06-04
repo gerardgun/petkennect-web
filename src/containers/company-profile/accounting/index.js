@@ -29,7 +29,7 @@ function SetupCompanyProfileAccounting (props) {
       <Segment className='segment-content' padded='very'>
         <Menu/>
         <Form onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h3' content='Account Settings: These options affect reporting'/>
+          <Header as='h3' content='Account Settings: These options affect reporting' color='teal' />
 
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
