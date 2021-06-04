@@ -181,7 +181,6 @@ import serviceAttributeValueDetail from './service/service-attribute-value/detai
 import serviceGroup from './service/group'
 import serviceGroupDetail from './service/group/detail'
 import serviceGroupPetKind from './service/group/pet/kind'
-import servicePackageDayServices from './service/package/day-services'
 import servicePetKind from './service/pet/kind'
 import serviceVariation from './service/variation'
 import serviceVariationDetail from './service/variation/detail'
@@ -396,7 +395,6 @@ export default function* rootSaga() {
     ...serviceGroup,
     ...serviceGroupDetail,
     ...serviceGroupPetKind,
-    ...servicePackageDayServices,
     ...servicePetKind,
     ...serviceVariation,
     ...serviceVariationDetail,
