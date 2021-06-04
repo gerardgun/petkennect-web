@@ -139,7 +139,7 @@ export default [
       },
       {
         name: 'Packages',
-        to  : '/setup'
+        to  : '/setup/service/package/day-services'
 
       },
       {
