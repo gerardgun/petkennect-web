@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
 import { Image, Breadcrumb, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea, GridColumn } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import './styles.scss'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -231,7 +230,7 @@ return(
 }
 
 export default reduxForm({
-    form              : 'setup-boarding-setting',
+    form              : 'setup-company-profile-contact-billing',
     enableReinitialize: true,
     validate          : values => {
       const schema = {}

@@ -941,7 +941,7 @@ const privateRoutes = [
     component: SetupCompanyProfileCalendar
   },
   {
-    path     : '/setup/comapny-profile/branding',
+    path     : '/setup/company-profile/branding',
     component: SetupCompanyProfileBranding
   },
   {

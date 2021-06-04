@@ -11,7 +11,7 @@ const items = [
   },
   {
     label: 'Branding',
-    to   : '/setup/comapny-profile/branding',
+    to   : '/setup/company-profile/branding',
     linklabel: 'Branding'
   },
   {
@@ -36,7 +36,7 @@ const items = [
   }
 ]
 
-const Menu = () => {
+function Menu () {
   const location = useLocation()
   const[ linkLabel, setLinkLabel ] = useState('')
   return (
