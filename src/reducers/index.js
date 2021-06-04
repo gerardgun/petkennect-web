@@ -242,7 +242,6 @@ import serviceAttributeValueDetail from '@reducers/service/service-attribute-val
 import serviceGroup from '@reducers/service/group'
 import serviceGroupDetail from '@reducers/service/group/detail'
 import serviceGroupPetKind from '@reducers/service/group/pet/kind'
-import servicePackageDayServices from '@reducers/service/package/day-services'
 import servicePetKind from '@reducers/service/pet/kind'
 import serviceVariation from '@reducers/service/variation'
 import serviceVariationDetail from '@reducers/service/variation/detail'
@@ -529,7 +528,6 @@ const createRootReducer = history => combineReducers({
   [serviceGroup.store]                                     : serviceGroup.reducer,
   [serviceGroupDetail.store]                               : serviceGroupDetail.reducer,
   [serviceGroupPetKind.store]                              : serviceGroupPetKind.reducer,
-  [servicePackageDayServices.store]                        : servicePackageDayServices.reducer,
   [servicePetKind.store]                                   : servicePetKind.reducer,
   [serviceVariation.store]                                 : serviceVariation.reducer,
   [serviceVariationDetail.store]                           : serviceVariationDetail.reducer,
