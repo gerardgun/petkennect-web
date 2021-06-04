@@ -15,13 +15,19 @@ import serviceVariationDetailDuck from '@reducers/service/variation/detail'
 const SetupServiceReservationIndex = () => {
   const dispatch = useDispatch()
   const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
-  const list = useSelector(serviceVariationDuck.selectors.list)
 
   useEffect(() => {
-    if(list.items.length === 0)
+    dispatch(
+      serviceVariationDuck.creators.get({
+        service__type: 'C'
+      })
+    )
+
+    return () => {
       dispatch(
-        serviceVariationDuck.creators.get()
+        serviceVariationDuck.creators.reset()
       )
+    }
   }, [])
 
   useEffect(() => {
@@ -36,6 +42,17 @@ const SetupServiceReservationIndex = () => {
       dispatch(
         serviceVariationDetailDuck.creators.setItem(null, 'CREATE')
       )
+  }
+
+  const _handleDelete = () => {
+    dispatch(
+      serviceVariationDetailDuck.creators.delete(detail.item.id, detail.item.service.id)
+    )
+      .then(() => {
+        dispatch(
+          serviceVariationDetailDuck.creators.resetItem()
+        )
+      })
   }
 
   const _handleRowButtonClick = (button, reason) => {
@@ -63,7 +80,7 @@ const SetupServiceReservationIndex = () => {
 
         <CreateFormModal/>
 
-        <ModalDelete duckDetail={serviceVariationDetailDuck}/>
+        <ModalDelete duckDetail={serviceVariationDetailDuck} onDelete={_handleDelete}/>
 
       </Segment>
     </Layout>

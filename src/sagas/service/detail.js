@@ -1,4 +1,5 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
+import _intersection from 'lodash/intersection'
 
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 import * as locationSaga from '@sagas/location'
@@ -10,21 +11,14 @@ import petKindDuck from '@reducers/pet/kind'
 import serviceDetailDuck from '@reducers/service/detail'
 import serviceGroupDuck from '@reducers/service/group'
 
-const { types } = serviceDetailDuck
+const { selectors, types } = serviceDetailDuck
 
 function* create() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    let locationList = yield select(locationDuck.selectors.list)
     let petKindList = yield select(petKindDuck.selectors.list)
     let serviceGroupList = yield select(serviceGroupDuck.selectors.list)
-
-    if(locationList.items.length === 0) {
-      yield* locationSaga.get()
-
-      locationList = yield select(locationDuck.selectors.list)
-    }
 
     if(petKindList.items.length === 0) {
       yield* petKindSaga.get()
@@ -41,10 +35,6 @@ function* create() {
     yield put({
       payload: {
         form: {
-          location_options: locationList.items.map(({ id, name }) => ({
-            text : name,
-            value: id
-          })),
           pet_kind_options: petKindList.items.map(({ id, name }) => ({
             text : name,
             value: id
@@ -61,6 +51,57 @@ function* create() {
     yield put({
       error: e,
       type : types.GET_FAILURE
+    })
+  }
+}
+
+function* createGetLocations({ payload }) {
+  try {
+    yield put({ type: types.GET_PENDING })
+
+    const detail = yield select(selectors.detail)
+    let locationList = yield select(locationDuck.selectors.list)
+    let petKindList = yield select(petKindDuck.selectors.list)
+
+    if(locationList.items.length === 0) {
+      yield* locationSaga.get()
+
+      locationList = yield select(locationDuck.selectors.list)
+    }
+
+    if(petKindList.items.length === 0) {
+      yield* petKindSaga.get()
+
+      petKindList = yield select(petKindDuck.selectors.list)
+    }
+
+    // Get location ids related to every pet class
+    const locationGroupIds = petKindList.items
+      .filter(({ id }) => payload.pet_class_ids.includes(id))
+      .map(({ locations }) => {
+        return locations.map(item => item.id)
+      })
+
+    const interesectedLocationIds = _intersection(...locationGroupIds)
+
+    yield put({
+      type   : types.GET_FULFILLED,
+      payload: {
+        form: {
+          ...detail.form,
+          location_options: locationList.items
+            .filter(({ id }) => interesectedLocationIds.includes(id))
+            .map(({ id, name }) => ({
+              text : name,
+              value: id
+            }))
+        }
+      }
+    })
+  } catch (e) {
+    yield put({
+      type : types.GET_FAILURE,
+      error: e
     })
   }
 }
@@ -137,6 +178,7 @@ function* _put({ payload: { type, ...payload } }) {
 
 export default [
   takeEvery(types.CREATE, create),
+  takeEvery(types.CREATE_GET_LOCATIONS, createGetLocations),
   takeEvery(types.DELETE, deleteItem),
   takeEvery(types.GET, get),
   takeEvery(types.POST, post),

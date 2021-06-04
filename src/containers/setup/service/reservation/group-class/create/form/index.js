@@ -1,61 +1,42 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Field, formValueSelector, reduxForm } from 'redux-form'
-import { Button, Checkbox, Form, Header, Input, Select, TextArea } from 'semantic-ui-react'
+import { Field, reduxForm } from 'redux-form'
+import { Checkbox, Form, Header, Icon, Input, Label, Select, TextArea } from 'semantic-ui-react'
 import * as yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import { ServiceDefaultConfig } from '@lib/constants/service'
+import { ServiceVariationGroupClassDefaultConfig } from '@lib/constants/service'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
-import './styles.scss'
 
-import serviceDetailDuck from '@reducers/service/detail'
-
-const selector = formValueSelector('service-reservation')
+import serviceVariationDetailDuck from '@reducers/service/variation/detail'
 
 const ServiceReservationCreateForm = props => {
   const {
-    change, error, handleSubmit, reset, initialize // redux-form
+    error, handleSubmit, reset, initialize // redux-form
   } = props
 
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
-  const service_group = useSelector(state => selector(state, 'service_group'))
+  const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
 
   useEffect(() => {
-    // Get default data to create a new service type
-    dispatch(serviceDetailDuck.creators.create())
+    dispatch(serviceVariationDetailDuck.creators.createGroupClass())
   }, [])
-
-  useEffect(() => {
-    if(detail.status === 'GOT' && detail.form.service_group_options.length > 0)
-      if(editing)
-        change('service_group', detail.item.service_group)
-      else
-        change('service_group', detail.form.service_group_options[0].value)
-  }, [ detail.status ])
 
   useEffect(() => {
     if(editing)
       initialize({
         ...detail.item,
-        pet_classes: detail.item.pet_classes.map(({ id }) => id),
-        locations  : detail.item.locations.map(({ id }) => id)
+        locations: detail.item.locations.map(({ id }) => id)
       })
     else
-      // Set default data for new register
-      initialize(ServiceDefaultConfig)
+      initialize(ServiceVariationGroupClassDefaultConfig)
   }, [ detail.item.id ])
 
   const _handleClose = () => {
     dispatch(
-      serviceDetailDuck.creators.resetItem()
+      serviceVariationDetailDuck.creators.resetItem()
     )
-  }
-
-  const _handleServiceGroupBtnClick = e => {
-    change('service_group', parseInt(e.currentTarget.dataset.id))
   }
 
   const _handleSubmit = values => {
@@ -63,11 +44,11 @@ const ServiceReservationCreateForm = props => {
       delete values.sku_id
 
     if(editing)
-      return dispatch(serviceDetailDuck.creators.put({ id: detail.item.id, ...values }))
+      return dispatch(serviceVariationDetailDuck.creators.putGroupClass({ id: detail.item.id, ...values }))
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return dispatch(serviceDetailDuck.creators.post(values))
+      return dispatch(serviceVariationDetailDuck.creators.postGroupClass(values))
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -76,41 +57,27 @@ const ServiceReservationCreateForm = props => {
 
   return (
     // eslint-disable-next-line react/jsx-handler-names
-    <Form id='service-reservation' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-
-      {
-        !editing && (
-          <Button.Group basic className='service-type-form-buttons' fluid>
-            {
-              detail.form.service_group_options.map(({ value, text }) => (
-                <Button
-                  color={value === service_group ? 'teal' : null}
-                  content={text}
-                  data-id={value}
-                  key={value}
-                  onClick={_handleServiceGroupBtnClick}
-                  type='button'/>
-              ))
-            }
-          </Button.Group>
-        )
-      }
-
-      <Form.Group widths={2}>
+    <Form id='service-group-class' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+      <Form.Group widths='equal'>
         <Form.Input
           label='Service Group'
           readOnly
           required
-          value={detail.form.service_group_options.find(({ value }) => value === service_group)?.text}/>
+          value={detail.form.service_group_name}/>
+        <Form.Input
+          label='Service Type'
+          readOnly
+          required
+          value={detail.form.service_name}/>
       </Form.Group>
       <Form.Group widths='equal'>
         <Field
           autoFocus
           component={FormField}
           control={Input}
-          label='Service Type'
+          label='Class Name'
           name='name'
-          placeholder='Enter Service Type Name'
+          placeholder='Enter Class Name'
           required/>
       </Form.Group>
       <Form.Group widths='equal'>
@@ -122,6 +89,59 @@ const ServiceReservationCreateForm = props => {
           placeholder='Enter some description'
           rows={5}/>
       </Form.Group>
+      <Form.Group widths='equal'>
+        <Field
+          component={FormField}
+          control={Input}
+          label='Class Size Limit'
+          name='capacity'
+          parse={parseInt}
+          placeholder='Enter capacity'
+          required
+          type='number'/>
+        <Field
+          component={FormField}
+          control={Input}
+          iconPosition='left'
+          label='Length'
+          labelPosition='right'
+          name='duration_minutes'
+          placeholder='Enter length'
+          required
+          type='number'>
+          <Icon name='clock outline'/>
+          <input/>
+          <Label content='minutes'/>
+        </Field>
+      </Form.Group>
+      <Form.Group widths='equal'>
+        <Field
+          component={FormField}
+          control={Input}
+          label='Duration'
+          name='config.duration_value'
+          parse={parseFloat}
+          placeholder='Enter duration'
+          required
+          type='number'/>
+        <Field
+          component={FormField}
+          control={Select}
+          label='&nbsp;'
+          name='config.duration_type'
+          options={detail.form.duration_type_options}
+          selectOnBlur={false}/>
+      </Form.Group>
+      <Form.Group widths='equal'>
+        <Field
+          component={FormField}
+          control={Checkbox}
+          format={Boolean}
+          label='Is Scheduled'
+          name='is_scheduled'
+          toggle
+          type='checkbox'/>
+      </Form.Group>
 
       <Header as='h6' className='section-header' color='blue'>Applies to</Header>
 
@@ -129,26 +149,12 @@ const ServiceReservationCreateForm = props => {
         <Field
           component={FormField}
           control={Select}
-          label='Species'
-          multiple
-          name='pet_classes'
-          options={detail.form.pet_kind_options}
-          placeholder='Select Species'
-          required
-          search
-          selectOnBlur={false}/>
-      </Form.Group>
-      <Form.Group widths='equal'>
-        <Field
-          component={FormField}
-          control={Select}
-          label='Location'
+          label='Locations'
           multiple
           name='locations'
           options={detail.form.location_options}
           placeholder='Select Locations'
           required
-          search
           selectOnBlur={false}/>
       </Form.Group>
 
@@ -188,13 +194,17 @@ const ServiceReservationCreateForm = props => {
 }
 
 export default reduxForm({
-  form    : 'service-reservation',
+  form    : 'service-group-class',
   validate: values => {
     const schema = {
-      name       : yup.string().required('Name is required'),
-      pet_classes: yup.array().required('Choose at least one service group'),
-      locations  : yup.array().required('Choose at least one service group'),
-      sku_id     : yup.string().required('Custom Acct Cd is required')
+      name            : yup.string().required('Name is required'),
+      capacity        : yup.number().typeError('Class size limit must be a number').required('Class size limit is required'),
+      duration_minutes: yup.number().typeError('Length must be a number').required('Length is required'),
+      locations       : yup.array().required('Choose at least one location'),
+      sku_id          : yup.string().required('Custom Acct Cd is required'),
+      config          : yup.object().shape({
+        duration_value: yup.number().typeError('Duration must be a number').required('Duration is required')
+      })
     }
 
     return syncValidate(yup.object().shape(schema), values)

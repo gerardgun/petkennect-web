@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment } from 'semantic-ui-react'
+import { Breadcrumb, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -11,6 +12,9 @@ import Menu from '@containers/settings/components/Menu'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 const SetupBoardingPricingIndex = props => {
+  const[ pricingModel, setPricingModel ] = useState(false);
+  const[ calculatePricing, setCalculatePricing ] = useState(false);
+  const[ textDiscount, setTextDiscount] = useState('$0.00')
   const {
     error, handleSubmit // redux-form
   } = props
@@ -39,9 +43,6 @@ const SetupBoardingPricingIndex = props => {
               <Grid.Column width='6'>
                 <Header as='h4'>
                   <p>Select your pricing model</p>
-                  <Header.Subheader>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam mi, eros vitae, elementum luctus elit.
-                  </Header.Subheader>
                 </Header>
               </Grid.Column>
               <Grid.Column width='5'>
@@ -56,86 +57,93 @@ const SetupBoardingPricingIndex = props => {
                   ]}
                   placeholder='Select your pricing model'
                   search
-                  selectOnBlur={false}/>
+                  selectOnBlur={false}
+                  onChange={(event)=> event===1 ? setPricingModel(1):setPricingModel(2)}/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
           {/*<Divider/>*/}
-          <Grid style={{ padding: '1rem' }}>
-            <Grid.Row>
-              <Grid.Column width='6'>
-                <Header as='h4'>
-                  <p>For all inclusive</p>
-                  <Header.Subheader>
-                    Breakout Day Services and Boarding Revenues:
-                  </Header.Subheader>
-                </Header>
-              </Grid.Column>
-              <Grid.Column width='5'>
-                <Field
-                  component={FormField}
-                  control={Select}
-                  name='all_inclusive'
-                  options={[
-                    { value: 1, text: 'No' },
-                    { value: 2, text: 'Yes, For Entire Stay' },
-                    { value: 3, text: 'Yes, Only and Check-out day' }
-                  ]}
-                  placeholder='Select charge type'
-                  search
-                  selectOnBlur={false}/>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+          {pricingModel === 1 &&
+            <>
+              <Grid style={{ padding: '1rem' }}>
+                  <Grid.Row>
+                    <Grid.Column width='6'>
+                      <Header as='h4'>
+                        <p>For all inclusive</p>
+                        <Header.Subheader>
+                          Breakout Day Services and Boarding Revenues:
+                        </Header.Subheader>
+                      </Header>
+                    </Grid.Column>
+                    <Grid.Column width='5'>
+                      <Field
+                        component={FormField}
+                        control={Select}
+                        name='all_inclusive'
+                        options={[
+                          { value: 1, text: 'No' },
+                          { value: 2, text: 'Yes, For Entire Stay' },
+                          { value: 3, text: 'Yes, Only and Check-out day' }
+                        ]}
+                        placeholder='Select charge type'
+                        search
+                        selectOnBlur={false}/>
+                    </Grid.Column>
+                  </Grid.Row>
+              </Grid>
+              {/*<Divider/>*/}
+              <Grid style={{ padding: '1rem' }}>
+                <Grid.Row>
+                  <Grid.Column width='6'>
+                    <Header as='h4'>
+                      <p>Enter the dollar amount to allocate to day Services (per day)</p>
+                      <Header.Subheader>
+                        Tip: Enter $15 If Boarding + Day Care has a total cost of $40 but $15 is the amount to allocate.
+                      </Header.Subheader>
+                    </Header>
+                  </Grid.Column>
+                  <Grid.Column width='5'>
+                    <Field
+                      component={FormField}
+                      control={Input}
+                      name='day_service_price'
+                      placeholder='$0.00'
+                      type='number'/>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </>
+          }
           {/*<Divider/>*/}
-          <Grid style={{ padding: '1rem' }}>
-            <Grid.Row>
-              <Grid.Column width='6'>
-                <Header as='h4'>
-                  <p>Enter the dollar amount to allocate to day Services (per day)</p>
-                  <Header.Subheader>
-                    Tip: If service of Boarding + Day Care has a total cost of $40 but $15
-                  </Header.Subheader>
-                </Header>
-              </Grid.Column>
-              <Grid.Column width='5'>
-                <Field
-                  component={FormField}
-                  control={Input}
-                  name='day_service_price'
-                  placeholder='$0.00'
-                  type='number'/>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-          {/*<Divider/>*/}
-          <Grid style={{ padding: '1rem' }}>
-            <Grid.Row>
-              <Grid.Column width='6'>
-                <Header as='h4'>
-                  <p>For Activity Based</p>
-                  <Header.Subheader>
-                    What is the frequency of the activity package/day service?
-                  </Header.Subheader>
-                </Header>
-              </Grid.Column>
-              <Grid.Column width='5'>
-                <Field
-                  component={FormField}
-                  control={Select}
-                  name='activity_id'
-                  options={[
-                    { value: 1, text: 'As Requested' },
-                    { value: 2, text: 'Every day including Check-out' },
-                    { value: 3, text: 'Every day, Except Check-out' },
-                    { value: 4, text: 'Every day, Except Check-in/out' }
-                  ]}
-                  placeholder='Select activity based'
-                  search
-                  selectOnBlur={false}/>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+          {pricingModel === 2 &&
+            <Grid style={{ padding: '1rem' }}>
+              <Grid.Row>
+                <Grid.Column width='6'>
+                  <Header as='h4'>
+                    <p>For Activity Based</p>
+                    <Header.Subheader>
+                      What is the frequency of the activity package/day service?
+                    </Header.Subheader>
+                  </Header>
+                </Grid.Column>
+                <Grid.Column width='5'>
+                  <Field
+                    component={FormField}
+                    control={Select}
+                    name='activity_id'
+                    options={[
+                      { value: 1, text: 'As Requested' },
+                      { value: 2, text: 'Every day including Check-out' },
+                      { value: 3, text: 'Every day, Except Check-out' },
+                      { value: 4, text: 'Every day, Except Check-in/out' }
+                    ]}
+                    placeholder='Select activity based'
+                    search
+                    selectOnBlur={false}/>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          }
 
           <Header as='h4' color='teal'>Pricing</Header>
 
@@ -183,64 +191,69 @@ const SetupBoardingPricingIndex = props => {
                   ]}
                   placeholder='Select option'
                   search
-                  selectOnBlur={false}/>
+                  selectOnBlur={false}
+                  onChange={(event)=> event===1 ? setCalculatePricing(true):setCalculatePricing(false)}/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
           {/*<Divider/>*/}
-          <Grid style={{ padding: '1rem' }}>
-            <Grid.Row>
-              <Grid.Column width='6'>
-                <Header as='h4'>
-                  <p>What does the discount apply to</p>
-                </Header>
-              </Grid.Column>
-              <Grid.Column width='5'>
-                <Field
-                  component={FormField}
-                  control={Select}
-                  name='discount_apply_to'
-                  options={[
-                    { value: 1, text: 'Nightly Boarding charges Only' },
-                    { value: 2, text: 'All boarding Charges and Day Services' }
-                  ]}
-                  placeholder='Select discount apply to'
-                  search
-                  selectOnBlur={false}/>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-          {/*<Divider/>*/}
-          <Grid style={{ padding: '1rem' }}>
-            <Grid.Row>
-              <Grid.Column width='6'>
-                <Header as='h4'>
-                  <p>How much is the discount per dog</p>
-                </Header>
-              </Grid.Column>
-              <Grid.Column width='5'>
-                <Field
-                  component={FormField}
-                  control={Select}
-                  name='discount_per_dog'
-                  options={[
-                    { value: 1, text: '$ Off' },
-                    { value: 2, text: '% Off' }
-                  ]}
-                  placeholder='Select option'
-                  search
-                  selectOnBlur={false}/>
-              </Grid.Column>
-              <Grid.Column width='3'>
-                <Field
-                  component={FormField}
-                  control={Input}
-                  name='discount_per_dog_price'
-                  placeholder='$0.00'
-                  type='number'/>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+          {calculatePricing &&
+          <>
+            <Grid style={{ padding: '1rem' }}>
+              <Grid.Row>
+                <Grid.Column width='6'>
+                  <Header as='h4'>
+                    <p>What does the discount apply to</p>
+                  </Header>
+                </Grid.Column>
+                <Grid.Column width='5'>
+                  <Field
+                    component={FormField}
+                    control={Select}
+                    name='discount_apply_to'
+                    options={[
+                      { value: 1, text: 'Nightly Boarding charges Only' },
+                      { value: 2, text: 'All boarding Charges and Day Services' }
+                    ]}
+                    placeholder='Select discount apply to'
+                    search
+                    selectOnBlur={false}/>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+
+            <Grid style={{ padding: '1rem' }}>
+              <Grid.Row>
+                <Grid.Column width='6'>
+                  <Header as='h4'>
+                    <p>How much is the discount per dog</p>
+                  </Header>
+                </Grid.Column>
+                <Grid.Column width='5'>
+                  <Field
+                    component={FormField}
+                    control={Select}
+                    name='discount_per_dog'
+                    options={[
+                      { value: 1, text: '$ Off' },
+                      { value: 2, text: '% Off' }
+                    ]}
+                    placeholder='Select option'
+                    search
+                    selectOnBlur={false}
+                    onChange={(event) => event===2 ? setTextDiscount('%0.00'):setTextDiscount('$0.00')}/>
+                </Grid.Column>
+                <Grid.Column width='3'>
+                  <Field
+                    component={FormField}
+                    control={Input}
+                    name='discount_per_dog_price'
+                    placeholder={textDiscount}
+                    type='number'/>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </>}
 
           <Header as='h4' color='teal'>Do other factors affect pricing?</Header>
 
@@ -302,7 +315,7 @@ const SetupBoardingPricingIndex = props => {
                   options={[
                     { value: 1, text: 'None' },
                     { value: 2, text: 'Let PetKennect do it By Breed (must be set in pet profile)' },
-                    { value: 3, text: 'Let PetKennect fo it By Weight (requires weight in pet profile)' },
+                    { value: 3, text: 'PetKennect should do it By Weight (requires weight in pet profile)' },
                     { value: 4, text: 'Create Reservation Type for each dog size and select manually' }
                   ]}
                   placeholder='Select option'
@@ -349,7 +362,7 @@ const SetupBoardingPricingIndex = props => {
                   name='checkout_prior'
                   options={[
                     { value: 1, text: 'No' },
-                    { value: 2, text: 'Yes, half day of Day Service' }
+                    { value: 2, text: 'Yes, Half Charge of Activities' }
                   ]}
                   placeholder='Select option'
                   search
@@ -374,7 +387,7 @@ const SetupBoardingPricingIndex = props => {
                     { value: 1, text: 'No Fees' },
                     { value: 2, text: 'Flat Late Check-out Fee per dog' },
                     { value: 2, text: 'Flat Late Check-out Fee per client' },
-                    { value: 2, text: 'Full day of day service' }
+                    { value: 2, text: 'Full Day of selected Activties' }
                   ]}
                   placeholder='Select option'
                   search

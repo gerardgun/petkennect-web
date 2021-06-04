@@ -1,6 +1,8 @@
 import React from 'react'
 import { Checkbox } from 'semantic-ui-react'
 
+import { VariationDurationType } from '@lib/constants/service'
+
 export default {
   search_placeholder: 'Search by sku_id, name or description',
   actions           : [
@@ -19,8 +21,8 @@ export default {
     },
     {
       display_name: 'Service Type',
-      name        : 'name',
-      formatter   : () => 'Group Classes'
+      name        : 'service.name',
+      type        : 'string'
     },
     {
       display_name: 'Locations',
@@ -38,24 +40,21 @@ export default {
     },
     {
       display_name: 'Length',
-      name        : 'duration',
-      formatter   : cell => `${cell} hours`
+      name        : 'duration_minutes',
+      formatter   : cell => `${cell} minutes`
     },
     {
       display_name: 'Size Limit',
-      name        : 'max_capacity_per_day',
-      type        : 'string',
-      align       : 'center'
+      name        : 'capacity',
+      align       : 'center',
+      formatter   : cell => `${cell} pets`
     },
     {
       display_name: 'Duration',
-      name        : 'duration_week',
-      formatter   : cell => `${cell} weeks`
-    },
-    {
-      display_name: 'Price',
-      name        : 'price',
-      type        : 'money'
+      name        : 'config',
+      formatter   : cell => {
+        return `${cell.duration_value} ${VariationDurationType[cell.duration_type]}`
+      }
     },
     {
       display_name: 'Active',

@@ -2,6 +2,7 @@ import React from 'react'
 import { Form, Icon, Popup } from 'semantic-ui-react'
 
 import FormError from '@components/Common/FormError'
+
 const FormField = props => {
   const {
     help : helpText,                   // for help icon on fields
@@ -20,6 +21,7 @@ const FormField = props => {
     children,
     ...rest
   } = props
+
   const getComputedInput = () => {
     let { ...computed } = input
     if(props.type === 'checkbox') delete computed['value']

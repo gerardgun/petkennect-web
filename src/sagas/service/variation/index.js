@@ -32,12 +32,13 @@ function* get() {
       payload: {
         items: results.map(item => ({
           ...item,
-          locations: [].map(locationId => {
+          locations: item.locations.map(locationId => {
             const location = locationList.items
               .find(({ id }) => id === locationId)
 
             return location
           })
+            .filter(Boolean)
         })),
         pagination: {
           ...list.pagination,

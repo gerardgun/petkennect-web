@@ -181,11 +181,14 @@ import serviceAttributeValueDetail from './service/service-attribute-value/detai
 import serviceGroup from './service/group'
 import serviceGroupDetail from './service/group/detail'
 import serviceGroupPetKind from './service/group/pet/kind'
+import servicePackageDayServices from './service/package/day-services'
 import servicePetKind from './service/pet/kind'
 import serviceVariation from './service/variation'
 import serviceVariationDetail from './service/variation/detail'
 import servicePackage from './service/package'
 import servicePackageDetail from './service/package/detail'
+import serviceVariationRelease from './service/variation/release'
+import serviceVariationReleaseDetail from './service/variation/release/detail'
 import setupCapacityServiceCustom from './setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from './setup/capacity/service/custom/detail'
 import tenantDetail from './tenant/detail'
@@ -393,11 +396,14 @@ export default function* rootSaga() {
     ...serviceGroup,
     ...serviceGroupDetail,
     ...serviceGroupPetKind,
+    ...servicePackageDayServices,
     ...servicePetKind,
     ...serviceVariation,
     ...serviceVariationDetail,
     ...servicePackage,
     ...servicePackageDetail,
+    ...serviceVariationRelease,
+    ...serviceVariationReleaseDetail,
     ...setupCapacityServiceCustom,
     ...setupCapacityServiceCustomDetail,
     ...tenantDetail,

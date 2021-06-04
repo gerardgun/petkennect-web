@@ -82,10 +82,18 @@ textarea {
 
 .appbar-grid {
   border-bottom: 1px solid #e5eaee !important;
-  height: 7rem;   // appbar height
+  height: 6.7rem;   // appbar height
   margin-left: 0rem !important;
   margin-right: 0rem !important;
   background-color: #00B5AD !important; // appbar color
+
+  .appbar-freeze {
+    position: fixed !important;
+    z-index: 7 !important;
+    background-color: #00B5AD !important;
+    height: 6.7rem !important;
+    max-width: 1500px !important;
+  }
 }
 
 .detail-view {

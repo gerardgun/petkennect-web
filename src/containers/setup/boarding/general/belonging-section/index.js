@@ -49,24 +49,15 @@ const SetupBoardingGeneralBelongingIndex = () => {
   }
 
   return (
-    <Layout>
-      <Segment className='segment-content' padded='very'>
-        <Menu/>
-
-        <Tab>
-          <Table
-            config={belongingAreaListConfig}
-            duck={kennelAreaDuck}
-            onActionClick={_handleActionClick}
-            onRowButtonClick={_handleRowButtonClick}/>
-        </Tab>
-
+    <>
+        <Table
+          config={belongingAreaListConfig}
+          duck={kennelAreaDuck}
+          onActionClick={_handleActionClick}
+          onRowButtonClick={_handleRowButtonClick}/>
         <CreateFormModal/>
-
         <ModalDelete duckDetail={kennelAreaDetailDuck}/>
-
-      </Segment>
-    </Layout>
+    </>
   )
 }
 

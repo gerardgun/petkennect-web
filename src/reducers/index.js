@@ -242,11 +242,14 @@ import serviceAttributeValueDetail from '@reducers/service/service-attribute-val
 import serviceGroup from '@reducers/service/group'
 import serviceGroupDetail from '@reducers/service/group/detail'
 import serviceGroupPetKind from '@reducers/service/group/pet/kind'
+import servicePackageDayServices from '@reducers/service/package/day-services'
 import servicePetKind from '@reducers/service/pet/kind'
 import serviceVariation from '@reducers/service/variation'
 import serviceVariationDetail from '@reducers/service/variation/detail'
 import servicePackage from '@reducers/service/package'
 import servicePackageDetail from '@reducers/service/package/detail'
+import serviceVariationRelease from '@reducers/service/variation/release'
+import serviceVariationReleaseDetail from '@reducers/service/variation/release/detail'
 import setupCapacityServiceCustom from '@reducers/setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from '@reducers/setup/capacity/service/custom/detail'
 import servicePrice from '@reducers/service-price'
@@ -526,11 +529,14 @@ const createRootReducer = history => combineReducers({
   [serviceGroup.store]                                     : serviceGroup.reducer,
   [serviceGroupDetail.store]                               : serviceGroupDetail.reducer,
   [serviceGroupPetKind.store]                              : serviceGroupPetKind.reducer,
+  [servicePackageDayServices.store]                        : servicePackageDayServices.reducer,
   [servicePetKind.store]                                   : servicePetKind.reducer,
   [serviceVariation.store]                                 : serviceVariation.reducer,
   [serviceVariationDetail.store]                           : serviceVariationDetail.reducer,
   [servicePackage.store]                                   : servicePackage.reducer,
   [servicePackageDetail.store]                             : servicePackageDetail.reducer,
+  [serviceVariationRelease.store]                          : serviceVariationRelease.reducer,
+  [serviceVariationReleaseDetail.store]                    : serviceVariationReleaseDetail.reducer,
   [setupCapacityServiceCustom.store]                       : setupCapacityServiceCustom.reducer,
   [setupCapacityServiceCustomDetail.store]                 : setupCapacityServiceCustomDetail.reducer,
   [servicePrice.store]                                     : servicePrice.reducer,

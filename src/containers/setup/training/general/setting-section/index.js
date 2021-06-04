@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
 import { Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea } from 'semantic-ui-react'
@@ -12,6 +12,8 @@ import Tab from '@containers/setup/training/general/components/Tab'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 const SetupTrainingGeneralSettingIndex = props => {
+  const [includeDrop, setIncludeDrop] = useState(false)
+  const [textOption, setTextOption] = useState('a percent (25%) or a dollar value ($250)')
   const {
     error, handleSubmit // redux-form
   } = props
@@ -27,7 +29,6 @@ const SetupTrainingGeneralSettingIndex = props => {
       <Segment className='segment-content'>
         <Menu/>
 
-        <Tab>
           {/* eslint-disable-next-line react/jsx-handler-names */}
           <Form onSubmit={handleSubmit(_handleSubmit)}>
             <Grid style={{ padding: '1rem' }}>
@@ -106,80 +107,53 @@ const SetupTrainingGeneralSettingIndex = props => {
                     ]}
                     placeholder='Select option'
                     search
-                    selectOnBlur={false}/>
+                    selectOnBlur={false}
+                    onChange={(event)=> event===1 ? setIncludeDrop(true):setIncludeDrop(false)}/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
 
-            {/*<Divider/>*/}
-
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='7'>
-                  <Header as='h4'>
-                    <p>
-                      Since boarding is included in the total
-                      price, do you want to break out the cost by allocating a
-                      percentage or dollar value?
-                    </p>
-                    <Header.Subheader>
-                      Ex. If a board and train costs $1000, you can allocate
-                      a percent (25%) or a dollar value ($250). In reporting, the amount allocated to boarding will
-                      appear there.
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column width='5'>
-                  <Field
-                    component={FormField}
-                    control={Select}
-                    name='discount_per_dog'
-                    options={[
-                      { value: 1, text: '$ Off' },
-                      { value: 2, text: '% Off' }
-                    ]}
-                    placeholder='Select option'
-                    search
-                    selectOnBlur={false}/>
-                </Grid.Column>
-                <Grid.Column width='3'>
-                  <Field
-                    component={FormField}
-                    control={Input}
-                    name='discount_per_dog_price'
-                    placeholder='0.00'
-                    type='number'/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-
-            <Header as='h4' color='teal'>Multiple Location Setup</Header>
-
-            <Divider className='mt20'/>
-
-            <Grid style={{ padding: '1rem' }}>
-              <Grid.Row>
-                <Grid.Column width='7'>
-                  <Header as='h4'>
-                    <p>Enable Multiple Location Setup</p>
-                    <Header.Subheader>
-                      If prices vary by location, enable this options.
-                      If all locations charge the same prices for services, do not enable this option.
-                    </Header.Subheader>
-                  </Header>
-                </Grid.Column>
-                <Grid.Column textAlign='center' width='4'>
-                  <Field
-                    component={FormField}
-                    control={Checkbox}
-                    format={Boolean}
-                    name='multiple_location_setup_enabled'
-                    toggle
-                    type='checkbox'/>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-            {/*<Divider className='mt20'/>*/}
+            {includeDrop &&
+              <Grid style={{ padding: '1rem' }}>
+                <Grid.Row>
+                  <Grid.Column width='7'>
+                    <Header as='h4'>
+                      <p>
+                        Since boarding is included in the total
+                        price, do you want to break out the cost by allocating a
+                        percentage or dollar value?
+                      </p>
+                      <Header.Subheader>
+                        Ex. If a board and train costs $1000, you can allocate {textOption}. In reporting, the amount allocated to boarding will
+                        appear there.
+                      </Header.Subheader>
+                    </Header>
+                  </Grid.Column>
+                  <Grid.Column width='5'>
+                    <Field
+                      component={FormField}
+                      control={Select}
+                      name='discount_per_dog'
+                      options={[
+                        { value: 1, text: '$ Off' },
+                        { value: 2, text: '% Off' }
+                      ]}
+                      placeholder='Select option'
+                      search
+                      selectOnBlur={false}
+                      onChange={(event) => event === 1 ? setTextOption('a dollar value ($250)'):setTextOption('a percent (25%)')}/>
+                  </Grid.Column>
+                  <Grid.Column width='3'>
+                    <Field
+                      component={FormField}
+                      control={Input}
+                      name='discount_per_dog_price'
+                      placeholder='0.00'
+                      type='number'/>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            }
 
             {
               error && (
@@ -188,7 +162,6 @@ const SetupTrainingGeneralSettingIndex = props => {
             }
 
           </Form>
-        </Tab>
       </Segment>
     </Layout>
   )

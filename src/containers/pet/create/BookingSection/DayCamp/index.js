@@ -237,7 +237,7 @@ function DaycampServiceSection({ comesFromScreen, petDetail,  ...props }) {
           <Header as='h4' color='teal'>Reservation History</Header>
         </Grid.Column >
       </Grid>
-      <div className='padding-table-header'>
+      <div>
         <Table
           config={config}
           duck={dayCampReservationDuck}

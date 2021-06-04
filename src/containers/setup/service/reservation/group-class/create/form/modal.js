@@ -2,17 +2,17 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
-import ServiceTypeCreateForm from './index'
+import ServiceReservationCreateForm from './index'
 
-import serviceDetailDuck from '@reducers/service/detail'
+import serviceVariationDetailDuck from '@reducers/service/variation/detail'
 
-const ServiceTypeCreateFormModal = () => {
+const ServiceReservationCreateFormModal = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
+  const detail = useSelector(serviceVariationDetailDuck.selectors.detail)
 
   const _handleClose = () => {
     dispatch(
-      serviceDetailDuck.creators.resetItem()
+      serviceVariationDetailDuck.creators.resetItem()
     )
   }
 
@@ -27,9 +27,9 @@ const ServiceTypeCreateFormModal = () => {
       open={open}
       size='small'>
       <Modal.Content>
-        <Header as='h2'>{editing ? 'Update' : 'New'} Reservation</Header>
+        <Header as='h2'>{editing ? 'Update' : 'Add'} Group Class</Header>
 
-        <ServiceTypeCreateForm/>
+        <ServiceReservationCreateForm/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
@@ -43,9 +43,9 @@ const ServiceTypeCreateFormModal = () => {
               type='button'/>
             <Button
               color='teal'
-              content={editing ? 'Save changes' : 'Create Service Type'}
+              content={editing ? 'Save changes' : 'Create Group Class'}
               disabled={saving}
-              form='service-type'
+              form='service-group-class'
               loading={saving}
               type='submit'/>
           </Form.Field>
@@ -55,4 +55,4 @@ const ServiceTypeCreateFormModal = () => {
   )
 }
 
-export default ServiceTypeCreateFormModal
+export default ServiceReservationCreateFormModal
