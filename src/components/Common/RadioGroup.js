@@ -10,7 +10,7 @@ const RadioGroup = props => {
   } = props
 
   return (
-    <>
+    <div className='pt12'>
       {
         label && (
           <label>{label}</label>
@@ -26,7 +26,7 @@ const RadioGroup = props => {
             value={option.value}/>
         ))
       }
-    </>
+    </div>
   )
 }
 

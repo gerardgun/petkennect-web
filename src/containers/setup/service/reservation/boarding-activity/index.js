@@ -44,6 +44,17 @@ const SetupServiceReservationBoardingActivityIndex = () => {
       )
   }
 
+  const _handleDelete = () => {
+    dispatch(
+      serviceVariationDetailDuck.creators.delete(detail.item.id, detail.item.service.id)
+    )
+      .then(() => {
+        dispatch(
+          serviceVariationDetailDuck.creators.resetItem()
+        )
+      })
+  }
+
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
@@ -69,7 +80,7 @@ const SetupServiceReservationBoardingActivityIndex = () => {
 
         <CreateFormModal/>
 
-        <ModalDelete duckDetail={serviceVariationDetailDuck}/>
+        <ModalDelete duckDetail={serviceVariationDetailDuck} onDelete={_handleDelete}/>
 
       </Segment>
     </Layout>

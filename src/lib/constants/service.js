@@ -40,6 +40,20 @@ export const VariationCheckoutChargeType = {
 
 export const VariationCheckoutChargeTypeOptions = obj2options(VariationCheckoutChargeType)
 
+export const VariationDurationType = {
+  S: 'Sessions',
+  W: 'Weeks'
+}
+
+export const VariationDurationTypeOptions = obj2options(VariationDurationType)
+
+export const VariationReleaseCommissionUnit = {
+  P: 'Percentage %',
+  A: 'Amount $'
+}
+
+export const VariationReleaseCommissionUnitOptions = obj2options(VariationReleaseCommissionUnit)
+
 export const VariationType = {
   A: 'Appointment',
   R: 'Reservation'
@@ -60,6 +74,28 @@ export const ServiceReservationDefaultConfig = {
   capacity        : 1,
   is_main         : false,
   is_bookable     : true
+}
+
+export const ServiceVariationGroupClassDefaultConfig = {
+  is_scheduled          : false,
+  is_active             : false,
+  // Defaults
+  type                  : 'R',
+  is_main               : false,
+  is_group_play_required: true,
+  is_bookable           : false,
+  is_bookable_by_client : false,
+  employee_schedule     : null,
+  config                : {
+    duration_type: 'S'
+  }
+}
+
+export const ServiceVariationGroupClassSessionDefaultConfig = {
+  is_bookable_by_client: false,
+  locations            : [],
+  // Defaults
+  status               : 'P'
 }
 
 // Service Config Helpers

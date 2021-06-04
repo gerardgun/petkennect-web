@@ -16,8 +16,11 @@ export default base({
       // For boarding activities
       checkout_charge_type_options: [],
       service_group_name          : null,
+      service_name                : null,
       service_sku_id              : null,
-      service_variation_options   : []
+      service_variation_options   : [],
+      // For group classes
+      duration_type_options       : []
     }
   }
 })
@@ -28,10 +31,13 @@ export default base({
       'CREATE_BOARDING_ACTIVITY_GET_RESERVATIONS',
       'CREATE_GET_LOCATIONS',
       'CREATE_GET_SERVICE_TYPES',
+      'CREATE_GROUP_CLASS',
       'EDIT_BOARDING_ACTIVITY',
       'POST_PRICE',
       'POST_BOARDING_ACTIVITY',
-      'PUT_BOARDING_ACTIVITY'
+      'POST_GROUP_CLASS',
+      'PUT_BOARDING_ACTIVITY',
+      'PUT_GROUP_CLASS'
     ],
     creators: ({
       types: {
@@ -39,12 +45,16 @@ export default base({
         CREATE_BOARDING_ACTIVITY_GET_RESERVATIONS,
         CREATE_GET_LOCATIONS,
         CREATE_GET_SERVICE_TYPES,
+        CREATE_GROUP_CLASS,
+        DELETE, DELETE_FULFILLED, DELETE_FAILURE,
         EDIT_BOARDING_ACTIVITY,
         POST_FAILURE,
         POST_FULFILLED,
         POST_PRICE,
         POST_BOARDING_ACTIVITY,
+        POST_GROUP_CLASS,
         PUT_BOARDING_ACTIVITY,
+        PUT_GROUP_CLASS,
         PUT_FULFILLED,
         PUT_FAILURE
       }
@@ -53,8 +63,16 @@ export default base({
       createBoardingActivityGetReservations: (payload = {}) => ({ type: CREATE_BOARDING_ACTIVITY_GET_RESERVATIONS, payload }),
       createGetLocations                   : (payload = {}) => ({ type: CREATE_GET_LOCATIONS, payload }),
       createGetServiceTypes                : (payload = {}) => ({ type: CREATE_GET_SERVICE_TYPES, payload }),
-      editBoardingActivity                 : id => ({ type: EDIT_BOARDING_ACTIVITY, id }),
-      postPrice                            : (payload = {}) => ({
+      createGroupClass                     : () => ({ type: CREATE_GROUP_CLASS }),
+      'delete'                             : (id, serviceId) => ({
+        type             : DELETE,
+        id,
+        service_id       : serviceId,
+        [WAIT_FOR_ACTION]: DELETE_FULFILLED,
+        [ERROR_ACTION]   : DELETE_FAILURE
+      }),
+      editBoardingActivity: id => ({ type: EDIT_BOARDING_ACTIVITY, id }),
+      postPrice           : (payload = {}) => ({
         type             : POST_PRICE,
         payload,
         [WAIT_FOR_ACTION]: POST_FULFILLED,
@@ -66,8 +84,20 @@ export default base({
         [WAIT_FOR_ACTION]: POST_FULFILLED,
         [ERROR_ACTION]   : POST_FAILURE
       }),
+      postGroupClass: (payload = {}) => ({
+        type             : POST_GROUP_CLASS,
+        payload,
+        [WAIT_FOR_ACTION]: POST_FULFILLED,
+        [ERROR_ACTION]   : POST_FAILURE
+      }),
       putBoardingActivity: payload => ({
         type             : PUT_BOARDING_ACTIVITY,
+        payload,
+        [WAIT_FOR_ACTION]: PUT_FULFILLED,
+        [ERROR_ACTION]   : PUT_FAILURE
+      }),
+      putGroupClass: payload => ({
+        type             : PUT_GROUP_CLASS,
         payload,
         [WAIT_FOR_ACTION]: PUT_FULFILLED,
         [ERROR_ACTION]   : PUT_FAILURE
