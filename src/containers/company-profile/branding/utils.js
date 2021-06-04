@@ -9,6 +9,12 @@ function previewImage(event, image_id){
     reader.readAsDataURL(event.target.files[0]);
 }
 
+function deleteImage(image_id){
+  const image = document.getElementById(image_id);
+  image.src = '';
+}
+
 export {
-    previewImage
+    previewImage,
+    deleteImage
 }

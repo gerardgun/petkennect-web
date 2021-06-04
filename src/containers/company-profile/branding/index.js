@@ -12,7 +12,7 @@ import Menu from '@containers/company-profile/components/Menu'
 import Tab from '@containers/setup/boarding/general/components/Tab'
 import SetupBoardingGeneralBelongingIndex from '@containers/setup/boarding/general/belonging-section'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
-import { previewImage } from './utils'
+import { previewImage, deleteImage } from './utils'
 
 const colors = [
   {color:'red', label:'#FF0000'},
@@ -62,7 +62,7 @@ return (
               <Segment className='segment-dotted'>
                 <p className='branding-titles'>Logo Image for Top Navigation</p>
                 <div className='segment-delete'>
-                  <Button basic color='teal' className='button-delete-image'>
+                  <Button basic color='teal' className='button-delete-image' onClick={() => deleteImage('logo_preview')}>
                     <Icon name='trash alternate outline' /> Delete Image
                   </Button>
                 </div>
@@ -79,7 +79,7 @@ return (
               <Segment className='segment-dotted'>
                 <p className='branding-titles'>Login Background Image</p>
                 <div className='segment-delete'>
-                  <Button basic color='teal' className='button-delete-image'>
+                  <Button basic color='teal' className='button-delete-image' onClick={() => deleteImage('background_preview')}>
                     <Icon name='trash alternate outline' /> Delete Image
                   </Button>
                 </div>
