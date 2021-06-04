@@ -176,6 +176,9 @@ import SetupServiceReservationBoardingActivityIndex from '@containers/setup/serv
 import SetupServiceReservationGroupClassIndex from '@containers/setup/service/reservation/group-class'
 import SetupServiceReservationGroupClassSessionIndex from '@containers/setup/service/reservation/group-class/session'
 import SetupServicePackageDayServices from '@containers/setup/service/package/day-services-section'
+import SetupServicePackageBoarding from '@containers/setup/service/package/boarding-section'
+import SetupServicePackageTraining from '@containers/setup/service/package/training-section'
+import SetupServicePackageGrooming from '@containers/setup/service/package/grooming-section'
 
 // Settings / Training
 // import SetupTrainingIndex from '@containers/setup/training'
@@ -713,6 +716,18 @@ const privateRoutes = [
   {
     path     : '/setup/service/package/day-services',
     component: SetupServicePackageDayServices
+  },
+  {
+    path     : '/setup/service/package/boarding',
+    component: SetupServicePackageBoarding
+  },
+  {
+    path     : '/setup/service/package/training',
+    component: SetupServicePackageTraining
+  },
+  {
+    path     : '/setup/service/package/grooming',
+    component: SetupServicePackageGrooming
   },
   {
     path     : '/setup/add-on/general/add-on',

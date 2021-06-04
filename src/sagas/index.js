@@ -185,6 +185,8 @@ import servicePackageDayServices from './service/package/day-services'
 import servicePetKind from './service/pet/kind'
 import serviceVariation from './service/variation'
 import serviceVariationDetail from './service/variation/detail'
+import servicePackage from './service/package'
+import servicePackageDetail from './service/package/detail'
 import serviceVariationRelease from './service/variation/release'
 import serviceVariationReleaseDetail from './service/variation/release/detail'
 import setupCapacityServiceCustom from './setup/capacity/service/custom'
@@ -398,6 +400,8 @@ export default function* rootSaga() {
     ...servicePetKind,
     ...serviceVariation,
     ...serviceVariationDetail,
+    ...servicePackage,
+    ...servicePackageDetail,
     ...serviceVariationRelease,
     ...serviceVariationReleaseDetail,
     ...setupCapacityServiceCustom,

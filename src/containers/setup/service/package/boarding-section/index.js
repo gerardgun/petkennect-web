@@ -13,19 +13,19 @@ const Layout = loadable(() => import('@components/Common/Layout'))
 const Menu = loadable(() => import('../components/Menu'))
 const Tab = loadable(() => import('../components/Tab'))
 
-const SetupServicePackageDayServices = ()=>{
+const SetupServicePackageBoarding = ()=>{
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(
-      servicePackageDuck.creators.get({ service_group: 3 })
+      servicePackageDuck.creators.get({ service_group: 2 })
     )
   }, [])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        servicePackageDetailDuck.creators.setItem({ service_group: 3 }, 'CREATE')
+        servicePackageDetailDuck.creators.setItem({ service_group: 2 }, 'CREATE')
       )
   }
 
@@ -57,4 +57,4 @@ const SetupServicePackageDayServices = ()=>{
   )
 }
 
-export default SetupServicePackageDayServices
+export default SetupServicePackageBoarding
