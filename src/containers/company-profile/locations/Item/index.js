@@ -13,6 +13,7 @@ function Item({ item, onUpdate, onDelete }) {
   const _handleDeleteBtnClick = () => {
     onDelete(item)
   }
+  console.log(item)
 
   return (
     <Segment className='location-item'>
@@ -20,15 +21,27 @@ function Item({ item, onUpdate, onDelete }) {
         <Grid.Column  computer={14} mobile={11} tablet={14}>
           <Header as='h3'>
             {item.name}
-            <Header.Subheader style={{ display: 'inline-block', marginLeft: '0.5rem' }}>{item.code}</Header.Subheader>
+          <Header.Subheader style={{ display: 'inline-block', marginLeft: '0.5rem' }}>{item.code}</Header.Subheader>
           </Header>
+          <InputReadOnly
+            label='Street Address'
+            value={item.addresses ? item.addresses[0] : '-'}/>
+          <br/>
+          <InputReadOnly
+            label='City, ST Zip'
+            value={'----------'}/>
+          <br/>
+          <InputReadOnly
+            label='Country'
+            value={'----------'}/>
+          <br/>
           <InputReadOnly
             label='Time Zone'
             value={item.timezone || '-'}/>
           <br/>
           <InputReadOnly
-            label='Address'
-            value={item.addresses ? item.addresses[0] : '-'}/>
+            label='Phone, Fax, Email, Contact Person'
+            value={'----------'}/>
           <br/>
           <InputReadOnly
             label='Description'
