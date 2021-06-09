@@ -12,7 +12,7 @@ const items = [
     to   : '/setup/capacity/service/setting'
   },
   {
-    label: 'Lodging Area Management',
+    label: 'Lodging Capacity',
     to   : '/setup/capacity/boarding/setting'
   }
 ]
@@ -41,6 +41,7 @@ const Menu = () => {
           return (
             <Button
               as={Link}
+              className='w210'
               color={rgx.test(location.pathname) ? 'teal' : null}
               content={label}
               key={index}

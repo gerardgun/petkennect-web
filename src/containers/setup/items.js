@@ -250,24 +250,8 @@ export default [
     image: '/images/admin-item/CapacityRecolored.png',
     items: [
       {
-        name: 'Service Capacity',
-        to  : '/setup'
-      },
-      {
-        name: 'Lodging Areas',
-        to  : '/setup/pet-kennel-area'
-      },
-      {
-        name: 'Appointment Capacity',
+        name: 'Capacity Management',
         to  : '/setup/capacity/appointment/setting'
-      },
-      {
-        name: 'Services Capacity',
-        to  : '/setup/capacity/service/setting'
-      },
-      {
-        name: 'Lodging Area Management',
-        to  : '/setup/capacity/boarding/setting'
       }
     ]
   },

@@ -6,6 +6,10 @@ const items = [
   {
     label: 'General Settings',
     to   : '/setup/add-on/general/setting'
+  },
+  {
+    label: 'Capacity Management',
+    to   : '/setup/capacity/appointment/setting'
   }
 ]
 
@@ -29,6 +33,7 @@ const Menu = () => {
           return (
             <Button
               as={Link}
+              className='w210'
               color={rgx.test(location.pathname) ? 'teal' : null}
               content={label}
               key={index}
