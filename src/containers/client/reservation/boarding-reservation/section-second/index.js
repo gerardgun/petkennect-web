@@ -1,19 +1,16 @@
 import React from 'react'
-
-import {
-  Button,
-  Checkbox,
-  Divider,
-  Grid,
-  Header,
-  Input,
-  Select
-} from 'semantic-ui-react'
-import { PetCard } from '@components/PetCard'
+import { useSelector } from 'react-redux'
 import { Field, formValueSelector } from 'redux-form'
 import FormField from '@components/Common/FormField'
-import SelectPetsSectionForm from '../../components/SelectPetsSectionForm'
-import { useSelector } from 'react-redux'
+import { Button, Checkbox, Divider, Grid, Header, Input, Select } from 'semantic-ui-react'
+
+import { PetCard } from '@components/PetCard'
+import GeneralModal from '@containers/client/reservation/components/addons_modal/generalModal'
+import FeedingModal from '@containers/client/reservation/components/addons_modal/feedingModal'
+import MedicationModal from '@containers/client/reservation/components/addons_modal/medicationModal'
+import GroomingModal from '@containers/client/reservation/components/addons_modal/groomingModal'
+import TransportModal from '@containers/client/reservation/components/addons_modal/transportModal'
+
 import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
 
 const selector = formValueSelector('boarding-form')
@@ -43,9 +40,7 @@ const BoardingSectionSecond = (props) => {
                   </Header>
                 </Grid.Column>
                 <Grid.Column width={2} floated='right'>
-                  <Button color='green' positive>
-                    Edit
-                  </Button>
+                  <GeneralModal/>
                 </Grid.Column>
               </Grid.Row>
 
@@ -58,9 +53,7 @@ const BoardingSectionSecond = (props) => {
                   </Header>
                 </Grid.Column>
                 <Grid.Column width={2} floated='right'>
-                  <Button color='green' positive>
-                    Edit
-                  </Button>
+                  <FeedingModal/>
                 </Grid.Column>
               </Grid.Row>
 
@@ -73,9 +66,7 @@ const BoardingSectionSecond = (props) => {
                   </Header>
                 </Grid.Column>
                 <Grid.Column width={2} floated='right' verticalAlign='middle'>
-                  <Button color='green' positive>
-                    Edit
-                  </Button>
+                  <MedicationModal/>
                 </Grid.Column>
               </Grid.Row>
 
@@ -88,9 +79,7 @@ const BoardingSectionSecond = (props) => {
                   </Header>
                 </Grid.Column>
                 <Grid.Column width={2} floated='right' verticalAlign='middle'>
-                  <Button color='green' positive>
-                    Edit
-                  </Button>
+                  <GroomingModal/>
                 </Grid.Column>
               </Grid.Row>
 
@@ -103,9 +92,7 @@ const BoardingSectionSecond = (props) => {
                   </Header>
                 </Grid.Column>
                 <Grid.Column width={2} floated='right' verticalAlign='middle'>
-                  <Button color='green' positive>
-                    Edit
-                  </Button>
+                  <TransportModal/>
                 </Grid.Column>
               </Grid.Row>
 
