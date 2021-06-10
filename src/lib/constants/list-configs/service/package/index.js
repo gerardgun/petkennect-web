@@ -1,6 +1,5 @@
 import React from 'react'
 import { Checkbox } from 'semantic-ui-react'
-import _truncate from 'lodash/truncate'
 
 export default {
   actions: [
@@ -20,12 +19,12 @@ export default {
     {
       display_name: 'Service Type',
       name        : 'applies_service_type',
-      type        : 'string'
+      formatter   : cell => cell.name
     },
     {
       display_name: 'Locations',
       name        : 'applies_locations',
-      formatter   : cell => _truncate(cell, { length: 35 })
+      formatter   : cell => cell.map(({ name }) => name).join(', ')
     },
     {
       display_name: 'Price',

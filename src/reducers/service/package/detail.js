@@ -14,12 +14,14 @@ export default base({
 })
   .extend(detail)
   .extend({
-    types   : [ 'CREATE_GET_SERVICE_TYPES' ],
+    types   : [ 'CREATE_GET_SERVICE_TYPES', 'CREATE_GET_LOCATIONS' ],
     creators: ({
       types: {
-        CREATE_GET_SERVICE_TYPES
+        CREATE_GET_SERVICE_TYPES,
+        CREATE_GET_LOCATIONS
       }
     }) => ({
-      createGetServiceTypes: (payload = {}) => ({ type: CREATE_GET_SERVICE_TYPES, payload })
+      createGetServiceTypes: (payload = {}) => ({ type: CREATE_GET_SERVICE_TYPES, payload }),
+      createGetLocations   : (payload = {}) => ({ type: CREATE_GET_LOCATIONS, payload })
     })
   })

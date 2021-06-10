@@ -32,11 +32,13 @@ const TopBar = ({ config, duck, ...props }) => {
 
   // improve
   const { _handleChangeText: _handleSearchInputChange } = useDebounceText(str => {
-    dispatch(
-      duck.creators.get({
-        search: str
-      })
-    )
+    if(props.onSearch) props.onSearch(str)
+    else
+      dispatch(
+        duck.creators.get({
+          search: str
+        })
+      )
   })
   // improve
 
