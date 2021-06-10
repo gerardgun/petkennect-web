@@ -1,7 +1,7 @@
 import produce from 'immer'
 import _get from 'lodash/get'
 
-const params2filters = params => {
+const params2filters = (params = {}) => {
   const validParamKeys = Object.keys(params)
     .filter(key => !([ 'page_size', 'page' ].includes(key)))
 

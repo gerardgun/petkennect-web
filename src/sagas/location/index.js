@@ -7,11 +7,10 @@ import locationDuck from '@reducers/location'
 
 const { types } = locationDuck
 
-export function* get(/* { payload } */) {
+export function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    // const filters = yield select(selectors.filters)
     const locations = yield call(Get, '/locations/')
 
     yield put({
