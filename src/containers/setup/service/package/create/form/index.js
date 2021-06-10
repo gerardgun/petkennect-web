@@ -32,8 +32,8 @@ const ServicePackageForm = (props) => {
   let timeout = null
   const dispatch = useDispatch()
   const detail = useSelector(servicePackageDetailDuck.selectors.detail)
-  const { applied_service_type, service_group = null } = useSelector((state) =>
-    selector(state, 'service_group', 'applied_service_type')
+  const { applies_service_type, service_group = null, applies_locations = [] } = useSelector((state) =>
+    selector(state, 'service_group', 'applies_service_type', 'applies_locations')
   )
 
   useEffect(() => {
@@ -42,15 +42,12 @@ const ServicePackageForm = (props) => {
   }, [])
 
   useEffect(() => {
-    console.log(applied_service_type, service_group)
-  }, [ service_group, applied_service_type ])
-
-  useEffect(() => {
     if(editing)
       initialize({
         ...detail.item,
-        applied_locations        : detail.item.applied_locations.map(({ id }) => id),
-        applied_reservation_types: detail.item.applied_reservation_types.map(
+        applies_service_type     : detail.item.applies_service_type.id,
+        applies_locations        : detail.item.applies_locations.map(({ id }) => id),
+        applies_reservation_types: detail.item.applies_reservation_types.map(
           ({ id }) => id
         )
       })
@@ -94,6 +91,14 @@ const ServicePackageForm = (props) => {
     }
   }
 
+  const _handleGetLocations = (value) => {
+    dispatch(
+      servicePackageDetailDuck.creators.createGetLocations({
+        service_id: value
+      })
+    )
+  }
+
   const editing = Boolean(detail.item.id)
 
   return (
@@ -125,7 +130,8 @@ const ServicePackageForm = (props) => {
           component={FormField}
           control={Select}
           label='Service Type'
-          name='applied_service_type'
+          name='applies_service_type'
+          onChange={_handleGetLocations}
           onKeyUp={_handleGetServices}
           options={detail.form.service_type_options}
           placeholder='Select Service'
@@ -137,9 +143,10 @@ const ServicePackageForm = (props) => {
         <Field
           component={FormField}
           control={Select}
+          disabled={!applies_service_type}
           label='Locations'
           multiple
-          name='applied_locations'
+          name='applies_locations'
           options={detail.form.location_options}
           placeholder='Select Locations (All is Default)'
           required
@@ -150,9 +157,10 @@ const ServicePackageForm = (props) => {
         <Field
           component={FormField}
           control={Select}
+          disabled={!(applies_locations.length > 0)}
           label='Reservation Types'
           multiple
-          name='applied_reservation_types'
+          name='applies_reservation_types'
           options={detail.form.reservation_type_options}
           placeholder='Select Reservation Types (All is Default)'
           required
@@ -168,6 +176,7 @@ const ServicePackageForm = (props) => {
           name='price'
           placeholder='Price'
           required
+          step='0.01'
           type='number'/>
         <Field
           component={FormField}
@@ -335,6 +344,18 @@ export default reduxForm({
   form    : 'service-package',
   validate: (values) => {
     const schema = {
+      name                : Yup.string().required('Price is required'),
+      applies_service_type: Yup.string().required('Service Type is required'),
+      applies_locations   : Yup.array().required('Choose at least one service type'),
+      // applies_reservation_types: Yup.array().required('Choose at least one reservation type'),
+      price               : Yup.number().required('Price is required'),
+      credits             : Yup.number().required('Credits is required'),
+      started_at          : Yup.mixed().when('days_valid', {
+        is       : value => !!value,
+        then     : Yup.string().required('Start Date is required'),
+        otherwise: Yup.mixed()
+      })
+
     }
 
     return syncValidate(Yup.object().shape(schema), values)

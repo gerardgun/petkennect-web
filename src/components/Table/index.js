@@ -31,7 +31,8 @@ const TableList = ({ childProps, config, duck, ...props }) => {
             config={finalConfig}
             duck={duck}
             onActionClick={props.onActionClick}
-            onOptionClick={props.onOptionClick}/>
+            onOptionClick={props.onOptionClick}
+            onSearch={props.onSearch}/>
         )
       }
 
@@ -82,6 +83,7 @@ TableList.defaultProps = {
   // Event handlers
   onActionClick: () => {},
   onOptionClick: () => {},
+  onSearch     : null,
   ...commonDefaultProps
 }
 
