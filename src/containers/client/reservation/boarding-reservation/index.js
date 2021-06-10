@@ -6,6 +6,7 @@ import { Form, Grid, Icon, Step } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
 import BoardingSectionFirst from './section-first'
+import BoardingSectionSecond from './section-second'
 import { useParams } from 'react-router-dom'
 
 const BoardingReservationForm = (props) => {
@@ -45,19 +46,19 @@ const BoardingReservationForm = (props) => {
         <Grid.Column  only='large screen' width={2}/>
         <Grid.Column largeScreen={12} widescreen={16}>
           <Step.Group>
-            <Step completed={step > 1}>
+            <Step completed={step > 1} active={step === 1} onClick={() => setStep(1)} >
               <Icon name='check circle outline'/>
               <Step.Content>
                 <Step.Title>Service Information</Step.Title>
               </Step.Content>
             </Step>
-            <Step completed={step > 2}>
+            <Step completed={step > 2} active={step === 2} onClick={() => setStep(2)} >
               <Icon name='check circle outline'/>
               <Step.Content>
                 <Step.Title>Additional Services</Step.Title>
               </Step.Content>
             </Step>
-            <Step completed={step > 3}>
+            <Step completed={step > 3} active={step === 3} onClick={() => setStep(3)} >
               <Icon name='check circle outline'/>
               <Step.Content>
                 <Step.Title>Summary</Step.Title>
@@ -68,10 +69,11 @@ const BoardingReservationForm = (props) => {
         <Grid.Column  only='large screen' width={2}/>
       </Grid.Row>
       {/* eslint-disable-next-line react/jsx-handler-names*/}
-      <Form id='boarding-form' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+      <Form id='boarding-form' className='w100' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
         {step === 1 && (
           <BoardingSectionFirst {...props}/>
         )}
+        {step === 2 && <BoardingSectionSecond />}
       </Form>
     </Grid>
 
