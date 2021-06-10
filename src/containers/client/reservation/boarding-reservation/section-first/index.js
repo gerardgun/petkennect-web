@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import {
   Button,
@@ -9,12 +9,20 @@ import {
   Input,
   Select
 } from 'semantic-ui-react'
-import { PetCardSelect, PetCard } from '@components/PetCard'
-import { Field } from 'redux-form'
+import { PetCard } from '@components/PetCard'
+import { Field, formValueSelector } from 'redux-form'
 import FormField from '@components/Common/FormField'
+import SelectPetsSectionForm from '../../components/SelectPetsSectionForm'
+import { useSelector } from 'react-redux'
+import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
 
-const BoardingSectionFirst = () => {
-  const [ petReservation, setPetReservation ] = useState([])
+const selector = formValueSelector('boarding-form')
+const BoardingSectionFirst = (props) => {
+  const detail = useSelector(boardingReservationBookDetailDuck.selectors.detail)
+
+  const pets = useSelector((state) =>
+    selector(state, 'pets')
+  )
 
   return (
     <Grid className='mb40' columns='equal' id='boarding-container'>
@@ -76,39 +84,18 @@ const BoardingSectionFirst = () => {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={13}>
-                <PetCardSelect
-                  image_url='/images/pets_img/dog_1.jpg'
-                  name='Boots, 45lbs'
-                  setState={setPetReservation}
-                  state={petReservation}/>
-                <PetCardSelect
-                  image_url='/images/pets_img/dog_2.jpg'
-                  name='Fizz, 17lbs'
-                  setState={setPetReservation}
-                  state={petReservation}/>
-                <PetCardSelect
-                  image_url='/images/pets_img/dog_3.jpg'
-                  name='Sylas, 60lbs'
-                  setState={setPetReservation}
-                  state={petReservation}/>
-                <PetCardSelect
-                  image_url='/images/pets_img/dog_4.jpg'
-                  name='Jinx, 34lbs'
-                  setState={setPetReservation}
-                  state={petReservation}/>
+                <SelectPetsSectionForm {...props}/>
               </Grid.Column>
               <Grid.Column width={3}>
                 <Header as='h4' className='select-label underline'>
                     On Reservation
                 </Header>
-                {petReservation.length !== 0
-                    && petReservation.map((pet, index) => {
-                      return (
-                        <Header as='p' key={index}>
-                          {pet}
-                        </Header>
-                      )
-                    })}
+                {pets && pets.map((pet, index) => {
+                  return (
+                    <Header as='p' key={index}>
+                      {detail.form.pet_options.find(({ id }) => id === pet).name}
+                    </Header>
+                  )})}
               </Grid.Column>
             </Grid.Row>
           </Grid>

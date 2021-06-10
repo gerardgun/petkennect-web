@@ -15,7 +15,6 @@ function* create() {
     const detail = yield select(selectors.detail)
     let serviceOptions = []
     let locationOptions = []
-    console.log(detail.item)
     if(detail.item.id) {
       // get services types of package
       const { results } = yield call(Get, 'services/', {

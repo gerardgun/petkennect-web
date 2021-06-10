@@ -52,7 +52,7 @@ import customizedFieldDetail from '@reducers/customized-field/field/detail'
 import customizedFieldGroup from '@reducers/customized-field/group'
 import customizedFieldGroupDetail from '@reducers/customized-field/group/detail'
 
-// import boardingReservationBookDetail from '@reducers/client/reservation/boarding-reservation-book/detail'
+import boardingReservationBookDetail from '@reducers/client/reservation/boarding-reservation-book/detail'
 
 import dashboard from '@reducers/dashboard'
 import dashboardDetail from '@reducers/dashboard/detail'
@@ -351,7 +351,7 @@ const createRootReducer = history => combineReducers({
   [boardingPrepaidUsage.store]                             : boardingPrepaidUsage.reducer,
   [boardingReservationUsage.store]                         : boardingReservationUsage.reducer,
   [dashboard.store]                                        : dashboard.reducer,
-  //  [boardingReservationBookDetail.store]                    : boardingReservationBookDetail.reducer,
+  [boardingReservationBookDetail.store]                    : boardingReservationBookDetail.reducer,
   [dashboardDetail.store]                                  : dashboardDetail.reducer,
   [dashboardModal.store]                                   : dashboardModal.reducer,
   [dashboardModalDetail.store]                             : dashboardModalDetail.reducer,

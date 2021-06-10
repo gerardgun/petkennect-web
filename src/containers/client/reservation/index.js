@@ -28,7 +28,7 @@ import authDuck from '@reducers/auth'
 import locationDuck from '@reducers/location'
 import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
-import BoardingReservationForm from './boardin-reservation'
+import BoardingReservationForm from './boarding-reservation'
 import './styles.scss'
 
 function Reservation({
@@ -189,7 +189,7 @@ function Reservation({
               </div>
             </div>
 
-            {activeReservationItem === 'B' && <BoardingReservationForm/>}
+            {activeReservationItem === 'B' && <BoardingReservationForm comesFromPetScreen/>}
 
             {/*
               {activeReservationItem === 'D' && (
