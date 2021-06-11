@@ -33,11 +33,11 @@ const SelectPetsSectionForm = (props) => {
                   centered
                   circular
                   className='pet-avatar'
-                  src={pet.image_url}/>
+                  src={pet.image_filepath}/>
               </Grid.Column>
               <Grid.Column width={10}>
                 <Header as='p' className='m0'>{pet.name}</Header>
-                <Header as='p' className='m0 fw400 f16'>Mixed Breed</Header>
+                <Header as='p' className='m0 fw400 f16'>{pet.breed_name}</Header>
                 <Grid className='flex flex-row m0'>
                   <Icon className='p0 f16' color='teal' name='medkit'/>
                   <Icon className='p0 f16' color='blue' name='mars'/>
@@ -61,7 +61,7 @@ const SelectPetsSectionForm = (props) => {
             </Grid>
           </Grid.Column>
           <Grid.Column textAlign='center' verticalAlign='middle' width={9}>
-            {pets.includes(pet.id) ? (
+            {pets && pets.includes(pet.id) ? (
               <Grid className='flex flex-row align-center justify-center'>
                 <Header as='h4' className='m0' color='blue'>ADDED</Header>
                 <Button

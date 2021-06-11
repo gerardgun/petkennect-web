@@ -8,7 +8,8 @@ import {
   Button,
   Icon,
   Segment,
-  Breadcrumb
+  Breadcrumb,
+  Image
 } from 'semantic-ui-react'
 
 import Layout from '@components/Common/Layout'
@@ -16,7 +17,7 @@ import Layout from '@components/Common/Layout'
 import ViewNoteSection from '../../online-request/notesSection/'
 
 import clientDetailDuck from '@reducers/client/detail'
-import clientPetDuck from '@reducers/client/pet'
+import clientPetDetailDuck from '@reducers/pet/detail'
 import petNoteDetailDuck from '@reducers/pet/note/detail'
 import employeeDuck from '@reducers/employee'
 import employeeDetailDuck from '@reducers/employee/detail'
@@ -31,21 +32,16 @@ import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import BoardingReservationForm from './boarding-reservation'
 import './styles.scss'
 
-function Reservation({
+const Reservation = ({
   petReservationDetail,
   currentTenant,
   clientDetail,
-  clientPet,
+  petDetail,
   ...props
-}) {
+}) => {
   const history = useHistory()
-  const { client: client } = useParams()
+  const { client } = useParams()
   const { pet: pet } = useParams()
-  let clientId
-  const comesFromPetScreen = useMemo(() => Boolean(history.location.state), [])
-
-  if(comesFromPetScreen) clientId = history.location.state.clientid
-  else clientId = client
   const [ activeReservationItem, setActiveReservationItem ] = useState(
     petReservationDetail.item.service
       || petReservationDetail.item.service_type
@@ -55,24 +51,22 @@ function Reservation({
   useEffect(() => {
     if(currentTenant && currentTenant.employee)
       props.getEmployee(currentTenant.employee.id)
-    props.getClient(clientId)
-    props.getLocations()
-    props.getClientPets({ client__id: clientId })
-    props.getServices()
-    props.getServiceAttributes()
-    props.getPetKennelType()
-    props.getEmployees()
-    props.getTrainingMethod()
-    props.getTrainingReason()
+    if(client) props.getClient(client)
+    // props.getLocations()
+    if(pet) props.getPet({ id: pet })
+    // props.getServices()
+    // props.getServiceAttributes()
+    // props.getPetKennelType()
+    // props.getEmployees()
+    // props.getTrainingMethod()
+    // props.getTrainingReason()
   }, [])
-  let petInfo
   const fullname = `${clientDetail.item.first_name || ''} ${
     clientDetail.item.last_name || ''
   }`
 
-  petInfo
-    = comesFromPetScreen && clientPet.items.find((_item) => _item.id == pet)
-  const petFullName = petInfo != undefined ? petInfo.name : ''
+  const petFullName = pet && petDetail.item.id ? petDetail.item.name : ''
+
   const _handleReservationTypeClick = (type) => () => {
     props.resetReserveItem()
     if(!isUpdating) setActiveReservationItem(type)
@@ -96,20 +90,20 @@ function Reservation({
           <Grid.Column width={16}>
             <Breadcrumb>
               <Breadcrumb.Section>
-                {comesFromPetScreen ? (
+                {pet ? (
                   <Link to='/pet'>Pets</Link>
                 ) : (
                   <Link to='/client'>Clients</Link>
                 )}
               </Breadcrumb.Section>
               <Breadcrumb.Divider/>
-              {comesFromPetScreen ? (
+              {pet ? (
                 <Breadcrumb.Section active>
                   <Link to={`/pet/${pet}`}> {petFullName} </Link>
                 </Breadcrumb.Section>
               ) : (
                 <Breadcrumb.Section active>
-                  <Link to={`/client/${clientId}`}> {fullname} </Link>
+                  <Link to={`/client/${client}`}> {fullname} </Link>
                 </Breadcrumb.Section>
               )}
 
@@ -146,50 +140,46 @@ function Reservation({
             )}
 
             <Header as='h3'>What is the Service?</Header>
-            <div className='mv32 btn-service-type'>
-              <div
-                className={`button-service ${
+            <Grid className='mv32 flex justify-around'>
+              <Grid.Column
+                className={`flex flex-row align-center button-service-group p2 ${
                   activeReservationItem === 'B' && 'selected'
                 }`}
-                onClick={_handleReservationTypeClick('B')}>
-                <div className='image_container'>
-                  <img src='/images/boarding.png'/>
-                </div>
-                <span>BOARDING</span>
-              </div>
-              <div
-                className={`button-service ${
+                onClick={_handleReservationTypeClick('B')}
+                width={3}>
+                <Image src='/images/boarding.png'/>
+                <Header as='span' className='m0 f14 ml12' color='grey'>BOARDING</Header>
+              </Grid.Column>
+              <Grid.Column
+                className={`flex flex-row align-center button-service-group p2 ${
                   activeReservationItem === 'F' && 'selected'
                 }`}
-                onClick={_handleReservationTypeClick('F')}>
-                <div className='image_container'>
-                  <img src='/images/dayServices.png'/>
-                </div>
-                <span>DAY SERVICES</span>
-              </div>
-              <div
-                className={`button-service ${
+                onClick={_handleReservationTypeClick('F')}
+                width={3}>
+                <Image src='/images/dayServices.png'/>
+                <Header as='span' className='m0 f14 ml12' color='grey'>DAY SERVICES</Header>
+              </Grid.Column>
+              <Grid.Column
+                className={`flex flex-row align-center button-service-group p2 ${
                   activeReservationItem === 'T' && 'selected'
                 }`}
-                onClick={_handleReservationTypeClick('T')}>
-                <div className='image_container'>
-                  <img src='/images/DogTraining.jpg'/>
-                </div>
-                <span>TRAINING</span>
-              </div>
-              <div
-                className={`button-service ${
+                onClick={_handleReservationTypeClick('T')}
+                width={3}>
+                <Image src='/images/DogTraining.jpg'/>
+                <Header as='span' className='m0 f14 ml12' color='grey'>TRAINING</Header>
+              </Grid.Column>
+              <Grid.Column
+                className={`flex flex-row align-center button-service-group p2 ${
                   activeReservationItem === 'G' && 'selected'
                 }`}
-                onClick={_handleReservationTypeClick('G')}>
-                <div className='image_container'>
-                  <img src='/images/grooming.png'/>
-                </div>
-                <span>GROOMING</span>
-              </div>
-            </div>
+                onClick={_handleReservationTypeClick('G')}
+                width={3}>
+                <Image src='/images/grooming.png'/>
+                <Header as='span' className='m0 f14 ml12' color='grey'>GROOMING</Header>
+              </Grid.Column>
+            </Grid>
 
-            {activeReservationItem === 'B' && <BoardingReservationForm comesFromPetScreen/>}
+            {activeReservationItem === 'B' && <BoardingReservationForm/>}
 
             {/*
               {activeReservationItem === 'D' && (
@@ -238,7 +228,7 @@ export default compose(
         trainingReason,
         currentTenant: authDuck.selectors.getCurrentTenant(auth),
         clientDetail : clientDetailDuck.selectors.detail(state),
-        clientPet    : clientPetDuck.selectors.list(state),
+        petDetail    : clientPetDetailDuck.selectors.detail(state),
         location     : locationDuck.selectors.list(state)
       }
     },
@@ -246,7 +236,7 @@ export default compose(
       getEmployee         : employeeDetailDuck.creators.get,
       getEmployees        : employeeDuck.creators.get,
       getClient           : clientDetailDuck.creators.get,
-      getClientPets       : clientPetDuck.creators.get,
+      getPet              : clientPetDetailDuck.creators.get,
       getServices         : serviceDuck.creators.get,
       getServiceAttributes: serviceAttributeDuck.creators.get,
       getLocations        : locationDuck.creators.get,

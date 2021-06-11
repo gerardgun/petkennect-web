@@ -9,6 +9,7 @@ import servicePackageDetailDuck from '@reducers/service/package/detail'
 import servicePackageListConfig from '@lib/constants/list-configs/service/package'
 import ServicePackageFormModal from '../create/form/modal'
 import { parseResponseError } from '@lib/utils/functions'
+import serviceGroups from '@lib/constants/serviceGroups'
 
 const Layout = loadable(() => import('@components/Common/Layout'))
 const Menu = loadable(() => import('../components/Menu'))
@@ -19,14 +20,14 @@ const SetupServicePackageTraining = ()=>{
 
   useEffect(() => {
     dispatch(
-      servicePackageDuck.creators.get({ service_group: 5 })
+      servicePackageDuck.creators.get({ service_group: serviceGroups.TRAINING })
     )
   }, [])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        servicePackageDetailDuck.creators.setItem({ service_group: 5 }, 'CREATE')
+        servicePackageDetailDuck.creators.setItem({ service_group: serviceGroups.TRAINING }, 'CREATE')
       )
   }
 

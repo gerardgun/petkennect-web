@@ -206,7 +206,7 @@ import SetupTrainingGeneralReservationIndex from '@containers/setup/training/gen
 import SetupTrainingGeneralServiceTypeIndex from '@containers/setup/training/general/service-type-section'
 import SettingsTrainingIndex from '@containers/settings/training'
 
-//Settings Company
+// Settings Company
 import SetupCompanyProfile from '@containers/company-profile'
 import SetupCompanyProfileContactBilling from '@containers/company-profile/contact-billing'
 import SetupCompanyProfileCalendar from '@containers/company-profile/calendar'
@@ -765,7 +765,7 @@ const privateRoutes = [
     path     : '/setup/settings/training',
     component: SettingsTrainingIndex
   },
-  ///////////
+  // /////////
   {
     path     : '/setup/training/method',
     component: SetupTrainingMethodIndex
@@ -970,7 +970,7 @@ const privateRoutes = [
   {
     path     : '/setup/company-profile/accounting',
     component: SetupCompanyProfileAccounting
-  },
+  }
 ]
 
 const routes = [

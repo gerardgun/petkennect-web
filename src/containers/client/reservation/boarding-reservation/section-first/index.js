@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import {
-  Button,
   Checkbox,
   Divider,
   Grid,
@@ -13,25 +12,43 @@ import { PetCard } from '@components/PetCard'
 import { Field, formValueSelector } from 'redux-form'
 import FormField from '@components/Common/FormField'
 import SelectPetsSectionForm from '../../components/SelectPetsSectionForm'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
+import serviceGroups from '@lib/constants/serviceGroups'
 
 const selector = formValueSelector('boarding-form')
 const BoardingSectionFirst = (props) => {
-  const detail = useSelector(boardingReservationBookDetailDuck.selectors.detail)
-
-  const pets = useSelector((state) =>
-    selector(state, 'pets')
+  const { change } = props
+  const dispatch = useDispatch()
+  const detail = useSelector(
+    boardingReservationBookDetailDuck.selectors.detail
   )
+  const { pets = [], applies_service_type = null, applies_location } = useSelector((state) => selector(state, 'pets', 'applies_service_type', 'applies_location'))
+
+  const _handleGetServiceTypes = (value) => {
+    dispatch(
+      boardingReservationBookDetailDuck.creators.createGetServiceTypesByLocation(
+        { location: value, service_group: serviceGroups.BOARDING }
+      )
+    )
+  }
+
+  useEffect(() => {
+    if(applies_service_type)
+      if(!detail.form.service_options.map(({ value }) => value).includes(applies_service_type))
+        change('applies_service_type','')
+
+    return () => {}
+  }, [ detail.form.service_options ])
 
   return (
-    <Grid className='mb40' columns='equal' id='boarding-container'>
+    <Grid columns='equal' id='boarding-container'>
       <Grid.Column only='large screen'></Grid.Column>
       <Grid.Column largeScreen={12} widescreen={16}>
         {/* First Section Location */}
         <Grid className='mt40'>
           <Header as='h1' color='teal'>
-              Select Location, Service Type, and Pets
+            Select Location, Service Type, and Pets
           </Header>
           <Grid className='pl40'>
             <Grid.Row>
@@ -40,7 +57,7 @@ const BoardingSectionFirst = (props) => {
               </Grid.Column>
               <Grid.Column width={10}>
                 <Header className='select-label'>
-                    Devika Christie | 314-7572054
+                  Devika Christie | 314-7572054
                 </Header>
               </Grid.Column>
             </Grid.Row>
@@ -52,11 +69,9 @@ const BoardingSectionFirst = (props) => {
                 <Field
                   component={FormField}
                   control={Select}
-                  name='applies_locations'
-                  options={[
-                    { text: 'Location one', value: 1 },
-                    { text: 'Locatoon two', value: 2 }
-                  ]}
+                  name='applies_location'
+                  onChange={_handleGetServiceTypes}
+                  options={detail.form.location_options}
                   placeholder='Select Location'
                   required
                   search
@@ -71,11 +86,9 @@ const BoardingSectionFirst = (props) => {
                 <Field
                   component={FormField}
                   control={Select}
+                  disabled={!applies_location}
                   name='applies_service_type'
-                  options={[
-                    { text: 'Service Type one', value: 1 },
-                    { text: 'Service Type two', value: 2 }
-                  ]}
+                  options={detail.form.service_options}
                   placeholder='Select Service Type'
                   required
                   search
@@ -88,14 +101,19 @@ const BoardingSectionFirst = (props) => {
               </Grid.Column>
               <Grid.Column width={3}>
                 <Header as='h4' className='select-label underline'>
-                    On Reservation
+                  On Reservation
                 </Header>
-                {pets && pets.map((pet, index) => {
-                  return (
-                    <Header as='p' key={index}>
-                      {detail.form.pet_options.find(({ id }) => id === pet).name}
-                    </Header>
-                  )})}
+                {pets
+                  && pets.map((pet, index) => {
+                    return (
+                      <Header as='p' key={index}>
+                        {
+                          detail.form.pet_options.find(({ id }) => id === pet)
+                            .name
+                        }
+                      </Header>
+                    )
+                  })}
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -104,7 +122,7 @@ const BoardingSectionFirst = (props) => {
         {/* Second Section Dates */}
         <Grid className='mt40'>
           <Header as='h1' color='teal'>
-              Select Dates
+            Select Dates
           </Header>
           <Grid className='pl40'>
             <Grid.Row verticalAlign='middle'>
@@ -113,7 +131,7 @@ const BoardingSectionFirst = (props) => {
                 largeScreen={8}
                 tablet={16}>
                 <Header as='h4' className='m0 w30'>
-                    Arriving&nbsp;
+                  Arriving&nbsp;
                 </Header>
                 <Field
                   className='m0'
@@ -123,7 +141,7 @@ const BoardingSectionFirst = (props) => {
                   required
                   type='date'/>
                 <Header as='h4' className='m0'>
-                    &nbsp;at&nbsp;
+                  &nbsp;at&nbsp;
                 </Header>
                 <Field
                   className='m0'
@@ -160,7 +178,7 @@ const BoardingSectionFirst = (props) => {
                 largeScreen={8}
                 tablet={16}>
                 <Header as='h4' className='m0 w30'>
-                    Departing&nbsp;
+                  Departing&nbsp;
                 </Header>
                 <Field
                   className='m0'
@@ -170,7 +188,7 @@ const BoardingSectionFirst = (props) => {
                   required
                   type='date'/>
                 <Header as='h4' className='m0'>
-                    &nbsp;at&nbsp;
+                  &nbsp;at&nbsp;
                 </Header>
                 <Field
                   className='m0'
@@ -197,7 +215,7 @@ const BoardingSectionFirst = (props) => {
         {/* Third Section Dates */}
         <Grid className='mt40'>
           <Header as='h1' color='teal'>
-              Select Reservation Type and Activity{' '}
+            Select Reservation Type and Activity{' '}
             <span className='required-indicator'>Required</span>
           </Header>
           <Grid className='pl40'>
@@ -340,18 +358,6 @@ const BoardingSectionFirst = (props) => {
             </div>
           </div>
           */}
-        <Grid className='flex flex-row justify-end'>
-          <Button color='green'>
-              QUICK BOOK:
-            <br/>
-              NO OTHER SERVICES
-          </Button>
-          <Button color='teal'>
-              CONTINUE:
-            <br/>
-              ADD OTHER SERVICES
-          </Button>
-        </Grid>
       </Grid.Column>
       <Grid.Column only='large screen'></Grid.Column>
     </Grid>

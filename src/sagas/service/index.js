@@ -11,8 +11,10 @@ import serviceDuck from '@reducers/service'
 
 const { selectors, types } = serviceDuck
 
-export function* get() {
+export function* get({ payload }) {
   try {
+    yield put({ type: types.SET_FILTERS, payload })
+
     yield put({ type: types.GET_PENDING })
 
     // Load related entities
