@@ -1,6 +1,10 @@
-#pets-section{
+.pet-avatar{
+  height: 75px;
+  width: 75px;
+}
+@media (max-width: 1200px) {
   .pet-avatar{
-    height: 75px;
-    width: 75px;
+    height: 65px;
+    width: 65px;
   }
 }
