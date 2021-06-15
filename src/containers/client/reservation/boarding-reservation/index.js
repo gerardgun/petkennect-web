@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Grid, Icon, Step } from 'semantic-ui-react'
-import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
-import BoardingSectionFirst from './section-first'
 import { useParams } from 'react-router-dom'
+import { Grid, Icon, Step } from 'semantic-ui-react'
+
+// Custom components and libs (alphabetically order)
+import BoardingSectionFirst from './section-first'
 import serviceGroups from '@lib/constants/serviceGroups'
+
+// Duck reducers (alphabetically order)
+import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
+
 import '../styles.scss'
 
 const BoardingReservationForm = () => {
   const dispatch = useDispatch()
   const [ step, setStep ] = useState(1)
-  const { client = null } = useParams()
-  const { pet = null } = useParams()
+  const { client = null, pet = null } = useParams()
 
   const _handleNextStep = () => {
     setStep(step + 1)
@@ -63,17 +67,13 @@ const BoardingReservationForm = () => {
         </Grid.Column>
         <Grid.Column only='large screen' width={2}/>
       </Grid.Row>
-      {step === 1 && <BoardingSectionFirst onSubmit={_handleNextStep}/>}
+
+      {
+        step === 1 && <BoardingSectionFirst onSubmit={_handleNextStep}/>
+      }
 
     </Grid>
   )
-}
-
-const commonDefaultProps = {}
-
-BoardingReservationForm.defaultProps = {
-  childProps: commonDefaultProps,
-  ...commonDefaultProps
 }
 
 export default BoardingReservationForm

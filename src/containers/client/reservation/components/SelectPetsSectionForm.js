@@ -6,6 +6,7 @@ import './styles.scss'
 import { formValueSelector, arrayPush } from 'redux-form'
 
 const selector = formValueSelector('boarding-form')
+
 const SelectPetsSectionForm = (props) => {
   const { change } = props
   const dispatch = useDispatch()
