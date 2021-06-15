@@ -79,7 +79,7 @@ const SelectPetsSectionForm = (props) => {
                 color='green'
                 content='SELECT'
                 // eslint-disable-next-line react/jsx-handler-names
-                onClick={() => _handleAddPet(pet.id)}
+                onClick={() => _handleAddPet(pet)}
                 type='button'/>
             )}
           </Grid.Column>

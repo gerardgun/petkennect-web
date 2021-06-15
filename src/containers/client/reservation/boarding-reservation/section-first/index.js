@@ -93,7 +93,7 @@ const BoardingSectionFirst = (props) => {
                 {pets && pets.map((pet, index) => {
                   return (
                     <Header as='p' key={index}>
-                      {detail.form.pet_options.find(({ id }) => id === pet).name}
+                      {detail.form.pet_options.find(({ id }) => id === pet.id).name}
                     </Header>
                   )})}
               </Grid.Column>
