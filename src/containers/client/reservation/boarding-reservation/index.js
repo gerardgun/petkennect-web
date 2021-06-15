@@ -17,7 +17,8 @@ const BoardingReservationForm = () => {
   const [ step, setStep ] = useState(1)
   const { client = null, pet = null } = useParams()
 
-  const _handleNextStep = () => {
+  const _handleNextStep = (values) => {
+    console.log(values)
     setStep(step + 1)
   }
 

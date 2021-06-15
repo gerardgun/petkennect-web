@@ -6,20 +6,23 @@ export default base({
   store       : 'client/reservation/boarding/detail',
   initialState: {
     form: {
-      pet_options     : [],
-      location_options: [],
-      service_options : []
+      pet_options             : [],
+      location_options        : [],
+      service_options         : [],
+      reservation_type_options: []
     }
   }
 })
   .extend(detail)
   .extend({
-    types   : [ 'CREATE_GET_SERVICES_TYPES_BY_LOCATION' ],
+    types   : [ 'CREATE_GET_SERVICES_TYPES_BY_LOCATION', 'CREATE_GET_RESERVATION_TYPES_BY_SERVICE' ],
     creators: ({
       types: {
-        CREATE_GET_SERVICES_TYPES_BY_LOCATION
+        CREATE_GET_SERVICES_TYPES_BY_LOCATION,
+        CREATE_GET_RESERVATION_TYPES_BY_SERVICE
       }
     }) => ({
-      createGetServiceTypesByLocation: (payload = {}) => ({ type: CREATE_GET_SERVICES_TYPES_BY_LOCATION, payload })
+      createGetServiceTypesByLocation   : (payload = {}) => ({ type: CREATE_GET_SERVICES_TYPES_BY_LOCATION, payload }),
+      createGetReservationTypesByService: (payload = {}) => ({ type: CREATE_GET_RESERVATION_TYPES_BY_SERVICE, payload })
     })
   })

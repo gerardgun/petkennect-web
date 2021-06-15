@@ -9,6 +9,8 @@ import * as locationSaga from '@sagas/location'
 import locationDuck from '@reducers/location'
 import * as serviceSaga from '@sagas/service'
 import serviceDuck from '@reducers/service'
+import * as variationSaga from '@sagas/service/variation'
+import variationDuck from '@reducers/service/variation'
 
 const { types, selectors } = boardingReservationDetailDuck
 
@@ -83,10 +85,40 @@ function* createGetServiceTypesByLocation({ payload }) {
   })
 }
 
+function* createGetReservationTypesByService({ payload }) {
+  yield put({ type: types.GET_PENDING })
+
+  const detail = yield select(selectors.detail)
+  yield* variationSaga.get({
+    payload: {
+      service  : payload.service_id,
+      type     : 'A,R',
+      page_size: 100
+    }
+  })
+  const variationList = yield select(variationDuck.selectors.list)
+
+  yield put({
+    payload: {
+      form: {
+        ...detail.form,
+        service_options: variationList.items.map((service) => {
+          return { text: service.name, value: service.id }
+        })
+      }
+    },
+    type: types.GET_FULFILLED
+  })
+}
+
 export default [
   takeEvery(types.CREATE, create),
   takeEvery(
     types.CREATE_GET_SERVICES_TYPES_BY_LOCATION,
     createGetServiceTypesByLocation
+  ),
+  takeEvery(
+    types.CREATE_GET_RESERVATION_TYPES_BY_SERVICE,
+    createGetReservationTypesByService
   )
 ]

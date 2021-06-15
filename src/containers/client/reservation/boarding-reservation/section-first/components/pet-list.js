@@ -1,24 +1,22 @@
 import React from 'react'
-import { Field } from 'redux-form'
+import { Field, formValueSelector } from 'redux-form'
 import { Divider, Grid, Header, Icon, Image, Select } from 'semantic-ui-react'
 
 import FormField from '@components/Common/FormField'
+import { useSelector } from 'react-redux'
+import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
 
+const selector = formValueSelector('boarding-form')
 const PetList = ({ fields }) => {
+  const detail = useSelector(
+    boardingReservationBookDetailDuck.selectors.detail
+  )
+  const applies_service_type = useSelector(state =>
+    selector(state, 'applies_service_type')
+  )
+
   return (
     <>
-      <button
-        // eslint-disable-next-line react/jsx-handler-names
-        onClick={() =>
-          fields.push({
-            id            : 4,
-            image_filepath:
-              'https://petkennect-collection.s3.us-east-2.amazonaws.com/a94439d1-947c-4371-a77e-d32c953e9b84_aa858121.png',
-            applies_reservation_type: '', applies_package: '', applies_frequency: ''
-          })
-        }>
-        ADD
-      </button>
       {fields.map((item, index) => (
         <Grid key={index}>
           <Grid.Column largeScreen={7} tablet={6}>
@@ -35,12 +33,20 @@ const PetList = ({ fields }) => {
                   name={`${item}.image_filepath`}/>
               </Grid.Column>
               <Grid.Column width={10}>
-                <Header as='p' className='m0'>
-                  {item.name}
-                </Header>
-                <Header as='p' className='m0 fw400 f16'>
-                  {item.breed_name}
-                </Header>
+                <Field
+                  component={({ input }) => (
+                    <Header as='p' className='m0'>
+                      {input.value}
+                    </Header>
+                  )}
+                  name={`${item}.name`}/>
+                <Field
+                  component={({ input }) => (
+                    <Header as='p' className='m0 fw400 f16'>
+                      {input.value}
+                    </Header>
+                  )}
+                  name={`${item}.breed_name`}/>
                 <Grid className='flex flex-row m0'>
                   <Icon className='p0 f16' color='teal' name='medkit'/>
                   <Icon className='p0 f16' color='blue' name='mars'/>
@@ -73,11 +79,9 @@ const PetList = ({ fields }) => {
                 <Field
                   component={FormField}
                   control={Select}
+                  disabled={!applies_service_type}
                   name={`${item}.applies_reservation_type`}
-                  options={[
-                    { text: 'Reservation one', value: 1 },
-                    { text: 'Reservation two', value: 2 }
-                  ]}
+                  options={detail.form.reservation_type_options}
                   placeholder='Select Reservation Type'
                   search
                   selectOnBlur={false}/>

@@ -70,6 +70,15 @@ const BoardingSectionFirst = props => {
     return () => {}
   }, [])
 
+  const _handleGetReservationTypes = (value) => {
+    // obtener la lista de los reservation types
+    dispatch(
+      boardingReservationBookDetailDuck.creators.createGetReservationTypesByService({
+        service_id: value
+      })
+    )
+  }
+
   return (
     // eslint-disable-next-line react/jsx-handler-names
     <Form id='boarding-form' onReset={reset} onSubmit={handleSubmit}>
@@ -119,6 +128,7 @@ const BoardingSectionFirst = props => {
                     control={Select}
                     disabled={!applies_location}
                     name='applies_service_type'
+                    onChange={_handleGetReservationTypes}
                     options={detail.form.service_options}
                     placeholder='Select Service Type'
                     required

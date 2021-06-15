@@ -1,23 +1,23 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Button, Divider, Grid, Header, Icon, Image } from 'semantic-ui-react'
 import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
 import './styles.scss'
-import { formValueSelector, arrayPush } from 'redux-form'
+import { formValueSelector } from 'redux-form'
 
 const selector = formValueSelector('boarding-form')
 
 const SelectPetsSectionForm = (props) => {
   const { change } = props
-  const dispatch = useDispatch()
   const detail = useSelector(
     boardingReservationBookDetailDuck.selectors.detail
   )
   const pets = useSelector((state) => selector(state, 'pets'))
 
   const _handleAddPet = (pet) => {
-    dispatch(
-      arrayPush('boarding-form', 'pets', {
+    change(
+      'pets',
+      [ ...pets, {
         id                      : pet.id,
         name                    : pet.name,
         breed_name              : pet.breed_name,
@@ -25,8 +25,7 @@ const SelectPetsSectionForm = (props) => {
         applies_reservation_type: '',
         applies_package         : '',
         applies_frequency       : ''
-      })
-    )
+      } ])
   }
 
   const _handleRemovePet = (petId) => {
