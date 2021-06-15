@@ -1,5 +1,12 @@
 import produce from 'immer'
 
+const params2filters = (params = {}) => {
+  const validParamKeys = Object.keys(params)
+    .filter(key => [ 'page_size', 'page' ].includes(key))
+
+  return validParamKeys.reduce((a, b) => ({ ...a, [b]: params[b] }), {})
+}
+
 export default {
   initialState: (duck, previousState = {}) => {
     const {
@@ -27,22 +34,20 @@ export default {
   reducer: (state, action, { types }) =>
     produce(state, draft => {
       switch (action.type) {
-        case types.GET: {
-          const { payload } = action
-
-          // Pagination params to apply
-          const paramKeys = Object.keys(payload)
-            .filter(key => [ 'page_size', 'page' ].includes(key))
-
-          const params = paramKeys.reduce((a, b) => ({ ...a, [b]: payload[b] }), {})
-
+        case types.GET:
           draft.pagination.params = {
             ...state.pagination.params,
-            ...params
+            ...params2filters(action.payload)
           }
 
           return
-        }
+        case types.SET_FILTERS:
+          draft.pagination.params = {
+            ...state.pagination.params,
+            ...params2filters(action.payload)
+          }
+
+          return
         default:
           return
       }

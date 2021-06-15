@@ -1,4 +1,12 @@
 import produce from 'immer'
+import _get from 'lodash/get'
+
+const params2filters = (params = {}) => {
+  const validParamKeys = Object.keys(params)
+    .filter(key => !([ 'page_size', 'page' ].includes(key)))
+
+  return validParamKeys.reduce((a, b) => ({ ...a, [b]: params[b] }), {})
+}
 
 export default {
   initialState: (duck, previousState = {}) => {
@@ -20,22 +28,13 @@ export default {
   reducer: (state, action, { types, statuses }) =>
     produce(state, draft => {
       switch (action.type) {
-        case types.GET: {
-          const { payload = {} } = action
-
-          // Filter params to apply
-          const paramKeys = Object.keys(payload)
-            .filter(key => !([ 'page_size', 'page' ].includes(key)))
-
-          const params = paramKeys.reduce((a, b) => ({ ...a, [b]: payload[b] }), {})
-
+        case types.GET:
           draft.filters = {
             ...state.filters,
-            ...params
+            ...params2filters(action.payload)
           }
 
           return
-        }
         case types.REMOVE_FILTERS: {
           let { ...filters } = state.filters
 
@@ -50,7 +49,7 @@ export default {
         case types.SET_FILTERS:
           draft.filters = {
             ...state.filters,
-            ...action.payload
+            ...params2filters(action.payload)
           }
 
           draft.status = statuses.SET_FILTERS
@@ -73,21 +72,18 @@ export default {
     removeFilters: (...keys) => ({ type: REMOVE_FILTERS, keys }),
     reset        : () => ({ type: RESET }),
     set          : payload => ({ type: SET, payload }),
-    setFilters   : payload => ({ type: SET_FILTERS, payload }),
+    setFilters   : (payload = {}) => ({ type: SET_FILTERS, payload }),
     // Creadores para redux-sagas
     get          : (payload = {}) => ({ type: GET, payload })
   }),
   selectors: ({ store }) => ({
     list   : state => state[store],
     filters: state => {
-      const {
-        filters,
-        pagination = {}
-      } = state[store]
+      const list = state[store]
 
       return {
-        ...filters,
-        ...(pagination.params || {})
+        ...list.filters,
+        ..._get(list, 'pagination.params', {})
       }
     }
   })
