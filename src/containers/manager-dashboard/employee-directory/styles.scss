@@ -1,0 +1,77 @@
+.employee-directory-style {
+
+  .table-padding {
+    .ui.table td {
+      padding: .78571429em 4px .78571429em 4px !important;
+    }
+    .ui.table thead th {
+      padding: .92857143em 4px .78571429em 4px !important;
+    }
+  }
+
+  .employee-menu-color {
+    a {
+      color: grey;
+    }
+  }
+
+  .employee-selected-menu-color {
+    a {
+      color: #00B5AD;
+    }
+  }
+
+  .info-line-height {
+    line-height: 2rem !important;
+  }
+
+  .table-filter-width-sidebar-min {
+    width: 120px !important;
+    @media (min-width: 1400px) {
+      width: 140px !important;
+    }
+  }
+
+  .table-filter-width-sidebar-max {
+    width: 147px !important;
+    @media (min-width: 1400px) {
+      width: 170px !important;
+    }
+  }
+
+  .table-filter-padding {
+    .ui.form .field .ui.input input, .ui.form .fields .field .ui.input input {
+      border-radius: 0px !important;
+    }
+
+    .ui.form .field > .selection.dropdown {
+      border-radius: 0px !important;
+    }
+
+    .ui.form .fields > .field {
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+    }
+
+    .filter-button-style {
+      height: 37.5px !important;
+      margin-top: 19.5px !important;
+      margin-left: 7px !important;
+      border: 1px solid rgba(191, 191, 191, 0.87) !important;
+      border-radius: 0px !important;
+    }
+  }
+}
+
+.update-time-input-padding {
+  .ui.form .field .ui.input input, .ui.form .fields .field .ui.input input {
+    padding: 0.3em !important;
+  }
+}
+
+.current-time-input-padding {
+  .ui.form .field .ui.input input, .ui.form .fields .field .ui.input input {
+    padding: 0.44em !important;
+  }
+}
+
