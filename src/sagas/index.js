@@ -7,6 +7,7 @@ import application from './application'
 import breedManagerSetting from './pet/breed-manager-setting'
 import boardingPrepaidUsage from './pet/reservation/usage/boarding/prepaid'
 import boardingReservationUsage from './pet/reservation/usage/boarding/reservation'
+import boardingReservationBook from './client/reservation/boarding-reservation/detail'
 import category from './category'
 import categoryDetail from './category/detail'
 import client from './client'
@@ -25,6 +26,7 @@ import clientPet from './client/pet'
 import clientEmailMessage from './client/email-message'
 import company from './company'
 import companyDetail from './company/detail'
+import companyContactBilling from './company/contact-billing/detail'
 import customReport from './custom-report'
 import customized from './customized-field'
 import customizedField from './customized-field/field'
@@ -235,6 +237,7 @@ export default function* rootSaga() {
     ...breedManagerSetting,
     ...boardingPrepaidUsage,
     ...boardingReservationUsage,
+    ...boardingReservationBook,
     ...category,
     ...categoryDetail,
     ...client,
@@ -254,6 +257,7 @@ export default function* rootSaga() {
     ...clientPetBreed,
     ...company,
     ...companyDetail,
+    ...companyContactBilling,
     ...customReport,
     ...customized,
     ...customizedField,
