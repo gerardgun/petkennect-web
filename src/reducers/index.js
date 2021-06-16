@@ -113,6 +113,12 @@ import employeeSchedule from '@reducers/employee/schedule'
 import employeeScheduleDetail from '@reducers/employee/schedule/detail'
 import employeeRole from '@reducers/employee/role'
 import employeeRoleDetail from '@reducers/employee/role/detail'
+import employeeTimeOff from '@reducers/staff-management/employee-time-off'
+import employeeTimeOffRequestHistory from '@reducers/staff-management/employee-time-off/requests/history'
+import employeeTimeOffRequestUpcoming from '@reducers/staff-management/employee-time-off/requests/upcoming'
+import employeeTimeOffRequestOtherDetail from '@reducers/staff-management/employee-time-off/requests/other/detail'
+import employeeTimeOffRequestUpcomingDetail from '@reducers/staff-management/employee-time-off/requests/upcoming/detail'
+import employeeTimeOffRequestOther from '@reducers/staff-management/employee-time-off/requests/other'
 import employeeTitle from '@reducers/employee/title'
 import employeeTitleDetail from '@reducers/employee/title/detail'
 import feedingTime from '@reducers/pet/feeding-setting/feeding-time'   // feeding setting start
@@ -129,6 +135,12 @@ import mealStatus from '@reducers/pet/feeding-setting/meal-status'
 import mealStatusDetail from '@reducers/pet/feeding-setting/meal-status/detail'    // feeding setting end
 import location from '@reducers/location'
 import locationDetail from '@reducers/location/detail'
+import managerDashboardDepartmentRole from '@reducers/manager-dashboard/department-role'
+import managerDashboardDepartmentRoleDetail from '@reducers/manager-dashboard/department-role/detail'
+import managerDashboardEmployeeDirectory from '@reducers/manager-dashboard/employee/employee-directory'
+import managerDashboardEmployeeDirectoryDetail from '@reducers/manager-dashboard/employee/employee-directory/detail'
+import managerDashboardEmployeeWageHistory from '@reducers/manager-dashboard/employee/employee-wage-history'
+import managerDashboardEmployeeWageHistoryDetail from '@reducers/manager-dashboard/employee/employee-wage-history/detail'
 import MedicationType from '@reducers/pet/medication-setting/medication-type'
 import MedicationTypeDetail from '@reducers/pet/medication-setting/medication-type/detail'
 import medication from '@reducers/pet/medication-setting/medication'
@@ -255,6 +267,20 @@ import setupCapacityServiceCustom from '@reducers/setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from '@reducers/setup/capacity/service/custom/detail'
 import servicePrice from '@reducers/service-price'
 import servicePriceDetail from '@reducers/service-price/detail'
+import staffManagementInfoAvailability from '@reducers/staff-management/information/availability'
+import staffManagementInfoAvailabilityDetail from '@reducers/staff-management/information/availability/detail'
+import staffManagementInfoPersonal from '@reducers/staff-management/information/personal-detail'
+import staffManagementInfoPersonalDetail from '@reducers/staff-management/information/personal-detail/detail'
+import staffManagementInfoWages from '@reducers/staff-management/information/wages'
+import staffManagementInfoWagesDetail from '@reducers/staff-management/information/wages/detail'
+import staffManagementNotification from '@reducers/staff-management/notification/employee-notice'
+import staffManagementNotificationDetail from '@reducers/staff-management/notification/employee-notice/detail'
+import staffManagementNotificationSettingEmployee from '@reducers/staff-management/notification/notification-setting/employee-notification'
+import staffManagementNotificationSettingEmployeeDetail from '@reducers/staff-management/notification/notification-setting/employee-notification/detail'
+import staffManagementNotificationSettingManager from '@reducers/staff-management/notification/notification-setting/manager-notification'
+import staffManagementNotificationSettingManagerDetail from '@reducers/staff-management/notification/notification-setting/manager-notification/detail'
+import staffManagementPerformanceNotice from '@reducers/staff-management/performance/notice'
+import staffManagementPerformanceReview from '@reducers/staff-management/performance/review'
 import tenantDetail from '@reducers/tenant/detail'
 import onlineRequestsClientSubmission from '@reducers/online-request/client-submission'
 import onlineRequestsClientSubmissionDetail from '@reducers/online-request/client-submission/detail'
@@ -399,6 +425,13 @@ const createRootReducer = history => combineReducers({
   [employeeScheduleDetail.store]                           : employeeScheduleDetail.reducer,
   [employeeRole.store]                                     : employeeRole.reducer,
   [employeeRoleDetail.store]                               : employeeRoleDetail.reducer,
+  [employeeTimeOff.store]                                  : employeeTimeOff.reducer,
+  [employeeTimeOffRequestUpcoming.store]                   : employeeTimeOffRequestUpcoming.reducer,
+  [employeeTimeOffRequestHistory.store]                    : employeeTimeOffRequestHistory.reducer,
+  [employeeTimeOffRequestOther.store]                      : employeeTimeOffRequestOther.reducer,
+  [employeeTimeOffRequestOtherDetail.store]                : employeeTimeOffRequestOtherDetail.reducer,
+  [employeeTimeOffRequestUpcomingDetail.store]             : employeeTimeOffRequestUpcomingDetail.reducer,
+  [employeeDetail.store]                                   : employeeDetail.reducer,
   [employeeTitle.store]                                    : employeeTitle.reducer,
   [employeeTitleDetail.store]                              : employeeTitleDetail.reducer,
   [feedingTime.store]                                      : feedingTime.reducer,
@@ -415,6 +448,12 @@ const createRootReducer = history => combineReducers({
   [mealStatusDetail.store]                                 : mealStatusDetail.reducer,
   [location.store]                                         : location.reducer,
   [locationDetail.store]                                   : locationDetail.reducer,
+  [managerDashboardDepartmentRole.store]                   : managerDashboardDepartmentRole.reducer,
+  [managerDashboardDepartmentRoleDetail.store]             : managerDashboardDepartmentRoleDetail.reducer,
+  [managerDashboardEmployeeDirectory.store]                : managerDashboardEmployeeDirectory.reducer,
+  [managerDashboardEmployeeDirectoryDetail.store]          : managerDashboardEmployeeDirectoryDetail.reducer,
+  [managerDashboardEmployeeWageHistory.store]              : managerDashboardEmployeeWageHistory.reducer,
+  [managerDashboardEmployeeWageHistoryDetail.store]        : managerDashboardEmployeeWageHistoryDetail.reducer,
   [MedicationType.store]                                   : MedicationType.reducer,
   [MedicationTypeDetail.store]                             : MedicationTypeDetail.reducer,
   [medication.store]                                       : medication.reducer,
@@ -542,6 +581,20 @@ const createRootReducer = history => combineReducers({
   [setupCapacityServiceCustomDetail.store]                 : setupCapacityServiceCustomDetail.reducer,
   [servicePrice.store]                                     : servicePrice.reducer,
   [servicePriceDetail.store]                               : servicePriceDetail.reducer,
+  [staffManagementInfoAvailability.store]                  : staffManagementInfoAvailability.reducer,
+  [staffManagementInfoAvailabilityDetail.store]            : staffManagementInfoAvailabilityDetail.reducer,
+  [staffManagementInfoPersonal.store]                      : staffManagementInfoPersonal.reducer,
+  [staffManagementInfoPersonalDetail.store]                : staffManagementInfoPersonalDetail.reducer,
+  [staffManagementInfoWages.store]                         : staffManagementInfoWages.reducer,
+  [staffManagementInfoWagesDetail.store]                   : staffManagementInfoWagesDetail.reducer,
+  [staffManagementNotification.store]                      : staffManagementNotification.reducer,
+  [staffManagementNotificationDetail.store]                : staffManagementNotificationDetail.reducer,
+  [staffManagementNotificationSettingEmployee.store]       : staffManagementNotificationSettingEmployee.reducer,
+  [staffManagementNotificationSettingEmployeeDetail.store] : staffManagementNotificationSettingEmployeeDetail.reducer,
+  [staffManagementNotificationSettingManager.store]        : staffManagementNotificationSettingManager.reducer,
+  [staffManagementNotificationSettingManagerDetail.store]  : staffManagementNotificationSettingManagerDetail.reducer,
+  [staffManagementPerformanceNotice.store]                 : staffManagementPerformanceNotice.reducer,
+  [staffManagementPerformanceReview.store]                 : staffManagementPerformanceReview.reducer,
   [tenantDetail.store]                                     : tenantDetail.reducer,
   [onlineRequestsClientSubmission.store]                   : onlineRequestsClientSubmission.reducer,
   [onlineRequestsClientSubmissionDetail.store]             : onlineRequestsClientSubmissionDetail.reducer,

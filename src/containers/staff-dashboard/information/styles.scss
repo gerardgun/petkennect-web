@@ -1,0 +1,20 @@
+.staff-information-styles {
+  .heading-style {
+    align-items: flex-end !important;
+  }
+
+  .table-padding {
+    .table-primary.ui.basic.table thead th {
+      padding-left: 12px !important;
+      padding-right: 0px !important;
+    }
+
+    .table-primary.ui.basic.table tbody td {
+      padding-left: 12px !important;
+      padding-right: 0px !important;
+    }
+  }
+  .info-line-height {
+    line-height: 2rem !important;
+  }
+}

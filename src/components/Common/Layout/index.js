@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 import Sidebar from '@components/Sidebar'
 import Appbar from '@components/Appbar'
 
-const Layout = ({ children, sidebarHandle }) => {
-  const [ hideSidebar, setHideSidebar ] = useState(true)
+const Layout = ({ children, sidebarHandle,showSidebar }) => {
+  const [ hideSidebar, setHideSidebar ] = useState(showSidebar ? false : true)
 
   useEffect(()=>{
     if(sidebarHandle)
