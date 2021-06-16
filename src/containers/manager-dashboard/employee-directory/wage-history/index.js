@@ -2,21 +2,28 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { useLocation } from 'react-router-dom'
-import { Grid, Segment, Card, Button, Header } from 'semantic-ui-react'
+import { Grid, Segment, Card, Button, Header, Icon } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ManagerShortcut from '../../manager-shortcut/manager-shortcut'
 import HeaderLink from '../../manager-shortcut/header-link'
 import EmployeeMenu from '../employee-menu'
 
 import Table from '@components/Table'
+import ModalDelete from '@components/Modal/Delete'
+import { useChangeStatusEffect } from '@hooks/Shared'
 import wagesConfig from '@lib/constants/list-configs/manager-dashboard/employee/employee-wage-history'
 import wagesDuck from '@reducers/manager-dashboard/employee/employee-wage-history'
 import wagesDetailDuck from '@reducers/manager-dashboard/employee/employee-wage-history/detail'
 
-const EmployeeWageHistory = (props)=>{
+import WageHistoryForm from './wage-history-form'
+
+const EmployeeWageHistory = ({ wagesDetail, ...props }) => {
+  useChangeStatusEffect(props.getWages, wagesDetail.status)
+
   useEffect(() => {
     props.getWages()
   }, [])
+
   const location = useLocation()
   const [ showSideBar ] =  useState(location.state ? !location.state.isSideBarHidden : false)
 
@@ -24,6 +31,24 @@ const EmployeeWageHistory = (props)=>{
 
   const _onHandleSideBar = (sidebar)=>{
     setSidebarHidden(sidebar)
+  }
+
+  const _handleCreateWage = () => {
+    props.setItem(null, 'CREATE')
+  }
+
+  const _handleDropdownOptionClick = (option,item) => {
+    switch (option) {
+      case 'edit_wage':
+        props.setItem(item.id, 'UPDATE')
+        break
+      case 'end_wage':
+
+        break
+      case 'delete_wage':
+        props.setItem(item.id, 'DELETE')
+        break
+    }
   }
 
   return (
@@ -53,7 +78,7 @@ const EmployeeWageHistory = (props)=>{
                   <Grid.Column
                     className='ui-grid-align'
                     computer={8} mobile={14} tablet={8}>
-                    <Button color='teal' content='Add Wage'/>
+                    <Button color='teal' onClick={_handleCreateWage}><Icon name='plus'/>Add Wage</Button>
                   </Grid.Column>
                 </Grid>
                 <Grid>
@@ -62,22 +87,22 @@ const EmployeeWageHistory = (props)=>{
                     computer={16} mobile={16} tablet={6}>
                     <Table
                       config={wagesConfig}
-                      duck={wagesDuck}/>
+                      duck={wagesDuck}
+                      onRowDropdownChange={_handleDropdownOptionClick}/>
                   </Grid.Column >
                 </Grid>
               </div>
             </Card>
-
           </Grid.Column>
-
         </Grid>
-
       </Segment>
+      <ModalDelete duckDetail={wagesDetailDuck}/>
+      <WageHistoryForm/>
     </Layout>
   )
 }
 
-export default  compose(
+export default compose(
   connect(
     (state) => {
       const wagesDetail = wagesDetailDuck.selectors.detail(state)
@@ -91,6 +116,7 @@ export default  compose(
       getWages : wagesDuck.creators.get,
       post     : wagesDetailDuck.creators.post,
       put      : wagesDetailDuck.creators.put,
+      setItem  : wagesDetailDuck.creators.setItem,
       resetItem: wagesDetailDuck.creators.resetItem
     }
   )
