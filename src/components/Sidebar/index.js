@@ -182,6 +182,11 @@ const categories = [
     ]
   },
   {
+    href : '/staff-dashboard',
+    icon : 'id badge outline',
+    label: 'Staff'
+  },
+  {
     href : '/setup',
     icon : 'cogs',
     label: 'Setup'

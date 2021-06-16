@@ -48,6 +48,7 @@ const TableList = ({ childProps, config, duck, ...props }) => {
           onCellClick={props.onCellClick}
           onRowButtonClick={props.onRowButtonClick}
           onRowCheckboxChange={props.onRowCheckboxChange}
+          onRowCheckboxChecked={props.onRowCheckboxChecked}
           onRowClick={props.onRowClick}
           onRowDropdownChange={props.onRowDropdownChange}
           onRowDropdownFieldChange={props.onRowDropdownFieldChange}
@@ -71,6 +72,7 @@ const commonDefaultProps = {
   onCellClick             : () => {},
   onRowButtonClick        : () => {},
   onRowCheckboxChange     : () => {},
+  onRowCheckboxChecked    : () => {},
   onRowClick              : () => {},
   onRowDropdownChange     : () => {},
   onRowTextFieldChange    : ()=> {},

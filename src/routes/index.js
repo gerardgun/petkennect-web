@@ -34,6 +34,13 @@ import EmailMessage from '@containers/email-message'
 import ServiceSetting from '@containers/service-setting'
 import SystemSetting from '@containers/system-setting'
 import EmailTemplate from '@containers/email-template'
+import ManagerDashboardDepartment from '@containers/manager-dashboard/department-roles'
+import ManagerDashboardEmployeeDirectory from '@containers/manager-dashboard/employee-directory'
+import ManagerDashboardEmployeePersonalDetail from '@containers/manager-dashboard/employee-directory/personal-detail'
+import ManagerDashboardEmployeeAvailability from '@containers/manager-dashboard/employee-directory/availability'
+import ManagerDashboardEmployeeWageHistory from '@containers/manager-dashboard/employee-directory/wage-history'
+import ManagerDashboardEmployeeNote from '@containers/manager-dashboard/employee-directory/note'
+import ManagerDashboardEmployeeDocument from '@containers/manager-dashboard/employee-directory/document'
 import Notification from '@containers/notification'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
@@ -86,6 +93,12 @@ import ReportSheetSetting from '@containers/report-sheet-setting'
 import SetupIndex from '@containers/setup'
 import SetupPetBreedIndex from '@containers/setup/pet/breed'
 import SetupPetBehaviorTagsIndex from '@containers/setup/pet/behavior-tag'
+import StaffDashboard from '@containers/staff-dashboard/dashboard'
+import StaffDashboardInfo from '@containers/staff-dashboard/information'
+import StaffDashboardRequest from '@containers/staff-dashboard/requests'
+import StaffDashboardPerformance from '@containers/staff-dashboard/performance'
+import StaffDashboardDocument from '@containers/staff-dashboard/document'
+import StaffDashboardNotification from '@containers/staff-dashboard/notification'
 
 // Settings / Add-on / General Settings
 import SetupAddOnGeneralAddOnIndex from '@containers/setup/add-on/general/add-on-section'
@@ -206,7 +219,7 @@ import SetupTrainingGeneralReservationIndex from '@containers/setup/training/gen
 import SetupTrainingGeneralServiceTypeIndex from '@containers/setup/training/general/service-type-section'
 import SettingsTrainingIndex from '@containers/settings/training'
 
-//Settings Company
+// Settings Company
 import SetupCompanyProfile from '@containers/company-profile'
 import SetupCompanyProfileContactBilling from '@containers/company-profile/contact-billing'
 import SetupCompanyProfileCalendar from '@containers/company-profile/calendar'
@@ -301,6 +314,34 @@ const privateRoutes = [
   {
     path     : '/setup/notifications',
     component: Notification
+  },
+  {
+    path     : '/manager-dashboard/department-roles',
+    component: ManagerDashboardDepartment
+  },
+  {
+    path     : '/manager-dashboard/employee-directory',
+    component: ManagerDashboardEmployeeDirectory
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/personal-detail',
+    component: ManagerDashboardEmployeePersonalDetail
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/availability',
+    component: ManagerDashboardEmployeeAvailability
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/wage-history',
+    component: ManagerDashboardEmployeeWageHistory
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/note',
+    component: ManagerDashboardEmployeeNote
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/document',
+    component: ManagerDashboardEmployeeDocument
   },
   {
     path     : '/client',
@@ -427,6 +468,30 @@ const privateRoutes = [
   {
     path     : '/products/families',
     component: ProductFamily
+  },
+  {
+    path     : '/staff-dashboard',
+    component: StaffDashboard
+  },
+  {
+    path     : '/staff-dashboard/document',
+    component: StaffDashboardDocument
+  },
+  {
+    path     : '/staff-dashboard/information',
+    component: StaffDashboardInfo
+  },
+  {
+    path     : '/staff-dashboard/requests',
+    component: StaffDashboardRequest
+  },
+  {
+    path     : '/staff-dashboard/notification',
+    component: StaffDashboardNotification
+  },
+  {
+    path     : '/staff-dashboard/performance',
+    component: StaffDashboardPerformance
   },
   {
     path     : '/services',
@@ -765,7 +830,6 @@ const privateRoutes = [
     path     : '/setup/settings/training',
     component: SettingsTrainingIndex
   },
-  ///////////
   {
     path     : '/setup/training/method',
     component: SetupTrainingMethodIndex
@@ -970,7 +1034,7 @@ const privateRoutes = [
   {
     path     : '/setup/company-profile/accounting',
     component: SetupCompanyProfileAccounting
-  },
+  }
 ]
 
 const routes = [

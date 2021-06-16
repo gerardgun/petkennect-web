@@ -63,6 +63,10 @@ import employeeTitleDetail from './employee/title/detail'
 import emailMessage from './email-message'
 import emailTemplate from './email-template'
 import emailLog from './email-log'
+import employeeTimeOff from './staff-management/employee-time-off'
+import employeeTimeOffRequestUpcoming from './staff-management/employee-time-off/requests/upcoming'
+import employeeTimeOffRequestHistory from './staff-management/employee-time-off/requests/history'
+import employeeTimeOffRequestOther from './staff-management/employee-time-off/requests/other'
 import exampleOne from './example/one'
 import exampleTwo from './example/two'
 import feedingMeasurement from './pet/feeding-setting/feeding-measurement'
@@ -73,6 +77,9 @@ import foodType from './pet/feeding-setting/food-type'
 import mealStatus from './pet/feeding-setting/meal-status'
 import location from './location'
 import locationDetail from './location/detail'
+import managerDashboardDepartmentRole from './manager-dashboard/department-role'
+import managerDashboardEmployeeDirectory from './manager-dashboard/employee/employee-directory'
+import managerDashboardEmployeeWageHistory from './manager-dashboard/employee/employee-wage-history'
 import medication from './pet/medication-setting/medication'
 import medicationMeasurement from './pet/medication-setting/medication-measurement'
 import medicationTime from './pet/medication-setting/medication-time'
@@ -192,6 +199,13 @@ import serviceVariationRelease from './service/variation/release'
 import serviceVariationReleaseDetail from './service/variation/release/detail'
 import setupCapacityServiceCustom from './setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from './setup/capacity/service/custom/detail'
+import staffManagementInfoAvailability from './staff-management/information/availability'
+import staffManagementInfoWages from './staff-management/information/wages'
+import staffManagementNotificationEmployeeNotice from './staff-management/notification/employee-notice'
+import staffManagementNotificationSettingEmployee from './staff-management/notification/notification-setting/employee-notification'
+import staffManagementNotificationSettingManager from './staff-management/notification/notification-setting/manager-notification'
+import staffManagementNotice from './staff-management/performance/notice'
+import staffManagementReview from './staff-management/performance/review'
 import tenantDetail from './tenant/detail'
 import onlineRequestClientSubmission from './online-request/client-submission'
 import onlineRequestClientSubmissionDetail from './online-request/client-submission/detail'
@@ -280,6 +294,10 @@ export default function* rootSaga() {
     ...employeeRoleDetail,
     ...employeeSchedule,
     ...employeeScheduleDetail,
+    ...employeeTimeOff,
+    ...employeeTimeOffRequestUpcoming,
+    ...employeeTimeOffRequestHistory,
+    ...employeeTimeOffRequestOther,
     ...employeeTitle,
     ...employeeTitleDetail,
     ...feedingMeasurement,
@@ -290,6 +308,9 @@ export default function* rootSaga() {
     ...mealStatus,
     ...location,
     ...locationDetail,
+    ...managerDashboardDepartmentRole,
+    ...managerDashboardEmployeeDirectory,
+    ...managerDashboardEmployeeWageHistory,
     ...medication,
     ...medicationMeasurement,
     ...medicationReportStatus,
@@ -408,6 +429,13 @@ export default function* rootSaga() {
     ...serviceVariationReleaseDetail,
     ...setupCapacityServiceCustom,
     ...setupCapacityServiceCustomDetail,
+    ...staffManagementInfoAvailability,
+    ...staffManagementInfoWages,
+    ...staffManagementNotificationEmployeeNotice,
+    ...staffManagementNotificationSettingEmployee,
+    ...staffManagementNotificationSettingManager,
+    ...staffManagementNotice,
+    ...staffManagementReview,
     ...tenantDetail,
     ...onlineRequestClientSubmission,
     ...onlineRequestClientSubmissionDetail,

@@ -1,0 +1,50 @@
+.performance-tb {
+   
+    .ui.table thead th {
+      padding-left: 0.4rem !important;
+      padding-right: 0 !important;
+      padding-top: 5px !important;
+      padding-bottom: 5px !important;
+    }
+    .ui.basic.table td {
+      padding-left: 0.4rem !important;
+      padding-right: 0 !important;
+    }
+  
+    .ui.table {
+      font-size: 0.9em !important;
+    }
+    .table-primary.ui.basic.table {   
+      margin-bottom: 0 !important;
+  }
+  
+  }
+
+.stats-div{
+    display: flex;
+    height: 100%;
+    width: 45%;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-h{
+  font-size: 1rem !important;
+  
+}
+  
+.selected-h{
+   border-bottom: solid 4px #00aa9f;
+  .stats-color{
+    color: #52b5ad;
+    
+  }
+  
+}
+.un-selected-h{
+  .stats-color{
+    color: #9b9c9efa;
+    border-bottom: solid 4px white;
+  }
+}
+  
