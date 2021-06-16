@@ -5,18 +5,22 @@ import Menu from '../menu'
 
 import EmployeeNotice from './employee-notice'
 import NotificationSetting from './notification-setting'
+import HeaderLink from '../header-link'
 
 const MyNotification = ()=>{
-  const [ hideSidebar, setHideSidebar ] = useState()
+  const [ sidebarHidden, setSidebarHidden ] = useState()
 
   const _onHandleSideBar = (sidebar)=>{
-    setHideSidebar(sidebar)
+    setSidebarHidden(sidebar)
   }
 
   return (
     <Layout sidebarHandle={_onHandleSideBar}>
       <Segment className='segment-dashboard-content' >
         <Grid>
+          <Grid.Column className='pb12 pt0 ' computer={16}>
+            <HeaderLink sideBarHidden={sidebarHidden}/>
+          </Grid.Column>
           <Grid.Column computer={3}>
             <Menu/>
           </Grid.Column>
@@ -32,7 +36,7 @@ const MyNotification = ()=>{
                   <EmployeeNotice/>
                 </Grid.Column>
                 <Grid.Column width={8}>
-                  <NotificationSetting hideSidebar={hideSidebar}/>
+                  <NotificationSetting hideSidebar={sidebarHidden}/>
                 </Grid.Column>
               </Grid>
             </Card>

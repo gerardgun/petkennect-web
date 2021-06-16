@@ -63,8 +63,6 @@ const EmployeeDirectory = (props)=>{
   }
 
   const _handleDropdownOptionClick = (option,item) => {
-    console.log(item)
-    console.log(option)
     switch (option) {
       case 'edit':
         props.setItem(item.id, 'UPDATE')
@@ -81,7 +79,9 @@ const EmployeeDirectory = (props)=>{
         break
 
       case 'add_note':
-
+        history.push({
+          pathname: `/manager-dashboard/employee-directory/${item.id}/note`
+        })
         break
       case 'terminate_team_member':
 
