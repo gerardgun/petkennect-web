@@ -40,9 +40,13 @@
 }
 //Payment Method
 .current-card{
-    font-size: 18px;
+    font-size: 12px;
+    margin: 0px;
 }
 .creditcard-container{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
     box-shadow: none !important;
     color: #C8C8C8;
     border-radius: 0px !important;
