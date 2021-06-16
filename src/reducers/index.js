@@ -139,8 +139,6 @@ import managerDashboardDepartmentRole from '@reducers/manager-dashboard/departme
 import managerDashboardDepartmentRoleDetail from '@reducers/manager-dashboard/department-role/detail'
 import managerDashboardEmployeeDirectory from '@reducers/manager-dashboard/employee/employee-directory'
 import managerDashboardEmployeeDirectoryDetail from '@reducers/manager-dashboard/employee/employee-directory/detail'
-import managerDashboardEmployeeDocument from '@reducers/manager-dashboard/employee/employee-document'
-import managerDashboardEmployeeDocumentDetail from '@reducers/manager-dashboard/employee/employee-document/detail'
 import managerDashboardEmployeeWageHistory from '@reducers/manager-dashboard/employee/employee-wage-history'
 import managerDashboardEmployeeWageHistoryDetail from '@reducers/manager-dashboard/employee/employee-wage-history/detail'
 import MedicationType from '@reducers/pet/medication-setting/medication-type'
@@ -454,8 +452,6 @@ const createRootReducer = history => combineReducers({
   [managerDashboardDepartmentRoleDetail.store]             : managerDashboardDepartmentRoleDetail.reducer,
   [managerDashboardEmployeeDirectory.store]                : managerDashboardEmployeeDirectory.reducer,
   [managerDashboardEmployeeDirectoryDetail.store]          : managerDashboardEmployeeDirectoryDetail.reducer,
-  [managerDashboardEmployeeDocument.store]                 : managerDashboardEmployeeDocument.reducer,
-  [managerDashboardEmployeeDocumentDetail.store]           : managerDashboardEmployeeDocumentDetail.reducer,
   [managerDashboardEmployeeWageHistory.store]              : managerDashboardEmployeeWageHistory.reducer,
   [managerDashboardEmployeeWageHistoryDetail.store]        : managerDashboardEmployeeWageHistoryDetail.reducer,
   [MedicationType.store]                                   : MedicationType.reducer,

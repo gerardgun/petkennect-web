@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Grid,Segment, Card, Header, Icon, Button } from 'semantic-ui-react'
+import { Grid,Segment, Card } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import ManagerShortcut from '../../manager-shortcut/manager-shortcut'
 import HeaderLink from '../../manager-shortcut/header-link'
@@ -23,10 +23,10 @@ const EmployeeNote = ()=>{
           <Grid.Column className='pb12 pt0 ' computer={16}>
             <HeaderLink sideBarHidden={sidebarHidden}/>
           </Grid.Column>
-          <Grid.Column style={{ width: '17%' }}>
+          <Grid.Column computer={3}>
             <ManagerShortcut/>
           </Grid.Column>
-          <Grid.Column className='pl0' style={{ width: '83%' }}>
+          <Grid.Column computer={13}>
             <Card fluid>
               <div className='pv20 ph16'>
                 <Grid style={{ borderBottom: 'solid 1px rgba(34, 36, 38, 0.15)' }}>
@@ -36,15 +36,10 @@ const EmployeeNote = ()=>{
                     <EmployeeMenu/>
                   </Grid.Column >
                 </Grid>
-                <Grid columns={2}>
-                  <Grid.Column computer={8} mobile={14} tablet={8}>
-                    <Header as='h3' className='mt4'>Employee Notes</Header>
+                <Grid>
+                  <Grid.Column computer={16} mobile={16} tablet={6}>
+
                   </Grid.Column >
-                  <Grid.Column
-                    className='ui-grid-align'
-                    computer={8} mobile={14} tablet={8}>
-                    <Button color='teal'><Icon name='plus'/>Add Comment</Button>
-                  </Grid.Column>
                 </Grid>
               </div>
             </Card>

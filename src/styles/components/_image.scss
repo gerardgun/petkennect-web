@@ -1,0 +1,11 @@
+.ui.image {
+  &.mini {
+    height: 35px;
+    object-fit: cover;
+  }
+
+  &.c-crop-picker {
+    width: 569px;
+    height: 538px;
+  }
+}

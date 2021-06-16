@@ -1,0 +1,115 @@
+.petkennect-profile {
+  &-menu.ui.menu.vertical {
+    box-shadow: none;
+
+    .item {
+      padding: 1.1rem 2rem;
+
+      @media only screen and (min-width: 768px) and (max-width: 1120px) {
+        padding: 1rem 0.5rem;
+      }
+
+      &.active {
+        background-color: #00b5ad0a !important;
+      }
+
+      i {
+        line-height: 1.2rem;
+      }
+    }
+  }
+
+  &-sidebar {
+    min-height: 100vh;
+
+    @media only screen and (max-width: 1120px) {
+      min-height: fit-content;
+    }
+    
+  }
+
+  &-body {
+    border-left: solid 1px rgba(34, 36, 38, 0.15);
+
+    &-header {
+      border-bottom: solid 1px rgba(34, 36, 38, 0.15);
+      margin-bottom: 0rem !important;
+      padding-left: 1.8rem !important;
+      padding-right: 1.8rem !important;
+      padding-top: 1rem !important;
+
+      @media only screen and (max-width: 767px) {
+        padding-left: 0.8rem !important;
+      }
+
+      .ui.header {
+        font-weight: 400;
+      }
+    }
+
+    &-content {
+      padding: 2.5rem 1.8rem 1.5rem;
+    }
+  }
+
+  .c-icon-profile{
+    display: flex;
+    line-height: initial;
+    margin-bottom: 2.5rem;
+
+    .icon{
+      font-size: 14rem;
+      color: gray;
+    }
+
+    .icon_green{
+      color: green;
+    }
+
+    .icon_red{
+      color: red;
+    }
+  }
+
+  .c-image-profile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 14rem;
+    height: 14rem;
+    margin-bottom: 2.5rem;
+
+    .ui.image {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .c-image-profile__overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(97, 100, 104, 0.9);
+      cursor: pointer;
+    }
+
+  }
+
+  .c-image-profile__menu {
+    top: 70px !important;
+    right: -60px !important;
+    left: auto !important;
+  }
+ 
+  .ui.dropdown:not(.active) {
+    &:hover .c-image-profile__overlay {
+      display: flex;
+    }
+}
+}

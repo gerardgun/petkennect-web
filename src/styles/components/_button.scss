@@ -1,0 +1,22 @@
+.ui.button {
+  font-family: Poppins;
+
+  &.blue:not(.basic) {
+    background-color: $blue !important;
+  }
+
+  &.red:not(.basic) {
+    background-color: $red !important;
+  }
+
+  &.bg-gray {
+    background: #f7f9fc !important; 
+    
+  }
+  &.text-gray {
+    color: #BDC3C9 !important;
+  }
+  &.no-border {
+    border: none !important;
+  }
+}
