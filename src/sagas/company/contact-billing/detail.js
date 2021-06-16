@@ -15,16 +15,16 @@ function* create({ payload }) {
             {
               id         : 1,
               name       : 'Credit Card 1',
-              card_number: '4966 8270 1684 XXXX',
-              exp: '02/25',
-              cvv: '123',
+              cc_number: '4966 8270 1684 XXXX',
+              cc_exp: '02/25',
+              cc_cvv: '123',
             },
             {
               id         : 1,
               name       : 'Credit Card 1',
-              card_number: '4966 8270 1684 XXXX',
-              exp: '02/25',
-              cvv: '123',
+              cc_number: '4966 8270 1684 XXXX',
+              cc_exp: '02/25',
+              cc_cvc: '123',
             }
           ]
         }

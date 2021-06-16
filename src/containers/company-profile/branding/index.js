@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import {useDropzone} from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm, change, formValueSelector } from 'redux-form'
 import { Label, Image, Breadcrumb, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea, GridColumn } from 'semantic-ui-react'
@@ -36,9 +37,30 @@ const textColors = [
 ]
 
 function SetupCompanyProfileBranding (props) {
-  const[navColor, setNavColor] = useState();
-  const[headingColor, setHeadingColor] = useState();
-  const[textColor, setTextColor] = useState();
+  const[ logo, setLogo ] = useState([]);
+  const[ background, setBackground ] = useState([]);
+  const[ navColor, setNavColor ] = useState();
+  const[ headingColor, setHeadingColor ] = useState();
+  const[ textColor, setTextColor ] = useState();
+  const{ getRootProps: getRootLogo, getInputProps: getInputLogo } = useDropzone({
+    maxFiles: 1,
+    accept: 'image/png, image/gif, image/jpeg',
+    onDrop: acceptedFiles => {
+      setLogo(acceptedFiles.map(file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      })));
+    }
+  });
+
+  const{ getRootProps: getRootBackground, getInputProps: getInputBackground } = useDropzone({
+    maxFiles: 1,
+    accept: 'image/png, image/gif, image/jpeg',
+    onDrop: acceptedFiles => {
+      setBackground(acceptedFiles.map(file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      })));
+    }
+  });
 
   const {
       error, handleSubmit // redux-form
@@ -59,35 +81,35 @@ return (
         <Grid className='grid-branding'>
           <Grid.Row>
             <Grid.Column width='8'>
-              <Segment className='segment-dotted'>
+              <Segment {...getRootLogo({className: 'dropzone'})}>
                 <p className='branding-titles'>Logo Image for Top Navigation</p>
                 <div className='segment-delete'>
                   <Button basic color='teal' className='button-delete-image' onClick={() => deleteImage('logo_preview')}>
                     <Icon name='trash alternate outline' /> Delete Image
                   </Button>
                 </div>
-                <Image id='logo_preview' className='image-default-size' src='/images/logo.png' size='small' centered />
+                <Image id='logo_preview' className='image-default-size' src={logo[0] ? logo[0].preview:'/images/logo.png'} size='small' centered />
                 <p className='branding-titles'>Drag {'&'} Drop</p>
                 <label className='branding-titles-label'>
                   files or click here for upload
-                  <Input className='input-file' type='file' accept="image/png, image/gif, image/jpeg" onChange={(e) => previewImage(e, 'logo_preview')}/>
+                  <Input {...getInputLogo()} className='input-file' type='file' accept="image/png, image/gif, image/jpeg" />
                 </label>
               </Segment>
             </Grid.Column>
 
             <Grid.Column width='8'>
-              <Segment className='segment-dotted'>
+              <Segment {...getRootBackground({className: 'dropzone'})}>
                 <p className='branding-titles'>Login Background Image</p>
                 <div className='segment-delete'>
                   <Button basic color='teal' className='button-delete-image' onClick={() => deleteImage('background_preview')}>
                     <Icon name='trash alternate outline' /> Delete Image
                   </Button>
                 </div>
-                <Image id='background_preview' className='image-default-size' src='/images/background_dog.jpg' size='small' centered/>
+                <Image id='background_preview' className='image-default-size' src={background[0] ? background[0].preview:'/images/background_dog.jpg'} size='small' centered/>
                 <p className='branding-titles'>Drag {'&'} Drop</p>
                 <label className='branding-titles-label'>
                   files or click here for upload
-                  <Input className='input-file' type='file' accept="image/png, image/gif, image/jpeg" onChange={(e) => previewImage(e, 'background_preview')}/>
+                  <Input {...getInputBackground()} className='input-file' type='file' accept="image/png, image/gif, image/jpeg" />
                 </label>
               </Segment>
             </Grid.Column>
