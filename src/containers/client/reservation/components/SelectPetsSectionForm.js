@@ -18,7 +18,7 @@ const SelectPetsSectionForm = (props) => {
   }
 
   const _handleRemovePet = (petId) => {
-    change('pets', pets.filter(pet => pet !== petId))
+    change('pets', pets.filter(pet => pet.id !== petId.id))
   }
 
   return (

@@ -9,6 +9,7 @@ import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
+import CreateCardModal from '@containers/company-profile/components/CreateCardModal'
 import Tab from '@containers/setup/boarding/general/components/Tab'
 import SetupBoardingGeneralBelongingIndex from '@containers/setup/boarding/general/belonging-section'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
@@ -29,7 +30,7 @@ return(
     <Layout>
         <Segment className='segment-content' padded='very'>
             <Menu/>
-            <Form onSubmit={handleSubmit(_handleSubmit)} className='form-container'>
+            <Form onSubmit={handleSubmit(_handleSubmit)} className='form-container' id='billing-form'>
                 <Grid style={{ padding: '1rem' }}>
                     <Grid.Row>
                         <Grid.Column width='5' className='input-form'>
@@ -150,7 +151,7 @@ return(
                                         </p>
                                         <Divider/>
                                         <Segment className='row-end'>
-                                            <Button content='Add New Card' positive/>
+                                            <CreateCardModal/>
                                             <Button content='Confirm' primary/>
                                         </Segment>
                                     </Grid.Column>

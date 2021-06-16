@@ -44,6 +44,7 @@ import clientEmailMessage from '@reducers/client/email-message'
 import clientEmailMessageDetail from '@reducers/client/email-message/detail'
 import company from '@reducers/company'
 import companyDetail from '@reducers/company/detail'
+import companyContactBillingDetail from '@reducers/company/contact-billing/detail'
 import customReport from '@reducers/custom-report'
 import customReportDetail from '@reducers/custom-report/detail'
 import customized from '@reducers/customized-field'
@@ -327,6 +328,7 @@ const createRootReducer = history => combineReducers({
   [clientEmailMessageDetail.store]                         : clientEmailMessageDetail.reducer,
   [company.store]                                          : company.reducer,
   [companyDetail.store]                                    : companyDetail.reducer,
+  [companyContactBillingDetail.store]                      : companyContactBillingDetail.reducer,
   [customReport.store]                                     : customReport.reducer,
   [customReportDetail.store]                               : customReportDetail.reducer                ,
   [customized.store]                                       : customized.reducer,
