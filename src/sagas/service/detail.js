@@ -121,8 +121,9 @@ function* deleteItem({ ids: [ id ] }) {
   }
 }
 
-function* get({ id }) {
+export function* get({ id }) {
   try {
+    console.log(id, 'iddddd')
     yield put({ type: types.GET_PENDING })
 
     const service = yield call(Get, `services/${id}/`)

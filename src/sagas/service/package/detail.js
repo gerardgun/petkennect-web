@@ -1,5 +1,6 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects'
-
+import moment from 'moment'
+import { all, call, put, select, takeEvery } from 'redux-saga/effects'
+import faker from 'faker'
 import { Delete, Get, Post, Patch } from '@lib/utils/http-client'
 
 import servicePackageDetailDuck from '@reducers/service/package/detail'
@@ -7,26 +8,33 @@ import * as locationSaga from '@sagas/location'
 import locationDuck from '@reducers/location'
 import _uniqBy from 'lodash/uniqBy'
 import servicePackageDuck from '@reducers/service/package'
+import * as variationSaga from '@sagas/service/variation'
+import variationDuck from '@reducers/service/variation'
+import * as serviceSaga from '@sagas/service'
+import serviceDuck from '@reducers/service'
 
 const { selectors, types } = servicePackageDetailDuck
 
 function* create() {
   try {
     const detail = yield select(selectors.detail)
+    let reservationTypesSelected = []
     let serviceOptions = []
     let locationOptions = []
-    if(detail.item.id) {
-      // get services types of package
-      const { results } = yield call(Get, 'services/', {
-        ordering         : 'name',
-        service_group__id: detail.item.service_group,
-        page_size        : 100
-      })
+    let reservationOptions = []
 
-      serviceOptions = results.map(({ id, name }) => ({
-        text : name,
-        value: id
-      }))
+    // get services types of package
+    const results = yield call(Get, 'services/', {
+      ordering         : 'name',
+      service_group__id: detail.item.service_group
+    })
+
+    serviceOptions = results.map(({ id, name }) => ({
+      text : name,
+      value: id
+    }))
+
+    if(detail.item.id) {
       // get locations of package
       const serviceSelected = results.find(
         ({ id }) => id === detail.item.applies_service_type.id
@@ -39,14 +47,34 @@ function* create() {
           text : name,
           value: id
         }))
+      // get reservation types options
+      const { types: variationTypes } = variationDuck
+      yield put({
+        type   : variationTypes.SET_FILTERS,
+        payload: { service: detail.item.service, type: 'A,R' }
+      })
+      yield* variationSaga.get()
+      const variationList = yield select(variationDuck.selectors.list)
+      reservationOptions = variationList.items.map(({ id, name }) => ({
+        text : name,
+        value: id
+      }))
+
+      // get reservation types selected of package
+      const { results: reservations } = yield call(Get, `service-variations/${detail.item.id}/addons`)
+      reservationTypesSelected = reservations.map(({ id }) => id)
     }
     yield put({ type: types.GET_PENDING })
     yield put({
       payload: {
         form: {
-          service_type_options    : serviceOptions,
-          location_options        : locationOptions,
-          reservation_type_options: []
+          service_type_options: serviceOptions,
+          location_options    : locationOptions,
+          reservation_options : reservationOptions
+        },
+        item: {
+          ...detail.item,
+          applies_reservation_types: reservationTypesSelected
         }
       },
       type: types.GET_FULFILLED
@@ -59,21 +87,7 @@ function* create() {
   }
 }
 
-function* deleteItem({ ids: [ id ] }) {
-  try {
-    yield put({ type: types.DELETE_PENDING })
-
-    yield call(Delete, `services/${id}/`)
-
-    yield put({ type: types.DELETE_FULFILLED })
-  } catch (e) {
-    yield put({
-      type : types.DELETE_FAILURE,
-      error: e
-    })
-  }
-}
-
+/*
 function* get({ id }) {
   try {
     yield put({ type: types.GET_PENDING })
@@ -93,50 +107,38 @@ function* get({ id }) {
     })
   }
 }
+*/
 
 function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
-    /*
-    const package = yield call(Post, 'packages/', payload)
-    */
 
-    /* codigo momentaneo hasta que se implemente los endpoints */
-    const detail = yield select(selectors.detail)
-    let packageList = yield select(servicePackageDuck.selectors.list)
-    let locationList = []
-    if(payload.applies_locations.length > 0)
-      if(payload.applies_locations[0].id) { // copy case
-        locationList = payload.applies_locations
-      } else {
-        // create case
-        locationList = detail.form.location_options
-          .map(({ value, text }) => {
-            return { id: value, name: text }
-          })
-          .filter(({ id }) => payload.applies_locations.includes(id))
+    const package_item = yield call(
+      Post,
+      `services/${payload.service}/variations/`,
+      {
+        ...payload,
+        type                  : 'P',
+        duration_minutes      : 5,
+        is_group_play_required: false,
+        is_scheduled          : true
       }
-    yield put({
-      type   : servicePackageDuck.types.GET_FULFILLED,
-      payload: {
-        items: [
-          ...packageList.items,
-          {
-            ...payload,
-            id                  : Date.now(),
-            is_active           : true,
-            applies_service_type: payload.applies_service_type.id
-              ? payload.applies_service_type
-              : detail.form.service_type_options
-                .map(({ value, text }) => {
-                  return { id: value, name: text }
-                })
-                .find(({ id }) => id === payload.applies_service_type),
-            applies_locations: locationList
-          }
-        ]
-      }
+    )
+    // create price
+    yield call(Post, `service-variations/${package_item.id}/prices/`, {
+      price                      : payload.price,
+      is_set_additional_pet_price: false,
+      started_at                 : moment().format('YYYY-MM-DD[T]HH:mm:ss')
     })
+
+    // create reservation types
+    yield all(
+      payload.applies_reservation_types.map((reservationTypeId) =>
+        call(Post, `service-variations/${package_item.id}/addons/`, {
+          addon_service_variation: reservationTypeId
+        })
+      )
+    )
 
     yield put({
       type: types.POST_FULFILLED,
@@ -151,40 +153,40 @@ function* post({ payload }) {
 }
 
 function* _put({ payload: { type, ...payload } }) {
-  /* eslint no-unused-vars: 0 */ //
-
+  /* eslint no-unused-vars: 0 */
   try {
-    yield put({ type: types.PUT_PENDING })
-    /*
-      yield call(Patch, `packages/${payload.id}/`, payload)
-    */
-
-    /* codigo momentaneo hasta que se implemente los endpoints */
     const detail = yield select(selectors.detail)
-    let packageList = yield select(servicePackageDuck.selectors.list)
-    yield put({
-      type   : servicePackageDuck.types.GET_FULFILLED,
-      payload: {
-        items: packageList.items.map(item => {
-          if(item.id === payload.id)
-            return {
-              ...payload,
-              applies_service_type: detail.form.service_type_options
-                .map(({ value, text }) => {
-                  return { id: value, name: text }
-                })
-                .find(({ id }) => id === payload.applies_service_type),
-              applies_locations: detail.form.location_options
-                .map(({ value, text }) => {
-                  return { id: value, name: text }
-                })
-                .filter(({ id }) => payload.applies_locations.includes(id))
-            }
+    yield put({ type: types.PUT_PENDING })
 
-          return item
-        })
-      }
+    yield call(
+      Patch,
+      `services/${payload.service}/variations/${payload.id}`,
+      payload
+    )
+
+    // create price
+    yield call(Post, `service-variations/${payload.id}/prices/`, {
+      price                      : payload.price,
+      is_set_additional_pet_price: false,
+      started_at                 : moment().format('YYYY-MM-DD[T]HH:mm:ss')
     })
+
+    const oldReservationTypes = yield call(
+      Get,
+      `service-variations/${payload.id}/addons`
+    )
+    console.log(oldReservationTypes)
+    /*
+    // create reservation types
+    yield all(payload.applies_reservation_types.map((reservationTypeId) =>
+      call(Post, `service-variations/${payload.id}/addons/`, { addon_service_variation: reservationTypeId })
+    ))
+    */
+    // prices deleted
+    yield call(
+      Delete,
+      `service-variations/${payload.id}/prices/${detail.item.price_id}`
+    )
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
@@ -195,7 +197,8 @@ function* _put({ payload: { type, ...payload } }) {
   }
 }
 
-function* createGetServiceTypes({ payload }) {
+/*
+  function* createGetServiceTypes({ payload }) {
   try {
     yield put({ type: types.GET_PENDING })
 
@@ -230,6 +233,7 @@ function* createGetServiceTypes({ payload }) {
     })
   }
 }
+*/
 
 function* createGetLocations({ payload }) {
   try {
@@ -265,12 +269,61 @@ function* createGetLocations({ payload }) {
   }
 }
 
+function* createGetReservations({ payload }) {
+  try {
+    const detail = yield select(selectors.detail)
+    yield put({ type: types.GET_PENDING })
+
+    const { types: variationTypes } = variationDuck
+    yield put({ type: variationTypes.SET_FILTERS, payload })
+    yield* variationSaga.get()
+
+    const variationList = yield select(variationDuck.selectors.list)
+
+    yield put({
+      type   : types.GET_FULFILLED,
+      payload: {
+        form: {
+          ...detail.form,
+          reservation_options: variationList.items.map(({ id, name }) => ({
+            text : name,
+            value: id
+          }))
+        }
+      }
+    })
+  } catch (e) {
+    yield put({
+      type : types.GET_FAILURE,
+      error: e
+    })
+  }
+}
+
+function* copy({ payload }) {
+  const reservations = yield call(
+    Get,
+    `service-variations/${payload.id}/addons`,
+    { page_size: 100 }
+  )
+
+  yield put({
+    type   : types.POST,
+    payload: {
+      ...payload,
+      name                     : `${payload.name} (copy)`,
+      sku_id                   : `${payload.sku_id} (copy)`,
+      applies_reservation_types: reservations.results.map(({ id }) => id)
+    }
+  })
+}
+
 export default [
   takeEvery(types.CREATE, create),
-  takeEvery(types.DELETE, deleteItem),
-  takeEvery(types.GET, get),
+  // takeEvery(types.GET, get),
   takeEvery(types.POST, post),
   takeEvery(types.PUT, _put),
-  takeEvery(types.CREATE_GET_SERVICE_TYPES, createGetServiceTypes),
-  takeEvery(types.CREATE_GET_LOCATIONS, createGetLocations)
+  takeEvery(types.CREATE_GET_LOCATIONS, createGetLocations),
+  takeEvery(types.CREATE_GET_RESERVATIONS, createGetReservations),
+  takeEvery(types.COPY, copy)
 ]

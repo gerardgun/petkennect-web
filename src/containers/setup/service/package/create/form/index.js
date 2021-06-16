@@ -27,13 +27,13 @@ const ServicePackageForm = (props) => {
     error,
     handleSubmit,
     reset,
+    change,
     initialize // redux-form
   } = props
-  let timeout = null
   const dispatch = useDispatch()
   const detail = useSelector(servicePackageDetailDuck.selectors.detail)
-  const { applies_service_type, service_group = null, applies_locations = [] } = useSelector((state) =>
-    selector(state, 'service_group', 'applies_service_type', 'applies_locations')
+  const service = useSelector((state) =>
+    selector(state, 'service')
   )
 
   useEffect(() => {
@@ -44,12 +44,10 @@ const ServicePackageForm = (props) => {
   useEffect(() => {
     if(editing)
       initialize({
-        ...detail.item,
-        applies_service_type     : detail.item.applies_service_type.id,
-        applies_locations        : detail.item.applies_locations.map(({ id }) => id),
-        applies_reservation_types: detail.item.applies_reservation_types.map(
-          ({ id }) => id
-        )
+        ...detail.item
+        // applies_reservation_types: detail.item.applies_reservation_types.map(
+        //  ({ id }) => id
+        // )
       })
     // Set default data for new register
     else
@@ -59,42 +57,62 @@ const ServicePackageForm = (props) => {
       })
   }, [ detail.item.id ])
 
+  useEffect(() => {
+    if(editing)
+      change('applies_reservation_types', detail.item.applies_reservation_types)
+  }, [ detail.item.applies_reservation_types ])
+
   const _handleClose = () => {
     dispatch(servicePackageDetailDuck.creators.resetItem())
   }
 
   const _handleSubmit = (values) => {
+    const form = {
+      name                     : values.name,
+      description              : values.description,
+      service                  : values.service,
+      locations                : values.locations,
+      applies_reservation_types: values.applies_reservation_types,
+      price                    : values.price,
+      config                   : {
+        credits          : values.credits,
+        days_valid       : values.days_valid,
+        days             : values.days,
+        is_limited       : values.is_limited,
+        is_hourly_credits: values.is_hourly_credits,
+        is_suscription   : values.is_suscription,
+        frequency        : values.frequency
+      },
+      is_bookable_by_client: values.is_bookable_by_client,
+      sku_id               : values.sku_id
+    }
+    if(detail.item.sku_id === values.sku_id)
+      delete form.sku_id
+
     if(editing)
       return dispatch(
-        servicePackageDetailDuck.creators.put({ id: detail.item.id, ...values })
+        servicePackageDetailDuck.creators.put({ id: detail.item.id, ...form })
       )
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return dispatch(servicePackageDetailDuck.creators.post(values))
+      return dispatch(servicePackageDetailDuck.creators.post(form))
         .then(_handleClose)
         .catch(parseResponseError)
   }
 
-  const _handleGetServices = (e) => {
-    const search = e.target.value
-    if(search && service_group) {
-      if(timeout) clearTimeout(timeout)
-      timeout = setTimeout(() => {
-        dispatch(
-          servicePackageDetailDuck.creators.createGetServiceTypes({
-            search,
-            service_group
-          })
-        )
-      }, 500)
-    }
-  }
-
-  const _handleGetLocations = (value) => {
+  const _handleGetLocationsAndReservations = (value) => {
+    change('locations', [])
+    change('applies_reservation_types', [])
     dispatch(
       servicePackageDetailDuck.creators.createGetLocations({
         service_id: value
+      })
+    )
+    dispatch(
+      servicePackageDetailDuck.creators.createGetReservations({
+        service: value,
+        type   : 'A,R'
       })
     )
   }
@@ -130,9 +148,8 @@ const ServicePackageForm = (props) => {
           component={FormField}
           control={Select}
           label='Service Type'
-          name='applies_service_type'
-          onChange={_handleGetLocations}
-          onKeyUp={_handleGetServices}
+          name='service'
+          onChange={_handleGetLocationsAndReservations}
           options={detail.form.service_type_options}
           placeholder='Select Service'
           required
@@ -143,10 +160,10 @@ const ServicePackageForm = (props) => {
         <Field
           component={FormField}
           control={Select}
-          disabled={!applies_service_type}
+          disabled={!service}
           label='Locations'
           multiple
-          name='applies_locations'
+          name='locations'
           options={detail.form.location_options}
           placeholder='Select Locations (All is Default)'
           required
@@ -157,11 +174,11 @@ const ServicePackageForm = (props) => {
         <Field
           component={FormField}
           control={Select}
-          disabled={!(applies_locations.length > 0)}
+          disabled={!service}
           label='Reservation Types'
           multiple
           name='applies_reservation_types'
-          options={detail.form.reservation_type_options}
+          options={detail.form.reservation_options}
           placeholder='Select Reservation Types (All is Default)'
           required
           search
@@ -195,12 +212,6 @@ const ServicePackageForm = (props) => {
           name='days_valid'
           placeholder='Valid for Days'
           type='number'/>
-        <Field
-          component={FormField}
-          control={Input}
-          label='Start Date'
-          name='started_at'
-          type='date'/>
       </Form.Group>
       <Header as='h6' className='section-header' color='blue'>
         Miscellaneous Options
@@ -310,7 +321,7 @@ const ServicePackageForm = (props) => {
             component={FormField}
             control={Checkbox}
             format={Boolean}
-            name='is_available_portal'
+            name='is_bookable_by_client'
             toggle
             type='checkbox'/>
         </Form.Field>
@@ -318,15 +329,18 @@ const ServicePackageForm = (props) => {
       <Form.Group>
         <Form.Field width={12}>
           <Header as='h5' className='package-label'>
-            Custom Account Code
+            Custom Account Code <Header as='span' color='red'>
+            *
+            </Header>
           </Header>
         </Form.Field>
         <Form.Field width={4}>
           <Field
             component={FormField}
             control={Input}
-            name='custom_code'
-            placeholder='Enter Custom Code'/>
+            name='sku_id'
+            placeholder='Enter Custom Code'
+            required/>
         </Form.Field>
       </Form.Group>
       {error && (
@@ -344,17 +358,19 @@ export default reduxForm({
   form    : 'service-package',
   validate: (values) => {
     const schema = {
-      name                : Yup.string().required('Price is required'),
-      applies_service_type: Yup.string().required('Service Type is required'),
-      applies_locations   : Yup.array().required('Choose at least one service type'),
-      // applies_reservation_types: Yup.array().required('Choose at least one reservation type'),
-      price               : Yup.number().required('Price is required'),
-      credits             : Yup.number().required('Credits is required'),
+      name                     : Yup.string().required('Package Name is required'),
+      service                  : Yup.string().required('Service Type is required'),
+      locations                : Yup.array().required('Choose at least one location'),
+      applies_reservation_types: Yup.array().required('Choose at least one reservation type'),
+      price                    : Yup.number().required('Price is required'),
+      credits                  : Yup.number().required('Credits is required'),
+      sku_id                   : Yup.string().required('Custom Code is required')
+      /*
       started_at          : Yup.mixed().when('days_valid', {
         is       : value => !!value,
         then     : Yup.string().required('Start Date is required'),
         otherwise: Yup.mixed()
-      })
+      })*/
 
     }
 
