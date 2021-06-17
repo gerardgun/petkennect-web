@@ -56,7 +56,7 @@ export default {
     modes: { READ }
   }) => ({
     // Sagas creators
-    create  : () => ({ type: CREATE }),
+    create  : (payload) => ({ type: CREATE, payload }),
     'delete': (...ids) => ({
       type             : DELETE,
       ids,

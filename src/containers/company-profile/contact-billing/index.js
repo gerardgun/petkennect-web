@@ -16,9 +16,14 @@ import * as Yup from 'yup'
 
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
+import CreateCardModal from '@containers/company-profile/components/CreateCardModal'
+import companyContactBillingDetailDuck from '@reducers/company/contact-billing/detail'
 import { syncValidate } from '@lib/utils/functions'
+import { useSelector } from 'react-redux'
 
 function SetupCompanyProfileContactBilling(props) {
+  const detail = useSelector(companyContactBillingDetailDuck.selectors.detail)
+
   const {
     handleSubmit // redux-form
   } = props
@@ -31,8 +36,11 @@ function SetupCompanyProfileContactBilling(props) {
     <Layout>
       <Segment className='segment-content' padded='very'>
         <Menu/>
-        {/* eslint-disable-next-line react/jsx-handler-names*/}
-        <Form className='form-container' onSubmit={handleSubmit(_handleSubmit)}>
+        {/* eslint-disable-next-line react/jsx-handler-names */}
+        <Form
+          className='form-container'
+          id='billing-form'
+          onSubmit={handleSubmit(_handleSubmit)}>
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column className='input-form' width='5'>
@@ -162,14 +170,16 @@ function SetupCompanyProfileContactBilling(props) {
               <Grid.Column width='11'>
                 <Segment>
                   <Grid>
-                    <Grid.Column verticalAlign='middle' width='8'>
-                      <Segment className='creditcard-container'>
-                        <p className='current-card'>
-                          Current Card: Type, Ending in XXXX
-                        </p>
-                        <p className='current-card'>Exp: XX/XX</p>
-                        <p className='current-card'>CVC: ***</p>
-                      </Segment>
+                    <Grid.Column verticalAlign='top' width='8'>
+                      {detail.form.cards.map((card, index) => (
+                        <Segment className='creditcard-container' key={index}>
+                          <p className='current-card'>
+                            Current Card: {card.card_number}
+                          </p>
+                          <p className='current-card'>Exp: {card.exp}</p>
+                          <p className='current-card'>CVC: {card.cvv}</p>
+                        </Segment>
+                      ))}
                     </Grid.Column>
                     <Grid.Column width='8'>
                       <Segment className='input-segment'>
@@ -179,12 +189,12 @@ function SetupCompanyProfileContactBilling(props) {
                       <p>
                         Safe money Transfer using your bank acount. Visa,
                         Maestro, Discover, American Express, Powered by Stripe
-                        {/* eslint-disable-next-line react/no-unescaped-entities*/}
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         and We don't store card information in our system.
                       </p>
                       <Divider/>
                       <Segment className='row-end'>
-                        <Button content='Add New Card' positive/>
+                        <CreateCardModal/>
                         <Button content='Confirm' primary/>
                       </Segment>
                     </Grid.Column>

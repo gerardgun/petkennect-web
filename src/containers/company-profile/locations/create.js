@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Input, Modal, Select, TextArea } from 'semantic-ui-react'
+import { Grid, Button, Form, Header, Input, Modal, Select, TextArea, Label } from 'semantic-ui-react'
 
 import * as Yup from 'yup'
 
@@ -126,13 +126,196 @@ const LocationCreate = props => {
       className='form-modal'
       onClose={_handleClose}
       open={isOpened}
-      size='small'>
+      size='large'>
       <Modal.Content>
         <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'New'} Location</Header>
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
           <Field component='input' name='latitude' type='hidden'/>
           <Field component='input' name='longitude' type='hidden'/>
+
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width='4'>
+                <Label
+                  content='Location Codes'
+                  icon='map marker alternate'/>
+              </Grid.Column>
+              <Grid.Column width='6'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='store_code'
+                  placeholder='Enter Store Code'
+                  required/>
+              </Grid.Column>
+              <Grid.Column width='6'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='region_code'
+                  placeholder='Enter Region code'
+                  required/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width='4'>
+                <Label
+                  content='Business name'
+                  icon='map marker alternate'/>
+              </Grid.Column>
+              <Grid.Column width='12'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='company_name'
+                  placeholder='Enter Company Name'
+                  required/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width='4'>
+                <Label
+                  content='Address'
+                  icon='map marker alternate'/>
+              </Grid.Column>
+              <Grid.Column width='12'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='address'
+                  placeholder='Enter Street Address, City,State, Zip, Country'
+                  required/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width='4'>
+                <Label
+                  content='Contact Information'
+                  icon='map marker alternate'/>
+              </Grid.Column>
+              <Grid.Column width='4'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='phone_number'
+                  placeholder='Enter Phone Number'
+                  required/>
+              </Grid.Column>
+              <Grid.Column width='4'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='fax_number'
+                  placeholder='Enter Fax Number'
+                  required/>
+              </Grid.Column>
+              <Grid.Column width='4'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='email_address'
+                  placeholder='Enter Email Address'
+                  required/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width='4'>
+                <Label
+                  content='Website'
+                  icon='map marker alternate'/>
+              </Grid.Column>
+              <Grid.Column width='12'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='website'
+                  placeholder='Enter Website URL'
+                  required/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width='4'>
+                <Label
+                  content='Social Media'
+                  icon='map marker alternate'/>
+              </Grid.Column>
+              <Grid.Column width='4'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='media_site'
+                  placeholder='Select Site'
+                  required/>
+              </Grid.Column>
+              <Grid.Column width='8'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='media_url'
+                  placeholder='Enter URL'
+                  required/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width='4'>
+                <Label
+                  content='Services and Taxes'
+                  icon='map marker alternate'/>
+              </Grid.Column>
+              <Grid.Column width='12'>
+                <Label
+                  content='Table'/>
+                <Label
+                  content='Table'/>
+                <Label
+                  content='Table'/>
+                <Label
+                  content='Table'/>
+                <Label
+                  content='Table'/>
+                <Label
+                  content='Table'/>
+                <Label
+                  content='Table'/>
+                <Label
+                  content='Table'/>
+                <Label
+                  content='Table'/>
+                <Label
+                  content='Table'/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
           <Form.Group widths={3}>
             <Field
               autoComplete='off'
@@ -260,10 +443,20 @@ export default compose(
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        code    : Yup.string().required('Code is required'),
-        name    : Yup.string().required('Name is required'),
-        timezone: Yup.string().required('Timezone is required'),
-        address : Yup.string().required('Address is required')
+        code         : Yup.string().required('Code is required'),
+        name         : Yup.string().required('Name is required'),
+        timezone     : Yup.string().required('Timezone is required'),
+        address      : Yup.string().required('Address is required'),
+        store_code   : Yup.string().required('store_code'),
+        region_code  : Yup.string().required('region_code'),
+        company_name : Yup.string().required('company_name'),
+        phone_number : Yup.string().required('phone_number'),
+        fax_number   : Yup.string().required('fax_number'),
+        email_address: Yup.string().required('email_address'),
+        website      : Yup.string().required('website'),
+        media_site   : Yup.string().required('media_site'),
+        media_url    : Yup.string().required('media_url'),
+        media_site   : Yup.string().required('media_site')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

@@ -46,6 +46,7 @@ import company from '@reducers/company'
 import companyDetail from '@reducers/company/detail'
 import companyProfileCalendar from '@reducers/company-profile/calendar'
 import companyProfileCalendarDetail from '@reducers/company-profile/calendar/detail'
+import companyContactBillingDetail from '@reducers/company/contact-billing/detail'
 import customReport from '@reducers/custom-report'
 import customReportDetail from '@reducers/custom-report/detail'
 import customized from '@reducers/customized-field'
@@ -54,7 +55,7 @@ import customizedFieldDetail from '@reducers/customized-field/field/detail'
 import customizedFieldGroup from '@reducers/customized-field/group'
 import customizedFieldGroupDetail from '@reducers/customized-field/group/detail'
 
-// import boardingReservationBookDetail from '@reducers/client/reservation/boarding-reservation-book/detail'
+import boardingReservationBookDetail from '@reducers/client/reservation/boarding-reservation-book/detail'
 
 import dashboard from '@reducers/dashboard'
 import dashboardDetail from '@reducers/dashboard/detail'
@@ -357,6 +358,7 @@ const createRootReducer = history => combineReducers({
   [companyDetail.store]                                    : companyDetail.reducer,
   [companyProfileCalendar.store]                           : companyProfileCalendar.reducer,
   [companyProfileCalendarDetail.store]                     : companyProfileCalendarDetail.reducer,
+  [companyContactBillingDetail.store]                      : companyContactBillingDetail.reducer,
   [customReport.store]                                     : customReport.reducer,
   [customReportDetail.store]                               : customReportDetail.reducer                ,
   [customized.store]                                       : customized.reducer,
@@ -381,7 +383,7 @@ const createRootReducer = history => combineReducers({
   [boardingPrepaidUsage.store]                             : boardingPrepaidUsage.reducer,
   [boardingReservationUsage.store]                         : boardingReservationUsage.reducer,
   [dashboard.store]                                        : dashboard.reducer,
-  //  [boardingReservationBookDetail.store]                    : boardingReservationBookDetail.reducer,
+  [boardingReservationBookDetail.store]                    : boardingReservationBookDetail.reducer,
   [dashboardDetail.store]                                  : dashboardDetail.reducer,
   [dashboardModal.store]                                   : dashboardModal.reducer,
   [dashboardModalDetail.store]                             : dashboardModalDetail.reducer,
