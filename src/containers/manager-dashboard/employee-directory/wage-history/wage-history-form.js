@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Header, Select, Modal, Grid, Input } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
@@ -89,13 +89,13 @@ const WageHistoryForm = (props) => {
                   label='Hourly Rate'
                   name='hourly_rate'
                   placeholder='Enter hourly rate'
-                  required/>
-                <Field
-                  component={FormField}
-                  control={Input}
+                  required
+                  type='number'/>
+                  <Form.Input
                   label='Salaried Rate'
                   name='salaried_rate'
-                  readOnly/>
+                  readOnly
+                  value={(props.rate > 0 ?  ('$ ' + props.rate * 2080) : ('$ 0'))}/>
               </Form.Group>
               <Field
                 component={FormField}
@@ -163,9 +163,11 @@ export default  compose(
   connect(
     (state) => {
       const wageHistoryDetail = wageHistoryDetailDuck.selectors.detail(state)
+      const rate = formValueSelector('department-role-form')(state, 'hourly_rate')
 
       return {
-        wageHistoryDetail
+        wageHistoryDetail,
+        rate
       }
     },
     {
@@ -180,7 +182,13 @@ export default  compose(
     enableReinitialize: true,
     validate          : (values) => {
       const schema = {
-        role: Yup.string().required('Role is required')
+        role: Yup.string().required('Role is required'),
+        salaried: Yup.string().required('Salaried is required'),
+        hourly_rate: Yup.string().required('Hourly Rate is required'),
+        adjustment_type: Yup.string().required('Adjustment Type is required'),
+        start_date: Yup
+          .date()
+          .required('Start Date is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

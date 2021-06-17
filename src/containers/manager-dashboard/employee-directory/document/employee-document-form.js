@@ -179,7 +179,12 @@ export default  compose(
     enableReinitialize: true,
     validate          : (values) => {
       const schema = {
-        file_name: Yup.string().required('Name is required')
+        file_name: Yup.string().required('Name is required'),
+        document_type: Yup.string().required('Document Type is required'),
+        category: Yup.string().required('Category is required'),
+        date_added: Yup
+          .date()
+          .required('Date is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)
