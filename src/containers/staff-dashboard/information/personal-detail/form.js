@@ -31,8 +31,6 @@ function PersonalInformationForm(props) {
             <>
               <Grid>
                 <Grid.Column className='pl28 pr8' width={8}>
-
-                  <Form className=''>
                     <Header as='h6' className='section-header' color='teal'>Basics</Header>
                     <Field
                       component={FormField}
@@ -55,7 +53,8 @@ function PersonalInformationForm(props) {
                       label='Work Email'
                       name='work_email'
                       placeholder='Enter work email'
-                      type='email'/>
+                      type='email'
+                      required/>
                     <Field
                       autoComplete='off'
                       component={FormField}
@@ -72,16 +71,8 @@ function PersonalInformationForm(props) {
                       mask='(999) 999-9999'
                       name='mobile_phone'
                       placeholder='Enter mobile number'
-                      type='tel'/>
-                    {/* <Field
-                      autoComplete='off'
-                      component={FormField}
-                      control={InputMask}
-                      label='SSN'
-                      mask='999-99-9999'
-                      name='ssn'
-                      placeholder='Enter SSN'
-                      type='number'/> */}
+                      type='tel'
+                      required/>
                     <Form.Input label='SSN' readOnly value='333-33-9999'/>
                     <Field
                       autoFocus
@@ -91,10 +82,8 @@ function PersonalInformationForm(props) {
                       name='birthday'
                       required
                       type='date'/>
-                  </Form>
                 </Grid.Column>
                 <Grid.Column className='pr28 pl8' width={8}>
-                  <Form className=''>
                     <Header as='h6' className='section-header' color='teal'>Emergency Contact</Header>
                     <Field
                       component={FormField}
@@ -118,9 +107,8 @@ function PersonalInformationForm(props) {
                       mask='(999) 999-9999'
                       name='phone_number'
                       placeholder='Enter phone number'
-                      type='tel'/>
-                  </Form>
-
+                      type='tel'
+                      required/>
                   <Grid  className='pt20'>
                     <Grid.Column className='pb0' width={7}>
                       <Header as='h6' className='section-header mt8' color='teal'>Login Credentials</Header>
@@ -152,7 +140,6 @@ function PersonalInformationForm(props) {
               </Grid>
               <Grid>
                 <Grid.Column className='pl28 pt28 pr8' width={8}>
-                  <Form className=''>
                     <Header as='h6' className='section-header' color='teal'>Home Address</Header>
                     <Field
                       component={FormField}
@@ -188,11 +175,9 @@ function PersonalInformationForm(props) {
                       name='state_province'
                       placeholder='Enter state/province'
                       required/>
-                  </Form>
                 </Grid.Column>
 
                 <Grid.Column className='pt28 pr28 pl8' width={8}>
-                  <Form className=''>
                     <Header as='h6' className='section-header' color='teal'>Company Information</Header>
                     <Form.Input label='Primary Location' readOnly value='Location One'/>
                     <Form.Input label='Hire Date' readOnly value='1/1/2018'/>
@@ -200,7 +185,6 @@ function PersonalInformationForm(props) {
                     <Form.Input label='Roles' readOnly value='Manager, Dog Training'/>
                     <Form.Input label='Managers' readOnly value='Shannon Mayfield'/>
                     <Form.Input label='Annual PTO Days' readOnly value='10'/>
-                  </Form>
                 </Grid.Column>
 
               </Grid>
@@ -234,7 +218,18 @@ export default compose(
     enableReinitialize: true,
     validate          : values => {
       const schema = {
-        first_name: Yup.string().required('Name is required')
+        first_name: Yup.string().required('First Name is required'),
+        last_name: Yup.string().required('Last Name is required'),
+        work_email: Yup.string().required('Email is required'),
+        mobile_phone: Yup.string().required('Mobile Number is required'),
+        birthday: Yup.string().required('Birthday is required'),
+        full_name: Yup.string().required('Name is required'),
+        relation: Yup.string().required('Relation is required'),
+        phone_number: Yup.string().required('Phone Number is required'),
+        user_id: Yup.string().required('User Id is required'),
+        pin: Yup.string().required('Pin is required'),
+        address_line1: Yup.string().required('Address is required'),
+        zip_postal_code: Yup.string().required('Zip/Postal Code is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

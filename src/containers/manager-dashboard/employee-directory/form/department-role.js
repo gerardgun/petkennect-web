@@ -36,7 +36,7 @@ const DepartmentRole = ({ locations, fields, meta: { error, submitFailed }, ...p
               control={Select}
               fluid
               label='Department'
-              name='department'
+              name={`department${index}`}
               options={[
                 { key: 1, value: 'management', text: 'Management' },
                 { key: 2, value: 'training', text: 'Training' },
@@ -51,7 +51,7 @@ const DepartmentRole = ({ locations, fields, meta: { error, submitFailed }, ...p
               fluid
               label='Role'
               multiple={true}
-              name='role'
+              name={`role${index}`}
               options={[
                 { key: 1, value: 'manager', text: 'Manager' },
                 { key: 2, value: 'trainer', text: 'Trainer' },
@@ -65,7 +65,7 @@ const DepartmentRole = ({ locations, fields, meta: { error, submitFailed }, ...p
               control={Select}
               label='Select Location'
               multiple={true}
-              name='location'
+              name={`location${index}`}
               options={locations.items.map((_location) => ({
                 key  : _location.id,
                 value: _location.id,

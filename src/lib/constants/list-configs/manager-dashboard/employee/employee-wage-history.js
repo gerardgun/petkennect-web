@@ -75,7 +75,7 @@ export default {
               name        : 'end_wage'
             },
             {
-              icon        : 'delete',
+              icon        : 'trash alternate outline',
               display_name: 'Delete Wage',
               name        : 'delete_wage'
             }
