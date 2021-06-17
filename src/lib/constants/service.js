@@ -114,10 +114,10 @@ export const KennelTypeDefaultConfig = {
 }
 
 export const ServicePackageDefaultConfig = {
-  locations                : [],
-  applies_reservation_types: [],
-  is_limited               : false,
-  is_hourly_credits        : false,
-  is_suscription           : false,
-  is_bookable_by_client    : false
+  locations               : [],
+  service_variation_addons: [],
+  is_limited              : false,
+  is_hourly_credits       : false,
+  is_suscription          : false,
+  is_bookable_by_client   : false
 }

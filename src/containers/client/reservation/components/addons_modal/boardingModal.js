@@ -1,28 +1,32 @@
 import React, { useState } from 'react'
-import { Button, Header, Icon, Modal } from 'semantic-ui-react'
+import { Button, Modal } from 'semantic-ui-react'
 
-function BoardingModal (){
-  const [open, setOpen] = useState(false)
-return(
-  <Modal
-    onClose={() => setOpen(false)}
-    onOpen={() => setOpen(true)}
-    open={open}
-    trigger={<Button type='button' positive>Edit</Button>}>
+function BoardingModal() {
+  const [ open, setOpen ] = useState(false)
 
-    <Modal.Actions>
+  return (
+    <Modal
+      // eslint-disable-next-line react/jsx-handler-names
+      onClose={() => setOpen(false)}
+      // eslint-disable-next-line react/jsx-handler-names
+      onOpen={() => setOpen(true)}
+      open={open}
+      trigger={<Button positive type='button'>Edit</Button>}>
+
+      <Modal.Actions>
+        { /* eslint-disable-next-line react/jsx-handler-names */ }
         <Button color='black' onClick={() => setOpen(false)}>
           Nope
         </Button>
         <Button
           content="Yep, that's me"
-          labelPosition='right'
           icon='checkmark'
+          labelPosition='right'
+          // eslint-disable-next-line react/jsx-handler-names
           onClick={() => setOpen(false)}
-          positive
-        />
+          positive/>
       </Modal.Actions>
-  </Modal>
-)
+    </Modal>
+  )
 }
 export default BoardingModal

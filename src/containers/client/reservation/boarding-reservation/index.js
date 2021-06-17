@@ -46,19 +46,22 @@ const BoardingReservationForm = (props) => {
         <Grid.Column  only='large screen' width={2}/>
         <Grid.Column largeScreen={12} widescreen={16}>
           <Step.Group>
-            <Step completed={step > 1} active={step === 1} onClick={() => setStep(1)} >
+            {/* eslint-disable-next-line react/jsx-handler-names*/}
+            <Step active={step === 1} completed={step > 1} onClick={() => setStep(1)} >
               <Icon name='check circle outline'/>
               <Step.Content>
                 <Step.Title>Service Information</Step.Title>
               </Step.Content>
             </Step>
-            <Step completed={step > 2} active={step === 2} onClick={() => setStep(2)} >
+            {/* eslint-disable-next-line react/jsx-handler-names*/}
+            <Step active={step === 2} completed={step > 2} onClick={() => setStep(2)} >
               <Icon name='check circle outline'/>
               <Step.Content>
                 <Step.Title>Additional Services</Step.Title>
               </Step.Content>
             </Step>
-            <Step completed={step > 3} active={step === 3} onClick={() => setStep(3)} >
+            {/* eslint-disable-next-line react/jsx-handler-names*/}
+            <Step active={step === 3} completed={step > 3} onClick={() => setStep(3)} >
               <Icon name='check circle outline'/>
               <Step.Content>
                 <Step.Title>Summary</Step.Title>
@@ -68,12 +71,15 @@ const BoardingReservationForm = (props) => {
         </Grid.Column>
         <Grid.Column  only='large screen' width={2}/>
       </Grid.Row>
-      {/* eslint-disable-next-line react/jsx-handler-names*/}
-      <Form id='boarding-form' className='w100' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+      <Form
+        // eslint-disable-next-line react/jsx-handler-names
+        className='w100' id='boarding-form' onReset={reset}
+        // eslint-disable-next-line react/jsx-handler-names
+        onSubmit={handleSubmit(_handleSubmit)}>
         {step === 1 && (
           <BoardingSectionFirst {...props}/>
         )}
-        {step === 2 && <BoardingSectionSecond />}
+        {step === 2 && <BoardingSectionSecond/>}
       </Form>
     </Grid>
 

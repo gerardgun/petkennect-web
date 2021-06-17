@@ -78,6 +78,7 @@ import location from './location'
 import locationDetail from './location/detail'
 import managerDashboardDepartmentRole from './manager-dashboard/department-role'
 import managerDashboardEmployeeDirectory from './manager-dashboard/employee/employee-directory'
+import managerDashboardEmployeeDocument from './manager-dashboard/employee/employee-document'
 import managerDashboardEmployeeWageHistory from './manager-dashboard/employee/employee-wage-history'
 import medication from './pet/medication-setting/medication'
 import medicationMeasurement from './pet/medication-setting/medication-measurement'
@@ -308,6 +309,7 @@ export default function* rootSaga() {
     ...locationDetail,
     ...managerDashboardDepartmentRole,
     ...managerDashboardEmployeeDirectory,
+    ...managerDashboardEmployeeDocument,
     ...managerDashboardEmployeeWageHistory,
     ...medication,
     ...medicationMeasurement,

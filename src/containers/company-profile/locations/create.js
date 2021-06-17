@@ -142,8 +142,8 @@ const LocationCreate = props => {
             <Grid.Row>
               <Grid.Column width='4'>
                 <Label
-                icon='map marker alternate' 
-                content='Location Codes'/>
+                  content='Location Codes'
+                  icon='map marker alternate'/>
               </Grid.Column>
               <Grid.Column width='6'>
                 <Field
@@ -155,7 +155,7 @@ const LocationCreate = props => {
                   required/>
               </Grid.Column>
               <Grid.Column width='6'>
-                  <Field
+                <Field
                   autoComplete='off'
                   component={FormField}
                   control={Input}
@@ -170,8 +170,8 @@ const LocationCreate = props => {
             <Grid.Row>
               <Grid.Column width='4'>
                 <Label
-                icon='map marker alternate' 
-                content='Business name'/>
+                  content='Business name'
+                  icon='map marker alternate'/>
               </Grid.Column>
               <Grid.Column width='12'>
                 <Field
@@ -189,8 +189,8 @@ const LocationCreate = props => {
             <Grid.Row>
               <Grid.Column width='4'>
                 <Label
-                icon='map marker alternate' 
-                content='Address'/>
+                  content='Address'
+                  icon='map marker alternate'/>
               </Grid.Column>
               <Grid.Column width='12'>
                 <Field
@@ -209,8 +209,8 @@ const LocationCreate = props => {
             <Grid.Row>
               <Grid.Column width='4'>
                 <Label
-                icon='map marker alternate' 
-                content='Contact Information'/>
+                  content='Contact Information'
+                  icon='map marker alternate'/>
               </Grid.Column>
               <Grid.Column width='4'>
                 <Field
@@ -249,8 +249,8 @@ const LocationCreate = props => {
             <Grid.Row>
               <Grid.Column width='4'>
                 <Label
-                icon='map marker alternate' 
-                content='Website'/>
+                  content='Website'
+                  icon='map marker alternate'/>
               </Grid.Column>
               <Grid.Column width='12'>
                 <Field
@@ -268,8 +268,8 @@ const LocationCreate = props => {
             <Grid.Row>
               <Grid.Column width='4'>
                 <Label
-                icon='map marker alternate' 
-                content='Social Media'/>
+                  content='Social Media'
+                  icon='map marker alternate'/>
               </Grid.Column>
               <Grid.Column width='4'>
                 <Field
@@ -297,30 +297,30 @@ const LocationCreate = props => {
             <Grid.Row>
               <Grid.Column width='4'>
                 <Label
-                icon='map marker alternate' 
-                content='Services and Taxes'/>
+                  content='Services and Taxes'
+                  icon='map marker alternate'/>
               </Grid.Column>
               <Grid.Column width='12'>
                 <Label
-                content='Table'/>
+                  content='Table'/>
                 <Label
-                content='Table'/>
+                  content='Table'/>
                 <Label
-                content='Table'/>
+                  content='Table'/>
                 <Label
-                content='Table'/>
+                  content='Table'/>
                 <Label
-                content='Table'/>
+                  content='Table'/>
                 <Label
-                content='Table'/>
+                  content='Table'/>
                 <Label
-                content='Table'/>
+                  content='Table'/>
                 <Label
-                content='Table'/>
+                  content='Table'/>
                 <Label
-                content='Table'/>
+                  content='Table'/>
                 <Label
-                content='Table'/>
+                  content='Table'/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -463,10 +463,10 @@ export default compose(
         phone_number: Yup.string().required('Phone number is required'),
         fax_number: Yup.string().required('fax_number'),
         email_address: Yup.string().required('email_address'),
-        website: Yup.string().required('website'),
-        media_site: Yup.string().required('media_site'),
-        media_url: Yup.string().required('media_url'),
-        media_site: Yup.string().required('media_site')
+        website      : Yup.string().required('website'),
+        media_site   : Yup.string().required('media_site'),
+        media_url    : Yup.string().required('media_url'),
+        media_site   : Yup.string().required('media_site')
       }
 
       return syncValidate(Yup.object().shape(schema), values)

@@ -57,24 +57,19 @@ const ServicePackageForm = (props) => {
       })
   }, [ detail.item.id ])
 
-  useEffect(() => {
-    if(editing)
-      change('applies_reservation_types', detail.item.applies_reservation_types)
-  }, [ detail.item.applies_reservation_types ])
-
   const _handleClose = () => {
     dispatch(servicePackageDetailDuck.creators.resetItem())
   }
 
   const _handleSubmit = (values) => {
     const form = {
-      name                     : values.name,
-      description              : values.description,
-      service                  : values.service,
-      locations                : values.locations,
-      applies_reservation_types: values.applies_reservation_types,
-      price                    : values.price,
-      config                   : {
+      name                    : values.name,
+      description             : values.description,
+      service                 : values.service,
+      locations               : values.locations,
+      service_variation_addons: values.service_variation_addons,
+      price                   : values.price,
+      config                  : {
         credits          : values.credits,
         days_valid       : values.days_valid,
         days             : values.days,
@@ -86,8 +81,6 @@ const ServicePackageForm = (props) => {
       is_bookable_by_client: values.is_bookable_by_client,
       sku_id               : values.sku_id
     }
-    if(detail.item.sku_id === values.sku_id)
-      delete form.sku_id
 
     if(editing)
       return dispatch(
@@ -177,7 +170,7 @@ const ServicePackageForm = (props) => {
           disabled={!service}
           label='Reservation Types'
           multiple
-          name='applies_reservation_types'
+          name='service_variation_addons'
           options={detail.form.reservation_options}
           placeholder='Select Reservation Types (All is Default)'
           required
@@ -358,13 +351,13 @@ export default reduxForm({
   form    : 'service-package',
   validate: (values) => {
     const schema = {
-      name                     : Yup.string().required('Package Name is required'),
-      service                  : Yup.string().required('Service Type is required'),
-      locations                : Yup.array().required('Choose at least one location'),
-      applies_reservation_types: Yup.array().required('Choose at least one reservation type'),
-      price                    : Yup.number().required('Price is required'),
-      credits                  : Yup.number().required('Credits is required'),
-      sku_id                   : Yup.string().required('Custom Code is required')
+      name              : Yup.string().required('Package Name is required'),
+      service           : Yup.string().required('Service Type is required'),
+      locations         : Yup.array().required('Choose at least one location'),
+      service_addons_ids: Yup.array().required('Choose at least one reservation type'),
+      price             : Yup.number().required('Price is required'),
+      credits           : Yup.number().required('Credits is required'),
+      sku_id            : Yup.string().required('Custom Code is required')
       /*
       started_at          : Yup.mixed().when('days_valid', {
         is       : value => !!value,

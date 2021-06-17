@@ -1,12 +1,8 @@
-import React, { useState } from 'react'
-import { formValueSelector } from 'redux-form'
-import { Accordion, Button, Divider, Grid, Header, Icon, Image } from 'semantic-ui-react'
+import React from 'react'
+import { Accordion, Divider, Grid, Header, Icon, Image } from 'semantic-ui-react'
 import './styles.scss'
 
-const selector = formValueSelector('boarding-form')
-
-function  PetCard ({ pet, activeIndex, onclick }) {
-
+function  PetCard({ pet, activeIndex }) {
   const handleClick = (e, titleProps) => {
     const { index } = titleProps
     const newIndex = activeIndex === index ? -1 : index
@@ -19,6 +15,7 @@ function  PetCard ({ pet, activeIndex, onclick }) {
       <Accordion.Title
         active={activeIndex === pet.id}
         index={pet.id}
+        // eslint-disable-next-line react/jsx-handler-names
         onClick={handleClick}>
         <Grid id='pets-section'>
           <input name='pets' type='hidden'/>
@@ -59,15 +56,15 @@ function  PetCard ({ pet, activeIndex, onclick }) {
             </Grid.Column>
             <Divider className='w100'/>
           </Grid.Row>
-      </Grid>
-        <Icon name='dropdown' />
+        </Grid>
+        <Icon name='dropdown'/>
       </Accordion.Title>
-      <Accordion.Content active={ activeIndex === pet.id }>
-          <p>
+      <Accordion.Content active={activeIndex === pet.id}>
+        <p>
             A dog is a type of domesticated animal. Known for its loyalty and
             faithfulness, it can be found as a welcome guest in many households
             across the world.
-          </p>
+        </p>
       </Accordion.Content>
     </Accordion>
   )
