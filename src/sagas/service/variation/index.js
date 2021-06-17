@@ -8,7 +8,7 @@ import serviceVariationDuck from '@reducers/service/variation'
 
 const { selectors, types } = serviceVariationDuck
 
-function* get() {
+export function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 

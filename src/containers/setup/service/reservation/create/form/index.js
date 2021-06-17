@@ -339,7 +339,7 @@ export default reduxForm({
       price        : yup.object().shape({
         price     : yup.number().typeError('Price must be a number').required('Price is required'),
         started_at: yup.date().min(moment().subtract(1, 'days').toString(), 'Start Date must be a valid date').required('Start Date is required'),
-        ended_at  : yup.date().min(moment().subtract(1, 'days').toString(), 'Start Date must be a valid date').required('End Date is required'),
+        ended_at  : yup.date().min(moment().subtract(1, 'days').toString(), 'End Date must be a valid date').required('End Date is required'),
         ...extra
       })
     }
