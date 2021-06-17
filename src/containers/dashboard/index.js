@@ -16,6 +16,7 @@ import {
 import { useChangeStatusEffect } from '@hooks/Shared'
 import { FaCashRegister } from 'react-icons/fa'
 
+import theme from '@components/mainTheme'
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import ModalDelete from '@components/Modal/Delete'
@@ -146,19 +147,19 @@ const Dashboard = (props) => {
           </Grid>
           <Button
             className='mb4'
-            color={outerFilter === 'expected' ? 'teal' : ''}
+            color={outerFilter === 'expected' ? theme.buttonMenuColor : ''}
             content='Expected : 45'
             // eslint-disable-next-line react/jsx-handler-names
             onClick={() => setOuterFilter('expected')}/>
           <Button
-            className='mb4'
-            color={outerFilter === 'checkIn' ? 'teal' : ''}
+            className='mb4 button-menu'
+            color={outerFilter === 'checkIn' ? theme.buttonMenuColor : ''}
             content='Checked In : 30'
             // eslint-disable-next-line react/jsx-handler-names
             onClick={() => setOuterFilter('checkIn')}/>
           <Button
-            className='mb4'
-            color={outerFilter === 'checkOut' ? 'teal' : ''}
+            className='mb4 button-menu'
+            color={outerFilter === 'checkOut' ? theme.buttonMenuColor : ''}
             content='Checked Out : 15'
             // eslint-disable-next-line react/jsx-handler-names
             onClick={() => setOuterFilter('checkOut')}/>

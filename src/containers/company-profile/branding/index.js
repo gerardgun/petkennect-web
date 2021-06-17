@@ -8,6 +8,7 @@ import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
+import theme from '@components/mainTheme'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
 import Tab from '@containers/setup/boarding/general/components/Tab'
@@ -37,11 +38,16 @@ const textColors = [
 ]
 
 function SetupCompanyProfileBranding(props) {
+  const {
+    error, handleSubmit, reset, initialize // redux-form
+  } = props
+
   const [ logo, setLogo ] = useState([])
   const [ background, setBackground ] = useState([])
   const [ navColor, setNavColor ] = useState()
   const [ headingColor, setHeadingColor ] = useState()
   const [ textColor, setTextColor ] = useState()
+
   const { getRootProps: getRootLogo, getInputProps: getInputLogo } = useDropzone({
     maxFiles: 1,
     accept  : 'image/png, image/gif, image/jpeg',
@@ -61,12 +67,6 @@ function SetupCompanyProfileBranding(props) {
       })))
     }
   })
-
-  const {
-    error, handleSubmit // redux-form
-  } = props
-
-  const dispatch = useDispatch()
 
   const _handleSubmit = values => {
     console.log(values)
@@ -148,16 +148,19 @@ function SetupCompanyProfileBranding(props) {
             <Grid.Row>
               <Grid.Column width='12'>
                 <Header as='h4'>Top Navigation Text Color</Header>
-                {textColors.map(item => (<Button
-                  className='button-color' color={item.color} onClick={() => setTextColor(item)}
+                {textColors.map(item => (
+                  <Button
+                  type='button'
+                  className='button-color' 
+                  color={item.color} onClick={() => {setTextColor(item)}}
                   size='mini'/>))}
               </Grid.Column>
               <Grid.Column width='4'>
-                {textColor
-              && <Label basic className='label-color'>
-                <Button className='button-color' color={textColor.color} size='mini'/>
-                {textColor.label}
-              </Label>}
+                {textColor && 
+                  <Label basic className='label-color'>
+                    <Button className='button-color' color={textColor.color} size='mini'/>
+                    {textColor.label}
+                  </Label>}
               </Grid.Column>
             </Grid.Row>
 

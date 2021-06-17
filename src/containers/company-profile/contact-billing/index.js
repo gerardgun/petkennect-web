@@ -12,12 +12,9 @@ import Menu from '@containers/company-profile/components/Menu'
 import CreateCardModal from '@containers/company-profile/components/CreateCardModal'
 import Tab from '@containers/setup/boarding/general/components/Tab'
 import SetupBoardingGeneralBelongingIndex from '@containers/setup/boarding/general/belonging-section'
-import companyContactBillingDetailDuck from '@reducers/company/contact-billing/detail'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 function SetupCompanyProfileContactBilling (props){
-
-    const detail = useSelector(companyContactBillingDetailDuck.selectors.detail)
 
     const {
         error, handleSubmit // redux-form
@@ -137,12 +134,12 @@ return(
                             <Segment>
                                 <Grid>
                                     <Grid.Column width='8' verticalAlign='top'>
-                                        {detail.form.cards.map(card => 
+                                        {/*detail.form.cards.map(card => 
                                             <Segment className='creditcard-container'>
                                                 <p className='current-card'>Current Card: {card.card_number}</p>
                                                 <p className='current-card'>Exp: {card.exp}</p>
                                                 <p className='current-card'>CVC: {card.cvv}</p>
-                                            </Segment>)}
+                                        </Segment>)*/}
                                     </Grid.Column>
                                     <Grid.Column width='8'>
                                         <Segment className='input-segment'>

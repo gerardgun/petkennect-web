@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect , useDispatch } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid,Header,Dimmer,Loader, Segment } from 'semantic-ui-react'
 
@@ -13,11 +13,13 @@ import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
 
 const SetupCompanyProfileLocations = ({ location, locationDetail, ...props }) => {
+  const dispatch = useDispatch()
   useEffect(() => {
-    props.getLocations()
+    dispatch(locationDuck.creators.get())
   }, [])
 
   useEffect(() => {
+    console.log('posteddddddddddddddddd')
     if(locationDetail.status === 'POSTED' || locationDetail.status === 'PUT' || locationDetail.status === 'DELETED')
       props.getLocations()
   }, [ locationDetail.status ])

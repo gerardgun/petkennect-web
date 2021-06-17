@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Grid, Button, Form, Header, Input, Modal, Select, TextArea, Label } from 'semantic-ui-react'
+import { Divider, Grid, Button, Form, Header, Input, Modal, Select, TextArea, Label } from 'semantic-ui-react'
 
 import * as Yup from 'yup'
 
@@ -15,6 +15,8 @@ import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/fu
 
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
+
+const social_media = ['Facebook', 'Youtube','Instagram']
 
 const LocationCreate = props => {
   const {
@@ -57,8 +59,8 @@ const LocationCreate = props => {
           props.change('address', response.results[0].formatted_address)
 
         getTimeZone(lat, lng)
-        props.change('latitude', lat)
-        props.change('longitude', lng)
+        props.change('latitude', lat.toString())
+        props.change('longitude', lng.toString())
       })
   }
 
@@ -71,8 +73,8 @@ const LocationCreate = props => {
           setDefaultLocation({ lat: response.results[0].geometry.location.lat, lng: response.results[0].geometry.location.lng })
 
           getTimeZone(response.results[0].geometry.location.lat, response.results[0].geometry.location.lng)
-          props.change('latitude', response.results[0].geometry.location.lat)
-          props.change('longitude', response.results[0].geometry.location.lng)
+          props.change('latitude', response.results[0].geometry.location.lat.toString())
+          props.change('longitude', response.results[0].geometry.location.lng.toString())
         }
       })
   }
@@ -90,7 +92,8 @@ const LocationCreate = props => {
 
   const _handleSubmit = values => {
     const { address, ...rest } = parseFormValues(values)
-    values = { ...rest, addresses: [ address ] }
+    values = { ...rest, addresses: address , zip_code: 123, employee_schedule_id: 123}
+    console.log(values)
 
     if(typeof values.description === 'string' && !values.description.trim())
       delete values.description
@@ -109,6 +112,7 @@ const LocationCreate = props => {
   const isOpened = useMemo(() => {
     return locationDetail.mode === 'CREATE' || locationDetail.mode === 'UPDATE'
   }, [ locationDetail.mode ])
+
   const locationOptions = useMemo(() => {
     return location.items.map(item => ({
       key  : item.id,
@@ -146,7 +150,7 @@ const LocationCreate = props => {
                   autoComplete='off'
                   component={FormField}
                   control={Input}
-                  name='store_code'
+                  name='code'
                   placeholder='Enter Store Code'
                   required/>
               </Grid.Column>
@@ -155,7 +159,7 @@ const LocationCreate = props => {
                   autoComplete='off'
                   component={FormField}
                   control={Input}
-                  name='region_code'
+                  name='timezone'
                   placeholder='Enter Region code'
                   required/>
               </Grid.Column>
@@ -174,7 +178,7 @@ const LocationCreate = props => {
                   autoComplete='off'
                   component={FormField}
                   control={Input}
-                  name='company_name'
+                  name='name'
                   placeholder='Enter Company Name'
                   required/>
               </Grid.Column>
@@ -192,6 +196,7 @@ const LocationCreate = props => {
                 <Field
                   autoComplete='off'
                   component={FormField}
+                  onChange={_handleAddressChange}
                   control={Input}
                   name='address'
                   placeholder='Enter Street Address, City,State, Zip, Country'
@@ -213,6 +218,7 @@ const LocationCreate = props => {
                   component={FormField}
                   control={Input}
                   name='phone_number'
+                  type='number'
                   placeholder='Enter Phone Number'
                   required/>
               </Grid.Column>
@@ -222,6 +228,7 @@ const LocationCreate = props => {
                   component={FormField}
                   control={Input}
                   name='fax_number'
+                  type='number'
                   placeholder='Enter Fax Number'
                   required/>
               </Grid.Column>
@@ -230,6 +237,7 @@ const LocationCreate = props => {
                   autoComplete='off'
                   component={FormField}
                   control={Input}
+                  type='email'
                   name='email_address'
                   placeholder='Enter Email Address'
                   required/>
@@ -268,6 +276,7 @@ const LocationCreate = props => {
                   autoComplete='off'
                   component={FormField}
                   control={Input}
+                  type='url'
                   name='media_site'
                   placeholder='Select Site'
                   required/>
@@ -316,7 +325,7 @@ const LocationCreate = props => {
             </Grid.Row>
           </Grid>
 
-          <Form.Group widths={3}>
+          {/*<Form.Group widths={3}>
             <Field
               autoComplete='off'
               component={FormField}
@@ -341,9 +350,9 @@ const LocationCreate = props => {
               name='timezone'
               placeholder='Enter timezone'
               readOnly
-              required/>
-          </Form.Group>
-          {
+            required/>
+          </Form.Group>*/}
+          {/*
             locationDetail.mode === 'CREATE' && (
               <Form.Group widths='equal'>
                 <Field
@@ -377,7 +386,8 @@ const LocationCreate = props => {
               label='Description'
               name='description'
               placeholder='Enter description'/>
-          </Form.Group>
+            </Form.Group>*/}
+          <Divider />
           <MapPicker
             apiKey={googleApiKey}
             defaultLocation={defaultLocation}
@@ -443,14 +453,14 @@ export default compose(
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        code    : Yup.string().required('Code is required'),
-        name    : Yup.string().required('Name is required'),
-        timezone: Yup.string().required('Timezone is required'),
+        //code    : Yup.string().required('Code is required'),
+        //name    : Yup.string().required('Name is required'),
+        name: Yup.string().required('Company name is required'),
+        code: Yup.string().required('Store Code is required'),
         address : Yup.string().required('Address is required'),
-        store_code: Yup.string().required('store_code'),
-        region_code: Yup.string().required('region_code'),
-        company_name: Yup.string().required('company_name'),
-        phone_number: Yup.string().required('phone_number'),
+        timezone: Yup.string().required('Timezone is required'),
+        region_code: Yup.string().required('Region Code is required'),  
+        phone_number: Yup.string().required('Phone number is required'),
         fax_number: Yup.string().required('fax_number'),
         email_address: Yup.string().required('email_address'),
         website: Yup.string().required('website'),
