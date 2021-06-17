@@ -18,7 +18,6 @@ const { selectors, types } = servicePackageDetailDuck
 function* create() {
   try {
     const detail = yield select(selectors.detail)
-    let reservationTypesSelected = []
     let serviceOptions = []
     let locationOptions = []
     let reservationOptions = []
@@ -59,10 +58,6 @@ function* create() {
         text : name,
         value: id
       }))
-
-      // get reservation types selected of package
-      const { results: reservations } = yield call(Get, `service-variations/${detail.item.id}/addons`)
-      reservationTypesSelected = reservations.map(({ id }) => id)
     }
     yield put({ type: types.GET_PENDING })
     yield put({
@@ -71,10 +66,6 @@ function* create() {
           service_type_options: serviceOptions,
           location_options    : locationOptions,
           reservation_options : reservationOptions
-        },
-        item: {
-          ...detail.item,
-          applies_reservation_types: reservationTypesSelected
         }
       },
       type: types.GET_FULFILLED
@@ -132,6 +123,7 @@ function* post({ payload }) {
     })
 
     // create reservation types
+    /*
     yield all(
       payload.applies_reservation_types.map((reservationTypeId) =>
         call(Post, `service-variations/${package_item.id}/addons/`, {
@@ -139,6 +131,7 @@ function* post({ payload }) {
         })
       )
     )
+    */
 
     yield put({
       type: types.POST_FULFILLED,
@@ -171,17 +164,6 @@ function* _put({ payload: { type, ...payload } }) {
       started_at                 : moment().format('YYYY-MM-DD[T]HH:mm:ss')
     })
 
-    const oldReservationTypes = yield call(
-      Get,
-      `service-variations/${payload.id}/addons`
-    )
-    console.log(oldReservationTypes)
-    /*
-    // create reservation types
-    yield all(payload.applies_reservation_types.map((reservationTypeId) =>
-      call(Post, `service-variations/${payload.id}/addons/`, { addon_service_variation: reservationTypeId })
-    ))
-    */
     // prices deleted
     yield call(
       Delete,
@@ -301,19 +283,20 @@ function* createGetReservations({ payload }) {
 }
 
 function* copy({ payload }) {
+  /*
   const reservations = yield call(
     Get,
     `service-variations/${payload.id}/addons`,
     { page_size: 100 }
-  )
+  )*/
 
   yield put({
     type   : types.POST,
     payload: {
       ...payload,
-      name                     : `${payload.name} (copy)`,
-      sku_id                   : `${payload.sku_id} (copy)`,
-      applies_reservation_types: reservations.results.map(({ id }) => id)
+      name  : `${payload.name} (copy)`,
+      sku_id: `${payload.sku_id} (copy)`
+      // applies_reservation_types: reservations.results.map(({ id }) => id)
     }
   })
 }
