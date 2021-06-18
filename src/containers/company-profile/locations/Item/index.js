@@ -13,7 +13,6 @@ function Item({ item, onUpdate, onDelete }) {
   const _handleDeleteBtnClick = () => {
     onDelete(item)
   }
-  console.log(item)
 
   return (
     <Segment className='location-item'>
@@ -21,19 +20,19 @@ function Item({ item, onUpdate, onDelete }) {
         <Grid.Column  computer={14} mobile={11} tablet={14}>
           <Header as='h3'>
             {item.name}
-          <Header.Subheader style={{ display: 'inline-block', marginLeft: '0.5rem' }}>{item.code}</Header.Subheader>
+            <Header.Subheader style={{ display: 'inline-block', marginLeft: '0.5rem' }}>{item.code}</Header.Subheader>
           </Header>
           <InputReadOnly
             label='Street Address'
-            value={item.addresses ? item.addresses[0] : '-'}/>
+            value={item.address}/>
           <br/>
           <InputReadOnly
             label='City, ST Zip'
-            value={'----------'}/>
+            value={`${item.zip.city}, ${item.zip.state}, ${item.zip_code}`}/>
           <br/>
           <InputReadOnly
             label='Country'
-            value={'----------'}/>
+            value={item.zip.country}/>
           <br/>
           <InputReadOnly
             label='Time Zone'
@@ -41,13 +40,15 @@ function Item({ item, onUpdate, onDelete }) {
           <br/>
           <InputReadOnly
             label='Phone, Fax, Email, Contact Person'
-            value={'----------'}/>
+            value={item.contact_people[0]}/>
           <br/>
           <InputReadOnly
             label='Description'
             value={item.description ? item.description :  '-'}/>
         </Grid.Column>
-        <Grid.Column  computer={2} mobile={5} tablet={2}>
+        <Grid.Column
+          computer={2} mobile={5} tablet={2}
+          verticalAlign='top'>
           <Button
             basic icon='edit outline'
             onClick={_handleUpdateBtnClick}/>

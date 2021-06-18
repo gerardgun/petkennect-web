@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch,  useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import {
   Grid,
@@ -16,6 +16,7 @@ import {
 import { useChangeStatusEffect } from '@hooks/Shared'
 import { FaCashRegister } from 'react-icons/fa'
 
+import Theme from '@components/mainTheme'
 import Layout from '@components/Common/Layout'
 import Table from '@components/Table'
 import ModalDelete from '@components/Modal/Delete'
@@ -28,6 +29,7 @@ import dashboardListConfig from '@lib/constants/list-configs/dashboard'
 import dashboardDuck from '@reducers/dashboard'
 import dashboardDetailDuck from '@reducers/dashboard/detail'
 import dashboardModalDetailDuck from '@reducers/dashboard/dashboard-modal/detail'
+import tenantDetailDuck from '@reducers/tenant/detail'
 import clientDetailDuck from '@reducers/client/detail'
 
 import NewClientForm from '../client/form/modal'
@@ -42,6 +44,8 @@ const Dashboard = (props) => {
   const [ outerFilter, setOuterFilter ] = useState('expected')
   const [ hideSidebar, setHideSidebar ] = useState()
   const dispatch = useDispatch()
+
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(dashboardDuck.creators.get())
@@ -65,8 +69,7 @@ const Dashboard = (props) => {
       })
     )
   }
-  const _handleDropdownOptionClick = (option, item) => {
-    console.log(item)
+  const _handleDropdownOptionClick = (option) => {
     switch (option) {
       case 'edit_pet':
         history.push({
@@ -126,7 +129,6 @@ const Dashboard = (props) => {
     })
   }
   const _handleRetailSale = () => {
-    //
   }
 
   const _onHandleSideBar = (sidebar) => {
@@ -141,24 +143,24 @@ const Dashboard = (props) => {
             <Grid.Column
               className='pb8' computer={16} mobile={16}
               tablet={16}>
-              <Header as='h2'>The Daily Dashboard</Header>
+              <Header as='h2' color={Theme(tenant).headingColor}>The Daily Dashboard</Header>
             </Grid.Column>
           </Grid>
           <Button
             className='mb4'
-            color={outerFilter === 'expected' ? 'teal' : ''}
+            color={outerFilter === 'expected' ? Theme(tenant).buttonMenuColor : ''}
             content='Expected : 45'
             // eslint-disable-next-line react/jsx-handler-names
             onClick={() => setOuterFilter('expected')}/>
           <Button
-            className='mb4'
-            color={outerFilter === 'checkIn' ? 'teal' : ''}
+            className='mb4 button-menu'
+            color={outerFilter === 'checkIn' ? Theme(tenant).buttonMenuColor : ''}
             content='Checked In : 30'
             // eslint-disable-next-line react/jsx-handler-names
             onClick={() => setOuterFilter('checkIn')}/>
           <Button
-            className='mb4'
-            color={outerFilter === 'checkOut' ? 'teal' : ''}
+            className='mb4 button-menu'
+            color={outerFilter === 'checkOut' ? Theme(tenant).buttonMenuColor : ''}
             content='Checked Out : 15'
             // eslint-disable-next-line react/jsx-handler-names
             onClick={() => setOuterFilter('checkOut')}/>

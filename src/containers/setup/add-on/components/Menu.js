@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Button, Divider, Header } from 'semantic-ui-react'
+import theme from '@components/mainTheme'
 
 const items = [
   {
@@ -33,8 +34,8 @@ const Menu = () => {
           return (
             <Button
               as={Link}
-              className='w210'
-              color={rgx.test(location.pathname) ? 'teal' : null}
+              className='w210 button-menu'
+              color={rgx.test(location.pathname) ? theme.buttonMenuColor : null}
               content={label}
               key={index}
               to={to}/>

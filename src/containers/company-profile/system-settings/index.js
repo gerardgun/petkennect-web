@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Label, Image, Breadcrumb, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea, GridColumn, GridRow } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+/* eslint-disable */
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Field, reduxForm } from 'redux-form'
+import { Label, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, GridColumn, GridRow } from 'semantic-ui-react'
 import * as Yup from 'yup'
+import Theme from '@components/mainTheme'
 
+import tenantDetailDuck from '@reducers/tenant/detail'
 import FormField from '@components/Common/FormField'
-import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
-import Tab from '@containers/setup/boarding/general/components/Tab'
-import SetupBoardingGeneralBelongingIndex from '@containers/setup/boarding/general/belonging-section'
-import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import { syncValidate } from '@lib/utils/functions'
 import { TimeAmPm } from './utils'
 
 function SetupCompanyProfileSystemSettings (props) {
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
+
   const[sundayStart, setSundayStart] = useState('9:00')
   const[sundayEnd, setSundayEnd] = useState('6:00')
   const[mondayStart, setMondayStart] = useState('9:00')
@@ -46,21 +47,19 @@ function SetupCompanyProfileSystemSettings (props) {
   }
   
   const {
-    error, handleSubmit // redux-form
+     handleSubmit // redux-form
     } = props
-    
-  const dispatch = useDispatch()
       
-  const _handleSubmit = values => {
-      console.log(values)
+  const _handleSubmit = () => {
   }
+
 return (
   <Layout>
     <Segment className='segment-content' padded='very'>
       <Menu/>
+      {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form onSubmit={handleSubmit(_handleSubmit)}>
-        <Header as='h3' content='System Wide Settings: Changes Affect All Locations' color='teal' />
-      
+        <Header as='h3' color={Theme(tenant).headingColor} content='System Wide Settings: Changes Affect All Locations'/>
         <Grid>
           <Grid.Row style={{ padding: '1rem' }}>
             <Grid.Column width='5'>
@@ -200,6 +199,7 @@ return (
               </div>
             </Grid.Column>
             <Grid.Column width='1'>
+                {/* eslint-disable-next-line react/jsx-handler-names */}
                 <Icon name='pencil' onClick={() => setShowEdit(true)} />
             </Grid.Column>
             {showEdit &&
@@ -208,47 +208,62 @@ return (
                     <div className='day-hours'>
                       <p>Sunday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setSundayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setSundayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Monday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setMondayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setMondayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Tuesday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setTuesdayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setTuesdayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Wednesday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setWednesdayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setWednesdayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Thursday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setThursdayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setThursdayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Friday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setFridayStart(e.target.value)}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setFridayEnd(e.target.value)}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Saturday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setSaturdayStart(e.target.value)}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setSaturdayEnd(e.target.value)}/></div>
                     </div>
                   </Grid.Column>
                   <Grid.Column width='3'>
+                    {/* eslint-disable-next-line react/jsx-handler-names */}
                     <Label onClick={()=>{setStartTimes(sundayStart); setEndTimes(sundayEnd)} }>
                       <Icon name='copy' color='teal' outline />
                       Copy time to all
@@ -309,3 +324,4 @@ export default reduxForm({
     return syncValidate(Yup.object().shape(schema), values)
   }
 })(SetupCompanyProfileSystemSettings)
+/* eslint-enable */

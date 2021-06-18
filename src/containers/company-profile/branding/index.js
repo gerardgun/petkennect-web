@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react'
+/* eslint-disable */
+import React, { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch, useSelector } from 'react-redux'
-import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Label, Image, Breadcrumb, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea, GridColumn } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { reduxForm } from 'redux-form'
+import { Label, Image, Icon, Button, Divider, Form, Grid, Header, Input, Segment } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
-import FormField from '@components/Common/FormField'
-import FormError from '@components/Common/FormError'
+import Theme from '@components/mainTheme'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
-import Tab from '@containers/setup/boarding/general/components/Tab'
-import SetupBoardingGeneralBelongingIndex from '@containers/setup/boarding/general/belonging-section'
-import { parseResponseError, syncValidate } from '@lib/utils/functions'
-import { previewImage, deleteImage } from './utils'
+import tenantDetailDuck from '@reducers/tenant/detail'
+import { syncValidate } from '@lib/utils/functions'
+import { deleteImage } from './utils'
 
 const colors = [
   { color: 'red', label: '#FF0000' },
@@ -32,16 +30,24 @@ const colors = [
 ]
 
 const textColors = [
-  { color: 'white', label: '#000000' },
-  { color: 'black', label: '#FFFFFF' }
+  { color: 'black', label: '#000000' },
+  { color: 'white', label: '#FFFFFF' }
 ]
 
 function SetupCompanyProfileBranding(props) {
+  const dispatch = useDispatch()
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
+
+  const {
+   handleSubmit // redux-form
+  } = props
+
   const [ logo, setLogo ] = useState([])
   const [ background, setBackground ] = useState([])
   const [ navColor, setNavColor ] = useState()
   const [ headingColor, setHeadingColor ] = useState()
   const [ textColor, setTextColor ] = useState()
+
   const { getRootProps: getRootLogo, getInputProps: getInputLogo } = useDropzone({
     maxFiles: 1,
     accept  : 'image/png, image/gif, image/jpeg',
@@ -62,21 +68,21 @@ function SetupCompanyProfileBranding(props) {
     }
   })
 
-  const {
-    error, handleSubmit // redux-form
-  } = props
-
-  const dispatch = useDispatch()
-
-  const _handleSubmit = values => {
-    console.log(values)
+  const _handleSubmit = () => {
+    const newColors = {branding_config: {
+                        navigation_color: navColor ? navColor.label:tenant.item.branding_config.navigation_color, 
+                        navigation_text_color: textColor ? textColor.label:tenant.item.branding_config.navigation_text_color, 
+                        heading_text_color: headingColor ? headingColor.label:tenant.item.branding_config.heading_text_color, 
+                      }}
+    dispatch(tenantDetailDuck.creators.put(newColors))
+    setNavColor();setHeadingColor();setTextColor()
   }
 
   return (
     <Layout>
       <Segment className='segment-content'>
         <Menu/>
-        <Header as='h3' color='teal' content='Branding Options'/>
+        <Header as='h3' color={Theme(tenant).headingColor} content='Branding Options'/>
         <Form onSubmit={handleSubmit(_handleSubmit)}>
           <Grid className='grid-branding'>
             <Grid.Row>
@@ -84,8 +90,8 @@ function SetupCompanyProfileBranding(props) {
                 <Segment {...getRootLogo({ className: 'dropzone' })}>
                   <p className='branding-titles'>Logo Image for Top Navigation</p>
                   <div className='segment-delete'>
-                    <Button
-                      basic className='button-delete-image' color='teal'
+                    <Button type='button' basic  
+                      className='button-delete-image' color='teal'
                       onClick={() => deleteImage('logo_preview')}>
                       <Icon name='trash alternate outline'/> Delete Image
                     </Button>
@@ -107,9 +113,8 @@ function SetupCompanyProfileBranding(props) {
                 <Segment {...getRootBackground({ className: 'dropzone' })}>
                   <p className='branding-titles'>Login Background Image</p>
                   <div className='segment-delete'>
-                    <Button
-                      basic className='button-delete-image' color='teal'
-                      onClick={() => deleteImage('background_preview')}>
+                    <Button type='button' onClick={() => deleteImage('background_preview')}
+                      basic className='button-delete-image' color='teal'>
                       <Icon name='trash alternate outline'/> Delete Image
                     </Button>
                   </div>
@@ -130,9 +135,12 @@ function SetupCompanyProfileBranding(props) {
             <Grid.Row>
               <Grid.Column width='12'>
                 <Header as='h4'>Navigation Color</Header>
-                {colors.map(item => (<Button
-                  className='button-color' color={item.color} onClick={() => setNavColor(item)}
-                  size='mini'/>))}
+                {colors.map(item => (
+                  <Button type='button' onClick={() => setNavColor(item)}
+                    key={`nav${item.color}`}
+                    className='button-color' 
+                    color={item.color} 
+                    size='mini'/>))}
               </Grid.Column>
               <Grid.Column width='4'>
                 {navColor
@@ -148,16 +156,19 @@ function SetupCompanyProfileBranding(props) {
             <Grid.Row>
               <Grid.Column width='12'>
                 <Header as='h4'>Top Navigation Text Color</Header>
-                {textColors.map(item => (<Button
-                  className='button-color' color={item.color} onClick={() => setTextColor(item)}
-                  size='mini'/>))}
+                {textColors.map(item => (
+                  <Button type='button' onClick={() => {setTextColor(item)}}
+                    key={`text${item.color}`}
+                    className='button-color' 
+                    color={item.color}
+                    size='mini'/>))}
               </Grid.Column>
               <Grid.Column width='4'>
-                {textColor
-              && <Label basic className='label-color'>
-                <Button className='button-color' color={textColor.color} size='mini'/>
-                {textColor.label}
-              </Label>}
+                {textColor && 
+                  <Label basic className='label-color'>
+                    <Button disabled={true} className='button-color' color={textColor.color} size='mini'/>
+                    {textColor.label}
+                  </Label>}
               </Grid.Column>
             </Grid.Row>
 
@@ -166,9 +177,12 @@ function SetupCompanyProfileBranding(props) {
             <Grid.Row>
               <Grid.Column width='12'>
                 <Header as='h4'>Headings Color</Header>
-                {colors.map(item => (<Button
-                  className='button-color' color={item.color} onClick={() => setHeadingColor(item)}
-                  size='mini'/>))}
+                {colors.map(item => (
+                  <Button type='button' onClick={() => setHeadingColor(item)}
+                    key={`heading${item.color}`}
+                    className='button-color' 
+                    color={item.color} 
+                    size='mini'/>))}
               </Grid.Column>
               <Grid.Column width='4'>
                 {headingColor
@@ -182,8 +196,8 @@ function SetupCompanyProfileBranding(props) {
             <Divider/>
 
             <Grid.Row className='row-end'>
-              <Button basic color='teal' content='Cancel'/>
-              <Button color='teal' content='Save changes'/>
+              <Button basic color='red' content='Cancel' disabled={!(navColor || textColor || headingColor)} onClick={()=>{setNavColor();setHeadingColor();setTextColor()}}/>
+              <Button type='submit' color='teal' content='Save changes' disabled={!(navColor || textColor || headingColor)}/>
             </Grid.Row>
           </Grid>
         </Form>
@@ -200,3 +214,4 @@ export default reduxForm({
     return syncValidate(Yup.object().shape(schema), values)
   }
 })(SetupCompanyProfileBranding)
+/* eslint-enable */

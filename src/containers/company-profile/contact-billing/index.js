@@ -1,35 +1,19 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
-import {
-  Image,
-  Icon,
-  Button,
-  Checkbox,
-  Divider,
-  Form,
-  Grid,
-  Header,
-  Input,
-  Segment
-} from 'semantic-ui-react'
+import { Image, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Segment } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
 import CreateCardModal from '@containers/company-profile/components/CreateCardModal'
-import companyContactBillingDetailDuck from '@reducers/company/contact-billing/detail'
 import { syncValidate } from '@lib/utils/functions'
-import { useSelector } from 'react-redux'
 
 function SetupCompanyProfileContactBilling(props) {
-  const detail = useSelector(companyContactBillingDetailDuck.selectors.detail)
-
   const {
     handleSubmit // redux-form
   } = props
 
-  const _handleSubmit = (values) => {
-    console.log(values)
+  const _handleSubmit = () => {
   }
 
   return (
@@ -37,10 +21,7 @@ function SetupCompanyProfileContactBilling(props) {
       <Segment className='segment-content' padded='very'>
         <Menu/>
         {/* eslint-disable-next-line react/jsx-handler-names */}
-        <Form
-          className='form-container'
-          id='billing-form'
-          onSubmit={handleSubmit(_handleSubmit)}>
+        <Form className='form-container' id='billing-form' onSubmit={handleSubmit(_handleSubmit)}>
           <Grid style={{ padding: '1rem' }}>
             <Grid.Row>
               <Grid.Column className='input-form' width='5'>
@@ -98,57 +79,44 @@ function SetupCompanyProfileContactBilling(props) {
                       </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                      <Grid.Column width='7'>
-                        <Header as='h5' className='billing-header' color='blue'>
-                          Contact Details
+                      <Grid.Column width='5'>
+                        <Header as='h4'>
+                          <p>Payment Method</p>
                         </Header>
-                        <Segment className='input-segment'>
-                          <Input placeholder='Contact Name' size='small'/>
-                          <Input placeholder='Contact Phone' size='small'/>
+                        <Header.Subheader>
+                                The preferred method on how you are billed. Credit cards can
+                                be added or removed.
+                        </Header.Subheader>
+                      </Grid.Column>
+                      <Grid.Column width='11'>
+                        <Segment>
+                          <Grid>
+                            <Grid.Column verticalAlign='top' width='8'>
+                              {/* detail.form.cards.map(card =>
+                                            <Segment className='creditcard-container'>
+                                                <p className='current-card'>Current Card: {card.card_number}</p>
+                                                <p className='current-card'>Exp: {card.exp}</p>
+                                                <p className='current-card'>CVC: {card.cvv}</p>
+                                        </Segment>)*/}
+                            </Grid.Column>
+                            <Grid.Column width='8'>
+                              <Segment className='input-segment'>
+                                <Checkbox checked label='Credit Card' radio/>
+                                <Image size='tiny' src='/images/credit-card.jpg'/>
+                              </Segment>
+                              <p>Safe money Transfer using your bank acount. Visa, Maestro,
+                                            Discover, American Express, Powered by Stripe and We don&apos;t
+                                            store card information in our system.
+                              </p>
+                              <Divider/>
+                              <Segment className='row-end'>
+                                <CreateCardModal/>
+                                <Button content='Confirm' primary/>
+                              </Segment>
+                            </Grid.Column>
+                          </Grid>
                         </Segment>
                       </Grid.Column>
-                      <Grid.Column width='9'>
-                        <Grid columns='3'>
-                          <Grid.Row>
-                            <Grid.Column style={{ padding: '0.5rem' }}>
-                              <Header
-                                as='h5'
-                                className='billing-header'
-                                color='blue'>
-                                City
-                              </Header>
-                              <Input
-                                fluid
-                                placeholder='San Francisco'
-                                size='small'/>
-                            </Grid.Column>
-                            <Grid.Column style={{ padding: '0.5rem' }}>
-                              <Header
-                                as='h5'
-                                className='billing-header'
-                                color='blue'>
-                                State
-                              </Header>
-                              <Input
-                                fluid
-                                placeholder='California'
-                                size='small'/>
-                            </Grid.Column>
-                            <Grid.Column style={{ padding: '0.5rem' }}>
-                              <Header
-                                as='h5'
-                                className='billing-header'
-                                color='blue'>
-                                Zip Code
-                              </Header>
-                              <Input fluid placeholder='94108' size='small'/>
-                            </Grid.Column>
-                          </Grid.Row>
-                        </Grid>
-                      </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row className='row-end'>
-                      <Button content='Save' primary/>
                     </Grid.Row>
                   </Grid>
                 </Segment>
@@ -171,7 +139,7 @@ function SetupCompanyProfileContactBilling(props) {
                 <Segment>
                   <Grid>
                     <Grid.Column verticalAlign='top' width='8'>
-                      {detail.form.cards.map((card, index) => (
+                      {/* detail.form.cards.map((card, index) => (
                         <Segment className='creditcard-container' key={index}>
                           <p className='current-card'>
                             Current Card: {card.card_number}
@@ -179,7 +147,7 @@ function SetupCompanyProfileContactBilling(props) {
                           <p className='current-card'>Exp: {card.exp}</p>
                           <p className='current-card'>CVC: {card.cvv}</p>
                         </Segment>
-                      ))}
+                      ))*/}
                     </Grid.Column>
                     <Grid.Column width='8'>
                       <Segment className='input-segment'>

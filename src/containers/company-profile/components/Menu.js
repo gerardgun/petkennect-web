@@ -1,44 +1,48 @@
-import React, {useState}from 'react'
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Breadcrumb, Icon, Button, Divider, Header } from 'semantic-ui-react'
+import { Button, Divider, Header } from 'semantic-ui-react'
+import Theme from '@components/mainTheme'
 import '../styles.scss'
+import { useSelector } from 'react-redux'
+import tenantDetailDuck from '@reducers/tenant/detail'
 
 const items = [
   {
-    label: 'Contact Billing',
-    to   : '/setup/company-profile/contact-billing',
+    label    : 'Contact Billing',
+    to       : '/setup/company-profile/contact-billing',
     linklabel: 'Contact Billing'
   },
   {
-    label: 'Branding',
-    to   : '/setup/company-profile/branding',
+    label    : 'Branding',
+    to       : '/setup/company-profile/branding',
     linklabel: 'Branding'
   },
   {
-    label: 'Locations',
-    to   : '/setup/company-profile/locations',
+    label    : 'Locations',
+    to       : '/setup/company-profile/locations',
     linklabel: 'Locations'
   },
   {
-    label: 'System Settings',
-    to   : '/setup/company-profile/system-settings',
+    label    : 'System Settings',
+    to       : '/setup/company-profile/system-settings',
     linklabel: 'System Settings'
   },
   {
-    label: 'Calendar',
-    to   : '/setup/company-profile/calendar',
+    label    : 'Calendar',
+    to       : '/setup/company-profile/calendar',
     linklabel: 'Calendar'
   },
   {
-    label: 'Accounting',
-    to   : '/setup/company-profile/accounting',
+    label    : 'Accounting',
+    to       : '/setup/company-profile/accounting',
     linklabel: 'Accouting'
   }
 ]
 
-function Menu () {
+function Menu() {
   const location = useLocation()
-  const[ linkLabel, setLinkLabel ] = useState('')
+  const detail = useSelector(tenantDetailDuck.selectors.detail)
+
   return (
     <>
       <Header>Company profile</Header>
@@ -54,7 +58,7 @@ function Menu () {
             <Button
               as={Link}
               className='button-menu'
-              color={rgx.test(location.pathname) ? 'teal' : null}
+              color={rgx.test(location.pathname) ?  Theme(detail).buttonMenuColor : null}
               content={label}
               key={index}
               to={to}/>

@@ -7,22 +7,14 @@ import * as Yup from 'yup'
 import FormField from '@components/Common/FormField'
 import { Form, Modal, Button, Checkbox, Divider, Grid, Header, Input, Select } from 'semantic-ui-react'
 import { PetCard } from '@components/PetCard'
-import companyContactBillingDetailDuck from '@reducers/company/contact-billing/detail'
 
 const selector = formValueSelector('card-form')
 
 function CreateCardModal (){
   const dispatch = useDispatch()
-  const detail = useSelector(companyContactBillingDetailDuck.selectors.detail)
-  const cards = useSelector((state) => selector(state, 'cards') )
   const [open, setOpen] = React.useState(false)
 
-  useEffect(() => {
-    // Get default data to create a new boarding reservation
-      dispatch(companyContactBillingDetailDuck.creators.create({ cards }))
-  }, [])
 
-  console.log('detail',detail.form.cards, 'cards',cards)
 
   return (
     <Modal
