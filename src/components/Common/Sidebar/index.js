@@ -1,8 +1,12 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import tenantDetailDuck from '@reducers/tenant/detail'
+import Theme from '@components/mainTheme'
 
 const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
+  const dispatch = useDispatch()
   const getWrapped = () => {
     return href ? ({
       component: Link,
@@ -12,6 +16,13 @@ const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
       props    : {}
     })
   }
+
+  const detail = useSelector(tenantDetailDuck.selectors.detail)
+
+  useEffect(() => {
+    if(!detail.item.id)
+      dispatch(tenantDetailDuck.creators.get())
+  }, [])
 
   const {
     component: WrappedComponent,
@@ -32,7 +43,7 @@ const SidebarCategory = ({ active, children, href, icon, label, ...rest }) => {
             ) : (
               <div className='sidebar-category-item-icon-sidebar-minimize'>
                 {
-                  rest.subCategories.length === 0 ? (<Icon name={icon}/>)
+                  rest.subCategories.length === 0 ? (<Icon color={active ? Theme(detail).buttonMenuColor : ''} name={icon}/>)
                     : (
                       <div>
                         <Dropdown

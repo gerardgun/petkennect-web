@@ -6,7 +6,7 @@ import '../../dashboard.scss'
 
 const TaskCreator = ({ fields, taskListData,completedTasks })=>{
   useEffect(()=>{
-    if(taskListData && taskListData.length != 0 && fields.length === 0)
+    if(taskListData && taskListData.length !== 0 && fields.length === 0)
       taskListData.forEach(()=>{
         fields.push()
       })
