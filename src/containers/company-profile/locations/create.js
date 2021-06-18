@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Divider, Grid, Button, Form, Header, Input, Modal, Select, TextArea, Label } from 'semantic-ui-react'
+import { Divider, Grid, Button, Form, Header, Input, Modal, Label } from 'semantic-ui-react'
 
 import * as Yup from 'yup'
 
@@ -16,12 +16,10 @@ import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/fu
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
 
-const social_media = ['Facebook', 'Youtube','Instagram']
-
 const LocationCreate = props => {
   const {
     locationDetail,
-    location,
+    // location,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
@@ -79,7 +77,7 @@ const LocationCreate = props => {
       })
   }
 
-  const _handlePositionOptionChange = value => {
+  /* const _handlePositionOptionChange = value => {
     const { timezone, latitude, longitude, addresses } = location.items.find(({ id }) => id === value)
 
     setDefaultLocation({ lat: parseFloat(latitude), lng: parseFloat(longitude) })
@@ -88,12 +86,11 @@ const LocationCreate = props => {
     props.change('latitude', latitude)
     props.change('longitude', longitude)
     props.change('address', addresses[0])
-  }
+  }*/
 
   const _handleSubmit = values => {
     const { address, ...rest } = parseFormValues(values)
-    values = { ...rest, addresses: address , zip_code: 123, employee_schedule_id: 123}
-    console.log(values)
+    values = { ...rest, addresses: address , zip_code: 123, employee_schedule_id: 123 }
 
     if(typeof values.description === 'string' && !values.description.trim())
       delete values.description
@@ -113,7 +110,7 @@ const LocationCreate = props => {
     return locationDetail.mode === 'CREATE' || locationDetail.mode === 'UPDATE'
   }, [ locationDetail.mode ])
 
-  const locationOptions = useMemo(() => {
+  /* const locationOptions = useMemo(() => {
     return location.items.map(item => ({
       key  : item.id,
       value: item.id,
@@ -123,7 +120,7 @@ const LocationCreate = props => {
         </span>
       )
     }))
-  }, [ location.status ])
+  }, [ location.status ])*/
 
   return (
     <Modal
@@ -196,9 +193,9 @@ const LocationCreate = props => {
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  onChange={_handleAddressChange}
                   control={Input}
                   name='address'
+                  onChange={_handleAddressChange}
                   placeholder='Enter Street Address, City,State, Zip, Country'
                   required/>
               </Grid.Column>
@@ -218,9 +215,9 @@ const LocationCreate = props => {
                   component={FormField}
                   control={Input}
                   name='phone_number'
-                  type='number'
                   placeholder='Enter Phone Number'
-                  required/>
+                  required
+                  type='number'/>
               </Grid.Column>
               <Grid.Column width='4'>
                 <Field
@@ -228,19 +225,19 @@ const LocationCreate = props => {
                   component={FormField}
                   control={Input}
                   name='fax_number'
-                  type='number'
                   placeholder='Enter Fax Number'
-                  required/>
+                  required
+                  type='number'/>
               </Grid.Column>
               <Grid.Column width='4'>
                 <Field
                   autoComplete='off'
                   component={FormField}
                   control={Input}
-                  type='email'
                   name='email_address'
                   placeholder='Enter Email Address'
-                  required/>
+                  required
+                  type='email'/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -276,10 +273,10 @@ const LocationCreate = props => {
                   autoComplete='off'
                   component={FormField}
                   control={Input}
-                  type='url'
                   name='media_site'
                   placeholder='Select Site'
-                  required/>
+                  required
+                  type='url'/>
               </Grid.Column>
               <Grid.Column width='8'>
                 <Field
@@ -325,7 +322,7 @@ const LocationCreate = props => {
             </Grid.Row>
           </Grid>
 
-          {/*<Form.Group widths={3}>
+          {/* <Form.Group widths={3}>
             <Field
               autoComplete='off'
               component={FormField}
@@ -387,7 +384,7 @@ const LocationCreate = props => {
               name='description'
               placeholder='Enter description'/>
             </Form.Group>*/}
-          <Divider />
+          <Divider/>
           <MapPicker
             apiKey={googleApiKey}
             defaultLocation={defaultLocation}
@@ -434,7 +431,7 @@ export default compose(
     state => {
       const locationDetail = locationDetailDuck.selectors.detail(state)
       const location = locationDuck.selectors.list(state)
-      const initialValues = { ...locationDetail.item, address: locationDetail.item.addresses ? locationDetail.item.addresses[0] : '' }
+      const initialValues = { ...locationDetail.item, address: locationDetail.item.address }
 
       return {
         locationDetail,
@@ -453,20 +450,17 @@ export default compose(
     enableReinitialize: true,
     validate          : values  => {
       const schema = {
-        //code    : Yup.string().required('Code is required'),
-        //name    : Yup.string().required('Name is required'),
-        name: Yup.string().required('Company name is required'),
-        code: Yup.string().required('Store Code is required'),
-        address : Yup.string().required('Address is required'),
-        timezone: Yup.string().required('Timezone is required'),
-        region_code: Yup.string().required('Region Code is required'),  
-        phone_number: Yup.string().required('Phone number is required'),
-        fax_number: Yup.string().required('fax_number'),
+        name         : Yup.string().required('Company name is required'),
+        code         : Yup.string().required('Store Code is required'),
+        address      : Yup.string().required('Address is required'),
+        timezone     : Yup.string().required('Timezone is required'),
+        region_code  : Yup.string().required('Region Code is required'),
+        phone_number : Yup.string().required('Phone number is required'),
+        fax_number   : Yup.string().required('fax_number'),
         email_address: Yup.string().required('email_address'),
         website      : Yup.string().required('website'),
         media_site   : Yup.string().required('media_site'),
-        media_url    : Yup.string().required('media_url'),
-        media_site   : Yup.string().required('media_site')
+        media_url    : Yup.string().required('media_url')
       }
 
       return syncValidate(Yup.object().shape(schema), values)
