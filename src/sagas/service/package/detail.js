@@ -17,6 +17,7 @@ const { selectors, types } = servicePackageDetailDuck
 
 function* create() {
   try {
+    yield put({ type: types.GET_PENDING })
     const detail = yield select(selectors.detail)
     let serviceOptions = []
     let locationOptions = []
@@ -59,7 +60,6 @@ function* create() {
         value: id
       }))
     }
-    yield put({ type: types.GET_PENDING })
     yield put({
       payload: {
         form: {

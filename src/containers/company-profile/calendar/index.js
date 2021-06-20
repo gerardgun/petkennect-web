@@ -9,10 +9,12 @@ import companyProfileCalendarDetailDuck from '@reducers/company-profile/calendar
 import Menu from '@containers/company-profile/components/Menu'
 import './styles.scss'
 import CompanyProfileCalendarFormModal from './create/form/modal'
+import { useHistory } from 'react-router-dom'
 const Layout = loadable(() => import('@components/Common/Layout'))
 
 const SetupCompanyProfileCalendar = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const detail = useSelector(companyProfileCalendarDetailDuck.selectors.detail)
 
   useEffect(() => {
@@ -36,6 +38,8 @@ const SetupCompanyProfileCalendar = () => {
           'UPDATE'
         )
       )
+    if(button === 'view')
+      history.push(`/setup/company-profile/calendar/${reason.id}`)
   }
 
   const _handleActionClick = (action) => {

@@ -26,6 +26,10 @@ import clientPet from './client/pet'
 import clientEmailMessage from './client/email-message'
 import company from './company'
 import companyDetail from './company/detail'
+import companyProfileCalendar from './company-profile/calendar'
+import companyProfileCalendarDetail from './company-profile/calendar/detail'
+import companyProfileCalendarEvent from './company-profile/calendar/event'
+import companyProfileCalendarEventDetail from './company-profile/calendar/event/detail'
 import customReport from './custom-report'
 import customized from './customized-field'
 import customizedField from './customized-field/field'
@@ -199,6 +203,8 @@ import serviceVariationRelease from './service/variation/release'
 import serviceVariationReleaseDetail from './service/variation/release/detail'
 import setupCapacityServiceCustom from './setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from './setup/capacity/service/custom/detail'
+import setupAddonServiceSetting from './service/addon/general/add-on-service'
+import setupAddonServiceSettingDetail from './service/addon/general/add-on-service/detail'
 import staffManagementInfoAvailability from './staff-management/information/availability'
 import staffManagementInfoWages from './staff-management/information/wages'
 import staffManagementNotificationEmployeeNotice from './staff-management/notification/employee-notice'
@@ -257,6 +263,10 @@ export default function* rootSaga() {
     ...clientPetBreed,
     ...company,
     ...companyDetail,
+    ...companyProfileCalendar,
+    ...companyProfileCalendarDetail,
+    ...companyProfileCalendarEvent,
+    ...companyProfileCalendarEventDetail,
     ...customReport,
     ...customized,
     ...customizedField,
@@ -429,6 +439,8 @@ export default function* rootSaga() {
     ...serviceVariationReleaseDetail,
     ...setupCapacityServiceCustom,
     ...setupCapacityServiceCustomDetail,
+    ...setupAddonServiceSetting,
+    ...setupAddonServiceSettingDetail,
     ...staffManagementInfoAvailability,
     ...staffManagementInfoWages,
     ...staffManagementNotificationEmployeeNotice,

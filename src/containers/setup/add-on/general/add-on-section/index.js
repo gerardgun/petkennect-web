@@ -5,46 +5,46 @@ import { Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/add-on/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
-import ServiceFormModal from  './create'
+import SetupAddonServiceSettingFormModal from  './create/form/modal'
 import Tab from '@containers/setup/add-on/general/components/Tab'
 import Table from '@components/Table'
-import serviceListConfig from '@lib/constants/list-configs/service/add-on'
+import addonServiceListConfig from '@lib/constants/list-configs/service/add-on'
 
-import serviceDuck from '@reducers/service'
-import serviceDetailDuck from '@reducers/service/detail'
+import setupAddonServiceSettingDuck from '@reducers/service/addon/general/add-on-service'
+import setupAddonServiceSettingDetailDuck from '@reducers/service/addon/general/add-on-service/detail'
 
 const SetupAddOnGeneralAddOnIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
+  const detail = useSelector(setupAddonServiceSettingDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      serviceDuck.creators.get()
+      setupAddonServiceSettingDuck.creators.get({ service__type: 'A' })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        serviceDuck.creators.get()
+        setupAddonServiceSettingDuck.creators.get({ service__type: 'A' })
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        serviceDetailDuck.creators.setItem(null, 'CREATE')
+        setupAddonServiceSettingDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
-        serviceDetailDuck.creators.setItem(reason, 'DELETE')
+        setupAddonServiceSettingDetailDuck.creators.setItem(reason, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        serviceDetailDuck.creators.setItem(reason, 'UPDATE')
+        setupAddonServiceSettingDetailDuck.creators.setItem(reason, 'UPDATE')
       )
   }
 
@@ -55,15 +55,15 @@ const SetupAddOnGeneralAddOnIndex = () => {
 
         <Tab>
           <Table
-            config={serviceListConfig}
-            duck={serviceDuck}
+            config={addonServiceListConfig}
+            duck={setupAddonServiceSettingDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
-        <ServiceFormModal/>
+        <SetupAddonServiceSettingFormModal/>
 
-        <ModalDelete duckDetail={serviceDetailDuck}/>
+        <ModalDelete duckDetail={setupAddonServiceSettingDetailDuck}/>
 
       </Segment>
     </Layout>

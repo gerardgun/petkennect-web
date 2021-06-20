@@ -10,7 +10,6 @@ import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-// import { ServicePackageDefaultConfig } from '@lib/constants/service'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import companyProfileCalendarDetailDuck from '@reducers/company-profile/calendar/detail'

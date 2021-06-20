@@ -19,9 +19,9 @@ function ChangeHexClasss(color) {
 }
 
 function  Theme(palette) {
-  const buttonMenuColor = palette.item.branding_config.navigation_color
-  const buttonTextColor  = palette.item.branding_config.navigation_text_color
-  const headingColor = palette.item.branding_config.heading_text_color
+  const buttonMenuColor = palette.item.branding_config ? palette.item.branding_config.navigation_color : null
+  const buttonTextColor  = palette.item.branding_config ? palette.item.branding_config.navigation_text_color : null
+  const headingColor = palette.item.branding_config ? palette.item.branding_config.heading_text_color : null
 
   return ({
     buttonMenuColor: buttonMenuColor ? ChangeHexClasss(buttonMenuColor) : 'teal',
