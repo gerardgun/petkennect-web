@@ -4,7 +4,7 @@ import { useDispatch, connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Divider, Grid, Button, Form, Header, Input, Modal, Label } from 'semantic-ui-react'
+import { Divider, Grid, Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 
 import * as Yup from 'yup'
 
@@ -18,6 +18,12 @@ import kennelAreaListConfig from '@lib/constants/list-configs/service/location'
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
 import serviceGroupDuck from '@reducers/service/group'
+
+const social_options = [
+  { value: 'youtube',   text: 'Youtube' },
+  { value: 'facebook',  text: 'Facebook' },
+  { value: 'twitter',   text: 'Twitter' },
+  { value: 'instagram', text: 'Instagram' } ]
 
 const LocationCreate = props => {
   const {
@@ -51,6 +57,11 @@ const LocationCreate = props => {
   const _handleClose = () => {
     props.resetItem()
     reset()
+  }
+
+  const _handleShowMap = () =>{
+    const map = document.getElementsByClassName('mapicker')
+    map[0].classList.toggle('hidemap')
   }
 
   const getTimeZone = (lat, lng) =>{
@@ -102,8 +113,23 @@ const LocationCreate = props => {
   }*/
 
   const _handleSubmit = values => {
-    const { address, ...rest } = parseFormValues(values)
-    values = { ...rest, addresses: address , zip_code: 123, employee_schedule_id: 123 }
+    const { first_name, last_name,
+      email_address, phone_number,
+      fax_number, media_site, media_url, ...rest } = parseFormValues(values)
+    values = { ...rest,
+      employee_schedule_id: 1,
+      contact_people      : [ {
+        first_name  : first_name,
+        last_name   : last_name,
+        email       : email_address,
+        phone_type  : 'cell',
+        phone_number: phone_number,
+        fax_number  : fax_number } ],
+      social_networks: [ {
+        type: media_site,
+        url : media_url
+      } ]
+    }
 
     if(typeof values.description === 'string' && !values.description.trim())
       delete values.description
@@ -151,9 +177,8 @@ const LocationCreate = props => {
           <Grid>
             <Grid.Row>
               <Grid.Column width='4'>
-                <Label
-                  content='Location Codes'
-                  icon='map marker alternate'/>
+                <p>Location Codes</p>
+                <Divider className='mv4'/>
               </Grid.Column>
               <Grid.Column width='6'>
                 <Field
@@ -169,9 +194,10 @@ const LocationCreate = props => {
                   autoComplete='off'
                   component={FormField}
                   control={Input}
-                  name='timezone'
+                  name='zip_code'
                   placeholder='Enter Region code'
-                  required/>
+                  required
+                  type='number'/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -179,9 +205,8 @@ const LocationCreate = props => {
           <Grid>
             <Grid.Row>
               <Grid.Column width='4'>
-                <Label
-                  content='Business name'
-                  icon='map marker alternate'/>
+                <p>Business name</p>
+                <Divider className='mv4'/>
               </Grid.Column>
               <Grid.Column width='12'>
                 <Field
@@ -198,11 +223,10 @@ const LocationCreate = props => {
           <Grid>
             <Grid.Row>
               <Grid.Column width='4'>
-                <Label
-                  content='Address'
-                  icon='map marker alternate'/>
+                <p>Address</p>
+                <Divider className='mv4'/>
               </Grid.Column>
-              <Grid.Column width='12'>
+              <Grid.Column textAlign='right' width='12'>
                 <Field
                   autoComplete='off'
                   component={FormField}
@@ -211,6 +235,14 @@ const LocationCreate = props => {
                   onChange={_handleAddressChange}
                   placeholder='Enter Street Address, City,State, Zip, Country'
                   required/>
+                <p className='select_map' onClick={_handleShowMap()}>select map</p>
+                <MapPicker
+                  apiKey={googleApiKey}
+                  className='mapicker hidemap'
+                  defaultLocation={defaultLocation}
+                  onChangeLocation={_handleChangeLocation}
+                  style={{ height: '300px' }}
+                  zoom={17}/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -218,11 +250,17 @@ const LocationCreate = props => {
           <Grid>
             <Grid.Row>
               <Grid.Column width='4'>
-                <Label
-                  content='Contact Information'
-                  icon='map marker alternate'/>
+                <p>Contact Information</p>
+                <Divider className='mv4'/>
               </Grid.Column>
               <Grid.Column width='4'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='first_name'
+                  placeholder='Enter First Name'
+                  required/>
                 <Field
                   autoComplete='off'
                   component={FormField}
@@ -233,6 +271,13 @@ const LocationCreate = props => {
                   type='number'/>
               </Grid.Column>
               <Grid.Column width='4'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  name='last_name'
+                  placeholder='Enter Last Name'
+                  required/>
                 <Field
                   autoComplete='off'
                   component={FormField}
@@ -258,9 +303,8 @@ const LocationCreate = props => {
           <Grid>
             <Grid.Row>
               <Grid.Column width='4'>
-                <Label
-                  content='Website'
-                  icon='map marker alternate'/>
+                <p>Website</p>
+                <Divider className='mv4'/>
               </Grid.Column>
               <Grid.Column width='12'>
                 <Field
@@ -277,19 +321,19 @@ const LocationCreate = props => {
           <Grid>
             <Grid.Row>
               <Grid.Column width='4'>
-                <Label
-                  content='Social Media'
-                  icon='map marker alternate'/>
+                <p>Social Media</p>
+                <Divider className='mv4'/>
               </Grid.Column>
               <Grid.Column width='4'>
                 <Field
                   autoComplete='off'
                   component={FormField}
-                  control={Input}
+                  control={Select}
                   name='media_site'
+                  options={social_options}
                   placeholder='Select Site'
                   required
-                  type='url'/>
+                  selectOnBlur={false}/>
               </Grid.Column>
               <Grid.Column width='8'>
                 <Field
@@ -306,14 +350,31 @@ const LocationCreate = props => {
           <Grid>
             <Grid.Row>
               <Grid.Column width='4'>
-                <Label
-                  content='Services and Taxes'
-                  icon='map marker alternate'/>
+                <p>Services and Taxes</p>
+                <Divider className='mv4'/>
               </Grid.Column>
               <Grid.Column width='12'>
                 <Table
-                config={kennelAreaListConfig}
-                duck={serviceGroupDuck}/>
+                  config={kennelAreaListConfig}
+                  duck={serviceGroupDuck}/>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width='4'>
+                <p>Services and Taxes</p>
+              </Grid.Column>
+              <Grid.Column width='4'>
+                <Field
+                  autoComplete='off'
+                  component={FormField}
+                  control={Input}
+                  label='Time Zone'
+                  name='timezone'
+                  placeholder='Enter timezone'
+                  readOnly
+                  required/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -381,13 +442,6 @@ const LocationCreate = props => {
               placeholder='Enter description'/>
             </Form.Group>*/}
           <Divider/>
-          <MapPicker
-            apiKey={googleApiKey}
-            defaultLocation={defaultLocation}
-            onChangeLocation={_handleChangeLocation}
-            style={{ height: '300px' }}
-            zoom={17}/>
-
           {
             error && (
               <Form.Group widths='equal'>
@@ -428,7 +482,7 @@ export default compose(
       const locationDetail = locationDetailDuck.selectors.detail(state)
       const location = locationDuck.selectors.list(state)
       const ServiceList = serviceGroupDuck.selectors.list(state)
-      const initialValues = { ...locationDetail.item, address: locationDetail.item.address }
+      const initialValues = { ...locationDetail.item }
 
       return {
         locationDetail,
@@ -450,15 +504,16 @@ export default compose(
       const schema = {
         name         : Yup.string().required('Company name is required'),
         code         : Yup.string().required('Store Code is required'),
+        zip_code     : Yup.string().required('Region Code is required'),
         address      : Yup.string().required('Address is required'),
         timezone     : Yup.string().required('Timezone is required'),
         region_code  : Yup.string().required('Region Code is required'),
         phone_number : Yup.string().required('Phone number is required'),
-        fax_number   : Yup.string().required('fax_number'),
-        email_address: Yup.string().required('email_address'),
-        website      : Yup.string().required('website'),
-        media_site   : Yup.string().required('media_site'),
-        media_url    : Yup.string().required('media_url')
+        fax_number   : Yup.string().required('Fax number is required'),
+        email_address: Yup.string().required('Email is required'),
+        website      : Yup.string().required('Website is required'),
+        media_site   : Yup.string().required('Media Site is required'),
+        media_url    : Yup.string().required('Url is Required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)
