@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import MapPicker from 'react-google-map-picker'
-import { connect } from 'react-redux'
+import { useDispatch, connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
@@ -10,18 +10,31 @@ import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
+import Table from '@components/Table'
 import { googleApiKey } from '@lib/constants'
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
+import kennelAreaListConfig from '@lib/constants/list-configs/service/location'
 
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
+import serviceGroupDuck from '@reducers/service/group'
 
 const LocationCreate = props => {
   const {
     locationDetail,
     // location,
+    ServiceList,
     error, handleSubmit, reset, submitting // redux-form
   } = props
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if(ServiceList.items.length === 0)
+      dispatch(
+        serviceGroupDuck.creators.get()
+      )
+  }, [])
 
   const [ defaultLocation, setDefaultLocation ] = useState({ lat: 0, lng: 0 })
 
@@ -298,26 +311,9 @@ const LocationCreate = props => {
                   icon='map marker alternate'/>
               </Grid.Column>
               <Grid.Column width='12'>
-                <Label
-                  content='Table'/>
-                <Label
-                  content='Table'/>
-                <Label
-                  content='Table'/>
-                <Label
-                  content='Table'/>
-                <Label
-                  content='Table'/>
-                <Label
-                  content='Table'/>
-                <Label
-                  content='Table'/>
-                <Label
-                  content='Table'/>
-                <Label
-                  content='Table'/>
-                <Label
-                  content='Table'/>
+                <Table
+                config={kennelAreaListConfig}
+                duck={serviceGroupDuck}/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -431,11 +427,13 @@ export default compose(
     state => {
       const locationDetail = locationDetailDuck.selectors.detail(state)
       const location = locationDuck.selectors.list(state)
+      const ServiceList = serviceGroupDuck.selectors.list(state)
       const initialValues = { ...locationDetail.item, address: locationDetail.item.address }
 
       return {
         locationDetail,
         location,
+        ServiceList,
         initialValues
       }
     },
