@@ -17,8 +17,12 @@ export const GroupType = {
 }
 
 export const ProtectedServiceType = {
+  A: 'True Add-on',
   B: 'Boarding Activity',
-  G: 'Group Class'
+  G: 'Group Class',
+  O: 'Open Line Add-on',
+  S: 'Surcharges',
+  T: 'Transport Add-on'
 }
 
 export const ServiceType = {
