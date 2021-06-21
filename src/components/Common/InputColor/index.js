@@ -43,11 +43,10 @@ function InputColor(props) {
             )}
             on='click'
             pinned
-            position='bottom center'
             trigger={
               <Icon
-                circular className={`input-color-icon ${uuidClassName}`} inverted
-                link name='eye dropper'/>
+                circular className={`input-color-icon ${uuidClassName}`} disabled={props.disabled}
+                inverted link name='eye dropper'/>
             }/>
         }
         {...props}/>

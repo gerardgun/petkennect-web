@@ -16,7 +16,7 @@ import calendarDetailDuck from '@reducers/calendar/detail'
 import Menu from '@containers/company-profile/components/Menu'
 import './styles.scss'
 const Layout = loadable(() => import('@components/Common/Layout'))
-const CalendarEventCreate = loadable(() => import('./create'))
+const CalendarEventCreate = loadable(() => import('./create-old'))
 
 const SetupCompanyProfileCalendar = props => {
   const {

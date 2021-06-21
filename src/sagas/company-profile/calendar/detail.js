@@ -1,12 +1,31 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import companyProfileCalendarDetailDuck from '@reducers/company-profile/calendar/detail'
-import { Patch, Post } from '@lib/utils/http-client'
+import { Get, Patch, Post } from '@lib/utils/http-client'
 
 const { types } = companyProfileCalendarDetailDuck
 
+function* get({ id }) {
+  try {
+    yield put({ type: types.GET_PENDING })
+
+    const result = yield call(Get, `employees-schedules/${id}`)
+
+    yield put({
+      type   : types.GET_FULFILLED,
+      payload: {
+        item: result
+      }
+    })
+  } catch (e) {
+    yield put({
+      type : types.GET_FAILURE,
+      error: e
+    })
+  }
+}
+
 function* post({ payload }) {
   try {
-    console.log(payload)
     yield put({ type: types.POST_PENDING })
 
     const result = yield call(Post, 'employees-schedules/', payload)
@@ -39,6 +58,7 @@ function* _put({ payload }) {
 }
 
 export default [
+  takeEvery(types.GET, get),
   takeEvery(types.POST, post),
   takeEvery(types.PUT, _put)
 ]

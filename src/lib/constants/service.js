@@ -121,3 +121,14 @@ export const ServicePackageDefaultConfig = {
   is_suscription          : false,
   is_bookable_by_client   : false
 }
+
+export const TrueAddonServiceDefaultConfig = {
+  is_scheduled         : false,
+  locations            : [],
+  is_bookable_by_client: false,
+  is_taxable           : false,
+  is_active            : false,
+  service_true_addon   : {
+    service_variations: []
+  }
+}

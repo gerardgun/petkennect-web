@@ -44,6 +44,11 @@ import clientEmailMessage from '@reducers/client/email-message'
 import clientEmailMessageDetail from '@reducers/client/email-message/detail'
 import company from '@reducers/company'
 import companyDetail from '@reducers/company/detail'
+import companyProfileCalendar from '@reducers/company-profile/calendar'
+import companyProfileCalendarDetail from '@reducers/company-profile/calendar/detail'
+import companyProfileCalendarEvent from '@reducers/company-profile/calendar/event'
+import companyProfileCalendarEventDetail from '@reducers/company-profile/calendar/event/detail'
+// import companyContactBillingDetail from '@reducers/company/contact-billing/detail'
 import customReport from '@reducers/custom-report'
 import customReportDetail from '@reducers/custom-report/detail'
 import customized from '@reducers/customized-field'
@@ -269,6 +274,8 @@ import serviceVariationRelease from '@reducers/service/variation/release'
 import serviceVariationReleaseDetail from '@reducers/service/variation/release/detail'
 import setupCapacityServiceCustom from '@reducers/setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from '@reducers/setup/capacity/service/custom/detail'
+import setupAddonServiceSetting from '@reducers/service/addon/general/add-on-service'
+import setupAddonServiceSettingDetail from '@reducers/service/addon/general/add-on-service/detail'
 import servicePrice from '@reducers/service-price'
 import servicePriceDetail from '@reducers/service-price/detail'
 import staffManagementInfoAvailability from '@reducers/staff-management/information/availability'
@@ -357,6 +364,11 @@ const createRootReducer = history => combineReducers({
   [clientEmailMessageDetail.store]                         : clientEmailMessageDetail.reducer,
   [company.store]                                          : company.reducer,
   [companyDetail.store]                                    : companyDetail.reducer,
+  [companyProfileCalendar.store]                           : companyProfileCalendar.reducer,
+  [companyProfileCalendarDetail.store]                     : companyProfileCalendarDetail.reducer,
+  [companyProfileCalendarEvent.store]                      : companyProfileCalendarEvent.reducer,
+  [companyProfileCalendarEventDetail.store]                : companyProfileCalendarEventDetail.reducer,
+  // [companyContactBillingDetail.store]                      : companyContactBillingDetail.reducer,
   [customReport.store]                                     : customReport.reducer,
   [customReportDetail.store]                               : customReportDetail.reducer                ,
   [customized.store]                                       : customized.reducer,
@@ -587,6 +599,8 @@ const createRootReducer = history => combineReducers({
   [serviceVariationReleaseDetail.store]                    : serviceVariationReleaseDetail.reducer,
   [setupCapacityServiceCustom.store]                       : setupCapacityServiceCustom.reducer,
   [setupCapacityServiceCustomDetail.store]                 : setupCapacityServiceCustomDetail.reducer,
+  [setupAddonServiceSetting.store]                         : setupAddonServiceSetting.reducer,
+  [setupAddonServiceSettingDetail.store]                   : setupAddonServiceSettingDetail.reducer,
   [servicePrice.store]                                     : servicePrice.reducer,
   [servicePriceDetail.store]                               : servicePriceDetail.reducer,
   [staffManagementInfoAvailability.store]                  : staffManagementInfoAvailability.reducer,

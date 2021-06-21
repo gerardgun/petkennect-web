@@ -29,13 +29,13 @@ export default {
     },
     {
       display_name: `Applies to${'\n'}Services`,
-      name        : 'applies_service_type',
-      type        : 'string'
+      name        : 'service',
+      formatter   : cell => cell.service_group_name
     },
     {
       display_name: `Applies to${'\n'}Service${'\n'}Types`,
-      name        : 'applies_service_type',
-      type        : 'string'
+      name        : 'service',
+      formatter   : cell => cell.name
     },
     {
       display_name: `Applies to${'\n'}Reservation${'\n'}Types`,
@@ -70,7 +70,7 @@ export default {
           display_name: 'Delete Add-On',
           name        : 'delete',
           icon        : 'trash alternate outline',
-          color       : 'grey'
+          color       : 'red'
         }
       ]
     }

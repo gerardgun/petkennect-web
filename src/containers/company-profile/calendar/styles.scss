@@ -29,3 +29,35 @@ opacity: inherit;
 .color_training{
     background: #A52A2A !important;
 }
+
+.calendar-event{
+    cursor: pointer;
+}
+.icon-trash{
+    background: transparent !important;
+}
+.fc--button{
+    display: none !important;
+}
+.fc-timeGridDay-button{
+    border-radius: 4px !important;
+}
+.fc-timeGridWeek-button{
+    border-radius: 4px !important;
+}
+.checkbox-recurring{
+    label {
+        font-size: 18px !important;
+      }
+}
+.button-day{
+    border-radius: 50% !important;
+    padding: 10px 13px !important;
+    margin-left: 10px !important;
+    &.first{
+        margin-left: 0 !important;
+    }
+    &.teal:focus{
+        background-color: #00b5ad !important;
+    }
+}
