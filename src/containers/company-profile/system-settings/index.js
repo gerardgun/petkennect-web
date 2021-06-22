@@ -1,20 +1,27 @@
 /* eslint-disable */
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector, connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
 import { Label, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, GridColumn, GridRow } from 'semantic-ui-react'
 import * as Yup from 'yup'
 import Theme from '@components/mainTheme'
 
 import tenantDetailDuck from '@reducers/tenant/detail'
+import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
-import { syncValidate } from '@lib/utils/functions'
+import { parseFormValues, syncValidate } from '@lib/utils/functions'
 import { TimeAmPm } from './utils'
 
-function SetupCompanyProfileSystemSettings (props) {
-  const tenant = useSelector(tenantDetailDuck.selectors.detail)
+const SetupCompanyProfileSystemSettings = props => {
+  const {
+    tenant,
+    error, handleSubmit // redux-form
+  } = props
+  const dispatch = useDispatch()
 
   const[sundayStart, setSundayStart] = useState('9:00')
   const[sundayEnd, setSundayEnd] = useState('6:00')
@@ -45,12 +52,13 @@ function SetupCompanyProfileSystemSettings (props) {
       setWednesdayEnd(timeEnd);setThursdayEnd(timeEnd);setFridayEnd(timeEnd);setSaturdayEnd(timeEnd);
     }
   }
-  
-  const {
-     handleSubmit // redux-form
-    } = props
       
-  const _handleSubmit = () => {
+  const _handleSubmit = values => {
+    console.log(values)
+    const { weigth_type, currency_format, ...rest } = parseFormValues(values)
+    const convertChar = {...rest, weight_type: weigth_type}
+    const s_config = {system_config: convertChar}
+    dispatch(tenantDetailDuck.creators.put(s_config))
   }
 
 return (
@@ -77,12 +85,12 @@ return (
                     control={Select}
                     name='date_format'
                     options={[
-                      { value: 1, text: 'MM/DD/YYYY' },
-                      { value: 2, text: 'DD/MM/YYYY' },
+                      { value: 'MM/DD/YYYY', text: 'MM/DD/YYYY' },
+                      { value: 'DD/MM/YYYY', text: 'DD/MM/YYYY' },
                     ]}
                     placeholder='Select format'
-                    search
-                    selectOnBlur={false}/>
+                    selectOnBlur={false}
+                    required/>
                   </Grid.Column>
                 </Grid.Row>
 
@@ -96,12 +104,12 @@ return (
                       control={Select}
                       name='time_format'
                       options={[
-                        { value: 1, text: '24 Hours' },
-                        { value: 2, text: '12 Hours' },
+                        { value: 'H:mm a', text: '24 Hours' },
+                        { value: 'h:mm a', text: '12 Hours' },
                       ]}
                       placeholder='Select format'
-                      search
-                      selectOnBlur={false}/>
+                      selectOnBlur={false}
+                      required/>
                   </Grid.Column>
                 </Grid.Row>
 
@@ -113,13 +121,12 @@ return (
                     <Field
                       component={FormField}
                       control={Select}
-                      name='weigth_format'
+                      name='weigth_type'
                       options={[
-                        { value: 1, text: 'Lbs' },
-                        { value: 2, text: 'Kgs' },
+                        { value: 'L', text: 'Lbs' },
+                        { value: 'K', text: 'Kgs' },
                       ]}
                       placeholder='Select format'
-                      search
                       selectOnBlur={false}/>
                   </Grid.Column>
                 </Grid.Row>
@@ -139,7 +146,8 @@ return (
                       ]}
                       placeholder='Select format'
                       search
-                      selectOnBlur={false}/>
+                      selectOnBlur={false}
+                      required/>
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
@@ -299,12 +307,29 @@ return (
               </div>
             </Grid.Column>
           </GridRow>
+          {
+            error && (
+              <Form.Group widths='equal'>
+                <Form.Field>
+                  <FormError message={error}/>
+                </Form.Field>
+              </Form.Group>
+            )
+          }
           <Grid.Row>
               <Grid.Column width='6'>
               </Grid.Column>
               <Grid.Column width='4' floated='right'>
-                  <Button basic color='teal' content='Cancel'/>
-                  <Button color='teal' content='Save changes'/>
+                <Form.Field>
+                    <Button basic 
+                      type='button'
+                      color='red' 
+                      content='Cancel'/>
+                    <Button 
+                      color= 'teal' 
+                      type= 'submit'
+                      content= 'Save changes'/>
+                </Form.Field>
               </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -315,13 +340,28 @@ return (
   )
 }
 
-export default reduxForm({
-  form              : 'setup-company-profile-system-settings',
+export default compose(
+  withRouter,
+  connect(
+    state => {
+      const tenant = tenantDetailDuck.selectors.detail(state)
+      return {
+        tenant,
+      }
+    }
+  ),
+  reduxForm({
+  form              : 'system-settings-form',
   enableReinitialize: true,
   validate          : values => {
-    const schema = {}
+    const schema = {
+      date_format  : Yup.string().required('Date Format is required'),
+      time_format  : Yup.string().required('Time Format is required'),
+      weight_type  : Yup.string().required('Weight is required'),
+    }
 
     return syncValidate(Yup.object().shape(schema), values)
   }
-})(SetupCompanyProfileSystemSettings)
+})
+)(SetupCompanyProfileSystemSettings)
 /* eslint-enable */
