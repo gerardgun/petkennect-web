@@ -8,22 +8,20 @@ import { Button, Form, Select, Input } from 'semantic-ui-react'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 
-import wagesDuck from '@reducers/manager-dashboard/employee/employee-wage-history'
-
-const DepartmentRole = ({ wages, fields, meta: { error, submitFailed }, ...props }) => {
+const AssignRole = ({ fields, meta: { error, submitFailed }, ...props }) => {
   useEffect(() => {
     if(fields.length === 0) _handleAddBtnClick() // Add a default item
   }, [])
 
   useEffect(() => {
-    props.getWages()
+
   }, [])
 
   const _handleAddBtnClick = () => fields.push({ ...departmentInitialState })
   const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
 
   const departmentInitialState = {
-    department: ''
+    role: ''
   }
 
   return (
@@ -33,39 +31,20 @@ const DepartmentRole = ({ wages, fields, meta: { error, submitFailed }, ...props
           <Form.Group key={index}>
             <Field
               component={FormField}
-              control={Select}
+              control={Input}
               fluid
-              label='Department'
-              name={`department${index}`}
-              options={[
-                { key: 1, value: 'management', text: 'Management' },
-                { key: 2, value: 'training', text: 'Training' },
-                { key: 3, value: 'grooming', text: 'Grooming' }
-              ]}
-              placeholder='Select department'
-              selectOnBlur={false}
-              style={{ width: '240px' }}/>
-            <Field
-              component={FormField}
-              control={Select}
-              fluid
-              label='Role'
+              label='Assign Role'
               name={`role${index}`}
-              options={[
-                { key: 1, value: 'manager', text: 'Manager' },
-                { key: 2, value: 'trainer', text: 'Trainer' },
-                { key: 3, value: 'groomer', text: 'Groomer' }
-              ]}
-              placeholder='Select role'
+              placeholder='Assign role'
               selectOnBlur={false}
-              style={{ width: '220px' }}/>
+              style={{ width: '260px' }}/>
             <Field
               component={FormField}
               control={Input}
               fluid
-              label='Rate'
-              name={`rate${index}`}
-              placeholder='Enter rate'
+              label='Wage'
+              name={`wage${index}`}
+              placeholder='Enter wage $'
               selectOnBlur={false}
               style={{ width: '160px' }}
               type='number'/>
@@ -82,7 +61,7 @@ const DepartmentRole = ({ wages, fields, meta: { error, submitFailed }, ...props
               ]}
               placeholder='Select wage type'
               selectOnBlur={false}
-              style={{ width: '200px' }}/>
+              style={{ width: '180px' }}/>
 
             {
               index !== 0 && (
@@ -102,7 +81,7 @@ const DepartmentRole = ({ wages, fields, meta: { error, submitFailed }, ...props
       <Form.Group widths='equal'>
         <Form.Field>
           <Button
-            basic color='teal' content='Add Department & Role'
+            basic color='teal' content='Assign Additional Role'
             icon='plus'
             onClick={_handleAddBtnClick}
             type='button'/>
@@ -122,18 +101,5 @@ const DepartmentRole = ({ wages, fields, meta: { error, submitFailed }, ...props
   )
 }
 
-export default  compose(
-  connect(
-    (state) => {
-      const wages = wagesDuck.selectors.list(state)
-
-      return {
-        wages
-      }
-    },
-    {
-      getWages: wagesDuck.creators.get
-    }
-  )
-)(DepartmentRole)
+export default AssignRole
 

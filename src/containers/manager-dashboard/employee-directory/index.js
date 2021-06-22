@@ -21,7 +21,10 @@ import employeeDirectoryDetailDuck from '@reducers/manager-dashboard/employee/em
 import personalInformationDetailDuck from '@reducers/staff-management/information/personal-detail/detail'
 import locationDuck from '@reducers/location'
 import EmployeeDetail from './employee-detail'
-import EmployeeForm from './form/modal'
+import userDetailDuck from '@reducers/system-user/detail'
+
+import UserCreateModal from './../../user/user-form'
+// import EmployeeForm from './form/modal'
 import './styles.scss'
 
 export const formId = 'employee-directory-form'
@@ -50,7 +53,7 @@ const EmployeeDirectory = (props)=>{
   }
 
   const _handleCreateEmployee = () => {
-    props.setItem(null, 'CREATE')
+    props.setUserItem(null, 'CREATE')
   }
 
   const _handleFilter = () => {
@@ -213,7 +216,8 @@ const EmployeeDirectory = (props)=>{
         </Grid>
 
       </Segment>
-      <EmployeeForm/>
+      {/* <EmployeeForm/> */}
+      <UserCreateModal/>
     </Layout>
   )
 }
@@ -235,7 +239,8 @@ export default compose(
       post                  : employeeDirectoryDetailDuck.creators.post,
       put                   : employeeDirectoryDetailDuck.creators.put,
       resetItem             : employeeDirectoryDetailDuck.creators.resetItem,
-      setItem               : personalInformationDetailDuck.creators.setItem
+      setItem               : personalInformationDetailDuck.creators.setItem,
+      setUserItem           : userDetailDuck.creators.setItem
     }
   ),
   reduxForm({

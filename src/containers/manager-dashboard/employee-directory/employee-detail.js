@@ -72,9 +72,7 @@ const EmployeeDetail = (props)=>{
             </Grid.Column>
           </Grid>
         </Grid.Column>
-
       </Grid>
-
     </>
   )
 }

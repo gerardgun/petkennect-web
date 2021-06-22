@@ -136,6 +136,8 @@ import feedingUnit from '@reducers/pet/feeding-setting/feeding-unit'
 import feedingUnitDetail from '@reducers/pet/feeding-setting/feeding-unit/detail'
 import foodType from '@reducers/pet/feeding-setting/food-type'
 import foodTypeDetail from '@reducers/pet/feeding-setting/food-type/detail'
+import groupPermission from '@reducers/group-permission'
+import groupPermissionDetail from '@reducers/group-permission/detail'
 import mealStatus from '@reducers/pet/feeding-setting/meal-status'
 import mealStatusDetail from '@reducers/pet/feeding-setting/meal-status/detail'    // feeding setting end
 import location from '@reducers/location'
@@ -150,6 +152,8 @@ import managerDashboardEmployeeNote from '@reducers/manager-dashboard/employee/e
 import managerDashboardEmployeeNoteDetail from '@reducers/manager-dashboard/employee/employee-note/detail'
 import managerDashboardEmployeeWageHistory from '@reducers/manager-dashboard/employee/employee-wage-history'
 import managerDashboardEmployeeWageHistoryDetail from '@reducers/manager-dashboard/employee/employee-wage-history/detail'
+import managerDashboardSettingPermission from '@reducers/manager-dashboard/setting/permission'
+import managerDashboardSettingPermissionDetail from '@reducers/manager-dashboard/setting/permission/detail'
 import MedicationType from '@reducers/pet/medication-setting/medication-type'
 import MedicationTypeDetail from '@reducers/pet/medication-setting/medication-type/detail'
 import medication from '@reducers/pet/medication-setting/medication'
@@ -322,6 +326,8 @@ import trainingReason from '@reducers/training-reason'
 import trainingReasonDetail from '@reducers/training-reason/detail'
 import transaction from '@reducers/transaction'
 import transactionDetail from '@reducers/transaction/detail'
+import systemUser from '@reducers/system-user'
+import systemUserDetail from '@reducers/system-user/detail'
 import user from '@reducers/user'
 import userDetail from '@reducers/user/detail'
 import zip from '@reducers/zip'
@@ -460,6 +466,8 @@ const createRootReducer = history => combineReducers({
   [feedingUnitDetail.store]                                : feedingUnitDetail.reducer,
   [foodType.store]                                         : foodType.reducer,
   [foodTypeDetail.store]                                   : foodTypeDetail.reducer,
+  [groupPermission.store]                                  : groupPermission.reducer,
+  [groupPermissionDetail.store]                            : groupPermissionDetail.reducer,
   [mealStatus.store]                                       : mealStatus.reducer,
   [mealStatusDetail.store]                                 : mealStatusDetail.reducer,
   [location.store]                                         : location.reducer,
@@ -474,6 +482,8 @@ const createRootReducer = history => combineReducers({
   [managerDashboardEmployeeNoteDetail.store]               : managerDashboardEmployeeNoteDetail.reducer,
   [managerDashboardEmployeeWageHistory.store]              : managerDashboardEmployeeWageHistory.reducer,
   [managerDashboardEmployeeWageHistoryDetail.store]        : managerDashboardEmployeeWageHistoryDetail.reducer,
+  [managerDashboardSettingPermission.store]                : managerDashboardSettingPermission.reducer,
+  [managerDashboardSettingPermissionDetail.store]          : managerDashboardSettingPermissionDetail.reducer,
   [MedicationType.store]                                   : MedicationType.reducer,
   [MedicationTypeDetail.store]                             : MedicationTypeDetail.reducer,
   [medication.store]                                       : medication.reducer,
@@ -647,6 +657,8 @@ const createRootReducer = history => combineReducers({
   [trainingReasonDetail.store]                             : trainingReasonDetail.reducer,
   [transactionDetail.store]                                : transactionDetail.reducer,
   [transactionDetail.store]                                : transactionDetail.reducer,
+  [systemUser.store]                                       : systemUser.reducer,
+  [systemUserDetail.store]                                 : systemUserDetail.reducer,
   [user.store]                                             : user.reducer,
   [userDetail.store]                                       : userDetail.reducer,
   [zip.store]                                              : zip.reducer,
