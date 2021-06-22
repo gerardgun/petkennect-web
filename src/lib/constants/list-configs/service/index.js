@@ -1,8 +1,6 @@
 import React from 'react'
 import { Checkbox } from 'semantic-ui-react'
 
-import { GroupType } from '@lib/constants/service'
-
 export default {
   search_placeholder: 'Search by sku_id, name or description',
   actions           : [
@@ -22,12 +20,10 @@ export default {
     },
     {
       display_name: 'Service Group',
-      name        : 'group.type',
+      name        : 'group.name',
+      type        : 'string',
       sort        : true,
-      sort_name   : 'service_group__name',
-      formatter   : cell => {
-        return GroupType[cell]
-      }
+      sort_name   : 'service_group__name'
     },
     {
       display_name: 'Locations',
