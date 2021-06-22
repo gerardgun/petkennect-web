@@ -8,7 +8,7 @@ export const ChargeType = {
 
 export const ChargeTypeOptions = obj2options(ChargeType)
 
-export const GroupType = {
+export const BaseGroupType = {
   B: 'Boarding',
   D: 'Day Services',
   G: 'Grooming',
@@ -16,9 +16,19 @@ export const GroupType = {
   C: 'Custom'
 }
 
+export const GroupType = {
+  ...BaseGroupType,
+  A: 'Add-On',
+  S: 'Surcharges '
+}
+
 export const ProtectedServiceType = {
+  A: 'True Add-on',
   B: 'Boarding Activity',
-  G: 'Group Class'
+  G: 'Group Class',
+  O: 'Open Line Add-on',
+  S: 'Surcharges',
+  T: 'Transport Add-on'
 }
 
 export const ServiceType = {

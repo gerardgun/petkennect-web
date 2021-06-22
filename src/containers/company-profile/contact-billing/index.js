@@ -78,45 +78,37 @@ function SetupCompanyProfileContactBilling(props) {
                         <Input fluid placeholder='133 Kearmy Street'/>
                       </Grid.Column>
                     </Grid.Row>
+                    
                     <Grid.Row>
-                      <Grid.Column width='5'>
-                        <Header as='h4'>
-                          <p>Payment Method</p>
-                        </Header>
-                        <Header.Subheader>
-                                The preferred method on how you are billed. Credit cards can
-                                be added or removed.
-                        </Header.Subheader>
+                      <Grid.Column width='7'>
+                          <Header as='h5' color='blue' className='billing-header'>Contact Details</Header>
+                          <Segment className='input-segment'>
+                              <Input size='small' placeholder='Contact Name' />
+                              <Input size='small' placeholder='Contact Phone' />
+                          </Segment>
                       </Grid.Column>
-                      <Grid.Column width='11'>
-                        <Segment>
-                          <Grid>
-                            <Grid.Column verticalAlign='top' width='8'>
-                              {/* detail.form.cards.map(card =>
-                                            <Segment className='creditcard-container'>
-                                                <p className='current-card'>Current Card: {card.card_number}</p>
-                                                <p className='current-card'>Exp: {card.exp}</p>
-                                                <p className='current-card'>CVC: {card.cvv}</p>
-                                        </Segment>)*/}
+                      <Grid.Column width='9'>
+                        <Grid columns='3'>
+                          <Grid.Row>
+                            <Grid.Column style={{ padding: '0.5rem' }}>
+                              <Header as='h5' color='blue' className='billing-header'>City</Header>
+                              <Input fluid size='small' placeholder='San Francisco' />
                             </Grid.Column>
-                            <Grid.Column width='8'>
-                              <Segment className='input-segment'>
-                                <Checkbox checked label='Credit Card' radio/>
-                                <Image size='tiny' src='/images/credit-card.jpg'/>
-                              </Segment>
-                              <p>Safe money Transfer using your bank acount. Visa, Maestro,
-                                            Discover, American Express, Powered by Stripe and We don&apos;t
-                                            store card information in our system.
-                              </p>
-                              <Divider/>
-                              <Segment className='row-end'>
-                                <CreateCardModal/>
-                                <Button content='Confirm' primary/>
-                              </Segment>
+                            <Grid.Column style={{ padding: '0.5rem' }}>
+                              <Header as='h5' color='blue' className='billing-header'>State</Header>
+                              <Input fluid size='small' placeholder='California' />
                             </Grid.Column>
-                          </Grid>
-                        </Segment>
+                            <Grid.Column style={{ padding: '0.5rem' }}>
+                              <Header as='h5' color='blue' className='billing-header'>Zip Code</Header>
+                              <Input fluid size='small' placeholder='94108' />
+                            </Grid.Column>
+                          </Grid.Row>
+                        </Grid>
                       </Grid.Column>
+                    </Grid.Row>
+
+                    <Grid.Row className='row-end'>
+                      <Button content='Save' primary />
                     </Grid.Row>
                   </Grid>
                 </Segment>

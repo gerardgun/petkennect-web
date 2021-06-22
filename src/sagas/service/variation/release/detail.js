@@ -13,21 +13,15 @@ function* create() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const { results: employees } = yield call(Get, 'employees/', {
-      page_size: 100,
-      ordering : 'user__first_name'
+    const employees = yield call(Get, 'employees/', {
+      ordering: 'user__first_name'
     })
 
-    // BEGIN get group class service
-    const { results: services } = yield call(Get, 'services/', {
-      service_group__type: 'T'
+    const [ groupClassService ] = yield call(Get, 'services/', {
+      type: 'G'
     })
 
-    const groupClassService = services.find(({ type }) => type === 'G')
-    // END get group class service
-
-    const { results: serviceVariations } = yield call(Get, 'services-variations/', {
-      page_size    : 100,
+    const serviceVariations = yield call(Get, 'services-variations/', {
       ordering     : 'name',
       service__type: 'G'
     })
@@ -127,21 +121,15 @@ function* edit() {
       locationList = yield select(locationDuck.selectors.list)
     }
 
-    const { results: employees } = yield call(Get, 'employees/', {
-      page_size: 100,
-      ordering : 'user__first_name'
+    const employees = yield call(Get, 'employees/', {
+      ordering: 'user__first_name'
     })
 
-    // BEGIN get group class service
-    const { results: services } = yield call(Get, 'services/', {
-      service_group__type: 'T'
+    const [ groupClassService ] = yield call(Get, 'services/', {
+      type: 'G'
     })
 
-    const groupClassService = services.find(({ type }) => type === 'G')
-    // END get group class service
-
-    const { results: serviceVariations } = yield call(Get, 'services-variations/', {
-      page_size    : 100,
+    const serviceVariations = yield call(Get, 'services-variations/', {
       ordering     : 'name',
       service__type: 'G'
     })

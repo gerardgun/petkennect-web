@@ -86,13 +86,13 @@ const ServiceVariationReleaseCreateForm = props => {
           .format('YYYY-MM-DD[T]HH:mm:ss')
 
       const frequency = {
-        interval_type : config.recurring_type === 'monthly' ? 'M' : 'W',
+        interval_type: config.recurring_type === 'monthly' ? 'M' : 'W',
         interval_value,
-        week_day      : null,
-        week_day_order: null,
-        time_start    : '00:00:00',
-        time_end      : '00:00:00',
-        started_at    : `${started_at}T00:00:00`,
+        week_day     : null,
+        // week_day_order: null,
+        time_start   : '00:00:00',
+        time_end     : '00:00:00',
+        started_at   : `${started_at}T00:00:00`,
         ended_at
       }
 
@@ -219,6 +219,14 @@ const ServiceVariationReleaseCreateForm = props => {
     })
   }
 
+  const _handleRecurringEndedAt = () => {
+    change('config.recurring_ended_type', 'end_by')
+  }
+
+  const _handleRecurringEndedValue = () => {
+    change('config.recurring_ended_type', 'end_after')
+  }
+
   const _handleServiceVariationChange = serviceVariationId => {
     dispatch(
       serviceVariationReleaseDetailDuck.creators.createGetLocations({
@@ -337,36 +345,36 @@ const ServiceVariationReleaseCreateForm = props => {
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at || editing}
+              disabled={!started_at}
               label='Every Week'
               name='config.recurring_type' type='radio' value='every_week'/>
           </div>
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at || editing}
+              disabled={!started_at}
               label='Every Other Week'
               name='config.recurring_type' type='radio' value='every_other_week'/>
           </div>
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at || editing}
+              disabled={!started_at}
               label='Every'
               name='config.recurring_type' type='radio' value='every_custom_week'/>
             <Field
               component={CommonInput}
-              disabled={!started_at || editing}
+              disabled={!started_at}
               name='config.recurring_value'
               parse={parseInt}
               placeholder='0'
               type='number'/>
-            <span className={!started_at || editing ? 'disabled' : ''}> &nbsp;&nbsp;Week(s)</span>
+            <span className={!started_at ? 'disabled' : ''}> &nbsp;&nbsp;Week(s)</span>
           </div>
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at || editing}
+              disabled={!started_at}
               label='Monthly'
               name='config.recurring_type' type='radio' value='monthly'/>
           </div>
@@ -376,37 +384,39 @@ const ServiceVariationReleaseCreateForm = props => {
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at || editing}
+              disabled={!started_at}
               label='End by'
               name='config.recurring_ended_type' type='radio' value='end_by'/>
             <Field
               className='input-date'
               component={CommonInput}
-              disabled={!started_at || editing}
+              disabled={!started_at}
               name='config.recurring_ended_at'
+              onChange={_handleRecurringEndedAt}
               type='date'/>
           </div>
           <div className='recurring-type'>
             <Field
               component={Radio}
-              disabled={!started_at || editing}
+              disabled={!started_at}
               label='End after'
               name='config.recurring_ended_type' type='radio' value='end_after'/>
             <Field
               component={CommonInput}
-              disabled={!started_at || editing}
+              disabled={!started_at}
               name='config.recurring_ended_value'
+              onChange={_handleRecurringEndedValue}
               parse={parseInt}
               placeholder='0'
               type='number'/>
-            <span className={!started_at || editing ? 'disabled' : ''}> &nbsp;&nbsp;ocurrence(s)</span>
+            <span className={!started_at ? 'disabled' : ''}> &nbsp;&nbsp;ocurrence(s)</span>
           </div>
         </Form.Field>
         <Form.Field width={3}>
           <Field
             component={FormField}
             control={CheckboxGroup}
-            disabled={!started_at || editing}
+            disabled={!started_at}
             inline={false}
             label='On days'
             name='config.recurring_week_days'
