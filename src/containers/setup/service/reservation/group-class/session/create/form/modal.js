@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Dimmer, Form, Header, Loader, Modal } from 'semantic-ui-react'
 
 import ServiceVariationReleaseCreateForm from './index'
 
@@ -50,6 +50,10 @@ const ServiceVariationReleaseCreateFormModal = () => {
               type='submit'/>
           </Form.Field>
         </Form.Group>
+
+        <Dimmer active={detail.status === 'GETTING'} inverted>
+          <Loader inverted/>
+        </Dimmer>
       </Modal.Content>
     </Modal>
   )

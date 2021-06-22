@@ -67,20 +67,11 @@ function* createBoardingActivity() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    // BEGIN get boarding activity service
-    const { results: services } = yield call(Get, 'services/', {
-      service_group__type: 'B'
+    const serviceTypes = yield call(Get, 'services/', {
+      ordering: 'name'
     })
 
-    const boardingActivityService = services.find(({ type }) => type === 'B')
-    // END get boarding activity service
-
-    // BEGIN get service types
-    const { results: serviceTypes } = yield call(Get, 'services/', {
-      ordering : 'name',
-      page_size: 100
-    })
-    // END get service types
+    const boardingActivityService = serviceTypes.find(({ type }) => type === 'B')
 
     let employeeScheduleList = yield select(employeeScheduleDuck.selectors.list)
 
@@ -127,8 +118,7 @@ function* createBoardingActivityGetReservations({ payload }) {
 
     const lists = yield all(payload.service_type_ids.map(serviceId =>
       call(Get, 'services-variations/', {
-        service  : serviceId,
-        page_size: 100
+        service: serviceId
       })
     ))
 
@@ -137,9 +127,7 @@ function* createBoardingActivityGetReservations({ payload }) {
       payload: {
         form: {
           ...detail.form,
-          service_variation_options: [].concat(
-            ...lists.map(({ results }) => results)
-          )
+          service_variation_options: [].concat(...lists)
             .map(({ id, name }) => ({
               text : name,
               value: id
@@ -233,13 +221,9 @@ function* createGroupClass() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    // BEGIN get group class service
-    const { results: services } = yield call(Get, 'services/', {
-      service_group__type: 'T'
+    const [ groupClassService ] = yield call(Get, 'services/', {
+      type: 'G'
     })
-
-    const groupClassService = services.find(({ type }) => type === 'G')
-    // END get group class service
 
     let locationList = yield select(locationDuck.selectors.list)
 
@@ -347,16 +331,15 @@ function* editBoardingActivity() {
     const detail = yield select(selectors.detail)
 
     // Loading default service types and reservation types
-    const { results: serviceVariationAddons } = yield call(Get, `service-variations/${detail.item.id}/addons/`, {
-      page_size: 100
+    const serviceVariations = yield call(Get, 'services-variations/', {
+      id: detail.item.service_variation_addons.join()
     })
 
-    const serviceIds = _uniq(serviceVariationAddons.map(item => item.service.id))
+    const serviceIds = _uniq(serviceVariations.map(item => item.service.id))
 
     const lists = yield all(serviceIds.map(serviceId =>
       call(Get, 'services-variations/', {
-        service  : serviceId,
-        page_size: 100
+        service: serviceId
       })
     ))
 
@@ -366,13 +349,11 @@ function* editBoardingActivity() {
         item: {
           ...detail.item,
           service_type_ids     : serviceIds,
-          service_variation_ids: serviceVariationAddons.map(({ id }) => id)
+          service_variation_ids: detail.item.service_variation_addons
         },
         form: {
           ...detail.form,
-          service_variation_options: [].concat(
-            ...lists.map(({ results }) => results)
-          )
+          service_variation_options: [].concat(...lists)
             .map(({ id, name }) => ({
               text : name,
               value: id
@@ -415,27 +396,13 @@ function* postBoardingActivity({ payload: { price, service_variation_ids, ...pay
   try {
     yield put({ type: types.POST_PENDING })
 
-    // BEGIN get boarding activity service
-    const { results: services } = yield call(Get, 'services/', {
-      service_group__type: 'B'
+    const [ boardingActivityService ] = yield call(Get, 'services/', {
+      type: 'B'
     })
-
-    const boardingActivityService = services.find(({ type }) => type === 'B')
-    // END get boarding activity service
-
-    let locationList = yield select(locationDuck.selectors.list)
-
-    if(locationList.items.length === 0) {
-      yield* locationSaga.get()
-
-      locationList = yield select(locationDuck.selectors.list)
-    }
 
     const result = yield call(Post, `services/${boardingActivityService.id}/variations/`, {
       ...payload,
-      // BEGIN delete
-      locations: locationList.items.map(({ id }) => id)
-      // END delete
+      service_variation_addons: service_variation_ids
     })
 
     // Creating price
@@ -444,13 +411,6 @@ function* postBoardingActivity({ payload: { price, service_variation_ids, ...pay
       started_at: moment(price.started_at).format('YYYY-MM-DD[T]HH:mm:ss'),
       ended_at  : moment(price.ended_at).format('YYYY-MM-DD[T]HH:mm:ss')
     })
-
-    // Creating related service variation/reservation addons
-    yield all(service_variation_ids.map(serviceVariationId =>
-      call(Post, `service-variations/${result.id}/addons/`, {
-        addon_service_variation: serviceVariationId
-      })
-    ))
 
     yield put({
       type: types.POST_FULFILLED
@@ -467,13 +427,9 @@ function* postGroupClass({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    // BEGIN get group class service
-    const { results: services } = yield call(Get, 'services/', {
-      service_group__type: 'T'
+    const [ groupClassService ] = yield call(Get, 'services/', {
+      type: 'G'
     })
-
-    const groupClassService = services.find(({ type }) => type === 'G')
-    // END get group class service
 
     yield call(Post, `services/${groupClassService.id}/variations/`, payload)
 
@@ -513,6 +469,8 @@ function* _put({ payload: { id, service_id, price, ...payload } }) {
   try {
     yield put({ type: types.PUT_PENDING })
 
+    delete payload.capacity
+
     yield call(Patch, `services/${service_id}/variations/${id}/`, payload)
 
     if(price.id)
@@ -541,7 +499,10 @@ function* _putBoardingActivity({ payload: { id, service, price, service_variatio
   try {
     yield put({ type: types.PUT_PENDING })
 
-    yield call(Patch, `services/${service.id}/variations/${id}/`, payload)
+    yield call(Patch, `services/${service.id}/variations/${id}/`, {
+      ...payload,
+      service_variation_addons: service_variation_ids
+    })
 
     // Creating/Updating price
     if(price.id)
@@ -556,28 +517,6 @@ function* _putBoardingActivity({ payload: { id, service, price, service_variatio
         started_at: moment(price.started_at).format('YYYY-MM-DD[T]HH:mm:ss'),
         ended_at  : moment(price.ended_at).format('YYYY-MM-DD[T]HH:mm:ss')
       })
-
-    // Updating related service variation/reservation addons
-    const { results: serviceVariationAddons } = yield call(Get, `service-variations/${id}/addons/`, {
-      page_size: 100
-    })
-
-    const serviceVariationIdsToAdd = service_variation_ids
-      .filter(serviceVariationId => !serviceVariationAddons.some(({ id }) => id === serviceVariationId))
-    const serviceVariationIdsToDelete = serviceVariationAddons
-      .filter(({ id }) => !service_variation_ids.some(serviceVariationId => serviceVariationId === id))
-
-    if(serviceVariationIdsToAdd.length > 0)
-      yield all(serviceVariationIdsToAdd.map(serviceVariationId =>
-        call(Post, `service-variations/${id}/addons/`, {
-          addon_service_variation: serviceVariationId
-        })
-      ))
-
-    if(serviceVariationIdsToDelete.length > 0)
-      yield all(serviceVariationIdsToDelete.map(serviceVariationId =>
-        call(Delete, `service-variations/${id}/addons/${serviceVariationId}/`)
-      ))
 
     yield put({ type: types.PUT_FULFILLED })
   } catch (e) {
