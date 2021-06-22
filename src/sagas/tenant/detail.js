@@ -17,7 +17,22 @@ const parseTenant = tenant => {
       boarding    : _merge({
         show_kennel_as_occupied       : false,
         show_kennel_id                : false,
-        enable_client_kennel_selection: false
+        enable_client_kennel_selection: false,
+        pricing_model_id              : 1,
+        all_inclusive                 : 1,
+        day_service_price             : 1,
+        activity_id                   : 1,
+        pricing_offer_discount        : 1,
+        compute_dog_pricing           : 1,
+        discount_apply_to             : 1,
+        discount_per_dog              : 1,
+        discount_per_dog_price        : 1,
+        season_peak                   : 1,
+        peak_price_surcharge          : 1,
+        dog_size                      : 1,
+        time_checkout                 : '12:00',
+        checkout_prior                : 1,
+        checkout_after                : 1
       }, _get(tenant, 'service_config.boarding', {}))
     }
   }

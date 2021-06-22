@@ -1,8 +1,9 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Breadcrumb, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Field, reduxForm } from 'redux-form'
+import { Button, Divider, Form, Grid, Header, Input, Select, Segment } from 'semantic-ui-react'
+import { withRouter } from 'react-router-dom'
 import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
@@ -10,20 +11,37 @@ import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/settings/components/Menu'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import tenantDetailDuck from '@reducers/tenant/detail'
 
 const SetupBoardingPricingIndex = props => {
   const[ pricingModel, setPricingModel ] = useState(false);
   const[ calculatePricing, setCalculatePricing ] = useState(false);
   const[ textDiscount, setTextDiscount] = useState('$0.00')
   const {
-    error, handleSubmit // redux-form
+    error, handleSubmit, reset, initialize // redux-form
   } = props
 
   const dispatch = useDispatch()
+  const detail = useSelector(tenantDetailDuck.selectors.detail)
 
   const _handleSubmit = values => {
-    console.log(values)
+    return dispatch(tenantDetailDuck.creators.put({
+      service_config: {
+        ...detail.item.service_config,
+        boarding: {
+          ...detail.item.service_config.boarding,
+          ...values
+        }
+      }
+    }))
+      .catch(parseResponseError)
   }
+
+  useEffect(() => {
+    if(detail.item.id) initialize(detail.item.service_config.boarding)
+  }, [ detail.item.id ])
+
+  const saving = [ 'POSTING', 'PUTTING' ].includes(detail.status)
 
   return (
     <Layout>
@@ -31,7 +49,7 @@ const SetupBoardingPricingIndex = props => {
         <Menu/>
 
         {/* eslint-disable-next-line react/jsx-handler-names */}
-        <Form onSubmit={handleSubmit(_handleSubmit)}>
+        <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
 
           <Header as='h4' color='teal'>Boarding Pricing Settings</Header>
           <p>
@@ -58,7 +76,8 @@ const SetupBoardingPricingIndex = props => {
                   placeholder='Select your pricing model'
                   search
                   selectOnBlur={false}
-                  onChange={(event)=> event===1 ? setPricingModel(1):setPricingModel(2)}/>
+                  onChange={(event)=> event===1 ? setPricingModel(1):setPricingModel(2)}
+                  required/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -87,7 +106,8 @@ const SetupBoardingPricingIndex = props => {
                         ]}
                         placeholder='Select charge type'
                         search
-                        selectOnBlur={false}/>
+                        selectOnBlur={false}
+                        required/>
                     </Grid.Column>
                   </Grid.Row>
               </Grid>
@@ -108,7 +128,8 @@ const SetupBoardingPricingIndex = props => {
                       control={Input}
                       name='day_service_price'
                       placeholder='$0.00'
-                      type='number'/>
+                      type='number'
+                      required/>
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
@@ -139,7 +160,8 @@ const SetupBoardingPricingIndex = props => {
                     ]}
                     placeholder='Select activity based'
                     search
-                    selectOnBlur={false}/>
+                    selectOnBlur={false}
+                    required/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -168,7 +190,8 @@ const SetupBoardingPricingIndex = props => {
                   ]}
                   placeholder='Select option'
                   search
-                  selectOnBlur={false}/>
+                  selectOnBlur={false}
+                  required/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -192,7 +215,8 @@ const SetupBoardingPricingIndex = props => {
                   placeholder='Select option'
                   search
                   selectOnBlur={false}
-                  onChange={(event)=> event===1 ? setCalculatePricing(true):setCalculatePricing(false)}/>
+                  onChange={(event)=> event===1 ? setCalculatePricing(true):setCalculatePricing(false)}
+                  required/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -217,7 +241,8 @@ const SetupBoardingPricingIndex = props => {
                     ]}
                     placeholder='Select discount apply to'
                     search
-                    selectOnBlur={false}/>
+                    selectOnBlur={false}
+                    required/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -249,7 +274,8 @@ const SetupBoardingPricingIndex = props => {
                     control={Input}
                     name='discount_per_dog_price'
                     placeholder={textDiscount}
-                    type='number'/>
+                    type='number'
+                    required/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -277,7 +303,8 @@ const SetupBoardingPricingIndex = props => {
                   ]}
                   placeholder='Select option'
                   search
-                  selectOnBlur={false}/>
+                  selectOnBlur={false}
+                  required/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -295,7 +322,8 @@ const SetupBoardingPricingIndex = props => {
                   control={Input}
                   name='peak_price_surcharge'
                   placeholder='$0.00'
-                  type='number'/>
+                  type='number'
+                  required/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -320,7 +348,8 @@ const SetupBoardingPricingIndex = props => {
                   ]}
                   placeholder='Select option'
                   search
-                  selectOnBlur={false}/>
+                  selectOnBlur={false}
+                  required/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -343,7 +372,8 @@ const SetupBoardingPricingIndex = props => {
                   control={Input}
                   name='time_checkout'
                   placeholder='13:00'
-                  type='time'/>
+                  type='time'
+                  required/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -382,40 +412,72 @@ const SetupBoardingPricingIndex = props => {
                 <Field
                   component={FormField}
                   control={Select}
-                  name='dog_size'
+                  name='checkout_after'
                   options={[
                     { value: 1, text: 'No Fees' },
                     { value: 2, text: 'Flat Late Check-out Fee per dog' },
-                    { value: 2, text: 'Flat Late Check-out Fee per client' },
-                    { value: 2, text: 'Full Day of selected Activties' }
+                    { value: 3, text: 'Flat Late Check-out Fee per client' },
+                    { value: 4, text: 'Full Day of selected Activties' }
                   ]}
                   placeholder='Select option'
                   search
-                  selectOnBlur={false}/>
+                  selectOnBlur={false}
+                  required/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
           {/*<Divider/>*/}
 
-        </Form>
-
-        {
+          {
           error && (
-            <FormError message={error}/>
+            <Form.Group widths='equal'>
+                <Form.Field>
+                  <FormError message={error}/>
+                </Form.Field>
+              </Form.Group>
           )
-        }
+          }
 
+          <Form.Group className='form-modal-actions' widths='equal'>
+            <Form.Field>
+              <Button
+                color='teal'
+                content='Save changes'
+                disabled={saving}
+                loading={saving}
+                type='submit'/>
+            </Form.Field>
+          </Form.Group>
+
+        </Form>
       </Segment>
     </Layout>
   )
 }
 
-export default reduxForm({
+export default 
+reduxForm({
   form              : 'setup-boarding-pricing',
-  enableReinitialize: true,
   validate          : values => {
-    const schema = {}
+    const schema = {
+      pricing_model_id          : Yup.string().required('Pricing Model is required'),
+      all_inclusive             : Yup.string().required('Charge Type is required'),
+      day_service_price         : Yup.string().required('Day Service Price is required'),
+      activity_id               : Yup.string().required('Activity Frequency is required'),
+      pricing_offer_discount    : Yup.string().required('Pricing Discount is required'),
+      compute_dog_pricing       : Yup.string().required('Option is required'),
+      discount_apply_to         : Yup.string().required('Discount is required'),
+      discount_per_dog          : Yup.string().required('Discount per dog is required'),
+      discount_per_dog_price    : Yup.string().required('Price per dog is required'),
+      season_peak               : Yup.string().required('Season/Pek is required'),
+      peak_price_surcharge      : Yup.string().required('Peak Price is required'),
+      dog_size                  : Yup.string().required('Dog size is required'),
+      time_checkout             : Yup.string().required('Time is required'),
+      checkout_prior            : Yup.string().required('Prior is required'),
+      checkout_after            : Yup.string().required('After Charges is required'),
+    }
 
     return syncValidate(Yup.object().shape(schema), values)
   }
 })(SetupBoardingPricingIndex)
+/* eslint-enable */
