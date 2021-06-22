@@ -48,6 +48,17 @@ const SetupAddOnGeneralAddOnIndex = () => {
       )
   }
 
+  const _handleConfirmDelete = () => {
+    dispatch(
+      setupAddonServiceSettingDetailDuck.creators.delete(detail.item)
+    )
+      .then(() => {
+        dispatch(
+          setupAddonServiceSettingDetailDuck.creators.resetItem()
+        )
+      })
+  }
+
   return (
     <Layout>
       <Segment className='segment-content' padded='very'>
@@ -63,7 +74,7 @@ const SetupAddOnGeneralAddOnIndex = () => {
 
         <SetupAddonServiceSettingFormModal/>
 
-        <ModalDelete duckDetail={setupAddonServiceSettingDetailDuck}/>
+        <ModalDelete duckDetail={setupAddonServiceSettingDetailDuck} onDelete={_handleConfirmDelete}/>
 
       </Segment>
     </Layout>

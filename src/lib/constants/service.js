@@ -123,12 +123,34 @@ export const ServicePackageDefaultConfig = {
 }
 
 export const TrueAddonServiceDefaultConfig = {
+  service_groups       : [],
+  service_types        : [],
   is_scheduled         : false,
   locations            : [],
   is_bookable_by_client: false,
   is_taxable           : false,
   is_active            : false,
   service_true_addon   : {
+    service_variations: []
+  }
+}
+
+export const OpenLineAddonServiceDefaultConfig = {
+  locations              : [],
+  is_taxable             : false,
+  service_open_line_addon: {
+    can_be_credit_negative: false,
+    is_tip                : false
+  }
+}
+
+export const TransportAddonServiceDefaultConfig = {
+  service_groups         : [],
+  service_types          : [],
+  locations              : [],
+  is_active              : false,
+  is_bookable_by_client  : false,
+  service_transport_addon: {
     service_variations: []
   }
 }

@@ -2,26 +2,26 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Header, Modal } from 'semantic-ui-react'
 
-import SetupAddonServiceSettingForm from './index'
+import SetupOpenLineAddonServiceSettingForm from './index'
 
-import setupAddonServiceSettingDetailDuck from '@reducers/service/addon/general/add-on-service/detail'
+import setupOpenLineAddonServiceSettingDetailDuck from '@reducers/service/addon/general/open-line-service/detail'
 import { formValueSelector } from 'redux-form'
 
-const selector = formValueSelector('setup-addon-service')
+const selector = formValueSelector('setup-open-line-addon-service')
 
-const SetupAddonServiceSettingFormModal = () => {
+const SetupOpenLineAddonServiceSettingFormModal = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(setupAddonServiceSettingDetailDuck.selectors.detail)
+  const detail = useSelector(setupOpenLineAddonServiceSettingDetailDuck.selectors.detail)
   const price = useSelector(state => selector(state, 'price'))
 
   const _handleClose = () => {
     dispatch(
-      setupAddonServiceSettingDetailDuck.creators.resetItem()
+      setupOpenLineAddonServiceSettingDetailDuck.creators.resetItem()
     )
   }
 
   const _handleUpdatePricingBtnClick = () => {
-    return dispatch(setupAddonServiceSettingDetailDuck.creators.postPrice({ service_variation_id: detail.item.id, ...price }))
+    return dispatch(setupOpenLineAddonServiceSettingDetailDuck.creators.postPrice({ service_variation_id: detail.item.id, ...price }))
       .then(_handleClose)
       // .catch(parseResponseError)
   }
@@ -37,9 +37,9 @@ const SetupAddonServiceSettingFormModal = () => {
       open={open}
       size='small'>
       <Modal.Content>
-        <Header as='h2'>{editing ? 'Update' : 'New'} Add-On Service</Header>
+        <Header as='h2'>{editing ? 'Update' : 'New'} Open Line Item</Header>
 
-        <SetupAddonServiceSettingForm/>
+        <SetupOpenLineAddonServiceSettingForm/>
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
@@ -63,9 +63,9 @@ const SetupAddonServiceSettingFormModal = () => {
               type='button'/>
             <Button
               color='teal'
-              content={editing ? 'Save changes' : 'Create Add-On Service'}
+              content={editing ? 'Save changes' : 'Create Open Line Item'}
               disabled={saving}
-              form='setup-addon-service'
+              form='setup-open-line-addon-service'
               loading={saving}
               type='submit'/>
           </Form.Field>
@@ -75,4 +75,4 @@ const SetupAddonServiceSettingFormModal = () => {
   )
 }
 
-export default SetupAddonServiceSettingFormModal
+export default SetupOpenLineAddonServiceSettingFormModal

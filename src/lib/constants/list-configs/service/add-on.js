@@ -29,22 +29,22 @@ export default {
     },
     {
       display_name: `Applies to${'\n'}Services`,
-      name        : 'service',
-      formatter   : cell => cell.service_group_name
+      name        : 'service_group_names',
+      type        : 'string'
     },
     {
       display_name: `Applies to${'\n'}Service${'\n'}Types`,
-      name        : 'service',
-      formatter   : cell => cell.name
+      name        : 'service_type_names',
+      type        : 'string'
     },
     {
       display_name: `Applies to${'\n'}Reservation${'\n'}Types`,
-      name        : 'applies',
+      name        : 'applies_reservations',
       type        : 'string'
     },
     {
       display_name: 'Price',
-      name        : 'price',
+      name        : 'price.price',
       type        : 'money'
     },
     {
