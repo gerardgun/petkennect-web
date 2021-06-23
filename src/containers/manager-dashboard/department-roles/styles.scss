@@ -1,0 +1,34 @@
+.manager-department-role-style {
+  .field-input-width-sidebar-max {  // hidden true
+    width: 240px !important;
+    @media (min-width: 1400px) {
+      width: 240px !important;
+    }
+  }
+  .field-input-width-sidebar-min {
+    width: 250px !important;
+    @media (min-width: 1400px) {
+      width: 260px !important;
+    }
+  }
+
+  .field-dropdown-width-sidebar-max {
+    width: 560px !important;
+    @media (min-width: 1400px) {
+      width: 640px !important;
+    }
+  }
+  .field-dropdown-width-sidebar-min {
+    width: 660px !important;
+    @media (min-width: 1400px) {
+      width: 740px !important;
+    }
+  }
+
+  .input-field-padding {
+    .ui.form .fields > .field {
+      padding-left: .5em !important;
+      padding-right: 0em;
+    }
+  }
+}

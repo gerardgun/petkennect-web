@@ -3,27 +3,27 @@ import React, { Fragment, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field } from 'redux-form'
-import { Button, Form, Select } from 'semantic-ui-react'
+import { Button, Form, Select, Input } from 'semantic-ui-react'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import locationDuck from '@reducers/location'
 
-const DepartmentRole = ({ locations, fields, meta: { error, submitFailed }, ...props }) => {
+import wagesDuck from '@reducers/manager-dashboard/employee/employee-wage-history'
+
+const DepartmentRole = ({ wages, fields, meta: { error, submitFailed }, ...props }) => {
   useEffect(() => {
     if(fields.length === 0) _handleAddBtnClick() // Add a default item
   }, [])
 
   useEffect(() => {
-    props.getLocations()
+    props.getWages()
   }, [])
 
   const _handleAddBtnClick = () => fields.push({ ...departmentInitialState })
   const _handleRemoveBtnClick = e => fields.remove(e.currentTarget.dataset.index)
 
   const departmentInitialState = {
-    number: '',
-    type  : null
+    department: ''
   }
 
   return (
@@ -42,38 +42,48 @@ const DepartmentRole = ({ locations, fields, meta: { error, submitFailed }, ...p
                 { key: 2, value: 'training', text: 'Training' },
                 { key: 3, value: 'grooming', text: 'Grooming' }
               ]}
-              placeholder='Select'
+              placeholder='Select department'
               selectOnBlur={false}
-              style={{ width: '260px' }}/>
+              style={{ width: '240px' }}/>
             <Field
               component={FormField}
               control={Select}
               fluid
               label='Role'
-              multiple={true}
               name={`role${index}`}
               options={[
                 { key: 1, value: 'manager', text: 'Manager' },
                 { key: 2, value: 'trainer', text: 'Trainer' },
                 { key: 3, value: 'groomer', text: 'Groomer' }
               ]}
-              placeholder='Select'
+              placeholder='Select role'
               selectOnBlur={false}
-              style={{ width: '260px' }}/>
+              style={{ width: '220px' }}/>
+            <Field
+              component={FormField}
+              control={Input}
+              fluid
+              label='Rate'
+              name={`rate${index}`}
+              placeholder='Enter rate'
+              selectOnBlur={false}
+              style={{ width: '160px' }}
+              type='number'/>
+
             <Field
               component={FormField}
               control={Select}
-              label='Select Location'
-              multiple={true}
-              name={`location${index}`}
-              options={locations.items.map((_location) => ({
-                key  : _location.id,
-                value: _location.id,
-                text : `${_location.name}`
-              }))}
-              placeholder='Select location'
+              fluid
+              label='Wage Type'
+              name={`wage_type${index}`}
+              options={[
+                { key: 1, value: 'per_hour', text: 'per Hour' },
+                { key: 2, value: 'per_year', text: 'per Year' }
+              ]}
+              placeholder='Select wage type'
               selectOnBlur={false}
-              style={{ width: '260px' }}/>
+              style={{ width: '200px' }}/>
+
             {
               index !== 0 && (
                 <Form.Button
@@ -115,14 +125,14 @@ const DepartmentRole = ({ locations, fields, meta: { error, submitFailed }, ...p
 export default  compose(
   connect(
     (state) => {
-      const locations = locationDuck.selectors.list(state)
+      const wages = wagesDuck.selectors.list(state)
 
       return {
-        locations
+        wages
       }
     },
     {
-      getLocations: locationDuck.creators.get
+      getWages: wagesDuck.creators.get
     }
   )
 )(DepartmentRole)

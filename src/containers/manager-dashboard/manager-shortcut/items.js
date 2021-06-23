@@ -64,7 +64,8 @@ export default [
   {
     name: 'Settings',
     icon: 'settings',
-    to  : ''
+    to  : '/manager-dashboard/setting/permission',
+    link: [ '/manager-dashboard/setting/permission' ]
   }
 
 ]

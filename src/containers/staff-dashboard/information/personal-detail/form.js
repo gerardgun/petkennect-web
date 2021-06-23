@@ -181,6 +181,7 @@ function PersonalInformationForm(props) {
                     <Header as='h6' className='section-header' color='teal'>Company Information</Header>
                     <Form.Input label='Primary Location' readOnly value='Location One'/>
                     <Form.Input label='Hire Date' readOnly value='1/1/2018'/>
+                    <Form.Input label='Other Locations' readOnly value='Location One, Location Two'/>
                     <Form.Input label='Department' readOnly value='Management, Training'/>
                     <Form.Input label='Roles' readOnly value='Manager, Dog Training'/>
                     <Form.Input label='Managers' readOnly value='Shannon Mayfield'/>

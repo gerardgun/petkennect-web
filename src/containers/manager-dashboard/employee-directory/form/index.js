@@ -213,6 +213,7 @@ function PersonalInformationForm(props) {
                     placeholder='Enter annual PTO days'
                     required/>
                   <Field
+                    className='mt28'
                     component={FormField}
                     control={Checkbox}
                     label='Active'
