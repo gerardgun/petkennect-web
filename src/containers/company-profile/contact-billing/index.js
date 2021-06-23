@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { Image, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Segment } from 'semantic-ui-react'
 import * as Yup from 'yup'
@@ -6,9 +7,12 @@ import * as Yup from 'yup'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
 import CreateCardModal from '@containers/company-profile/components/CreateCardModal'
+import tenantDetailDuck from '@reducers/tenant/detail'
 import { syncValidate } from '@lib/utils/functions'
 
 function SetupCompanyProfileContactBilling(props) {
+  const dispatch = useDispatch()
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
   const {
     handleSubmit // redux-form
   } = props
@@ -131,15 +135,13 @@ function SetupCompanyProfileContactBilling(props) {
                 <Segment>
                   <Grid>
                     <Grid.Column verticalAlign='top' width='8'>
-                      {/* detail.form.cards.map((card, index) => (
-                        <Segment className='creditcard-container' key={index}>
+                        <Segment className='creditcard-container'>
                           <p className='current-card'>
-                            Current Card: {card.card_number}
+                            Current Card: XXXX-XXXX-XXXX-XXXX
                           </p>
-                          <p className='current-card'>Exp: {card.exp}</p>
-                          <p className='current-card'>CVC: {card.cvv}</p>
+                          <p className='current-card'>Exp: XX/XX</p>
+                          <p className='current-card'>CVC: XXX</p>
                         </Segment>
-                      ))*/}
                     </Grid.Column>
                     <Grid.Column width='8'>
                       <Segment className='input-segment'>

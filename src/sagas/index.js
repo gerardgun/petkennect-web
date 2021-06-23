@@ -85,11 +85,13 @@ import managerDashboardEmployeeDirectory from './manager-dashboard/employee/empl
 import managerDashboardEmployeeDocument from './manager-dashboard/employee/employee-document'
 import managerDashboardEmployeeWageHistory from './manager-dashboard/employee/employee-wage-history'
 import medication from './pet/medication-setting/medication'
+import medicationDetail from './pet/medication-setting/medication/detail'
 import medicationMeasurement from './pet/medication-setting/medication-measurement'
 import medicationTime from './pet/medication-setting/medication-time'
 import medicationUnit from './pet/medication-setting/medication-unit'
 import medicationReportStatus from './pet/medication-setting/medication-report-status'
 import medicationType from './pet/medication-setting/medication-type'
+import medicationTypeDetail from './pet/medication-setting/medication-type/detail'
 import notification from './notification'
 import organization from './organization'
 import organizationDetail from './organization/detail'
@@ -326,10 +328,12 @@ export default function* rootSaga() {
     ...managerDashboardEmployeeDocument,
     ...managerDashboardEmployeeWageHistory,
     ...medication,
+    ...medicationDetail,
     ...medicationMeasurement,
     ...medicationReportStatus,
     ...medicationTime,
     ...medicationType,
+    ...medicationTypeDetail,
     ...medicationUnit,
     ...notification,
     ...organization,

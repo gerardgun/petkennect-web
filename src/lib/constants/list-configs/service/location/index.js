@@ -24,10 +24,9 @@ export default {
     },
     {
       display_name: 'Tax Rate',
-      type        : 'text',
-      formatter   : cell => (
-        <Input placeholder='0.00' disabled toggle/>
-      )
+      type        : 'string',
+      align       : 'left',
+      sort        : false
     },
   ]
 }
