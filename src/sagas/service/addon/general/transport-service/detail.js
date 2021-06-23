@@ -1,4 +1,4 @@
-import setupAddonServiceSettingDetailDuck from '@reducers/service/addon/general/add-on-service/detail'
+import setupTransportAddonServiceSettingDetailDuck from '@reducers/service/addon/general/transport-service/detail'
 import { all, call, put, select, takeEvery } from 'redux-saga/effects'
 import * as locationSaga from '@sagas/location'
 import locationDuck from '@reducers/location'
@@ -8,7 +8,7 @@ import { Delete, Get, Patch, Post } from '@lib/utils/http-client'
 import moment from 'moment'
 import _uniqBy from 'lodash/uniqBy'
 
-const { types, selectors } = setupAddonServiceSettingDetailDuck
+const { types, selectors } = setupTransportAddonServiceSettingDetailDuck
 
 function* create() {
   try {
@@ -23,8 +23,6 @@ function* create() {
     // service groups
     yield* serviceGroupSaga.get()
     const serviceGroupList = yield select(serviceGroupDuck.selectors.list)
-    // calendars
-    const calendarOptions = yield call(Get, 'employees-schedules/')
 
     // service type and reservation type options
     let serviceTypeOptions = []
@@ -62,10 +60,6 @@ function* create() {
               text : name,
               value: id
             })),
-          calendar_options: calendarOptions.map(({ id, name }) => ({
-            text : name,
-            value: id
-          })),
           service_type_options: _uniqBy(
             [].concat(...serviceTypeOptions).map(({ id, name, service_group }) => ({
               text : name,
@@ -74,7 +68,7 @@ function* create() {
             })),
             'value'
           ),
-          true_addons_options: _uniqBy(
+          transport_addons_options: _uniqBy(
             [].concat(...reservationTypeOptions).map(
               ({ id, name, locations, service: { id: service_id } }) => ({
                 text   : name,
@@ -101,7 +95,7 @@ function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    const addon = yield call(Post, 'services-true-addons/', {
+    const addon = yield call(Post, 'services-transport-addons/', {
       ...payload,
       is_group_play_required: false
     })
@@ -129,14 +123,13 @@ function* post({ payload }) {
 
 function* _put({ payload }) {
   try {
-    yield put({ type: types.POST_PENDING })
+    yield put({ type: types.PUT_PENDING })
 
     delete payload.service
-    const addon = yield call(Patch, `services-true-addons/${payload.id}`, {
+    const addon = yield call(Patch, `services-transport-addons/${payload.id}`, {
       ...payload,
-      service_true_addon: {
-        service_variations: payload.service_true_addon.service_variations,
-        color_code        : payload.service_true_addon.color_code
+      service_transport_addon: {
+        service_variations: payload.service_transport_addon.service_variations
       }
     })
 
@@ -248,7 +241,7 @@ function* getReservationTypes({ payload }) {
 
     const detail = yield select(selectors.detail)
     const uniqOptions = _uniqBy(
-      [ ...detail.form.true_addons_options, ...reservationOptions ],
+      [ ...detail.form.transport_addons_options, ...reservationOptions ],
       'value'
     )
 
@@ -257,7 +250,7 @@ function* getReservationTypes({ payload }) {
       payload: {
         form: {
           ...detail.form,
-          true_addons_options: uniqOptions.filter(({ service }) =>
+          transport_addons_options: uniqOptions.filter(({ service }) =>
             payload.services.includes(service)
           )
         }

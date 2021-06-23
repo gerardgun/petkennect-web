@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Header, Segment } from 'semantic-ui-react'
 import loadable from '@loadable/component'
 import Table from '@components/Table'
+import ModalDelete from '@components/Modal/Delete'
 import companyProfileCalendarListConfig from '@lib/constants/list-configs/company-profile/calendar'
 import companyProfileCalendarDuck from '@reducers/company-profile/calendar'
 import companyProfileCalendarDetailDuck from '@reducers/company-profile/calendar/detail'
@@ -38,6 +39,13 @@ const SetupCompanyProfileCalendar = () => {
           'UPDATE'
         )
       )
+    if(button === 'delete')
+      dispatch(
+        companyProfileCalendarDetailDuck.creators.setItem(
+          reason,
+          'DELETE'
+        )
+      )
     if(button === 'view')
       history.push(`/setup/company-profile/calendar/${reason.id}`)
   }
@@ -65,6 +73,8 @@ const SetupCompanyProfileCalendar = () => {
             onRowButtonClick={_handleRowButtonClick}/>
         </Grid.Row>
         <CompanyProfileCalendarFormModal/>
+
+        <ModalDelete duckDetail={companyProfileCalendarDetailDuck}/>
       </Segment>
     </Layout>
   )

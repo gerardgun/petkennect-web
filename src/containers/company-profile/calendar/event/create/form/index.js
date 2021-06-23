@@ -44,7 +44,7 @@ const CalendarEventForm = (props) => {
     is_exception,
     color,
     is_recurring,
-    frequency: { week_days = [] } = {}
+    frequency: { week_days = [], interval_type = null } = {}
   } = useSelector((state) =>
     selector(
       state,
@@ -63,7 +63,10 @@ const CalendarEventForm = (props) => {
       initialize({
         ...CompanyProfileCalendarEventConfig,
         ...detail.item,
-        type: 'E'
+        type          : 'E',
+        interval_value: detail.item.frequency
+          ? detail.item.frequency.interval_value
+          : 1
       })
     // Set default data for new register
     else
@@ -102,6 +105,10 @@ const CalendarEventForm = (props) => {
     }
   }, [ is_exception ])
 
+  useEffect(() => {
+    if(interval_type === 'D') change('frequency.week_days', [])
+  }, [ interval_type ])
+
   const _handleClose = () => {
     dispatch(companyProfileCalendarEventDetailDuck.creators.resetItem())
   }
@@ -133,6 +140,7 @@ const CalendarEventForm = (props) => {
     else change('frequency.week_days', [ ...week_days, day ])
     setTimeout(() => {
       untouch(
+        'company-profile-calendar-event',
         'name',
         'description',
         'start_date',
@@ -146,7 +154,7 @@ const CalendarEventForm = (props) => {
 
   return (
     // eslint-disable-next-line react/jsx-handler-names
-    <Form id='company-profile-calendar-event' onReset={reset}onSubmit={handleSubmit(_handleSubmit)}>
+    <Form id='company-profile-calendar-event' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
       <Form.Group widths='equal'>
         <Field
           component={FormField}
@@ -274,59 +282,68 @@ const CalendarEventForm = (props) => {
               required
               selectOnBlur={false}/>
           </Form.Group>
-          <Form.Group>
-            <Grid.Row className='flex flex-row mv20'>
-              <Button
-                circular
-                className='button-day first'
-                color={week_days.includes(6) ? 'teal' : undefined}
-                content='D'
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick={() => _handleAddDay(6)}/>
-              <Button
-                circular
-                className='button-day'
-                color={week_days.includes(0) ? 'teal' : undefined}
-                content='L'
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick={() => _handleAddDay(0)}/>
-              <Button
-                circular
-                className='button-day'
-                color={week_days.includes(1) ? 'teal' : undefined}
-                content='M'
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick={() => _handleAddDay(1)}/>
-              <Button
-                circular
-                className='button-day'
-                color={week_days.includes(2) ? 'teal' : undefined}
-                content='X'
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick={() => _handleAddDay(2)}/>
-              <Button
-                circular
-                className='button-day'
-                color={week_days.includes(3) ? 'teal' : undefined}
-                content='J'
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick={() => _handleAddDay(3)}/>
-              <Button
-                circular
-                className='button-day'
-                color={week_days.includes(4) ? 'teal' : undefined}
-                content='V'
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick={() => _handleAddDay(4)}/>
-              <Button
-                circular
-                className='button-day'
-                color={week_days.includes(5) ? 'teal' : undefined}
-                content='S'
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick={() => _handleAddDay(5)}/>
-            </Grid.Row>
-          </Form.Group>
+          {interval_type !== 'D' && (
+            <Form.Group>
+              <Grid.Row className='flex flex-row mv20'>
+                <Button
+                  circular
+                  className='button-day first'
+                  color={week_days.includes(7) ? 'teal' : undefined}
+                  content='D'
+                  // eslint-disable-next-line react/jsx-handler-names
+                  onClick={() => _handleAddDay(7)}
+                  type='button'/>
+                <Button
+                  circular
+                  className='button-day'
+                  color={week_days.includes(1) ? 'teal' : undefined}
+                  content='L'
+                  // eslint-disable-next-line react/jsx-handler-names
+                  onClick={() => _handleAddDay(1)}
+                  type='button'/>
+                <Button
+                  circular
+                  className='button-day'
+                  color={week_days.includes(2) ? 'teal' : undefined}
+                  content='M'
+                  // eslint-disable-next-line react/jsx-handler-names
+                  onClick={() => _handleAddDay(2)}
+                  type='button'/>
+                <Button
+                  circular
+                  className='button-day'
+                  color={week_days.includes(3) ? 'teal' : undefined}
+                  content='X'
+                  // eslint-disable-next-line react/jsx-handler-names
+                  onClick={() => _handleAddDay(3)}
+                  type='button'/>
+                <Button
+                  circular
+                  className='button-day'
+                  color={week_days.includes(4) ? 'teal' : undefined}
+                  content='J'
+                  // eslint-disable-next-line react/jsx-handler-names
+                  onClick={() => _handleAddDay(4)}
+                  type='button'/>
+                <Button
+                  circular
+                  className='button-day'
+                  color={week_days.includes(5) ? 'teal' : undefined}
+                  content='V'
+                  // eslint-disable-next-line react/jsx-handler-names
+                  onClick={() => _handleAddDay(5)}
+                  type='button'/>
+                <Button
+                  circular
+                  className='button-day'
+                  color={week_days.includes(6) ? 'teal' : undefined}
+                  content='S'
+                  // eslint-disable-next-line react/jsx-handler-names
+                  onClick={() => _handleAddDay(6)}
+                  type='button'/>
+              </Grid.Row>
+            </Form.Group>
+          )}
           <Form.Group className='align-center' widths='2'>
             <Form.Field className='flex flex-row align-center p0'>
               <Header as='p' className='m0 fw400 f16 mr8'>
@@ -410,6 +427,7 @@ export default reduxForm({
       interval_value: Yup.mixed().when('is_recurring', {
         is  : true,
         then: Yup.number()
+          .min(1, 'The number of intervals is not valid')
           .integer('The number of intervals is not valid')
           .required('The number of intervals is not valid')
           .typeError('The number of intervals is not valid'),

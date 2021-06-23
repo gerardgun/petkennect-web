@@ -13,16 +13,15 @@ import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import { TrueAddonServiceDefaultConfig } from '@lib/constants/service'
+import { TransportAddonServiceDefaultConfig } from '@lib/constants/service'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 import moment from 'moment'
-import setupAddonServiceSettingDetailDuck from '@reducers/service/addon/general/add-on-service/detail'
-import InputColor from '@components/Common/InputColor'
+import setupTransportAddonServiceSettingDetailDuck from '@reducers/service/addon/general/transport-service/detail'
 import _uniq from 'lodash/uniq'
 
-const selector = formValueSelector('setup-addon-service')
+const selector = formValueSelector('setup-transport-addon-service')
 let startedAt = null
-const SetupAddonServiceSettingForm = (props) => {
+const SetupTransportAddonServiceSettingForm = (props) => {
   const {
     error,
     handleSubmit,
@@ -33,20 +32,20 @@ const SetupAddonServiceSettingForm = (props) => {
   } = props
   const dispatch = useDispatch()
   const detail = useSelector(
-    setupAddonServiceSettingDetailDuck.selectors.detail
+    setupTransportAddonServiceSettingDetailDuck.selectors.detail
   )
   const {
     service_types = [],
     service_groups = [],
     price: { started_at = null } = {},
-    service_true_addon: { service_variations = [] } = {},
+    service_transport_addon: { service_variations = [] } = {},
     locations = []
   } = useSelector((state) =>
     selector(
       state,
       'service_groups',
       'service_types',
-      'service_true_addon',
+      'service_transport_addon',
       'locations',
       'price'
     )
@@ -54,7 +53,7 @@ const SetupAddonServiceSettingForm = (props) => {
 
   useEffect(() => {
     // Get default data to create a new service package
-    dispatch(setupAddonServiceSettingDetailDuck.creators.create())
+    dispatch(setupTransportAddonServiceSettingDetailDuck.creators.create())
   }, [])
 
   useEffect(() => {
@@ -67,7 +66,7 @@ const SetupAddonServiceSettingForm = (props) => {
     // Set default data for new register
     else
     {initialize({
-      ...TrueAddonServiceDefaultConfig
+      ...TransportAddonServiceDefaultConfig
     })}
   }, [ detail.item.id ])
 
@@ -78,12 +77,12 @@ const SetupAddonServiceSettingForm = (props) => {
       && detail.form.location_total_options.length > 0
     ) {
       const variationsLocations = _uniq(
-        detail.form.true_addons_options
+        detail.form.transport_addons_options
           .filter(({ value }) => service_variations.includes(value))
           .flatMap(({ locations }) => [ ...locations ])
       )
       dispatch(
-        setupAddonServiceSettingDetailDuck.creators.set({
+        setupTransportAddonServiceSettingDetailDuck.creators.set({
           form: {
             ...detail.form,
             location_options: detail.form.location_total_options.filter(
@@ -101,7 +100,7 @@ const SetupAddonServiceSettingForm = (props) => {
       }, 10)
     } else {
       dispatch(
-        setupAddonServiceSettingDetailDuck.creators.set({
+        setupTransportAddonServiceSettingDetailDuck.creators.set({
           form: {
             ...detail.form,
             location_options: detail.form.location_total_options
@@ -128,19 +127,19 @@ const SetupAddonServiceSettingForm = (props) => {
       }, 10)
 
       // reservations
-      const reservationOptionsSelected = detail.form.true_addons_options.filter(
+      const reservationOptionsSelected = detail.form.transport_addons_options.filter(
         ({ service }) => service_types.includes(service)
       ).map(({ value }) => value)
       change(
-        'service_true_addon.service_variations',
+        'service_transport_addon.service_variations',
         service_variations.filter((variation) => reservationOptionsSelected.includes(variation))
       )
       setTimeout(() => {
-        untouch('service_true_addon.service_variations')
+        untouch('service_transport_addon.service_variations')
       }, 10)
       if(service_types.length > 0)
         dispatch(
-          setupAddonServiceSettingDetailDuck.creators.getReservationTypes({
+          setupTransportAddonServiceSettingDetailDuck.creators.getReservationTypes({
             services: service_types,
             type    : 'A,R'
           })
@@ -149,13 +148,13 @@ const SetupAddonServiceSettingForm = (props) => {
   }, [ service_groups, detail.form.service_type_options ])
 
   const _handleClose = () => {
-    dispatch(setupAddonServiceSettingDetailDuck.creators.resetItem())
+    dispatch(setupTransportAddonServiceSettingDetailDuck.creators.resetItem())
   }
 
   const _handleSubmit = (values) => {
     if(editing)
       return dispatch(
-        setupAddonServiceSettingDetailDuck.creators.put({
+        setupTransportAddonServiceSettingDetailDuck.creators.put({
           id: detail.item.id,
           ...values
         })
@@ -163,7 +162,7 @@ const SetupAddonServiceSettingForm = (props) => {
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return dispatch(setupAddonServiceSettingDetailDuck.creators.post(values))
+      return dispatch(setupTransportAddonServiceSettingDetailDuck.creators.post(values))
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -171,7 +170,7 @@ const SetupAddonServiceSettingForm = (props) => {
   const _handleGetServiceTypes = (values) => {
     if(values.length > 0) {
       dispatch(
-        setupAddonServiceSettingDetailDuck.creators.getServiceTypes({
+        setupTransportAddonServiceSettingDetailDuck.creators.getServiceTypes({
           service_group__ids: values
         })
       )
@@ -184,18 +183,17 @@ const SetupAddonServiceSettingForm = (props) => {
   }
 
   const _handleGetReservationsTypes = (values) => {
-    console.log('entroooooo')
     if(values.length > 0) {
       dispatch(
-        setupAddonServiceSettingDetailDuck.creators.getReservationTypes({
+        setupTransportAddonServiceSettingDetailDuck.creators.getReservationTypes({
           services: values,
           type    : 'A,R'
         })
       )
     } else {
-      change('service_true_addon.service_variations', [])
+      change('service_transport_addon.service_variations', [])
       setTimeout(() => {
-        untouch('service_true_addon.service_variations')
+        untouch('service_transport_addon.service_variations')
       }, 10)
     }
   }
@@ -205,14 +203,14 @@ const SetupAddonServiceSettingForm = (props) => {
   return (
     <Form
       // eslint-disable-next-line react/jsx-handler-names
-      id='setup-addon-service' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+      id='setup-transport-addon-service' onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
       <Form.Group widths='equal'>
         <Field
           component={FormField}
           control={Input}
-          label='Add-On Name'
+          label='Route Name'
           name='name'
-          placeholder='Enter Add-On Name'
+          placeholder='Enter Rute Name'
           required/>
       </Form.Group>
       <Form.Group widths='equal'>
@@ -275,8 +273,8 @@ const SetupAddonServiceSettingForm = (props) => {
           disabled={service_types.length === 0}
           label='Reservation Types'
           multiple
-          name='service_true_addon.service_variations'
-          options={detail.form.true_addons_options}
+          name='service_transport_addon.service_variations'
+          options={detail.form.transport_addons_options}
           placeholder='Select Reservation Types (All is Default)'
           required
           search
@@ -330,46 +328,18 @@ const SetupAddonServiceSettingForm = (props) => {
       <Form.Group className='flex flex-row align-center' widths={3}>
         <Field
           component={FormField}
-          control={Input}
-          label='Duration'
-          name='duration_minutes'
-          placeholder='Enter duration'
-          step='0.01'
-          toggle
-          type='number'/>
-        <Field
-          component={FormField}
-          control={Select}
-          label='Time Offered'
-          name='employee_schedule'
-          options={detail.form.calendar_options}
-          placeholder='Select Calendar'
-          required
-          search/>
-        <Field
-          component={FormField}
           control={Checkbox}
           format={Boolean}
           label='Show to Customer'
           name='is_bookable_by_client'
           toggle
           type='checkbox'/>
-      </Form.Group>
-      <Form.Group className='flex flex-row align-center' widths={3}>
         <Field
           component={FormField}
           control={Checkbox}
           format={Boolean}
-          label='Is taxable'
-          name='is_taxable'
-          toggle
-          type='checkbox'/>
-        <Field
-          component={FormField}
-          control={Checkbox}
-          format={Boolean}
-          label='Is scheduled'
-          name='is_scheduled'
+          label='Is Active'
+          name='is_active'
           toggle
           type='checkbox'/>
         <Field
@@ -379,23 +349,7 @@ const SetupAddonServiceSettingForm = (props) => {
           name='sku_id'
           placeholder='Enter Custom Code'
           required/>
-      </Form.Group>
-      <Form.Group className='flex flex-row align-center' widths={3}>
-        <Field
-          component={FormField}
-          control={Checkbox}
-          format={Boolean}
-          label='Active'
-          name='is_active'
-          toggle
-          type='checkbox'/>
-        <Field
-          autoComplete='off'
-          component={FormField}
-          control={InputColor}
-          name='service_true_addon.color_code'
-          readOnly
-          required/>
+
       </Form.Group>
       {error && (
         <Form.Group widths='equal'>
@@ -409,7 +363,7 @@ const SetupAddonServiceSettingForm = (props) => {
 }
 
 export default reduxForm({
-  form    : 'setup-addon-service',
+  form    : 'setup-transport-addon-service',
   validate: (values) => {
     let validationStartedAt = Yup.date()
       .min(
@@ -429,12 +383,11 @@ export default reduxForm({
         .typeError('Start Date is required')
 
     const schema = {
-      name              : Yup.string().required('Package Name is required'),
-      locations         : Yup.array().required('Choose at least one location'),
-      service_groups    : Yup.array().required('Choose at least one service'),
-      service_types     : Yup.array().required('Choose at least one service type'),
-      service_true_addon: Yup.object().shape({
-        color_code        : Yup.string().required('Color is required'),
+      name                   : Yup.string().required('Package Name is required'),
+      locations              : Yup.array().required('Choose at least one location'),
+      service_groups         : Yup.array().required('Choose at least one service'),
+      service_types          : Yup.array().required('Choose at least one service type'),
+      service_transport_addon: Yup.object().shape({
         service_variations: Yup.array().required(
           'Choose at least one reservation type'
         )
@@ -459,10 +412,9 @@ export default reduxForm({
           else return schema.required('End Date is required')
         })
       }),
-      employee_schedule: Yup.string().required('Time Offered is required'),
-      sku_id           : Yup.string().required('Custom Code is required')
+      sku_id: Yup.string().required('Custom Code is required')
     }
 
     return syncValidate(Yup.object().shape(schema), values)
   }
-})(SetupAddonServiceSettingForm)
+})(SetupTransportAddonServiceSettingForm)

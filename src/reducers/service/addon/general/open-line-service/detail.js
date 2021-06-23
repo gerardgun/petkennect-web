@@ -4,25 +4,18 @@ import { ERROR_ACTION, WAIT_FOR_ACTION } from 'redux-wait-for-action'
 
 export default base({
   namespace   : '@@pet-kennect',
-  store       : 'service/addon/general/add-on-service/detail',
+  store       : 'service/addon/general/open-line-service/detail',
   initialState: {
     form: {
-      service_group_options : [],
-      service_type_options  : [],
-      true_addons_options   : [],
-      location_total_options: [],
-      location_options      : [],
-      calendar_options      : []
+      location_options: []
     }
   }
 })
   .extend(detail)
   .extend({
-    types   : [ 'GET_SERVICE_TYPES', 'GET_RESERVATION_TYPES', 'DELETE', 'POST_PRICE' ],
+    types   : [ 'DELETE', 'POST_PRICE' ],
     creators: ({
       types: {
-        GET_SERVICE_TYPES,
-        GET_RESERVATION_TYPES,
         DELETE,
         DELETE_FULFILLED,
         DELETE_FAILURE,
@@ -31,9 +24,7 @@ export default base({
         POST_FAILURE
       }
     }) => ({
-      getServiceTypes    : (payload = {}) => ({ type: GET_SERVICE_TYPES, payload }),
-      getReservationTypes: (payload = {}) => ({ type: GET_RESERVATION_TYPES, payload }),
-      'delete'           : (payload = {}) => ({
+      'delete': (payload = {}) => ({
         type             : DELETE,
         payload,
         [WAIT_FOR_ACTION]: DELETE_FULFILLED,

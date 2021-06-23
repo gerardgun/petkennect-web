@@ -4,15 +4,14 @@ import { ERROR_ACTION, WAIT_FOR_ACTION } from 'redux-wait-for-action'
 
 export default base({
   namespace   : '@@pet-kennect',
-  store       : 'service/addon/general/add-on-service/detail',
+  store       : 'service/addon/general/transport-service/detail',
   initialState: {
     form: {
-      service_group_options : [],
-      service_type_options  : [],
-      true_addons_options   : [],
-      location_total_options: [],
-      location_options      : [],
-      calendar_options      : []
+      service_group_options   : [],
+      service_type_options    : [],
+      transport_addons_options: [],
+      location_total_options  : [],
+      location_options        : []
     }
   }
 })

@@ -5,65 +5,76 @@ import { Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/add-on/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
-import ServiceFormModal from  './create'
+import SetupTransportAddonServiceSettingFormModal from  './create/form/modal'
 import Tab from '@containers/setup/add-on/general/components/Tab'
 import Table from '@components/Table'
-import listConfig from '@lib/constants/list-configs/service/add-on-transport'
+import transportAddonServiceListConfig from '@lib/constants/list-configs/service/add-on-transport'
 
-import serviceDuck from '@reducers/service'
-import serviceDetailDuck from '@reducers/service/detail'
+import setupTransportServiceSettingDuck from '@reducers/service/addon/general/transport-service'
+import setupTransportServiceSettingDetailDuck from '@reducers/service/addon/general/transport-service/detail'
 
 const SetupAddOnGeneralTransportIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
+  const detail = useSelector(setupTransportServiceSettingDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      serviceDuck.creators.get()
+      setupTransportServiceSettingDuck.creators.get({ service__type: 'T' })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        serviceDuck.creators.get()
+        setupTransportServiceSettingDuck.creators.get({ service__type: 'T' })
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        serviceDetailDuck.creators.setItem(null, 'CREATE')
+        setupTransportServiceSettingDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
-        serviceDetailDuck.creators.setItem(reason, 'DELETE')
+        setupTransportServiceSettingDetailDuck.creators.setItem(reason, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        serviceDetailDuck.creators.setItem(reason, 'UPDATE')
+        setupTransportServiceSettingDetailDuck.creators.setItem(reason, 'UPDATE')
       )
+  }
+
+  const _handleConfirmDelete = () => {
+    dispatch(
+      setupTransportServiceSettingDetailDuck.creators.delete(detail.item)
+    )
+      .then(() => {
+        dispatch(
+          setupTransportServiceSettingDetailDuck.creators.resetItem()
+        )
+      })
   }
 
   return (
     <Layout>
-      <Segment className='segment-content'>
+      <Segment className='segment-content' padded='very'>
         <Menu/>
 
         <Tab>
           <Table
-            config={listConfig}
-            duck={serviceDuck}
+            config={transportAddonServiceListConfig}
+            duck={setupTransportServiceSettingDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
-        <ServiceFormModal/>
+        <SetupTransportAddonServiceSettingFormModal/>
 
-        <ModalDelete duckDetail={serviceDetailDuck}/>
+        <ModalDelete duckDetail={setupTransportServiceSettingDetailDuck} onDelete={_handleConfirmDelete}/>
 
       </Segment>
     </Layout>
