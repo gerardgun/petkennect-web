@@ -1,67 +1,75 @@
-import React, { useMemo, useEffect } from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
-import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Input, Modal, Checkbox, Select } from 'semantic-ui-react'
-import * as Yup from 'yup'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Field, formValueSelector, reduxForm } from 'redux-form'
+import { Button, Checkbox, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
+import * as yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import foodTypeDetailDuck from '@reducers/pet/feeding-setting/food-type/detail'
+import foodTypeDetailDuck from '@reducers/service/food/type/detail'
 
-const FoodTypeForm = (props) => {
+const selector = formValueSelector('food-type-form')
+
+const FoodTypeForm = props => {
   const {
-    foodTypeDetail,
-    error,
-    handleSubmit,
-    reset,
-    submitting // redux-form
+    error, handleSubmit, initialize, reset, submitting // redux-form
   } = props
 
-  useEffect(() => {
-    if(foodTypeDetail.item.id)
-      props.get(foodTypeDetail.item.id)
-  }, [ foodTypeDetail.item.id ])
+  const dispatch = useDispatch()
+  const detail = useSelector(foodTypeDetailDuck.selectors.detail)
+  const is_charged = useSelector(state => selector(state, 'is_charged'))
 
-  const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
+  useEffect(() => {
+    if(detail.item.id)
+      initialize({
+        id         : detail.item.id,
+        name       : detail.item.name,
+        charge_type: detail.item.charge_type,
+        is_charged : detail.item.is_charged,
+        price      : detail.item.price
+      })
+    else
+      initialize({
+        charge_type: null,
+        price      : 0
+      })
+  }, [ detail.item.id ])
 
   const _handleClose = () => {
-    props.reset()
-    props.resetItem()
+    dispatch(
+      foodTypeDetailDuck.creators.resetItem()
+    )
   }
 
-  const _handleSubmit = (values) => {
-    if(isUpdating)
-      return props
-        .put({ id: foodTypeDetail.item.id, ...values })
+  const _handleSubmit = values => {
+    if(editing)
+      return dispatch(foodTypeDetailDuck.creators.put(values))
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props
-        .post({ ...values })
+      return dispatch(foodTypeDetailDuck.creators.post(values))
         .then(_handleClose)
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(foodTypeDetail.mode), [
-    foodTypeDetail.mode
-  ])
-  const isUpdating = Boolean(foodTypeDetail.item.id)
+  const editing = Boolean(detail.item.id)
+  const open = [ 'CREATE', 'UPDATE' ].includes(detail.mode)
 
   return (
     <Modal
       className='form-modal'
       onClose={_handleClose}
-      open={isOpened}
+      open={open}
       size='small'>
       <Modal.Content>
+        <Header as='h2' className='segment-content-header'>
+          {editing ? 'Update' : 'Add'} Food Type
+        </Header>
+
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>
-            {isUpdating ? 'Update' : 'Add'} Food Type
-          </Header>
           <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
@@ -69,47 +77,52 @@ const FoodTypeForm = (props) => {
               control={Input}
               label='Food Type'
               name='name'
-              placeholder='Enter type'
-              required/>
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={Select}
-              label='Charges Type'
-              name='charge_type'
-              options={
-                [ { key: 1, value: 'No Charge' , text: 'No Charge' },
-                  { key: 1, value: 'Per Day' , text: 'Per Day' },
-                  { key: 1, value: 'Per Meal', text: 'Per Meal' },
-                  { key: 1, value: 'Per Bag' , text: 'Per Bag' } ]
-              }
-              placeholder='Select Charges'
-              required/>
-            <Field
-              component={FormField}
-              control={Input}
-              label='Price'
-              name='price'
-              placeholder='Enter Price'
+              placeholder='Enter name'
               required/>
           </Form.Group>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
               control={Checkbox}
-              label='Charges Applies'
-              name='charges'
+              format={Boolean}
+              label='Is Charged'
+              name='is_charged'
+              toggle
               type='checkbox'/>
           </Form.Group>
+          <Field
+            component={FormField}
+            control={Select}
+            label='Charges Type'
+            name='charge_type'
+            options={[
+              { key: 1, value: 'D' , text: 'Per Day' },
+              { key: 2, value: 'M', text: 'Per Meal' }
+              // { key: 3, value: 'Per Bag' , text: 'Per Bag' }
+            ]}
+            placeholder='Select Charges'
+            required={is_charged === true}/>
+          <Form.Group widths={2}>
+            <Field
+              component={FormField}
+              control={Input}
+              label='Price'
+              name='price'
+              parse={parseFloat}
+              placeholder='$0.00'
+              required
+              type='number'/>
+          </Form.Group>
 
-          {error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )}
+          {
+            error && (
+              <Form.Group widths='equal'>
+                <Form.Field>
+                  <FormError message={error}/>
+                </Form.Field>
+              </Form.Group>
+            )
+          }
 
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
@@ -120,44 +133,32 @@ const FoodTypeForm = (props) => {
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save'}
+                content={editing ? 'Save changes' : 'Add Food Type'}
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>
           </Form.Group>
         </Form>
+
       </Modal.Content>
     </Modal>
   )
 }
 
-export default compose(
-  connect(
-    (state) => {
-      const foodTypeDetail = foodTypeDetailDuck.selectors.detail(state)
-
-      return {
-        foodTypeDetail,
-        initialValues: { ...foodTypeDetail.item }
-      }
-    },
-    {
-      get      : foodTypeDetailDuck.creators.get,
-      post     : foodTypeDetailDuck.creators.post,
-      put      : foodTypeDetailDuck.creators.put,
-      resetItem: foodTypeDetailDuck.creators.resetItem
+export default reduxForm({
+  form    : 'food-type-form',
+  validate: values => {
+    let schema = {
+      name : yup.string().required('Name is required'),
+      price: yup.number().typeError('Price must be a number').required('Price is required')
     }
-  ),
-  reduxForm({
-    form              : 'food-type-form',
-    destroyOnUnmount  : false,
-    enableReinitialize: true,
-    validate          : (values) => {
-      const schema = {
-        name: Yup.string().required('Name is required')
+
+    if(values.is_charged === true)
+      schema = {
+        ...schema,
+        charge_type: yup.mixed().required('Charge Type is required')
       }
 
-      return syncValidate(Yup.object().shape(schema), values)
-    }
-  })
-)(FoodTypeForm)
+    return syncValidate(yup.object().shape(schema), values)
+  }
+})(FoodTypeForm)

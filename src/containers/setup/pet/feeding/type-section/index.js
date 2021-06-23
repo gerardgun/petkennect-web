@@ -10,8 +10,8 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import foodTypeListConfig from '@lib/constants/list-configs/pet/feeding-setting/food-type'
 
-import foodTypeDuck from '@reducers/pet/feeding-setting/food-type'
-import foodTypeDetailDuck from '@reducers/pet/feeding-setting/food-type/detail'
+import foodTypeDuck from '@reducers/service/food/type'
+import foodTypeDetailDuck from '@reducers/service/food/type/detail'
 
 const SetupPetFeedingTypeIndex = () => {
   const dispatch = useDispatch()
@@ -19,7 +19,9 @@ const SetupPetFeedingTypeIndex = () => {
 
   useEffect(() => {
     dispatch(
-      foodTypeDuck.creators.get()
+      foodTypeDuck.creators.get({
+        ordering: 'name'
+      })
     )
   }, [])
 

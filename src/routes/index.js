@@ -12,7 +12,6 @@ import Agreement from '@containers/agreement'
 import AgreementCreate from '@containers/agreement/create'
 import AnimalSetting from '@containers/animal-setting'
 import AdminItem from '@containers/admin-item'
-import FeedingSetting from '@containers/feeding-setting'
 import MedicationSetting from '@containers/medication-setting'
 import VaccinationSetting from '@containers/vaccination-setting'
 import AuthMe from '@containers/auth/me'
@@ -278,10 +277,6 @@ const privateRoutes = [
   {
     path     : '/setup/admin-item',
     component: AdminItem
-  },
-  {
-    path     : '/setup/animal-setting/feeding',
-    component: FeedingSetting
   },
   {
     path     : '/setup/animal-setting/medication',

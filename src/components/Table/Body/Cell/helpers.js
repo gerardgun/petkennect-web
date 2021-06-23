@@ -7,10 +7,10 @@ import { defaultImageUrl } from '@lib/constants'
 const getContent = (item, column) => {
   const cell = _get(item, column.name, null)
 
-  if(cell === null || cell === undefined || cell === '')
-    return <span style={{ color: 'grey' }}>-</span>
-  else if(typeof column.formatter === 'function')
+  if(typeof column.formatter === 'function')
     return column.formatter(cell, item)
+  else if(cell === null || cell === undefined || cell === '')
+    return <span style={{ color: 'grey' }}>-</span>
   else if(column.type === 'boolean')
     return getContentBoolean(cell)
   else if(column.type === 'boolean_active')
