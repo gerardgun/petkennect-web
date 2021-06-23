@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 
-import EmployeeRoleForm from  './create'
+import EmployeeRoleServiceTypeFormModal from  './create/form/modal'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/capacity/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
@@ -10,41 +10,54 @@ import Tab from '@containers/setup/capacity/appointment/components/Tab'
 import Table from '@components/Table'
 import employeeRoleListConfig from '@lib/constants/list-configs/employee/role'
 
-import employeeRoleDuck from '@reducers/employee/role'
-import employeeRoleDetailDuck from '@reducers/employee/role/detail'
+import employeeRoleServiceTypeDuck from '@reducers/employee/role/service-type'
+import employeeRoleServiceTypeDetailDuck from '@reducers/employee/role/service-type/detail'
 
 const SetupCapacityAppointmentRoleIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(employeeRoleDetailDuck.selectors.detail)
+  const detail = useSelector(employeeRoleServiceTypeDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      employeeRoleDuck.creators.get()
+      employeeRoleServiceTypeDuck.creators.get({
+        ordering: 'role__name'
+      })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        employeeRoleDuck.creators.get()
+        employeeRoleServiceTypeDuck.creators.get()
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        employeeRoleDetailDuck.creators.setItem(null, 'CREATE')
+        employeeRoleServiceTypeDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
-  const _handleRowButtonClick = (button, reason) => {
+  const _handleDelete = () => {
+    dispatch(
+      employeeRoleServiceTypeDetailDuck.creators.delete(detail.item.id, detail.item.role_id)
+    )
+      .then(() => {
+        dispatch(
+          employeeRoleServiceTypeDetailDuck.creators.resetItem()
+        )
+      })
+  }
+
+  const _handleRowButtonClick = (button, item) => {
     if(button === 'delete')
       dispatch(
-        employeeRoleDetailDuck.creators.setItem(reason, 'DELETE')
+        employeeRoleServiceTypeDetailDuck.creators.setItem(item, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        employeeRoleDetailDuck.creators.setItem(reason, 'UPDATE')
+        employeeRoleServiceTypeDetailDuck.creators.setItem(item, 'UPDATE')
       )
   }
 
@@ -56,14 +69,14 @@ const SetupCapacityAppointmentRoleIndex = () => {
         <Tab>
           <Table
             config={employeeRoleListConfig}
-            duck={employeeRoleDuck}
+            duck={employeeRoleServiceTypeDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
-        <EmployeeRoleForm/>
+        <EmployeeRoleServiceTypeFormModal/>
 
-        <ModalDelete duckDetail={employeeRoleDetailDuck}/>
+        <ModalDelete duckDetail={employeeRoleServiceTypeDetailDuck} onDelete={_handleDelete}/>
 
       </Segment>
     </Layout>

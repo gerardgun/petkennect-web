@@ -1,26 +1,43 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Button, Checkbox, Divider, Form, Grid, Header, Input, Segment, TextArea } from 'semantic-ui-react'
-import * as Yup from 'yup'
+import { Field, reduxForm } from 'redux-form'
+import { Button, Checkbox, Divider, Form, Grid, Header, Segment } from 'semantic-ui-react'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/capacity/components/Menu'
 import Tab from '@containers/setup/capacity/appointment/components/Tab'
-import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import { parseResponseError } from '@lib/utils/functions'
+
+import tenantDetailDuck from '@reducers/tenant/detail'
 
 const SetupCapacityAppointmentSettingIndex = props => {
   const {
-    error, handleSubmit // redux-form
+    error, handleSubmit, reset, initialize // redux-form
   } = props
 
   const dispatch = useDispatch()
+  const detail = useSelector(tenantDetailDuck.selectors.detail)
+
+  useEffect(() => {
+    if(detail.item.id) initialize(detail.item.service_config.appointment_capacity)
+  }, [ detail.item.id ])
 
   const _handleSubmit = values => {
-    console.log(values)
+    return dispatch(tenantDetailDuck.creators.put({
+      service_config: {
+        ...detail.item.service_config,
+        appointment_capacity: {
+          ...detail.item.service_config.appointment_capacity,
+          ...values
+        }
+      }
+    }))
+      .catch(parseResponseError)
   }
+
+  const saving = [ 'PUTTING' ].includes(detail.status)
 
   return (
     <Layout>
@@ -29,7 +46,7 @@ const SetupCapacityAppointmentSettingIndex = props => {
 
         <Tab>
           {/* eslint-disable-next-line react/jsx-handler-names */}
-          <Form onSubmit={handleSubmit(_handleSubmit)}>
+          <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='6'>
@@ -55,9 +72,24 @@ const SetupCapacityAppointmentSettingIndex = props => {
 
             {
               error && (
-                <FormError message={error}/>
+                <Form.Group widths='equal'>
+                  <Form.Field>
+                    <FormError message={error}/>
+                  </Form.Field>
+                </Form.Group>
               )
             }
+
+            <Form.Group className='form-modal-actions' widths='equal'>
+              <Form.Field>
+                <Button
+                  color='teal'
+                  content='Save changes'
+                  disabled={saving}
+                  loading={saving}
+                  type='submit'/>
+              </Form.Field>
+            </Form.Group>
 
           </Form>
         </Tab>
@@ -67,11 +99,5 @@ const SetupCapacityAppointmentSettingIndex = props => {
 }
 
 export default reduxForm({
-  form              : 'setup-capacity-appointment-setting',
-  enableReinitialize: true,
-  validate          : values => {
-    const schema = {}
-
-    return syncValidate(Yup.object().shape(schema), values)
-  }
+  form: 'setup-capacity-appointment-setting'
 })(SetupCapacityAppointmentSettingIndex)

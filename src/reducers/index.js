@@ -118,6 +118,8 @@ import employeeSchedule from '@reducers/employee/schedule'
 import employeeScheduleDetail from '@reducers/employee/schedule/detail'
 import employeeRole from '@reducers/employee/role'
 import employeeRoleDetail from '@reducers/employee/role/detail'
+import employeeRoleServiceType from '@reducers/employee/role/service-type'
+import employeeRoleServiceTypeDetail from '@reducers/employee/role/service-type/detail'
 import employeeTimeOff from '@reducers/staff-management/employee-time-off'
 import employeeTimeOffRequestHistory from '@reducers/staff-management/employee-time-off/requests/history'
 import employeeTimeOffRequestUpcoming from '@reducers/staff-management/employee-time-off/requests/upcoming'
@@ -445,6 +447,8 @@ const createRootReducer = history => combineReducers({
   [employeeScheduleDetail.store]                           : employeeScheduleDetail.reducer,
   [employeeRole.store]                                     : employeeRole.reducer,
   [employeeRoleDetail.store]                               : employeeRoleDetail.reducer,
+  [employeeRoleServiceType.store]                          : employeeRoleServiceType.reducer,
+  [employeeRoleServiceTypeDetail.store]                    : employeeRoleServiceTypeDetail.reducer,
   [employeeTimeOff.store]                                  : employeeTimeOff.reducer,
   [employeeTimeOffRequestUpcoming.store]                   : employeeTimeOffRequestUpcoming.reducer,
   [employeeTimeOffRequestHistory.store]                    : employeeTimeOffRequestHistory.reducer,

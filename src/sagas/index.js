@@ -59,6 +59,8 @@ import employee from './employee'
 import employeeDetail from './employee/detail'
 import employeeRole from './employee/role'
 import employeeRoleDetail from './employee/role/detail'
+import employeeRoleServiceType from './employee/role/service-type'
+import employeeRoleServiceTypeDetail from './employee/role/service-type/detail'
 import employeeSchedule from './employee/schedule'
 import employeeScheduleDetail from './employee/schedule/detail'
 import employeeTitle from './employee/title'
@@ -305,6 +307,8 @@ export default function* rootSaga() {
     ...employeeDetail,
     ...employeeRole,
     ...employeeRoleDetail,
+    ...employeeRoleServiceType,
+    ...employeeRoleServiceTypeDetail,
     ...employeeSchedule,
     ...employeeScheduleDetail,
     ...employeeTimeOff,
