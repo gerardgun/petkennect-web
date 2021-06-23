@@ -10,41 +10,43 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import feedingTimeListConfig from '@lib/constants/list-configs/pet/feeding-setting/feeding-time'
 
-import feedingTimeDuck from '@reducers/pet/feeding-setting/feeding-time'
-import feedingTimeDetailDuck from '@reducers/pet/feeding-setting/feeding-time/detail'
+import foodTimeDuck from '@reducers/service/food/time'
+import foodTimeDetailDuck from '@reducers/service/food/time/detail'
 
 const SetupPetFeedingTimeIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(feedingTimeDetailDuck.selectors.detail)
+  const detail = useSelector(foodTimeDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      feedingTimeDuck.creators.get()
+      foodTimeDuck.creators.get({
+        ordering: 'name'
+      })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        feedingTimeDuck.creators.get()
+        foodTimeDuck.creators.get()
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        feedingTimeDetailDuck.creators.setItem(null, 'CREATE')
+        foodTimeDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
-        feedingTimeDetailDuck.creators.setItem(reason, 'DELETE')
+        foodTimeDetailDuck.creators.setItem(reason, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        feedingTimeDetailDuck.creators.setItem(reason, 'UPDATE')
+        foodTimeDetailDuck.creators.setItem(reason, 'UPDATE')
       )
   }
 
@@ -56,18 +58,18 @@ const SetupPetFeedingTimeIndex = () => {
         <Tab>
           <p>
           Use the feeding schedules based on your facilities operations.
-          If you charge for a feeding, ensure "Charge Applies" is enabled.
+          If you charge for a feeding, ensure {'"Charge Applies"'} is enabled.
           </p>
           <Table
             config={feedingTimeListConfig}
-            duck={feedingTimeDuck}
+            duck={foodTimeDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
         <FeedingTimeForm/>
 
-        <ModalDelete duckDetail={feedingTimeDetailDuck}/>
+        <ModalDelete duckDetail={foodTimeDetailDuck}/>
 
       </Segment>
     </Layout>

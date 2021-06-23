@@ -4,7 +4,7 @@ import { Checkbox } from 'semantic-ui-react'
 export default {
   actions: [
     {
-      display_name: 'Add Meal Time',
+      display_name: 'Add Feeding Time',
       name        : 'create',
       color       : 'teal',
       icon        : 'add'
@@ -16,28 +16,21 @@ export default {
       name        : 'name',
       type        : 'string',
       width       : 6,
-      align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Charge Applies',
-      name        : 'charges',
-      type        : 'string',
+      name        : 'is_charged',
       width       : 4,
-      align       : 'left',
-      sort        : false,
       formatter   : cell => (
-        <Checkbox
-          checked={JSON.parse(cell)}
-          disabled
-          style={{ 'margin-left': '40px' }}/>
+        <Checkbox checked={cell} disabled toggle/>
       )
     },
     {
       display_name: 'Price',
       name        : 'price',
-      type        : 'string',
-      align       : 'left'
+      type        : 'money',
+      sort        : true
     },
     {
       display_name: 'Actions',

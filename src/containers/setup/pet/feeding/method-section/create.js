@@ -1,67 +1,66 @@
-import React, { useMemo, useEffect } from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Input, Modal } from 'semantic-ui-react'
-import * as Yup from 'yup'
+import * as yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import feedingMethodDetailDuck from '@reducers/pet/feeding-setting/feeding-method/detail'
+import foodMethodDetailDuck from '@reducers/service/food/method/detail'
 
-const FeedingMethodForm = (props) => {
+const FeedingMethodForm = props => {
   const {
-    feedingMethodDetail,
-    error,
-    handleSubmit,
-    reset,
-    submitting // redux-form
+    error, handleSubmit, initialize, reset, submitting // redux-form
   } = props
 
-  useEffect(() => {
-    if(feedingMethodDetail.item.id)
-      props.get(feedingMethodDetail.item.id)
-  }, [ feedingMethodDetail.item.id ])
+  const dispatch = useDispatch()
+  const detail = useSelector(foodMethodDetailDuck.selectors.detail)
 
-  const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
+  useEffect(() => {
+    if(detail.item.id)
+      initialize({
+        id  : detail.item.id,
+        name: detail.item.name
+      })
+    else
+      initialize({})
+  }, [ detail.item.id ])
 
   const _handleClose = () => {
-    props.reset()
-    props.resetItem()
+    dispatch(
+      foodMethodDetailDuck.creators.resetItem()
+    )
   }
 
   const _handleSubmit = (values) => {
-    if(isUpdating)
-      return props
-        .put({ id: feedingMethodDetail.item.id, ...values })
+    if(editing)
+      return dispatch(foodMethodDetailDuck.creators.put(values))
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props
-        .post({ ...values })
+      return dispatch(foodMethodDetailDuck.creators.post(values))
         .then(_handleClose)
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(feedingMethodDetail.mode), [
-    feedingMethodDetail.mode
-  ])
-  const isUpdating = Boolean(feedingMethodDetail.item.id)
+  const editing = Boolean(detail.item.id)
+  const open = [ 'CREATE', 'UPDATE' ].includes(detail.mode)
 
   return (
     <Modal
       className='form-modal'
       onClose={_handleClose}
-      open={isOpened}
+      open={open}
       size='small'>
       <Modal.Content>
+        <Header as='h2' className='segment-content-header'>
+          {editing ? 'Update' : 'Add'} Feeding Method
+        </Header>
+
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>
-            {isUpdating ? 'Update' : 'Add'} Feeding Method
-          </Header>
           <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
@@ -69,17 +68,19 @@ const FeedingMethodForm = (props) => {
               control={Input}
               label='Feeding Method'
               name='name'
-              placeholder='Enter method'
+              placeholder='Enter name'
               required/>
           </Form.Group>
 
-          {error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )}
+          {
+            error && (
+              <Form.Group widths='equal'>
+                <Form.Field>
+                  <FormError message={error}/>
+                </Form.Field>
+              </Form.Group>
+            )
+          }
 
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
@@ -90,44 +91,25 @@ const FeedingMethodForm = (props) => {
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save'}
+                content={editing ? 'Save changes' : 'Add Method'}
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>
           </Form.Group>
         </Form>
+
       </Modal.Content>
     </Modal>
   )
 }
 
-export default compose(
-  connect(
-    (state) => {
-      const feedingMethodDetail = feedingMethodDetailDuck.selectors.detail(state)
-
-      return {
-        feedingMethodDetail,
-        initialValues: { ...feedingMethodDetail.item }
-      }
-    },
-    {
-      get      : feedingMethodDetailDuck.creators.get,
-      post     : feedingMethodDetailDuck.creators.post,
-      put      : feedingMethodDetailDuck.creators.put,
-      resetItem: feedingMethodDetailDuck.creators.resetItem
+export default reduxForm({
+  form    : 'feeding-method-form',
+  validate: values => {
+    const schema = {
+      name: yup.string().required('Name is required')
     }
-  ),
-  reduxForm({
-    form              : 'feeding-method-form',
-    destroyOnUnmount  : false,
-    enableReinitialize: true,
-    validate          : (values) => {
-      const schema = {
-        name: Yup.string().required('Method is required')
-      }
 
-      return syncValidate(Yup.object().shape(schema), values)
-    }
-  })
-)(FeedingMethodForm)
+    return syncValidate(yup.object().shape(schema), values)
+  }
+})(FeedingMethodForm)

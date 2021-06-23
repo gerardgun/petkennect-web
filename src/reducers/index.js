@@ -114,6 +114,8 @@ import emailTemplate from '@reducers/email-template'
 import emailTemplateDetail from '@reducers/email-template/detail'
 import employee from '@reducers/employee'
 import employeeDetail from '@reducers/employee/detail'
+import employeeServiceType from '@reducers/employee/service-type'
+import employeeServiceTypeDetail from '@reducers/employee/service-type/detail'
 import employeeSchedule from '@reducers/employee/schedule'
 import employeeScheduleDetail from '@reducers/employee/schedule/detail'
 import employeeRole from '@reducers/employee/role'
@@ -128,20 +130,20 @@ import employeeTimeOffRequestUpcomingDetail from '@reducers/staff-management/emp
 import employeeTimeOffRequestOther from '@reducers/staff-management/employee-time-off/requests/other'
 import employeeTitle from '@reducers/employee/title'
 import employeeTitleDetail from '@reducers/employee/title/detail'
-import feedingTime from '@reducers/pet/feeding-setting/feeding-time'   // feeding setting start
-import feedingTimeDetail from '@reducers/pet/feeding-setting/feeding-time/detail'
-import feedingMeasurement from '@reducers/pet/feeding-setting/feeding-measurement'
-import feedingMeasurementDetail from '@reducers/pet/feeding-setting/feeding-measurement/detail'
-import feedingMethod from '@reducers/pet/feeding-setting/feeding-method'
-import feedingMethodDetail from '@reducers/pet/feeding-setting/feeding-method/detail'
-import feedingUnit from '@reducers/pet/feeding-setting/feeding-unit'
-import feedingUnitDetail from '@reducers/pet/feeding-setting/feeding-unit/detail'
-import foodType from '@reducers/pet/feeding-setting/food-type'
-import foodTypeDetail from '@reducers/pet/feeding-setting/food-type/detail'
+import foodMeasurement from '@reducers/service/food/measurement'
+import foodMeasurementDetail from '@reducers/service/food/measurement/detail'
+import foodMethod from '@reducers/service/food/method'
+import foodMethodDetail from '@reducers/service/food/method/detail'
+import foodReportStatus from '@reducers/service/food/report-status'
+import foodReportStatusDetail from '@reducers/service/food/report-status/detail'
+import foodTime from '@reducers/service/food/time'
+import foodTimeDetail from '@reducers/service/food/time/detail'
+import foodType from '@reducers/service/food/type'
+import foodTypeDetail from '@reducers/service/food/type/detail'
+import foodUnit from '@reducers/service/food/unit'
+import foodUnitDetail from '@reducers/service/food/unit/detail'
 import groupPermission from '@reducers/group-permission'
 import groupPermissionDetail from '@reducers/group-permission/detail'
-import mealStatus from '@reducers/pet/feeding-setting/meal-status'
-import mealStatusDetail from '@reducers/pet/feeding-setting/meal-status/detail'    // feeding setting end
 import location from '@reducers/location'
 import locationDetail from '@reducers/location/detail'
 import managerDashboardDepartmentRole from '@reducers/manager-dashboard/department-role'
@@ -451,6 +453,8 @@ const createRootReducer = history => combineReducers({
   [emailLogDetail.store]                                   : emailLogDetail.reducer,
   [employee.store]                                         : employee.reducer,
   [employeeDetail.store]                                   : employeeDetail.reducer,
+  [employeeServiceType.store]                              : employeeServiceType.reducer,
+  [employeeServiceTypeDetail.store]                        : employeeServiceTypeDetail.reducer,
   [employeeSchedule.store]                                 : employeeSchedule.reducer,
   [employeeScheduleDetail.store]                           : employeeScheduleDetail.reducer,
   [employeeRole.store]                                     : employeeRole.reducer,
@@ -466,20 +470,20 @@ const createRootReducer = history => combineReducers({
   [employeeDetail.store]                                   : employeeDetail.reducer,
   [employeeTitle.store]                                    : employeeTitle.reducer,
   [employeeTitleDetail.store]                              : employeeTitleDetail.reducer,
-  [feedingTime.store]                                      : feedingTime.reducer,
-  [feedingTimeDetail.store]                                : feedingTimeDetail.reducer,
-  [feedingMeasurement.store]                               : feedingMeasurement.reducer,
-  [feedingMeasurementDetail.store]                         : feedingMeasurementDetail.reducer,
-  [feedingMethod.store]                                    : feedingMethod.reducer,
-  [feedingMethodDetail.store]                              : feedingMethodDetail.reducer,
-  [feedingUnit.store]                                      : feedingUnit.reducer,
-  [feedingUnitDetail.store]                                : feedingUnitDetail.reducer,
+  [foodMeasurement.store]                                  : foodMeasurement.reducer,
+  [foodMeasurementDetail.store]                            : foodMeasurementDetail.reducer,
+  [foodMethod.store]                                       : foodMethod.reducer,
+  [foodMethodDetail.store]                                 : foodMethodDetail.reducer,
+  [foodReportStatus.store]                                 : foodReportStatus.reducer,
+  [foodReportStatusDetail.store]                           : foodReportStatusDetail.reducer,
+  [foodTime.store]                                         : foodTime.reducer,
+  [foodTimeDetail.store]                                   : foodTimeDetail.reducer,
   [foodType.store]                                         : foodType.reducer,
   [foodTypeDetail.store]                                   : foodTypeDetail.reducer,
+  [foodUnit.store]                                         : foodUnit.reducer,
+  [foodUnitDetail.store]                                   : foodUnitDetail.reducer,
   [groupPermission.store]                                  : groupPermission.reducer,
   [groupPermissionDetail.store]                            : groupPermissionDetail.reducer,
-  [mealStatus.store]                                       : mealStatus.reducer,
-  [mealStatusDetail.store]                                 : mealStatusDetail.reducer,
   [location.store]                                         : location.reducer,
   [locationDetail.store]                                   : locationDetail.reducer,
   [managerDashboardDepartmentRole.store]                   : managerDashboardDepartmentRole.reducer,

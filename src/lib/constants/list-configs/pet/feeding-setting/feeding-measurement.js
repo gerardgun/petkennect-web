@@ -12,7 +12,9 @@ export default {
       display_name: 'Feeding Measurements',
       name        : 'name',
       type        : 'string',
-      align       : 'left'
+      align       : 'left',
+      sort        : true,
+      sort_name   : 'value'
     },
     {
       display_name: 'Actions',

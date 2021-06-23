@@ -74,13 +74,19 @@ import employeeTimeOffRequestHistory from './staff-management/employee-time-off/
 import employeeTimeOffRequestOther from './staff-management/employee-time-off/requests/other'
 import exampleOne from './example/one'
 import exampleTwo from './example/two'
-import feedingMeasurement from './pet/feeding-setting/feeding-measurement'
-import feedingMethod from './pet/feeding-setting/feeding-method'
-import feedingTime from './pet/feeding-setting/feeding-time'
-import feedingUnit from './pet/feeding-setting/feeding-unit'
-import foodType from './pet/feeding-setting/food-type'
+import foodMeasurement from './service/food/measurement'
+import foodMeasurementDetail from './service/food/measurement/detail'
+import foodMethod from './service/food/method'
+import foodMethodDetail from './service/food/method/detail'
+import foodReportStatus from './service/food/report-status'
+import foodReportStatusDetail from './service/food/report-status/detail'
+import foodTime from './service/food/time'
+import foodTimeDetail from './service/food/time/detail'
+import foodType from './service/food/type'
+import foodTypeDetail from './service/food/type/detail'
+import foodUnit from './service/food/unit'
+import foodUnitDetail from './service/food/unit/detail'
 import groupPermission from './group-permission'
-import mealStatus from './pet/feeding-setting/meal-status'
 import location from './location'
 import locationDetail from './location/detail'
 import managerDashboardDepartmentRole from './manager-dashboard/department-role'
@@ -323,13 +329,19 @@ export default function* rootSaga() {
     ...employeeTimeOffRequestOther,
     ...employeeTitle,
     ...employeeTitleDetail,
-    ...feedingMeasurement,
-    ...feedingMethod,
-    ...feedingTime,
-    ...feedingUnit,
+    ...foodMeasurement,
+    ...foodMeasurementDetail,
+    ...foodMethod,
+    ...foodMethodDetail,
+    ...foodReportStatus,
+    ...foodReportStatusDetail,
+    ...foodTime,
+    ...foodTimeDetail,
     ...foodType,
+    ...foodTypeDetail,
+    ...foodUnit,
+    ...foodUnitDetail,
     ...groupPermission,
-    ...mealStatus,
     ...location,
     ...locationDetail,
     ...managerDashboardDepartmentRole,
