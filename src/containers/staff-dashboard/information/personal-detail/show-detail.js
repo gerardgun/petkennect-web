@@ -110,6 +110,7 @@ const ShowDetail = ()=>{
             <Grid.Column className='info-line-height' width={7}>
               <span>Primary Location</span><br/>
               <span>Hire Date</span><br/>
+              <span>Other Locations</span><br/>
               <span>Status</span><br/>
               <span>Department</span><br/>
               <span>Roles</span><br/>
@@ -120,6 +121,7 @@ const ShowDetail = ()=>{
             <Grid.Column className='info-line-height' width={9}>
               <span>Location One</span><br/>
               <span>1/1/2018</span><br/>
+              <span>Location One, Location Two</span><br/>
               <span>Active</span><br/>
               <span>Management, Training</span><br/>
               <span>Manager, Dog Training</span><br/>

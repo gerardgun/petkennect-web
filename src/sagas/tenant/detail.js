@@ -33,7 +33,11 @@ const parseTenant = tenant => {
         time_checkout                 : '12:00',
         checkout_prior                : 1,
         checkout_after                : 1
-      }, _get(tenant, 'service_config.boarding', {}))
+      }, _get(tenant, 'service_config.boarding', {})),
+      appointment_capacity: _merge({
+        enable_booking_override: false
+      }, _get(tenant, 'service_config.appointment_capacity', {})),
+      addon: _get(tenant, 'service_config.addon', {})
     }
   }
 }

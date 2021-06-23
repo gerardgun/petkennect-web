@@ -34,6 +34,7 @@ import EmailMessage from '@containers/email-message'
 import ServiceSetting from '@containers/service-setting'
 import SystemSetting from '@containers/system-setting'
 import EmailTemplate from '@containers/email-template'
+import GroupPermission from '@containers/group-permission'
 import ManagerDashboardDepartment from '@containers/manager-dashboard/department-roles'
 import ManagerDashboardEmployeeDirectory from '@containers/manager-dashboard/employee-directory'
 import ManagerDashboardEmployeePersonalDetail from '@containers/manager-dashboard/employee-directory/personal-detail'
@@ -41,6 +42,7 @@ import ManagerDashboardEmployeeAvailability from '@containers/manager-dashboard/
 import ManagerDashboardEmployeeWageHistory from '@containers/manager-dashboard/employee-directory/wage-history'
 import ManagerDashboardEmployeeNote from '@containers/manager-dashboard/employee-directory/note'
 import ManagerDashboardEmployeeDocument from '@containers/manager-dashboard/employee-directory/document'
+import ManagerDashboardSettingPermission from '@containers/manager-dashboard/setting/permission'
 import Notification from '@containers/notification'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
@@ -230,7 +232,8 @@ import SetupCompanyProfileSystemSettings from '@containers/company-profile/syste
 import SetupCompanyProfileCalendarDetail from '@containers/company-profile/calendar/detail'
 
 import Transaction from '@containers/transaction'
-import User from '@containers/user'
+import User from '@containers/system-user-and-role/user'
+import Role from '@containers/system-user-and-role/role'
 
 const publicRoutes = [
   {
@@ -345,6 +348,10 @@ const privateRoutes = [
     component: ManagerDashboardEmployeeDocument
   },
   {
+    path     : '/manager-dashboard/setting/permission',
+    component: ManagerDashboardSettingPermission
+  },
+  {
     path     : '/client',
     component: Client
   },
@@ -376,6 +383,10 @@ const privateRoutes = [
   {
     path     : '/setup/email-template',
     component: EmailTemplate
+  },
+  {
+    path     : '/group-permission',
+    component: GroupPermission
   },
   {
     path     : '/setup/system-setting',
@@ -1007,6 +1018,10 @@ const privateRoutes = [
   {
     path     : '/user',
     component: User
+  },
+  {
+    path     : '/role',
+    component: Role
   },
   {
     path     : '/setup/company-profile',

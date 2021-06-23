@@ -6,13 +6,12 @@ import clientDuck from '@reducers/client'
 
 const { selectors, types } = clientDuck
 
-function* get(/* { payload } */) {
+function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
     const filters = yield select(selectors.filters)
     const list = yield select(selectors.list)
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
 
     const { results, ...meta } = yield call(Get, 'clients/', filters)
 

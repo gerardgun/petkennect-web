@@ -161,12 +161,12 @@ export default [
     items: [
       {
         name: 'Users & Roles',
-        to  : '/employee'
+        to  : '/user'
 
       },
       {
         name: 'Permissions',
-        to  : '/setup'
+        to  : '/group-permission'
 
       },
       {
