@@ -1,5 +1,6 @@
-
 import { call, put, takeEvery } from 'redux-saga/effects'
+
+import { Get } from '@lib/utils/http-client'
 
 import medicationUnitDuck from '@reducers/pet/medication-setting/medication-unit'
 
@@ -9,16 +10,12 @@ function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    yield call(() => new Promise(resolve => setTimeout(resolve, 500)))
+    const medications_unit = yield call(Get, '/medication-units/')
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: [ { id: 1, name: 'Pill' },
-          { id: 2, name: 'Drop' },
-          { id: 3, name: 'CCs' },
-          { id: 4, name: 'MLs' }
-        ]
+        items: medications_unit
       }
     })
   } catch (e) {
@@ -32,4 +29,3 @@ function* get() {
 export default [
   takeEvery(types.GET, get)
 ]
-

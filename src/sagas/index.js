@@ -30,6 +30,8 @@ import companyProfileCalendar from './company-profile/calendar'
 import companyProfileCalendarDetail from './company-profile/calendar/detail'
 import companyProfileCalendarEvent from './company-profile/calendar/event'
 import companyProfileCalendarEventDetail from './company-profile/calendar/event/detail'
+import companyProfileContactBilling from './company-profile/contact-billing/detail'
+import companyProfileContactBillingDetail from './company-profile/contact-billing/detail'
 import customReport from './custom-report'
 import customized from './customized-field'
 import customizedField from './customized-field/field'
@@ -91,9 +93,13 @@ import managerDashboardSettingPermission from './manager-dashboard/setting/permi
 import medication from './pet/medication-setting/medication'
 import medicationDetail from './pet/medication-setting/medication/detail'
 import medicationMeasurement from './pet/medication-setting/medication-measurement'
+import medicationMeasurementDetail from './pet/medication-setting/medication-measurement/detail'
 import medicationTime from './pet/medication-setting/medication-time'
+import medicationTimeDetail from './pet/medication-setting/medication-time/detail'
 import medicationUnit from './pet/medication-setting/medication-unit'
+import medicationUnitDetail from './pet/medication-setting/medication-unit/detail'
 import medicationReportStatus from './pet/medication-setting/medication-report-status'
+import medicationReportStatusDetail from './pet/medication-setting/medication-report-status/detail'
 import medicationType from './pet/medication-setting/medication-type'
 import medicationTypeDetail from './pet/medication-setting/medication-type/detail'
 import notification from './notification'
@@ -279,6 +285,8 @@ export default function* rootSaga() {
     ...companyProfileCalendarDetail,
     ...companyProfileCalendarEvent,
     ...companyProfileCalendarEventDetail,
+    ...companyProfileContactBilling,
+    ...companyProfileContactBillingDetail,
     ...customReport,
     ...customized,
     ...customizedField,
@@ -340,11 +348,15 @@ export default function* rootSaga() {
     ...medication,
     ...medicationDetail,
     ...medicationMeasurement,
+    ...medicationMeasurementDetail,
     ...medicationReportStatus,
+    ...medicationReportStatusDetail,
     ...medicationTime,
+    ...medicationTimeDetail,
     ...medicationType,
     ...medicationTypeDetail,
     ...medicationUnit,
+    ...medicationUnitDetail,
     ...notification,
     ...organization,
     ...organizationDetail,

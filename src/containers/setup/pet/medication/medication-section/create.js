@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Input, Modal, Checkbox } from 'semantic-ui-react'
+import { Select, Button, Form, Header, Input, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -10,10 +10,12 @@ import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import medicationDetailDuck from '@reducers/pet/medication-setting/medication/detail'
+import medicationTypeDuck from '@reducers/pet/medication-setting/medication-type'
 
 const MedicationForm = (props) => {
   const {
     medicationDetail,
+    medicationTypes,
     error,
     handleSubmit,
     reset,
@@ -84,13 +86,15 @@ const MedicationForm = (props) => {
           <Form.Group widths='equal'>
             <Field
               component={FormField}
-              control={Input}
+              control={Select}
               label='Type'
               name='medication_type'
-              placeholder='Enter type'
-              required/>
+              options={medicationTypes.items.map(type => {return ({ value: type.id, text: type.name })})}
+              placeholder='Select Type'
+              search
+              selectOnBlur={false}/>
           </Form.Group>
-        {/*<Form.Group widths='equal'>
+          {/* <Form.Group widths='equal'>
             <Field
               component={FormField}
               control={Input}
@@ -140,13 +144,15 @@ export default compose(
   connect(
     (state) => {
       const medicationDetail = medicationDetailDuck.selectors.detail(state)
+      const medicationTypes  = medicationTypeDuck.selectors.list(state)
 
       return {
         medicationDetail,
-        initialValues: {  name              : medicationDetail.item.name              && medicationDetail.item.name,
-                          description       : medicationDetail.item.description       && medicationDetail.item.description,
-                          medication_type   : medicationDetail.item.medication_type    && medicationDetail.item.medication_type.name,
-                        }
+        medicationTypes,
+        initialValues: {  name           : medicationDetail.item.name              && medicationDetail.item.name,
+          description    : medicationDetail.item.description       && medicationDetail.item.description,
+          medication_type: medicationDetail.item.medication_type    && medicationDetail.item.medication_type.id
+        }
       }
     },
     {
@@ -162,9 +168,9 @@ export default compose(
     enableReinitialize: true,
     validate          : (values) => {
       const schema = {
-        name              : Yup.string().required('Medication name is required'),
-        description       : Yup.string().required('Purpuse is required'),
-        medication_type   : Yup.string().required('Type is required'),
+        name           : Yup.string().required('Medication name is required'),
+        description    : Yup.string().required('Purpuse is required'),
+        medication_type: Yup.string().required('Type is required')
       }
 
       return syncValidate(Yup.object().shape(schema), values)
