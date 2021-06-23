@@ -27,11 +27,11 @@ const UserForm = (props) => {
 
   const [ KennelAccess, setKennelAccess ] = useState()
   const [ StaffManagerAccess, setStaffManagerAccess ] = useState()
-  const [ hasStaffManager, setHasStaffManager ] = useState(true)
+  // const [ hasStaffManager, setHasStaffManager ] = useState(false)
 
   useEffect(()=> {
     props.getLocations()
-    setHasStaffManager(true)
+    // setHasStaffManager(false)
   }, [ ])
 
   const saving = [ 'POSTING', 'PUTTING' ].includes(userDetail.status)
@@ -173,8 +173,6 @@ const UserForm = (props) => {
                 content='Supervisor' name='supervisor'
                 onClick={_handleKennelAccess} type='button'/>
             </Grid.Column>
-            {
-              hasStaffManager === true && (
                 <Grid.Column className='button-color-user-staff' width={16}>
                   <Header as='h3' className={userDetail.mode !== 'UPDATE' ? 'pb0 mb0' : 'pb0 mb12'} style={{ color: '#306EFF' }}>Staff Manager Access Level:</Header>
                   {
@@ -218,11 +216,7 @@ const UserForm = (props) => {
                 color: StaffManagerAccess !== 'supervisor' ? '' : 'white' }}
                 type='button'/>
             </Grid.Column>
-              )
-            }
-            {
-              hasStaffManager !== true && (
-                <Grid.Column className='mt20' width={10}>
+                <Grid.Column className='mt4' width={10}>
                   <Field
                   component={FormField}
                   control={Select}
@@ -233,10 +227,9 @@ const UserForm = (props) => {
                     { key: 1, value: 'manager', text: 'Manager' },
                     { key: 2, value: 'trainer', text: 'Trainer' },
                     { key: 3, value: 'groomer', text: 'Groomer' }
-                  ]}/>
+                  ]}
+                  placeholder='Select role'/>
                 </Grid.Column>
-              )
-            }
 
             <Grid.Column width={16}>
             <Form.Group widths='equal'>
