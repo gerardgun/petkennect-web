@@ -36,7 +36,8 @@ const parseTenant = tenant => {
       }, _get(tenant, 'service_config.boarding', {})),
       appointment_capacity: _merge({
         enable_booking_override: false
-      }, _get(tenant, 'service_config.appointment_capacity', {}))
+      }, _get(tenant, 'service_config.appointment_capacity', {})),
+      addon: _get(tenant, 'service_config.addon', {})
     }
   }
 }

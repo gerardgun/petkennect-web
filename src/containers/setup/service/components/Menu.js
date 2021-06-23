@@ -1,7 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import { Button, Divider, Header } from 'semantic-ui-react'
-import theme from '@components/mainTheme'
+import Theme from '@components/mainTheme'
+import tenantDetailDuck from '@reducers/tenant/detail'
 
 const items = [
   {
@@ -32,6 +34,7 @@ const items = [
 
 const Menu = () => {
   const location = useLocation()
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
 
   return (
     <>
@@ -44,7 +47,7 @@ const Menu = () => {
             <Button
               as={Link}
               className='button-menu'
-              color={to === location.pathname ? theme.buttonMenuColor : null}
+              color={to === location.pathname ? Theme(tenant).buttonMenuColor : null}
               content={label}
               key={index}
               to={to}/>
