@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector, connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
@@ -18,10 +18,10 @@ import { TimeAmPm } from './utils'
 
 const SetupCompanyProfileSystemSettings = props => {
   const {
-    tenant,
-    error, handleSubmit // redux-form
+    error, handleSubmit, initialize // redux-form
   } = props
   const dispatch = useDispatch()
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
 
   const[sundayStart, setSundayStart] = useState('9:00')
   const[sundayEnd, setSundayEnd] = useState('6:00')
@@ -54,12 +54,14 @@ const SetupCompanyProfileSystemSettings = props => {
   }
       
   const _handleSubmit = values => {
-    console.log(values)
-    const { weigth_type, currency_format, ...rest } = parseFormValues(values)
-    const convertChar = {...rest, weight_type: weigth_type}
-    const s_config = {system_config: convertChar}
+    const { currency_format, ...rest } = parseFormValues(values)
+    const s_config = {system_config: rest}
     dispatch(tenantDetailDuck.creators.put(s_config))
   }
+
+  useEffect(() => {
+    if(tenant.item.id) initialize(tenant.item.system_config)
+  }, [ tenant.item.id ])
 
 return (
   <Layout>
@@ -121,7 +123,7 @@ return (
                     <Field
                       component={FormField}
                       control={Select}
-                      name='weigth_type'
+                      name='weight_type'
                       options={[
                         { value: 'L', text: 'Lbs' },
                         { value: 'K', text: 'Kgs' },
@@ -340,19 +342,8 @@ return (
   )
 }
 
-export default compose(
-  withRouter,
-  connect(
-    state => {
-      const tenant = tenantDetailDuck.selectors.detail(state)
-      return {
-        tenant,
-      }
-    }
-  ),
-  reduxForm({
+export default reduxForm({
   form              : 'system-settings-form',
-  enableReinitialize: true,
   validate          : values => {
     const schema = {
       date_format  : Yup.string().required('Date Format is required'),
@@ -362,6 +353,5 @@ export default compose(
 
     return syncValidate(Yup.object().shape(schema), values)
   }
-})
-)(SetupCompanyProfileSystemSettings)
+})(SetupCompanyProfileSystemSettings)
 /* eslint-enable */
