@@ -330,8 +330,10 @@ import trainingReason from '@reducers/training-reason'
 import trainingReasonDetail from '@reducers/training-reason/detail'
 import transaction from '@reducers/transaction'
 import transactionDetail from '@reducers/transaction/detail'
-import systemUser from '@reducers/system-user'
-import systemUserDetail from '@reducers/system-user/detail'
+import systemUser from '@reducers/system-user-and-role/user'
+import systemUserDetail from '@reducers/system-user-and-role/user/detail'
+import systemRole from '@reducers/system-user-and-role/role'
+import systemRoleDetail from '@reducers/system-user-and-role/role/detail'
 import user from '@reducers/user'
 import userDetail from '@reducers/user/detail'
 import zip from '@reducers/zip'
@@ -667,6 +669,8 @@ const createRootReducer = history => combineReducers({
   [transactionDetail.store]                                : transactionDetail.reducer,
   [systemUser.store]                                       : systemUser.reducer,
   [systemUserDetail.store]                                 : systemUserDetail.reducer,
+  [systemRole.store]                                       : systemRole.reducer,
+  [systemRoleDetail.store]                                 : systemRoleDetail.reducer,
   [user.store]                                             : user.reducer,
   [userDetail.store]                                       : userDetail.reducer,
   [zip.store]                                              : zip.reducer,

@@ -232,7 +232,8 @@ import SetupCompanyProfileSystemSettings from '@containers/company-profile/syste
 import SetupCompanyProfileCalendarDetail from '@containers/company-profile/calendar/detail'
 
 import Transaction from '@containers/transaction'
-import User from '@containers/user'
+import User from '@containers/system-user-and-role/user'
+import Role from '@containers/system-user-and-role/role'
 
 const publicRoutes = [
   {
@@ -1017,6 +1018,10 @@ const privateRoutes = [
   {
     path     : '/user',
     component: User
+  },
+  {
+    path     : '/role',
+    component: Role
   },
   {
     path     : '/setup/company-profile',

@@ -3,7 +3,7 @@ import list from '@reducers/common/list'
 
 export default base({
   namespace   : '@@pet-kennect',
-  store       : 'system-user',
+  store       : 'system-user-and-role/user',
   initialState: {}
 })
   .extend(list)

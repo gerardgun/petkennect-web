@@ -1,9 +1,9 @@
 import base from '@reducers/base'
-import detail from '@reducers/common/detail'
+import list from '@reducers/common/list'
 
 export default base({
   namespace   : '@@pet-kennect',
-  store       : 'system-user/detail',
+  store       : 'system-user-and-role/role',
   initialState: {}
 })
-  .extend(detail)
+  .extend(list)

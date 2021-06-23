@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 
-import systemUserDuck from '@reducers/system-user'
+import systemUserDuck from '@reducers/system-user-and-role/user'
 
 const { types } = systemUserDuck
 

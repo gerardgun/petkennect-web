@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Field, reduxForm, formValueSelector, FieldArray } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import { Button, Form, Header, Select, Modal, Grid, Input, Checkbox } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
@@ -10,13 +10,12 @@ import FormField from '@components/Common/FormField'
 import InputMask from '@components/Common/InputMask'
 import { syncValidate } from '@lib/utils/functions'
 
-import userDetailDuck from '@reducers/system-user/detail'
+import userDetailDuck from '@reducers/system-user-and-role/user/detail'
 import personalInformationDetailDuck from '@reducers/staff-management/information/personal-detail/detail'
 import locationDuck from '@reducers/location'
 
-import UserAssignRoleForm from './user-form-assign-role'
-import EmployeeCreateForm from './../manager-dashboard/employee-directory/form/modal'
-import './styles.scss'
+import EmployeeCreateForm from '../../manager-dashboard/employee-directory/form/modal'
+import '../styles.scss'
 
 const UserForm = (props) => {
   const {
@@ -28,14 +27,15 @@ const UserForm = (props) => {
 
   const [ KennelAccess, setKennelAccess ] = useState()
   const [ StaffManagerAccess, setStaffManagerAccess ] = useState()
+  const [ hasStaffManager, setHasStaffManager ] = useState(true)
 
   useEffect(()=> {
     props.getLocations()
+    setHasStaffManager(true)
   }, [ ])
 
   const saving = [ 'POSTING', 'PUTTING' ].includes(userDetail.status)
   const opened = [ 'CREATE', 'UPDATE' ].includes(userDetail.mode)
-  const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
 
   const _handleKennelAccess = (e, { name }) => setKennelAccess(name)
   const _handleStaffManagerAccess = (e, { name }) => setStaffManagerAccess(name)
@@ -54,7 +54,6 @@ const UserForm = (props) => {
     props.resetItem()
   }
 
-  console.log(userDetail.mode)
   const isUpdating = userDetail.mode === 'UPDATE' ? true : false
 
   return (
@@ -97,11 +96,10 @@ const UserForm = (props) => {
                   type='email'/>
                 <Field
                   component={FormField}
-                  control={Input}
-                  label='Password'
-                  name='user_password'
-                  type='password'
-                  required/>
+                  control={InputMask}
+                  label='Phone Number'
+                  mask='(999) 999-9999'
+                  name='phone_number'/>
               </Form.Group>
               <Form.Group widths='equal'>
                 <Field
@@ -129,12 +127,16 @@ const UserForm = (props) => {
                   required/>
               </Form.Group>
               <Form.Group widths='equal'>
-                <Field
-                  component={FormField}
-                  control={InputMask}
-                  label='Phone Number'
-                  mask='(999) 999-9999'
-                  name='phone_number'/>
+                {
+                  userDetail.mode === 'UPDATE' && (
+                    <Field
+                      component={FormField}
+                      control={Input}
+                      label='Password'
+                      name='user_password'
+                      type='password'/>
+                  )
+                }
                 <Field
                   className='mt28'
                   component={FormField}
@@ -171,20 +173,22 @@ const UserForm = (props) => {
                 content='Supervisor' name='supervisor'
                 onClick={_handleKennelAccess} type='button'/>
             </Grid.Column>
-            <Grid.Column className='button-color-user-staff' width={16}>
-              <Header as='h3' className={userDetail.mode !== 'UPDATE' ? 'pb0 mb0' : 'pb0 mb12'} style={{ color: '#306EFF' }}>Staff Manager Access Level:</Header>
-              {
-                userDetail.mode !== 'UPDATE' && (
-                  <Form.Group  className='mt8' widths='equal'>
-                  <Field
-                    component={FormField}
-                    control={Checkbox}
-                    label='Create Employee after saving user'
-                    name='create_employee_form'
-                    type='checkbox'/>
-                </Form.Group>
-                )
-              }
+            {
+              hasStaffManager === true && (
+                <Grid.Column className='button-color-user-staff' width={16}>
+                  <Header as='h3' className={userDetail.mode !== 'UPDATE' ? 'pb0 mb0' : 'pb0 mb12'} style={{ color: '#306EFF' }}>Staff Manager Access Level:</Header>
+                  {
+                    userDetail.mode !== 'UPDATE' && (
+                      <Form.Group  className='mt8' widths='equal'>
+                        <Field
+                          component={FormField}
+                          control={Checkbox}
+                          label='Create Employee after saving user'
+                          name='create_employee_form'
+                          type='checkbox'/>
+                      </Form.Group>
+                    )
+                  }
               <Button
                 basic={StaffManagerAccess !== 'employee'}
                 content='Employee' name='employee'
@@ -214,11 +218,26 @@ const UserForm = (props) => {
                 color: StaffManagerAccess !== 'supervisor' ? '' : 'white' }}
                 type='button'/>
             </Grid.Column>
-                {/* <Grid.Column className='mt20' width={16}>
-                  <FieldArray
-                    component={UserAssignRoleForm}
-                    name='user_assign_role'/>
-                </Grid.Column> */}
+              )
+            }
+            {
+              hasStaffManager !== true && (
+                <Grid.Column className='mt20' width={10}>
+                  <Field
+                  component={FormField}
+                  control={Select}
+                  label='Assign Role'
+                  multiple={true}
+                  name='assign_roles'
+                  options={[
+                    { key: 1, value: 'manager', text: 'Manager' },
+                    { key: 2, value: 'trainer', text: 'Trainer' },
+                    { key: 3, value: 'groomer', text: 'Groomer' }
+                  ]}/>
+                </Grid.Column>
+              )
+            }
+
             <Grid.Column width={16}>
             <Form.Group widths='equal'>
               <Field
@@ -270,7 +289,7 @@ const UserForm = (props) => {
   )
 }
 
-export default  compose(
+export default compose(
   connect(
     (state) => {
       const userDetail = userDetailDuck.selectors.detail(state)
@@ -300,7 +319,6 @@ export default  compose(
         first_name: Yup.string().required('First Name is required'),
         last_name: Yup.string().required('Last Name is required'),
         user_email: Yup.string().required('Email is required'),
-        user_password: Yup.string().required('Password is required'),
         primary_location: Yup.string().required('Primary Location is required'),
         other_available_locations: Yup.string().required('Other Locations is required')
 

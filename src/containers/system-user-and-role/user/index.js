@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
@@ -8,11 +8,12 @@ import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import FormCreate from './user-form'
+import AlertModal from './alert-modal'
 import { useChangeStatusEffect } from '@hooks/Shared'
-import userListConfig from '@lib/constants/list-configs/user'
+import userListConfig from '@lib/constants/list-configs/system-user-and-role/user'
 
-import systemUserDuck from '@reducers/system-user'
-import systemUserDetailDuck from '@reducers/system-user/detail'
+import systemUserDuck from '@reducers/system-user-and-role/user'
+import systemUserDetailDuck from '@reducers/system-user-and-role/user/detail'
 
 const UserList = ({ systemUser, systemUserDetail ,...props }) => {
   const history = useHistory()
@@ -23,8 +24,9 @@ const UserList = ({ systemUser, systemUserDetail ,...props }) => {
     props.getSystemUsers()
   }, [])
 
-  const _handleAddBtnClick = () => {
-    props.setItem(null, 'CREATE')
+  const _handleActionClick = action => {
+    if(action === 'create')
+      props.setItem(null, 'CREATE')
   }
 
   const _handleDropdownOptionClick = (option,item) => {
@@ -33,8 +35,10 @@ const UserList = ({ systemUser, systemUserDetail ,...props }) => {
         props.setItem(item.id, 'UPDATE')
         break
       case 'terminate_access':
+        props.setItem(null, 'READ')
         break
-      case 'view_employee_file':
+      case 'view_employee_profile':
+        history.push(`/manager-dashboard/employee-directory/${item.id}/personal-detail`)
         break
     }
   }
@@ -50,18 +54,16 @@ const UserList = ({ systemUser, systemUserDetail ,...props }) => {
             className='ui-grid-align'
             computer={12} mobile={10} tablet={12}>
             <Button
-              color='teal'
-              content='Add User'
-              icon='add'
-              onClick={_handleAddBtnClick}/>
+              color='teal'><Link to={'/role'} style={{ color: 'white' }}>System Roles</Link></Button>
           </Grid.Column>
         </Grid>
         <Table
           config={userListConfig}
           duck={systemUserDuck}
+          onActionClick={_handleActionClick}
           onRowDropdownChange={_handleDropdownOptionClick}/>
       </Segment>
-
+      <AlertModal/>
       <FormCreate/>
       <ModalDelete duckDetail={systemUserDetailDuck}/>
 

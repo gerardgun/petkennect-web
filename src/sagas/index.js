@@ -235,7 +235,8 @@ import trainingReason from './training-reason'
 import trainingReasonDetail from './training-reason/detail'
 import transaction from './transaction'
 import transactionDetail from './transaction/detail'
-import systemUser from './system-user'
+import systemUser from './system-user-and-role/user'
+import systemRole from './system-user-and-role/role'
 import user from './user'
 import userDetail from './user/detail'
 import zip from './zip'
@@ -479,6 +480,7 @@ export default function* rootSaga() {
     ...transaction,
     ...transactionDetail,
     ...systemUser,
+    ...systemRole,
     ...user,
     ...userDetail,
     ...zip,

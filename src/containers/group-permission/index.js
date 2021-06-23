@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { compose } from 'redux'
-import { Button, Grid, Header, Segment } from 'semantic-ui-react'
+import { Field, reduxForm } from 'redux-form'
+import { Button, Grid, Header, Segment, Form, Input } from 'semantic-ui-react'
 
+import FormField from '@components/Common/FormField'
 import Layout from '@components/Common/Layout'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
@@ -12,6 +14,8 @@ import groupPermissionConfig from '@lib/constants/list-configs/group-permission'
 
 import groupPermissionDuck from '@reducers/group-permission'
 import groupPermissionDetailDuck from '@reducers/group-permission/detail'
+
+export const formId = 'group-permission-form'
 
 const GroupPermission = ({ groupPermission, groupPermissionDetail ,...props }) => {
   const history = useHistory()
@@ -47,6 +51,26 @@ const GroupPermission = ({ groupPermission, groupPermissionDetail ,...props }) =
               onClick={_handleAddBtnClick}/>
           </Grid.Column>
         </Grid>
+        <Grid>
+          <Grid.Column className='pb8 pt0' width={10}>
+            <Form id={formId}>
+              <Form.Group>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  icon='search' iconPosition='left'
+                  onChange=''
+                  placeholder='Search' type='search'/>
+              </Form.Group>
+            </Form>
+          </Grid.Column>
+          <Grid.Column
+            className='ui-grid-align pb8 pt0' computer={6}>
+            <Button
+              color='teal'
+              content='Save'/>
+          </Grid.Column>
+        </Grid>
         <Table
           config={groupPermissionConfig}
           duck={groupPermissionDuck}
@@ -71,6 +95,10 @@ export default compose(
     }, {
       getGroupPermissions: groupPermissionDuck.creators.get,
       setItem            : groupPermissionDetailDuck.creators.setItem
-    })
+    }),
+    reduxForm({
+      form              : formId,
+      enableReinitialize: true
+  })
 )(GroupPermission)
 

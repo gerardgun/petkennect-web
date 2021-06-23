@@ -21,9 +21,9 @@ import employeeDirectoryDetailDuck from '@reducers/manager-dashboard/employee/em
 import personalInformationDetailDuck from '@reducers/staff-management/information/personal-detail/detail'
 import locationDuck from '@reducers/location'
 import EmployeeDetail from './employee-detail'
-import userDetailDuck from '@reducers/system-user/detail'
+import userDetailDuck from '@reducers/system-user-and-role/user/detail'
 
-import UserCreateModal from './../../user/user-form'
+import UserCreateModal from './../../system-user-and-role/user/user-form'
 // import EmployeeForm from './form/modal'
 import './styles.scss'
 

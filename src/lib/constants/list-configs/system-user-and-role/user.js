@@ -3,35 +3,16 @@ import { Label } from 'semantic-ui-react'
 
 export default {
   search_placeholder: 'Search by name',
-  options           : {
-    basic: [
-      {
-        display_name: 'Download',
-        name        : 'download',
-        icon        : 'download'
-      },
-      {
-        display_name: 'Print',
-        name        : 'print',
-        icon        : 'print'
-      }
-    ],
-    single: [
-      {
-        display_name: 'Delete Pet',
-        name        : 'delete',
-        icon        : 'trash alternate outline',
-        color       : 'red'
-      }
-    ],
-    multiple: [
-      {
-        display_name: 'Fork',
-        name        : 'multiple',
-        icon        : 'fork'
-      }
-    ]
-  },
+
+  actions: [
+    {
+      display_name: 'Add User',
+      name        : 'create',
+      color       : 'teal',
+      icon        : 'add'
+    }
+  ],
+
   columns: [
     {
       display_name: 'User',
@@ -100,8 +81,8 @@ export default {
           icon        : 'cancel'
         },
         {
-          display_name: 'View Employee File',
-          name        : 'view_employee_file',
+          display_name: 'View Employee Profile',
+          name        : 'view_employee_profile',
           icon        : 'user'
         }
       ]
