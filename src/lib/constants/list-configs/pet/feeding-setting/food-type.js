@@ -1,6 +1,8 @@
 import React from 'react'
 import { Checkbox } from 'semantic-ui-react'
 
+import { FoodTypeChargeType } from '@lib/constants/service'
+
 export default {
   actions: [
     {
@@ -12,30 +14,33 @@ export default {
   ],
   columns: [
     {
-      display_name: 'Food Type',
+      display_name: 'Food Types',
       name        : 'name',
       type        : 'string',
       align       : 'left',
-      sort        : false
+      sort        : true
     },
     {
       display_name: 'Charge Applies',
-      name        : 'charges',
-      type        : 'string',
-      align       : 'left',
-      sort        : false,
+      name        : 'is_charged',
       formatter   : cell => (
-        <Checkbox
-          checked={JSON.parse(cell)}
-          disabled
-          style={{ 'margin-left': '40px' }}/>
+        <Checkbox checked={cell} disabled toggle/>
       )
+    },
+    {
+      display_name: 'Charge Type',
+      name        : 'charge_type',
+      formatter   : (cell, row) => {
+        if(row.is_charged === false) return 'No Charge'
+
+        return FoodTypeChargeType[cell]
+      }
     },
     {
       display_name: 'Price',
       name        : 'price',
-      type        : 'string',
-      align       : 'left'
+      type        : 'money',
+      sort        : true
     },
     {
       display_name: 'Actions',

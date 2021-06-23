@@ -10,41 +10,43 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import feedingMeasurementListConfig from '@lib/constants/list-configs/pet/feeding-setting/feeding-measurement'
 
-import feedingMeasurementDuck from '@reducers/pet/feeding-setting/feeding-measurement'
-import feedingMeasurementDetailDuck from '@reducers/pet/feeding-setting/feeding-measurement/detail'
+import foodMeasurementDuck from '@reducers/service/food/measurement'
+import foodMeasurementDetailDuck from '@reducers/service/food/measurement/detail'
 
 const SetupPetFeedingMeasurementIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(feedingMeasurementDetailDuck.selectors.detail)
+  const detail = useSelector(foodMeasurementDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      feedingMeasurementDuck.creators.get()
+      foodMeasurementDuck.creators.get({
+        ordering: 'value'
+      })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        feedingMeasurementDuck.creators.get()
+        foodMeasurementDuck.creators.get()
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        feedingMeasurementDetailDuck.creators.setItem(null, 'CREATE')
+        foodMeasurementDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
-        feedingMeasurementDetailDuck.creators.setItem(reason, 'DELETE')
+        foodMeasurementDetailDuck.creators.setItem(reason, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        feedingMeasurementDetailDuck.creators.setItem(reason, 'UPDATE')
+        foodMeasurementDetailDuck.creators.setItem(reason, 'UPDATE')
       )
   }
 
@@ -59,14 +61,14 @@ const SetupPetFeedingMeasurementIndex = () => {
           </p>
           <Table
             config={feedingMeasurementListConfig}
-            duck={feedingMeasurementDuck}
+            duck={foodMeasurementDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
         <MeasurementForm/>
 
-        <ModalDelete duckDetail={feedingMeasurementDetailDuck}/>
+        <ModalDelete duckDetail={foodMeasurementDetailDuck}/>
 
       </Segment>
     </Layout>

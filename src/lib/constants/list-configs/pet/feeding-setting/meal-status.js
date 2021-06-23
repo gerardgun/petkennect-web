@@ -12,7 +12,7 @@ export default {
       display_name: 'Quantity Eaten',
       name        : 'name',
       type        : 'string',
-      align       : 'left'
+      sort        : true
     },
     {
       display_name: 'Actions',

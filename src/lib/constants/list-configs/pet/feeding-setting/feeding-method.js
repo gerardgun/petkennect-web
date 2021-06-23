@@ -12,7 +12,8 @@ export default {
       display_name: 'Feeding Methods',
       name        : 'name',
       type        : 'string',
-      align       : 'left'
+      align       : 'left',
+      sort        : true
     },
     {
       display_name: 'Actions',

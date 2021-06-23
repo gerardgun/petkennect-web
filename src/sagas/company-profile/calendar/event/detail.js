@@ -64,26 +64,8 @@ function* _put({ payload }) {
 
     yield put({ type: types.PUT_PENDING })
 
-    if(!payload.is_recurring) {delete payload.frequency}
-    else {
-      let frequencyFormatted = {
-        interval_value: payload.interval_value,
-        interval_type : payload.frequency.interval_type,
-        week_days     : payload.frequency.week_days
-      }
-      if(payload.frequency.ended_at)
-        frequencyFormatted = {
-          ...frequencyFormatted,
-          ended_at: payload.frequency.ended_at
-        }
-      payload = {
-        ...payload,
-        frequency: frequencyFormatted
-      }
-    }
-    /*
     let frequencyFormatted = {
-      interval_value: payload.is_recurring ? payload.frequency.interval_value : null,
+      interval_value: payload.is_recurring ? payload.interval_value : null,
       interval_type : payload.is_recurring ? payload.frequency.interval_type : null,
       week_days     : payload.is_recurring ? payload.frequency.week_days : null
     }
@@ -97,7 +79,7 @@ function* _put({ payload }) {
       ...payload,
       frequency: frequencyFormatted
     }
-    */
+
     yield call(
       Patch,
       `employee-schedules/${payload.calendarId}/events/${payload.id}`,

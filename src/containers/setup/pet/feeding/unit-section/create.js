@@ -1,85 +1,107 @@
-import React, { useMemo, useEffect } from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Input, Modal } from 'semantic-ui-react'
-import * as Yup from 'yup'
+import { Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
+import * as yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
-import feedingUnitDetailDuck from '@reducers/pet/feeding-setting/feeding-unit/detail'
+import foodUnitDetailDuck from '@reducers/service/food/unit/detail'
 
-const FeedingUnitForm = (props) => {
+const FoodMethodForm = props => {
   const {
-    feedingUnitDetail,
-    error,
-    handleSubmit,
-    reset,
-    submitting // redux-form
+    error, handleSubmit, initialize, reset, submitting // redux-form
   } = props
 
-  useEffect(() => {
-    if(feedingUnitDetail.item.id)
-      props.get(feedingUnitDetail.item.id)
-  }, [ feedingUnitDetail.item.id ])
+  const dispatch = useDispatch()
+  const detail = useSelector(foodUnitDetailDuck.selectors.detail)
 
-  const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
+  useEffect(() => {
+    if(detail.item.id)
+      initialize({
+        id          : detail.item.id,
+        name        : detail.item.name,
+        food_type_id: detail.item.food_type
+      })
+    else
+      initialize({
+        food_type_id: null
+      })
+  }, [ detail.item.id ])
+
+  useEffect(() => {
+    if([ 'CREATE', 'UPDATE' ].includes(detail.mode))
+      dispatch(
+        foodUnitDetailDuck.creators.create()
+      )
+  }, [ detail.mode ])
 
   const _handleClose = () => {
-    props.reset()
-    props.resetItem()
+    dispatch(
+      foodUnitDetailDuck.creators.resetItem()
+    )
   }
 
-  const _handleSubmit = (values) => {
-    if(isUpdating)
-      return props
-        .put({ id: feedingUnitDetail.item.id, ...values })
+  const _handleSubmit = values => {
+    if(editing)
+      return dispatch(foodUnitDetailDuck.creators.put(values))
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props
-        .post({ ...values })
+      return dispatch(foodUnitDetailDuck.creators.post(values))
         .then(_handleClose)
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(feedingUnitDetail.mode), [
-    feedingUnitDetail.mode
-  ])
-  const isUpdating = Boolean(feedingUnitDetail.item.id)
+  const editing = Boolean(detail.item.id)
+  const open = [ 'CREATE', 'UPDATE' ].includes(detail.mode)
 
   return (
     <Modal
       className='form-modal'
       onClose={_handleClose}
-      open={isOpened}
+      open={open}
       size='small'>
       <Modal.Content>
+        <Header as='h2' className='segment-content-header'>
+          {editing ? 'Update' : 'Add'} Food Unit
+        </Header>
+
         {/* eslint-disable-next-line react/jsx-handler-names */}
         <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
-          <Header as='h2' className='segment-content-header'>
-            {isUpdating ? 'Update' : 'Add'} Feeding Unit
-          </Header>
           <Field component='input' name='id' type='hidden'/>
           <Form.Group widths='equal'>
             <Field
               component={FormField}
+              control={Select}
+              label='Food Type'
+              name='food_type_id'
+              options={detail.form.food_type_options}
+              placeholder='Select food type'
+              selectOnBlur={false}/>
+          </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              autoFocus
+              component={FormField}
               control={Input}
-              label='Feeding Unit'
+              label='Food Unit'
               name='name'
-              placeholder='Enter unit'
+              placeholder='Enter name'
               required/>
           </Form.Group>
 
-          {error && (
-            <Form.Group widths='equal'>
-              <Form.Field>
-                <FormError message={error}/>
-              </Form.Field>
-            </Form.Group>
-          )}
+          {
+            error && (
+              <Form.Group widths='equal'>
+                <Form.Field>
+                  <FormError message={error}/>
+                </Form.Field>
+              </Form.Group>
+            )
+          }
 
           <Form.Group className='form-modal-actions' widths='equal'>
             <Form.Field>
@@ -90,44 +112,26 @@ const FeedingUnitForm = (props) => {
                 type='button'/>
               <Button
                 color='teal'
-                content={isUpdating ? 'Save changes' : 'Save'}
+                content={editing ? 'Save changes' : 'Add Unit'}
                 disabled={submitting}
                 loading={submitting}/>
             </Form.Field>
           </Form.Group>
         </Form>
+
       </Modal.Content>
     </Modal>
   )
 }
 
-export default compose(
-  connect(
-    (state) => {
-      const feedingUnitDetail = feedingUnitDetailDuck.selectors.detail(state)
-
-      return {
-        feedingUnitDetail,
-        initialValues: { ...feedingUnitDetail.item }
-      }
-    },
-    {
-      get      : feedingUnitDetailDuck.creators.get,
-      post     : feedingUnitDetailDuck.creators.post,
-      put      : feedingUnitDetailDuck.creators.put,
-      resetItem: feedingUnitDetailDuck.creators.resetItem
+export default reduxForm({
+  form    : 'food-unit-form',
+  validate: values => {
+    const schema = {
+      name : yup.string().required('Name is required'),
+      price: yup.number().typeError('Price must be a number').required('Price is required')
     }
-  ),
-  reduxForm({
-    form              : 'feeding-unit-form',
-    destroyOnUnmount  : false,
-    enableReinitialize: true,
-    validate          : (values) => {
-      const schema = {
-        name: Yup.string().required('Unit is required')
-      }
 
-      return syncValidate(Yup.object().shape(schema), values)
-    }
-  })
-)(FeedingUnitForm)
+    return syncValidate(yup.object().shape(schema), values)
+  }
+})(FoodMethodForm)

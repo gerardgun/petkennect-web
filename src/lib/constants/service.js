@@ -8,6 +8,11 @@ export const ChargeType = {
 
 export const ChargeTypeOptions = obj2options(ChargeType)
 
+export const FoodTypeChargeType = {
+  D: 'Per Day',
+  M: 'Per Meal'
+}
+
 export const BaseGroupType = {
   B: 'Boarding',
   D: 'Day Services',

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 
-import EmployeeForm from  './create'
+import EmployeeServiceTypeFormModal from  './create/form/modal'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/capacity/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
@@ -10,41 +10,54 @@ import Tab from '@containers/setup/capacity/appointment/components/Tab'
 import Table from '@components/Table'
 import employeeListConfig from '@lib/constants/list-configs/employee/appointment-capacity'
 
-import employeeDuck from '@reducers/employee'
-import employeeDetailDuck from '@reducers/employee/detail'
+import employeeServiceTypeDuck from '@reducers/employee/service-type'
+import employeeServiceTypeDetailDuck from '@reducers/employee/service-type/detail'
 
-const SetupCapacityAppointmentSpecialistIndex = () => {
+const SetupCapacityAppointmentIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(employeeDetailDuck.selectors.detail)
+  const detail = useSelector(employeeServiceTypeDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      employeeDuck.creators.get()
+      employeeServiceTypeDuck.creators.get({
+        ordering: 'employee__full_name'
+      })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        employeeDuck.creators.get()
+        employeeServiceTypeDuck.creators.get()
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        employeeDetailDuck.creators.setItem(null, 'CREATE')
+        employeeServiceTypeDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
-  const _handleRowButtonClick = (button, reason) => {
+  const _handleDelete = () => {
+    dispatch(
+      employeeServiceTypeDetailDuck.creators.delete(detail.item.id, detail.item.employee_id)
+    )
+      .then(() => {
+        dispatch(
+          employeeServiceTypeDetailDuck.creators.resetItem()
+        )
+      })
+  }
+
+  const _handleRowButtonClick = (button, item) => {
     if(button === 'delete')
       dispatch(
-        employeeDetailDuck.creators.setItem(reason, 'DELETE')
+        employeeServiceTypeDetailDuck.creators.setItem(item, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        employeeDetailDuck.creators.setItem(reason, 'UPDATE')
+        employeeServiceTypeDetailDuck.creators.setItem(item, 'UPDATE')
       )
   }
 
@@ -56,18 +69,18 @@ const SetupCapacityAppointmentSpecialistIndex = () => {
         <Tab>
           <Table
             config={employeeListConfig}
-            duck={employeeDuck}
+            duck={employeeServiceTypeDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
-        <EmployeeForm/>
+        <EmployeeServiceTypeFormModal/>
 
-        <ModalDelete duckDetail={employeeDetailDuck}/>
+        <ModalDelete duckDetail={employeeServiceTypeDetailDuck} onDelete={_handleDelete}/>
 
       </Segment>
     </Layout>
   )
 }
 
-export default SetupCapacityAppointmentSpecialistIndex
+export default SetupCapacityAppointmentIndex
