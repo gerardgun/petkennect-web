@@ -10,22 +10,31 @@ export default {
   columns: [
     {
       display_name: 'Per Role',
-      name        : 'name',
+      name        : 'role.name',
       type        : 'string'
     },
     {
       display_name: 'Service Type',
-      name        : 'service_name',
+      name        : 'service_type.name',
       type        : 'string'
     },
     {
       display_name: 'Applies to Appointments',
-      name        : 'applies',
-      type        : 'string'
+      name        : 'service_variations',
+      formatter   : cell => {
+        let reservationTypeNames = 'All'
+
+        if(cell.length > 0)
+          reservationTypeNames = cell
+            .map(({ name }) => name)
+            .join(', ')
+
+        return reservationTypeNames
+      }
     },
     {
       display_name: 'Max Scheduled Per Day',
-      name        : 'max_scheduled_per_day',
+      name        : 'max_reservations_per_day',
       type        : 'string',
       align       : 'center'
     },
