@@ -33,7 +33,8 @@ const parseTenant = tenant => {
         time_checkout                 : '12:00',
         checkout_prior                : 1,
         checkout_after                : 1
-      }, _get(tenant, 'service_config.boarding', {}))
+      }, _get(tenant, 'service_config.boarding', {})),
+      addon: _get(tenant, 'service_config.addon', {})
     }
   }
 }
