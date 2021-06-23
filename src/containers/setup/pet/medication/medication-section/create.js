@@ -77,7 +77,7 @@ const MedicationForm = (props) => {
               component={FormField}
               control={Input}
               label='Purpose'
-              name='purpose'
+              name='description'
               placeholder='Enter purpose'
               required/>
           </Form.Group>
@@ -86,11 +86,11 @@ const MedicationForm = (props) => {
               component={FormField}
               control={Input}
               label='Type'
-              name='type'
+              name='medication_type'
               placeholder='Enter type'
               required/>
           </Form.Group>
-          <Form.Group widths='equal'>
+        {/*<Form.Group widths='equal'>
             <Field
               component={FormField}
               control={Input}
@@ -106,7 +106,7 @@ const MedicationForm = (props) => {
               label='Charges Applies'
               name='charges'
               type='checkbox'/>
-          </Form.Group>
+            </Form.Group>*/}
 
           {error && (
             <Form.Group widths='equal'>
@@ -143,7 +143,10 @@ export default compose(
 
       return {
         medicationDetail,
-        initialValues: { ...medicationDetail.item }
+        initialValues: {  name              : medicationDetail.item.name              && medicationDetail.item.name,
+                          description       : medicationDetail.item.description       && medicationDetail.item.description,
+                          medication_type   : medicationDetail.item.medication_type    && medicationDetail.item.medication_type.name,
+                        }
       }
     },
     {
@@ -159,7 +162,9 @@ export default compose(
     enableReinitialize: true,
     validate          : (values) => {
       const schema = {
-        name: Yup.string().required('Medication is required')
+        name              : Yup.string().required('Medication name is required'),
+        description       : Yup.string().required('Purpuse is required'),
+        medication_type   : Yup.string().required('Type is required'),
       }
 
       return syncValidate(Yup.object().shape(schema), values)
