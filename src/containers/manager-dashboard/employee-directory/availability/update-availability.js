@@ -59,7 +59,6 @@ const UpdateAvailabilityForm = (props)=>{
 
   const _handleSubmit = () => {
     // values = parseFormValues(values)
-    // console.log(values)
   }
 
   return (

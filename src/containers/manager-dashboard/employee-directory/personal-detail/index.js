@@ -48,11 +48,8 @@ const PersonalDetail = ()=>{
                 </Grid>
               </div>
             </Card>
-
           </Grid.Column>
-
         </Grid>
-
       </Segment>
     </Layout>
   )

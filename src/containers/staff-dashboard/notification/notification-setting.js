@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Header, Grid, Checkbox } from 'semantic-ui-react'
+import { Header, Grid, Checkbox, Button } from 'semantic-ui-react'
 
 // import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
@@ -23,7 +23,6 @@ const EmployeeNotice = ({ ...props }) => {
   }, [])
 
   const _handleCheckboxChecked = (item, data) => {
-    console.log('check')
     console.log(data)
     console.log(item)
   }
@@ -32,15 +31,22 @@ const EmployeeNotice = ({ ...props }) => {
     <>
       <div className='notification-setting-style'>
         <Grid>
-          <Grid.Column width={11}><Header as='h3' color='teal'>Notification Settings</Header></Grid.Column>
+          <Grid.Column width={8}>
+            <Header as='h3' className='pt8' color='teal'>Notification Settings</Header>
+          </Grid.Column>
+          <Grid.Column width={3}>
+            <Button
+                color='teal'
+                content='Save'/>
+          </Grid.Column>
           <Grid.Column style={{ display: 'flex' }} width={5}>
             <Field
-              className={props.hideSidebar ? 'employee-left-checkbox' : 'sidebar-employee-left-checkbox'}
+              className={props.hideSidebar ? 'employee-left-checkbox pt8' : 'sidebar-employee-left-checkbox pt8'}
               component={FormField} control={Checkbox}
               name='employee_sms'
               type='checkbox'/>
             <Field
-              className={props.hideSidebar ? 'employee-right-checkbox' : 'sidebar-employee-right-checkbox'}
+              className={props.hideSidebar ? 'employee-right-checkbox pt8' : 'sidebar-employee-right-checkbox pt8'}
               component={FormField} control={Checkbox}
               name='employee_email'
               type='checkbox'/>
@@ -50,21 +56,26 @@ const EmployeeNotice = ({ ...props }) => {
           <Grid.Column className='pt0' width={16}>
             <Table config={employeeNotificationConfig} duck={employeeNotificationDuck}/>
           </Grid.Column>
-          <Grid.Column width={11}>
+          <Grid.Column width={8}>
+          </Grid.Column>
+          <Grid.Column width={3}>
+            <Button
+                color='teal'
+                content='Save'/>
           </Grid.Column>
           <Grid.Column style={{ display: 'flex' }} width={5}>
             <Field
-              className={props.hideSidebar ? 'manager-left-checkbox' : 'sidebar-manager-left-checkbox'}
+              className={props.hideSidebar ? 'manager-left-checkbox pt8' : 'sidebar-manager-left-checkbox pt8'}
               component={FormField} control={Checkbox}
               name='manager_sms'
               type='checkbox'/>
             <Field
-              className={props.hideSidebar ? 'manager-right-checkbox' : 'sidebar-manager-right-checkbox'}
+              className={props.hideSidebar ? 'manager-right-checkbox pt8' : 'sidebar-manager-right-checkbox pt8'}
               component={FormField} control={Checkbox}
               name='manager_email'
               type='checkbox'/>
           </Grid.Column>
-          <Grid.Column width={16}>
+          <Grid.Column className='pt0' width={16}>
             <Table config={managerNotificationConfig} duck={managerNotificationDuck} onRowCheckboxChecked={_handleCheckboxChecked}/>
           </Grid.Column>
         </Grid>

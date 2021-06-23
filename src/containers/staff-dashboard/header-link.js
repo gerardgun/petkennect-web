@@ -12,7 +12,7 @@ const HeaderLink = ({ sideBarHidden })=>{
       <Header
         as={Link} className='mt0 mb0' color='grey'
         content='Manager Dashboard'
-        to={{ pathname: '/manager-dashboard/department-roles', state: { isSideBarHidden: sideBarHidden } }}/>
+        to={{ pathname: '/manager-dashboard/employee-directory', state: { isSideBarHidden: sideBarHidden } }}/>
     </div>
   )
 }

@@ -59,6 +59,8 @@ import employee from './employee'
 import employeeDetail from './employee/detail'
 import employeeRole from './employee/role'
 import employeeRoleDetail from './employee/role/detail'
+import employeeRoleServiceType from './employee/role/service-type'
+import employeeRoleServiceTypeDetail from './employee/role/service-type/detail'
 import employeeSchedule from './employee/schedule'
 import employeeScheduleDetail from './employee/schedule/detail'
 import employeeTitle from './employee/title'
@@ -77,6 +79,7 @@ import feedingMethod from './pet/feeding-setting/feeding-method'
 import feedingTime from './pet/feeding-setting/feeding-time'
 import feedingUnit from './pet/feeding-setting/feeding-unit'
 import foodType from './pet/feeding-setting/food-type'
+import groupPermission from './group-permission'
 import mealStatus from './pet/feeding-setting/meal-status'
 import location from './location'
 import locationDetail from './location/detail'
@@ -84,6 +87,7 @@ import managerDashboardDepartmentRole from './manager-dashboard/department-role'
 import managerDashboardEmployeeDirectory from './manager-dashboard/employee/employee-directory'
 import managerDashboardEmployeeDocument from './manager-dashboard/employee/employee-document'
 import managerDashboardEmployeeWageHistory from './manager-dashboard/employee/employee-wage-history'
+import managerDashboardSettingPermission from './manager-dashboard/setting/permission'
 import medication from './pet/medication-setting/medication'
 import medicationMeasurement from './pet/medication-setting/medication-measurement'
 import medicationTime from './pet/medication-setting/medication-time'
@@ -233,6 +237,8 @@ import trainingReason from './training-reason'
 import trainingReasonDetail from './training-reason/detail'
 import transaction from './transaction'
 import transactionDetail from './transaction/detail'
+import systemUser from './system-user-and-role/user'
+import systemRole from './system-user-and-role/role'
 import user from './user'
 import userDetail from './user/detail'
 import zip from './zip'
@@ -305,6 +311,8 @@ export default function* rootSaga() {
     ...employeeDetail,
     ...employeeRole,
     ...employeeRoleDetail,
+    ...employeeRoleServiceType,
+    ...employeeRoleServiceTypeDetail,
     ...employeeSchedule,
     ...employeeScheduleDetail,
     ...employeeTimeOff,
@@ -318,6 +326,7 @@ export default function* rootSaga() {
     ...feedingTime,
     ...feedingUnit,
     ...foodType,
+    ...groupPermission,
     ...mealStatus,
     ...location,
     ...locationDetail,
@@ -325,6 +334,7 @@ export default function* rootSaga() {
     ...managerDashboardEmployeeDirectory,
     ...managerDashboardEmployeeDocument,
     ...managerDashboardEmployeeWageHistory,
+    ...managerDashboardSettingPermission,
     ...medication,
     ...medicationMeasurement,
     ...medicationReportStatus,
@@ -473,6 +483,8 @@ export default function* rootSaga() {
     ...trainingReasonDetail,
     ...transaction,
     ...transactionDetail,
+    ...systemUser,
+    ...systemRole,
     ...user,
     ...userDetail,
     ...zip,

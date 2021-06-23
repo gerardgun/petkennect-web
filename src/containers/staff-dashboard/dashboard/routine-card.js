@@ -1,6 +1,11 @@
 import React from 'react'
-import { Button, Card, Header ,Input, Icon, Image } from 'semantic-ui-react'
+import { Field } from 'redux-form'
+import { Button, Card, Form, Header, Checkbox, TextArea, Select, Input,  Icon, Image } from 'semantic-ui-react'
+
+import FormField from '@components/Common/FormField'
+
 import './styles.scss'
+
 const RoutineCard = ()=>{
   return (
     <Card fluid>
@@ -32,15 +37,15 @@ const RoutineCard = ()=>{
 
         </div>
         <div className='ph16' style={{ flex: 1 }}>
-          <Input className='mt20' fluid placeholder='Add Notes...'/>
+          <Form.Field
+              className='mt20'
+              component={FormField}
+              control={TextArea}
+              name='note'
+              placeholder='Add Notes...'
+              style={{ minHeight: '100px', width: '100%' }}/>
           <Button
             className='mt20' color='teal' content='Clock In/Out'
-            fluid/>
-          <Button
-            className='mt20' color='teal' content='Break'
-            fluid/>
-          <Button
-            className='mv20' color='teal' content='Lunch'
             fluid/>
         </div>
       </div>
