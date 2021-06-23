@@ -29,7 +29,6 @@ const Tab = () => {
                     <Step.Title>Medication Times</Step.Title>
                   </Step.Content>
                 </Step>
-                {/* eslint-disable-next-line react/jsx-handler-names */}
                 <Step
                   active={activeTab === 'Medication Types'}
                   link name='Medication Types'
