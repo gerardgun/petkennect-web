@@ -114,6 +114,8 @@ import emailTemplate from '@reducers/email-template'
 import emailTemplateDetail from '@reducers/email-template/detail'
 import employee from '@reducers/employee'
 import employeeDetail from '@reducers/employee/detail'
+import employeeServiceType from '@reducers/employee/service-type'
+import employeeServiceTypeDetail from '@reducers/employee/service-type/detail'
 import employeeSchedule from '@reducers/employee/schedule'
 import employeeScheduleDetail from '@reducers/employee/schedule/detail'
 import employeeRole from '@reducers/employee/role'
@@ -451,6 +453,8 @@ const createRootReducer = history => combineReducers({
   [emailLogDetail.store]                                   : emailLogDetail.reducer,
   [employee.store]                                         : employee.reducer,
   [employeeDetail.store]                                   : employeeDetail.reducer,
+  [employeeServiceType.store]                              : employeeServiceType.reducer,
+  [employeeServiceTypeDetail.store]                        : employeeServiceTypeDetail.reducer,
   [employeeSchedule.store]                                 : employeeSchedule.reducer,
   [employeeScheduleDetail.store]                           : employeeScheduleDetail.reducer,
   [employeeRole.store]                                     : employeeRole.reducer,

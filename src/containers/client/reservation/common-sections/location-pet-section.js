@@ -11,8 +11,6 @@ import FormField from '@components/Common/FormField'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import locationDuck from '@reducers/location'
 import clientPetDuck from '@reducers/client/pet'
-import 'react-day-picker/lib/style.css'
-// import '../styles.scss'
 
 const LocationPetForm = ({ ...props }) => {
   const {

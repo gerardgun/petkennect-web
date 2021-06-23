@@ -4,7 +4,6 @@ import { compose } from 'redux'
 import { Grid } from 'semantic-ui-react'
 import { defaultImageUrl } from '@lib/constants'
 import { Carousel } from 'react-responsive-carousel'
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import petDuck from '@reducers/pet'
 import '../../styles.scss'
 
