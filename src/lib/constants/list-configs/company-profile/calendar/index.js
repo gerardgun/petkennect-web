@@ -34,6 +34,12 @@ export default {
           name        : 'view',
           icon        : 'eye',
           color       : 'olive'
+        },
+        {
+          display_name: 'Delete Calendar',
+          name        : 'delete',
+          icon        : 'trash alternate outline',
+          color       : 'red'
         }
       ]
     }

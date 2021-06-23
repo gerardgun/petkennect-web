@@ -205,6 +205,10 @@ import setupCapacityServiceCustom from './setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from './setup/capacity/service/custom/detail'
 import setupAddonServiceSetting from './service/addon/general/add-on-service'
 import setupAddonServiceSettingDetail from './service/addon/general/add-on-service/detail'
+import setupOpenLineAddonServiceSetting from './service/addon/general/open-line-service'
+import setupOpenLineAddonServiceSettingDetail from './service/addon/general/open-line-service/detail'
+import setupTransportAddonServiceSetting from './service/addon/general/transport-service'
+import setupTransportAddonServiceSettingDetail from './service/addon/general/transport-service/detail'
 import staffManagementInfoAvailability from './staff-management/information/availability'
 import staffManagementInfoWages from './staff-management/information/wages'
 import staffManagementNotificationEmployeeNotice from './staff-management/notification/employee-notice'
@@ -441,6 +445,10 @@ export default function* rootSaga() {
     ...setupCapacityServiceCustomDetail,
     ...setupAddonServiceSetting,
     ...setupAddonServiceSettingDetail,
+    ...setupOpenLineAddonServiceSetting,
+    ...setupOpenLineAddonServiceSettingDetail,
+    ...setupTransportAddonServiceSetting,
+    ...setupTransportAddonServiceSettingDetail,
     ...staffManagementInfoAvailability,
     ...staffManagementInfoWages,
     ...staffManagementNotificationEmployeeNotice,

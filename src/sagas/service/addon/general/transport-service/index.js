@@ -1,14 +1,14 @@
 import { Get } from '@lib/utils/http-client'
-import setupAddonServiceSettingDuck from '@reducers/service/addon/general/add-on-service/'
+import setupTransportAddonServiceSettingDuck from '@reducers/service/addon/general/transport-service/'
 import { call, put, select, takeEvery } from 'redux-saga/effects'
 import moment from 'moment'
 import * as locationSaga from '@sagas/location'
 import locationDuck from '@reducers/location'
 import _uniq from 'lodash/uniq'
 
-const { types, selectors } = setupAddonServiceSettingDuck
+const { types, selectors } = setupTransportAddonServiceSettingDuck
 
-function* get(/* { payload } */) {
+function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
@@ -34,7 +34,7 @@ function* get(/* { payload } */) {
       payload: {
         items: results.map((addon) => {
           const reservationSelecteds = reservationTypesList.filter(({ id }) =>
-            addon.service_true_addon.service_variations.includes(id)
+            addon.service_transport_addon.service_variations.includes(id)
           )
 
           return {
@@ -70,7 +70,7 @@ function* get(/* { payload } */) {
               .join(', '),
             applies_reservations: reservationTypesList
               .filter(({ id }) =>
-                addon.service_true_addon.service_variations.includes(id)
+                addon.service_transport_addon.service_variations.includes(id)
               )
               .map(({ name }) => name)
               .join(', ')

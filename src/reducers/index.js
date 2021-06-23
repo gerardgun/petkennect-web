@@ -276,6 +276,10 @@ import setupCapacityServiceCustom from '@reducers/setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from '@reducers/setup/capacity/service/custom/detail'
 import setupAddonServiceSetting from '@reducers/service/addon/general/add-on-service'
 import setupAddonServiceSettingDetail from '@reducers/service/addon/general/add-on-service/detail'
+import setupOpenLineAddonServiceSetting from '@reducers/service/addon/general/open-line-service'
+import setupOpenLineAddonServiceSettingDetail from '@reducers/service/addon/general/open-line-service/detail'
+import setupTransportAddonServiceSetting from '@reducers/service/addon/general/transport-service'
+import setupTransportAddonServiceSettingDetail from '@reducers/service/addon/general/transport-service/detail'
 import servicePrice from '@reducers/service-price'
 import servicePriceDetail from '@reducers/service-price/detail'
 import staffManagementInfoAvailability from '@reducers/staff-management/information/availability'
@@ -601,6 +605,10 @@ const createRootReducer = history => combineReducers({
   [setupCapacityServiceCustomDetail.store]                 : setupCapacityServiceCustomDetail.reducer,
   [setupAddonServiceSetting.store]                         : setupAddonServiceSetting.reducer,
   [setupAddonServiceSettingDetail.store]                   : setupAddonServiceSettingDetail.reducer,
+  [setupOpenLineAddonServiceSetting.store]                 : setupOpenLineAddonServiceSetting.reducer,
+  [setupOpenLineAddonServiceSettingDetail.store]           : setupOpenLineAddonServiceSettingDetail.reducer,
+  [setupTransportAddonServiceSetting.store]                : setupTransportAddonServiceSetting.reducer,
+  [setupTransportAddonServiceSettingDetail.store]          : setupTransportAddonServiceSettingDetail.reducer,
   [servicePrice.store]                                     : servicePrice.reducer,
   [servicePriceDetail.store]                               : servicePriceDetail.reducer,
   [staffManagementInfoAvailability.store]                  : staffManagementInfoAvailability.reducer,
