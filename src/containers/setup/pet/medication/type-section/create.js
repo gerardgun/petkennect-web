@@ -1,6 +1,5 @@
-import React, { useMemo, useEffect } from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Form, Header, Input, Modal, Checkbox } from 'semantic-ui-react'
 import * as Yup from 'yup'
@@ -13,48 +12,51 @@ import medicationTypeDetailDuck from '@reducers/pet/medication-setting/medicatio
 
 const MedicationTypeForm = (props) => {
   const {
-    medicationTypeDetail,
-    error,
-    handleSubmit,
-    reset,
-    submitting // redux-form
+    error, handleSubmit, initialize, reset, submitting // redux-form
   } = props
 
-  useEffect(() => {
-    if(medicationTypeDetail.item.id)
-      props.get(medicationTypeDetail.item.id)
-  }, [ medicationTypeDetail.item.id ])
+  const dispatch = useDispatch()
+  const medicationTypes = useSelector(medicationTypeDetailDuck.selectors.detail)
 
-  const getIsOpened = (mode) => mode === 'CREATE' || mode === 'UPDATE'
+  useEffect(() => {
+    if(medicationTypes.item.id)
+      initialize({
+        name      : medicationTypes.item.name,
+        price     : medicationTypes.item.price,
+        is_charged: medicationTypes.item.is_charged
+      })
+    else
+      initialize({
+        is_charged: false,
+        price     : null
+      })
+  }, [ medicationTypes.item.id ])
 
   const _handleClose = () => {
-    props.reset()
-    props.resetItem()
+    dispatch(
+      medicationTypeDetailDuck.creators.resetItem()
+    )
   }
 
-  const _handleSubmit = (values) => {
+  const _handleSubmit = values => {
     if(isUpdating)
-      return props
-        .put({ id: medicationTypeDetail.item.id, ...values })
+      return dispatch(medicationTypeDetailDuck.creators.put({ id: medicationTypes.item.id, ...values }))
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props
-        .post({ ...values })
+      return dispatch(medicationTypeDetailDuck.creators.post({ ...values }))
         .then(_handleClose)
         .catch(parseResponseError)
   }
 
-  const isOpened = useMemo(() => getIsOpened(medicationTypeDetail.mode), [
-    medicationTypeDetail.mode
-  ])
-  const isUpdating = Boolean(medicationTypeDetail.item.id)
+  const isUpdating = Boolean(medicationTypes.item.id)
+  const open = [ 'CREATE' , 'UPDATE' ].includes(medicationTypes.mode)
 
   return (
     <Modal
       className='form-modal'
       onClose={_handleClose}
-      open={isOpened}
+      open={open}
       size='small'>
       <Modal.Content>
         {/* eslint-disable-next-line react/jsx-handler-names */}
@@ -118,33 +120,13 @@ const MedicationTypeForm = (props) => {
   )
 }
 
-export default compose(
-  connect(
-    (state) => {
-      const medicationTypeDetail = medicationTypeDetailDuck.selectors.detail(state)
-
-      return {
-        medicationTypeDetail,
-        initialValues: { ...medicationTypeDetail.item }
-      }
-    },
-    {
-      get      : medicationTypeDetailDuck.creators.get,
-      post     : medicationTypeDetailDuck.creators.post,
-      put      : medicationTypeDetailDuck.creators.put,
-      resetItem: medicationTypeDetailDuck.creators.resetItem
+export default reduxForm({
+  form    : 'medication-type-form',
+  validate: values => {
+    const schema = {
+      name: Yup.string().required('Name is required')
     }
-  ),
-  reduxForm({
-    form              : 'medication-type-form',
-    destroyOnUnmount  : false,
-    enableReinitialize: true,
-    validate          : (values) => {
-      const schema = {
-        name: Yup.string().required('Name is required')
-      }
 
-      return syncValidate(Yup.object().shape(schema), values)
-    }
-  })
-)(MedicationTypeForm)
+    return syncValidate(Yup.object().shape(schema), values)
+  }
+})(MedicationTypeForm)
