@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Segment } from 'semantic-ui-react'
 
-import Layout from '@components/Common/Layout'
 import MedicationTimeForm from  './create'
-import Menu from '@containers/setup/pet/components/Menu'
-import Tab from '@containers/setup/pet/medication/components/Tab'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import medicationTimeListConfig from '@lib/constants/list-configs/pet/medication-setting/medication-time'
@@ -49,11 +45,7 @@ const SetupPetMedicationTimeIndex = () => {
   }
 
   return (
-    <Layout>
-      <Segment className='segment-content' padded='very'>
-        <Menu/>
-
-        <Tab>
+    <>
           <p>
             Use the medication schedules based on your facilities operations. If you charge for medication, ensure {'"Charge Applies"'} is enabled.
           </p>
@@ -62,14 +54,10 @@ const SetupPetMedicationTimeIndex = () => {
             duck={medicationTimeDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
-        </Tab>
-
         <MedicationTimeForm/>
 
         <ModalDelete duckDetail={medicationTimeDetailDuck}/>
-
-      </Segment>
-    </Layout>
+    </>
   )
 }
 

@@ -1,12 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Segment } from 'semantic-ui-react'
 
-import Layout from '@components/Common/Layout'
 import MedicationMeasurementForm from  './create'
-import Menu from '@containers/setup/pet/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
-import Tab from '@containers/setup/pet/medication/components/Tab'
 import Table from '@components/Table'
 import medicationMeasurementListConfig from '@lib/constants/list-configs/pet/medication-setting/medication-measurement'
 
@@ -49,11 +45,7 @@ const SetupPetMedicationMeasurementIndex = () => {
   }
 
   return (
-    <Layout>
-      <Segment className='segment-content' padded='very'>
-        <Menu/>
-
-        <Tab>
+    <>
           <p>
             List the measurements for medications.
           </p>
@@ -62,14 +54,11 @@ const SetupPetMedicationMeasurementIndex = () => {
             duck={medicationMeasurementDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
-        </Tab>
 
         <MedicationMeasurementForm/>
 
         <ModalDelete duckDetail={medicationMeasurementDetailDuck}/>
-
-      </Segment>
-    </Layout>
+    </>
   )
 }
 

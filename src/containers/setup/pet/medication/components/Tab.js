@@ -1,73 +1,92 @@
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { Grid, Header, Menu } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Segment, Grid, Step } from 'semantic-ui-react'
+import SetupPetMedicationMeasurementIndex from '../measurement-section'
+import SetupPetMedicationReportStatusIndex from '../report-status-section'
+import SetupPetMedicationTimeIndex from '../time-section'
+import SetupPetMedicationTypeIndex from '../type-section'
+import SetupPetMedicationUnitIndex from '../unit-section'
+import SetupPetMedicationSectionIndex from '../medication-section'
 
-const items = [
-  {
-    label: 'Charge Settings',
-    to   : '/setup/pet/medication/setting'
-  },
-  {
-    label: 'Medication Times',
-    to   : '/setup/pet/medication/time'
-  },
-  {
-    label: 'Medication Types',
-    to   : '/setup/pet/medication/type'
-  },
-  {
-    label: 'Medications',
-    to   : '/setup/pet/medication'
-  },
-  {
-    label: 'Report Status',
-    to   : '/setup/pet/medication/report-status'
-  },
-  {
-    label: 'Units',
-    to   : '/setup/pet/medication/unit'
-  },
-  {
-    label: 'Measurements',
-    to   : '/setup/pet/medication/measurement'
-  }
-]
+const Tab = () => {
 
-const Tab = ({ children }) => {
-  const location = useLocation()
+  const [ activeTab, setActiveTab ] = useState('Medications')
 
   return (
-    <>
-      <Header as='h4' color='teal'>Adjust Editable Field Values</Header>
+    <Segment className='segment-content-no-border'>
       <p>
         <b>Edit field values regarding all things medication related here.</b>
       </p>
+      <Grid>
+        <Grid.Column computer={16}>
+          <Grid>
+            <Grid.Column  className='grid-step pr0 mr32' computer={3}>
+              <Step.Group fluid vertical>
+                <Step
+                  active={activeTab === 'Medication Times'}
+                  link name='Medication Times'
+                  onClick={()=>{setActiveTab('Medication Times')}}>
+                  <Step.Content>
+                    <Step.Title>Medication Times</Step.Title>
+                  </Step.Content>
+                </Step>
+                {/* eslint-disable-next-line react/jsx-handler-names */}
+                <Step
+                  active={activeTab === 'Medication Types'}
+                  link name='Medication Types'
+                  onClick={()=>{setActiveTab('Medication Types')}}>
+                  <Step.Content>
+                    <Step.Title>Medication Types</Step.Title>
+                  </Step.Content>
+                </Step>
+                <Step
+                  active={activeTab === 'Medications'}
+                  link name='Medications'
+                  onClick={()=>{setActiveTab('Medications')}}>
+                  <Step.Content>
+                    <Step.Title>Medications</Step.Title>
+                  </Step.Content>
+                </Step>
+                <Step
+                  active={activeTab === 'Report Status'}
+                  link name='Report Status'
+                  onClick={()=>{setActiveTab('Report Status')}}>
+                  <Step.Content>
+                    <Step.Title>Report Status</Step.Title>
+                  </Step.Content>
+                </Step>
+                <Step
+                  active={activeTab === 'Units'}
+                  link name='Units'
+                  onClick={()=>{setActiveTab('Units')}}>
+                  <Step.Content>
+                    <Step.Title>Units</Step.Title>
+                  </Step.Content>
+                </Step>
+                <Step
+                  active={activeTab === 'Measurements'}
+                  link name='Measurements'
+                  onClick={()=>{setActiveTab('Measurements')}}>
+                  <Step.Content>
+                    <Step.Title>Measurements</Step.Title>
+                  </Step.Content>
+                </Step>
+              </Step.Group>
+            </Grid.Column>
+            <Grid.Column computer={12}>
+              {activeTab === 'Medication Times' &&  <SetupPetMedicationTimeIndex/> }
+              {activeTab === 'Medication Types' && <SetupPetMedicationTypeIndex/>}
+              {activeTab === 'Medications'      && <SetupPetMedicationSectionIndex/>}
+              {activeTab === 'Report Status'    && <SetupPetMedicationReportStatusIndex/>}
+              {activeTab === 'Units'            && <SetupPetMedicationUnitIndex/>}
+              {activeTab === 'Measurements'     && <SetupPetMedicationMeasurementIndex/>}
+            </Grid.Column>
 
-      <Grid className='mt20'>
-        <Grid.Row>
-          <Grid.Column className='menu-item-style' width={3}>
-            <Menu
-              fluid pointing
-              vertical>
-              {
-                items.map(({ label, to }, index) => (
-                  <Menu.Item
-                    active={location.pathname === to}
-                    as={Link}
-                    key={index}
-                    to={to}>
-                    {label}
-                  </Menu.Item>
-                ))
-              }
-            </Menu>
-          </Grid.Column>
-          <Grid.Column width={13}>
-            {children}
-          </Grid.Column>
-        </Grid.Row>
+          </Grid>
+        </Grid.Column>
+
       </Grid>
-    </>
+
+    </Segment>
   )
 }
 

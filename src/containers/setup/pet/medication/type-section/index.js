@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Segment } from 'semantic-ui-react'
 
-import Layout from '@components/Common/Layout'
 import MedicationTypeForm from './create'
-import Menu from '@containers/setup/pet/components/Menu'
-import Tab from '@containers/setup/pet/medication/components/Tab'
 import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import medicationTypeListConfig from '@lib/constants/list-configs/pet/medication-setting/medication-type'
@@ -49,11 +45,7 @@ const SetupPetMedicationTypeIndex = () => {
   }
 
   return (
-    <Layout>
-      <Segment className='segment-content' padded='very'>
-        <Menu/>
-
-        <Tab>
+    <>  
           <p>
             You can charge for types of medication here, ensure charge applies is enabled and price is input.
           </p>
@@ -62,14 +54,11 @@ const SetupPetMedicationTypeIndex = () => {
             duck={medicationTypeDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
-        </Tab>
 
         <MedicationTypeForm/>
 
         <ModalDelete duckDetail={medicationTypeDetailDuck}/>
-
-      </Segment>
-    </Layout>
+    </>
   )
 }
 
