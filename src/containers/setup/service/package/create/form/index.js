@@ -52,7 +52,7 @@ const ServicePackageForm = (props) => {
     // Set default data for new register
     else
       initialize({
-        service_group: detail.item.service_group,
+        service__group_type: detail.item.service__group_type,
         ...ServicePackageDefaultConfig
       })
   }, [ detail.item.id ])
@@ -332,8 +332,7 @@ const ServicePackageForm = (props) => {
             component={FormField}
             control={Input}
             name='sku_id'
-            placeholder='Enter Custom Code'
-            required/>
+            placeholder='Enter Custom Code'/>
         </Form.Field>
       </Form.Group>
       {error && (
@@ -356,8 +355,8 @@ export default reduxForm({
       locations         : Yup.array().required('Choose at least one location'),
       service_addons_ids: Yup.array().required('Choose at least one reservation type'),
       price             : Yup.number().required('Price is required'),
-      credits           : Yup.number().required('Credits is required'),
-      sku_id            : Yup.string().required('Custom Code is required')
+      credits           : Yup.number().required('Credits is required')
+      // sku_id            : Yup.string().required('Custom Code is required')
       /*
       started_at          : Yup.mixed().when('days_valid', {
         is       : value => !!value,

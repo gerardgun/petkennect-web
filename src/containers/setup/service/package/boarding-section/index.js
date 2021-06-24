@@ -19,28 +19,28 @@ const SetupServicePackageBoarding = ()=>{
 
   useEffect(() => {
     dispatch(
-      servicePackageDuck.creators.get({ service__group_id: 2, type: 'P' })
+      servicePackageDuck.creators.get({ service__group_type: 'B', type: 'P' })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        servicePackageDuck.creators.get({ service__group_id: 2, type: 'P' })
+        servicePackageDuck.creators.get({ service__group_type: 'B', type: 'P' })
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        servicePackageDetailDuck.creators.setItem({ service_group: 2 }, 'CREATE')
+        servicePackageDetailDuck.creators.setItem({ service__group_type: 'B' }, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'edit')
       dispatch(
-        servicePackageDetailDuck.creators.setItem({ ...reason, service_group: 2 }, 'UPDATE')
+        servicePackageDetailDuck.creators.setItem({ ...reason, service__group_type: 'B' }, 'UPDATE')
       )
     if(button === 'copy')
       return dispatch(
@@ -51,8 +51,8 @@ const SetupServicePackageBoarding = ()=>{
   const _handleSearch = (str) => {
     dispatch(
       servicePackageDuck.creators.get({
-        search       : str,
-        service_group: 2
+        search             : str,
+        service__group_type: 'B'
       })
     )
   }

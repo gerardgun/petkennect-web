@@ -184,7 +184,6 @@ const SetupAddonServiceSettingForm = (props) => {
   }
 
   const _handleGetReservationsTypes = (values) => {
-    console.log('entroooooo')
     if(values.length > 0) {
       dispatch(
         setupAddonServiceSettingDetailDuck.creators.getReservationTypes({
@@ -378,8 +377,7 @@ const SetupAddonServiceSettingForm = (props) => {
           control={Input}
           label='Custom Acct Cd'
           name='sku_id'
-          placeholder='Enter Custom Code'
-          required/>
+          placeholder='Enter Custom Code'/>
       </Form.Group>
       <Form.Group className='flex flex-row align-center' widths={3}>
         <Field
@@ -461,7 +459,7 @@ export default reduxForm({
         })
       }),
       employee_schedule: Yup.string().required('Time Offered is required'),
-      sku_id           : Yup.string().required('Custom Code is required'),
+      // sku_id           : Yup.string().required('Custom Code is required'),
       duration_minutes : Yup.string().required('Duration is required')
     }
 
