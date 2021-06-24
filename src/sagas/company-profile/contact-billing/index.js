@@ -2,20 +2,20 @@ import { call, put, takeEvery } from 'redux-saga/effects'
 
 import { Get } from '@lib/utils/http-client'
 
-import medicationMeasurementDuck from '@reducers/pet/medication-setting/medication-measurement'
+import companyProfileContactBillingDuck from '@reducers/company-profile/contact-billing'
 
-const { types } = medicationMeasurementDuck
+const { types } = companyProfileContactBillingDuck
 
-function* get() {
+export function* get() {
   try {
     yield put({ type: types.GET_PENDING })
 
-    const medications_measurement = yield call(Get, '/medication-measurements/')
+    const payments = yield call(Get, '/payments/')
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
-        items: medications_measurement
+        items: payments
       }
     })
   } catch (e) {
@@ -29,4 +29,3 @@ function* get() {
 export default [
   takeEvery(types.GET, get)
 ]
-

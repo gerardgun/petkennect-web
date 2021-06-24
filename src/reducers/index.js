@@ -48,7 +48,8 @@ import companyProfileCalendar from '@reducers/company-profile/calendar'
 import companyProfileCalendarDetail from '@reducers/company-profile/calendar/detail'
 import companyProfileCalendarEvent from '@reducers/company-profile/calendar/event'
 import companyProfileCalendarEventDetail from '@reducers/company-profile/calendar/event/detail'
-// import companyContactBillingDetail from '@reducers/company/contact-billing/detail'
+import companyProfileContactBilling from '@reducers/company-profile/contact-billing'
+import companyProfileContactBillingDetail from '@reducers/company-profile/contact-billing/detail'
 import customReport from '@reducers/custom-report'
 import customReportDetail from '@reducers/custom-report/detail'
 import customized from '@reducers/customized-field'
@@ -384,7 +385,8 @@ const createRootReducer = history => combineReducers({
   [companyProfileCalendarDetail.store]                     : companyProfileCalendarDetail.reducer,
   [companyProfileCalendarEvent.store]                      : companyProfileCalendarEvent.reducer,
   [companyProfileCalendarEventDetail.store]                : companyProfileCalendarEventDetail.reducer,
-  // [companyContactBillingDetail.store]                      : companyContactBillingDetail.reducer,
+  [companyProfileContactBilling.store]                     : companyProfileContactBilling.reducer,
+  [companyProfileContactBillingDetail.store]               : companyProfileContactBillingDetail.reducer,
   [customReport.store]                                     : customReport.reducer,
   [customReportDetail.store]                               : customReportDetail.reducer                ,
   [customized.store]                                       : customized.reducer,

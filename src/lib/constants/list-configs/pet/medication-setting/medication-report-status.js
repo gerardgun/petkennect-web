@@ -19,7 +19,7 @@ export default {
     },
     {
       display_name: 'Charge Applies',
-      name        : 'charges',
+      name        : 'is_charged',
       type        : 'string',
       align       : 'left',
       formatter   : cell => (

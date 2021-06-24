@@ -86,7 +86,7 @@ const MedicationTimeForm = (props) => {
               component={FormField}
               control={Checkbox}
               label='Charges Applies'
-              name='charges'
+              name='is_charged'
               type='checkbox'/>
           </Form.Group>
 
