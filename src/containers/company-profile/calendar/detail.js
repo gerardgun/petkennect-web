@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import companyProfileCalendarDetailDuck from '@reducers/company-profile/calendar/detail'
+import authDuck from '@reducers/auth'
+
+import locationDuck from '@reducers/location'
 import companyProfileCalendarEventDetailDuck from '@reducers/company-profile/calendar/event/detail'
 import companyProfileCalendarEventDuck from '@reducers/company-profile/calendar/event'
 import Layout from '@components/Common/Layout'
-import { Button, Grid, Header, Segment } from 'semantic-ui-react'
+import { Button, Grid, Header, Segment, Select } from 'semantic-ui-react'
 import Menu from '@containers/company-profile/components/Menu'
 import { useDispatch, useSelector } from 'react-redux'
 import FullCalendar from '@fullcalendar/react'
@@ -17,20 +19,31 @@ import rrulePlugin from '@fullcalendar/rrule'
 const SetupCompanyProfileCalendarDetail = () => {
   const { calendarId } = useParams()
   const dispatch = useDispatch()
-  const detail = useSelector(companyProfileCalendarDetailDuck.selectors.detail)
   const eventDetail = useSelector(
     companyProfileCalendarEventDetailDuck.selectors.detail
   )
+  const { location: authLocation = '' } = useSelector(
+    authDuck.selectors.detail
+  )
+  const { items: locationList } = useSelector(locationDuck.selectors.list)
+  const [ location, setLocation ] = useState('')
   const events = useSelector(companyProfileCalendarEventDuck.selectors.list)
 
-  useEffect(() => {
-    // calendar detail
-    dispatch(companyProfileCalendarDetailDuck.creators.get(calendarId))
-    // events list
-    dispatch(companyProfileCalendarEventDuck.creators.get({ calendarId }))
+  const _handleGetCalendarEvents = (loc) => {
+    const locationSelected = locationList.filter(({ id }) => id === loc)
+    dispatch(
+      companyProfileCalendarEventDuck.creators.get({
+        calendarId: locationSelected[0].employee_schedule.id
+      })
+    )
+  }
 
-    return () => {}
-  }, [])
+  useEffect(() => {
+    if(authLocation && locationList.length > 0) {
+      setLocation(authLocation)
+      _handleGetCalendarEvents(authLocation)
+    }
+  }, [ authLocation, locationList ])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(eventDetail.status))
@@ -45,6 +58,9 @@ const SetupCompanyProfileCalendarDetail = () => {
       )
     )
   }
+  const _handleChangeLocation = (event, { value }) => {
+    _handleGetCalendarEvents(value)
+  }
 
   const _handleUpdateEvent = (event) => {
     const { extendedProps } = event
@@ -55,10 +71,22 @@ const SetupCompanyProfileCalendarDetail = () => {
           calendarId,
           id        : event.id,
           color     : event.backgroundColor,
-          start_date: moment(extendedProps.started_at, 'YYYY-MM-DD[T]HH:mm:ssZ').format('YYYY-MM-DD'),
-          start_time: moment(extendedProps.started_at, 'YYYY-MM-DD[T]HH:mm:ssZ').format('HH:mm'),
-          end_date  : moment(extendedProps.ended_at, 'YYYY-MM-DD[T]HH:mm:ssZ').format('YYYY-MM-DD'),
-          end_time  : moment(extendedProps.ended_at, 'YYYY-MM-DD[T]HH:mm:ssZ').format('HH:mm')
+          start_date: moment(
+            extendedProps.started_at,
+            'YYYY-MM-DD[T]HH:mm:ssZ'
+          ).format('YYYY-MM-DD'),
+          start_time: moment(
+            extendedProps.started_at,
+            'YYYY-MM-DD[T]HH:mm:ssZ'
+          ).format('HH:mm'),
+          end_date: moment(
+            extendedProps.ended_at,
+            'YYYY-MM-DD[T]HH:mm:ssZ'
+          ).format('YYYY-MM-DD'),
+          end_time: moment(
+            extendedProps.ended_at,
+            'YYYY-MM-DD[T]HH:mm:ssZ'
+          ).format('HH:mm')
         },
         'UPDATE'
       )
@@ -73,8 +101,24 @@ const SetupCompanyProfileCalendarDetail = () => {
           <Grid
             className='flex flex-row mv40 justify-between'
             verticalAlign='middle'>
-            {' '}
-            <Header as='h2'>{detail.item.name}</Header>
+            <Grid className='align-center'>
+              <Header as='h3' className='m0'>
+                Location:
+              </Header>
+              <Select
+                onChange={_handleChangeLocation}
+                options={locationList
+                  .filter(({ employee_schedule }) => employee_schedule)
+                  .map(({ id, name, employee_schedule }) => {
+                    return {
+                      value     : id,
+                      text      : name,
+                      calendarId: employee_schedule.id
+                    }
+                  })}
+                placeholder='Select location'
+                value={location}/>
+            </Grid>
             <Button
               color='teal'
               content='New Event'
