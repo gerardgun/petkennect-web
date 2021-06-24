@@ -141,25 +141,25 @@ const Dashboard = (props) => {
         <Segment className='segment-dashboard-content pt0 pb0'>
           <Grid className='mt0' style={{ 'margin-bottom': '2.2rem' }}>
             <Grid.Column
-              className='pb8' computer={16} mobile={16}
+              className={`pb8 ${Theme(tenant).buttonTextColor}`}  computer={16} mobile={16}
               tablet={16}>
               <Header as='h2' color={Theme(tenant).headingColor}>The Daily Dashboard</Header>
             </Grid.Column>
           </Grid>
           <Button
-            className='mb4'
+            className={`mb4 ${Theme(tenant).buttonTextColor}`}
             color={outerFilter === 'expected' ? Theme(tenant).buttonMenuColor : ''}
             content='Expected : 45'
             // eslint-disable-next-line react/jsx-handler-names
             onClick={() => setOuterFilter('expected')}/>
           <Button
-            className='mb4 button-menu'
+            className={`mb4 button-menu ${Theme(tenant).buttonTextColor}`}
             color={outerFilter === 'checkIn' ? Theme(tenant).buttonMenuColor : ''}
             content='Checked In : 30'
             // eslint-disable-next-line react/jsx-handler-names
             onClick={() => setOuterFilter('checkIn')}/>
           <Button
-            className='mb4 button-menu'
+            className={`mb4 button-menu ${Theme(tenant).buttonTextColor}`}
             color={outerFilter === 'checkOut' ? Theme(tenant).buttonMenuColor : ''}
             content='Checked Out : 15'
             // eslint-disable-next-line react/jsx-handler-names

@@ -37,7 +37,7 @@ const Menu = () => {
           return (
             <Button
               as={Link}
-              className='w210 button-menu'
+              className={`w210 button-menu ${rgx.test(location.pathname) ? Theme(tenant).buttonTextColor : null}`}
               color={rgx.test(location.pathname) ? Theme(tenant).buttonMenuColor : null}
               content={label}
               key={index}
