@@ -46,7 +46,7 @@ const Menu = () => {
           return (
             <Button
               as={Link}
-              className='button-menu'
+              className={`button-menu ${to === location.pathname ? Theme(tenant).buttonTextColor : null}`}
               color={to === location.pathname ? Theme(tenant).buttonMenuColor : null}
               content={label}
               key={index}

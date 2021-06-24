@@ -57,7 +57,7 @@ function Menu() {
           return (
             <Button
               as={Link}
-              className='button-menu'
+              className={`button-menu ${rgx.test(location.pathname) ?  Theme(detail).buttonTextColor : null}`}
               color={rgx.test(location.pathname) ?  Theme(detail).buttonMenuColor : null}
               content={label}
               key={index}

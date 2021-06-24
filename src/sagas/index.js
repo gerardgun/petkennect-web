@@ -255,6 +255,7 @@ import systemUser from './system-user-and-role/user'
 import systemRole from './system-user-and-role/role'
 import user from './user'
 import userDetail from './user/detail'
+import userFilesDetail from './user_files/detail'
 import zip from './zip'
 import zipDetail from './zip/detail'
 
@@ -515,6 +516,7 @@ export default function* rootSaga() {
     ...systemRole,
     ...user,
     ...userDetail,
+    ...userFilesDetail,
     ...zip,
     ...zipDetail
   ])
