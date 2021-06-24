@@ -23,18 +23,35 @@ function Item({ item, onUpdate, onDelete }) {
             <Header.Subheader style={{ display: 'inline-block', marginLeft: '0.5rem' }}>{item.code}</Header.Subheader>
           </Header>
           <InputReadOnly
+            label='Street Address'
+            value={item.address}/>
+          <br/>
+          <InputReadOnly
+            label='City, ST Zip'
+            value={item.zip ? `${item.zip.city}, ${item.zip.state}, ${item.zip_code}` : ''}/>
+          <br/>
+          <InputReadOnly
+            label='Country'
+            value={item.zip ? item.zip.country : ''}/>
+          <br/>
+          <InputReadOnly
             label='Time Zone'
-            value={item.timezone || '-'}/>
+            value={item.timezone}/>
           <br/>
           <InputReadOnly
-            label='Address'
-            value={item.addresses ? item.addresses[0] : '-'}/>
+            label='Phone, Fax, Email, Contact Person'
+            value={`${item.contact_people[0].phone_number + ', '
+                      + item.contact_people[0].fax_number + ', '
+                      + item.contact_people[0].email + ', '
+                      + item.contact_people[0].first_name}`}/>
           <br/>
-          <InputReadOnly
+          {/* <InputReadOnly
             label='Description'
-            value={item.description ? item.description :  '-'}/>
+          value={'item.description ? item.description :  '-''}/>*/}
         </Grid.Column>
-        <Grid.Column  computer={2} mobile={5} tablet={2}>
+        <Grid.Column
+          computer={2} mobile={5} tablet={2}
+          verticalAlign='top'>
           <Button
             basic icon='edit outline'
             onClick={_handleUpdateBtnClick}/>

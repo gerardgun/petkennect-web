@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { Route, withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 
 import authDuck from '@reducers/auth'
+import tenantDetailDuck from '@reducers/tenant/detail'
 
 const PublicRoute = ({ auth, check, component: Component, ...rest }) => {
+  const dispatch = useDispatch()
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
   useEffect(() => {
     if(!auth.session_status) check()
   }, [])
@@ -25,6 +28,11 @@ const PublicRoute = ({ auth, check, component: Component, ...rest }) => {
         rest.history.replace('/dashboard')
       }
   }, [ auth.status ])
+
+  useEffect(() => {
+    if(!tenant.item.id)
+      dispatch(tenantDetailDuck.creators.get())
+  }, [])
 
   return (
     <Route {...rest} render={props => <Component {...props}/>}/>

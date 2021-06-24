@@ -10,41 +10,43 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import feedingMethodListConfig from '@lib/constants/list-configs/pet/feeding-setting/feeding-method'
 
-import feedingMethodDuck from '@reducers/pet/feeding-setting/feeding-method'
-import feedingMethodDetailDuck from '@reducers/pet/feeding-setting/feeding-method/detail'
+import foodMethodDuck from '@reducers/service/food/method'
+import foodMethodDetailDuck from '@reducers/service/food/method/detail'
 
 const SetupPetFeedingMethodIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(feedingMethodDetailDuck.selectors.detail)
+  const detail = useSelector(foodMethodDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      feedingMethodDuck.creators.get()
+      foodMethodDuck.creators.get({
+        ordering: 'name'
+      })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        feedingMethodDuck.creators.get()
+        foodMethodDuck.creators.get()
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        feedingMethodDetailDuck.creators.setItem(null, 'CREATE')
+        foodMethodDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
-        feedingMethodDetailDuck.creators.setItem(reason, 'DELETE')
+        foodMethodDetailDuck.creators.setItem(reason, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        feedingMethodDetailDuck.creators.setItem(reason, 'UPDATE')
+        foodMethodDetailDuck.creators.setItem(reason, 'UPDATE')
       )
   }
 
@@ -59,14 +61,14 @@ const SetupPetFeedingMethodIndex = () => {
           </p>
           <Table
             config={feedingMethodListConfig}
-            duck={feedingMethodDuck}
+            duck={foodMethodDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
         <FeedingMethodForm/>
 
-        <ModalDelete duckDetail={feedingMethodDetailDuck}/>
+        <ModalDelete duckDetail={foodMethodDetailDuck}/>
 
       </Segment>
     </Layout>

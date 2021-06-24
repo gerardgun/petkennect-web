@@ -10,41 +10,43 @@ import ModalDelete from '@components/Modal/Delete'
 import Table from '@components/Table'
 import feedingUnitListConfig from '@lib/constants/list-configs/pet/feeding-setting/feeding-unit'
 
-import feedingUnitDuck from '@reducers/pet/feeding-setting/feeding-unit'
-import feedingUnitDetailDuck from '@reducers/pet/feeding-setting/feeding-unit/detail'
+import foodUnitDuck from '@reducers/service/food/unit'
+import foodUnitDetailDuck from '@reducers/service/food/unit/detail'
 
 const SetupPetFeedingUnitIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(feedingUnitDetailDuck.selectors.detail)
+  const detail = useSelector(foodUnitDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      feedingUnitDuck.creators.get()
+      foodUnitDuck.creators.get({
+        ordering: 'name'
+      })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        feedingUnitDuck.creators.get()
+        foodUnitDuck.creators.get()
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        feedingUnitDetailDuck.creators.setItem(null, 'CREATE')
+        foodUnitDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
-        feedingUnitDetailDuck.creators.setItem(reason, 'DELETE')
+        foodUnitDetailDuck.creators.setItem(reason, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        feedingUnitDetailDuck.creators.setItem(reason, 'UPDATE')
+        foodUnitDetailDuck.creators.setItem(reason, 'UPDATE')
       )
   }
 
@@ -59,14 +61,14 @@ const SetupPetFeedingUnitIndex = () => {
           </p>
           <Table
             config={feedingUnitListConfig}
-            duck={feedingUnitDuck}
+            duck={foodUnitDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
         <FeedingUnitForm/>
 
-        <ModalDelete duckDetail={feedingUnitDetailDuck}/>
+        <ModalDelete duckDetail={foodUnitDetailDuck}/>
 
       </Segment>
     </Layout>

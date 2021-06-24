@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid, Header, Segment } from 'semantic-ui-react'
 
 import loadable from '@loadable/component'
 
+import Theme from '@components/mainTheme'
 import clientDuck from '@reducers/client'
 import clientDetailDuck from '@reducers/client/detail'
 import ClientFormModal from './form/modal'
 import clientListConfig from '@lib/constants/list-configs/client'
+import tenantDetailDuck from '@reducers/tenant/detail'
 
 const Layout = loadable(() => import('@components/Common/Layout'))
 const ModalDelete = loadable(() => import('@components/Modal/Delete'))
 const Table = loadable(() => import('@components/Table'))
 
 const Client = ({ client, clientDetail, ...props }) => {
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
+
   useEffect(() => {
     props.getClients()
   }, [])
@@ -38,7 +42,7 @@ const Client = ({ client, clientDetail, ...props }) => {
 
         <Grid columns={2} style={{ 'margin-bottom': '1.2rem' }}>
           <Grid.Column computer={4} mobile={10} tablet={4}>
-            <Header as='h2'>Clients</Header>
+            <Header as='h2' color={Theme(tenant).headingColor}>Clients</Header>
           </Grid.Column>
           <Grid.Column
             className='ui-grid-align'

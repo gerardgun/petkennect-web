@@ -19,19 +19,19 @@ export default {
     },
     {
       display_name: 'Purpose',
-      name        : 'purpose',
+      name        : 'description',
       type        : 'string',
       align       : 'left'
     },
     {
       display_name: 'Type',
-      name        : 'type',
+      name        : 'medication_type.name',
       type        : 'string',
       align       : 'left'
     },
     {
       display_name: 'Charge Applies',
-      name        : 'charges',
+      name        : 'medication_type.is_charged',
       type        : 'string',
       align       : 'left',
       formatter   : cell => (
@@ -43,7 +43,7 @@ export default {
     },
     {
       display_name: 'Price',
-      name        : 'price',
+      name        : 'medication_type.price',
       type        : 'string',
       align       : 'left',
       sort        : false

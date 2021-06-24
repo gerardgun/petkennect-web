@@ -15,7 +15,6 @@ import moment from 'moment'
 
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 
-import 'react-day-picker/lib/style.css'
 import './styles.scss'
 
 const RecurringDaysForm = ({ ...props }) => {

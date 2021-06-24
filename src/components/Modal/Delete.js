@@ -6,7 +6,9 @@ import _get from 'lodash/get'
 
 const ModalDelete = ({ detail, duck, duckDetail, list, ...props }) => {
   const _handleClose = () => {
-    props.dispatch(duckDetail.creators.resetItem())
+    if(props.onClose) props.onClose()
+    else
+      props.dispatch(duckDetail.creators.resetItem())
   }
 
   const _handleDeleteBtnClick = () => {
@@ -79,7 +81,8 @@ const ModalDelete = ({ detail, duck, duckDetail, list, ...props }) => {
 ModalDelete.defaultProps = {
   duck      : null,
   duckDetail: null,
-  onDelete  : null
+  onDelete  : null,
+  onClose   : null
 }
 
 export default compose(

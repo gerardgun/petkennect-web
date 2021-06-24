@@ -29,22 +29,22 @@ export default {
     },
     {
       display_name: `Applies to${'\n'}Services`,
-      name        : 'applies_service_type',
+      name        : 'service_group_names',
       type        : 'string'
     },
     {
       display_name: `Applies to${'\n'}Service${'\n'}Types`,
-      name        : 'applies_service_type',
+      name        : 'service_type_names',
       type        : 'string'
     },
     {
       display_name: `Applies to${'\n'}Reservation${'\n'}Types`,
-      name        : 'applies',
+      name        : 'applies_reservations',
       type        : 'string'
     },
     {
       display_name: 'Price',
-      name        : 'price',
+      name        : 'price.price',
       type        : 'money'
     },
     {
@@ -70,7 +70,7 @@ export default {
           display_name: 'Delete Add-On',
           name        : 'delete',
           icon        : 'trash alternate outline',
-          color       : 'grey'
+          color       : 'red'
         }
       ]
     }

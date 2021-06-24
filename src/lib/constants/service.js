@@ -8,7 +8,12 @@ export const ChargeType = {
 
 export const ChargeTypeOptions = obj2options(ChargeType)
 
-export const GroupType = {
+export const FoodTypeChargeType = {
+  D: 'Per Day',
+  M: 'Per Meal'
+}
+
+export const BaseGroupType = {
   B: 'Boarding',
   D: 'Day Services',
   G: 'Grooming',
@@ -16,9 +21,19 @@ export const GroupType = {
   C: 'Custom'
 }
 
+export const GroupType = {
+  ...BaseGroupType,
+  A: 'Add-On',
+  S: 'Surcharges '
+}
+
 export const ProtectedServiceType = {
+  A: 'True Add-on',
   B: 'Boarding Activity',
-  G: 'Group Class'
+  G: 'Group Class',
+  O: 'Open Line Add-on',
+  S: 'Surcharges',
+  T: 'Transport Add-on'
 }
 
 export const ServiceType = {
@@ -114,10 +129,43 @@ export const KennelTypeDefaultConfig = {
 }
 
 export const ServicePackageDefaultConfig = {
-  applies_locations        : [],
-  applies_reservation_types: [],
-  is_limited               : false,
-  is_hourly_credits        : false,
-  is_suscription           : false,
-  is_available_portal      : false
+  locations               : [],
+  service_variation_addons: [],
+  is_limited              : false,
+  is_hourly_credits       : false,
+  is_suscription          : false,
+  is_bookable_by_client   : false
+}
+
+export const TrueAddonServiceDefaultConfig = {
+  service_groups       : [],
+  service_types        : [],
+  is_scheduled         : false,
+  locations            : [],
+  is_bookable_by_client: false,
+  is_taxable           : false,
+  is_active            : false,
+  service_true_addon   : {
+    service_variations: []
+  }
+}
+
+export const OpenLineAddonServiceDefaultConfig = {
+  locations              : [],
+  is_taxable             : false,
+  service_open_line_addon: {
+    can_be_credit_negative: false,
+    is_tip                : false
+  }
+}
+
+export const TransportAddonServiceDefaultConfig = {
+  service_groups         : [],
+  service_types          : [],
+  locations              : [],
+  is_active              : false,
+  is_bookable_by_client  : false,
+  service_transport_addon: {
+    service_variations: []
+  }
 }

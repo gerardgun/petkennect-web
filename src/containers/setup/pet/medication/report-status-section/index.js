@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Segment } from 'semantic-ui-react'
 
-import Layout from '@components/Common/Layout'
-import Menu from '@containers/setup/pet/components/Menu'
-import Tab from '@containers/setup/pet/medication/components/Tab'
 import ModalDelete from '@components/Modal/Delete'
 import ReportStatusForm from  './create'
 import Table from '@components/Table'
@@ -49,27 +45,20 @@ const SetupPetMedicationReportStatusIndex = () => {
   }
 
   return (
-    <Layout>
-      <Segment className='segment-content' padded='very'>
-        <Menu/>
+    <>
+      <p>
+      This field shows up on your medication reports and run cards if enabled. You can enable the {'"Charge Applies"'} based on status.
+      </p>
+      <Table
+        config={reportStatusListConfig}
+        duck={reportStatusDuck}
+        onActionClick={_handleActionClick}
+        onRowButtonClick={_handleRowButtonClick}/>
 
-        <Tab>
-          <p>
-          This field shows up on your medication reports and run cards if enabled. You can enable the {'"Charge Applies"'} based on status.
-          </p>
-          <Table
-            config={reportStatusListConfig}
-            duck={reportStatusDuck}
-            onActionClick={_handleActionClick}
-            onRowButtonClick={_handleRowButtonClick}/>
-        </Tab>
+      <ReportStatusForm/>
 
-        <ReportStatusForm/>
-
-        <ModalDelete duckDetail={reportStatusDetailDuck}/>
-
-      </Segment>
-    </Layout>
+      <ModalDelete duckDetail={reportStatusDetailDuck}/>
+    </>
   )
 }
 

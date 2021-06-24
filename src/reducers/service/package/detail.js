@@ -6,22 +6,24 @@ export default base({
   store       : 'service/package/detail',
   initialState: {
     form: {
-      service_type_options    : [],
-      location_options        : [],
-      reservation_type_options: []
+      service_type_options: [],
+      location_options    : [],
+      reservation_options : []
     }
   }
 })
   .extend(detail)
   .extend({
-    types   : [ 'CREATE_GET_SERVICE_TYPES', 'CREATE_GET_LOCATIONS' ],
+    types   : [ 'CREATE_GET_LOCATIONS', 'CREATE_GET_RESERVATIONS', 'COPY' ],
     creators: ({
       types: {
-        CREATE_GET_SERVICE_TYPES,
-        CREATE_GET_LOCATIONS
+        CREATE_GET_LOCATIONS,
+        CREATE_GET_RESERVATIONS,
+        COPY
       }
     }) => ({
-      createGetServiceTypes: (payload = {}) => ({ type: CREATE_GET_SERVICE_TYPES, payload }),
-      createGetLocations   : (payload = {}) => ({ type: CREATE_GET_LOCATIONS, payload })
+      createGetLocations   : (payload = {}) => ({ type: CREATE_GET_LOCATIONS, payload }),
+      createGetReservations: (payload = {}) => ({ type: CREATE_GET_RESERVATIONS, payload }),
+      copy                 : (payload = {}) => ({ type: COPY, payload })
     })
   })

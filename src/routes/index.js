@@ -12,7 +12,6 @@ import Agreement from '@containers/agreement'
 import AgreementCreate from '@containers/agreement/create'
 import AnimalSetting from '@containers/animal-setting'
 import AdminItem from '@containers/admin-item'
-import FeedingSetting from '@containers/feeding-setting'
 import MedicationSetting from '@containers/medication-setting'
 import VaccinationSetting from '@containers/vaccination-setting'
 import AuthMe from '@containers/auth/me'
@@ -34,6 +33,15 @@ import EmailMessage from '@containers/email-message'
 import ServiceSetting from '@containers/service-setting'
 import SystemSetting from '@containers/system-setting'
 import EmailTemplate from '@containers/email-template'
+import GroupPermission from '@containers/group-permission'
+import ManagerDashboardDepartment from '@containers/manager-dashboard/department-roles'
+import ManagerDashboardEmployeeDirectory from '@containers/manager-dashboard/employee-directory'
+import ManagerDashboardEmployeePersonalDetail from '@containers/manager-dashboard/employee-directory/personal-detail'
+import ManagerDashboardEmployeeAvailability from '@containers/manager-dashboard/employee-directory/availability'
+import ManagerDashboardEmployeeWageHistory from '@containers/manager-dashboard/employee-directory/wage-history'
+import ManagerDashboardEmployeeNote from '@containers/manager-dashboard/employee-directory/note'
+import ManagerDashboardEmployeeDocument from '@containers/manager-dashboard/employee-directory/document'
+import ManagerDashboardSettingPermission from '@containers/manager-dashboard/setting/permission'
 import Notification from '@containers/notification'
 import Location from '@containers/location'
 import DocumentType from '@containers/document-type'
@@ -86,6 +94,12 @@ import ReportSheetSetting from '@containers/report-sheet-setting'
 import SetupIndex from '@containers/setup'
 import SetupPetBreedIndex from '@containers/setup/pet/breed'
 import SetupPetBehaviorTagsIndex from '@containers/setup/pet/behavior-tag'
+import StaffDashboard from '@containers/staff-dashboard/dashboard'
+import StaffDashboardInfo from '@containers/staff-dashboard/information'
+import StaffDashboardRequest from '@containers/staff-dashboard/requests'
+import StaffDashboardPerformance from '@containers/staff-dashboard/performance'
+import StaffDashboardDocument from '@containers/staff-dashboard/document'
+import StaffDashboardNotification from '@containers/staff-dashboard/notification'
 
 // Settings / Add-on / General Settings
 import SetupAddOnGeneralAddOnIndex from '@containers/setup/add-on/general/add-on-section'
@@ -214,9 +228,11 @@ import SetupCompanyProfileAccounting from '@containers/company-profile/accountin
 import SetupCompanyProfileBranding from '@containers/company-profile/branding'
 import SetupCompanyProfileLocations from '@containers/company-profile/locations'
 import SetupCompanyProfileSystemSettings from '@containers/company-profile/system-settings'
+import SetupCompanyProfileCalendarDetail from '@containers/company-profile/calendar/detail'
 
 import Transaction from '@containers/transaction'
-import User from '@containers/user'
+import User from '@containers/system-user-and-role/user'
+import Role from '@containers/system-user-and-role/role'
 
 const publicRoutes = [
   {
@@ -263,10 +279,6 @@ const privateRoutes = [
     component: AdminItem
   },
   {
-    path     : '/setup/animal-setting/feeding',
-    component: FeedingSetting
-  },
-  {
     path     : '/setup/animal-setting/medication',
     component: MedicationSetting
   },
@@ -303,6 +315,38 @@ const privateRoutes = [
     component: Notification
   },
   {
+    path     : '/manager-dashboard/department-roles',
+    component: ManagerDashboardDepartment
+  },
+  {
+    path     : '/manager-dashboard/employee-directory',
+    component: ManagerDashboardEmployeeDirectory
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/personal-detail',
+    component: ManagerDashboardEmployeePersonalDetail
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/availability',
+    component: ManagerDashboardEmployeeAvailability
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/wage-history',
+    component: ManagerDashboardEmployeeWageHistory
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/note',
+    component: ManagerDashboardEmployeeNote
+  },
+  {
+    path     : '/manager-dashboard/employee-directory/:employee/document',
+    component: ManagerDashboardEmployeeDocument
+  },
+  {
+    path     : '/manager-dashboard/setting/permission',
+    component: ManagerDashboardSettingPermission
+  },
+  {
     path     : '/client',
     component: Client
   },
@@ -334,6 +378,10 @@ const privateRoutes = [
   {
     path     : '/setup/email-template',
     component: EmailTemplate
+  },
+  {
+    path     : '/group-permission',
+    component: GroupPermission
   },
   {
     path     : '/setup/system-setting',
@@ -427,6 +475,30 @@ const privateRoutes = [
   {
     path     : '/products/families',
     component: ProductFamily
+  },
+  {
+    path     : '/staff-dashboard',
+    component: StaffDashboard
+  },
+  {
+    path     : '/staff-dashboard/document',
+    component: StaffDashboardDocument
+  },
+  {
+    path     : '/staff-dashboard/information',
+    component: StaffDashboardInfo
+  },
+  {
+    path     : '/staff-dashboard/requests',
+    component: StaffDashboardRequest
+  },
+  {
+    path     : '/staff-dashboard/notification',
+    component: StaffDashboardNotification
+  },
+  {
+    path     : '/staff-dashboard/performance',
+    component: StaffDashboardPerformance
   },
   {
     path     : '/services',
@@ -944,6 +1016,10 @@ const privateRoutes = [
     component: User
   },
   {
+    path     : '/role',
+    component: Role
+  },
+  {
     path     : '/setup/company-profile',
     component: SetupCompanyProfile
   },
@@ -954,6 +1030,10 @@ const privateRoutes = [
   {
     path     : '/setup/company-profile/calendar',
     component: SetupCompanyProfileCalendar
+  },
+  {
+    path     : '/setup/company-profile/calendar/:calendarId',
+    component: SetupCompanyProfileCalendarDetail
   },
   {
     path     : '/setup/company-profile/branding',

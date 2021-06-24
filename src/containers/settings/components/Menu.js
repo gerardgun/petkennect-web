@@ -1,55 +1,41 @@
-import React, {useState}from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-import { Breadcrumb, Icon, Button, Divider, Header } from 'semantic-ui-react'
+import { Button, Divider, Header } from 'semantic-ui-react'
+import Theme from '@components/mainTheme'
+import tenantDetailDuck from '@reducers/tenant/detail'
 import '../styles.scss'
 
 const items = [
   {
     label: 'Boarding Pricing',
-    to   : '/setup/settings/booarding-pricing',
-    linklabel: 'Boarding Pricing Settings'
+    to   : '/setup/settings/booarding-pricing'
   },
   {
     label: 'Boarding Settings',
-    to   : '/setup/settings/booarding-settings',
-    linklabel: 'Boarding Settings'
+    to   : '/setup/settings/booarding-settings'
   },
   {
     label: 'Day Service Settings',
-    to   : '/setup/settings/day-service',
-    linklabel: 'Day Service Settings'
+    to   : '/setup/settings/day-service'
   },
   {
     label: 'Training Settings',
-    to   : '/setup/settings/training',
-    linklabel: 'Training Settings'
+    to   : '/setup/settings/training'
   },
   {
     label: 'Grooming Settings',
-    to   : '/setup/settings/grooming',
-    linklabel: 'Grooming Settings'
+    to   : '/setup/settings/grooming'
   }
 ]
 
 const Menu = () => {
   const location = useLocation()
-  const[ linkLabel, setLinkLabel ] = useState('')
+  const detail = useSelector(tenantDetailDuck.selectors.detail)
+
   return (
     <>
       <Header>Service settings</Header>
-            {/*<Breadcrumb className='p0'>
-              <Breadcrumb.Section active>
-                <Link to='/setup/admin-item'><Icon name='setting'/>Settings</Link>
-              </Breadcrumb.Section>
-              <Breadcrumb.Divider className='mh12' icon='right chevron'/>
-              <Breadcrumb.Section active>
-                <Link to='/setup/service-setting'>Services</Link>
-              </Breadcrumb.Section>
-              <Breadcrumb.Divider className='mh12'  icon='right chevron'/>
-              <Breadcrumb.Section active>
-                <Link to='/setup/service-setting'>{linkLabel}</Link>
-              </Breadcrumb.Section>
-            </Breadcrumb>*/}
       <Divider/>
 
       {
@@ -62,7 +48,7 @@ const Menu = () => {
             <Button
               as={Link}
               className='button-menu'
-              color={rgx.test(location.pathname) ? 'teal' : null}
+              color={rgx.test(location.pathname) ? Theme(detail).buttonMenuColor : null}
               content={label}
               key={index}
               to={to}/>

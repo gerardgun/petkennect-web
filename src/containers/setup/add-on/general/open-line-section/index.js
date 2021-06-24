@@ -5,65 +5,76 @@ import { Segment } from 'semantic-ui-react'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/add-on/components/Menu'
 import ModalDelete from '@components/Modal/Delete'
-import ServiceFormModal from  './create'
+import SetupOpenLineAddonServiceSettingFormModal from  './create/form/modal'
 import Tab from '@containers/setup/add-on/general/components/Tab'
 import Table from '@components/Table'
-import listConfig from '@lib/constants/list-configs/service/add-on-open-line'
+import openLineAddonServiceListConfig from '@lib/constants/list-configs/service/add-on-open-line'
 
-import serviceDuck from '@reducers/service'
-import serviceDetailDuck from '@reducers/service/detail'
+import setupOpenLineAddonServiceSettingDuck from '@reducers/service/addon/general/open-line-service'
+import setupOpenLineAddonServiceSettingDetailDuck from '@reducers/service/addon/general/open-line-service/detail'
 
 const SetupAddOnGeneralOpenLineIndex = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(serviceDetailDuck.selectors.detail)
+  const detail = useSelector(setupOpenLineAddonServiceSettingDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      serviceDuck.creators.get()
+      setupOpenLineAddonServiceSettingDuck.creators.get({ service__type: 'O' })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        serviceDuck.creators.get()
+        setupOpenLineAddonServiceSettingDuck.creators.get({ service__type: 'O' })
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        serviceDetailDuck.creators.setItem(null, 'CREATE')
+        setupOpenLineAddonServiceSettingDetailDuck.creators.setItem(null, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'delete')
       dispatch(
-        serviceDetailDuck.creators.setItem(reason, 'DELETE')
+        setupOpenLineAddonServiceSettingDetailDuck.creators.setItem(reason, 'DELETE')
       )
     else if(button === 'edit')
       dispatch(
-        serviceDetailDuck.creators.setItem(reason, 'UPDATE')
+        setupOpenLineAddonServiceSettingDetailDuck.creators.setItem(reason, 'UPDATE')
       )
+  }
+
+  const _handleConfirmDelete = () => {
+    dispatch(
+      setupOpenLineAddonServiceSettingDetailDuck.creators.delete(detail.item)
+    )
+      .then(() => {
+        dispatch(
+          setupOpenLineAddonServiceSettingDetailDuck.creators.resetItem()
+        )
+      })
   }
 
   return (
     <Layout>
-      <Segment className='segment-content'>
+      <Segment className='segment-content' padded='very'>
         <Menu/>
 
         <Tab>
           <Table
-            config={listConfig}
-            duck={serviceDuck}
+            config={openLineAddonServiceListConfig}
+            duck={setupOpenLineAddonServiceSettingDuck}
             onActionClick={_handleActionClick}
             onRowButtonClick={_handleRowButtonClick}/>
         </Tab>
 
-        <ServiceFormModal/>
+        <SetupOpenLineAddonServiceSettingFormModal/>
 
-        <ModalDelete duckDetail={serviceDetailDuck}/>
+        <ModalDelete duckDetail={setupOpenLineAddonServiceSettingDetailDuck} onDelete={_handleConfirmDelete}/>
 
       </Segment>
     </Layout>

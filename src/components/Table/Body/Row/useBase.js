@@ -5,6 +5,7 @@ import TableCell from './../Cell'
 import TableCellButton from './../Cell/Button'
 import TableCellDropdown from './../Cell/Dropdown'
 import TableCellActionButton from './../Cell/action-button'
+import TableCellCheckbox from './../Cell/checkbox'
 import TableCellTextField from './../Cell/text-field'
 import TableCellDropdownField from './../Cell/dropdown-field'
 
@@ -14,6 +15,7 @@ const useBase = (
   onButtonClick,
   onCellClick,
   onCheckboxChange,
+  onCheckboxChecked,
   onClick,
   onDropdownChange,
   onTextFieldChange,
@@ -46,6 +48,12 @@ const useBase = (
             onButtonClick={_handleButtonClick} onClick={_handleCellClick}
             onDropdownChange={_handleDropdownChange}/>
         )
+      else if(config.type === 'checkbox')
+        return (
+          <TableCellCheckbox
+            config={config} data={data} key={index}
+            onCheckboxChecked={_handleCheckboxChecked} onClick={_handleCellClick}/>
+        )
       else if(config.type === 'text-field' || config.type === 'date-field')
         return (
           <TableCellTextField
@@ -70,6 +78,7 @@ const useBase = (
   }
 
   const _handleButtonClick = onButtonClick
+  const _handleCheckboxChecked = onCheckboxChecked
   const _handleCellClick = onCellClick
   const _handleDropdownChange = onDropdownChange
   const _handleTextFieldChange = onTextFieldChange

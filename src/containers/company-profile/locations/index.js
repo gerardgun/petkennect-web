@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect , useDispatch, useSelector } from 'react-redux'
 import { compose } from 'redux'
 import { Button, Grid,Header,Dimmer,Loader, Segment } from 'semantic-ui-react'
 
@@ -8,13 +8,18 @@ import ModalDelete from '@components/Modal/Delete'
 import Form from './create'
 import LocationItem from './Item'
 import Menu from '@containers/company-profile/components/Menu'
+import Theme from '@components/mainTheme'
 
+import tenantDetailDuck from '@reducers/tenant/detail'
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
 
 const SetupCompanyProfileLocations = ({ location, locationDetail, ...props }) => {
+  const dispatch = useDispatch()
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
+
   useEffect(() => {
-    props.getLocations()
+    dispatch(locationDuck.creators.get())
   }, [])
 
   useEffect(() => {
@@ -42,7 +47,7 @@ const SetupCompanyProfileLocations = ({ location, locationDetail, ...props }) =>
         <Menu/>
         <Grid className='segment-content-header' columns={2}>
           <Grid.Column>
-            <Header as='h2'>Locations</Header>
+            <Header as='h2' color={Theme(tenant).headingColor} >Locations</Header>
           </Grid.Column>
           <Grid.Column
             className='ui-grid-align'

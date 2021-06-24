@@ -29,12 +29,12 @@ export default {
     },
     {
       display_name: 'Price',
-      name        : 'price',
+      name        : 'price.price',
       type        : 'money'
     },
     {
       display_name: 'Can be\nnegative\n(Credit)',
-      name        : 'is_scheduled',
+      name        : 'service_open_line_addon.can_be_credit_negative',
       align       : 'center',
       formatter   : cell => (
         <Checkbox checked={cell} disabled toggle/>
@@ -50,20 +50,15 @@ export default {
     },
     {
       display_name: 'Is Tip',
-      name        : 'is_active',
+      name        : 'service_open_line_addon.is_tip',
       align       : 'center',
       formatter   : cell => (
         <Checkbox checked={cell} disabled toggle/>
       )
     },
     {
-      display_name: 'Employee',
-      name        : 'applies',
-      type        : 'string'
-    },
-    {
       display_name: 'Custom\nAccount\nCode',
-      name        : 'applies',
+      name        : 'sku_id',
       type        : 'string'
     },
     {
@@ -81,7 +76,7 @@ export default {
           display_name: 'Delete Line Item',
           name        : 'delete',
           icon        : 'trash alternate outline',
-          color       : 'grey'
+          color       : 'red'
         }
       ]
     }

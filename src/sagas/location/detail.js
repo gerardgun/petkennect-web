@@ -44,8 +44,10 @@ function* get({ id }) {
 function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
-
-    const result = yield call(Post, 'locations/', payload)
+    const { post_code, ...rest } = payload
+    const zip_code = yield call(Get, `zips/?search=${post_code}`)
+    const new_location = { zip_code: zip_code[0].id, ...rest }
+    const result = yield call(Post, 'locations/', new_location)
 
     yield put({
       type   : types.POST_FULFILLED,

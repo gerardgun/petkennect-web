@@ -44,6 +44,11 @@ import clientEmailMessage from '@reducers/client/email-message'
 import clientEmailMessageDetail from '@reducers/client/email-message/detail'
 import company from '@reducers/company'
 import companyDetail from '@reducers/company/detail'
+import companyProfileCalendar from '@reducers/company-profile/calendar'
+import companyProfileCalendarDetail from '@reducers/company-profile/calendar/detail'
+import companyProfileCalendarEvent from '@reducers/company-profile/calendar/event'
+import companyProfileCalendarEventDetail from '@reducers/company-profile/calendar/event/detail'
+// import companyContactBillingDetail from '@reducers/company/contact-billing/detail'
 import customReport from '@reducers/custom-report'
 import customReportDetail from '@reducers/custom-report/detail'
 import customized from '@reducers/customized-field'
@@ -109,26 +114,50 @@ import emailTemplate from '@reducers/email-template'
 import emailTemplateDetail from '@reducers/email-template/detail'
 import employee from '@reducers/employee'
 import employeeDetail from '@reducers/employee/detail'
+import employeeServiceType from '@reducers/employee/service-type'
+import employeeServiceTypeDetail from '@reducers/employee/service-type/detail'
 import employeeSchedule from '@reducers/employee/schedule'
 import employeeScheduleDetail from '@reducers/employee/schedule/detail'
 import employeeRole from '@reducers/employee/role'
 import employeeRoleDetail from '@reducers/employee/role/detail'
+import employeeRoleServiceType from '@reducers/employee/role/service-type'
+import employeeRoleServiceTypeDetail from '@reducers/employee/role/service-type/detail'
+import employeeTimeOff from '@reducers/staff-management/employee-time-off'
+import employeeTimeOffRequestHistory from '@reducers/staff-management/employee-time-off/requests/history'
+import employeeTimeOffRequestUpcoming from '@reducers/staff-management/employee-time-off/requests/upcoming'
+import employeeTimeOffRequestOtherDetail from '@reducers/staff-management/employee-time-off/requests/other/detail'
+import employeeTimeOffRequestUpcomingDetail from '@reducers/staff-management/employee-time-off/requests/upcoming/detail'
+import employeeTimeOffRequestOther from '@reducers/staff-management/employee-time-off/requests/other'
 import employeeTitle from '@reducers/employee/title'
 import employeeTitleDetail from '@reducers/employee/title/detail'
-import feedingTime from '@reducers/pet/feeding-setting/feeding-time'   // feeding setting start
-import feedingTimeDetail from '@reducers/pet/feeding-setting/feeding-time/detail'
-import feedingMeasurement from '@reducers/pet/feeding-setting/feeding-measurement'
-import feedingMeasurementDetail from '@reducers/pet/feeding-setting/feeding-measurement/detail'
-import feedingMethod from '@reducers/pet/feeding-setting/feeding-method'
-import feedingMethodDetail from '@reducers/pet/feeding-setting/feeding-method/detail'
-import feedingUnit from '@reducers/pet/feeding-setting/feeding-unit'
-import feedingUnitDetail from '@reducers/pet/feeding-setting/feeding-unit/detail'
-import foodType from '@reducers/pet/feeding-setting/food-type'
-import foodTypeDetail from '@reducers/pet/feeding-setting/food-type/detail'
-import mealStatus from '@reducers/pet/feeding-setting/meal-status'
-import mealStatusDetail from '@reducers/pet/feeding-setting/meal-status/detail'    // feeding setting end
+import foodMeasurement from '@reducers/service/food/measurement'
+import foodMeasurementDetail from '@reducers/service/food/measurement/detail'
+import foodMethod from '@reducers/service/food/method'
+import foodMethodDetail from '@reducers/service/food/method/detail'
+import foodReportStatus from '@reducers/service/food/report-status'
+import foodReportStatusDetail from '@reducers/service/food/report-status/detail'
+import foodTime from '@reducers/service/food/time'
+import foodTimeDetail from '@reducers/service/food/time/detail'
+import foodType from '@reducers/service/food/type'
+import foodTypeDetail from '@reducers/service/food/type/detail'
+import foodUnit from '@reducers/service/food/unit'
+import foodUnitDetail from '@reducers/service/food/unit/detail'
+import groupPermission from '@reducers/group-permission'
+import groupPermissionDetail from '@reducers/group-permission/detail'
 import location from '@reducers/location'
 import locationDetail from '@reducers/location/detail'
+import managerDashboardDepartmentRole from '@reducers/manager-dashboard/department-role'
+import managerDashboardDepartmentRoleDetail from '@reducers/manager-dashboard/department-role/detail'
+import managerDashboardEmployeeDirectory from '@reducers/manager-dashboard/employee/employee-directory'
+import managerDashboardEmployeeDirectoryDetail from '@reducers/manager-dashboard/employee/employee-directory/detail'
+import managerDashboardEmployeeDocument from '@reducers/manager-dashboard/employee/employee-document'
+import managerDashboardEmployeeDocumentDetail from '@reducers/manager-dashboard/employee/employee-document/detail'
+import managerDashboardEmployeeNote from '@reducers/manager-dashboard/employee/employee-note'
+import managerDashboardEmployeeNoteDetail from '@reducers/manager-dashboard/employee/employee-note/detail'
+import managerDashboardEmployeeWageHistory from '@reducers/manager-dashboard/employee/employee-wage-history'
+import managerDashboardEmployeeWageHistoryDetail from '@reducers/manager-dashboard/employee/employee-wage-history/detail'
+import managerDashboardSettingPermission from '@reducers/manager-dashboard/setting/permission'
+import managerDashboardSettingPermissionDetail from '@reducers/manager-dashboard/setting/permission/detail'
 import MedicationType from '@reducers/pet/medication-setting/medication-type'
 import MedicationTypeDetail from '@reducers/pet/medication-setting/medication-type/detail'
 import medication from '@reducers/pet/medication-setting/medication'
@@ -253,8 +282,28 @@ import serviceVariationRelease from '@reducers/service/variation/release'
 import serviceVariationReleaseDetail from '@reducers/service/variation/release/detail'
 import setupCapacityServiceCustom from '@reducers/setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from '@reducers/setup/capacity/service/custom/detail'
+import setupAddonServiceSetting from '@reducers/service/addon/general/add-on-service'
+import setupAddonServiceSettingDetail from '@reducers/service/addon/general/add-on-service/detail'
+import setupOpenLineAddonServiceSetting from '@reducers/service/addon/general/open-line-service'
+import setupOpenLineAddonServiceSettingDetail from '@reducers/service/addon/general/open-line-service/detail'
+import setupTransportAddonServiceSetting from '@reducers/service/addon/general/transport-service'
+import setupTransportAddonServiceSettingDetail from '@reducers/service/addon/general/transport-service/detail'
 import servicePrice from '@reducers/service-price'
 import servicePriceDetail from '@reducers/service-price/detail'
+import staffManagementInfoAvailability from '@reducers/staff-management/information/availability'
+import staffManagementInfoAvailabilityDetail from '@reducers/staff-management/information/availability/detail'
+import staffManagementInfoPersonal from '@reducers/staff-management/information/personal-detail'
+import staffManagementInfoPersonalDetail from '@reducers/staff-management/information/personal-detail/detail'
+import staffManagementInfoWages from '@reducers/staff-management/information/wages'
+import staffManagementInfoWagesDetail from '@reducers/staff-management/information/wages/detail'
+import staffManagementNotification from '@reducers/staff-management/notification/employee-notice'
+import staffManagementNotificationDetail from '@reducers/staff-management/notification/employee-notice/detail'
+import staffManagementNotificationSettingEmployee from '@reducers/staff-management/notification/notification-setting/employee-notification'
+import staffManagementNotificationSettingEmployeeDetail from '@reducers/staff-management/notification/notification-setting/employee-notification/detail'
+import staffManagementNotificationSettingManager from '@reducers/staff-management/notification/notification-setting/manager-notification'
+import staffManagementNotificationSettingManagerDetail from '@reducers/staff-management/notification/notification-setting/manager-notification/detail'
+import staffManagementPerformanceNotice from '@reducers/staff-management/performance/notice'
+import staffManagementPerformanceReview from '@reducers/staff-management/performance/review'
 import tenantDetail from '@reducers/tenant/detail'
 import onlineRequestsClientSubmission from '@reducers/online-request/client-submission'
 import onlineRequestsClientSubmissionDetail from '@reducers/online-request/client-submission/detail'
@@ -285,6 +334,10 @@ import trainingReason from '@reducers/training-reason'
 import trainingReasonDetail from '@reducers/training-reason/detail'
 import transaction from '@reducers/transaction'
 import transactionDetail from '@reducers/transaction/detail'
+import systemUser from '@reducers/system-user-and-role/user'
+import systemUserDetail from '@reducers/system-user-and-role/user/detail'
+import systemRole from '@reducers/system-user-and-role/role'
+import systemRoleDetail from '@reducers/system-user-and-role/role/detail'
 import user from '@reducers/user'
 import userDetail from '@reducers/user/detail'
 import zip from '@reducers/zip'
@@ -327,6 +380,11 @@ const createRootReducer = history => combineReducers({
   [clientEmailMessageDetail.store]                         : clientEmailMessageDetail.reducer,
   [company.store]                                          : company.reducer,
   [companyDetail.store]                                    : companyDetail.reducer,
+  [companyProfileCalendar.store]                           : companyProfileCalendar.reducer,
+  [companyProfileCalendarDetail.store]                     : companyProfileCalendarDetail.reducer,
+  [companyProfileCalendarEvent.store]                      : companyProfileCalendarEvent.reducer,
+  [companyProfileCalendarEventDetail.store]                : companyProfileCalendarEventDetail.reducer,
+  // [companyContactBillingDetail.store]                      : companyContactBillingDetail.reducer,
   [customReport.store]                                     : customReport.reducer,
   [customReportDetail.store]                               : customReportDetail.reducer                ,
   [customized.store]                                       : customized.reducer,
@@ -395,26 +453,51 @@ const createRootReducer = history => combineReducers({
   [emailLogDetail.store]                                   : emailLogDetail.reducer,
   [employee.store]                                         : employee.reducer,
   [employeeDetail.store]                                   : employeeDetail.reducer,
+  [employeeServiceType.store]                              : employeeServiceType.reducer,
+  [employeeServiceTypeDetail.store]                        : employeeServiceTypeDetail.reducer,
   [employeeSchedule.store]                                 : employeeSchedule.reducer,
   [employeeScheduleDetail.store]                           : employeeScheduleDetail.reducer,
   [employeeRole.store]                                     : employeeRole.reducer,
   [employeeRoleDetail.store]                               : employeeRoleDetail.reducer,
+  [employeeRoleServiceType.store]                          : employeeRoleServiceType.reducer,
+  [employeeRoleServiceTypeDetail.store]                    : employeeRoleServiceTypeDetail.reducer,
+  [employeeTimeOff.store]                                  : employeeTimeOff.reducer,
+  [employeeTimeOffRequestUpcoming.store]                   : employeeTimeOffRequestUpcoming.reducer,
+  [employeeTimeOffRequestHistory.store]                    : employeeTimeOffRequestHistory.reducer,
+  [employeeTimeOffRequestOther.store]                      : employeeTimeOffRequestOther.reducer,
+  [employeeTimeOffRequestOtherDetail.store]                : employeeTimeOffRequestOtherDetail.reducer,
+  [employeeTimeOffRequestUpcomingDetail.store]             : employeeTimeOffRequestUpcomingDetail.reducer,
+  [employeeDetail.store]                                   : employeeDetail.reducer,
   [employeeTitle.store]                                    : employeeTitle.reducer,
   [employeeTitleDetail.store]                              : employeeTitleDetail.reducer,
-  [feedingTime.store]                                      : feedingTime.reducer,
-  [feedingTimeDetail.store]                                : feedingTimeDetail.reducer,
-  [feedingMeasurement.store]                               : feedingMeasurement.reducer,
-  [feedingMeasurementDetail.store]                         : feedingMeasurementDetail.reducer,
-  [feedingMethod.store]                                    : feedingMethod.reducer,
-  [feedingMethodDetail.store]                              : feedingMethodDetail.reducer,
-  [feedingUnit.store]                                      : feedingUnit.reducer,
-  [feedingUnitDetail.store]                                : feedingUnitDetail.reducer,
+  [foodMeasurement.store]                                  : foodMeasurement.reducer,
+  [foodMeasurementDetail.store]                            : foodMeasurementDetail.reducer,
+  [foodMethod.store]                                       : foodMethod.reducer,
+  [foodMethodDetail.store]                                 : foodMethodDetail.reducer,
+  [foodReportStatus.store]                                 : foodReportStatus.reducer,
+  [foodReportStatusDetail.store]                           : foodReportStatusDetail.reducer,
+  [foodTime.store]                                         : foodTime.reducer,
+  [foodTimeDetail.store]                                   : foodTimeDetail.reducer,
   [foodType.store]                                         : foodType.reducer,
   [foodTypeDetail.store]                                   : foodTypeDetail.reducer,
-  [mealStatus.store]                                       : mealStatus.reducer,
-  [mealStatusDetail.store]                                 : mealStatusDetail.reducer,
+  [foodUnit.store]                                         : foodUnit.reducer,
+  [foodUnitDetail.store]                                   : foodUnitDetail.reducer,
+  [groupPermission.store]                                  : groupPermission.reducer,
+  [groupPermissionDetail.store]                            : groupPermissionDetail.reducer,
   [location.store]                                         : location.reducer,
   [locationDetail.store]                                   : locationDetail.reducer,
+  [managerDashboardDepartmentRole.store]                   : managerDashboardDepartmentRole.reducer,
+  [managerDashboardDepartmentRoleDetail.store]             : managerDashboardDepartmentRoleDetail.reducer,
+  [managerDashboardEmployeeDirectory.store]                : managerDashboardEmployeeDirectory.reducer,
+  [managerDashboardEmployeeDirectoryDetail.store]          : managerDashboardEmployeeDirectoryDetail.reducer,
+  [managerDashboardEmployeeDocument.store]                 : managerDashboardEmployeeDocument.reducer,
+  [managerDashboardEmployeeDocumentDetail.store]           : managerDashboardEmployeeDocumentDetail.reducer,
+  [managerDashboardEmployeeNote.store]                     : managerDashboardEmployeeNote.reducer,
+  [managerDashboardEmployeeNoteDetail.store]               : managerDashboardEmployeeNoteDetail.reducer,
+  [managerDashboardEmployeeWageHistory.store]              : managerDashboardEmployeeWageHistory.reducer,
+  [managerDashboardEmployeeWageHistoryDetail.store]        : managerDashboardEmployeeWageHistoryDetail.reducer,
+  [managerDashboardSettingPermission.store]                : managerDashboardSettingPermission.reducer,
+  [managerDashboardSettingPermissionDetail.store]          : managerDashboardSettingPermissionDetail.reducer,
   [MedicationType.store]                                   : MedicationType.reducer,
   [MedicationTypeDetail.store]                             : MedicationTypeDetail.reducer,
   [medication.store]                                       : medication.reducer,
@@ -540,8 +623,28 @@ const createRootReducer = history => combineReducers({
   [serviceVariationReleaseDetail.store]                    : serviceVariationReleaseDetail.reducer,
   [setupCapacityServiceCustom.store]                       : setupCapacityServiceCustom.reducer,
   [setupCapacityServiceCustomDetail.store]                 : setupCapacityServiceCustomDetail.reducer,
+  [setupAddonServiceSetting.store]                         : setupAddonServiceSetting.reducer,
+  [setupAddonServiceSettingDetail.store]                   : setupAddonServiceSettingDetail.reducer,
+  [setupOpenLineAddonServiceSetting.store]                 : setupOpenLineAddonServiceSetting.reducer,
+  [setupOpenLineAddonServiceSettingDetail.store]           : setupOpenLineAddonServiceSettingDetail.reducer,
+  [setupTransportAddonServiceSetting.store]                : setupTransportAddonServiceSetting.reducer,
+  [setupTransportAddonServiceSettingDetail.store]          : setupTransportAddonServiceSettingDetail.reducer,
   [servicePrice.store]                                     : servicePrice.reducer,
   [servicePriceDetail.store]                               : servicePriceDetail.reducer,
+  [staffManagementInfoAvailability.store]                  : staffManagementInfoAvailability.reducer,
+  [staffManagementInfoAvailabilityDetail.store]            : staffManagementInfoAvailabilityDetail.reducer,
+  [staffManagementInfoPersonal.store]                      : staffManagementInfoPersonal.reducer,
+  [staffManagementInfoPersonalDetail.store]                : staffManagementInfoPersonalDetail.reducer,
+  [staffManagementInfoWages.store]                         : staffManagementInfoWages.reducer,
+  [staffManagementInfoWagesDetail.store]                   : staffManagementInfoWagesDetail.reducer,
+  [staffManagementNotification.store]                      : staffManagementNotification.reducer,
+  [staffManagementNotificationDetail.store]                : staffManagementNotificationDetail.reducer,
+  [staffManagementNotificationSettingEmployee.store]       : staffManagementNotificationSettingEmployee.reducer,
+  [staffManagementNotificationSettingEmployeeDetail.store] : staffManagementNotificationSettingEmployeeDetail.reducer,
+  [staffManagementNotificationSettingManager.store]        : staffManagementNotificationSettingManager.reducer,
+  [staffManagementNotificationSettingManagerDetail.store]  : staffManagementNotificationSettingManagerDetail.reducer,
+  [staffManagementPerformanceNotice.store]                 : staffManagementPerformanceNotice.reducer,
+  [staffManagementPerformanceReview.store]                 : staffManagementPerformanceReview.reducer,
   [tenantDetail.store]                                     : tenantDetail.reducer,
   [onlineRequestsClientSubmission.store]                   : onlineRequestsClientSubmission.reducer,
   [onlineRequestsClientSubmissionDetail.store]             : onlineRequestsClientSubmissionDetail.reducer,
@@ -572,6 +675,10 @@ const createRootReducer = history => combineReducers({
   [trainingReasonDetail.store]                             : trainingReasonDetail.reducer,
   [transactionDetail.store]                                : transactionDetail.reducer,
   [transactionDetail.store]                                : transactionDetail.reducer,
+  [systemUser.store]                                       : systemUser.reducer,
+  [systemUserDetail.store]                                 : systemUserDetail.reducer,
+  [systemRole.store]                                       : systemRole.reducer,
+  [systemRoleDetail.store]                                 : systemRoleDetail.reducer,
   [user.store]                                             : user.reducer,
   [userDetail.store]                                       : userDetail.reducer,
   [zip.store]                                              : zip.reducer,

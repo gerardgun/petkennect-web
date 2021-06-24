@@ -1,20 +1,28 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Field, reduxForm, change, formValueSelector } from 'redux-form'
-import { Label, Image, Breadcrumb, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, TextArea, GridColumn, GridRow } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector, connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { compose } from 'redux'
+import { Field, reduxForm } from 'redux-form'
+import { Label, Icon, Button, Checkbox, Divider, Form, Grid, Header, Input, Select, Segment, GridColumn, GridRow } from 'semantic-ui-react'
 import * as Yup from 'yup'
+import Theme from '@components/mainTheme'
 
-import FormField from '@components/Common/FormField'
+import tenantDetailDuck from '@reducers/tenant/detail'
 import FormError from '@components/Common/FormError'
+import FormField from '@components/Common/FormField'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
-import Tab from '@containers/setup/boarding/general/components/Tab'
-import SetupBoardingGeneralBelongingIndex from '@containers/setup/boarding/general/belonging-section'
-import { parseResponseError, syncValidate } from '@lib/utils/functions'
+import { parseFormValues, syncValidate } from '@lib/utils/functions'
 import { TimeAmPm } from './utils'
 
-function SetupCompanyProfileSystemSettings (props) {
+const SetupCompanyProfileSystemSettings = props => {
+  const {
+    error, handleSubmit, initialize // redux-form
+  } = props
+  const dispatch = useDispatch()
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
+
   const[sundayStart, setSundayStart] = useState('9:00')
   const[sundayEnd, setSundayEnd] = useState('6:00')
   const[mondayStart, setMondayStart] = useState('9:00')
@@ -44,23 +52,24 @@ function SetupCompanyProfileSystemSettings (props) {
       setWednesdayEnd(timeEnd);setThursdayEnd(timeEnd);setFridayEnd(timeEnd);setSaturdayEnd(timeEnd);
     }
   }
-  
-  const {
-    error, handleSubmit // redux-form
-    } = props
-    
-  const dispatch = useDispatch()
       
   const _handleSubmit = values => {
-      console.log(values)
+    const { currency_format, ...rest } = parseFormValues(values)
+    const s_config = {system_config: rest}
+    dispatch(tenantDetailDuck.creators.put(s_config))
   }
+
+  useEffect(() => {
+    if(tenant.item.id) initialize(tenant.item.system_config)
+  }, [ tenant.item.id ])
+
 return (
   <Layout>
     <Segment className='segment-content' padded='very'>
       <Menu/>
+      {/* eslint-disable-next-line react/jsx-handler-names */}
       <Form onSubmit={handleSubmit(_handleSubmit)}>
-        <Header as='h3' content='System Wide Settings: Changes Affect All Locations' color='teal' />
-      
+        <Header as='h3' color={Theme(tenant).headingColor} content='System Wide Settings: Changes Affect All Locations'/>
         <Grid>
           <Grid.Row style={{ padding: '1rem' }}>
             <Grid.Column width='5'>
@@ -78,12 +87,12 @@ return (
                     control={Select}
                     name='date_format'
                     options={[
-                      { value: 1, text: 'MM/DD/YYYY' },
-                      { value: 2, text: 'DD/MM/YYYY' },
+                      { value: 'MM/DD/YYYY', text: 'MM/DD/YYYY' },
+                      { value: 'DD/MM/YYYY', text: 'DD/MM/YYYY' },
                     ]}
                     placeholder='Select format'
-                    search
-                    selectOnBlur={false}/>
+                    selectOnBlur={false}
+                    required/>
                   </Grid.Column>
                 </Grid.Row>
 
@@ -97,12 +106,12 @@ return (
                       control={Select}
                       name='time_format'
                       options={[
-                        { value: 1, text: '24 Hours' },
-                        { value: 2, text: '12 Hours' },
+                        { value: 'H:mm a', text: '24 Hours' },
+                        { value: 'h:mm a', text: '12 Hours' },
                       ]}
                       placeholder='Select format'
-                      search
-                      selectOnBlur={false}/>
+                      selectOnBlur={false}
+                      required/>
                   </Grid.Column>
                 </Grid.Row>
 
@@ -114,13 +123,12 @@ return (
                     <Field
                       component={FormField}
                       control={Select}
-                      name='weigth_format'
+                      name='weight_type'
                       options={[
-                        { value: 1, text: 'Lbs' },
-                        { value: 2, text: 'Kgs' },
+                        { value: 'L', text: 'Lbs' },
+                        { value: 'K', text: 'Kgs' },
                       ]}
                       placeholder='Select format'
-                      search
                       selectOnBlur={false}/>
                   </Grid.Column>
                 </Grid.Row>
@@ -140,7 +148,8 @@ return (
                       ]}
                       placeholder='Select format'
                       search
-                      selectOnBlur={false}/>
+                      selectOnBlur={false}
+                      required/>
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
@@ -200,6 +209,7 @@ return (
               </div>
             </Grid.Column>
             <Grid.Column width='1'>
+                {/* eslint-disable-next-line react/jsx-handler-names */}
                 <Icon name='pencil' onClick={() => setShowEdit(true)} />
             </Grid.Column>
             {showEdit &&
@@ -208,47 +218,62 @@ return (
                     <div className='day-hours'>
                       <p>Sunday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setSundayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setSundayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Monday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setMondayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setMondayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Tuesday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setTuesdayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setTuesdayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Wednesday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setWednesdayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setWednesdayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Thursday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setThursdayStart(TimeAmPm(e.target.value))}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setThursdayEnd(TimeAmPm(e.target.value))}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Friday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setFridayStart(e.target.value)}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setFridayEnd(e.target.value)}/></div>
                     </div>
                     <div className='day-hours'>
                       <p>Saturday</p>
                       <div className='input-hours'>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setSaturdayStart(e.target.value)}/><p> to </p>
+                        {/* eslint-disable-next-line react/jsx-handler-names */}
                         <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setSaturdayEnd(e.target.value)}/></div>
                     </div>
                   </Grid.Column>
                   <Grid.Column width='3'>
+                    {/* eslint-disable-next-line react/jsx-handler-names */}
                     <Label onClick={()=>{setStartTimes(sundayStart); setEndTimes(sundayEnd)} }>
                       <Icon name='copy' color='teal' outline />
                       Copy time to all
@@ -284,12 +309,29 @@ return (
               </div>
             </Grid.Column>
           </GridRow>
+          {
+            error && (
+              <Form.Group widths='equal'>
+                <Form.Field>
+                  <FormError message={error}/>
+                </Form.Field>
+              </Form.Group>
+            )
+          }
           <Grid.Row>
               <Grid.Column width='6'>
               </Grid.Column>
               <Grid.Column width='4' floated='right'>
-                  <Button basic color='teal' content='Cancel'/>
-                  <Button color='teal' content='Save changes'/>
+                <Form.Field>
+                    <Button basic 
+                      type='button'
+                      color='red' 
+                      content='Cancel'/>
+                    <Button 
+                      color= 'teal' 
+                      type= 'submit'
+                      content= 'Save changes'/>
+                </Form.Field>
               </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -301,11 +343,15 @@ return (
 }
 
 export default reduxForm({
-  form              : 'setup-company-profile-system-settings',
-  enableReinitialize: true,
+  form              : 'system-settings-form',
   validate          : values => {
-    const schema = {}
+    const schema = {
+      date_format  : Yup.string().required('Date Format is required'),
+      time_format  : Yup.string().required('Time Format is required'),
+      weight_type  : Yup.string().required('Weight is required'),
+    }
 
     return syncValidate(Yup.object().shape(schema), values)
   }
 })(SetupCompanyProfileSystemSettings)
+/* eslint-enable */

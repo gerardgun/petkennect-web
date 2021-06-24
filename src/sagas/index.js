@@ -26,6 +26,10 @@ import clientPet from './client/pet'
 import clientEmailMessage from './client/email-message'
 import company from './company'
 import companyDetail from './company/detail'
+import companyProfileCalendar from './company-profile/calendar'
+import companyProfileCalendarDetail from './company-profile/calendar/detail'
+import companyProfileCalendarEvent from './company-profile/calendar/event'
+import companyProfileCalendarEventDetail from './company-profile/calendar/event/detail'
 import customReport from './custom-report'
 import customized from './customized-field'
 import customizedField from './customized-field/field'
@@ -55,6 +59,8 @@ import employee from './employee'
 import employeeDetail from './employee/detail'
 import employeeRole from './employee/role'
 import employeeRoleDetail from './employee/role/detail'
+import employeeRoleServiceType from './employee/role/service-type'
+import employeeRoleServiceTypeDetail from './employee/role/service-type/detail'
 import employeeSchedule from './employee/schedule'
 import employeeScheduleDetail from './employee/schedule/detail'
 import employeeTitle from './employee/title'
@@ -62,22 +68,40 @@ import employeeTitleDetail from './employee/title/detail'
 import emailMessage from './email-message'
 import emailTemplate from './email-template'
 import emailLog from './email-log'
+import employeeTimeOff from './staff-management/employee-time-off'
+import employeeTimeOffRequestUpcoming from './staff-management/employee-time-off/requests/upcoming'
+import employeeTimeOffRequestHistory from './staff-management/employee-time-off/requests/history'
+import employeeTimeOffRequestOther from './staff-management/employee-time-off/requests/other'
 import exampleOne from './example/one'
 import exampleTwo from './example/two'
-import feedingMeasurement from './pet/feeding-setting/feeding-measurement'
-import feedingMethod from './pet/feeding-setting/feeding-method'
-import feedingTime from './pet/feeding-setting/feeding-time'
-import feedingUnit from './pet/feeding-setting/feeding-unit'
-import foodType from './pet/feeding-setting/food-type'
-import mealStatus from './pet/feeding-setting/meal-status'
+import foodMeasurement from './service/food/measurement'
+import foodMeasurementDetail from './service/food/measurement/detail'
+import foodMethod from './service/food/method'
+import foodMethodDetail from './service/food/method/detail'
+import foodReportStatus from './service/food/report-status'
+import foodReportStatusDetail from './service/food/report-status/detail'
+import foodTime from './service/food/time'
+import foodTimeDetail from './service/food/time/detail'
+import foodType from './service/food/type'
+import foodTypeDetail from './service/food/type/detail'
+import foodUnit from './service/food/unit'
+import foodUnitDetail from './service/food/unit/detail'
+import groupPermission from './group-permission'
 import location from './location'
 import locationDetail from './location/detail'
+import managerDashboardDepartmentRole from './manager-dashboard/department-role'
+import managerDashboardEmployeeDirectory from './manager-dashboard/employee/employee-directory'
+import managerDashboardEmployeeDocument from './manager-dashboard/employee/employee-document'
+import managerDashboardEmployeeWageHistory from './manager-dashboard/employee/employee-wage-history'
+import managerDashboardSettingPermission from './manager-dashboard/setting/permission'
 import medication from './pet/medication-setting/medication'
+import medicationDetail from './pet/medication-setting/medication/detail'
 import medicationMeasurement from './pet/medication-setting/medication-measurement'
 import medicationTime from './pet/medication-setting/medication-time'
 import medicationUnit from './pet/medication-setting/medication-unit'
 import medicationReportStatus from './pet/medication-setting/medication-report-status'
 import medicationType from './pet/medication-setting/medication-type'
+import medicationTypeDetail from './pet/medication-setting/medication-type/detail'
 import notification from './notification'
 import organization from './organization'
 import organizationDetail from './organization/detail'
@@ -191,6 +215,19 @@ import serviceVariationRelease from './service/variation/release'
 import serviceVariationReleaseDetail from './service/variation/release/detail'
 import setupCapacityServiceCustom from './setup/capacity/service/custom'
 import setupCapacityServiceCustomDetail from './setup/capacity/service/custom/detail'
+import setupAddonServiceSetting from './service/addon/general/add-on-service'
+import setupAddonServiceSettingDetail from './service/addon/general/add-on-service/detail'
+import setupOpenLineAddonServiceSetting from './service/addon/general/open-line-service'
+import setupOpenLineAddonServiceSettingDetail from './service/addon/general/open-line-service/detail'
+import setupTransportAddonServiceSetting from './service/addon/general/transport-service'
+import setupTransportAddonServiceSettingDetail from './service/addon/general/transport-service/detail'
+import staffManagementInfoAvailability from './staff-management/information/availability'
+import staffManagementInfoWages from './staff-management/information/wages'
+import staffManagementNotificationEmployeeNotice from './staff-management/notification/employee-notice'
+import staffManagementNotificationSettingEmployee from './staff-management/notification/notification-setting/employee-notification'
+import staffManagementNotificationSettingManager from './staff-management/notification/notification-setting/manager-notification'
+import staffManagementNotice from './staff-management/performance/notice'
+import staffManagementReview from './staff-management/performance/review'
 import tenantDetail from './tenant/detail'
 import onlineRequestClientSubmission from './online-request/client-submission'
 import onlineRequestClientSubmissionDetail from './online-request/client-submission/detail'
@@ -208,6 +245,8 @@ import trainingReason from './training-reason'
 import trainingReasonDetail from './training-reason/detail'
 import transaction from './transaction'
 import transactionDetail from './transaction/detail'
+import systemUser from './system-user-and-role/user'
+import systemRole from './system-user-and-role/role'
 import user from './user'
 import userDetail from './user/detail'
 import zip from './zip'
@@ -242,6 +281,10 @@ export default function* rootSaga() {
     ...clientPetBreed,
     ...company,
     ...companyDetail,
+    ...companyProfileCalendar,
+    ...companyProfileCalendarDetail,
+    ...companyProfileCalendarEvent,
+    ...companyProfileCalendarEventDetail,
     ...customReport,
     ...customized,
     ...customizedField,
@@ -276,23 +319,43 @@ export default function* rootSaga() {
     ...employeeDetail,
     ...employeeRole,
     ...employeeRoleDetail,
+    ...employeeRoleServiceType,
+    ...employeeRoleServiceTypeDetail,
     ...employeeSchedule,
     ...employeeScheduleDetail,
+    ...employeeTimeOff,
+    ...employeeTimeOffRequestUpcoming,
+    ...employeeTimeOffRequestHistory,
+    ...employeeTimeOffRequestOther,
     ...employeeTitle,
     ...employeeTitleDetail,
-    ...feedingMeasurement,
-    ...feedingMethod,
-    ...feedingTime,
-    ...feedingUnit,
+    ...foodMeasurement,
+    ...foodMeasurementDetail,
+    ...foodMethod,
+    ...foodMethodDetail,
+    ...foodReportStatus,
+    ...foodReportStatusDetail,
+    ...foodTime,
+    ...foodTimeDetail,
     ...foodType,
-    ...mealStatus,
+    ...foodTypeDetail,
+    ...foodUnit,
+    ...foodUnitDetail,
+    ...groupPermission,
     ...location,
     ...locationDetail,
+    ...managerDashboardDepartmentRole,
+    ...managerDashboardEmployeeDirectory,
+    ...managerDashboardEmployeeDocument,
+    ...managerDashboardEmployeeWageHistory,
+    ...managerDashboardSettingPermission,
     ...medication,
+    ...medicationDetail,
     ...medicationMeasurement,
     ...medicationReportStatus,
     ...medicationTime,
     ...medicationType,
+    ...medicationTypeDetail,
     ...medicationUnit,
     ...notification,
     ...organization,
@@ -406,6 +469,19 @@ export default function* rootSaga() {
     ...serviceVariationReleaseDetail,
     ...setupCapacityServiceCustom,
     ...setupCapacityServiceCustomDetail,
+    ...setupAddonServiceSetting,
+    ...setupAddonServiceSettingDetail,
+    ...setupOpenLineAddonServiceSetting,
+    ...setupOpenLineAddonServiceSettingDetail,
+    ...setupTransportAddonServiceSetting,
+    ...setupTransportAddonServiceSettingDetail,
+    ...staffManagementInfoAvailability,
+    ...staffManagementInfoWages,
+    ...staffManagementNotificationEmployeeNotice,
+    ...staffManagementNotificationSettingEmployee,
+    ...staffManagementNotificationSettingManager,
+    ...staffManagementNotice,
+    ...staffManagementReview,
     ...tenantDetail,
     ...onlineRequestClientSubmission,
     ...onlineRequestClientSubmissionDetail,
@@ -423,6 +499,8 @@ export default function* rootSaga() {
     ...trainingReasonDetail,
     ...transaction,
     ...transactionDetail,
+    ...systemUser,
+    ...systemRole,
     ...user,
     ...userDetail,
     ...zip,

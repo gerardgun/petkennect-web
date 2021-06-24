@@ -10,7 +10,7 @@ const TableRowChild = ({ config, data, ...props }) => {
     handlers // row event handlers
   ] = useBase(
     config, data,
-    props.onButtonClick, props.onCellClick, props.onCheckboxChange, props.onClick, props.onDropdownChange
+    props.onButtonClick, props.onCellClick, props.onCheckboxChange, props.onCheckboxChecked, props.onClick, props.onDropdownChange
   )
 
   return (

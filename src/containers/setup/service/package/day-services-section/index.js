@@ -8,56 +8,51 @@ import servicePackageDuck from '@reducers/service/package'
 import servicePackageDetailDuck from '@reducers/service/package/detail'
 import servicePackageListConfig from '@lib/constants/list-configs/service/package'
 import ServicePackageFormModal from '../create/form/modal'
-import { parseResponseError } from '@lib/utils/functions'
-import serviceGroups from '@lib/constants/serviceGroups'
 
 const Layout = loadable(() => import('@components/Common/Layout'))
 const Menu = loadable(() => import('../components/Menu'))
 const Tab = loadable(() => import('../components/Tab'))
 
-const SetupServicePackageDayServices = ()=>{
+const SetupServicePackageDayServices = () => {
   const dispatch = useDispatch()
   // eslint-disable-next-line no-unused-vars
   const detail = useSelector(servicePackageDetailDuck.selectors.detail)
 
   useEffect(() => {
     dispatch(
-      servicePackageDuck.creators.get({ service_group: serviceGroups.DAY_SERVICE })
+      servicePackageDuck.creators.get({ service__group_id: 3, type: 'P' })
     )
   }, [])
-  /*
+
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        servicePackageDuck.creators.get()
+        servicePackageDuck.creators.get({ service__group_id: 3, type: 'P' })
       )
   }, [ detail.status ])
-  */
-  const _handleActionClick = action => {
+
+  const _handleActionClick = (action) => {
     if(action === 'create')
       dispatch(
-        servicePackageDetailDuck.creators.setItem({ service_group: serviceGroups.DAY_SERVICE }, 'CREATE')
+        servicePackageDetailDuck.creators.setItem(
+          { service_group: 3 },
+          'CREATE'
+        )
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'edit')
       dispatch(
-        servicePackageDetailDuck.creators.setItem(reason, 'UPDATE')
+        servicePackageDetailDuck.creators.setItem(
+          { ...reason, service_group: 3 },
+          'UPDATE'
+        )
       )
     if(button === 'copy')
-    /*
-        return dispatch(servicePackageDetailDuck.creators.post({
-          ...reason,
-          applies_service_type: reason.applies_service_type.id,
-          applies_locations: reason.applies_locations.map(({id}) => id)
-        }))
-          .catch(parseResponseError)
-      */
-
-      /* codigo momentaneo hasta que se implemente los endpoints */
-      return dispatch(servicePackageDetailDuck.creators.post(reason))
-        .catch(parseResponseError)
+      return dispatch(
+        servicePackageDetailDuck.creators.copy(reason)
+      )
   }
 
   const _handleSearch = (str) => {

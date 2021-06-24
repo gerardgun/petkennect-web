@@ -1,3 +1,11 @@
+.hidemap{
+    display: none;
+}
+.select_map{
+    color: rgb(38, 38, 182);
+    text-decoration: underline;
+    cursor: pointer;
+}
 .segment-content{
     padding-right: 2rem !important;
     padding-left: 2rem !important;
@@ -40,9 +48,13 @@
 }
 //Payment Method
 .current-card{
-    font-size: 18px;
+    font-size: 12px;
+    margin: 0px;
 }
 .creditcard-container{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
     box-shadow: none !important;
     color: #C8C8C8;
     border-radius: 0px !important;
@@ -67,6 +79,11 @@
 }
 .segment-dotted{
     justify-content: center;
+    background-color: #f5f6f8 !important;
+    border: 1px dashed #cecece !important;
+    border-radius: 0px !important;
+}
+.dropzone{
     background-color: #f5f6f8 !important;
     border: 1px dashed #cecece !important;
     border-radius: 0px !important;

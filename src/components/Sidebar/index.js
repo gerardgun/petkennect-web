@@ -69,15 +69,15 @@ const categories = [
       { href: '/services/attributes', label: 'Attributes' }
     ]
   },
-  {
-    href         : null,
-    icon         : 'users',
-    label        : 'Employees',
-    subcategories: [
-      { href: '/employee', label: 'Employees' },
-      { href: '/employee-title', label: 'Titles' }
-    ]
-  },
+  // {
+  //   href         : null,
+  //   icon         : 'users',
+  //   label        : 'Employees',
+  //   subcategories: [
+  //     { href: '/employee', label: 'Employees' },
+  //     { href: '/employee-title', label: 'Titles' }
+  //   ]
+  // },
   {
     href         : null,
     icon         : 'osi',
@@ -180,6 +180,11 @@ const categories = [
       { href: '/custom-report', label: 'Run Custom Reports' },
       { href: '/custom-report', label: 'Dashboards' }
     ]
+  },
+  {
+    href : '/staff-dashboard',
+    icon : 'id badge outline',
+    label: 'Staff'
   },
   {
     href : '/setup',
