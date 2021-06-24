@@ -19,7 +19,8 @@ const SetupServiceReservationBoardingActivityIndex = () => {
   useEffect(() => {
     dispatch(
       serviceVariationDuck.creators.get({
-        service__type: 'B'
+        service__type: 'B',
+        type         : 'A,R'
       })
     )
 
