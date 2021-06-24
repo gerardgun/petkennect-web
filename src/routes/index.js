@@ -228,7 +228,6 @@ import SetupCompanyProfileAccounting from '@containers/company-profile/accountin
 import SetupCompanyProfileBranding from '@containers/company-profile/branding'
 import SetupCompanyProfileLocations from '@containers/company-profile/locations'
 import SetupCompanyProfileSystemSettings from '@containers/company-profile/system-settings'
-import SetupCompanyProfileCalendarDetail from '@containers/company-profile/calendar/detail'
 
 import Transaction from '@containers/transaction'
 import User from '@containers/system-user-and-role/user'
@@ -1029,10 +1028,6 @@ const privateRoutes = [
   {
     path     : '/setup/company-profile/calendar',
     component: SetupCompanyProfileCalendar
-  },
-  {
-    path     : '/setup/company-profile/calendar/:calendarId',
-    component: SetupCompanyProfileCalendarDetail
   },
   {
     path     : '/setup/company-profile/branding',

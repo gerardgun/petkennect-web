@@ -1,63 +1,99 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Header, Segment } from 'semantic-ui-react'
-import loadable from '@loadable/component'
-import Table from '@components/Table'
-import ModalDelete from '@components/Modal/Delete'
-import companyProfileCalendarListConfig from '@lib/constants/list-configs/company-profile/calendar'
-import companyProfileCalendarDuck from '@reducers/company-profile/calendar'
-import companyProfileCalendarDetailDuck from '@reducers/company-profile/calendar/detail'
+import React, { useEffect, useState } from 'react'
+import authDuck from '@reducers/auth'
+
+import locationDuck from '@reducers/location'
+import companyProfileCalendarEventDetailDuck from '@reducers/company-profile/calendar/event/detail'
+import companyProfileCalendarEventDuck from '@reducers/company-profile/calendar/event'
+import Layout from '@components/Common/Layout'
+import { Button, Grid, Header, Segment, Select } from 'semantic-ui-react'
 import Menu from '@containers/company-profile/components/Menu'
+import { useDispatch, useSelector } from 'react-redux'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import CalendarEventFormModal from './event/create/form/modal'
+import moment from 'moment'
+import rrulePlugin from '@fullcalendar/rrule'
 import './styles.scss'
-import CompanyProfileCalendarFormModal from './create/form/modal'
-import { useHistory } from 'react-router-dom'
-const Layout = loadable(() => import('@components/Common/Layout'))
 
-const SetupCompanyProfileCalendar = () => {
+const SetupCompanyProfileCalendarDetail = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
-  const detail = useSelector(companyProfileCalendarDetailDuck.selectors.detail)
+  const eventDetail = useSelector(
+    companyProfileCalendarEventDetailDuck.selectors.detail
+  )
+  const { location: authLocation = '' } = useSelector(
+    authDuck.selectors.detail
+  )
+  const { items: locationList } = useSelector(locationDuck.selectors.list)
+  const [ location, setLocation ] = useState('')
+  const [ calendarId, setCalendarId ] = useState('')
+  const events = useSelector(companyProfileCalendarEventDuck.selectors.list)
 
-  useEffect(() => {
+  const _handleGetCalendarEvents = (loc) => {
+    const locationSelected = locationList.filter(({ id }) => id === loc)
+    const calendarId = locationSelected[0].employee_schedule.id
+    setCalendarId(calendarId)
     dispatch(
-      companyProfileCalendarDuck.creators.get()
+      companyProfileCalendarEventDuck.creators.get({
+        calendarId: locationSelected[0].employee_schedule.id
+      })
     )
-  }, [])
-
-  useEffect(() => {
-    if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
-      dispatch(
-        companyProfileCalendarDuck.creators.get()
-      )
-  }, [ detail.status ])
-
-  const _handleRowButtonClick = (button, reason) => {
-    if(button === 'edit')
-      dispatch(
-        companyProfileCalendarDetailDuck.creators.setItem(
-          reason,
-          'UPDATE'
-        )
-      )
-    if(button === 'delete')
-      dispatch(
-        companyProfileCalendarDetailDuck.creators.setItem(
-          reason,
-          'DELETE'
-        )
-      )
-    if(button === 'view')
-      history.push(`/setup/company-profile/calendar/${reason.id}`)
   }
 
-  const _handleActionClick = (action) => {
-    if(action === 'create')
-      dispatch(
-        companyProfileCalendarDetailDuck.creators.setItem(
-          null,
-          'CREATE'
-        )
+  useEffect(() => {
+    if(authLocation && locationList.length > 0) {
+      setLocation(authLocation)
+      _handleGetCalendarEvents(authLocation)
+    }
+  }, [ authLocation, locationList ])
+
+  useEffect(() => {
+    if([ 'DELETED', 'POSTED', 'PUT' ].includes(eventDetail.status))
+      dispatch(companyProfileCalendarEventDuck.creators.get({ calendarId }))
+  }, [ eventDetail.status ])
+
+  const _handleAddEvent = () => {
+    dispatch(
+      companyProfileCalendarEventDetailDuck.creators.setItem(
+        { calendarId },
+        'CREATE'
       )
+    )
+  }
+  const _handleChangeLocation = (event, { value }) => {
+    setLocation(value)
+    _handleGetCalendarEvents(value)
+  }
+
+  const _handleUpdateEvent = (event) => {
+    const { extendedProps } = event
+    dispatch(
+      companyProfileCalendarEventDetailDuck.creators.setItem(
+        {
+          ...extendedProps,
+          calendarId,
+          id        : event.id,
+          color     : event.backgroundColor,
+          start_date: moment(
+            extendedProps.started_at,
+            'YYYY-MM-DD[T]HH:mm:ssZ'
+          ).format('YYYY-MM-DD'),
+          start_time: moment(
+            extendedProps.started_at,
+            'YYYY-MM-DD[T]HH:mm:ssZ'
+          ).format('HH:mm'),
+          end_date: moment(
+            extendedProps.ended_at,
+            'YYYY-MM-DD[T]HH:mm:ssZ'
+          ).format('YYYY-MM-DD'),
+          end_time: moment(
+            extendedProps.ended_at,
+            'YYYY-MM-DD[T]HH:mm:ssZ'
+          ).format('HH:mm')
+        },
+        'UPDATE'
+      )
+    )
   }
 
   return (
@@ -65,19 +101,50 @@ const SetupCompanyProfileCalendar = () => {
       <Segment className='segment-content'>
         <Menu/>
         <Grid.Row>
-          <Header as='h2'>Calendar</Header>
-          <Table
-            config={companyProfileCalendarListConfig}
-            duck={companyProfileCalendarDuck}
-            onActionClick={_handleActionClick}
-            onRowButtonClick={_handleRowButtonClick}/>
+          <Grid
+            className='flex flex-row mv40 justify-between'
+            verticalAlign='middle'>
+            <Grid className='align-center'>
+              <Header as='h3' className='m0'>
+                Location:
+              </Header>
+              <Select
+                onChange={_handleChangeLocation}
+                options={locationList
+                  .filter(({ employee_schedule }) => employee_schedule)
+                  .map(({ id, name }) => {
+                    return {
+                      value: id,
+                      text : name
+                    }
+                  })}
+                placeholder='Select location'
+                value={location}/>
+            </Grid>
+            <Button
+              color='teal'
+              content='New Event'
+              icon='plus'
+              onClick={_handleAddEvent}/>
+          </Grid>
+          <FullCalendar
+            eventClassNames={'calendar-event'}
+            eventClick={(e) => _handleUpdateEvent(e.event)}
+            events={events.items}
+            headerToolbar={{
+              left  : 'prev,next',
+              center: 'title',
+              right : 'timeGridDay, timeGridWeek, dayGridMonth'
+            }}
+            initialView='dayGridMonth'
+            nowIndicator
+            plugins={[ rrulePlugin, dayGridPlugin, timeGridPlugin ]}
+            stickyHeaderDates/>
         </Grid.Row>
-        <CompanyProfileCalendarFormModal/>
-
-        <ModalDelete duckDetail={companyProfileCalendarDetailDuck}/>
+        <CalendarEventFormModal/>
       </Segment>
     </Layout>
   )
 }
 
-export default SetupCompanyProfileCalendar
+export default SetupCompanyProfileCalendarDetail
