@@ -19,7 +19,8 @@ const SetupServiceReservationIndex = () => {
   useEffect(() => {
     dispatch(
       serviceVariationDuck.creators.get({
-        service__type: 'C'
+        service__type: 'C',
+        type         : 'A,R'
       })
     )
 

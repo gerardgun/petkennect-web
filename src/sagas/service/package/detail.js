@@ -48,14 +48,11 @@ function* create() {
           value: id
         }))
       // get reservation types options
-      const { types: variationTypes } = variationDuck
-      yield put({
-        type   : variationTypes.SET_FILTERS,
-        payload: { service: detail.item.service, type: 'A,R' }
+      const variationList = yield call(Get, 'services-variations/', {
+        service: detail.item.service,
+        type   : 'A,R'
       })
-      yield* variationSaga.get()
-      const variationList = yield select(variationDuck.selectors.list)
-      reservationOptions = variationList.items.map(({ id, name }) => ({
+      reservationOptions = variationList.map(({ id, name }) => ({
         text : name,
         value: id
       }))
@@ -256,18 +253,14 @@ function* createGetReservations({ payload }) {
     const detail = yield select(selectors.detail)
     yield put({ type: types.GET_PENDING })
 
-    const { types: variationTypes } = variationDuck
-    yield put({ type: variationTypes.SET_FILTERS, payload })
-    yield* variationSaga.get()
-
-    const variationList = yield select(variationDuck.selectors.list)
+    const variationList = yield call(Get, 'services-variations/', payload)
 
     yield put({
       type   : types.GET_FULFILLED,
       payload: {
         form: {
           ...detail.form,
-          reservation_options: variationList.items.map(({ id, name }) => ({
+          reservation_options: variationList.map(({ id, name }) => ({
             text : name,
             value: id
           }))
