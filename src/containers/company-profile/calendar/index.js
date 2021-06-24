@@ -16,7 +16,7 @@ import moment from 'moment'
 import rrulePlugin from '@fullcalendar/rrule'
 import './styles.scss'
 
-const SetupCompanyProfileCalendarDetail = () => {
+const SetupCompanyProfileCalendarByLocation = () => {
   const dispatch = useDispatch()
   const eventDetail = useSelector(
     companyProfileCalendarEventDetailDuck.selectors.detail
@@ -147,4 +147,4 @@ const SetupCompanyProfileCalendarDetail = () => {
   )
 }
 
-export default SetupCompanyProfileCalendarDetail
+export default SetupCompanyProfileCalendarByLocation

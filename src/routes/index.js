@@ -223,7 +223,7 @@ import SettingsTrainingIndex from '@containers/settings/training'
 // Settings Company
 import SetupCompanyProfile from '@containers/company-profile'
 import SetupCompanyProfileContactBilling from '@containers/company-profile/contact-billing'
-import SetupCompanyProfileCalendar from '@containers/company-profile/calendar'
+import SetupCompanyProfileCalendarByLocation from '@containers/company-profile/calendar'
 import SetupCompanyProfileAccounting from '@containers/company-profile/accounting'
 import SetupCompanyProfileBranding from '@containers/company-profile/branding'
 import SetupCompanyProfileLocations from '@containers/company-profile/locations'
@@ -1027,7 +1027,7 @@ const privateRoutes = [
   },
   {
     path     : '/setup/company-profile/calendar',
-    component: SetupCompanyProfileCalendar
+    component: SetupCompanyProfileCalendarByLocation
   },
   {
     path     : '/setup/company-profile/branding',

@@ -10,7 +10,6 @@ import servicePackageListConfig from '@lib/constants/list-configs/service/packag
 import ServicePackageFormModal from '../create/form/modal'
 
 const Layout = loadable(() => import('@components/Common/Layout'))
-const Menu = loadable(() => import('../components/Menu'))
 const Tab = loadable(() => import('../components/Tab'))
 
 const SetupServicePackageDayServices = () => {
@@ -67,7 +66,6 @@ const SetupServicePackageDayServices = () => {
   return (
     <Layout>
       <Segment className='segment-content'>
-        <Menu/>
         <Tab>
           <Table
             config={servicePackageListConfig}
