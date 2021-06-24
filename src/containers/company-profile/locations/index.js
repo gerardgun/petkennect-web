@@ -11,6 +11,7 @@ import Menu from '@containers/company-profile/components/Menu'
 import Theme from '@components/mainTheme'
 
 import tenantDetailDuck from '@reducers/tenant/detail'
+import serviceGroupDuck from '@reducers/service/group'
 import locationDuck from '@reducers/location'
 import locationDetailDuck from '@reducers/location/detail'
 
@@ -20,6 +21,7 @@ const SetupCompanyProfileLocations = ({ location, locationDetail, ...props }) =>
 
   useEffect(() => {
     dispatch(locationDuck.creators.get())
+    dispatch(serviceGroupDuck.creators.get())
   }, [])
 
   useEffect(() => {

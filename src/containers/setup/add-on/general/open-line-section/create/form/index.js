@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Field, formValueSelector, reduxForm } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import {
   Checkbox,
   Form,
@@ -15,12 +15,11 @@ import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { OpenLineAddonServiceDefaultConfig } from '@lib/constants/service'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
-import moment from 'moment'
 import setupOpenLineAddonServiceSettingDetailDuck from '@reducers/service/addon/general/open-line-service/detail'
 
-const selector = formValueSelector('setup-open-line-addon-service')
+// const selector = formValueSelector('setup-open-line-addon-service')
 
-let startedAt = null
+// let startedAt = null
 const SetupOpenLineAddonServiceSettingForm = (props) => {
   const {
     error,
@@ -32,6 +31,7 @@ const SetupOpenLineAddonServiceSettingForm = (props) => {
   const detail = useSelector(
     setupOpenLineAddonServiceSettingDetailDuck.selectors.detail
   )
+  /*
   const price = useSelector((state) =>
     selector(
       state,
@@ -39,6 +39,7 @@ const SetupOpenLineAddonServiceSettingForm = (props) => {
     )
   ) || {}
   const { started_at = null } = price
+  */
 
   useEffect(() => {
     // Get default data to create a new open line
@@ -46,17 +47,17 @@ const SetupOpenLineAddonServiceSettingForm = (props) => {
   }, [])
 
   useEffect(() => {
-    if(editing) {
-      startedAt = detail.item.price.started_at
+    if(editing)
+      // startedAt = detail.item.price.started_at
       initialize({
         ...detail.item
       })
-    }
+
     // Set default data for new register
     else
-    {initialize({
-      ...OpenLineAddonServiceDefaultConfig
-    })}
+      initialize({
+        ...OpenLineAddonServiceDefaultConfig
+      })
   }, [ detail.item.id ])
 
   const _handleClose = () => {
@@ -118,47 +119,49 @@ const SetupOpenLineAddonServiceSettingForm = (props) => {
           search
           selectOnBlur={false}/>
       </Form.Group>
-      <Header as='h6' className='section-header' color='blue'>
-        Pricing
-      </Header>
+      {/*
+        <Header as='h6' className='section-header' color='blue'>
+          Pricing
+        </Header>
 
-      <Form.Group widths={2}>
-        <Field
-          component={FormField}
-          control={Input}
-          label='Price'
-          name='price.price'
-          parse={parseFloat}
-          placeholder='$0.00'
-          required
-          step='0.01'
-          type='number'/>
-        <Field
-          component={FormField}
-          control={Input}
-          label="Add'l Price"
-          name='price.additional_pet_price'
-          parse={parseFloat}
-          placeholder='$0.00'
-          type='number'/>
-      </Form.Group>
-      <Form.Group widths={2}>
-        <Field
-          component={FormField}
-          control={Input}
-          label='Start Date'
-          name='price.started_at'
-          required
-          type='date'/>
-        <Field
-          component={FormField}
-          control={Input}
-          disabled={!started_at}
-          label='End Date'
-          name='price.ended_at'
-          required
-          type='date'/>
-      </Form.Group>
+        <Form.Group widths={2}>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Price'
+            name='price.price'
+            parse={parseFloat}
+            placeholder='$0.00'
+            required
+            step='0.01'
+            type='number'/>
+          <Field
+            component={FormField}
+            control={Input}
+            label="Add'l Price"
+            name='price.additional_pet_price'
+            parse={parseFloat}
+            placeholder='$0.00'
+            type='number'/>
+        </Form.Group>
+        <Form.Group widths={2}>
+          <Field
+            component={FormField}
+            control={Input}
+            label='Start Date'
+            name='price.started_at'
+            required
+            type='date'/>
+          <Field
+            component={FormField}
+            control={Input}
+            disabled={!started_at}
+            label='End Date'
+            name='price.ended_at'
+            required
+            type='date'/>
+        </Form.Group>
+      */}
 
       <Header as='h6' className='section-header' color='blue'>
         Other Settings
@@ -195,8 +198,7 @@ const SetupOpenLineAddonServiceSettingForm = (props) => {
           control={Input}
           label='Custom Acct Cd'
           name='sku_id'
-          placeholder='Enter Custom Code'
-          required/>
+          placeholder='Enter Custom Code'/>
       </Form.Group>
       {error && (
         <Form.Group widths='equal'>
@@ -212,6 +214,7 @@ const SetupOpenLineAddonServiceSettingForm = (props) => {
 export default reduxForm({
   form    : 'setup-open-line-addon-service',
   validate: (values) => {
+    /*
     let validationStartedAt = Yup.date()
       .min(
         moment().subtract(1, 'days').toString(),
@@ -228,10 +231,11 @@ export default reduxForm({
         )
         .required('Start Date is required')
         .typeError('Start Date is required')
-
+    */
     const schema = {
       name     : Yup.string().required('Item Name is required'),
-      locations: Yup.array().required('Choose at least one location'),
+      locations: Yup.array().required('Choose at least one location')
+      /*
       price    : Yup.object().shape({
         price: Yup.number()
           .typeError('Price must be a number')
@@ -251,8 +255,8 @@ export default reduxForm({
               : schema.required('End Date is required')
           else return schema.required('End Date is required')
         })
-      }),
-      sku_id: Yup.string().required('Custom Code is required')
+      })*/
+      // sku_id: Yup.string().required('Custom Code is required')
     }
 
     return syncValidate(Yup.object().shape(schema), values)

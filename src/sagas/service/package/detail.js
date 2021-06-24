@@ -25,8 +25,8 @@ function* create() {
 
     // get services types of package
     const results = yield call(Get, 'services/', {
-      ordering         : 'name',
-      service_group__id: detail.item.service_group
+      ordering           : 'name',
+      service_group__type: detail.item.service__group_type
     })
 
     serviceOptions = results.map(({ id, name }) => ({

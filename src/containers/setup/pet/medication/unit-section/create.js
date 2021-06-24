@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Form, Header, Input, Modal } from 'semantic-ui-react'
+import { Select, Button, Form, Header, Input, Modal } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
@@ -10,10 +10,12 @@ import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
 
 import medicationUnitDetailDuck from '@reducers/pet/medication-setting/medication-unit/detail'
+import medicationTypeDuck from '@reducers/pet/medication-setting/medication-type'
 
 const MedicationUnitForm = (props) => {
   const {
     medicationUnitDetail,
+    medicationTypes,
     error,
     handleSubmit,
     reset,
@@ -72,6 +74,17 @@ const MedicationUnitForm = (props) => {
               placeholder='Enter unit'
               required/>
           </Form.Group>
+          <Form.Group widths='equal'>
+            <Field
+              component={FormField}
+              control={Select}
+              label='Type'
+              name='medication_type'
+              options={medicationTypes.items.map(type => {return ({ value: type.id, text: type.name })})}
+              placeholder='Select Type'
+              search
+              selectOnBlur={false}/>
+          </Form.Group>
 
           {error && (
             <Form.Group widths='equal'>
@@ -105,10 +118,14 @@ export default compose(
   connect(
     (state) => {
       const medicationUnitDetail = medicationUnitDetailDuck.selectors.detail(state)
+      const medicationTypes  = medicationTypeDuck.selectors.list(state)
 
       return {
         medicationUnitDetail,
-        initialValues: { ...medicationUnitDetail.item }
+        medicationTypes,
+        initialValues: {  name           : medicationUnitDetail.item.name && medicationUnitDetail.item.name,
+          medication_type: medicationUnitDetail.item.medication_type && medicationUnitDetail.item.medication_type.id
+        }
       }
     },
     {

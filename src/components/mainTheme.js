@@ -14,6 +14,8 @@ function ChangeHexClasss(color) {
     case '#808080': return 'grey'
     case '#000000': return 'black'
     case '#FFFFFF': return 'white'
+    case '#00000B': return 'black_text'
+    case '#FFFFF0': return 'white_text'
     default: return 'teal'
   }
 }
@@ -25,7 +27,7 @@ function  Theme(palette) {
 
   return ({
     buttonMenuColor: buttonMenuColor ? ChangeHexClasss(buttonMenuColor) : 'teal',
-    buttonTextColor: buttonTextColor ? ChangeHexClasss(buttonTextColor) : 'teal',
+    buttonTextColor: buttonTextColor ? ChangeHexClasss(buttonTextColor) : '#FFFFF0',
     headingColor   : headingColor ? ChangeHexClasss(headingColor) : 'teal'
   })
 }

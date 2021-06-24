@@ -48,7 +48,8 @@ import companyProfileCalendar from '@reducers/company-profile/calendar'
 import companyProfileCalendarDetail from '@reducers/company-profile/calendar/detail'
 import companyProfileCalendarEvent from '@reducers/company-profile/calendar/event'
 import companyProfileCalendarEventDetail from '@reducers/company-profile/calendar/event/detail'
-// import companyContactBillingDetail from '@reducers/company/contact-billing/detail'
+import companyProfileContactBilling from '@reducers/company-profile/contact-billing'
+import companyProfileContactBillingDetail from '@reducers/company-profile/contact-billing/detail'
 import customReport from '@reducers/custom-report'
 import customReportDetail from '@reducers/custom-report/detail'
 import customized from '@reducers/customized-field'
@@ -340,6 +341,7 @@ import systemRole from '@reducers/system-user-and-role/role'
 import systemRoleDetail from '@reducers/system-user-and-role/role/detail'
 import user from '@reducers/user'
 import userDetail from '@reducers/user/detail'
+import userFilesDetail from '@reducers/user_files/detail'
 import zip from '@reducers/zip'
 import zipDetail from '@reducers/zip/detail'
 const createRootReducer = history => combineReducers({
@@ -384,7 +386,8 @@ const createRootReducer = history => combineReducers({
   [companyProfileCalendarDetail.store]                     : companyProfileCalendarDetail.reducer,
   [companyProfileCalendarEvent.store]                      : companyProfileCalendarEvent.reducer,
   [companyProfileCalendarEventDetail.store]                : companyProfileCalendarEventDetail.reducer,
-  // [companyContactBillingDetail.store]                      : companyContactBillingDetail.reducer,
+  [companyProfileContactBilling.store]                     : companyProfileContactBilling.reducer,
+  [companyProfileContactBillingDetail.store]               : companyProfileContactBillingDetail.reducer,
   [customReport.store]                                     : customReport.reducer,
   [customReportDetail.store]                               : customReportDetail.reducer                ,
   [customized.store]                                       : customized.reducer,
@@ -681,6 +684,7 @@ const createRootReducer = history => combineReducers({
   [systemRoleDetail.store]                                 : systemRoleDetail.reducer,
   [user.store]                                             : user.reducer,
   [userDetail.store]                                       : userDetail.reducer,
+  [userFilesDetail.store]                                  : userFilesDetail.reducer,
   [zip.store]                                              : zip.reducer,
   [zipDetail.store]                                        : zipDetail.reducer
 })

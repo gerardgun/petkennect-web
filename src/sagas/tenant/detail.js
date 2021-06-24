@@ -37,7 +37,14 @@ const parseTenant = tenant => {
       appointment_capacity: _merge({
         enable_booking_override: false
       }, _get(tenant, 'service_config.appointment_capacity', {})),
-      addon: _get(tenant, 'service_config.addon', {})
+      addon: _get(tenant, 'service_config.addon', {}),
+      food : _merge({
+        charge_type      : null,
+        charge_type_price: 0
+      }, _get(tenant, 'service_config.food', {})),
+      medication: _merge({
+        charge_type: 'noCharge'
+      }, _get(tenant, 'service_config.medication',{}))
     }
   }
 }

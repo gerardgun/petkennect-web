@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch, useSelector } from 'react-redux'
-import { reduxForm } from 'redux-form'
+import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Label, Image, Icon, Button, Divider, Form, Grid, Header, Input, Segment } from 'semantic-ui-react'
 import * as Yup from 'yup'
 
@@ -10,7 +10,10 @@ import Theme from '@components/mainTheme'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
 import tenantDetailDuck from '@reducers/tenant/detail'
-import { syncValidate } from '@lib/utils/functions'
+import userFilesDetailDuck from '@reducers/user_files/detail'
+import FormError from '@components/Common/FormError'
+import FormField from '@components/Common/FormField'
+import { parseResponseError, syncValidate } from '@lib/utils/functions'
 import { deleteImage } from './utils'
 
 const colors = [
@@ -30,8 +33,8 @@ const colors = [
 ]
 
 const textColors = [
-  { color: 'black', label: '#000000' },
-  { color: 'white', label: '#FFFFFF' }
+  { color: 'black', label: '#000000', labelC: '#00000B' },
+  { color: 'white', label: '#FFFFFF', labelC: '#FFFFF0' }
 ]
 
 function SetupCompanyProfileBranding(props) {
@@ -69,12 +72,15 @@ function SetupCompanyProfileBranding(props) {
   })
 
   const _handleSubmit = () => {
+    console.log(logo, background)
     const newColors = {branding_config: {
                         navigation_color: navColor ? navColor.label:tenant.item.branding_config.navigation_color, 
-                        navigation_text_color: textColor ? textColor.label:tenant.item.branding_config.navigation_text_color, 
+                        navigation_text_color: textColor ? textColor.labelC:tenant.item.branding_config.navigation_text_color, 
                         heading_text_color: headingColor ? headingColor.label:tenant.item.branding_config.heading_text_color, 
                       }}
     dispatch(tenantDetailDuck.creators.put(newColors))
+    //if(logo[0]){dispatch(tenantDetailDuck.creators.put(  ) )}
+    //if(background[0]){dispatch(userFilesDetailDuck.creators.post( {file: background[0]} ) )}
     setNavColor();setHeadingColor();setTextColor()
   }
 
@@ -143,11 +149,11 @@ function SetupCompanyProfileBranding(props) {
                     size='mini'/>))}
               </Grid.Column>
               <Grid.Column width='4'>
-                {navColor
-              && <Label basic className='label-color'>
-                <Button className='button-color' color={navColor.color} size='mini'/>
-                {navColor.label}
-              </Label>}
+                {navColor && 
+                <Label basic className='label-color'>
+                  <Button className='button-color' color={navColor.color} size='mini'/>
+                  {navColor.label}
+                </Label>}
               </Grid.Column>
             </Grid.Row>
 
@@ -187,8 +193,8 @@ function SetupCompanyProfileBranding(props) {
               <Grid.Column width='4'>
                 {headingColor
               && <Label basic className='label-color'>
-                <Button className='button-color' color={headingColor.color} size='mini'/>
-                {headingColor.label}
+                  <Button className='button-color' color={headingColor.color} size='mini'/>
+                  {headingColor.label}
               </Label>}
               </Grid.Column>
             </Grid.Row>
@@ -209,7 +215,11 @@ export default reduxForm({
   form              : 'setup-company-profile-branding',
   enableReinitialize: true,
   validate          : values => {
-    const schema = {}
+    const schema = {
+      navigation_text_color : Yup.string().required('Navigation Text Color is required'),
+      navigation_color      : Yup.string().required('Navigation Color is required'),
+      heading_text_color    : Yup.string().required('Heading Text Color is required'),
+    }
 
     return syncValidate(Yup.object().shape(schema), values)
   }

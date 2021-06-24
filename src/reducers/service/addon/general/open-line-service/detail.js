@@ -13,15 +13,12 @@ export default base({
 })
   .extend(detail)
   .extend({
-    types   : [ 'DELETE', 'POST_PRICE' ],
+    types   : [ 'DELETE' ],
     creators: ({
       types: {
         DELETE,
         DELETE_FULFILLED,
-        DELETE_FAILURE,
-        POST_PRICE,
-        POST_FULFILLED,
-        POST_FAILURE
+        DELETE_FAILURE
       }
     }) => ({
       'delete': (payload = {}) => ({
@@ -29,12 +26,6 @@ export default base({
         payload,
         [WAIT_FOR_ACTION]: DELETE_FULFILLED,
         [ERROR_ACTION]   : DELETE_FAILURE
-      }),
-      postPrice: (payload = {}) => ({
-        type             : POST_PRICE,
-        payload,
-        [WAIT_FOR_ACTION]: POST_FULFILLED,
-        [ERROR_ACTION]   : POST_FAILURE
       })
     })
   })

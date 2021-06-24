@@ -8,10 +8,8 @@ import servicePackageDuck from '@reducers/service/package'
 import servicePackageDetailDuck from '@reducers/service/package/detail'
 import servicePackageListConfig from '@lib/constants/list-configs/service/package'
 import ServicePackageFormModal from '../create/form/modal'
-import serviceGroups from '@lib/constants/serviceGroups'
 
 const Layout = loadable(() => import('@components/Common/Layout'))
-const Menu = loadable(() => import('../components/Menu'))
 const Tab = loadable(() => import('../components/Tab'))
 
 const SetupServicePackageGrooming = ()=>{
@@ -20,28 +18,28 @@ const SetupServicePackageGrooming = ()=>{
 
   useEffect(() => {
     dispatch(
-      servicePackageDuck.creators.get({ service__group_id: 4, type: 'P' })
+      servicePackageDuck.creators.get({ service__group_type: 'G', type: 'P' })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        servicePackageDuck.creators.get({ service__group_id: 4, type: 'P' })
+        servicePackageDuck.creators.get({ service__group_type: 'G', type: 'P' })
       )
   }, [ detail.status ])
 
   const _handleActionClick = action => {
     if(action === 'create')
       dispatch(
-        servicePackageDetailDuck.creators.setItem({ service_group: serviceGroups.GROOMING }, 'CREATE')
+        servicePackageDetailDuck.creators.setItem({ service__group_type: 'G' }, 'CREATE')
       )
   }
 
   const _handleRowButtonClick = (button, reason) => {
     if(button === 'edit')
       dispatch(
-        servicePackageDetailDuck.creators.setItem({ ...reason, service_group: 4 }, 'UPDATE')
+        servicePackageDetailDuck.creators.setItem({ ...reason, service__group_type: 'G' }, 'UPDATE')
       )
     if(button === 'copy')
       return dispatch(
@@ -52,8 +50,8 @@ const SetupServicePackageGrooming = ()=>{
   const _handleSearch = (str) => {
     dispatch(
       servicePackageDuck.creators.get({
-        search       : str,
-        service_group: 4
+        search             : str,
+        service__group_type: 'G'
       })
     )
   }
@@ -61,7 +59,6 @@ const SetupServicePackageGrooming = ()=>{
   return (
     <Layout>
       <Segment className='segment-content'>
-        <Menu/>
         <Tab>
           <Table
             config={servicePackageListConfig}

@@ -10,7 +10,6 @@ import servicePackageListConfig from '@lib/constants/list-configs/service/packag
 import ServicePackageFormModal from '../create/form/modal'
 
 const Layout = loadable(() => import('@components/Common/Layout'))
-const Menu = loadable(() => import('../components/Menu'))
 const Tab = loadable(() => import('../components/Tab'))
 
 const SetupServicePackageDayServices = () => {
@@ -20,14 +19,14 @@ const SetupServicePackageDayServices = () => {
 
   useEffect(() => {
     dispatch(
-      servicePackageDuck.creators.get({ service__group_id: 3, type: 'P' })
+      servicePackageDuck.creators.get({ service__group_type: 'D', type: 'P' })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        servicePackageDuck.creators.get({ service__group_id: 3, type: 'P' })
+        servicePackageDuck.creators.get({ service__group_type: 'D', type: 'P' })
       )
   }, [ detail.status ])
 
@@ -35,7 +34,7 @@ const SetupServicePackageDayServices = () => {
     if(action === 'create')
       dispatch(
         servicePackageDetailDuck.creators.setItem(
-          { service_group: 3 },
+          { service__group_type: 'D' },
           'CREATE'
         )
       )
@@ -45,7 +44,7 @@ const SetupServicePackageDayServices = () => {
     if(button === 'edit')
       dispatch(
         servicePackageDetailDuck.creators.setItem(
-          { ...reason, service_group: 3 },
+          { ...reason, service__group_type: 'D' },
           'UPDATE'
         )
       )
@@ -58,8 +57,8 @@ const SetupServicePackageDayServices = () => {
   const _handleSearch = (str) => {
     dispatch(
       servicePackageDuck.creators.get({
-        search       : str,
-        service_group: 3
+        search             : str,
+        service__group_type: 'D'
       })
     )
   }
@@ -67,7 +66,6 @@ const SetupServicePackageDayServices = () => {
   return (
     <Layout>
       <Segment className='segment-content'>
-        <Menu/>
         <Tab>
           <Table
             config={servicePackageListConfig}
