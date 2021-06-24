@@ -1,29 +1,53 @@
-import React, { useState } from 'react'
-import { Field, reduxForm } from 'redux-form'
-import { Form, Grid, Header, Input, Select, Segment } from 'semantic-ui-react'
-import * as Yup from 'yup'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Field, formValueSelector, reduxForm } from 'redux-form'
+import { Button, Form, Grid, Header, Input, Select, Segment } from 'semantic-ui-react'
+import * as yup from 'yup'
 
 import FormField from '@components/Common/FormField'
 import FormError from '@components/Common/FormError'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/setup/pet/components/Menu'
 import Tab from '@containers/setup/pet/feeding/components/Tab'
-import { syncValidate } from '@lib/utils/functions'
+import { parseResponseError, syncValidate } from '@lib/utils/functions'
+
+import tenantDetailDuck from '@reducers/tenant/detail'
+
+const selector = formValueSelector('setup-pet-feeding-setting')
 
 const SetupPetFeedingSettingIndex = props => {
   const {
-    error, handleSubmit // redux-form
+    error, handleSubmit, initialize, reset, submitting // redux-form
   } = props
 
-  const [ chargesType, setChargesType ] = useState('noCharge')
-
-  const _handleItemSelect = (value)=>{
-    setChargesType(value)
-  }
+  const dispatch = useDispatch()
+  const detail = useSelector(tenantDetailDuck.selectors.detail)
+  const charge_type = useSelector(state => selector(state, 'charge_type'))
 
   const _handleSubmit = values => {
-    console.log(values)
+    return dispatch(tenantDetailDuck.creators.put({
+      service_config: {
+        ...detail.item.service_config,
+        food: {
+          ...detail.item.service_config.food,
+          ...values,
+          charge_type: values.charge_type === 'null' ? null : values.charge_type
+        }
+      }
+    }))
+      .catch(parseResponseError)
   }
+
+  useEffect(() => {
+    if(detail.item.id) {
+      const config = detail.item.service_config.food
+
+      initialize({
+        ...config,
+        charge_type: config.charge_type + ''
+      })
+    }
+  }, [ detail.item.id ])
 
   return (
     <Layout>
@@ -32,7 +56,7 @@ const SetupPetFeedingSettingIndex = props => {
 
         <Tab>
           {/* eslint-disable-next-line react/jsx-handler-names */}
-          <Form onSubmit={handleSubmit(_handleSubmit)}>
+          <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='5'>
@@ -50,17 +74,11 @@ const SetupPetFeedingSettingIndex = props => {
                     component={FormField}
                     control={Select}
                     name='charge_type'
-                    onChange={_handleItemSelect}
                     options={[
-                      {
-                        key: 1, value: 'noCharge', text: 'No Charges Apply'
-                      },{
-                        key: 2, value: 'perDay', text: 'Yes, Per Day, Per Dog'
-                      },{
-                        key: 3, value: 'perMeal', text: 'Yes, Per Meal, Per Dog'
-                      },{
-                        key: 4, value: 'perBag', text: 'Yes, Per Bag (requires count)'
-                      }
+                      { key: 1, value: 'null', text: 'No Charges Apply' },
+                      { key: 2, value: 'per_day', text: 'Yes, Per Day, Per Dog' },
+                      { key: 3, value: 'per_meal', text: 'Yes, Per Meal, Per Dog' },
+                      { key: 4, value: 'per_bag', text: 'Yes, Per Bag (requires count)' }
                     ]}
                     placeholder='Select Charges'
                     selectOnBlur={false}/>
@@ -69,7 +87,7 @@ const SetupPetFeedingSettingIndex = props => {
             </Grid>
 
             {
-              chargesType !== 'noCharge' && (
+              charge_type !== 'null' && (
                 <React.Fragment>
                   <Grid style={{ padding: '1rem' }}>
                     <Grid.Row>
@@ -77,8 +95,13 @@ const SetupPetFeedingSettingIndex = props => {
                         <Header as='h4'>
                           <p className='mb0'>
                             {
-                              chargesType === 'perDay' ? 'Enter the Charge Per Day, Per Dog'
-                                : chargesType === 'perMeal' ? 'Enter the Charge Per Meal, Per Dog' : 'Enter the Charge Per Bag'
+                              charge_type === 'per_day' ? (
+                                'Enter the Charge Per Day, Per Dog'
+                              ) : charge_type === 'per_meal' ? (
+                                'Enter the Charge Per Meal, Per Dog'
+                              ) : (
+                                'Enter the Charge Per Bag'
+                              )
                             }
                           </p>
                           <Header.Subheader className='ml8 mt4'>
@@ -92,8 +115,10 @@ const SetupPetFeedingSettingIndex = props => {
                           className='w50'
                           component={FormField}
                           control={Input}
-                          name='daily_charge'
-                          placeholder='$0'
+                          name='charge_type_price'
+                          parse={parseFloat}
+                          placeholder='$0.00'
+                          required
                           type='number'/>
                       </Grid.Column>
                     </Grid.Row>
@@ -102,13 +127,26 @@ const SetupPetFeedingSettingIndex = props => {
               )
             }
 
-            {/* <Divider className='mt20'/> */}
-
             {
               error && (
-                <FormError message={error}/>
+                <Form.Group widths='equal'>
+                  <Form.Field>
+                    <FormError message={error}/>
+                  </Form.Field>
+                </Form.Group>
               )
             }
+
+            <Form.Group className='form-modal-actions' widths='equal'>
+              <Form.Field>
+                <Button
+                  color='teal'
+                  content='Save changes'
+                  disabled={submitting}
+                  loading={submitting}
+                  type='submit'/>
+              </Form.Field>
+            </Form.Group>
 
           </Form>
         </Tab>
@@ -118,11 +156,16 @@ const SetupPetFeedingSettingIndex = props => {
 }
 
 export default reduxForm({
-  form              : 'setup-pet-vaccination-setting',
-  enableReinitialize: true,
-  validate          : values => {
-    const schema = {}
+  form    : 'setup-pet-feeding-setting',
+  validate: values => {
+    let schema = {}
 
-    return syncValidate(Yup.object().shape(schema), values)
+    if(values.charge_type !== 'null')
+      schema = {
+        ...schema,
+        charge_type_price: yup.number().typeError('Price must be a number').required('Price is required')
+      }
+
+    return syncValidate(yup.object().shape(schema), values)
   }
 })(SetupPetFeedingSettingIndex)
