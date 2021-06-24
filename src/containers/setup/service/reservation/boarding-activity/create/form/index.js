@@ -44,7 +44,7 @@ const ServiceReservationCreateForm = props => {
         price    : lastPrice ? ({
           ...lastPrice,
           started_at: lastPrice.started_at.split('T')[0],
-          ended_at  : lastPrice.ended_at.split('T')[0]
+          ended_at  : lastPrice.ended_at ? lastPrice.ended_at.split('T')[0] : null
         }) : ({
           ...ServiceReservationDefaultConfig.price
         })
@@ -69,8 +69,10 @@ const ServiceReservationCreateForm = props => {
   }
 
   const _handleSubmit = values => {
-    if(values.sku_id === detail.item.sku_id)
-      delete values.sku_id
+    delete values.service_open_line_addon
+    delete values.service_surcharge
+    delete values.service_transport_addon
+    delete values.service_true_addon
 
     if(editing)
       return dispatch(serviceVariationDetailDuck.creators.putBoardingActivity({ id: detail.item.id, ...values }))
@@ -237,7 +239,6 @@ const ServiceReservationCreateForm = props => {
           control={Input}
           label='End Date'
           name='price.ended_at'
-          required
           type='date'/>
       </Form.Group>
       <Form.Group widths={2}>
@@ -306,7 +307,6 @@ export default reduxForm({
       price                : yup.object().shape({
         price     : yup.number().typeError('Price must be a number').required('Price is required'),
         started_at: yup.date().min(moment().subtract(1, 'days').toString(), 'Start Date must be a valid date').required('Start Date is required'),
-        ended_at  : yup.date().min(moment().subtract(1, 'days').toString(), 'Start Date must be a valid date').required('End Date is required'),
         ...extra
       }),
       config: yup.object().shape({
