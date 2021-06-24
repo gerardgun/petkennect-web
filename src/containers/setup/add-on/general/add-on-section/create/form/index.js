@@ -334,6 +334,7 @@ const SetupAddonServiceSettingForm = (props) => {
           label='Duration'
           name='duration_minutes'
           placeholder='Enter duration'
+          required
           step='0.01'
           toggle
           type='number'/>
@@ -460,7 +461,8 @@ export default reduxForm({
         })
       }),
       employee_schedule: Yup.string().required('Time Offered is required'),
-      sku_id           : Yup.string().required('Custom Code is required')
+      sku_id           : Yup.string().required('Custom Code is required'),
+      duration_minutes : Yup.string().required('Duration is required')
     }
 
     return syncValidate(Yup.object().shape(schema), values)
