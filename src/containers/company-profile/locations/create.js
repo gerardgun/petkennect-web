@@ -1,16 +1,16 @@
+/* eslint-disable */
 import React, { useMemo, useState, useEffect } from 'react'
 // import MapPicker from 'react-google-map-picker'
-import { useDispatch, connect } from 'react-redux'
+import { useDispatch, connect, useSelector } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
 import { Field, reduxForm } from 'redux-form'
-import { Icon, Label, Divider, Grid, Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
+import { Checkbox, Table, Icon, Label, Divider, Grid, Button, Form, Header, Input, Modal, Select } from 'semantic-ui-react'
 
 import * as Yup from 'yup'
 
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
-import Table from '@components/Table'
 import { googleApiKey } from '@lib/constants'
 import { parseFormValues, parseResponseError, syncValidate } from '@lib/utils/functions'
 import kennelAreaListConfig from '@lib/constants/list-configs/service/location'
@@ -29,26 +29,29 @@ const social_options = [
 const LocationCreate = props => {
   const {
     locationDetail,
-    // location,
-    ServiceList,
     error, handleSubmit, reset, submitting // redux-form
   } = props
 
-  const[sundayStart, setSundayStart] = useState('9:00')
-  const[sundayEnd, setSundayEnd] = useState('6:00')
-  const[mondayStart, setMondayStart] = useState('9:00')
-  const[mondayEnd, setMondayEnd] = useState('6:00')
-  const[tuesdayStart, setTuesdayStart] = useState('9:00')
-  const[tuesdayEnd, setTuesdayEnd] = useState('6:00')
-  const[wednesdayStart, setWednesdayStart] = useState('9:00')
-  const[wednesdayEnd, setWednesdayEnd] = useState('6:00')
-  const[thursdayStart, setThursdayStart] = useState('9:00')
-  const[thursdayEnd, setThursdayEnd] = useState('6:00')
-  const[fridayStart, setFridayStart] = useState('9:00')
-  const[fridayEnd, setFridayEnd] = useState('6:00')
-  const[saturdayStart, setSaturdayStart] = useState('9:00')
-  const[saturdayEnd, setSaturdayEnd] = useState('6:00')
-  const[showEdit, setShowEdit] = useState(false)
+  const dispatch = useDispatch()
+  const ServiceList = useSelector(serviceGroupDuck.selectors.list)
+  /* eslint-disable-next-line no-unused-vars */
+  const [ defaultLocation, setDefaultLocation ] = useState({ lat: 0, lng: 0 })
+
+  const[sundayStart, setSundayStart] = useState('09:00')
+  const[sundayEnd, setSundayEnd] = useState('18:00')
+  const[mondayStart, setMondayStart] = useState('09:00')
+  const[mondayEnd, setMondayEnd] = useState('18:00')
+  const[tuesdayStart, setTuesdayStart] = useState('09:00')
+  const[tuesdayEnd, setTuesdayEnd] = useState('18:00')
+  const[wednesdayStart, setWednesdayStart] = useState('09:00')
+  const[wednesdayEnd, setWednesdayEnd] = useState('18:00')
+  const[thursdayStart, setThursdayStart] = useState('09:00')
+  const[thursdayEnd, setThursdayEnd] = useState('18:00')
+  const[fridayStart, setFridayStart] = useState('09:00')
+  const[fridayEnd, setFridayEnd] = useState('18:00')
+  const[saturdayStart, setSaturdayStart] = useState('09:00')
+  const[saturdayEnd, setSaturdayEnd] = useState('18:00')
+  const[showEdit, setShowEdit] = useState(true)
 
   const setStartTimes = (timeStart) =>{
     if(timeStart){
@@ -63,17 +66,6 @@ const LocationCreate = props => {
       setWednesdayEnd(timeEnd);setThursdayEnd(timeEnd);setFridayEnd(timeEnd);setSaturdayEnd(timeEnd);
     }
   }
-
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if(ServiceList.items.length === 0)
-      dispatch(
-        serviceGroupDuck.creators.get()
-      )
-  }, [])
-  /* eslint-disable-next-line no-unused-vars */
-  const [ defaultLocation, setDefaultLocation ] = useState({ lat: 0, lng: 0 })
 
   useEffect(() => {
     if(locationDetail.mode === 'UPDATE')
@@ -157,12 +149,18 @@ const LocationCreate = props => {
   }*/
 
   const _handleSubmit = values => {
-    const { first_name, last_name,
-      email_address, phone_number,
-      fax_number, media_site, media_url, ...rest } = parseFormValues(values)
+    const event_dates = [{id:1, start: mondayStart,    end: mondayEnd},
+                         {id:2, start: tuesdayStart,   end: tuesdayEnd},
+                         {id:3, start: wednesdayStart, end: wednesdayEnd},
+                         {id:4, start: thursdayStart,  end: thursdayEnd},
+                         {id:5, start: fridayStart,    end: fridayEnd},
+                         {id:6, start: saturdayStart,  end: saturdayEnd},
+                         {id:7, start: sundayStart,    end: sundayEnd}]
 
-    values = { ...rest,
-      employee_schedule_id: 1,
+    const { first_name, last_name, email_address, phone_number, 
+            fax_number, media_site, media_url, ...rest } = parseFormValues(values)
+
+    const new_location = { ...rest,
       contact_people      : [ {
         first_name  : first_name,
         last_name   : last_name,
@@ -173,9 +171,10 @@ const LocationCreate = props => {
       social_networks: [ {
         type: media_site,
         url : media_url
-      } ]
+      } ],
+      dates: event_dates
     }
-
+    console.log(new_location)
     if(typeof values.description === 'string' && !values.description.trim())
       delete values.description
 
@@ -184,7 +183,7 @@ const LocationCreate = props => {
         .then(_handleClose)
         .catch(parseResponseError)
     else
-      return props.post(values)
+      return props.post(new_location)
         .then(_handleClose)
         .catch(parseResponseError)
   }
@@ -193,18 +192,6 @@ const LocationCreate = props => {
   const isOpened = useMemo(() => {
     return locationDetail.mode === 'CREATE' || locationDetail.mode === 'UPDATE'
   }, [ locationDetail.mode ])
-
-  /* const locationOptions = useMemo(() => {
-    return location.items.map(item => ({
-      key  : item.id,
-      value: item.id,
-      text : (
-        <span>
-          {item.name} <span style={{ color: 'grey', marginLeft: '0.3rem' }}>{item.code}</span>
-        </span>
-      )
-    }))
-  }, [ location.status ])*/
 
   return (
     <Modal
@@ -215,7 +202,7 @@ const LocationCreate = props => {
       <Modal.Content>
         <Header as='h2' className='segment-content-header'>{isUpdating ? 'Update' : 'New'} Location</Header>
         {/* eslint-disable-next-line react/jsx-handler-names */}
-        <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)}>
+        <Form onReset={reset} onSubmit={handleSubmit(_handleSubmit)} >
           <Field component='input' name='latitude' type='hidden'/>
           <Field component='input' name='longitude' type='hidden'/>
           <Field component='input' name='post_code' type='hidden'/>
@@ -358,25 +345,6 @@ const LocationCreate = props => {
             </Grid.Row>
           </Grid>
 
-          {/* <Grid>
-            <Grid.Row>
-              <Grid.Column width='4'>
-                <p>Website</p>
-                <Divider className='mv4'/>
-              </Grid.Column>
-              <Grid.Column width='12'>
-                <Field
-                  autoComplete='off'
-                  component={FormField}
-                  control={Input}
-                  name='website'
-                  placeholder='Enter Website URL'
-                  type='url'
-                  required/>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>*/}
-
           <Grid>
             <Grid.Row>
               <Grid.Column width='4'>
@@ -414,9 +382,61 @@ const LocationCreate = props => {
                 <Divider className='mv4'/>
               </Grid.Column>
               <Grid.Column width='12'>
-                <Table
-                  config={kennelAreaListConfig}
-                  duck={serviceGroupDuck}/>
+                {console.log('Hereeeeeeeeeeee',ServiceList)}
+                {isUpdating ? 
+                <Table>
+                </Table>:
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Service</Table.HeaderCell>
+                      <Table.HeaderCell>Enable</Table.HeaderCell>
+                      <Table.HeaderCell>Taxable</Table.HeaderCell>
+                      <Table.HeaderCell>Tax Rate</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                  {ServiceList.items.map((item,index)=>{
+                  return(
+                    <Table.Row>
+                      <Table.Cell>
+                        {item.name}
+                        <Field
+                        component='input'
+                        name={`services[${index}].service_group_id`}
+                        defaultValue={item.id}
+                        hidden/>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Field
+                        autoComplete='off'
+                        component={FormField}
+                        control={Checkbox}
+                        name={`services[${index}].is_active`}
+                        defaultValue={true}/>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Field
+                        autoComplete='off'
+                        component={FormField}
+                        control={Checkbox}
+                        name={`services[${index}].is_taxable`}
+                        />
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Field
+                        autoComplete='off'
+                        component={FormField}
+                        control={Input}
+                        placeholder='0'
+                        name={`services[${index}].tax_percentage`}
+                        readOnly
+                        required/>
+                      </Table.Cell>
+                    </Table.Row>
+                    )})}
+                  </Table.Body>
+                </Table>}
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -435,177 +455,132 @@ const LocationCreate = props => {
                   placeholder='Enter timezone'
                   readOnly
                   required/>
-                 <Grid>
+
+              {!isUpdating &&
+                <Grid>
                   <Grid.Row>
-                    <Grid.Column width='6'>
+                    <Grid.Column width='7'>
                       <div className='day-hours'>
                         <p>Sunday</p>
-                        <p>{sundayStart} am - {sundayEnd} pm</p>
+                        <div className='input-hours'>
+                          <Input type='time' min="00:00" max="11:00"
+                            value={sundayStart}
+                            onChange={(e) => setSundayStart(e.target.value)} 
+                            disabled={showEdit}/>
+                          <p> to </p>
+                          <Input type='time' min="12:00" max="23:00"
+                            value={sundayEnd}
+                            onChange={(e) => setSundayEnd(e.target.value)}
+                            disabled={showEdit}/>
+                        </div>
                       </div>
+
                       <div className='day-hours'>
                         <p>Monday</p>
-                        <p>{mondayStart} am - {mondayEnd} pm</p>
+                        <div className='input-hours'>
+                          <Input type='time' min="00:00" max="11:00"
+                            value={mondayStart}
+                            onChange={(e) => setMondayStart(e.target.value)}
+                            disabled={showEdit}/>
+                          <p> to </p>
+                          <Input type='time' min="12:00" max="23:00"
+                            value={mondayEnd}
+                            onChange={(e) => setMondayEnd(e.target.value)}
+                            disabled={showEdit}/>
+                        </div>
                       </div>
+
                       <div className='day-hours'>
                         <p>Tuesday</p>
-                        <p>{tuesdayStart} am - {tuesdayEnd} pm</p>
+                        <div className='input-hours'>
+                          <Input type='time' min="00:00" max="11:00"
+                            value={tuesdayStart}
+                            onChange={(e) => setTuesdayStart(e.target.value)} 
+                            disabled={showEdit}/>
+                          <p> to </p>
+                          <Input type='time' min="12:00" max="23:00"
+                            value={tuesdayEnd}
+                            onChange={(e) => setTuesdayEnd(e.target.value)} 
+                            disabled={showEdit}/>
+                        </div>
                       </div>
+
                       <div className='day-hours'>
                         <p>Wednesday</p>
-                        <p>{wednesdayStart} am - {wednesdayEnd} pm</p>
+                        <div className='input-hours'>
+                          <Input type='time' min="00:00" max="11:00"
+                            value={wednesdayStart}
+                            onChange={(e) => setWednesdayStart(e.target.value)} 
+                            disabled={showEdit}/>
+                          <p> to </p>
+                          <Input type='time' min="12:00" max="23:00"
+                            value={wednesdayEnd}
+                            onChange={(e) => setWednesdayEnd(e.target.value)} 
+                            disabled={showEdit}/>
+                        </div>
                       </div>
+
                       <div className='day-hours'>
                         <p>Thursday</p>
-                        <p>{thursdayStart} am - {thursdayEnd} pm</p>
+                        <div className='input-hours'>
+                          <Input type='time' min="00:00" max="11:00"
+                            value={thursdayStart}
+                            onChange={(e) => setThursdayStart(e.target.value)} 
+                            disabled={showEdit}/>
+                          <p> to </p>
+                          <Input type='time' min="12:00" max="23:00"
+                            value={thursdayEnd}
+                            onChange={(e) => setThursdayEnd(e.target.value)} 
+                            disabled={showEdit}/>
+                        </div>
                       </div>
+
                       <div className='day-hours'>
                         <p>Friday</p>
-                        <p>{fridayStart} am - {fridayEnd} pm</p>
+                        <div className='input-hours'>
+                          <Input type='time' min="00:00" max="11:00"
+                            value={fridayStart} 
+                            onChange={(e) => setFridayStart(e.target.value)} 
+                            disabled={showEdit}/>
+                          <p> to </p>
+                          <Input type='time' min="12:00" max="23:00" 
+                            value={fridayEnd}
+                            onChange={(e) => setFridayEnd(e.target.value)} 
+                            disabled={showEdit}/>
+                        </div>
                       </div>
+
                       <div className='day-hours'>
                         <p>Saturday</p>
-                        <p>{saturdayStart} am - {saturdayEnd} pm</p>
+                        <div className='input-hours'>
+                          <Input type='time' min="00:00" max="11:00" 
+                            value={saturdayStart}
+                            onChange={(e) => setSaturdayStart(e.target.value)} 
+                            disabled={showEdit}/>
+                          <p> to </p>
+                          <Input type='time' min="12:00" max="23:00" 
+                            value={saturdayEnd}
+                            onChange={(e) => setSaturdayEnd(e.target.value)} 
+                            disabled={showEdit}/>
+                        </div>
                       </div>
                     </Grid.Column>
-                    <Grid.Column width='1'>
-                        {/* eslint-disable-next-line react/jsx-handler-names */}
-                        <Icon name='pencil' onClick={() => setShowEdit(true)} />
-                    </Grid.Column>
-                    {showEdit &&
-                      <>
-                          <Grid.Column width='7'>
-                            <div className='day-hours'>
-                              <p>Sunday</p>
-                              <div className='input-hours'>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setSundayStart(TimeAmPm(e.target.value))}/><p> to </p>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setSundayEnd(TimeAmPm(e.target.value))}/></div>
-                            </div>
-                            <div className='day-hours'>
-                              <p>Monday</p>
-                              <div className='input-hours'>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setMondayStart(TimeAmPm(e.target.value))}/><p> to </p>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setMondayEnd(TimeAmPm(e.target.value))}/></div>
-                            </div>
-                            <div className='day-hours'>
-                              <p>Tuesday</p>
-                              <div className='input-hours'>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setTuesdayStart(TimeAmPm(e.target.value))}/><p> to </p>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setTuesdayEnd(TimeAmPm(e.target.value))}/></div>
-                            </div>
-                            <div className='day-hours'>
-                              <p>Wednesday</p>
-                              <div className='input-hours'>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setWednesdayStart(TimeAmPm(e.target.value))}/><p> to </p>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setWednesdayEnd(TimeAmPm(e.target.value))}/></div>
-                            </div>
-                            <div className='day-hours'>
-                              <p>Thursday</p>
-                              <div className='input-hours'>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setThursdayStart(TimeAmPm(e.target.value))}/><p> to </p>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setThursdayEnd(TimeAmPm(e.target.value))}/></div>
-                            </div>
-                            <div className='day-hours'>
-                              <p>Friday</p>
-                              <div className='input-hours'>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setFridayStart(e.target.value)}/><p> to </p>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setFridayEnd(e.target.value)}/></div>
-                            </div>
-                            <div className='day-hours'>
-                              <p>Saturday</p>
-                              <div className='input-hours'>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="00:00" max="11:00" onChange={(e)=> e.target.value && setSaturdayStart(e.target.value)}/><p> to </p>
-                                {/* eslint-disable-next-line react/jsx-handler-names */}
-                                <Input type='time' min="12:00" max="23:00" onChange={(e)=> e.target.value && setSaturdayEnd(e.target.value)}/></div>
-                            </div>
-                          </Grid.Column>
-                          <Grid.Column width='1'>
-                            {/* eslint-disable-next-line react/jsx-handler-names */}
-                            <Label onClick={()=>{setStartTimes(sundayStart); setEndTimes(sundayEnd)} }>
-                              <Icon name='copy' color='teal' outline />
-                            </Label>
-                          </Grid.Column>
+                    <Grid.Column width='2'>
+                      {showEdit ? 
+                        <Icon name='edit outline' size='large' onClick={()=>setShowEdit(false)}/>:
+                        <>
+                        <Icon name='copy outline' color='blue' size='large' onClick={() => {setStartTimes(sundayStart);setEndTimes(sundayEnd)}}/>
+                        <Icon name='close' color='red' size='large' onClick={() => setShowEdit(true)}/>
                         </>}
+                    </Grid.Column>
                   </Grid.Row>
                 </Grid>
+              }
+
               </Grid.Column>
             </Grid.Row>
           </Grid>
 
-          {/* <Form.Group widths={3}>
-            <Field
-              autoComplete='off'
-              component={FormField}
-              control={Input}
-              label='Code'
-              name='code'
-              placeholder='Enter code'
-              required/>
-            <Field
-              autoComplete='off'
-              component={FormField}
-              control={Input}
-              label='Name'
-              name='name'
-              placeholder='Enter name'
-              required/>
-            <Field
-              autoComplete='off'
-              component={FormField}
-              control={Input}
-              label='Time Zone'
-              name='timezone'
-              placeholder='Enter timezone'
-              readOnly
-            required/>
-          </Form.Group>*/}
-          {/*
-            locationDetail.mode === 'CREATE' && (
-              <Form.Group widths='equal'>
-                <Field
-                  component={FormField}
-                  control={Select}
-                  label='Copy Position From'
-                  name='copy_position_from'
-                  onChange={_handlePositionOptionChange}
-                  options={locationOptions}
-                  placeholder='Select a location to copy his geolocation information'
-                  search
-                  selectOnBlur={false}/>
-              </Form.Group>
-            )
-          }
-          <Form.Group widths='equal'>
-            <Field
-              autoComplete='off'
-              component={FormField}
-              control={Input}
-              label='Address'
-              name='address'
-              onChange={_handleAddressChange}
-              placeholder='Enter address'
-              required/>
-          </Form.Group>
-          <Form.Group widths='equal'>
-            <Field
-              component={FormField}
-              control={TextArea}
-              label='Description'
-              name='description'
-              placeholder='Enter description'/>
-            </Form.Group>*/}
           <Divider/>
           {
             error && (
@@ -622,7 +597,7 @@ const LocationCreate = props => {
               <Button
                 basic
                 className='w120'
-                color='teal'
+                color='red'
                 content='Cancel'
                 disabled={submitting}
                 onClick={_handleClose}
@@ -645,8 +620,6 @@ export default compose(
   connect(
     state => {
       const locationDetail = locationDetailDuck.selectors.detail(state)
-      const location = locationDuck.selectors.list(state)
-      const ServiceList = serviceGroupDuck.selectors.list(state)
       const initialValues = { post_code    : locationDetail.item.zip && locationDetail.item.zip.postal_code,
         region_code  : locationDetail.item.zip && locationDetail.item.zip.state_code,
         country_code : locationDetail.item.zip && locationDetail.item.zip.country_code,
@@ -661,8 +634,6 @@ export default compose(
 
       return {
         locationDetail,
-        location,
-        ServiceList,
         initialValues
       }
     },
@@ -687,7 +658,6 @@ export default compose(
         phone_number : Yup.string().required('Phone number is required'),
         fax_number   : Yup.string().required('Fax number is required'),
         email_address: Yup.string().required('Email is required'),
-        // website      : Yup.string().required('Website is required'),
         media_site   : Yup.string().required('Media Site is required'),
         media_url    : Yup.string().required('Url is Required'),
         post_code    : Yup.string().required('Enter a valid Street'),
@@ -698,3 +668,4 @@ export default compose(
     }
   })
 )(LocationCreate)
+/* eslint-enable */

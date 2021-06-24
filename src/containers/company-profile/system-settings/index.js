@@ -60,7 +60,11 @@ const SetupCompanyProfileSystemSettings = props => {
   }
 
   useEffect(() => {
-    if(tenant.item.id) initialize(tenant.item.system_config)
+    if(tenant.item.id) initialize({
+      date_format     : tenant.item.system_config.date_format,
+      time_format     : tenant.item.system_config.time_format,
+      weight_type     : tenant.item.system_config.weight_type,
+      currency_format : 1})
   }, [ tenant.item.id ])
 
 return (
@@ -143,8 +147,7 @@ return (
                       control={Select}
                       name='currency_format'
                       options={[
-                        { value: 1, text: 'US Dollar' },
-                        { value: 2, text: 'Euro' },
+                        { value: 1, text: 'US Dollar' }
                       ]}
                       placeholder='Select format'
                       search
