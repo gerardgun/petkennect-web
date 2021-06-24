@@ -27,11 +27,13 @@ export default {
       name        : 'applies_locations',
       type        : 'string'
     },
+    /*
     {
       display_name: 'Price',
       name        : 'price.price',
       type        : 'money'
     },
+    */
     {
       display_name: 'Can be\nnegative\n(Credit)',
       name        : 'service_open_line_addon.can_be_credit_negative',

@@ -347,8 +347,7 @@ const SetupTransportAddonServiceSettingForm = (props) => {
           control={Input}
           label='Custom Acct Cd'
           name='sku_id'
-          placeholder='Enter Custom Code'
-          required/>
+          placeholder='Enter Custom Code'/>
 
       </Form.Group>
       {error && (
@@ -411,8 +410,8 @@ export default reduxForm({
               : schema.required('End Date is required')
           else return schema.required('End Date is required')
         })
-      }),
-      sku_id: Yup.string().required('Custom Code is required')
+      })
+      // sku_id: Yup.string().required('Custom Code is required')
     }
 
     return syncValidate(Yup.object().shape(schema), values)

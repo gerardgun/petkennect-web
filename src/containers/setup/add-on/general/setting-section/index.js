@@ -128,12 +128,11 @@ const SetupAddOnGeneralSettingIndex = (props) => {
               </Grid.Row>
             </Grid>
 
+            {/*
             <Divider className='mt20'/>
-
             <Header as='h4' color='teal'>
               Multiple Location Setup
             </Header>
-
             <Grid style={{ padding: '1rem' }}>
               <Grid.Row>
                 <Grid.Column width='7'>
@@ -157,6 +156,7 @@ const SetupAddOnGeneralSettingIndex = (props) => {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
+            */}
 
             {error && <FormError message={error}/>}
             {confirmText && (

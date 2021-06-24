@@ -20,14 +20,14 @@ const SetupServicePackageDayServices = () => {
 
   useEffect(() => {
     dispatch(
-      servicePackageDuck.creators.get({ service__group_id: 3, type: 'P' })
+      servicePackageDuck.creators.get({ service__group_type: 'D', type: 'P' })
     )
   }, [])
 
   useEffect(() => {
     if([ 'DELETED', 'POSTED', 'PUT' ].includes(detail.status))
       dispatch(
-        servicePackageDuck.creators.get({ service__group_id: 3, type: 'P' })
+        servicePackageDuck.creators.get({ service__group_type: 'D', type: 'P' })
       )
   }, [ detail.status ])
 
@@ -35,7 +35,7 @@ const SetupServicePackageDayServices = () => {
     if(action === 'create')
       dispatch(
         servicePackageDetailDuck.creators.setItem(
-          { service_group: 3 },
+          { service__group_type: 'D' },
           'CREATE'
         )
       )
@@ -45,7 +45,7 @@ const SetupServicePackageDayServices = () => {
     if(button === 'edit')
       dispatch(
         servicePackageDetailDuck.creators.setItem(
-          { ...reason, service_group: 3 },
+          { ...reason, service__group_type: 'D' },
           'UPDATE'
         )
       )
@@ -58,8 +58,8 @@ const SetupServicePackageDayServices = () => {
   const _handleSearch = (str) => {
     dispatch(
       servicePackageDuck.creators.get({
-        search       : str,
-        service_group: 3
+        search             : str,
+        service__group_type: 'D'
       })
     )
   }

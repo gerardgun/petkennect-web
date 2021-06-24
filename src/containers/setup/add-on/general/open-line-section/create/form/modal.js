@@ -5,25 +5,15 @@ import { Button, Form, Header, Modal } from 'semantic-ui-react'
 import SetupOpenLineAddonServiceSettingForm from './index'
 
 import setupOpenLineAddonServiceSettingDetailDuck from '@reducers/service/addon/general/open-line-service/detail'
-import { formValueSelector } from 'redux-form'
-
-const selector = formValueSelector('setup-open-line-addon-service')
 
 const SetupOpenLineAddonServiceSettingFormModal = () => {
   const dispatch = useDispatch()
   const detail = useSelector(setupOpenLineAddonServiceSettingDetailDuck.selectors.detail)
-  const price = useSelector(state => selector(state, 'price'))
 
   const _handleClose = () => {
     dispatch(
       setupOpenLineAddonServiceSettingDetailDuck.creators.resetItem()
     )
-  }
-
-  const _handleUpdatePricingBtnClick = () => {
-    return dispatch(setupOpenLineAddonServiceSettingDetailDuck.creators.postPrice({ service_variation_id: detail.item.id, ...price }))
-      .then(_handleClose)
-      // .catch(parseResponseError)
   }
 
   const editing = Boolean(detail.item.id)
@@ -43,16 +33,6 @@ const SetupOpenLineAddonServiceSettingFormModal = () => {
 
         <Form.Group className='form-modal-actions' widths='equal'>
           <Form.Field>
-            {
-              editing && (
-                <Button
-                  color='violet'
-                  content='Update Pricing'
-                  disabled={saving}
-                  onClick={_handleUpdatePricingBtnClick}
-                  type='button'/>
-              )
-            }
             <Button
               basic
               className='w120'
