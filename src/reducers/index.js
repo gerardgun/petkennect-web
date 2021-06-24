@@ -341,6 +341,7 @@ import systemRole from '@reducers/system-user-and-role/role'
 import systemRoleDetail from '@reducers/system-user-and-role/role/detail'
 import user from '@reducers/user'
 import userDetail from '@reducers/user/detail'
+import userFilesDetail from '@reducers/user_files/detail'
 import zip from '@reducers/zip'
 import zipDetail from '@reducers/zip/detail'
 const createRootReducer = history => combineReducers({
@@ -683,6 +684,7 @@ const createRootReducer = history => combineReducers({
   [systemRoleDetail.store]                                 : systemRoleDetail.reducer,
   [user.store]                                             : user.reducer,
   [userDetail.store]                                       : userDetail.reducer,
+  [userFilesDetail.store]                                  : userFilesDetail.reducer,
   [zip.store]                                              : zip.reducer,
   [zipDetail.store]                                        : zipDetail.reducer
 })

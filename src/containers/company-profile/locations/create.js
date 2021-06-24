@@ -456,7 +456,7 @@ const LocationCreate = props => {
                   readOnly
                   required/>
 
-              {!isUpdating &&
+              
                 <Grid>
                   <Grid.Row>
                     <Grid.Column width='7'>
@@ -575,7 +575,6 @@ const LocationCreate = props => {
                     </Grid.Column>
                   </Grid.Row>
                 </Grid>
-              }
 
               </Grid.Column>
             </Grid.Row>
