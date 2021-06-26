@@ -1,5 +1,5 @@
 import React, { useMemo, useState,useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { compose } from 'redux'
 import { Link, useHistory } from 'react-router-dom'
 import { GoClippy } from 'react-icons/go'
@@ -9,6 +9,7 @@ import { getAbbreviature } from '@lib/utils/functions'
 
 import authDuck from '@reducers/auth'
 import applicationDuck from '@reducers/application'
+import tenantDetailDuck from '@reducers/tenant/detail'
 
 import './styles.scss'
 
@@ -16,6 +17,7 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
   const [ show, setShow ] = useState(false)
   const [ searchResult, setSearchResult ] = useState([])
   const [ searchConditionType, setSearchConditionType ] = useState('all')
+  const tenant = useSelector(tenantDetailDuck.selectors.detail)
 
   useEffect(() => {
     setSearchResult(applicationDetail.appbar_search_results)
@@ -83,7 +85,7 @@ const AppBar = ({ auth, location, applicationDetail, ...props }) => {
                 <div style={{ 'float': 'left', marginTop: '-8px' }}>
                   <Image
                     className='mt4'
-                    height='80px' src='/images/petKennectTenantLogo.png'/>
+                    height='80px' src={tenant.item.service_config  ? tenant.item.service_config.boarding.file_name : '/images/petKennectTenantLogo.png'}/>
                 </div>
                 <div className='search-dropdown'>
                   <Dropdown

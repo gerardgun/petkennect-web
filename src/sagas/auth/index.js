@@ -2,6 +2,7 @@ import { getLocation } from 'connected-react-router'
 import { call, fork, put, select, take, takeEvery } from 'redux-saga/effects'
 
 import { Get, Patch, Post, Put, reHydrateToken, reHydrateTenant as _reHydrateTenant } from '@lib/utils/http-client'
+import { reHydrateToken as commonReHydrateToken } from '@lib/utils/http-client/common'
 import * as tenantDetailSaga from '@sagas/tenant/detail'
 import * as petSaga from '@sagas/pet'
 
@@ -20,6 +21,7 @@ function* check() {
     if(token) {
       // Get session user data if token exists
       reHydrateToken(token)
+      commonReHydrateToken(token)
       _reHydrateTenant(tenant)
 
       yield* get()
@@ -153,6 +155,7 @@ function* signIn({ payload }) {
     // Setting the token
     localStorage.setItem('@token', token)
     reHydrateToken(token)
+    commonReHydrateToken(token)
 
     yield* get()
 
@@ -191,6 +194,7 @@ function* signOut() {
     })
 
     reHydrateToken()
+    commonReHydrateToken()
     _reHydrateTenant()
 
     yield put({
