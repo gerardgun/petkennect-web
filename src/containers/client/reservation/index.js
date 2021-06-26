@@ -30,6 +30,7 @@ import locationDuck from '@reducers/location'
 import petKennelTypeDuck from '@reducers/pet/pet-kennel-type'
 import petReservationDetailDuck from '@reducers/pet/reservation/detail'
 import BoardingReservationForm from './boarding-reservation'
+import DayServicesReservationForm from './day-services-reservation'
 import './styles.scss'
 
 const Reservation = ({
@@ -181,6 +182,7 @@ const Reservation = ({
             </Grid>
 
             {activeReservationItem === 'B' && <BoardingReservationForm/>}
+            {activeReservationItem === 'F' && <DayServicesReservationForm/>}
 
             {/*
               {activeReservationItem === 'D' && (

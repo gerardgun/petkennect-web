@@ -52,7 +52,7 @@ const SelectPetsSectionForm = (props) => {
               </Grid.Column>
               <Grid.Column width={10}>
                 <Header as='p' className='m0'>
-                  {pet.name}
+                  {pet.name}, {(pet.weight).toFixed(2)} lbs
                 </Header>
                 <Header as='p' className='m0 fw400 f16'>
                   {pet.breed_name}
