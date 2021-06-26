@@ -15,7 +15,8 @@ import {
   formValueSelector,
   FieldArray,
   reduxForm,
-  getFormSyncErrors
+  getFormSyncErrors,
+  submit
 } from 'redux-form'
 import * as Yup from 'yup'
 
@@ -138,8 +139,8 @@ const BoardingSectionFirst = (props) => {
 
   const _handleShowPetsError = () => {
     const { pets = {} } = formErrors
-    if(typeof pets === 'object') setPetsError(true)
-    else setPetsError(false)
+    if(Array.isArray(pets)) setPetsError(false)
+    else setPetsError(true)
   }
 
   const _handleChangeArrivingTime = (value) => {
@@ -180,9 +181,30 @@ const BoardingSectionFirst = (props) => {
     )
   }
 
+  const _handleQuickBook = () => {
+    _handleShowPetsError()
+    change('submit_mode', 'reserve')
+    setTimeout(() => {
+      dispatch(submit('boarding-form'))
+    }, 500)
+  }
+
+  const _handleChangeStep = () => {
+    _handleShowPetsError()
+    change('submit_mode', 'change')
+    setTimeout(() => {
+      dispatch(submit('boarding-form'))
+    }, 500)
+  }
+
   return (
     // eslint-disable-next-line react/jsx-handler-names
     <Form id='boarding-form' onReset={reset} onSubmit={handleSubmit}>
+      <Field
+        component={FormField}
+        control={Input}
+        name='submit_mode'
+        type='hidden'/>
       <Grid id='boarding-container'>
         <Grid.Column width={16}>
           <Grid columns='equal'>
@@ -535,14 +557,13 @@ const BoardingSectionFirst = (props) => {
                 <Button
                   color='green'
                   form='boarding-form'
-                  onClick={_handleShowPetsError}
-                  type='submit'>
+                  onClick={_handleQuickBook}
+                  type='button'>
                   QUICK BOOK:
                   <br/>
                   NO OTHER SERVICES
                 </Button>
-                {/* eslint-disable-next-line react/jsx-handler-names*/}
-                <Button color='teal'>
+                <Button color='teal' onClick={_handleChangeStep} type='button'>
                   CONTINUE:
                   <br/>
                   ADD OTHER SERVICES
@@ -566,7 +587,7 @@ export default reduxForm({
       applies_location    : Yup.string().required('Location is required'),
       applies_service_type: Yup.string().required('Service Type is required'),
       pets                : Yup.array()
-        .required('Choose at least one pet')
+        .min(1, 'Choose at least one pet')
         .of(
           Yup.object().shape(
             {
@@ -577,7 +598,7 @@ export default reduxForm({
               applies_frequency    : Yup.string().required('Frequency is required'),
               applies_selected_days: Yup.mixed().when('applies_frequency', {
                 is       : 'C',
-                then     : Yup.array().required('Choose at least one day'),
+                then     : Yup.array().min(1, 'Choose at least one day').required('Choose at least one day'),
                 otherwise: Yup.mixed()
               })
             },

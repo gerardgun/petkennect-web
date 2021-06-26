@@ -1,15 +1,13 @@
 import React from 'react'
-import { Field, formValueSelector, getFormSyncErrors } from 'redux-form'
-import { Divider, Grid, Header, Icon, Image, Select } from 'semantic-ui-react'
+import { Field, formValueSelector } from 'redux-form'
+import { Divider, Grid, Header, Icon, Image, Input, Select } from 'semantic-ui-react'
 import DayPicker from 'react-day-picker'
 import FormField from '@components/Common/FormField'
 import { useSelector } from 'react-redux'
 import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
 import moment from 'moment'
-import FormError from '@components/Common/FormError'
 
 const selector = formValueSelector('boarding-form')
-const getFormErrors = getFormSyncErrors('boarding-form')
 const PetList = ({ fields }) => {
   const detail = useSelector(
     boardingReservationBookDetailDuck.selectors.detail
@@ -18,7 +16,6 @@ const PetList = ({ fields }) => {
     (state) =>
       selector(state, 'applies_service_type', 'arriving_date', 'departing_date')
   )
-  const formErrors = useSelector((state) => getFormErrors(state))
 
   const _handleChangeReservation = (value, index) => {
     const packageSelected = fields.get(index).applies_package
@@ -198,14 +195,13 @@ const PetList = ({ fields }) => {
                   _handleDayClick(day, modifiers, index)
                 }
                 selectedDays={fields.get(index).applies_selected_days}/>
-              {formErrors.pets
-                && formErrors.pets[index]
-                && formErrors.pets[index].applies_selected_days && (
-                <Grid className='text-error'>
-                  <FormError
-                    message={formErrors.pets[index].applies_selected_days}/>
-                </Grid>
-              )}
+              <Grid className='text-error'>
+                <Field
+                  component={FormField}
+                  control={Input}
+                  name={`${item}.applies_selected_days`}
+                  type='hidden'/>
+              </Grid>
             </Grid>
           )}
         </Grid.Row>

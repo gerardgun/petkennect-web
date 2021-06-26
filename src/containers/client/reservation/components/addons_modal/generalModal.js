@@ -17,7 +17,7 @@ function GeneralModal() {
     <Modal
       // eslint-disable-next-line react/jsx-handler-names
       onClose={() => setOpen(false)} onOpen={() => setOpen(true)} open={open}
-      trigger={<Button disabled={SelectedPets.length === 0} positive type='button'>Edit</Button>}>
+      trigger={<Button color='green' disabled={SelectedPets.length === 0} type='button'>Edit</Button>}>
       <Modal.Content>
         {SelectedPets.map((pet, index) =>
           (<PetCard

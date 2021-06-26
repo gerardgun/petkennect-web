@@ -5,7 +5,7 @@ import { Grid, Icon, Step } from 'semantic-ui-react'
 
 // Custom components and libs (alphabetically order)
 import BoardingSectionFirst from './section-first'
-import serviceGroups from '@lib/constants/serviceGroups'
+import BoardingSectionSecond from './section-second'
 
 // Duck reducers (alphabetically order)
 import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
@@ -17,9 +17,16 @@ const BoardingReservationForm = () => {
   const [ step, setStep ] = useState(1)
   const { client = null, pet = null } = useParams()
 
-  const _handleNextStep = (values) => {
+  const _handleSubmit = (values) => {
+    const { submit_mode } = values
     console.log(values)
-    setStep(step + 1)
+    if(submit_mode === 'change') {
+      setStep(step + 1)
+
+      return
+    }
+
+    // crear reserva
   }
 
   useEffect(() => {
@@ -27,15 +34,13 @@ const BoardingReservationForm = () => {
     if(pet)
       dispatch(
         boardingReservationBookDetailDuck.creators.create({
-          pet,
-          service_group: serviceGroups.BOARDING
+          pet
         })
       )
     else
       dispatch(
         boardingReservationBookDetailDuck.creators.create({
-          client,
-          service_group: serviceGroups.BOARDING
+          client
         })
       )
   }, [])
@@ -70,7 +75,10 @@ const BoardingReservationForm = () => {
       </Grid.Row>
 
       {
-        step === 1 && <BoardingSectionFirst onSubmit={_handleNextStep}/>
+        step === 1 && <BoardingSectionFirst onSubmit={_handleSubmit}/>
+      }
+      {
+        step === 2 && <BoardingSectionSecond/>
       }
 
     </Grid>
