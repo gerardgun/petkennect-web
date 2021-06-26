@@ -1,105 +1,88 @@
-import { syncValidate } from '@lib/utils/functions'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { reduxForm } from 'redux-form'
-import { Form, Grid, Icon, Step } from 'semantic-ui-react'
-import * as Yup from 'yup'
-import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { Grid, Icon, Step } from 'semantic-ui-react'
+
+// Custom components and libs (alphabetically order)
 import BoardingSectionFirst from './section-first'
 import BoardingSectionSecond from './section-second'
-import { useParams } from 'react-router-dom'
 
-const BoardingReservationForm = (props) => {
+// Duck reducers (alphabetically order)
+import boardingReservationBookDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
+
+import '../styles.scss'
+
+const BoardingReservationForm = () => {
   const dispatch = useDispatch()
-  const detail = useSelector(boardingReservationBookDetailDuck.selectors.detail)
-  const editing = Boolean(detail.item.id)
-  const { reset, handleSubmit, initialize, comesFromPetScreen } = props
   const [ step, setStep ] = useState(1)
-  const { client = null } = useParams()
-  const { pet = null } = useParams()
+  const { client = null, pet = null } = useParams()
 
-  const _handleSubmit = () => {
-    setStep(1)
+  const _handleSubmit = (values) => {
+    const { submit_mode } = values
+    console.log(values)
+    if(submit_mode === 'change') {
+      setStep(step + 1)
+
+      return
+    }
+
+    // crear reserva
   }
 
   useEffect(() => {
     // Get default data to create a new boarding reservation
-    if(comesFromPetScreen)
-      dispatch(boardingReservationBookDetailDuck.creators.create({ pet }))
+    if(pet)
+      dispatch(
+        boardingReservationBookDetailDuck.creators.create({
+          pet
+        })
+      )
     else
-      dispatch(boardingReservationBookDetailDuck.creators.create({ client }))
-  }, [])
-
-  useEffect(() => {
-    if(editing)  console.log('editing')
-    else
-      initialize({
-        pets: []
-      })
-
-    return () => {}
+      dispatch(
+        boardingReservationBookDetailDuck.creators.create({
+          client
+        })
+      )
   }, [])
 
   return (
     <Grid>
       <Grid.Row>
-        <Grid.Column  only='large screen' width={2}/>
+        <Grid.Column only='large screen' width={2}/>
         <Grid.Column largeScreen={12} widescreen={16}>
-          <Step.Group>
-            {/* eslint-disable-next-line react/jsx-handler-names*/}
-            <Step active={step === 1} completed={step > 1} onClick={() => setStep(1)} >
-              <Icon name='check circle outline'/>
+          <Step.Group className='reservation-steps'>
+            <Step className='step' completed={step > 1}>
+              <Icon name='check circle'/>
               <Step.Content>
                 <Step.Title>Service Information</Step.Title>
               </Step.Content>
             </Step>
-            {/* eslint-disable-next-line react/jsx-handler-names*/}
-            <Step active={step === 2} completed={step > 2} onClick={() => setStep(2)} >
-              <Icon name='check circle outline'/>
+            <Step completed={step > 2}>
+              <Icon name='check circle'/>
               <Step.Content>
                 <Step.Title>Additional Services</Step.Title>
               </Step.Content>
             </Step>
-            {/* eslint-disable-next-line react/jsx-handler-names*/}
-            <Step active={step === 3} completed={step > 3} onClick={() => setStep(3)} >
-              <Icon name='check circle outline'/>
+            <Step completed={step > 3}>
+              <Icon name='check circle'/>
               <Step.Content>
                 <Step.Title>Summary</Step.Title>
               </Step.Content>
             </Step>
           </Step.Group>
         </Grid.Column>
-        <Grid.Column  only='large screen' width={2}/>
+        <Grid.Column only='large screen' width={2}/>
       </Grid.Row>
-      <Form
-        // eslint-disable-next-line react/jsx-handler-names
-        className='w100' id='boarding-form' onReset={reset}
-        // eslint-disable-next-line react/jsx-handler-names
-        onSubmit={handleSubmit(_handleSubmit)}>
-        {step === 1 && (
-          <BoardingSectionFirst {...props}/>
-        )}
-        {step === 2 && <BoardingSectionSecond/>}
-      </Form>
-    </Grid>
 
+      {
+        step === 1 && <BoardingSectionFirst onSubmit={_handleSubmit}/>
+      }
+      {
+        step === 2 && <BoardingSectionSecond/>
+      }
+
+    </Grid>
   )
 }
 
-const commonDefaultProps = {
-}
-
-BoardingReservationForm.defaultProps = {
-  childProps        : commonDefaultProps,
-  comesFromPetScreen: true,
-  ...commonDefaultProps
-}
-
-export default reduxForm({
-  form    : 'boarding-form',
-  validate: (values) => {
-    const schema = {}
-
-    return syncValidate(Yup.object().shape(schema), values)
-  }
-})(BoardingReservationForm)
+export default BoardingReservationForm

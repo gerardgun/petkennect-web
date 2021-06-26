@@ -2,7 +2,7 @@ import React from 'react'
 import { Button,  Divider, Grid, Header } from 'semantic-ui-react'
 import GeneralModal from '@containers/client/reservation/components/addons_modal/generalModal'
 import FeedingModal from '@containers/client/reservation/components/addons_modal/feedingModal'
-import MedicationModal from '@containers/client/reservation/components/addons_modal/medicationModal'
+import MedicationModal from '@containers/client/reservation/components/addons_modal/medication/modal'
 import GroomingModal from '@containers/client/reservation/components/addons_modal/groomingModal'
 import TransportModal from '@containers/client/reservation/components/addons_modal/transportModal'
 

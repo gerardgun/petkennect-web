@@ -6,10 +6,11 @@ import clientPetDuck from '@reducers/client/pet'
 
 const { types, selectors } = clientPetDuck
 
-export function* get(/* { payload }*/) {
+export function* get({ payload }) {
   try {
-    yield put({ type: types.GET_PENDING })
+    yield put({ type: types.SET_FILTERS, payload })
 
+    yield put({ type: types.GET_PENDING })
     const filters = yield select(selectors.filters)
     const list = yield select(selectors.list)
 

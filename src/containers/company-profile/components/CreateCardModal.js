@@ -6,15 +6,12 @@ import * as Yup from 'yup'
 
 import FormField from '@components/Common/FormField'
 import { Form, Modal, Button, Checkbox, Divider, Grid, Header, Input, Select } from 'semantic-ui-react'
-import { PetCard } from '@components/PetCard'
 
 const selector = formValueSelector('card-form')
 
-function CreateCardModal (){
+function CreateCardModal() {
   const dispatch = useDispatch()
-  const [open, setOpen] = React.useState(false)
-
-
+  const [ open, setOpen ] = React.useState(false)
 
   return (
     <Modal
@@ -22,8 +19,7 @@ function CreateCardModal (){
       onOpen={() => setOpen(true)}
       open={open}
       size='mini'
-      trigger={<Button positive>Add New Card</Button>}
-    >
+      trigger={<Button positive>Add New Card</Button>}>
       <Modal.Header>Add New Card</Modal.Header>
       <Modal.Content>
         <Form id='card-form'>
@@ -66,7 +62,7 @@ function CreateCardModal (){
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={() => setOpen(false)} negative>
+        <Button negative onClick={() => setOpen(false)}>
           Cancel
         </Button>
         <Button onClick={() => setOpen(false)} positive >

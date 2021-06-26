@@ -1,6 +1,56 @@
-#pets-section{
+.pet-avatar{
+  height: 75px;
+  width: 75px;
+}
+.selectable-dates{
+  margin-top: -40px;
+  .DayPicker-Day {
+    cursor: pointer !important;
+  }
+  .DayPicker-Day--disabled {
+    cursor: default !important;
+  }
+}
+.grid-pet{
+  position: relative;
+  &.with-picker{
+    margin-bottom: 80px;
+  }
+  .picker-pet{
+    position: absolute;
+    right: -90px;
+    top: 10px;
+    z-index: 6;
+    .text-error{
+      margin-top: -20px;
+    }
+  }
+}
+@media (max-width: 1200px) {
   .pet-avatar{
-    height: 75px;
-    width: 75px;
+    height: 65px;
+    width: 65px;
+  }
+  .grid-pet{
+    &.with-picker{
+      margin-bottom: 0px;
+    }
+    .picker-pet{
+      position: absolute;
+      right: 90px;
+      top: 40px;
+    }
+  }
+}
+@media (max-width: 991px) {
+  .grid-pet{
+    &.with-picker{
+      margin-bottom: 210px;
+    }
+    .picker-pet{
+      position: absolute;
+      right: 0px;
+      top: 180px;
+    }
   }
 }

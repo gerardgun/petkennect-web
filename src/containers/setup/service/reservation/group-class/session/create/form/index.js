@@ -161,6 +161,7 @@ const ServiceVariationReleaseCreateForm = props => {
     )
   }
 
+  // eslint-disable-next-line no-unused-vars
   const _handleDayClick = day => {
     setPicker(prev => {
       let ranges = prev.selectedDayRanges

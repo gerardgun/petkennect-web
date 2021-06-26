@@ -836,6 +836,7 @@ const privateRoutes = [
     path     : '/setup/settings/training',
     component: SettingsTrainingIndex
   },
+  // /////////
   {
     path     : '/setup/training/method',
     component: SetupTrainingMethodIndex
