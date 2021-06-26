@@ -32,7 +32,8 @@ const parseTenant = tenant => {
         dog_size                      : 1,
         time_checkout                 : '12:00',
         checkout_prior                : 1,
-        checkout_after                : 1
+        checkout_after                : 1,
+        file_name                     : '/images/petKennectTenantLogo.png'
       }, _get(tenant, 'service_config.boarding', {})),
       appointment_capacity: _merge({
         enable_booking_override: false
@@ -44,7 +45,8 @@ const parseTenant = tenant => {
       }, _get(tenant, 'service_config.food', {})),
       medication: _merge({
         charge_type: 'noCharge'
-      }, _get(tenant, 'service_config.medication',{}))
+      }, _get(tenant, 'service_config.medication',{})),
+      logo_file: _get(tenant, 'service_config.logo_file',{})
     }
   }
 }

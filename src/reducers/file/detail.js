@@ -3,7 +3,7 @@ import detail from '@reducers/common/detail'
 
 export default base({
   namespace   : '@@pet-kennect',
-  store       : 'user-files/detail',
+  store       : 'file/detail',
   initialState: {}
 })
   .extend(detail)

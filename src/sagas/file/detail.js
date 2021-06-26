@@ -1,18 +1,21 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 
-import { Post } from '@lib/utils/http-client'
+import { Post } from '@lib/utils/http-client/common'
 
-import userFilesDetailDuck from '@reducers/user_files/detail'
+import fileDetailDuck from '@reducers/file/detail'
 
-const { types } = userFilesDetailDuck
+const { types } = fileDetailDuck
 
 function* post({ payload }) {
   try {
     yield put({ type: types.POST_PENDING })
 
-    yield call(Post, '/common/user-files/', payload)
+    const result = yield call(Post, '/common/user-files/', payload)
 
-    yield put({ type: types.POST_FULFILLED })
+    yield put({
+      type   : types.POST_FULFILLED,
+      payload: result
+    })
   } catch (e) {
     yield put({
       type : types.POST_FAILURE,

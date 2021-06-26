@@ -10,7 +10,7 @@ import Theme from '@components/mainTheme'
 import Layout from '@components/Common/Layout'
 import Menu from '@containers/company-profile/components/Menu'
 import tenantDetailDuck from '@reducers/tenant/detail'
-import userFilesDetailDuck from '@reducers/user_files/detail'
+import fileDetailDuck from '@reducers/file/detail'
 import FormError from '@components/Common/FormError'
 import FormField from '@components/Common/FormField'
 import { parseResponseError, syncValidate } from '@lib/utils/functions'
@@ -71,15 +71,31 @@ function SetupCompanyProfileBranding(props) {
     }
   })
 
-  const _handleSubmit = () => {
-    console.log(logo, background)
+  const _handleSubmit = async() => {
     const newColors = {branding_config: {
-                        navigation_color: navColor ? navColor.label:tenant.item.branding_config.navigation_color, 
-                        navigation_text_color: textColor ? textColor.labelC:tenant.item.branding_config.navigation_text_color, 
-                        heading_text_color: headingColor ? headingColor.label:tenant.item.branding_config.heading_text_color, 
-                      }}
-    dispatch(tenantDetailDuck.creators.put(newColors))
-    //if(logo[0]){dispatch(tenantDetailDuck.creators.put(  ) )}
+      navigation_color: navColor ? navColor.label:tenant.item.branding_config.navigation_color, 
+      navigation_text_color: textColor ? textColor.labelC:tenant.item.branding_config.navigation_text_color, 
+      heading_text_color: headingColor ? headingColor.label:tenant.item.branding_config.heading_text_color, 
+    }}
+      dispatch(tenantDetailDuck.creators.put(newColors))
+    if(logo[0]){
+      const logo_result = await dispatch(fileDetailDuck.creators.post({file: logo[0]}))
+      console.log(logo_result)
+      setTimeout(10000);
+        dispatch(tenantDetailDuck.creators.put(
+          {
+            service_config: {
+              ...tenant.item.service_config,
+              boarding: {
+                ...tenant.item.service_config.boarding,
+                file_name: logo_result.thumbnail_path,
+              }
+            }
+          })
+        )
+    }
+    
+    
     //if(background[0]){dispatch(userFilesDetailDuck.creators.post( {file: background[0]} ) )}
     setNavColor();setHeadingColor();setTextColor()
   }
@@ -92,6 +108,7 @@ function SetupCompanyProfileBranding(props) {
         <Form onSubmit={handleSubmit(_handleSubmit)}>
           <Grid className='grid-branding'>
             <Grid.Row>
+              <Grid.Column width='4' />
               <Grid.Column width='8'>
                 <Segment {...getRootLogo({ className: 'dropzone' })}>
                   <p className='branding-titles'>Logo Image for Top Navigation</p>
@@ -115,7 +132,7 @@ function SetupCompanyProfileBranding(props) {
                 </Segment>
               </Grid.Column>
 
-              <Grid.Column width='8'>
+              {/*<Grid.Column width='8'>
                 <Segment {...getRootBackground({ className: 'dropzone' })}>
                   <p className='branding-titles'>Login Background Image</p>
                   <div className='segment-delete'>
@@ -135,7 +152,7 @@ function SetupCompanyProfileBranding(props) {
                       type='file'/>
                   </label>
                 </Segment>
-              </Grid.Column>
+              </Grid.Column>*/}
             </Grid.Row>
 
             <Grid.Row>
