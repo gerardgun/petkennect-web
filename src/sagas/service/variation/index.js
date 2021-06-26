@@ -8,10 +8,8 @@ import serviceVariationDuck from '@reducers/service/variation'
 
 const { selectors, types } = serviceVariationDuck
 
-export function* get({ payload }) {
+export function* get() {
   try {
-    yield put({ type: types.SET_FILTERS, payload })
-
     yield put({ type: types.GET_PENDING })
 
     // Load related entities

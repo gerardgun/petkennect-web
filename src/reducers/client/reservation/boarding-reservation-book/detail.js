@@ -9,20 +9,30 @@ export default base({
       pet_options             : [],
       location_options        : [],
       service_options         : [],
-      reservation_type_options: []
+      reservation_type_options: [],
+      package_options         : []
     }
   }
 })
   .extend(detail)
   .extend({
-    types   : [ 'CREATE_GET_SERVICES_TYPES_BY_LOCATION', 'CREATE_GET_RESERVATION_TYPES_BY_SERVICE' ],
+    types: [
+      'CREATE_GET_SERVICES_TYPES_BY_LOCATION',
+      'CREATE_GET_RESERVATION_TYPES_AND_PACKAGES_BY_SERVICE'
+    ],
     creators: ({
       types: {
         CREATE_GET_SERVICES_TYPES_BY_LOCATION,
-        CREATE_GET_RESERVATION_TYPES_BY_SERVICE
+        CREATE_GET_RESERVATION_TYPES_AND_PACKAGES_BY_SERVICE
       }
     }) => ({
-      createGetServiceTypesByLocation   : (payload = {}) => ({ type: CREATE_GET_SERVICES_TYPES_BY_LOCATION, payload }),
-      createGetReservationTypesByService: (payload = {}) => ({ type: CREATE_GET_RESERVATION_TYPES_BY_SERVICE, payload })
+      createGetServiceTypesByLocation: (payload = {}) => ({
+        type: CREATE_GET_SERVICES_TYPES_BY_LOCATION,
+        payload
+      }),
+      createGetReservationTypesAndPackagesByService: (payload = {}) => ({
+        type: CREATE_GET_RESERVATION_TYPES_AND_PACKAGES_BY_SERVICE,
+        payload
+      })
     })
   })

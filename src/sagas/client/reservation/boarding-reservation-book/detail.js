@@ -1,4 +1,4 @@
-import { put, select, takeEvery } from 'redux-saga/effects'
+import { call, put, select, takeEvery } from 'redux-saga/effects'
 
 import boardingReservationDetailDuck from '@reducers/client/reservation/boarding-reservation-book/detail'
 import * as clientPetSaga from '@sagas/client/pet'
@@ -7,10 +7,7 @@ import * as clientPetDetailSaga from '@sagas/pet/detail'
 import petDetailDuck from '@reducers/pet/detail'
 import * as locationSaga from '@sagas/location'
 import locationDuck from '@reducers/location'
-import * as serviceSaga from '@sagas/service'
-import serviceDuck from '@reducers/service'
-import * as variationSaga from '@sagas/service/variation'
-import variationDuck from '@reducers/service/variation'
+import { Get } from '@lib/utils/http-client'
 
 const { types, selectors } = boardingReservationDetailDuck
 
@@ -63,20 +60,17 @@ function* createGetServiceTypesByLocation({ payload }) {
   yield put({ type: types.GET_PENDING })
 
   const detail = yield select(selectors.detail)
-  yield* serviceSaga.get({
-    payload: {
-      location_id      : payload.location,
-      page_size        : 100,
-      service_group__id: payload.service_group
-    }
+
+  const serviceList = yield call(Get, 'services/', {
+    location_id        : payload.location,
+    service_group__type: payload.service_group__type
   })
-  const serviceList = yield select(serviceDuck.selectors.list)
 
   yield put({
     payload: {
       form: {
         ...detail.form,
-        service_options: serviceList.items.map((service) => {
+        service_options: serviceList.map((service) => {
           return { text: service.name, value: service.id }
         })
       }
@@ -85,26 +79,32 @@ function* createGetServiceTypesByLocation({ payload }) {
   })
 }
 
-function* createGetReservationTypesByService({ payload }) {
+function* createGetReservationTypesAndPackagesByService({ payload }) {
   yield put({ type: types.GET_PENDING })
 
   const detail = yield select(selectors.detail)
-  yield* variationSaga.get({
-    payload: {
-      service  : payload.service_id,
-      type     : 'A,R',
-      page_size: 100
-    }
-  })
-  const variationList = yield select(variationDuck.selectors.list)
 
+  const variationList = yield call(Get, 'services-variations/', {
+    service: payload.service_id
+  })
   yield put({
     payload: {
       form: {
         ...detail.form,
-        service_options: variationList.items.map((service) => {
-          return { text: service.name, value: service.id }
-        })
+        reservation_type_options: variationList
+          .filter(({ type }) => [ 'A', 'R' ].includes(type))
+          .map((service) => {
+            return { text: service.name, value: service.id }
+          }),
+        package_options: variationList
+          .filter(({ type }) => [ 'P' ].includes(type))
+          .map((packageItem) => {
+            return {
+              text             : packageItem.name,
+              value            : packageItem.id,
+              reservation_types: packageItem.service_variation_addons
+            }
+          })
       }
     },
     type: types.GET_FULFILLED
@@ -118,7 +118,7 @@ export default [
     createGetServiceTypesByLocation
   ),
   takeEvery(
-    types.CREATE_GET_RESERVATION_TYPES_BY_SERVICE,
-    createGetReservationTypesByService
+    types.CREATE_GET_RESERVATION_TYPES_AND_PACKAGES_BY_SERVICE,
+    createGetReservationTypesAndPackagesByService
   )
 ]

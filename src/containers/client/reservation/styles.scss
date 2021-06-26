@@ -516,6 +516,16 @@
     &.mini {
       font-size: 14px;
     }
+    .client-link{
+      font-weight: 600;
+      box-shadow: none !important;
+      color: #58779b !important;
+      padding: 0px;
+      padding-top: 4px;
+      font-size: 18px;
+      font-style: unset;
+      text-decoration: underline;
+    }
   }
   .checkbox-blue {
     label {

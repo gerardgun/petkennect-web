@@ -24,7 +24,8 @@ const SelectPetsSectionForm = (props) => {
         image_filepath          : pet.image_filepath,
         applies_reservation_type: '',
         applies_package         : '',
-        applies_frequency       : ''
+        applies_frequency       : '',
+        applies_selected_days   : []
       } ])
   }
 

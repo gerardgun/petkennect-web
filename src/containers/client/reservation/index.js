@@ -41,7 +41,7 @@ const Reservation = ({
 }) => {
   const history = useHistory()
   const { client } = useParams()
-  const { pet: pet } = useParams()
+  const { pet } = useParams()
   const [ activeReservationItem, setActiveReservationItem ] = useState(
     petReservationDetail.item.service
       || petReservationDetail.item.service_type
@@ -51,9 +51,10 @@ const Reservation = ({
   useEffect(() => {
     if(currentTenant && currentTenant.employee)
       props.getEmployee(currentTenant.employee.id)
+
     if(client) props.getClient(client)
     // props.getLocations()
-    if(pet) props.getPet({ id: pet })
+    if(pet) props.getPet(pet)
     // props.getServices()
     // props.getServiceAttributes()
     // props.getPetKennelType()
